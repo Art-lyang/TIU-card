@@ -66,6 +66,6 @@ body{font-family:'Noto Sans KR','Share Tech Mono',monospace;color:#33ff33;font-s
 .go-stat{color:#33ff33;margin-top:8px;font-size:12px;text-align:center}
 .go-msg{color:#f0a030;margin-top:20px;font-style:italic;font-size:13px;line-height:1.7;text-align:center}
 .footer{font-family:'Share Tech Mono',monospace;font-size:9px;color:#0d2a0d;letter-spacing:2px;padding:8px 0 max(12px,env(safe-area-inset-bottom));text-align:center;flex-shrink:0}
-.portrait{width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8);margin-bottom:8px}
-.mission-img{width:100%;max-width:420px;height:100px;object-fit:cover;margin-top:8px;border-radius:4px;border:1px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6)}
+.portrait{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8);margin-bottom:10px}
+.mission-img{width:100%;max-width:420px;height:140px;object-fit:cover;object-position:center;margin-top:8px;border-radius:4px;border:1px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6)}
 .bg-overlay{position:absolute;top:0;left:0;right:0;bottom:0;background-size:cover;background-position:center;filter:grayscale(1);pointer-events:none}

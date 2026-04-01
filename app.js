@@ -94,7 +94,7 @@ function App(){
     else{nextCard(ns,ng,logs,cq)}
   };
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);setStats(ns);setGi(ng);if(o.log)tryUnlock(o.log);Save.saveGame(ns,ng);var go=chk(ns);if(go){SFX.play('gameover');doGO(go,ns,ng);return}setCurMission(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
-  var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx),go=chk(ns);if(go){setStats(ns);SFX.play('gameover');doGO(go,ns,gi);return}var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi);setCt(0);nextCard(next,gi,logs,chainQueue);setPhase('game')};
+  var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi);setCt(0);nextCard(next,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng);var go=chk(ns);if(go){SFX.play('gameover');doGO(go,ns,ng);return}setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var restart=function(){var ns={c:50,r:60,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});Save.clearGame();Save.del('ts_trust');setCurCard(drawCard(ns,0,logs));setPhase('boot')};
 
@@ -108,14 +108,14 @@ function App(){
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
 
-  return h('div',{className:'screen'+(gi<=25?' screen-glitch':'')},
+  return h('div',{className:'screen'+(gi<=25&&stats.day>=5?' screen-glitch':'')},
     IMG.bg_command&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_command+')',opacity:0.06}}),
     h(Stats,{stats:stats}),
     sessions>=3?h('div',{className:'unnamed-gauge'},h('div',{className:'unnamed-gauge-fill',style:{width:Math.min(100,Math.max(0,gi))+'%'}})):null,
     h('div',{style:{display:'flex',alignItems:'center',gap:12,marginTop:8,flexShrink:0}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#1a6a1a',letterSpacing:1}},'카드 '+(ct+1)+' / '+cpd),
       h('button',{onClick:function(){setRet('game');setPhase('logs')},style:{background:'none',border:'1px solid #1a3a1a',color:'#1a6a1a',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'3px 8px',cursor:'pointer',borderRadius:2}},'LOG '+logs.length+'/'+ORACLE_LOGS.length)),
-    h(CardC,{card:curCard,onSwipe:swipe,gi:gi}),
+    h(CardC,{card:curCard,onSwipe:swipe,gi:gi,day:stats.day}),
     h('div',{className:'footer'},'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'));
 }
 
