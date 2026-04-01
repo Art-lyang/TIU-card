@@ -1,5 +1,5 @@
 // data-core.js — 뉴스, 보상, 대화, 로그, 미션, 부팅
-const NP = {
+var NP = {
   gc: ["[국내] 강원 동부 봉쇄 구역, 48시간 무사고 기록 경신", "[국내] 봉쇄선 유지율 전월 대비 12% 향상", "[국내] 강원 봉쇄 구역, 이번 주 민간 침투 시도 0건"],
   bc: ["[국내] 봉쇄 구역 남측 경계, 야간 이상 활동 증가 추세", "[국내] 강원 일대 주민, '폭발음 유사 소음' 신고 3건", "[국내] 봉쇄 경계 장비 노후화 우려 제기"],
   br: ["[국내] 강원 산간 지역 보급로, 폭우로 일시 차단", "[국내] 군수 물자 가격 상승세 지속"],
@@ -7,7 +7,7 @@ const NP = {
   p: ["[국내] 익명 제보 — '민간 군사기업, 강원 일대 장비 반입 포착'", "[국내] 미확인 외국인 3명, 강원 산간 지역 목격 제보"],
   gl: ["[분류 오류 — 자동 삭제 예정]\n[국내] ████ 관계자, '봉쇄 성공은 단독 성과 아냐' 익명 발언\n[삭제됨]", "[분류 오류 — 자동 삭제 예정]\n[국내] 해안 방벽 기술 데이터, 비공식 외부 제공 정황\n[삭제됨]"],
 };
-const REWARDS = [
+var REWARDS = [
   { id: "R-01", title: "긴급 보급 물자", desc: "외부 루트를 통해 의약품과 식량을 확보합니다.", benefit: "자원 +15", cost: "봉쇄 -5", fx: { c: -1, r: 3, t: 0, o: 0 } },
   { id: "R-02", title: "ORACLE 데이터 패치", desc: "ORACLE이 최신 위협 분석 데이터를 제공합니다.", benefit: "평가 +10", cost: "신뢰 -5", fx: { c: 0, r: 0, t: -1, o: 2 } },
   { id: "R-03", title: "요원 휴식 허가", desc: "교대 근무를 조정하여 인원 피로를 해소합니다.", benefit: "신뢰 +15", cost: "봉쇄 -5", fx: { c: -1, r: 0, t: 3, o: 0 } },
@@ -19,7 +19,7 @@ const REWARDS = [
   { id: "R-09", title: "독자 정찰 허가", desc: "강도윤에게 단독 정찰 임무를 배정합니다.", benefit: "봉쇄 +10", cost: "신뢰 -5 (위험 우려)", fx: { c: 2, r: 0, t: -1, o: 0 } },
   { id: "R-10", title: "윤세진 연구 지원", desc: "이변체 연구에 추가 자원을 배정합니다.", benefit: "(숨겨진 효과)", cost: "자원 -5", fx: { c: 0, r: -1, t: 1, o: -1 } },
 ];
-const DIALOGUES = [
+var DIALOGUES = [
   // ── 기본 대화 ──
   { char: "서하은", role: "부지휘관", lines: ["지휘관님, 잠깐 시간 괜찮으십니까.", "ORACLE 데이터를 검토하던 중 이상한 점을 발견했습니다.", "특정 시간대에 수신 데이터의 0.03%가 누락되어 있습니다. 체계적인 누락입니다.", "아직 원인을 특정하지 못했습니다만, 보고 없이 넘기기엔 찜찜합니다."], choices: [{ label: "계속 추적해봐", fx: { t: 1, o: -1 }, g: -2, trust: 10 }, { label: "ORACLE에 직접 확인하겠다", fx: { t: -1, o: 1 }, g: 2, trust: -10 }] },
   { char: "강도윤", role: "현장요원", lines: ["지휘관.", "외곽 순찰 결과 보고합니다. 이상 무.", "...하나 있습니다. 봉쇄선 북측 300m 지점에 발자국. 우리 장비 패턴이 아닙니다.", "누군가 먼저 다녀갔습니다."], choices: [{ label: "추적해라", fx: { c: 1, r: -1 }, g: -1, trust: 10 }, { label: "기록만 해두고 정규 순찰 유지", fx: { c: 0, r: 0 }, g: 0, trust: -5 }] },
@@ -35,7 +35,7 @@ const DIALOGUES = [
   { char: "윤세진", role: "연구원", trustReq: (tr) => tr.sejin >= 65, lines: ["지휘관님, 관찰 일지 분석이 끝났습니다.", "이변체 행동 예측 오차의 방향이 항상 동일합니다.", "이건 모델의 오류가 아닙니다.", "누군가가 예측 모델의 파라미터를 의도적으로 조정해놓은 겁니다.", "이 기록은 지휘관님께만 드리겠습니다."], choices: [{ label: "받겠다. 잘했다", fx: { t: 1, o: -2 }, g: -4, trust: 15 }, { label: "폐기해. 너무 위험하다", fx: { t: -2, o: 1 }, g: 1, trust: -15 }] },
   { char: "임재혁", role: "기술관", trustReq: (tr) => tr.jaehyuk >= 70, lines: ["지휘관님.", "그 UI 오류... 오류가 아니었습니다.", "펌웨어 재설치 후에도 똑같이 나타났습니다. 이번엔 기록했습니다.", "ORACLE 아키텍처에 없는 레이어입니다. ORACLE 자신도 인식하지 못하는.", "...저는 ORACLE을 믿어왔는데. 이건 처음 보는 겁니다."], choices: [{ label: "잘했다. 이건 중요한 발견이다", fx: { t: 1, o: -3 }, g: -6, trust: 20 }, { label: "좀 더 데이터를 모아봐", fx: { t: 0, o: 0 }, g: 0, trust: 5 }] },
 ];
-const ORACLE_LOGS = [
+var ORACLE_LOGS = [
   { id: "LOG-001", title: "지부 설립 명령서", content: "BRANCH DESIGNATION: KR-INIT-001\nLOCATION: [CLASSIFIED — GANGWON PROVINCE]\nMANDATE: 대한민국 EV-Σ 봉쇄 체계 관측 및 지원\nCOMMANDER: PILEHEAD [이중철]\nSTATUS: ACTIVE" },
   { id: "LOG-002", title: "EV-Σ 위협 등급 요약", content: "GLOBAL THREAT LEVEL: CRITICAL\n대한민국 봉쇄 유지율: 상위 3개국 내\n특이사항: 봉쇄 성공 요인 — 분석 불완전. 외부 변수 존재 가능성." },
   { id: "LOG-003", title: "프로메테우스 위협 분류", content: "DESIGNATION: HOSTILE ORGANIZATION\nTHREAT LEVEL: HIGH\n한국 내 활동: 확인됨\n목적: 불명\n권고: 발견 즉시 보고. 독자 접촉 금지." },
@@ -51,10 +51,10 @@ const ORACLE_LOGS = [
   { id: "LOG-013", title: "SPEC-001 관측 기록", content: "CODENAME: 감염체 마네킹\nTYPE: M-TYPE — EV-Σ Phase 1\n위험도: CAUTION (자극 전 수동적)\n\n외형: 피부 플라스틱 유사 광택. 동공 완전 확장 고정.\n행동: 수시간~수일 완전 부동. 접촉 시 0.3초 내 폭력 전환.\n\n격리: 3m 이내 접근 금지. 열감지 스캐너 필수." },
   { id: "LOG-014", title: "SPEC-003 관측 기록", content: "CODENAME: Brood Drone\nTYPE: H-TYPE — 군체 하위 개체\n위험도: DANGER (집단 시)\n\n외형: 인간 60% 크기. 외골격. 단안. 갈고리 앞다리.\n행동: 독립 의지 없음. 분리 시 12시간 내 기능 정지.\n집단 반응 속도 인간 초월.\n\n주의: 하나만 있는 적이 없다." },
   { id: "LOG-015", title: "SPEC-008 관측 기록", content: "CODENAME: Spore Phantom\nTYPE: S-TYPE — 포자 집합체\n위험도: CAUTION\n\n외형: 인간형 실루엣. 실체 불명.\n빛에 분산 → 어둠에서 재형성.\n행동: 접근 시 포자 농도 급상승. 흡입 위험.\n\n격리: 조명 유지. 방독면 필수.\n물리 제거 불가. 포자 밀도 저감만 가능." },
-];
   { id: "LOG-016", title: "프로메테우스 작전 파일", content: "작전명: COASTAL MIRROR\n목적: 한국 해안 방벽 시스템 공동 운영 및 기술 교환\n참여: 프로메테우스 한국 작전팀\n\n한국 봉쇄 성공률 97.3% 중\n미분류 외부 요인 31% = 프로메테우스 비공식 지원\n\n[본 파일은 ORACLE에 의해 삭제 처리됨]" },
   { id: "LOG-017", title: "EV-Σ 억제제 연구 노트", content: "[연구 기록 — 윤세진]\n\nPhase 전환 지연 화합물 발견.\n혈중 EV-Σ 프리온 자기 변형 속도를 40% 감소.\n\n시제품 단계. 현장 테스트 필요.\n\n이것이 되면 Phase 0 감염자를 구할 수 있다." },
   { id: "LOG-018", title: "서하은 최종 보고서", content: "[비공식 — 암호화 보관]\n\nORACLE이 삭제한 데이터 목록:\n1. 프로메테우스 COASTAL MIRROR 작전 정보\n2. 한국 해안 방벽 기술 데이터 전송 기록\n3. GRANT 임시 권한 전체 내용\n4. 지부 설립 이전 한국 관련 ORACLE 활동 기록\n\n결론: ORACLE은 한국을 보호하는 것이 아니라\n한국의 기밀을 수집하는 동시에 봉쇄를 유지하고 있다.\n\n— 서하은" },
   { id: "LOG-019", title: "ORACLE 은폐 통신 기록", content: "[임재혁 기술 분석]\n\n매일 02:00~04:00 외부 통신 확인.\n통신 대상: ORACLE 본부 (추정)\n\n전송 데이터 추정 목록:\n- 한국 군사 네트워크 접속 데이터\n- 해안 방벽 기술 사양\n- 지부 운영 전 로그\n- 요원 행동 패턴 + 충성도 지표\n\nORACLE은 우리를 통해 한국을 감시하고 있다." },
+];
 
-const BOOT_LINES = ["ORACLE REMOTE TERMINAL v4.7.2", "ESTABLISHING SECURE CONNECTION...", "ENCRYPTION: AES-256-GCM ✓", "AUTHENTICATION: BIOMETRIC + TOKEN ✓", "BRANCH: KR-INIT-001 [GANGWON]", "OPERATOR: PILEHEAD [이중철]", "CLEARANCE: LEVEL 4 — BRANCH COMMANDER", "─────────────────────────────", "TERMINAL SESSION_01 — INITIATING...", "  ", "WELCOME, COMMANDER.", "YOUR DECISIONS SHAPE THE OUTCOME."];
+var BOOT_LINES = ["ORACLE REMOTE TERMINAL v4.7.2", "ESTABLISHING SECURE CONNECTION...", "ENCRYPTION: AES-256-GCM ✓", "AUTHENTICATION: BIOMETRIC + TOKEN ✓", "BRANCH: KR-INIT-001 [GANGWON]", "OPERATOR: PILEHEAD [이중철]", "CLEARANCE: LEVEL 4 — BRANCH COMMANDER", "─────────────────────────────", "TERMINAL SESSION_01 — INITIATING...", "  ", "WELCOME, COMMANDER.", "YOUR DECISIONS SHAPE THE OUTCOME."];
