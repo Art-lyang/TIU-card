@@ -1,5 +1,6 @@
 // TERMINAL SESSION — app.js
 // Utils, Save, SFX, App
+var CARDS = CARDS_BASE.concat(CARDS_STORY);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
@@ -80,6 +81,11 @@ function App(){
     if(cid==='C-042'||cid==='C-043')tryUnlock('LOG-013');
     if(cid==='C-044'||cid==='C-045')tryUnlock('LOG-014');
     if(cid==='C-046'||cid==='C-047')tryUnlock('LOG-015');
+    if(cid==='CH-004-2')tryUnlock('LOG-009');
+    if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
+    if(cid==='C-067')tryUnlock('LOG-017');
+    if(cid==='C-074'||cid==='CH-006-2')tryUnlock('LOG-018');
+    if(cid==='C-079'||cid==='C-086')tryUnlock('LOG-019');
     if(dc==='\uc11c\ud558\uc740'&&di===0)tryUnlock('LOG-006');if(dc==='\uc724\uc138\uc9c4'&&di===0)tryUnlock('LOG-007');
     if(dc==='\uac15\ub3c4\uc724'&&di===0)tryUnlock('LOG-008');if(dc==='\uc784\uc7ac\ud601'&&di===1)tryUnlock('LOG-012');
     if(g<=20)tryUnlock('LOG-009');if(g<=10)tryUnlock('LOG-010');
