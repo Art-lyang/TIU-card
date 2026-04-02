@@ -3,7 +3,7 @@ var CARDS_BASE = [
   { id: "C-001", act: [1,2,3], priority: "하", msg: "신규 요원 3명이 기지에 도착했습니다. 배치 승인이 필요합니다.", left: { label: "내일 배치", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "즉시 배치", fx: { c: 1, r: -1, t: 1, o: 1 }, g: 1 } },
   { id: "C-002", act: [1,2,3], priority: "중", msg: "봉쇄 구역 외곽에서 민간인 접근 시도 감지. 대응 지침을 결정하십시오.", left: { label: "경고 방송만", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "요원 파견 차단", fx: { c: 1, r: -1, t: -1, o: 1 }, g: 1 } },
   { id: "C-003", act: [1], priority: "상", tag: "spec-011", msg: "인접 셀 C-14에서 SPEC-011 (Shell Talker) 목격 보고. 해당 셀 요원이 지원 요청.", left: { label: "거절: 자원 보존", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "요원 2명 + 물자 파견", fx: { c: -1, r: -2, t: 1, o: 1 }, g: 1, mission: "M-002" } },
-  { id: "C-004", act: [1,2,3], priority: "중", msg: "기지 의료 물자가 부족합니다. 윤세진 연구원이 긴급 보급을 요청합니다.", left: { label: "현 수준 유지", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 }, right: { label: "보급 승인", fx: { c: 0, r: -2, t: 1, o: 0 }, g: 0 } },
+  { 
   { id: "C-005", act: [1], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },
   { id: "C-006", act: [1,2], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -2, t: 1, o: 2 }, g: 2 } },
   { id: "C-007", act: [1], priority: "중", msg: "강도윤 요원이 봉쇄선 외곽 정찰을 자원합니다. 단독 작전입니다.", left: { label: "허가", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE 판단 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
@@ -12,7 +12,7 @@ var CARDS_BASE = [
   { id: "C-010", act: [1], priority: "상", tag: "spec-012", msg: "봉쇄 구역 내 SPEC-012 (Blood Pit) 활동 징후 감지. 샘플 채취 임무 제안.", left: { label: "위험 회피: 임무 취소", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "채취팀 편성", fx: { c: 0, r: -2, t: 0, o: 1 }, g: 1, mission: "M-001" } },
   { id: "C-011", act: [1,2], priority: "중", msg: "미확인 무선 신호 수신. 프로메테우스 암호 패턴과 유사합니다.", left: { label: "신호 추적", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
   { id: "C-012", act: [1,2,3], priority: "하", msg: "강원도 내 민간 뉴스 — '야간 군사 차량 이동' 목격담 확산. 기지 보안 위험.", left: { label: "무시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "이동 경로 변경", fx: { c: 0, r: -1, t: 1, o: 1 }, g: 1 } },
-  { id: "C-013", act: [1,2], priority: "상", msg: "ORACLE 긴급 통신: 봉쇄 구역 남측 경계에서 다수 생체 반응 감지. 즉각 대응 필요.", left: { label: "기지 방어 강화", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "선제 출격", fx: { c: 2, r: -3, t: 0, o: 2 }, g: 1 } },
+  { id: "C-013", act: [1,2], priority: "상", msg: "ORACLE 긴급 통신: 봉쇄 구역 남측 경계에서 다수 생체 반응 감지. 즉각 대응 필요.", left: { label: "기지 방어 강화", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "선제 출격", fx: { c: 2, r: -2, t: 0, o: 2 }, g: 1 } },
   { id: "C-014", act: [1], priority: "중", msg: "윤세진 연구원이 이변체 관찰 기록을 개인적으로 작성하고 있습니다. 보안 위반 여부 판단 필요.", left: { label: "묵인", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 }, right: { label: "기록 압수 + 경고", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "C-015", act: [1,2], priority: "중", msg: "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.", left: { label: "거절: 수동 유지", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4 }, right: { label: "부분 자동화 승인", fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
   // 조건부 카드
@@ -24,7 +24,7 @@ var CARDS_BASE = [
   { id: "C-021", act: [2,3], priority: "중", req: (s, g, logs) => s.day >= 7 && logs.includes("LOG-006"), msg: "서하은 부지휘관이 긴급 면담을 요청합니다. 표정이 심각합니다.", left: { label: "즉시 면담", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 }, right: { label: "내일로 미루기", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
   { id: "C-022", act: [3], priority: "상", req: (s, g) => s.day >= 10 && g >= 50, msg: "ORACLE 특별 통신: 지휘관의 탁월한 운영 성과를 인정합니다. 권한 확대를 제안합니다.", left: { label: "수락", fx: { c: 1, r: 1, t: -1, o: 3 }, g: 5 }, right: { label: "현행 유지", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   // ── 추가 카드: 일상 운영 ──
-  { id: "C-023", act: [1,2,3], priority: "하", msg: "기지 식수 정화 시설에 이상이 감지되었습니다. 수질 검사 결과 오염도가 기준치의 3배입니다.", left: { label: "응급 수리", fx: { c: 0, r: -2, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE 최적 해법 문의", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2 } },
+  { id: "C-023", act: [1,2,3], priority: "하", msg: "기지 식수 정화 시설에 이상이 감지되었습니다. 수질 검사 결과 오염도가 기준치의 3배입니다.", left: { label: "응급 수리", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE 최적 해법 문의", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2 } },
   { id: "C-024", act: [1,2,3], priority: "하", msg: "야간 근무 요원 2명 사이에서 언쟁이 발생했습니다. 한 명이 교대 거부를 선언했습니다.", left: { label: "직접 중재", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 }, right: { label: "강도윤에게 처리 위임", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
   { id: "C-025", act: [1,2,3], priority: "중", msg: "폭우로 인해 외부 보급로가 48시간 이상 차단될 전망입니다. 비상 물자 배분이 필요합니다.", left: { label: "배급제 시행", fx: { c: 0, r: 1, t: -1, o: 0 }, g: 0 }, right: { label: "대체 경로 탐색 (위험)", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-026", act: [1], priority: "중", msg: "기지 보안 점검 중 CCTV 사각지대 3곳이 발견되었습니다. 임재혁이 즉시 보완을 건의합니다.", left: { label: "즉시 보완", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "ORACLE 감시 시스템으로 대체", fx: { c: 1, r: 0, t: -1, o: 1 }, g: 2 } },

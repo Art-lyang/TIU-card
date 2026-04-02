@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Share+Tech+Mono&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body,#root{height:100%;background:#0a0a0a;overflow:hidden}
+html,body,#root{height:100%;background:#050808;overflow:hidden}
 body{font-family:'Noto Sans KR','Share Tech Mono',monospace;color:#33ff33;font-size:14px}
 
-/* Animations */
+/* === CRT TERMINAL FILTER === */
 @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
 @keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 @keyframes textGlitch{
@@ -15,65 +15,94 @@ body{font-family:'Noto Sans KR','Share Tech Mono',monospace;color:#33ff33;font-s
   100%{transform:translate(0);text-shadow:none}
 }
 @keyframes screenFlicker{0%{opacity:1}3%{opacity:0.7}6%{opacity:1}100%{opacity:1}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 4px rgba(51,255,51,0.3)}50%{box-shadow:0 0 14px rgba(51,255,51,0.6)}}
+@keyframes dangerPulse{0%,100%{box-shadow:0 0 4px rgba(255,68,68,0.2)}50%{box-shadow:0 0 16px rgba(255,68,68,0.5)}}
+@keyframes cardEnter{from{opacity:0;transform:scale(0.94) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+@keyframes subtleBreathe{0%,100%{opacity:0.015}50%{opacity:0.03}}
 
 /* Utility */
 .glitch-active{animation:textGlitch 0.2s infinite;color:#ff6666!important}
 .screen-glitch{animation:screenFlicker 3s infinite}
-.scanline{position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,0.015) 2px,rgba(0,255,0,0.015) 4px);pointer-events:none;z-index:999}
 
-/* Layout — overflow-y:auto로 변경 (컨텐츠 잘림 방지) */
+/* CRT Scanline overlay */
+.scanline{position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,0,0.018) 2px,rgba(0,255,0,0.018) 4px);pointer-events:none;z-index:999}
+
+/* CRT Vignette */
+.crt-vignette{position:fixed;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at center,transparent 50%,rgba(0,0,0,0.5) 100%);pointer-events:none;z-index:998}
+
+/* CRT Noise */
+.crt-noise{position:fixed;top:-50%;left:-50%;width:200%;height:200%;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:997;animation:subtleBreathe 4s ease infinite}
+
+/* Phosphor glow */
+#root{text-shadow:0 0 5px rgba(51,255,51,0.12)}
+
+/* === LAYOUT === */
 .screen{display:flex;flex-direction:column;align-items:center;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;padding:0 16px;padding-top:max(8px,env(safe-area-inset-top))}
 .boot{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px 20px}
 
-/* Buttons — min-height:44px 터치 타겟 보장 + hover 추가 */
-.btn{background:none;border:1px solid #33ff33;color:#33ff33;font-family:'Noto Sans KR',sans-serif;font-size:14px;padding:14px 28px;cursor:pointer;letter-spacing:1px;margin-top:24px;transition:all 0.2s;min-height:44px}
-.btn:active{background:#33ff33;color:#0a0a0a}
-.btn:hover{background:rgba(51,255,51,0.08)}
-.btn-amber{border-color:#f0a030;color:#f0a030}
-.btn-amber:active{background:#f0a030;color:#0a0a0a}
-.btn-amber:hover{background:rgba(240,160,48,0.08)}
+/* === BUTTONS === */
+.btn{background:none;border:1px solid #33ff33;color:#33ff33;font-family:'Noto Sans KR',sans-serif;font-size:14px;padding:14px 28px;cursor:pointer;letter-spacing:1px;margin-top:24px;transition:all 0.25s;min-height:44px;text-shadow:0 0 8px rgba(51,255,51,0.3);position:relative;overflow:hidden}
+.btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(51,255,51,0.05),transparent);transition:left 0.5s}
+.btn:hover::before{left:100%}
+.btn:active{background:#33ff33;color:#050808;text-shadow:none}
+.btn:hover{background:rgba(51,255,51,0.06);box-shadow:0 0 12px rgba(51,255,51,0.12)}
+.btn-amber{border-color:#f0a030;color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.3)}
+.btn-amber:active{background:#f0a030;color:#050808;text-shadow:none}
+.btn-amber:hover{background:rgba(240,160,48,0.06);box-shadow:0 0 12px rgba(240,160,48,0.12)}
 
-/* Stats — max-width 넓힘 */
-.stats{width:100%;max-width:480px;padding:14px 0;border-bottom:1px solid #1a3a1a;flex-shrink:0}
+/* === STATS === */
+.stats{width:100%;max-width:480px;padding:14px 0;border-bottom:1px solid #0a1a0a;flex-shrink:0}
 .stats-hdr{font-family:'Share Tech Mono',monospace;font-size:11px;color:#1a6a1a;letter-spacing:2px;margin-bottom:10px;text-align:center}
 .stat-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.stat-label{font-size:12px;width:56px;flex-shrink:0;text-align:right;padding-right:4px}
-.bar-bg{flex:1;height:10px;background:#111;border:1px solid #1a3a1a;border-radius:2px;overflow:hidden}
-.bar-fill{height:100%;border-radius:2px;transition:width 0.5s ease,background 0.5s ease}
+.stat-label{font-size:12px;width:56px;flex-shrink:0;text-align:right;padding-right:4px;transition:color 0.5s,text-shadow 0.5s}
+.bar-bg{flex:1;height:10px;background:#060a06;border:1px solid #0a1a0a;border-radius:2px;overflow:hidden}
+.bar-fill{height:100%;border-radius:2px;transition:width 0.5s ease,background 0.5s ease;position:relative}
+.bar-fill::after{content:'';position:absolute;top:0;right:0;width:6px;height:100%;background:inherit;filter:brightness(1.8);border-radius:0 2px 2px 0}
 .stat-val{font-family:'Share Tech Mono',monospace;font-size:12px;width:28px;text-align:right;flex-shrink:0}
+.stat-danger .stat-label{text-shadow:0 0 8px rgba(255,68,68,0.5)}
+.stat-high .stat-label{text-shadow:0 0 8px rgba(240,160,48,0.4)}
 
-/* Card */
+/* === CARD === */
 .card-area{flex:1;display:flex;align-items:center;justify-content:center;position:relative;width:100%;max-width:480px;padding:12px 0;overflow:hidden;min-height:200px}
-.card{background:#0d1a0d;border:1px solid #1a3a1a;border-radius:4px;width:100%;max-width:440px;user-select:none;touch-action:pan-y;box-shadow:0 0 20px rgba(0,255,0,0.05)}
-.card-hdr{font-family:'Share Tech Mono',monospace;display:flex;justify-content:space-between;padding:10px 16px;font-size:11px;border-bottom:1px solid #1a3a1a;color:#1a6a1a}
-.card-body{padding:18px 16px;font-size:14px;line-height:1.8;color:#33ff33;min-height:100px}
-.card-ft{display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid #1a3a1a;font-size:12px;color:#1a5a1a}
-.hint{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;max-width:80px;text-align:center;z-index:10;line-height:1.4;font-weight:bold}
+.card{background:#060a06;border:1px solid #0d2a0d;border-radius:4px;width:100%;max-width:440px;user-select:none;touch-action:pan-y;box-shadow:0 0 20px rgba(0,255,0,0.03),inset 0 1px 0 rgba(51,255,51,0.03);animation:cardEnter 0.3s ease;position:relative;overflow:hidden}
+.card-img-bg{position:absolute;top:0;left:0;right:0;bottom:0;background-size:cover;background-position:center;opacity:0.07;filter:grayscale(1) brightness(0.5);pointer-events:none;z-index:0}
+.card-hdr{font-family:'Share Tech Mono',monospace;display:flex;justify-content:space-between;padding:10px 16px;font-size:11px;border-bottom:1px solid #0d2a0d;color:#1a6a1a;position:relative;z-index:1}
+.card-body{padding:18px 16px;font-size:14px;line-height:1.8;color:#33ff33;min-height:100px;position:relative;z-index:1}
+.card-ft{display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid #0d2a0d;font-size:12px;color:#1a5a1a;position:relative;z-index:1}
+.card.card-p-high{border-color:#331111;box-shadow:0 0 20px rgba(255,0,0,0.06),inset 0 1px 0 rgba(255,68,68,0.05);animation:cardEnter 0.3s ease,dangerPulse 3s ease infinite}
+.card.card-p-high .card-hdr{border-bottom-color:#331111}
+.card.card-p-mid{border-color:#2a1f00;box-shadow:0 0 16px rgba(240,160,48,0.04)}
+.card.card-p-mid .card-hdr{border-bottom-color:#2a1f00}
+.hint{position:absolute;top:50%;transform:translateY(-50%);font-size:13px;pointer-events:none;max-width:80px;text-align:center;z-index:10;line-height:1.4;font-weight:bold;text-shadow:0 0 10px currentColor}
 .hint-l{left:0;color:#f0a030}
 .hint-r{right:0;color:#33ff33}
 
-/* News — overflow-x:hidden으로 배경 잘림 방지 */
+/* === NEWS === */
 .news{flex:1;width:100%;max-width:480px;padding:24px 0;overflow-y:auto;overflow-x:hidden;position:relative}
-.news-hdr{font-family:'Share Tech Mono',monospace;font-size:13px;color:#f0a030;letter-spacing:3px;margin-bottom:12px;text-align:center}
-.news-line{font-size:13px;line-height:1.9;margin-bottom:10px;white-space:pre-wrap;border-left:2px solid #1a3a1a;margin-left:4px;padding-left:12px;animation:slideUp 0.4s ease}
-.news-glitch{color:#ff4444!important;border-left-color:#ff4444}
+.news-hdr{font-family:'Share Tech Mono',monospace;font-size:13px;color:#f0a030;letter-spacing:3px;margin-bottom:12px;text-align:center;text-shadow:0 0 10px rgba(240,160,48,0.3)}
+.news-line{font-size:13px;line-height:1.9;margin-bottom:10px;white-space:pre-wrap;border-left:2px solid #0d2a0d;margin-left:4px;padding-left:12px;animation:slideUp 0.4s ease}
+.news-glitch{color:#ff4444!important;border-left-color:#ff4444;text-shadow:0 0 6px rgba(255,0,0,0.3)}
 .news-deleted{color:#664444;font-style:italic}
 
-/* Special */
-.unnamed-gauge{width:100%;max-width:480px;height:3px;background:#050505;margin-top:-1px;flex-shrink:0}
-.unnamed-gauge-fill{height:100%;background:linear-gradient(90deg,#552200,#ff2222);transition:width 1s ease}
-.go-title{color:#ff4444;font-weight:bold;font-size:15px;letter-spacing:3px;text-align:center}
+/* === SPECIAL === */
+.unnamed-gauge{width:100%;max-width:480px;height:3px;background:#050505;margin-top:-1px;flex-shrink:0;overflow:hidden}
+.unnamed-gauge-fill{height:100%;background:linear-gradient(90deg,#552200,#ff2222);transition:width 1s ease;box-shadow:0 0 6px rgba(255,34,34,0.3)}
+.go-title{color:#ff4444;font-weight:bold;font-size:15px;letter-spacing:3px;text-align:center;text-shadow:0 0 12px rgba(255,0,0,0.4)}
 .go-reason{color:#ff4444;margin-top:16px;font-size:14px;text-align:center;line-height:1.6}
 .go-section{color:#888;margin-top:24px;font-size:12px;text-align:center}
 .go-stat{color:#33ff33;margin-top:8px;font-size:13px;text-align:center}
 .go-msg{color:#f0a030;margin-top:20px;font-style:italic;font-size:13px;line-height:1.7;text-align:center}
 .footer{font-family:'Share Tech Mono',monospace;font-size:9px;color:#0d2a0d;letter-spacing:2px;padding:8px 0 max(12px,env(safe-area-inset-bottom));text-align:center;flex-shrink:0}
-.portrait{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8);margin-bottom:10px}
-.mission-img{width:100%;max-width:480px;height:160px;object-fit:cover;object-position:center;margin-top:8px;border-radius:4px;border:1px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6)}
-/* bg-overlay — bottom 제거, 높이를 부모에 맞춤 */
+.portrait{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8);margin-bottom:10px;box-shadow:0 0 16px rgba(51,255,51,0.08)}
+.mission-img{width:100%;max-width:480px;height:160px;object-fit:cover;object-position:center;margin-top:8px;border-radius:4px;border:1px solid #0d2a0d;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6)}
 .bg-overlay{position:absolute;top:0;left:0;right:0;background-size:cover;background-position:center;filter:grayscale(1);pointer-events:none;z-index:0}
 
-/* 모바일 소형 (iPhone SE 등) */
+/* Act badge */
+.act-badge{font-family:'Share Tech Mono',monospace;display:inline-block;padding:2px 8px;font-size:10px;letter-spacing:1px;border-radius:2px;border:1px solid #0d2a0d;color:#1a6a1a}
+.act-badge-2{border-color:#332a00;color:#f0a030;text-shadow:0 0 6px rgba(240,160,48,0.3)}
+.act-badge-3{border-color:#331111;color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.3);animation:dangerPulse 3s ease infinite}
+
+/* 모바일 소형 */
 @media(max-width:374px){
   .screen{padding:0 10px}
   .card-body{padding:14px 12px;font-size:13px}
@@ -83,7 +112,7 @@ body{font-family:'Noto Sans KR','Share Tech Mono',monospace;color:#33ff33;font-s
   .stat-label{width:46px;font-size:11px}
   .mission-img{height:120px}
 }
-/* PC (넓은 화면) */
+/* PC */
 @media(min-width:768px){
   .card{max-width:460px}
   .card-body{font-size:15px;padding:20px 20px;min-height:120px}
