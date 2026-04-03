@@ -83,13 +83,12 @@ function GameOver(p){
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
   var steps=[
-    {lines:["ORACLE 인사 프로토콜을 개시합니다.","","환영합니다, 이중철 지휘관.","","당신은 ORACLE Proxy Network","한국 지부의 초대 지휘관으로","발령되었습니다.","","기지 위치: 강원도 [기밀]","코드네임: BRANCH KR-INIT-001"],choices:[{label:"발령을 수락합니다",next:1},{label:"상세 브리핑을 요청합니다",next:1}]},
-    {lines:["[상황 브리핑 — EV-Σ 위기]","","2년 전, 전 세계에 미지의 위협이 나타났습니다.","","코드명: EV-Σ (이변체 시그마)","","감염된 생물은 '이변체'로 변이합니다.","인간의 목소리를 흉내내는 Shell Talker,","접촉 즉시 포식하는 Blood Pit —","이들은 지능적이고, 진화합니다.","","현재 전 세계 주요 도시가 봉쇄 중입니다."],choices:[{label:"계속",next:2}]},
-    {lines:["[위협 분류 — 프로메테우스]","","ORACLE은 '프로메테우스'를 적대 세력으로","분류하고 있습니다.","","정체: 비공인 무장 조직","목적: 불명","활동: 한국 내 침투 징후 확인","","발견 즉시 보고하십시오.","독자적 접촉은 금지됩니다.","","[ORACLE: 이것은 명령입니다.]"],choices:[{label:"확인했습니다",next:3}]},
-    {lines:["[임무 개요]","","대한민국은 안정적인 봉쇄 체계를 유지하는","몇 안 되는 국가입니다.","","지휘관으로서 당신의 임무:","","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 요원 4명의 운영 총괄","▸ ORACLE의 지시 이행","▸ 외부 위협(프로메테우스) 감시","","모든 판단은 당신의 몫입니다."],choices:[{label:"이해했습니다",next:4}]},
-    {lines:["[팀 소개]","","▸ 서하은 — 부지휘관. 데이터 분석 전문.","▸ 강도윤 — 현장요원. 전직 특수부대원.","▸ 윤세진 — 연구원. EV-Σ 생물학 분석.","▸ 임재혁 — 기술관. ORACLE 시스템 관리.","","이들의 신뢰를 얻으십시오.","신뢰는 정보의 질을 결정합니다."],choices:[{label:"계속",next:5}]},
-    {lines:["지휘관은 4가지 핵심 지표를 관리합니다.","","◆ 봉쇄 — 관할 구역 봉쇄선 유지도","◇ 자원 — 식량, 의약품, 장비 잔량","○ 신뢰 — 기지 요원의 신뢰도","● 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","균형을 유지하십시오."],choices:[{label:"이해했습니다",next:6}]},
-    {lines:["매일 ORACLE이 보고서와 요청을 전달합니다.","","카드를 좌우로 밀어 결정을 내리십시오.","","← 왼쪽: 첫 번째 선택지","→ 오른쪽: 두 번째 선택지","","당신의 선택이 기지의 운명을 결정합니다.","","행운을 빕니다, 지휘관."],choices:[{label:"임무를 시작합니다",next:-1}]}
+    {lines:["ORACLE 인사 프로토콜을 개시합니다.","","환영합니다, PILEHEAD.","본명: 이중철.","","당신은 ORACLE Proxy Network","한국 지부의 초대 지휘관으로","발령되었습니다.","","기지 위치: 강원도 [기밀]","코드네임: BRANCH KR-INIT-001"],choices:[{label:"발령을 수락합니다",next:1},{label:"브리핑을 요청합니다",next:1}]},
+    {lines:["[상황 브리핑 — EV-Σ]","","2년 전, 미지의 바이러스가 출현했습니다.","코드명: EV-Σ","","감염체는 기존 생물학으로","설명할 수 없는 방식으로 변이합니다.","이들을 '이변체'라 분류합니다.","","현재 전 세계 주요 도시가 봉쇄 중이며,","대한민국은 안정적 봉쇄를 유지하는","몇 안 되는 국가입니다."],choices:[{label:"계속",next:2}]},
+    {lines:["[위협 분류 — 프로메테우스]","","ORACLE은 '프로메테우스'를","적대 세력으로 분류하고 있습니다.","","정체: 비공인 무장 조직","목적: 불명","활동: 한국 내 침투 징후 확인","","발견 즉시 보고하십시오.","독자적 접촉은 금지됩니다."],choices:[{label:"확인했습니다",next:3}]},
+    {lines:["[임무 및 인원]","","당신의 임무:","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 운영 총괄","▸ ORACLE의 지시 이행","▸ 외부 위협 감시","","간부진 4명이 당신을 보좌합니다.","서하은(정보), 강도윤(현장),","윤세진(연구), 임재혁(기술).","","기지에는 일반 인원도 배치되어 있습니다.","모든 최종 판단은 당신의 몫입니다."],choices:[{label:"이해했습니다",next:4}]},
+    {lines:["4가지 핵심 지표를 관리합니다.","","◆ 봉쇄 — 봉쇄선 유지도","◇ 자원 — 식량, 의약품, 장비","○ 신뢰 — 기지 인원의 신뢰도","● 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","균형을 유지하십시오."],choices:[{label:"이해했습니다",next:5}]},
+    {lines:["매일 ORACLE이 보고서와 요청을","전달합니다.","","카드를 좌우로 밀어 결정하십시오.","← 왼쪽 / → 오른쪽","","당신의 선택이 기지의 운명을 결정합니다.","","행운을 빕니다, PILEHEAD."],choices:[{label:"임무를 시작합니다",next:-1}]}
   ];
   var st=steps[step];var s2=useState(0),shown=s2[0],setShown=s2[1];var s3=useState(false),bv=s3[0],setBv=s3[1];
   useEffect(function(){setShown(0);setBv(false)},[step]);
@@ -153,9 +152,6 @@ function Dialogue(p){
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#1a8a1a',marginTop:2}},d.role)),
     h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:100,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',marginBottom:0}},
       h('div',{className:'oracle-card__glow'}),
-      h('div',{style:{marginBottom:10,paddingBottom:8,borderBottom:'1px solid rgba(145,255,106,.12)',flexShrink:0}},
-        h('div',{style:{fontSize:14,color:'#9dff74',fontWeight:'bold'}},d.char),
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.5)'}},d.role)),
       h('div',{style:{flex:1}},
         d.lines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:6,animation:'fadeIn 0.3s ease'}},String(l))}),
         chosen&&chosen.reply&&h('div',{style:{fontSize:14,lineHeight:1.7,color:'#f0a030',marginTop:8}},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▌')),

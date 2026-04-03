@@ -71,7 +71,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 .go-msg{font-style:italic;color:#1a6a1a;margin-top:16px;font-size:13px}
 /* Portrait & Mission */
 .portrait{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid #1a3a1a;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8);margin-bottom:10px;box-shadow:0 0 16px rgba(51,255,51,0.08)}
-.mission-img{width:100%;max-width:480px;height:120px;object-fit:cover;object-position:center;margin-top:6px;border-radius:4px;border:1px solid #0d2a0d;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6)}
+.mission-img{width:100%;max-width:480px;height:140px;object-fit:contain;object-position:center;margin-top:6px;border-radius:4px;border:1px solid #0d2a0d;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6);background:#060a06}
 /* Mobile */
 @media(max-width:430px){
   .screen{padding:0 8px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
@@ -99,7 +99,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
   .oracle-card__effect{font-size:11px}
   .oracle-card__execute{padding:8px 16px;font-size:12px;margin-top:8px}
   .portrait{width:80px;height:80px}
-  .mission-img{height:90px}
+  .mission-img{height:110px}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
 /* ── Choice Cards (Reward Screen) ── */

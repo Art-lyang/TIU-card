@@ -1,6 +1,6 @@
 // TERMINAL SESSION — app.js
 // Utils, Save, SFX, App
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
@@ -29,7 +29,8 @@ var Save={
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
   getEndings:function(){return Save.get('ts_endings',[])},
   getSessions:function(){return Save.get('ts_sessions',0)},
-  incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c}
+  incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
+  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])}
 };
 
 var SFX={
@@ -78,6 +79,7 @@ function App(){
     var se=Save.getEndings();if(se)setEndings(se);
     setSessions(Save.getSessions());
     var st=Save.get('ts_trust',null);if(st)setTrust(st);
+    var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
     var sg=Save.get('ts_game',null);
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags)}
     var initAct=(sg&&sg.act)||1;
@@ -105,7 +107,7 @@ function App(){
   var chk=function(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 — \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null};
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
   var doGO=function(reason,ns,ng,specialId){setGor(reason);var eid=specialId||null;if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid='C_c';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();setTimeout(function(){setPhase('go')},500)};
-  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){return usedDlg.indexOf(i)<0&&(!d.trustReq||d.trustReq(trust))});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){return p.concat([DIALOGUES.indexOf(d)])});setPhase('dialogue');return true}return false};
+  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){return usedDlg.indexOf(i)<0&&(!d.trustReq||d.trustReq(trust))});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
   var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>8?n.slice(n.length-8):n})}};
   // Act 전환 체크
   var checkActTransition=function(s,g,lg,af,curAct){
@@ -161,7 +163,7 @@ function App(){
     if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'세션 종료',next,gi,se);return}
     nextCard(next,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
-  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
+  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
   if(phase==='boot')return h(Boot,{onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
