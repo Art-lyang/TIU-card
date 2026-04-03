@@ -76,11 +76,11 @@ var CARDS_ACT2_DAILY = [
     right: { label: "우회 경로 설정", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 } },
 
   // ═══ 날씨 / 환경 ═══
-  { id: "C-149", act: [2], priority: "하", bg: "weather",
+  { id: "C-149", act: [2], priority: "하", bg: "weather", tag: "weather",
     msg: "장마철이 시작되었습니다.\n\n기지 지하 침수 위험. 배수 펌프 가동 필요.",
     left: { label: "24시간 펌프 가동", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "침수 시 대응", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
-  { id: "C-150", act: [2], priority: "하", bg: "weather",
+  { id: "C-150", act: [2], priority: "하", bg: "weather", tag: "weather",
     msg: "낙뢰로 외곽 통신탑이 손상되었습니다.\n\n임재혁: \"수리에 자재가 필요합니다.\"",
     left: { label: "자재 투입 수리", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 0 },
     right: { label: "예비 통신으로 대체", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -88,10 +88,10 @@ var CARDS_ACT2_DAILY = [
   // ═══ 자원 회복 보너스 ═══
   { id: "C-151", act: [2], priority: "하", bg: "supply", req: function(s){ return s.day >= 8 },
     msg: "ORACLE 긴급 보급 도착.\n\n[ORACLE: 현장 상황을 고려한 추가 물자입니다.]",
-    left: { label: "전량 수령", fx: { c: 0, r: 3, t: 0, o: 1 }, g: 1 },
+    left: { label: "전량 수령", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 1 },
     right: { label: "필요분만 수령", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } },
   { id: "C-152", act: [2], priority: "하", bg: "base", req: function(s){ return s.r <= 40 },
     msg: "임재혁이 기지 물자 재고 정리를 완료했습니다.\n\n\"미사용 장비를 해체해서 자원으로 전환했습니다.\"",
-    left: { label: "잘했다", fx: { c: 0, r: 3, t: 1, o: 0 }, g: 0 },
+    left: { label: "잘했다", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
     right: { label: "다른 용도 검토", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } }
 ];

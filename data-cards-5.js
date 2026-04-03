@@ -11,6 +11,7 @@ var CARDS_RESOURCE = [
     right: { label: "봉쇄 장비 우선 배분", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-102", act: [1,2], priority: "하",
+    req: function(s,g,logs){ return !logs.includes("LOG-025") },
     msg: "기지 외곽 순찰 중 폐건물에서 군용 물자를 발견했습니다.\n\n강도윤: \"이전 부대가 남긴 것 같습니다. 상태가 양호합니다.\"\n\n식량 3상자, 의약품 1상자, 통신장비 부품.",
     left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 1 } },
@@ -23,7 +24,7 @@ var CARDS_RESOURCE = [
   { id: "C-104", act: [1,2,3], priority: "하",
     msg: "강원도 내 협력 마을에서 농산물을 보내왔습니다.\n\n\"봉쇄 구역 덕분에 안전합니다. 감사의 표시입니다.\"\n\n기지 식량에 여유가 생겼습니다.",
     left: { label: "감사 인사 + 관계 유지", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
-    right: { label: "추가 물물교환 제안", fx: { c: 0, r: 3, t: 0, o: -1 }, g: -1 } },
+    right: { label: "추가 물물교환 제안", fx: { c: 0, r: 2, t: 0, o: -1 }, g: -1 } },
 
   { id: "C-105", act: [2,3], priority: "하", req: function(s){ return s.day >= 7 },
     msg: "ORACLE 본부에서 특별 자원 패키지가 도착했습니다.\n\n내용: 고급 분석 장비, 봉쇄 자재, 비상 의약품.\n\n[ORACLE: 한국 지부의 성과를 인정합니다.]",
@@ -31,6 +32,7 @@ var CARDS_RESOURCE = [
     right: { label: "봉쇄 자재 우선 배치", fx: { c: 2, r: 1, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-106", act: [1,2,3], priority: "하",
+    req: function(s,g,logs){ return !logs.includes("LOG-026") },
     msg: "윤세진이 기지 내 약초 재배 실험에 성공했습니다.\n\n\"기본 해열제와 소독제를 자체 생산할 수 있게 됐습니다.\"\n\n\"작지만 꾸준한 자원입니다.\"",
     left: { label: "재배 규모 확대", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
     right: { label: "현 규모 유지", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
@@ -65,5 +67,17 @@ var CARDS_RESOURCE = [
   { id: "C-112", act: [2,3], priority: "하", req: function(s){ return s.day >= 6 },
     msg: "일반 요원 중 한 명이 가족에게 편지를 보내고 싶어합니다.\n\n보안 규정상 외부 통신은 금지되어 있습니다.\n\n\"한 줄이면 됩니다. 살아 있다는 것만...\"",
     left: { label: "비공식으로 허용", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 },
-    right: { label: "규정을 지켜야 한다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } }
+    right: { label: "규정을 지켜야 한다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
+  // ═══ 후속 카드 (1회성 이벤트 이후) ═══
+  { id: "C-153", act: [1,2], priority: "하", bg: "supply",
+    req: function(s,g,logs){ return logs.includes("LOG-025") && s.day >= 5 },
+    msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"더 깊이 들어가면 있을 수 있습니다.\"",
+    left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
+    right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-154", act: [1,2,3], priority: "하", bg: "lab",
+    req: function(s,g,logs){ return logs.includes("LOG-026") && s.day >= 8 },
+    msg: "윤세진: \"약초 재배가 안정기에 접어들었습니다.\"\n\n\"이번 수확분으로 해열제 10일분을 추가 확보했습니다.\"",
+    left: { label: "비축 처리", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
+    right: { label: "즉시 배분", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 } }
 ];

@@ -7,8 +7,9 @@ var CARDS_ACT1_DAILY = [
     left: { label: "의료품 우선 하역", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
     right: { label: "장비 부품 우선 하역", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } },
   { id: "C-114", act: [1], priority: "하", bg: "supply",
+    req: function(s,g,logs){ return !logs.includes("LOG-027") },
     msg: "인근 폐쇄 군부대에서 잔여 물자 발견 보고.\n\n강도윤: \"연료와 방한 장비가 있습니다.\"",
-    left: { label: "회수팀 파견", fx: { c: 0, r: 3, t: 0, o: 0 }, g: 0 },
+    left: { label: "회수팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "위험 — 무시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-115", act: [1], priority: "하", bg: "supply",
     msg: "임재혁이 태양광 패널 설치를 제안합니다.\n\n\"전력 자급률을 높일 수 있습니다.\"",
@@ -53,6 +54,7 @@ var CARDS_ACT1_DAILY = [
     left: { label: "센서 교체", fx: { c: 2, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "수동 순찰로 보완", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-124", act: [1], priority: "하", bg: "forest",
+    req: function(s,g,logs){ return !logs.includes("LOG-028") },
     msg: "순찰 중 야생 동물 사체 발견.\n\nEV-Σ 감염 여부 불명.\n\n윤세진: \"샘플 채취하면 확인 가능합니다.\"",
     left: { label: "샘플 채취", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "소각 처리", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -62,11 +64,11 @@ var CARDS_ACT1_DAILY = [
     right: { label: "경고 표지판 설치", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // ═══ 날씨 / 환경 ═══
-  { id: "C-126", act: [1], priority: "하", bg: "weather",
+  { id: "C-126", act: [1], priority: "하", bg: "weather", tag: "weather",
     msg: "기상 예보: 내일 폭설.\n\n외부 활동이 제한됩니다.",
     left: { label: "방한 장비 점검", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
     right: { label: "평소대로 대비", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
-  { id: "C-127", act: [1], priority: "하", bg: "weather",
+  { id: "C-127", act: [1], priority: "하", bg: "weather", tag: "weather",
     msg: "밤새 안개가 짙습니다.\n\n봉쇄선 가시거리 50m 미만.\n\n강도윤: \"순찰 효율이 절반입니다.\"",
     left: { label: "열감지 장비 투입", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "안개 해소까지 대기", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -93,5 +95,17 @@ var CARDS_ACT1_DAILY = [
   { id: "C-132", act: [1], priority: "하", bg: "base",
     msg: "기지 비상 발전기 점검일입니다.\n\n임재혁: \"30분이면 됩니다. 하지만 그동안 정전.\"",
     left: { label: "주간에 점검", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 0 },
-    right: { label: "연기", fx: { c: 0, r: 0, t: 0, o: -1 }, g: 0 } }
+    right: { label: "연기", fx: { c: 0, r: 0, t: 0, o: -1 }, g: 0 } },
+
+  // ═══ 후속 카드 ═══
+  { id: "C-155", act: [1,2], priority: "하", bg: "supply",
+    req: function(s,g,logs){ return logs.includes("LOG-027") && s.day >= 5 },
+    msg: "이전에 발견한 군부대 잔여 구역을 재탐색했습니다.\n\n\"탄약고는 비었지만 의약품 저장고가 남아 있습니다.\"",
+    left: { label: "회수 진행", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
+    right: { label: "부비트랩 위험 — 포기", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
+  { id: "C-156", act: [1,2], priority: "하", bg: "forest",
+    req: function(s,g,logs){ return logs.includes("LOG-028") && s.day >= 6 },
+    msg: "이전 사체 발견 지점 인근 모니터링 결과.\n\n윤세진: \"추가 감염 징후 없음. 격리 지역 아닙니다.\"",
+    left: { label: "순찰 구역에 포함", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 },
+    right: { label: "관찰만 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } }
 ];

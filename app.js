@@ -71,6 +71,7 @@ function App(){
   var _cd=useState({}),cooldowns=_cd[0],setCooldowns=_cd[1];
   var _rc=useState([]),recentCards=_rc[0],setRecentCards=_rc[1];
   var _pv=useState(null),preview=_pv[0],setPreview=_pv[1];
+  var _toast=useState(''),toast=_toast[0],setToast=_toast[1];
   var _act=useState(1),act=_act[0],setAct=_act[1];
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
   var cpd=act===1?5:act===2?6:7;
@@ -97,6 +98,8 @@ function App(){
     if(cid==='C-046'||cid==='C-047')tryUnlock('LOG-015');
     if(cid==='C-091')tryUnlock('LOG-020');if(cid==='C-092')tryUnlock('LOG-021');
     if(cid==='C-093')tryUnlock('LOG-022');if(cid==='C-094')tryUnlock('LOG-023');if(cid==='C-095')tryUnlock('LOG-024');
+    if(cid==='C-102')tryUnlock('LOG-025');if(cid==='C-106')tryUnlock('LOG-026');
+    if(cid==='C-114')tryUnlock('LOG-027');if(cid==='C-124')tryUnlock('LOG-028');
     if(cid==='CH-004-2')tryUnlock('LOG-009');
     if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
     if(cid==='C-067')tryUnlock('LOG-017');
@@ -110,7 +113,7 @@ function App(){
   var chk=function(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 — \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null};
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
   var doGO=function(reason,ns,ng,specialId){setGor(reason);var eid=specialId||null;if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid='C_c';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();setTimeout(function(){setPhase('go')},500)};
-  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){return usedDlg.indexOf(i)<0&&(!d.trustReq||d.trustReq(trust))});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
+  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
   var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>8?n.slice(n.length-8):n})}};
   // Act 전환 체크
   var checkActTransition=function(s,g,lg,af,curAct){
@@ -133,9 +136,13 @@ function App(){
     if(newAct===3){var ns={c:clamp(s.c-3),r:clamp(s.r-3),t:clamp(s.t-3),o:clamp(s.o-3),day:s.day};setStats(ns)}
     setPhase('briefing');
   };
+  var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
   var swipe=function(dir){
     SFX.play('swipe');var ch=dir==='left'?curCard.left:curCard.right;
-    var ns=applyFx(stats,ch.fx),ng=gi+(ch.g||0);setStats(ns);setGi(ng);
+    var fx=ch.fx;
+    // 자원 리스크: r>=2일 때 20% 확률로 실패
+    if(fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;var rm=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)];setToast(rm);setTimeout(function(){setToast('')},2500)}
+    var ns=applyFx(stats,fx),ng=gi+(ch.g||0);setStats(ns);setGi(ng);
     if(curCard.tag){var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
     checkLogs(ns,ng,curCard.id,null,null);
     // Track act flags
@@ -199,6 +206,7 @@ function App(){
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
       h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+logs.length+'/'+ORACLE_LOGS.length)),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
+    toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001')));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
