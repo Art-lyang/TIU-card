@@ -1,6 +1,6 @@
 // TERMINAL SESSION — app.js
 // Utils, Save, SFX, App
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
@@ -70,6 +70,7 @@ function App(){
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
   var _cd=useState({}),cooldowns=_cd[0],setCooldowns=_cd[1];
   var _rc=useState([]),recentCards=_rc[0],setRecentCards=_rc[1];
+  var _pv=useState(null),preview=_pv[0],setPreview=_pv[1];
   var _act=useState(1),act=_act[0],setAct=_act[1];
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
   var cpd=act===1?5:act===2?6:7;
@@ -94,6 +95,8 @@ function App(){
     if(cid==='C-042'||cid==='C-043')tryUnlock('LOG-013');
     if(cid==='C-044'||cid==='C-045')tryUnlock('LOG-014');
     if(cid==='C-046'||cid==='C-047')tryUnlock('LOG-015');
+    if(cid==='C-091')tryUnlock('LOG-020');if(cid==='C-092')tryUnlock('LOG-021');
+    if(cid==='C-093')tryUnlock('LOG-022');if(cid==='C-094')tryUnlock('LOG-023');if(cid==='C-095')tryUnlock('LOG-024');
     if(cid==='CH-004-2')tryUnlock('LOG-009');
     if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
     if(cid==='C-067')tryUnlock('LOG-017');
@@ -127,7 +130,7 @@ function App(){
   };
   var doBriefing=function(newAct,s){
     setAct(newAct);
-    if(newAct===3){var ns={c:clamp(s.c-5),r:clamp(s.r-5),t:clamp(s.t-5),o:clamp(s.o-5),day:s.day};setStats(ns)}
+    if(newAct===3){var ns={c:clamp(s.c-3),r:clamp(s.r-3),t:clamp(s.t-3),o:clamp(s.o-3),day:s.day};setStats(ns)}
     setPhase('briefing');
   };
   var swipe=function(dir){
@@ -152,8 +155,8 @@ function App(){
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log)tryUnlock(o.log);updateActFlags(null,curMission,false);Save.saveGame(ns,ng,act,actFlags);setCurMission(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
-    if(act===2){ns.c=Math.max(5,ns.c-2);ns.r=Math.max(5,ns.r-2)}
-    if(act===3){ns.c=Math.max(5,ns.c-3);ns.r=Math.max(5,ns.r-3);ns.t=Math.max(5,ns.t-1)}
+    if(act===2){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
+    if(act===3){ns.c=Math.max(5,ns.c-2);ns.r=Math.max(5,ns.r-2);ns.t=Math.max(5,ns.t-1)}
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi,act,actFlags);setCt(0);
     // Act 전환 체크
     var newAct=checkActTransition(next,gi,logs,actFlags,act);
@@ -165,7 +168,7 @@ function App(){
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
   if(phase==='boot')return h(Boot,{onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
-  if(phase==='tutorial')return h(Tutorial,{onDone:function(){setFp(false);setPhase('game')}});
+  if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
     h('div',{style:{width:'100%',maxWidth:440,background:'url(panel_frame_medium.png) center/100% 100% no-repeat',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
@@ -190,12 +193,12 @@ function App(){
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
-    h(Stats,{stats:stats}),
+    h(Stats,{stats:stats,preview:preview}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},'ACT '+act),
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
       h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+logs.length+'/'+ORACLE_LOGS.length)),
-    h(CardC,{card:curCard,onSwipe:swipe,gi:gi,day:stats.day}),
+    h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001')));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));

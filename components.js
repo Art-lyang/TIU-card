@@ -8,25 +8,31 @@ function Boot(p){
 }
 function Stats(p){
   var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
+  var pv=p.preview||{};
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var pvW=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
       h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},h('div',{className:'gauge-fill',style:{width:v+'%'}})),
-      h('span',{className:'gauge-val'},v))})
+      h('div',{className:'gauge-bar'},
+        h('div',{className:'gauge-fill',style:{width:v+'%'}}),
+        delta!==0&&h('div',{style:{position:'absolute',left:Math.min(v,pvW)+'%',width:Math.abs(delta*5)+'%',maxWidth:(100-Math.min(v,pvW))+'%',height:'100%',background:delta>0?'rgba(80,255,80,0.25)':'rgba(255,68,68,0.25)',transition:'all 0.15s',top:0}})),
+      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444'}:{}},delta!==0?(delta>0?'+':'')+delta*5:v))})
   );
 }
 function CardC(p){
   var card=p.card,gi=p.gi||0;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
-  var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging)setDx(x-sx)};
-  var hE=function(){setDragging(false);if(dir){setChosen(dir);setTimeout(function(){p.onSwipe(dir);setDx(0);setChosen(null)},300)}else setDx(0)};
+  var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
+  var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
+  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){setChosen(dir);setTimeout(function(){p.onSwipe(dir);setDx(0);setChosen(null)},300)}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   var plbl=card.priority==='상'?'상 ■':card.priority==='중'?'중 ■':'하';
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit};
+  var bgImgMap={base:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather};
   var specBg=card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
+  if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
   var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);if(v>0)tags.push(h('span',{key:k,style:{color:'#9dff74'}},SN[k]+'↑'));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+'↓'))});return tags.length?tags:null};
   var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
@@ -83,17 +89,16 @@ function GameOver(p){
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
   var steps=[
-    {lines:["ORACLE 인사 프로토콜을 개시합니다.","","환영합니다, PILEHEAD.","","당신은 ORACLE Proxy Network","한국 지부의 초대 지휘관으로","발령되었습니다.","","기지 위치: 강원도 [기밀]","코드네임: BRANCH KR-INIT-001"],choices:[{label:"발령을 수락합니다",next:1},{label:"브리핑을 요청합니다",next:1}]},
-    {lines:["[상황 브리핑 — EV-Σ]","","2년 전, 미지의 바이러스가 출현했습니다.","코드명: EV-Σ","","감염체는 기존 생물학으로","설명할 수 없는 방식으로 변이합니다.","이들을 '이변체'라 분류합니다.","","현재 전 세계 주요 도시가 봉쇄 중이며,","대한민국은 안정적 봉쇄를 유지하는","몇 안 되는 국가입니다."],choices:[{label:"계속",next:2}]},
-    {lines:["[위협 분류 — 프로메테우스]","","ORACLE은 '프로메테우스'를","적대 세력으로 분류하고 있습니다.","","정체: 비공인 무장 조직","목적: 불명","활동: 한국 내 침투 징후 확인","","발견 즉시 보고하십시오.","독자적 접촉은 금지됩니다."],choices:[{label:"확인했습니다",next:3}]},
-    {lines:["[임무 및 인원]","","당신의 임무:","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 운영 총괄","▸ ORACLE의 지시 이행","▸ 외부 위협 감시","","간부진 4명이 당신을 보좌합니다.","서하은(정보), 강도윤(현장),","윤세진(연구), 임재혁(기술).","","기지에는 일반 인원도 배치되어 있습니다.","모든 최종 판단은 당신의 몫입니다."],choices:[{label:"이해했습니다",next:4}]},
-    {lines:["4가지 핵심 지표를 관리합니다.","","◆ 봉쇄 — 봉쇄선 유지도","◇ 자원 — 식량, 의약품, 장비","○ 신뢰 — 기지 인원의 신뢰도","● 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","균형을 유지하십시오."],choices:[{label:"이해했습니다",next:5}]},
-    {lines:["매일 ORACLE이 보고서와 요청을","전달합니다.","","카드를 좌우로 밀어 결정하십시오.","← 왼쪽","→ 오른쪽","","당신의 선택이 기지의 운명을 결정합니다.","","행운을 빕니다, PILEHEAD."],choices:[{label:"임무를 시작합니다",next:-1}]}
+    {lines:["ORACLE 인사 프로토콜을 개시합니다.","","환영합니다, PILEHEAD.","","당신은 ORACLE Proxy Network","한국 지부의 초대 지휘관으로 발령되었습니다.","","2년 전, 미지의 바이러스 EV-Σ가 출현했습니다.","감염체는 이변체로 변이하며,","전 세계 주요 도시가 봉쇄 중입니다."],choices:[{label:"계속",next:1}]},
+    {lines:["[임무 브리핑]","","ORACLE은 프로메테우스를","적대 세력으로 분류하고 있습니다.","","당신의 임무:","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 운영 총괄","▸ ORACLE 지시 이행 및 외부 위협 감시","","간부진 4명이 당신을 보좌합니다.","기지에는 일반 인원도 배치되어 있습니다."],choices:[{label:"계속",next:2}]},
+    {lines:["4가지 핵심 지표를 관리합니다.","","◆ 봉쇄 — 봉쇄선 유지도","◇ 자원 — 식량, 의약품, 장비","○ 신뢰 — 기지 인원의 신뢰도","● 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","","카드를 좌우로 밀어 결정하십시오.","직접 해보겠습니다."],choices:[{label:"실전 연습 시작",next:-1}]}
   ];
+  var HL=[['PILEHEAD','#f0a030'],['ORACLE','#50ff50'],['EV-\u03A3','#33cccc'],['이변체','#33cccc'],['프로메테우스','#ff6644'],['봉쇄','#9dff74'],['자원','#9dff74'],['신뢰','#9dff74'],['평가','#9dff74']];
+  var hilite=function(txt){var parts=[{t:txt,c:null}];HL.forEach(function(pair){var nw=[];parts.forEach(function(p){if(p.c){nw.push(p);return}var s=p.t,k=pair[0],idx=s.indexOf(k);while(idx>=0){if(idx>0)nw.push({t:s.substring(0,idx),c:null});nw.push({t:k,c:pair[1]});s=s.substring(idx+k.length);idx=s.indexOf(k)}if(s.length>0)nw.push({t:s,c:null})});parts=nw});return parts.map(function(p,i){return p.c?h('span',{key:i,style:{color:p.c,fontWeight:'bold',textShadow:'0 0 6px '+p.c+'44'}},p.t):p.t})};
   var st=steps[step];var s2=useState(0),shown=s2[0],setShown=s2[1];var s3=useState(false),bv=s3[0],setBv=s3[1];
   useEffect(function(){setShown(0);setBv(false)},[step]);
   useEffect(function(){if(shown<st.lines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},st.lines[shown]===''?150:80);return function(){clearTimeout(t)}}else{var t2=setTimeout(function(){setBv(true)},400);return function(){clearTimeout(t2)}}},[shown,step]);
-  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'24px 0',flex:1,display:'flex',flexDirection:'column'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#1a6a1a',textAlign:'center',marginBottom:12,letterSpacing:2}},'ORACLE BRIEFING — '+(step+1)+'/'+steps.length),h('div',{style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto',minHeight:0}},st.lines.slice(0,shown).map(function(l,i){var txt=String(l||' ');var isHeader=txt.indexOf('[')===0;var isIcon='◆◇○●'.split('').some(function(c){return txt.indexOf(c)>=0});var isList=txt.indexOf('▸')===0;var isLeft=txt.indexOf('←')===0;var isRight=txt.indexOf('→')===0;var isCtrl=isLeft||isRight;var col=isHeader?'#f0a030':isIcon?'#f0a030':isList?'#9dff74':isCtrl?'#33ff33':'#ccddcc';var sz=isHeader?12:isIcon?13:14;var al=isLeft?'left':isRight?'right':'center';return h('div',{key:step+'-'+i,style:{fontSize:sz,lineHeight:1.7,color:col,textAlign:al,fontFamily:(isHeader||isCtrl)?"'Share Tech Mono',monospace":'inherit',letterSpacing:isHeader?1:0,padding:isCtrl?'0 40px':0,animation:'fadeIn 0.3s ease'}},txt)})),bv&&h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',paddingBottom:20,flexShrink:0}},st.choices.map(function(c,i){return h('button',{key:i,className:'btn'+(i===0?' btn-amber':''),onClick:function(){if(c.next===-1)p.onDone();else setStep(c.next)}},c.label)}))));
+  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'24px 0',flex:1,display:'flex',flexDirection:'column'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#1a6a1a',textAlign:'center',marginBottom:12,letterSpacing:2}},'ORACLE BRIEFING — '+(step+1)+'/'+steps.length),h('div',{style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto',minHeight:0}},st.lines.slice(0,shown).map(function(l,i){var txt=String(l||' ');var isHeader=txt.indexOf('[')===0;var isIcon='◆◇○●'.split('').some(function(c){return txt.indexOf(c)>=0});var isList=txt.indexOf('▸')===0;var isLeft=txt.indexOf('←')===0;var isRight=txt.indexOf('→')===0;var isCtrl=isLeft||isRight;var col=isHeader?'#f0a030':isIcon?'#f0a030':isList?'#9dff74':isCtrl?'#33ff33':'#ccddcc';var sz=isHeader?12:isIcon?13:14;var al=isLeft?'left':isRight?'right':'center';return h('div',{key:step+'-'+i,style:{fontSize:sz,lineHeight:1.7,color:col,textAlign:al,fontFamily:(isHeader||isCtrl)?"'Share Tech Mono',monospace":'inherit',letterSpacing:isHeader?1:0,padding:isCtrl?'0 40px':0,animation:'fadeIn 0.3s ease'}},hilite(txt))})),bv&&h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',paddingBottom:20,flexShrink:0}},st.choices.map(function(c,i){return h('button',{key:i,className:'btn btn-amber',onClick:function(){if(c.next===-1)p.onDone();else setStep(c.next)}},c.label)}),p.canSkip&&step===0&&h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,opacity:0.5},onClick:p.onSkip},'[ 튜토리얼 건너뛰기 ]'))));
 }
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};

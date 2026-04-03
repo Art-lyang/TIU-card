@@ -50,7 +50,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 .card-p-mid .card-hdr-r{color:#f0a030}
 .card-p-low .card-hdr-r{color:#1a6a1a}
 .card-msg{font-size:14px;line-height:1.9;color:#ccddcc;flex:1;padding:0 2px;position:relative;z-index:1}
-.card-img-bg{position:absolute;inset:20px;background-size:cover;background-position:center;opacity:0.06;pointer-events:none;z-index:0;filter:grayscale(1)}
+.card-img-bg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0.12;pointer-events:none;z-index:0;filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.3) brightness(0.7)}
 /* Utility */
 .bg-overlay{position:absolute;inset:0;background-size:cover;background-position:center;pointer-events:none;z-index:0}
 /* Footer */
