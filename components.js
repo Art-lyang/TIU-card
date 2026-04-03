@@ -27,6 +27,9 @@ function CardC(p){
   var plbl=card.priority==='상'?'상 ■':card.priority==='중'?'중 ■':'하';
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit};
   var specBg=card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
+  var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
+  var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);if(v>0)tags.push(h('span',{key:k,style:{color:'#9dff74'}},SN[k]+'↑'));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+'↓'))});return tags.length?tags:null};
+  var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'#33ff33',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+card.left.label),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'#33ff33',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},card.right.label+' →'),
@@ -36,7 +39,11 @@ function CardC(p){
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},'ORACLE 통신'),h('span',{className:'card-hdr-r'},'우선순위: '+plbl)),
       h('div',{className:'card-msg'},card.msg),
-      h('div',{style:{display:'flex',justifyContent:'space-between',marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,pointerEvents:'none'}},
+      (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(145,255,106,.08)'}},
+        h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:10,gap:8}},
+          h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(145,255,106,.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(145,255,106,.3)'}},'—')),
+          h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},rightFx||h('span',{style:{color:'rgba(145,255,106,.3)'}},'—'),h('span',{style:{color:'rgba(145,255,106,.5)',fontSize:9}},'→')))),
+      h('div',{style:{display:'flex',justifyContent:'space-between',paddingTop:8,borderTop:'1px solid rgba(145,255,106,.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,pointerEvents:'none'}},
         h('span',{style:{color:'rgba(145,255,106,.45)'}},'← '+card.left.label),
         h('span',{style:{color:'rgba(145,255,106,.45)'}},card.right.label+' →'))
     ));
@@ -45,15 +52,24 @@ function News(p){
   var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
   useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
   var parseHL=function(raw){var s=String(raw||'');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false}}return{tag:'INTEL-01',text:s,gl:false}};
+  var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
+  var assess=gi>=40?'운영 효율 양호. 현행 유지 권고.':gi>=10?'운영 안정. 일부 비표준 패턴 감지.':gi>=0?'비표준 판단 빈도 증가. 모니터링 중.':'비표준 운영 패턴 다수 감지. 주의 요망.';
+  var statBar=function(k,v,nm){var d=v<=20;return h('div',{key:k,style:{display:'flex',alignItems:'center',gap:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},h('span',{style:{color:'rgba(157,255,116,.55)',width:24}},nm),h('div',{style:{flex:1,height:3,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(145,255,106,.4)',borderRadius:2,transition:'width 0.4s'}})),h('span',{style:{color:d?'#ff4444':'rgba(157,255,116,.6)',width:20,textAlign:'right',fontSize:9}},v))};
   return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginBottom:0}},
     h('div',{className:'oracle-card__glow'}),
     h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}},
-      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'#9dff74',letterSpacing:1}},'[ORACLE // INTEL BRIEFING]'),
-      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.5)',letterSpacing:1}},'PRIORITY: MEDIUM')),
-    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(220,255,220,.9)',fontWeight:'bold',marginBottom:14,letterSpacing:1,borderBottom:'1px solid rgba(145,255,106,.15)',paddingBottom:10}},'DAY '+(p.day||'?')+' REPORT'),
-    p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'8px 0',borderBottom:'1px solid rgba(145,255,106,.08)',animation:'fadeIn 0.4s ease'}},
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'#9dff74',letterSpacing:1}},'[ORACLE // DAILY REPORT]'),
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.5)',letterSpacing:1}},'ACT '+act)),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(220,255,220,.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(145,255,106,.15)',paddingBottom:8}},'DAY '+(p.day||'?')+' REPORT'),
+    h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(145,255,106,.08)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:6}},'[STATUS OVERVIEW]'),
+      h('div',{style:{display:'flex',flexDirection:'column',gap:4}},
+        statBar('c',st.c||50,'봉쇄'),statBar('r',st.r||60,'자원'),statBar('t',st.t||50,'신뢰'),statBar('o',st.o||40,'평가')),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(157,255,116,.55)',marginTop:8,fontStyle:'italic'}},assess)),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
+    p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(145,255,106,.08)',animation:'fadeIn 0.4s ease'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
-      h('div',{style:{fontSize:13,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(220,255,220,.75)'}},hl.text))}),
+      h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(220,255,220,.75)'}},hl.text))}),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(145,255,106,.12)'}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},'[ 다음 사이클 진행 ]')));
 }
@@ -91,7 +107,7 @@ function RewardScreen(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // RESOURCE DIRECTIVE')),
     h('div',{style:{width:'100%',maxWidth:440,display:'flex',justifyContent:'center',gap:12,margin:'4px 0',flexShrink:0,flexWrap:'wrap'}},
       ['c','r','t','o'].map(function(k){var v=p.stats[k];var nm={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};var d=v<=20;return h('span',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'rgba(157,255,116,.7)',letterSpacing:1}},nm[k]+':'+v)})),
-    h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count===4?'4개 중 1개를 선택하십시오':count+'개 중 선택'),
+    h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
     h('div',{style:{flex:1,width:'100%',maxWidth:440,overflowY:'auto',minHeight:0,padding:'0 2px'}},
       av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
