@@ -14,10 +14,7 @@ function Stats(p){
     sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
       h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},
-        h('div',{className:'gauge-fill',style:{width:v+'%'}}),
-        delta>0&&h('div',{style:{position:'absolute',left:v+'%',width:Math.min(delta,100-v)+'%',height:'100%',background:'rgba(80,255,80,0.3)',top:0,transition:'all 0.15s'}}),
-        delta<0&&h('div',{style:{position:'absolute',left:Math.max(0,v+delta)+'%',width:Math.min(Math.abs(delta),v)+'%',height:'100%',background:'rgba(255,68,68,0.3)',top:0,transition:'all 0.15s'}})),
+      h('div',{className:'gauge-bar'},h('div',{className:'gauge-fill',style:{width:v+'%'}})),
       h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
   );
 }
