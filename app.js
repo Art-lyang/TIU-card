@@ -1,28 +1,29 @@
 // TERMINAL SESSION — app.js
 // Utils, Save, SFX, App
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
 var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
-var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct){
-  var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;
+var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
+  var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var valid=CARDS.filter(function(c){
     if(c.act&&c.act.indexOf(ca)<0)return false;
+    if(c.transReq&&c.transReq!==tr)return false;
     if(c.req&&!c.req(stats,gi,logs))return false;
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     if(rec.indexOf(c.id)>=0)return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&rec.indexOf(c.id)<0});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){return!c.req}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&rec.indexOf(c.id)<0});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){return!c.req&&!c.transReq}).slice(0,15));
 };
 
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
   get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{}})},
+  saveGame:function(s,g,a,af,tr){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||''})},
   clearGame:function(){Save.del('ts_game')},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
@@ -74,6 +75,7 @@ function App(){
   var _toast=useState(''),toast=_toast[0],setToast=_toast[1];
   var _act=useState(1),act=_act[0],setAct=_act[1];
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
+  var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
   var cpd=act===1?5:act===2?6:7;
 
   useEffect(function(){
@@ -83,7 +85,7 @@ function App(){
     var st=Save.get('ts_trust',null);if(st)setTrust(st);
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
     var sg=Save.get('ts_game',null);
-    if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags)}
+    if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
     var initAct=(sg&&sg.act)||1;
     setCurCard(drawCard({c:50,r:65,t:50,o:40,day:1},0,sl||['LOG-001'],{},[], initAct));
   },[]);
@@ -100,6 +102,12 @@ function App(){
     if(cid==='C-093')tryUnlock('LOG-022');if(cid==='C-094')tryUnlock('LOG-023');if(cid==='C-095')tryUnlock('LOG-024');
     if(cid==='C-102')tryUnlock('LOG-025');if(cid==='C-106')tryUnlock('LOG-026');
     if(cid==='C-114')tryUnlock('LOG-027');if(cid==='C-124')tryUnlock('LOG-028');
+    if(cid==='CT-001')tryUnlock('LOG-030');if(cid==='CT-002')tryUnlock('LOG-031');
+    if(cid==='CT-003')tryUnlock('LOG-032');if(cid==='CT-004')tryUnlock('LOG-033');
+    if(cid==='CT-005')tryUnlock('LOG-034');if(cid==='CT-006')tryUnlock('LOG-035');
+    if(cid==='CT-007')tryUnlock('LOG-036');if(cid==='CT-008')tryUnlock('LOG-037');
+    if(cid==='CT-009')tryUnlock('LOG-038');if(cid==='CT-010')tryUnlock('LOG-039');
+    if(cid==='CT-011')tryUnlock('LOG-040');
     if(cid==='CH-004-2')tryUnlock('LOG-009');
     if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
     if(cid==='C-067')tryUnlock('LOG-017');
@@ -114,12 +122,18 @@ function App(){
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
   var doGO=function(reason,ns,ng,specialId){setGor(reason);var eid=specialId||null;if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid='C_c';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();setTimeout(function(){setPhase('go')},500)};
   var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
-  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>8?n.slice(n.length-8):n})}};
-  // Act 전환 체크
+  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>8?n.slice(n.length-8):n})}};
+  // Act 전환 체크 — 10일/25일 경과 시 무조건 전환, 조건에 따라 루트 분기
   var checkActTransition=function(s,g,lg,af,curAct){
-    if(curAct===1&&s.day>=10&&af.prom_met&&af.mission_done){return 2}
-    if(curAct===2&&s.day>=25&&af.chain_done&&af.prom_mission){return 3}
-    return 0;
+    if(curAct===1&&s.day>=10){
+      var route=af.prom_met&&af.mission_done?'A':af.prom_met?'B':af.mission_done?'C':'D';
+      return{act:2,route:route};
+    }
+    if(curAct===2&&s.day>=25){
+      var route=af.chain_done&&af.prom_mission?'A':af.chain_done?'B':af.prom_mission?'C':'D';
+      return{act:3,route:route};
+    }
+    return null;
   };
   var updateActFlags=function(cardId,missionId,chainDone){
     setActFlags(function(prev){
@@ -131,9 +145,11 @@ function App(){
       return next;
     });
   };
-  var doBriefing=function(newAct,s){
-    setAct(newAct);
-    if(newAct===3){var ns={c:clamp(s.c-3),r:clamp(s.r-3),t:clamp(s.t-3),o:clamp(s.o-3),day:s.day};setStats(ns)}
+  var doBriefing=function(newAct,s,route){
+    setAct(newAct);setTransRoute(route);
+    var penalty=route==='A'?0:route==='B'||route==='C'?2:4;
+    if(newAct===3)penalty+=3;
+    if(penalty>0){var ns={c:clamp(s.c-penalty),r:clamp(s.r-penalty),t:clamp(s.t-penalty),o:clamp(s.o-penalty),day:s.day};setStats(ns)}
     setPhase('briefing');
   };
   var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
@@ -148,7 +164,7 @@ function App(){
     // Track act flags
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
-    Save.saveGame(ns,ng,act,actFlags);
+    Save.saveGame(ns,ng,act,actFlags,transRoute);
     var nct=ct+1;setCt(nct);var go=chk(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('mission');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
@@ -159,21 +175,21 @@ function App(){
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,logs,cq)},300)}
     else{nextCard(ns,ng,logs,cq)}
   };
-  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log)tryUnlock(o.log);updateActFlags(null,curMission,false);Save.saveGame(ns,ng,act,actFlags);setCurMission(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
+  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log)tryUnlock(o.log);updateActFlags(null,curMission,false);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurMission(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
     if(act===2){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
     if(act===3){ns.c=Math.max(5,ns.c-2);ns.r=Math.max(5,ns.r-2);ns.t=Math.max(5,ns.t-1)}
-    var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi,act,actFlags);setCt(0);
+    var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi,act,actFlags,transRoute);setCt(0);
     // Act 전환 체크
-    var newAct=checkActTransition(next,gi,logs,actFlags,act);
-    if(newAct>0){doBriefing(newAct,next);return}
+    var trans=checkActTransition(next,gi,logs,actFlags,act);
+    if(trans){doBriefing(trans.act,next,trans.route);return}
     // 특수 엔딩 체크 (B/D/F)
     var se=chkSpecialEnding(next,gi,act,trust,logs,actFlags);
     if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'세션 종료',next,gi,se);return}
     nextCard(next,gi,logs,chainQueue);setPhase('game')};
-  var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
-  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
+  var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
+  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
   if(phase==='boot')return h(Boot,{onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
@@ -186,10 +202,10 @@ function App(){
         '\uc9c0\ub09c '+(stats.day-1)+'\uc77c\uac04\uc758 \uc6b4\uc601 \ub370\uc774\ud130\ub97c \ubd84\uc11d\ud588\uc2b5\ub2c8\ub2e4.'),
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:16}},
         ['c','r','t','o'].map(function(k){var nm={c:'\ubd09\uc1c4 \uc548\uc815\uc131',r:'\uc790\uc6d0 \uc794\ub7c9',t:'\uc778\uc6d0 \uc2e0\ub8b0\ub3c4',o:'ORACLE \ud3c9\uac00'};var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'#33ff33',padding:'4px 0'}},nm[k]+': '+v+'%')})),
-      h('div',{style:{fontSize:13,color:'#f0a030',lineHeight:2,borderLeft:'2px solid rgba(240,160,48,.3)',paddingLeft:14,marginBottom:16}},
-        act===2?'\uadf8\ub7ec\ub098 \u2014 \uc0c8\ub85c\uc6b4 \ubcc0\uc218\uac00 \uac10\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.\n\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \ud65c\ub3d9 \uc9d5\ud6c4\uac00 \ud55c\uad6d \ub0b4\uc5d0\uc11c \uc99d\uac00\ud558\uace0 \uc788\uc2b5\ub2c8\ub2e4.\n\uae30\uc874 \uc6b4\uc601 \ud504\ub85c\ud1a0\ucf5c\uc744 \uc7ac\uc870\uc815\ud569\ub2c8\ub2e4.':'\uacbd\uace0: \ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \uc138\ub825\uc758 \ud65c\ub3d9\uc774 \uc9c1\uc811\uc801 \uc704\ud611 \uc218\uc900\uc5d0 \ub3c4\ub2ec\ud588\uc2b5\ub2c8\ub2e4.\n\uc9c0\ubd80 \uc874\uc18d\uc744 \uc704\ud55c \uacb0\uc815\uc801 \uc870\uce58\uac00 \ud544\uc694\ud569\ub2c8\ub2e4.')),
+      h('div',{style:{fontSize:12,color:transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030',lineHeight:2,borderLeft:'2px solid '+(transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)'),paddingLeft:14,marginBottom:16,whiteSpace:'pre-wrap'}},
+        act===2?(transRoute==='A'?'\ucd08\uae30 \uc548\uc815\ud654 \ub2e8\uacc4 \uc644\ub8cc.\n\uc0c8\ub85c\uc6b4 \ubcc0\uc218\uac00 \uac10\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.\n\ud504\ub85c\ud1a0\ucf5c\uc744 \uc7ac\uc870\uc815\ud569\ub2c8\ub2e4.':transRoute==='B'?'\ud604\uc7a5 \uacbd\ud5d8 \ubd80\uc871. \uc774\ubcc0\uccb4 \ub300\uc751 \ub370\uc774\ud130\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.\n\uae34\uae09 \ud604\uc7a5 \uc801\uc751\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.':transRoute==='C'?'\ubbf8\ud655\uc778 \uc138\ub825 \uae09\uc99d \uac10\uc9c0.\n\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \uc815\ubcf4 \ubd80\uc7ac.\n\uc815\ubcf4\uc804 \uc5ed\ub7c9 \uac15\ud654\uac00 \uc2dc\uae09\ud569\ub2c8\ub2e4.':'\uacbd\uace0: \uc0c1\ud669 \uc545\ud654.\n\ud604\uc7a5 \ub370\uc774\ud130 \ubd80\uc7ac + \uc678\ubd80 \uc704\ud611 \ubbf8\ud30c\uc545.\n\uae34\uae09 \uc7ac\ud3b8\uc744 \uc2dc\ud589\ud569\ub2c8\ub2e4.'):(transRoute==='A'?'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \uc704\ud611\uc774 \uc9c1\uc811\uc801 \uc218\uc900\uc5d0 \ub3c4\ub2ec\ud588\uc2b5\ub2c8\ub2e4.\n\uacb0\uc815\uc801 \uc870\uce58\uac00 \ud544\uc694\ud569\ub2c8\ub2e4.':transRoute==='B'?'ORACLE \uad8c\uace0 \ubbf8\uc774\ud589 \ub204\uc801.\n\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \ub300\uc751 \uc2e4\ud328.\n\uc7ac\ud3c9\uac00\uac00 \uc608\uc815\ub418\uc5b4 \uc788\uc2b5\ub2c8\ub2e4.':transRoute==='C'?'\uc815\ubcf4 \ubd80\uc871 \uc0c1\ud0dc\ub85c \ucd5c\uc885 \uad6d\uba74 \uc9c4\uc785.\n\uc11c\ud558\uc740 \uc544\ud06c \uc9c0\uc5f0 \uac00\ub2a5\uc131.':'\uc9c0\ud718\uad00 \uad50\uccb4 \uac80\ud1a0 \uc911.\n\ubaa8\ub4e0 \uc9c0\ud45c\uc5d0\uc11c \uc2ec\uac01\ud55c \uc774\ud0c8\uc774 \uac10\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.'))),
     h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){
-      Save.saveGame(stats,gi,act,actFlags);nextCard(stats,gi,logs,chainQueue);setPhase('game');
+      Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game');
     }},'[ ENTER ]'));
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,gi:gi,act:act,onContinue:function(){setPhase('reward')}}));
