@@ -1,6 +1,6 @@
 // TERMINAL SESSION — app.js
 // Utils, Save, SFX, App
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
@@ -92,7 +92,7 @@ function App(){
 
   var tryUnlock=function(id){setLogs(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveLogs(n);return n})};
   var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);return next})};
-  var checkLogs=function(s,g,cid,dc,di){
+  var checkLogs=function(s,g,cid,dc,di,dir){
     if(s.day>=3)tryUnlock('LOG-002');if(s.day>=7)tryUnlock('LOG-011');
     if(cid==='C-006')tryUnlock('LOG-003');if(cid==='C-003')tryUnlock('LOG-004');if(cid==='C-010')tryUnlock('LOG-005');
     if(cid==='C-042'||cid==='C-043')tryUnlock('LOG-013');
@@ -108,6 +108,10 @@ function App(){
     if(cid==='CT-007')tryUnlock('LOG-036');if(cid==='CT-008')tryUnlock('LOG-037');
     if(cid==='CT-009')tryUnlock('LOG-038');if(cid==='CT-010')tryUnlock('LOG-039');
     if(cid==='CT-011')tryUnlock('LOG-040');
+    if(cid==='C-073'&&dir==='left')tryUnlock('LOG-051');if(cid==='C-073'&&dir==='right')tryUnlock('LOG-050');
+    if(cid==='CS-001')tryUnlock('LOG-053');if(cid==='CS-002')tryUnlock('LOG-054');if(cid==='CS-003')tryUnlock('LOG-052');
+    if(cid==='CS-004')tryUnlock('LOG-055');if(cid==='CS-010')tryUnlock('LOG-056');
+    if(cid==='CS-013')tryUnlock('LOG-057');if(cid==='CS-014')tryUnlock('LOG-058');if(cid==='CS-015')tryUnlock('LOG-059');
     if(cid==='CH-004-2')tryUnlock('LOG-009');
     if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
     if(cid==='C-067')tryUnlock('LOG-017');
@@ -121,7 +125,7 @@ function App(){
   var chk=function(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 — \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null};
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
   var doGO=function(reason,ns,ng,specialId){setGor(reason);var eid=specialId||null;if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid='C_c';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();setTimeout(function(){setPhase('go')},500)};
-  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
+  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&logs.indexOf('LOG-050')>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(av.length>0&&Math.random()<0.35){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
   var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>20?n.slice(n.length-20):n})}};
   // Act 전환 체크 — 10일/25일 경과 시 무조건 전환, 조건에 따라 루트 분기
   var checkActTransition=function(s,g,lg,af,curAct){
@@ -160,7 +164,7 @@ function App(){
     if(fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;var rm=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)];setToast(rm);setTimeout(function(){setToast('')},2500)}
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);setStats(ns);setGi(ng);
     if(curCard.tag){var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
-    checkLogs(ns,ng,curCard.id,null,null);
+    checkLogs(ns,ng,curCard.id,null,null,dir);
     // Track act flags
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
@@ -190,7 +194,7 @@ function App(){
     nextCard(next,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');setCurCard(drawCard(ns,0,logs,{},[], 1));setPhase('boot')};
-  if(phase==='boot')return h(Boot,{onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
+  if(phase==='boot')return h(Boot,{sessions:sessions,onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
@@ -207,7 +211,7 @@ function App(){
     h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){
       Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game');
     }},'[ ENTER ]'));
-  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
+  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,gi:gi,act:act,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward});
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
