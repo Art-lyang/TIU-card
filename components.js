@@ -11,10 +11,13 @@ function Stats(p){
   var pv=p.preview||{};
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
       h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},h('div',{className:'gauge-fill',style:{width:v+'%'}})),
+      h('div',{className:'gauge-bar',style:{position:'relative'}},
+        delta>0?h('div',{className:'gauge-fill',style:{width:newV+'%',opacity:0.5,position:'absolute',top:0,left:0,height:'100%',transition:'width 0.15s'}}):null,
+        h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
+        delta<0?h('div',{style:{position:'absolute',left:newV+'%',width:(v-newV)+'%',height:'100%',top:0,background:'rgba(255,68,68,0.35)',transition:'all 0.15s'}}):null),
       h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
   );
 }
