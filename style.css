@@ -13,6 +13,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 .screen::-webkit-scrollbar{width:3px}
 .screen::-webkit-scrollbar-track{background:transparent}
 .screen::-webkit-scrollbar-thumb{background:rgba(51,255,51,0.15);border-radius:2px}
+/* Hide scrollbars globally (keep scroll functional) */
+.screen *{scrollbar-width:none}
+.screen *::-webkit-scrollbar{display:none}
 /* Title Frame */
 .title-frame{width:100%;max-width:460px;height:44px;background:url('title_frame.png') center/contain no-repeat;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(51,255,51,0.15);border-radius:2px}
 .title-frame span{font-family:'Share Tech Mono',monospace;font-size:11px;color:#33ff33;letter-spacing:3px;text-shadow:0 0 8px rgba(51,255,51,0.3)}
@@ -21,20 +24,27 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 .section-hdr span{font-family:'Share Tech Mono',monospace;font-size:10px;color:#1a8a1a;letter-spacing:2px}
 /* Stat Gauges */
 .gauge-row{display:flex;align-items:center;gap:6px;width:100%;max-width:420px;height:26px}
-.gauge-icon{width:18px;height:18px;background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0}
-.gauge-icon-c{background-image:url('icon_diamond.png')}
-.gauge-icon-r{background-image:url('icon_hollow_diamond.png');position:relative}
-.gauge-icon-r::after{content:'◇';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;color:#aaddaa;background-image:none}
-.gauge-icon-t{background-image:url('icon_circle.png')}
-.gauge-icon-o{background-image:url('icon_solid_circle.png')}
+.gauge-icon{width:26px;height:26px;background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(51,255,51,0.5)) drop-shadow(0 0 8px rgba(51,255,51,0.2))}
+.gauge-icon-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
+.gauge-icon-r{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_jawon.png')}
+.gauge-icon-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
+.gauge-icon-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
+.gauge-danger .gauge-icon{filter:drop-shadow(0 0 4px rgba(255,68,68,0.6)) drop-shadow(0 0 8px rgba(255,68,68,0.3))}
 .gauge-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:#aaddaa;width:26px;flex-shrink:0}
 .gauge-bar{flex:1;height:20px;background:url('gauge_track.png') left center/100% 100% no-repeat;position:relative;overflow:hidden}
+.gauge-bar-inner{position:absolute;left:3px;right:3px;top:2px;bottom:2px;overflow:hidden}
 .gauge-fill{height:100%;background:url('gauge_fill.png') left center/cover no-repeat;transition:width 0.6s ease;position:relative}
 .gauge-fill::after{display:none}
 .gauge-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:#33ff33;width:28px;text-align:right;flex-shrink:0;text-shadow:0 0 6px rgba(51,255,51,0.4)}
 .gauge-danger .gauge-fill{filter:hue-rotate(280deg) saturate(2)}
 .gauge-danger .gauge-val{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.4);animation:dangerPulse 1.5s ease-in-out infinite}
 .gauge-high .gauge-val{color:#50ff50;text-shadow:0 0 8px rgba(80,255,80,0.5)}
+/* Inline Stat Icons */
+.stat-icon-inline{display:inline-block;width:14px;height:14px;background-size:contain;background-repeat:no-repeat;background-position:center;vertical-align:middle;margin-right:3px;filter:drop-shadow(0 0 3px rgba(51,255,51,0.4))}
+.stat-icon-inline-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
+.stat-icon-inline-r{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_jawon.png')}
+.stat-icon-inline-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
+.stat-icon-inline-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 /* Info Bar */
 .info-bar{display:flex;gap:8px;justify-content:center;align-items:center;margin:6px 0;flex-shrink:0}
 .info-tag{font-family:'Share Tech Mono',monospace;font-size:11px;color:#33ff33;border:1px solid #1a3a1a;padding:4px 12px;letter-spacing:1px;background:rgba(13,26,13,0.6)}
@@ -79,10 +89,11 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
   .section-hdr{height:22px;margin:1px 0}
   .section-hdr span{font-size:9px}
   .gauge-row{height:22px;gap:4px}
-  .gauge-icon{width:14px;height:14px}
+  .gauge-icon{width:22px;height:22px}
   .gauge-label{font-size:10px;width:24px}
   .gauge-val{font-size:12px;width:24px}
   .gauge-bar{height:16px}
+  .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
   .info-bar{margin:4px 0;gap:6px}
   .info-tag{font-size:10px;padding:3px 8px}
   .card-panel{padding:14px 16px;min-height:160px}
