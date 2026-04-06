@@ -112,6 +112,7 @@ function App(){
     if(cid==='CT-007')tryUnlock('LOG-036');if(cid==='CT-008')tryUnlock('LOG-037');
     if(cid==='CT-009')tryUnlock('LOG-038');if(cid==='CT-010')tryUnlock('LOG-039');
     if(cid==='CT-011')tryUnlock('LOG-040');
+    if(cid==='C-177')tryUnlock('LOG-060');if(cid==='C-178'){tryUnlock('LOG-061');if(dir==='left')tryUnlock('LOG-004');if(dir==='right')tryUnlock('LOG-005')}
     if(cid==='C-073'&&dir==='left')tryUnlock('LOG-051');if(cid==='C-073'&&dir==='right')tryUnlock('LOG-050');
     if(cid==='CS-001')tryUnlock('LOG-053');if(cid==='CS-002')tryUnlock('LOG-054');if(cid==='CS-003')tryUnlock('LOG-052');
     if(cid==='CS-004')tryUnlock('LOG-055');if(cid==='CS-010')tryUnlock('LOG-056');
@@ -193,12 +194,8 @@ function App(){
     if(act===3){ns.c=Math.max(5,ns.c-2);ns.r=Math.max(5,ns.r-2);ns.t=Math.max(5,ns.t-1)}
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);Save.saveGame(next,gi,act,actFlags,transRoute);setCt(0);
     // Act 전환 체크
-    var trans=checkActTransition(next,gi,logs,actFlags,act);
-    if(trans){doBriefing(trans.act,next,trans.route);return}
-    // 특수 엔딩 체크 (B/D/F)
-    var se=chkSpecialEnding(next,gi,act,trust,logs,actFlags);
-    if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'세션 종료',next,gi,se);return}
-    nextCard(next,gi,logs,chainQueue);setPhase('game')};
+    setPhase('evening')};
+  var hEvening=function(){var trans=checkActTransition(stats,gi,logs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,logs,actFlags);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'\uc138\uc158 \uc885\ub8cc',stats,gi,se);return}nextCard(stats,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
   if(phase==='boot')return h(Boot,{sessions:sessions,onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
@@ -221,6 +218,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,gi:gi,act:act,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward});
+  if(phase==='evening')return h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,onChat:function(cn){modTrust(cn,3)},onDone:hEvening});
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,onComplete:hMission});
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});

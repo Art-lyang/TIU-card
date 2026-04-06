@@ -65,5 +65,24 @@ var CARDS_INVESTIGATE = [
     req: function(s,g,logs){ return s.day >= 12 && logs.includes("LOG-024") },
     msg: "Spore Phantom 발생원 위치 추정 완료.\n\n윤세진: \"발생원 소각으로 집합체 형성을 차단할 수 있습니다. 포자 샘플을 더 확보하면 해독제 개발도 가능합니다.\"\n\n강도윤: \"방독면 필수. 어느 쪽이든.\"",
     left: { label: "발생원 소각", fx: { c: 2, r: -1, t: 0, o: 1 }, g: 1, mission: "M-006" },
-    right: { label: "포자 채취 후 소각", fx: { c: 1, r: -2, t: 1, o: 0 }, g: 0, mission: "M-006" } }
+    right: { label: "포자 채취 후 소각", fx: { c: 1, r: -2, t: 1, o: 0 }, g: 0, mission: "M-006" } },
+
+  // ═══ 변이체 미조우 ACT 2 진입 카드 (1회성) ═══
+  // 이변체를 한 번도 만나지 않고 ACT 2에 돌입한 경우 트리거
+
+  { id: "C-177", act: [2], priority: "상", bg: "forest",
+    req: function(s,g,logs){
+      return !logs.includes("LOG-004") && !logs.includes("LOG-005") &&
+             !logs.includes("LOG-013") && !logs.includes("LOG-014") &&
+             !logs.includes("LOG-015") && !logs.includes("LOG-060") },
+    msg: "야간 경보.\n\n봉쇄선 4구역에서 미확인 생체 반응 다수 감지. 기지 외벽에 충격.\n\n강도윤: \"이변체입니다! 최소 3개체 이상 — 기지에 접근하고 있습니다!\"\n\n윤세진: \"이런 규모의 접촉은 처음입니다. 데이터가 전무합니다.\"",
+    left: { label: "전투 요원 투입", fx: { c: -1, r: -1, t: 1, o: 0 }, g: -1 },
+    right: { label: "봉쇄선 전력 차단벽 가동", fx: { c: 1, r: -2, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-178", act: [2], priority: "상", bg: "lab",
+    req: function(s,g,logs){
+      return logs.includes("LOG-060") && !logs.includes("LOG-061") },
+    msg: "윤세진이 야간 습격 잔해를 분석했습니다.\n\n\"두 종류의 시그니처가 확인됩니다.\"\n\"하나는 음파 기반 — 인간 음성을 모방합니다.\"\n\"다른 하나는 점액질 — 유기물 용해 능력 보유.\"\n\n\"어느 쪽을 먼저 추적하시겠습니까?\"",
+    left: { label: "음파 개체 추적 (Shell Talker)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
+    right: { label: "점액질 개체 추적 (Blood Pit)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } }
 ];

@@ -35,7 +35,7 @@ function CardC(p){
   var plbl=card.priority==='상'?'상 ■':card.priority==='중'?'중 ■':'하';
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit};
   var bgImgMap={base:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather};
-  var specBg=card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
+  var specBg=card.img?card.img:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
   var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);if(v>0)tags.push(h('span',{key:k,style:{color:'#9dff74'}},SN[k]+'↑'));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+'↓'))});return tags.length?tags:null};
@@ -202,4 +202,37 @@ function FieldMission(p){
     ),
     h('div',{className:'footer',style:{flexShrink:0}},'ORACLE REMOTE TERMINAL — FIELD OPS')
   );
+}
+function EveningChat(p){
+  var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
+  var s2=useState(0),li=s2[0],setLi=s2[1];
+  var s3=useState(false),done=s3[0],setDone=s3[1];
+  var chars=[{name:'\uc11c\ud558\uc740',key:'haeun',role:'\ubd80\uc9c0\ud734\uad00'},{name:'\uac15\ub3c4\uc724',key:'doyun',role:'\ud604\uc7a5\uc694\uc6d0'},{name:'\uc724\uc138\uc9c4',key:'sejin',role:'\uc5f0\uad6c\uc6d0'},{name:'\uc784\uc7ac\ud601',key:'jaehyuk',role:'\uae30\uc220\uad00'}];
+  var available=chars.filter(function(c){if(c.name==='\uc11c\ud558\uc740'&&p.logs.indexOf('LOG-050')>=0)return false;return true});
+  var chat=null;
+  if(selChar){var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax});if(matches.length>0)chat=matches[0];else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0});chat=matches.length>0?matches[matches.length-1]:null}}
+  useEffect(function(){if(selChar){setLi(0);setDone(false)}},[selChar]);
+  useEffect(function(){if(!chat||!selChar)return;if(li<chat.lines.length){var t=setTimeout(function(){setLi(function(v){return v+1})},800);return function(){clearTimeout(t)}}else{var t2=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t2)}}},[li,chat,selChar]);
+  if(!selChar)return h('div',{className:'screen'},
+    h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(220,255,220,.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' \uc885\ub8cc'),
+    h('div',{style:{fontSize:13,color:'rgba(157,255,116,.6)',textAlign:'center',marginBottom:20}},'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
+    h('div',{style:{display:'flex',gap:20,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
+      available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){setSelChar(c);if(p.onChat)p.onChat(c.name)},style:{cursor:'pointer',textAlign:'center',padding:'12px 8px',border:'1px solid rgba(145,255,106,.15)',borderRadius:6,background:'rgba(10,18,10,.6)',width:80,transition:'all 0.2s'}},
+        portrait?h('img',{src:portrait,style:{width:56,height:56,borderRadius:'50%',border:'2px solid rgba(145,255,106,.3)',display:'block',margin:'0 auto 6px'}}):h('div',{style:{width:56,height:56,borderRadius:'50%',background:'#1a2a1a',margin:'0 auto 6px'}}),
+        h('div',{style:{fontSize:12,color:'#f0a030',fontWeight:'bold'}},c.name),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#1a8a1a',marginTop:2}},c.role))})),
+    h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:p.onDone},'[ \uac74\ub108\ub6f0\uae30 ]'));
+  var portrait=CHAR_IMG[selChar.name]||null;
+  return h('div',{className:'screen'},
+    h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
+    h('div',{style:{textAlign:'center',margin:'8px 0',flexShrink:0}},
+      portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80}}),
+      h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold',marginTop:4}},selChar.name),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#1a8a1a',marginTop:2}},selChar.role)),
+    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',marginBottom:0}},
+      h('div',{className:'oracle-card__glow'}),
+      chat?chat.lines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:6,animation:'fadeIn 0.3s ease'}},l)}):h('div',{style:{fontSize:13,color:'rgba(157,255,116,.4)'}},'...')),
+    done&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'),
+    h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL \u2014 BRANCH KR-INIT-001')));
 }
