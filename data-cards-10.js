@@ -12,7 +12,7 @@ var CARDS_EXTRA = [
 
   { id: "C-158", act: [1], priority: "하", bg: "forest",
     msg: "봉쇄선 북쪽 초소 인근에서 오래된 텐트 자국 발견.\n\n강도윤: \"이전 부대가 남긴 것 같습니다. 위험은 없습니다.\"",
-    left: { label: "정소 및 재사용", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 },
+    left: { label: "정비 및 자원 재사용", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 },
     right: { label: "폐기 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
 
   { id: "C-159", act: [1], priority: "하", bg: "base",

@@ -38,7 +38,7 @@ function CardC(p){
   var specBg=card.img?IMG[card.img]:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
-  var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);if(v>0)tags.push(h('span',{key:k,style:{color:'#9dff74'}},SN[k]+'↑'));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+'↓'))});return tags.length?tags:null};
+  var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);var abs=Math.abs(v);if(v>0)tags.push(h('span',{key:k,style:{color:'#9dff74'}},SN[k]+(abs>=2?'↑↑':'↑')));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+(abs>=2?'↓↓':'↓')))});return tags.length?tags:null};
   var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'#33ff33',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+card.left.label),
@@ -132,8 +132,8 @@ function RewardScreen(p){
         h('div',{className:'oracle-card__title'},r.title),
         h('div',{className:'oracle-card__desc'},r.desc),
         h('div',{className:'oracle-card__effects'},
-          fl.pos.map(function(e){return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--pos'},'▲ '+SN[e.k]+' +'+e.v)}),
-          fl.neg.map(function(e){return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},'▼ '+SN[e.k]+' '+e.v)})
+          fl.pos.map(function(e){var arrow=Math.abs(e.v)>=10?'▲▲':'▲';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--pos'},arrow+' '+SN[e.k]+' +'+e.v)}),
+          fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})
         ),
         miniBar(r.fx),
         isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
