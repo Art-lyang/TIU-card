@@ -5,7 +5,7 @@ var CARDS_RESOURCE = [
 
   // ═══ 자원 확보 카드 ═══
 
-  { id: "C-101", act: [1,2,3], priority: "하", img: IMG.card_supply_regular,
+  { id: "C-101", act: [1,2,3], priority: "하", img: "card_supply_regular",
     msg: "ORACLE 정기 보급 알림.\n\n예정된 보급 물자가 도착했습니다. 식량, 의약품, 기본 장비.\n\n[ORACLE: 물자 배분은 지휘관 재량입니다.]",
     left: { label: "의료 물자 우선 배분", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
     right: { label: "봉쇄 장비 우선 배분", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } },
