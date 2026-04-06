@@ -69,7 +69,7 @@ var CARDS_TRANSITION = [
   // ════════════════════════════════════
 
   { id: "CT-008", act: [3], priority: "상", bg: "comms",
-    req: function(s,g,logs){ return s.day <= 28 && !logs.includes("LOG-037") },
+    req: function(s,g,logs){ return s.day <= 28 && !logs.includes("LOG-037") && !logs.includes("LOG-050") },
     transReq: "B",
     msg: "[ORACLE 문책 통신]\n\n\"프로메테우스 대응 실적이 부진합니다.\"\n\"한국 지부의 존재 의의가 의문시되고 있습니다.\"\n\n서하은: \"압박이 시작됐습니다.\"",
     left: { label: "성과를 내겠다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 },
@@ -80,7 +80,7 @@ var CARDS_TRANSITION = [
   // ════════════════════════════════════
 
   { id: "CT-009", act: [3], priority: "상", bg: "base",
-    req: function(s,g,logs){ return s.day <= 28 && !logs.includes("LOG-038") },
+    req: function(s,g,logs){ return s.day <= 28 && !logs.includes("LOG-038") && !logs.includes("LOG-050") },
     transReq: "C",
     msg: "서하은의 조사가 중단된 채로 최종 국면에 진입했습니다.\n\n핵심 정보가 부족합니다.\n\n서하은: \"시간이 부족했습니다. 알아낸 것만으로 가야 합니다.\"",
     left: { label: "지금이라도 조사 재개", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2 },
