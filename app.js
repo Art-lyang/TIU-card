@@ -164,7 +164,7 @@ function App(){
   };
   var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
   var swipe=function(dir){
-    SFX.play('swipe');var ch=dir==='left'?curCard.left:curCard.right;
+    SFX.play('swipe');setToast('');var ch=dir==='left'?curCard.left:curCard.right;
     var fx=ch.fx;
     // 자원 리스크: r>=2일 때 20% 확률로 실패
     if(fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;var rm=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)];setToast(rm);setTimeout(function(){setToast('')},2500)}
