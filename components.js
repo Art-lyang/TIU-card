@@ -48,7 +48,24 @@ function CardC(p){
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},'ORACLE 통신'),h('span',{className:'card-hdr-r'},'우선순위: '+plbl)),
-      h('div',{className:'card-msg'},card.msg),
+      h('div',{className:'card-msg'},function(){
+        var msg=card.msg||'';var paras=msg.split('\n\n');
+        return paras.map(function(para,pi){
+          var lines=para.split('\n');
+          return h('div',{key:pi,style:{marginBottom:pi<paras.length-1?10:0}},
+            lines.map(function(line,li){
+              var s=line.trim();if(!s)return null;
+              // [ORACLE: ...] 스타일
+              if(s.match(/^\[ORACLE[\s:：]/))return h('div',{key:li,style:{color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:12,padding:'6px 10px',margin:'4px 0',background:'rgba(240,160,48,.06)',borderLeft:'2px solid rgba(240,160,48,.3)',borderRadius:2}},s);
+              // 캐릭터: "대사" 스타일 (서하은, 강도윤, 윤세진, 임재혁, etc.)
+              if(s.match(/^(서하은|강도윤|윤세진|임재혁|박소영|마르쿠스 베버|닉 포스터|포스터)\s*[：:]/))return h('div',{key:li,style:{color:'#7ec8e3',padding:'3px 0',margin:'2px 0'}},s);
+              // "인용문" 스타일
+              if(s.match(/^["\"「]/)&&s.match(/["\"\」]$/))return h('div',{key:li,style:{color:'#a0d8a0',fontStyle:'italic',padding:'2px 0'}},s);
+              // 일반 텍스트
+              return h('div',{key:li,style:{padding:'1px 0'}},s);
+            }));
+        });
+      }()),
       (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(145,255,106,.08)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:10,gap:8}},
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(145,255,106,.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(145,255,106,.3)'}},'—')),
