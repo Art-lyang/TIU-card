@@ -50,6 +50,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 .info-tag{font-family:'Share Tech Mono',monospace;font-size:11px;color:#33ff33;border:1px solid #1a3a1a;padding:4px 12px;letter-spacing:1px;background:rgba(13,26,13,0.6)}
 .info-tag-log{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(51,255,51,0.15);text-decoration:underline;text-decoration-color:rgba(51,255,51,0.2);text-underline-offset:3px}
 .info-tag-log:active{background:rgba(51,255,51,0.1);border-color:rgba(51,255,51,0.4)}
+.info-tag-archive{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(240,160,48,0.15);text-decoration:underline;text-decoration-color:rgba(240,160,48,0.2);text-underline-offset:3px;color:#f0a030!important}
+.info-tag-archive:active{background:rgba(240,160,48,0.1);border-color:rgba(240,160,48,0.4)}
 /* Card Panel */
 .card-panel{width:100%;max-width:440px;flex:1;min-height:180px;position:relative;padding:20px 24px;display:flex;flex-direction:column;animation:cardEnter 0.35s ease;background:url('panel_frame_large.png') center/100% 100% no-repeat}
 .card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}

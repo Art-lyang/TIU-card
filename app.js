@@ -36,7 +36,8 @@ var Save={
   getSessions:function(){return Save.get('ts_sessions',0)},
   incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
   saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
-  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])}
+  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])},
+  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])}
 };
 
 var SFX={
@@ -67,6 +68,7 @@ function App(){
   var _dlg=useState(null),curDlg=_dlg[0],setCurDlg=_dlg[1];
   var _ud=useState([]),usedDlg=_ud[0],setUsedDlg=_ud[1];
   var _ue=useState([]),usedEvening=_ue[0],setUsedEvening=_ue[1];
+  var _sa=useState([]),seenArchive=_sa[0],setSeenArchive=_sa[1];
   var _logs=useState(['LOG-001']),logs=_logs[0],setLogs=_logs[1];
   var _ends=useState([]),endings=_ends[0],setEndings=_ends[1];
   var _sess=useState(0),sessions=_sess[0],setSessions=_sess[1];
@@ -91,6 +93,7 @@ function App(){
     var st=Save.get('ts_trust',null);if(st)setTrust(st);
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
     var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
+    var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
     var sg=Save.get('ts_game',null);
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
     else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
@@ -263,13 +266,14 @@ function App(){
     h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){
       Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game');
     }},'[ ENTER ]'));
-  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
+  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,gi:gi,act:act,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward});
   if(phase==='evening')return h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,3)},onDone:hEvening});
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,onComplete:hMission});
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
+  if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
@@ -277,7 +281,8 @@ function App(){
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},'ACT '+act),
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
-      h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length)),
+      h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
+      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return 'ARCHIVE '+uc+(nc>0?' ●':'')})())),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001')));
