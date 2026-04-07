@@ -209,8 +209,25 @@ function EveningChat(p){
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var chars=[{name:'\uc11c\ud558\uc740',key:'haeun',role:'\ubd80\uc9c0\ud718\uad00'},{name:'\uac15\ub3c4\uc724',key:'doyun',role:'\ud604\uc7a5\uc694\uc6d0'},{name:'\uc724\uc138\uc9c4',key:'sejin',role:'\uc5f0\uad6c\uc6d0'},{name:'\uc784\uc7ac\ud601',key:'jaehyuk',role:'\uae30\uc220\uad00'}];
   var available=chars.filter(function(c){if(c.name==='\uc11c\ud558\uc740'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='\uac15\ub3c4\uc724'&&p.logs.indexOf('LOG-075')>=0)return false;return true});
+  var usedEv=p.usedEvening||[];
+  var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var chat=null;
-  if(selChar){var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax});if(matches.length>0)chat=matches[0];else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0});chat=matches.length>0?matches[matches.length-1]:null}}
+  if(selChar){
+    // 1) 현재 act+day 범위에 맞는 미사용 챗 찾기
+    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&usedEv.indexOf(ecKey(ec))<0});
+    if(matches.length>0){chat=matches[0]}
+    else{
+      // 2) 같은 캐릭터+act의 미사용 챗 아무거나
+      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&usedEv.indexOf(ecKey(ec))<0});
+      if(matches.length>0){chat=matches[matches.length-1]}
+      else{
+        // 3) 전부 본 경우: 가장 최근 day 범위 챗을 폴백 (재등장 허용)
+        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax});
+        if(matches.length>0)chat=matches[0];
+        else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0});chat=matches.length>0?matches[matches.length-1]:null}
+      }
+    }
+  }
   // 신뢰도 기반 대사 결정 (수치는 표시하지 않음)
   var chatLines=chat?(typeof getEveningLines==='function'?getEveningLines(chat,p.trust,p.logs):chat.lines):[];
   // 타이핑 이펙트: ci = 현재 줄의 표시 글자 수
@@ -226,7 +243,11 @@ function EveningChat(p){
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(220,255,220,.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' \uc885\ub8cc'),
     h('div',{style:{fontSize:13,color:'rgba(157,255,116,.6)',textAlign:'center',marginBottom:20}},'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
     h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
-      available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){setSelChar(c);if(p.onChat)p.onChat(c.name)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(145,255,106,.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s'}},
+      available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){setSelChar(c);if(p.onChat)p.onChat(c.name);
+        // 선택한 캐릭터의 챗을 사용 완료 마킹
+        var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&usedEv.indexOf(ecKey(ec))<0});
+        if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&usedEv.indexOf(ecKey(ec))<0});
+        if(m2.length>0&&p.onMarkEvening)p.onMarkEvening(ecKey(m2[0]))},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(145,255,106,.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s'}},
         portrait?h('img',{src:portrait,style:{width:60,height:60,borderRadius:'50%',border:'2px solid rgba(145,255,106,.3)',display:'block',margin:'0 auto 6px',objectFit:'cover'}}):h('div',{style:{width:60,height:60,borderRadius:'50%',background:'#1a2a1a',margin:'0 auto 6px'}}),
         h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#1a8a1a',marginTop:2}},c.role))})),

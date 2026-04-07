@@ -35,7 +35,8 @@ var Save={
   getEndings:function(){return Save.get('ts_endings',[])},
   getSessions:function(){return Save.get('ts_sessions',0)},
   incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
-  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])}
+  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
+  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])}
 };
 
 var SFX={
@@ -65,6 +66,7 @@ function App(){
   var _fp=useState(true),fp=_fp[0],setFp=_fp[1];
   var _dlg=useState(null),curDlg=_dlg[0],setCurDlg=_dlg[1];
   var _ud=useState([]),usedDlg=_ud[0],setUsedDlg=_ud[1];
+  var _ue=useState([]),usedEvening=_ue[0],setUsedEvening=_ue[1];
   var _logs=useState(['LOG-001']),logs=_logs[0],setLogs=_logs[1];
   var _ends=useState([]),endings=_ends[0],setEndings=_ends[1];
   var _sess=useState(0),sessions=_sess[0],setSessions=_sess[1];
@@ -88,9 +90,10 @@ function App(){
     setSessions(Save.getSessions());
     var st=Save.get('ts_trust',null);if(st)setTrust(st);
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
+    var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
     var sg=Save.get('ts_game',null);
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
-    else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([])}
+    else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     var initAct=(sg&&sg.act)||1;
     setCurCard(drawCard({c:50,r:65,t:50,o:40,day:1},0,sl||['LOG-001'],{},[], initAct));
   },[]);
@@ -242,7 +245,7 @@ function App(){
     setPhase('evening')};
   var hEvening=function(){var trans=checkActTransition(stats,gi,logs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,logs,actFlags);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'\uc138\uc158 \uc885\ub8cc',stats,gi,se);return}nextCard(stats,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
-  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
+  var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
   if(phase==='boot')return h(Boot,{sessions:sessions,onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
@@ -263,7 +266,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,gi:gi,act:act,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward});
-  if(phase==='evening')return h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,onChat:function(cn){modTrust(cn,3)},onDone:hEvening});
+  if(phase==='evening')return h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,3)},onDone:hEvening});
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,onComplete:hMission});
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
