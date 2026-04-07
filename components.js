@@ -7,9 +7,14 @@ function Boot(p){
   var s=useState([]),lines=s[0],setLines=s[1];var s2=useState(false),done=s2[0],setDone=s2[1];var idx=useRef(0);
   var bootStarted=useRef(false);
   var audioUnlocked=useRef(false);
+  var _bm=useState(typeof BGM!=='undefined'?BGM.muted:false),bootMuted=_bm[0],setBootMuted=_bm[1];
   var tryBootAudio=function(){if(!audioUnlocked.current&&p.onBoot){audioUnlocked.current=true;p.onBoot()}};
+  var handleMuteToggle=function(e){e.stopPropagation();tryBootAudio();if(typeof BGM!=='undefined'){var m=BGM.toggleMute();setBootMuted(m)}};
   useEffect(function(){var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[]);
-  return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid #0d2a0d',boxShadow:'0 0 30px rgba(0,255,0,0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'#50ff50':'#33ff33',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},'[ 세션 '+(sn+1)+' 시작 ]'));
+  return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
+    h('div',{style:{position:'absolute',top:12,right:12,zIndex:100}},
+      h('button',{style:{background:'rgba(0,0,0,0.5)',border:'1px solid rgba(157,255,116,0.3)',borderRadius:4,padding:'4px 10px',color:bootMuted?'rgba(157,255,116,0.3)':'#9dff74',fontFamily:"'Share Tech Mono',monospace",fontSize:10,cursor:'pointer',letterSpacing:1},onClick:handleMuteToggle,onTouchStart:function(e){e.stopPropagation();handleMuteToggle(e)}},bootMuted?'♪ OFF':'♪ ON')),
+    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid #0d2a0d',boxShadow:'0 0 30px rgba(0,255,0,0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'#50ff50':'#33ff33',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},'[ 세션 '+(sn+1)+' 시작 ]'));
 }
 function Stats(p){
   var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
@@ -225,10 +230,95 @@ function FieldMission(p){
     h('div',{className:'footer',style:{flexShrink:0}},'ORACLE REMOTE TERMINAL — FIELD OPS')
   );
 }
+// 이브닝 챗 앰비언트 사운드 (Web Audio API)
+var EveningAmbient = {
+  ctx: null, nodes: [], active: false,
+  start: function() {
+    if (this.active) return;
+    if (typeof BGM !== 'undefined' && BGM.muted) return;
+    try {
+      this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      this.active = true;
+      var ctx = this.ctx;
+      var master = ctx.createGain();
+      master.gain.setValueAtTime(0, ctx.currentTime);
+      master.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 2);
+      master.connect(ctx.destination);
+      this.nodes.push(master);
+      // 저음 드론 — 깊은 밤 분위기
+      var drone = ctx.createOscillator();
+      drone.type = 'sine';
+      drone.frequency.setValueAtTime(55, ctx.currentTime);
+      var droneGain = ctx.createGain();
+      droneGain.gain.setValueAtTime(0.4, ctx.currentTime);
+      drone.connect(droneGain);
+      droneGain.connect(master);
+      drone.start();
+      this.nodes.push(drone);
+      // 미세한 고음 톤 — 기지 전자장비 느낌
+      var hum = ctx.createOscillator();
+      hum.type = 'sine';
+      hum.frequency.setValueAtTime(440, ctx.currentTime);
+      var humGain = ctx.createGain();
+      humGain.gain.setValueAtTime(0.015, ctx.currentTime);
+      hum.connect(humGain);
+      humGain.connect(master);
+      hum.start();
+      this.nodes.push(hum);
+      // LFO로 드론에 미세한 떨림
+      var lfo = ctx.createOscillator();
+      lfo.type = 'sine';
+      lfo.frequency.setValueAtTime(0.15, ctx.currentTime);
+      var lfoGain = ctx.createGain();
+      lfoGain.gain.setValueAtTime(3, ctx.currentTime);
+      lfo.connect(lfoGain);
+      lfoGain.connect(drone.frequency);
+      lfo.start();
+      this.nodes.push(lfo);
+      // 간헐적 화이트 노이즈 (바람 소리)
+      var bufSize = ctx.sampleRate * 4;
+      var noiseBuf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+      var data = noiseBuf.getChannelData(0);
+      for (var i = 0; i < bufSize; i++) data[i] = (Math.random() * 2 - 1) * 0.3;
+      var noise = ctx.createBufferSource();
+      noise.buffer = noiseBuf;
+      noise.loop = true;
+      var noiseFilter = ctx.createBiquadFilter();
+      noiseFilter.type = 'lowpass';
+      noiseFilter.frequency.setValueAtTime(200, ctx.currentTime);
+      var noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.08, ctx.currentTime);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(master);
+      noise.start();
+      this.nodes.push(noise);
+      this.master = master;
+    } catch(e) { console.warn('Evening ambient failed:', e); }
+  },
+  stop: function() {
+    if (!this.active || !this.ctx) return;
+    var ctx = this.ctx;
+    var master = this.master;
+    if (master) {
+      master.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.5);
+    }
+    var nodes = this.nodes;
+    setTimeout(function() {
+      nodes.forEach(function(n) { try { if (n.stop) n.stop(); } catch(e){} });
+    }, 1600);
+    this.nodes = [];
+    this.active = false;
+    this.master = null;
+  }
+};
+
 function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
+  // 이브닝 앰비언트 사운드 시작/정지
+  useEffect(function(){ EveningAmbient.start(); return function(){ EveningAmbient.stop(); }; },[]);
   var chars=[{name:'\uc11c\ud558\uc740',key:'haeun',role:'\ubd80\uc9c0\ud718\uad00'},{name:'\uac15\ub3c4\uc724',key:'doyun',role:'\ud604\uc7a5\uc694\uc6d0'},{name:'\uc724\uc138\uc9c4',key:'sejin',role:'\uc5f0\uad6c\uc6d0'},{name:'\uc784\uc7ac\ud601',key:'jaehyuk',role:'\uae30\uc220\uad00'},{name:'\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84',key:'weber',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ub2c9 \ud3ec\uc2a4\ud130',key:'foster',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ubc15\uc18c\uc601',key:'soyoung',role:'\ubd84\uc11d\uad00'}];
   var available=chars.filter(function(c){if(c.name==='\uc11c\ud558\uc740'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='\uac15\ub3c4\uc724'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84'&&p.logs.indexOf('LOG-080')<0)return false;if(c.name==='\ub2c9 \ud3ec\uc2a4\ud130'&&p.logs.indexOf('LOG-081')<0)return false;if(c.name==='\ubc15\uc18c\uc601'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
   var usedEv=p.usedEvening||[];
