@@ -56,6 +56,73 @@ var SFX={
   }}catch(e){}}
 };
 
+// ═══ BGM 시스템 ═══
+var BGM = {
+  main: null, crisis: null, current: null, target: null,
+  volume: 0.3, fadeSpeed: 0.01, muted: false, started: false, fading: null,
+  init: function(){
+    if(this.main) return;
+    this.main = new Audio('bgm_main.mp3');
+    this.crisis = new Audio('bgm_crisis.mp3');
+    this.main.loop = true;
+    this.crisis.loop = true;
+    this.main.volume = 0;
+    this.crisis.volume = 0;
+  },
+  start: function(){
+    if(this.started) return;
+    this.init();
+    this.started = true;
+    this.play('main');
+  },
+  play: function(name){
+    if(this.muted) return;
+    var next = name === 'crisis' ? this.crisis : this.main;
+    if(this.current === next) return;
+    this.target = next;
+    this._crossfade();
+  },
+  _crossfade: function(){
+    var self = this;
+    if(this.fading) cancelAnimationFrame(this.fading);
+    var vol = this.volume;
+    var old = this.current;
+    var next = this.target;
+    if(next){
+      try{ next.play().catch(function(){}) }catch(e){}
+    }
+    var step = function(){
+      var done = true;
+      if(old && old !== next && old.volume > 0){
+        old.volume = Math.max(0, old.volume - self.fadeSpeed);
+        if(old.volume <= 0){ old.pause(); old.currentTime = 0; }
+        else done = false;
+      }
+      if(next && next.volume < vol){
+        next.volume = Math.min(vol, next.volume + self.fadeSpeed);
+        if(next.volume < vol) done = false;
+      }
+      if(!done) self.fading = requestAnimationFrame(step);
+      else self.fading = null;
+    };
+    this.fading = requestAnimationFrame(step);
+    this.current = next;
+  },
+  setVolume: function(v){
+    this.volume = v;
+    if(this.current) this.current.volume = Math.min(v, this.current.volume);
+  },
+  toggle: function(){
+    this.muted = !this.muted;
+    if(this.muted){
+      if(this.current){ this.current.pause(); }
+    } else {
+      if(this.current){ try{ this.current.play().catch(function(){}) }catch(e){} }
+    }
+    return this.muted;
+  }
+};
+
 function App(){
   var _p=useState('boot'),phase=_p[0],setPhase=_p[1];
   var _s=useState({c:50,r:65,t:50,o:40,day:1}),stats=_s[0],setStats=_s[1];
@@ -100,6 +167,14 @@ function App(){
     var initAct=(sg&&sg.act)||1;
     setCurCard(drawCard({c:50,r:65,t:50,o:40,day:1},0,sl||['LOG-001'],{},[], initAct));
   },[]);
+
+  // BGM 상태 관리 — 위기 감지 및 전환
+  var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
+  useEffect(function(){
+    if(!BGM.started||BGM.muted) return;
+    var isCrisis = stats.c <= 20 || stats.r <= 15 || stats.t <= 15 || stats.o <= 15 || phase === 'go';
+    BGM.play(isCrisis ? 'crisis' : 'main');
+  },[stats.c, stats.r, stats.t, stats.o, phase]);
 
   var tryUnlock=function(id){setLogs(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveLogs(n);return n})};
   var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);return next})};
@@ -269,7 +344,7 @@ function App(){
   var hEvening=function(){var trans=checkActTransition(stats,gi,logs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,logs,actFlags);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'\uc138\uc158 \uc885\ub8cc',stats,gi,se);return}nextCard(stats,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurDlg(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var restart=function(){var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
-  if(phase==='boot')return h(Boot,{sessions:sessions,onDone:function(){if(fp){setPhase('tutorial')}else{setPhase('game')}}});
+  if(phase==='boot')return h(Boot,{sessions:sessions,onDone:function(){BGM.start();if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
@@ -302,7 +377,8 @@ function App(){
       h('span',{className:'info-tag'},'ACT '+act),
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
       h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
-      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return 'ARCHIVE '+uc+(nc>0?' ●':'')})())),
+      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return 'ARCHIVE '+uc+(nc>0?' ●':'')})()),
+      h('span',{className:'info-tag',style:{cursor:'pointer',opacity:bgmMuted?0.4:1},onClick:function(){var m=BGM.toggle();setBgmMuted(m)}},bgmMuted?'♪ OFF':'♪ ON')),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001')));
