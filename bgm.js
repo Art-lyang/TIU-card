@@ -7,7 +7,7 @@ var BGM = {
   shadows: {},      // 크로스페이드 루프용 섀도 트랙
   current: null,    // 'main' | 'tension' | null
   target: null,     // fade 목표
-  vol: 0.18,        // 기본 볼륨
+  vol: 0.10,        // 기본 볼륨 (낮게 깔리는 배경음)
   fadeInterval: null,
   muted: false,
   started: false,   // 유저 인터랙션 후 true
@@ -195,19 +195,19 @@ var BGM = {
     track.addEventListener('timeupdate', function() {
       if (!track.duration || self.current !== name || self.muted) return;
       var remaining = track.duration - track.currentTime;
-      if (remaining <= 2.5 && !self.shadows[name]) {
+      if (remaining <= 4 && !self.shadows[name]) {
         var shadow = new Audio(src);
         shadow.loop = false;
         shadow.volume = 0;
         shadow.play().catch(function(){});
         self.shadows[name] = shadow;
-        self._fadeIn(shadow, 2000);
-        self._fadeOut(track, 2000);
+        self._fadeIn(shadow, 3500);
+        self._fadeOut(track, 3500);
         setTimeout(function() {
           self.tracks[name] = shadow;
           self.shadows[name] = null;
           self._setupCrossfadeLoop(name, src);
-        }, 2500);
+        }, 4000);
       }
     });
   },
@@ -217,12 +217,12 @@ var BGM = {
     var toTrack = this.tracks[toName];
     if (!toTrack) return;
 
-    // 현재 트랙 페이드아웃
+    // 현재 트랙 느린 페이드아웃 (2.5초)
     if (this.current && this.tracks[this.current]) {
-      this._fadeOut(this.tracks[this.current]);
+      this._fadeOut(this.tracks[this.current], 2500);
     }
 
-    // 새 트랙 시작 + 페이드인
+    // 새 트랙 시작 + 느린 페이드인 (3초)
     toTrack.volume = 0;
     var playPromise = toTrack.play();
     if (playPromise) {
@@ -230,7 +230,7 @@ var BGM = {
         console.warn('BGM autoplay blocked, will retry on interaction');
       });
     }
-    this._fadeIn(toTrack);
+    this._fadeIn(toTrack, 3000);
     this.current = toName;
   },
 
