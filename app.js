@@ -227,6 +227,8 @@ function App(){
   };
   var doBriefing=function(newAct,s,route){
     setAct(newAct);setTransRoute(route);
+    if(newAct===2)tryUnlock('LOG-ACT2');
+    if(newAct===3)tryUnlock('LOG-ACT3');
     var penalty=route==='A'?0:route==='B'||route==='C'?2:4;
     if(newAct===3)penalty+=3;
     if(penalty>0){var ns={c:clamp(s.c-penalty),r:clamp(s.r-penalty),t:clamp(s.t-penalty),o:clamp(s.o-penalty),day:s.day};setStats(ns)}

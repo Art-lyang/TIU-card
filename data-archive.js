@@ -82,7 +82,7 @@ var ARCHIVE_ENTRIES = [
     content: "직책: 데이터 분석관 (서하은 후임)\n\n서하은의 추천으로 합류한 민간 데이터 과학자.\n\nORACLE 데이터 스트림 분석에 빠르게 적응. 서하은의 방법론을 계승.\n\n선별적 데이터 지연 패턴을 독자적으로 확인." },
 
   { id: "ARC-CHAR-KANG", cat: "인물", title: "에이전트 강 — 미확인 관찰자",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-ACT2")>=0 },
     content: "정체: 불명\n\nAct 1부터 기지 주변에서 흔적만 남기는 미확인 인물.\n\n군화도 민간 장비도 아닌 발자국, 초단파 전파 스캔, 서버실 미인식 세션, 전문가 수준의 관찰 거점.\n\nORACLE도 프로메테우스도 아닌 제3의 존재.\n\n경고: [ORACLE은 이 존재를 인식하지 못합니다]" },
 
   // ═══ 카테고리: 조직 ═══
