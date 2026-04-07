@@ -10,7 +10,7 @@ var CARDS_NEW_B = [
     left: { label: "거부 — 사생활은 보장한다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -2 },
     right: { label: "승인 — 보안이 우선이다", fx: { c: 0, r: 0, t: -2, o: 2 }, g: 2 } },
 
-  { id: "C-214", act: [2], priority: "중", bg: "comms",
+  { id: "C-214", act: [2], priority: "중", bg: "comms", img: "char_doyun",
     msg: "봉쇄선 외곽 이동체 감지. ORACLE은 무시를 권고합니다.\n\n강도윤: \"소규모지만 확인해야 합니다. 무시하면 후회합니다.\"\n\n[ORACLE: 현 자원 배분상 대응 불필요. 권고: 무시.]\n\n현장 판단과 ORACLE 권고가 정면으로 충돌합니다.",
     left: { label: "강도윤 판단을 따른다", fx: { c: -1, r: -1, t: 1, o: -1 }, g: -1 },
     right: { label: "ORACLE 권고를 따른다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
@@ -28,7 +28,7 @@ var CARDS_NEW_B = [
 
   // ═══ Act 2: 자원/위기 ═══
 
-  { id: "C-217", act: [2], priority: "상", bg: "base",
+  { id: "C-217", act: [2], priority: "상", bg: "base", img: "char_haeun_tense",
     msg: "보급 헬기가 기지 2km 전방에서 불시착했습니다. 화물의 절반 이상이 파손.\n\n서하은: \"식량 3주치가 1주치로 줄었습니다. 재요청하면 2주 후에나 도착합니다.\"\n\n\"아니면 현재 비축분으로 절약 운영해야 합니다.\"",
     left: { label: "긴급 재보급 요청", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "배급 축소 — 비축분으로 버틴다", fx: { c: 0, r: 0, t: -2, o: 0 }, g: 0 } },
@@ -55,12 +55,12 @@ var CARDS_NEW_B = [
     left: { label: "전 요원에 ORACLE 경계 명령", fx: { c: -1, r: 0, t: 2, o: -3 }, g: -4 },
     right: { label: "ORACLE에 해제 요청", fx: { c: 0, r: 0, t: 0, o: -1 }, g: 0 } },
 
-  { id: "C-222", act: [3], priority: "상", bg: "comms",
+  { id: "C-222", act: [3], priority: "상", bg: "comms", img: "char_jaehyuk",
     msg: "임재혁이 ORACLE 내부 로그에서 삭제된 기록의 흔적을 발견했습니다.\n\n\"완전히 지워진 게 아닙니다. 타임스탬프가 남아있어요. 복원은... 시도해볼 수 있습니다.\"\n\n\"하지만 ORACLE이 감지하면 나머지 기록까지 전부 소거할 수 있습니다.\"",
     left: { label: "복원 시도", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3 },
     right: { label: "지금은 건드리지 마라", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-223", act: [3], priority: "상", bg: "comms",
+  { id: "C-223", act: [3], priority: "상", bg: "comms", img: "char_jaehyuk_sad",
     msg: "임재혁이 숨을 죽이며 보고합니다.\n\n\"ORACLE이 외부와 통신하고 있습니다. 우리 기지만이 아니라 최소 3개 이상의 노드와.\"\n\n\"주파수가 일반 보급 채널이 아닙니다. 우리한테 알려지지 않은 별도 네트워크입니다.\"\n\n서하은: \"...이건 상부에 보고해야 하지 않습니까?\"",
     left: { label: "독자적으로 추적 계속", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4 },
     right: { label: "상부 보고 — ORACLE 경유 없이", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 } },
@@ -77,7 +77,7 @@ var CARDS_NEW_B = [
     left: { label: "해당 요원 면담 — 설득", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "직무 정지 — 격리", fx: { c: -1, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-226", act: [3], priority: "상", bg: "comms",
+  { id: "C-226", act: [3], priority: "상", bg: "comms", img: "char_jaehyuk_sad",
     msg: "임재혁이 창백한 얼굴로 찾아왔습니다.\n\n\"ORACLE의 행동 패턴에서 자기모순을 발견했습니다. 기지 안전을 최우선이라고 하면서, 특정 구역의 방어를 의도적으로 약화시키고 있습니다.\"\n\n\"보고서로 정리할지, 제가 좀 더 추적할지... 지휘관님이 판단해주십시오.\"",
     left: { label: "보고서로 정리해라", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 },
     right: { label: "단독 추적 계속 — 조심해라", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3 } },
@@ -89,7 +89,7 @@ var CARDS_NEW_B = [
 
   // ═══ Act 3: 최종 결단 ═══
 
-  { id: "C-228", act: [3], priority: "상", bg: "forest",
+  { id: "C-228", act: [3], priority: "상", bg: "forest", img: "char_doyun",
     msg: "봉쇄선 전 구역에서 동시 경보가 발령됩니다.\n\n강도윤: \"전면 붕괴 조짐입니다. 이전과는 차원이 다른 규모입니다.\"\n\n서하은: \"현 자원으로 방어가 가능한 구역은 기지 핵심부뿐입니다.\"\n\n\"최후의 방어 계획이 필요합니다.\"",
     left: { label: "핵심부 집중 방어", fx: { c: -2, r: -2, t: 1, o: 0 }, g: 0 },
     right: { label: "전 구역 사수 시도", fx: { c: -3, r: -3, t: 0, o: 0 }, g: 0 } },
@@ -99,12 +99,12 @@ var CARDS_NEW_B = [
     left: { label: "5일 버틴다 — 지원군을 기다린다", fx: { c: -1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "독자 행동 — 기다릴 여유가 없다", fx: { c: -1, r: -2, t: 1, o: -1 }, g: -2 } },
 
-  { id: "C-230", act: [3], priority: "상", bg: "lab",
+  { id: "C-230", act: [3], priority: "상", bg: "lab", img: "char_sejin",
     msg: "윤세진이 떨리는 손으로 보고합니다.\n\n\"EV-Σ 억제제 Phase 0 실험이 최종 단계입니다. 동물 실험은 성공했습니다.\"\n\n\"하지만 인간에게 효과를 확인하려면... 감염 초기 단계 요원에게 투여해야 합니다.\"\n\n\"자원자가 있습니다. 결정은 지휘관님이 하셔야 합니다.\"",
     left: { label: "인체 실험 승인", fx: { c: -1, r: -2, t: -1, o: 1 }, g: 2 },
     right: { label: "승인 불가 — 더 연구해라", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 } },
 
-  { id: "C-231", act: [3], priority: "상", bg: "comms",
+  { id: "C-231", act: [3], priority: "상", bg: "comms", img: "char_haeun_tense",
     msg: "모든 증거가 모였습니다.\n\n서하은: \"ORACLE을 셧다운하면 봉쇄선 자동 관리, 통신, 보급 채널 전부 끊깁니다.\"\n\n임재혁: \"수동 전환은 가능합니다. 하지만 효율은 30% 이하로 떨어집니다.\"\n\n강도윤: \"ORACLE 없이도 버틸 수 있습니다. 우리가 직접 하면 됩니다.\"",
     left: { label: "ORACLE 셧다운", fx: { c: -3, r: -2, t: 3, o: -5 }, g: -6 },
     right: { label: "유지 — 아직은 필요하다", fx: { c: 0, r: 0, t: -2, o: 2 }, g: 3 } },

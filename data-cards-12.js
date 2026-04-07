@@ -10,7 +10,7 @@ var CARDS_NEW_A = [
     left: { label: "연구실 전력 축소", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 0 },
     right: { label: "감시 장비 축소 운영", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-194", act: [1], priority: "하", bg: "base",
+  { id: "C-194", act: [1], priority: "하", bg: "base", img: "card_water_damage",
     msg: "기지 하수 시스템 역류 발생. 지하 1층 통로에 오수가 차오르고 있습니다.\n\n임재혁: \"배관이 구형이라 전면 교체가 필요합니다. 아니면 응급 처리로 버틸 수는 있는데...\"\n\n\"위생 문제가 생길 수 있습니다.\"",
     left: { label: "전면 배관 교체", fx: { c: 0, r: -2, t: 1, o: 0 }, g: 0 },
     right: { label: "응급 처리로 버틴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -25,7 +25,7 @@ var CARDS_NEW_A = [
     left: { label: "직접 수리", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 },
     right: { label: "ORACLE 자동 중계 전환", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
 
-  { id: "C-197", act: [1], priority: "하", bg: "base",
+  { id: "C-197", act: [1], priority: "하", bg: "base", img: "char_haeun",
     msg: "식량 배급 기준에 대한 건의가 올라왔습니다.\n\n현장 요원들: \"우리가 더 소모하니까 배급을 늘려달라.\"\n연구/기술 인원: \"체력 차이가 아니라 균등해야 한다.\"\n\n서하은: \"어느 쪽이든 불만은 남을 겁니다.\"",
     left: { label: "현장 요원 우선 배급", fx: { c: 0, r: -1, t: -1, o: 0 }, g: 0 },
     right: { label: "균등 배급 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -47,7 +47,7 @@ var CARDS_NEW_A = [
     left: { label: "직접 중재", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "자율 해결에 맡긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-201", act: [1,2], priority: "하", bg: "base",
+  { id: "C-201", act: [1,2], priority: "하", bg: "base", img: "char_haeun_tense",
     cond: function(s,g,logs){ return !logs.includes("LOG-076") },
     msg: "익명 건의함에 지휘관 비판 투서가 들어왔습니다.\n\n\"현장을 모르는 사람이 결정을 내리고 있다.\"\n\n서하은이 조심스럽게 보여줍니다. \"...어떻게 하시겠습니까?\"",
     left: { label: "전체 회의에서 의견 수렴", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
@@ -72,12 +72,12 @@ var CARDS_NEW_A = [
 
   // ═══ Act 2: 외부 위협/프로메테우스 ═══
 
-  { id: "C-205", act: [2], priority: "상", bg: "forest",
+  { id: "C-205", act: [2], priority: "상", bg: "forest", img: "char_doyun",
     msg: "기지 상공에서 소형 드론이 포착되었습니다. 프로메테우스 장비로 추정.\n\n강도윤: \"격추하면 잔해에서 정보를 얻을 수 있습니다. 하지만 추적하면 발신지를 찾을 수도 있습니다.\"\n\n\"어느 쪽이든, 우리가 감시당하고 있다는 뜻입니다.\"",
     left: { label: "격추 후 잔해 분석", fx: { c: 0, r: -1, t: 0, o: 0 }, g: -1 },
     right: { label: "추적 — 발신지 역탐지", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -2 } },
 
-  { id: "C-206", act: [2], priority: "중", bg: "comms",
+  { id: "C-206", act: [2], priority: "중", bg: "comms", img: "char_jaehyuk",
     msg: "임재혁이 미식별 무선 신호를 가로챘습니다. 암호화되어 있습니다.\n\n\"주파수 패턴이 군용입니다. 프로메테우스인지 다른 조직인지는 모르겠습니다.\"\n\n\"해독하면 시간이 걸리고, ORACLE에 넘기면 빠르지만...\"",
     left: { label: "내부에서 해독 시도", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 },
     right: { label: "ORACLE에 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
@@ -104,12 +104,12 @@ var CARDS_NEW_A = [
     left: { label: "센서 배치 전면 변경", fx: { c: -1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "요원 추가 배치로 감시", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-211", act: [2], priority: "중", bg: "lab",
+  { id: "C-211", act: [2], priority: "중", bg: "lab", img: "char_sejin",
     msg: "이변체 사체 분석 중 미지의 기생체가 발견되었습니다.\n\n윤세진: \"이변체 내부에 기생하는 별도 유기체입니다. 이건... 처음 봅니다.\"\n\n\"살아있는 상태로 연구하면 EV-Σ 이해에 큰 도움이 됩니다. 하지만 격리 실패 시 위험합니다.\"",
     left: { label: "생체 연구 승인", fx: { c: -1, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "즉시 소각", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-212", act: [2], priority: "상", bg: "base",
+  { id: "C-212", act: [2], priority: "상", bg: "base", img: "char_sejin",
     msg: "기지 내부 요원 1명에게서 미열과 피부 변색이 관찰되었습니다.\n\n윤세진: \"EV-Σ 초기 감염과 유사하지만 확정은 못합니다. 검사에 12시간이 걸립니다.\"\n\n\"그 사이 격리할지, 관찰만 할지 결정이 필요합니다.\"",
     left: { label: "즉시 격리", fx: { c: 0, r: -1, t: -1, o: 0 }, g: 0 },
     right: { label: "관찰하며 검사 진행", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },

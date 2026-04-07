@@ -211,20 +211,28 @@ function EveningChat(p){
   var available=chars.filter(function(c){if(c.name==='\uc11c\ud558\uc740'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='\uac15\ub3c4\uc724'&&p.logs.indexOf('LOG-075')>=0)return false;return true});
   var usedEv=p.usedEvening||[];
   var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
+  var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk'};
   var chat=null;
   if(selChar){
-    // 1) 현재 act+day 범위에 맞는 미사용 챗 찾기
-    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&usedEv.indexOf(ecKey(ec))<0});
+    // 신뢰도 기반 이브닝 챗 선택 — 호감도 순서 보장
+    var ck=charKeyMap2[selChar.name]||'';
+    var tier=(typeof getTrustTier==='function'&&ck)?getTrustTier(p.trust,ck):'mid';
+    // 신뢰도 구간별 접근 가능 최대 dayMax 제한 (낮은 호감도 → 초반 대화만)
+    var tierDayCap={low:10,mid:24,high:99,bond:99};
+    var dayCap=tierDayCap[tier]||99;
+    var sortByDay=function(a,b){return a.dayMin-b.dayMin};
+    // 1) 현재 act+day 범위 + 호감도 범위에 맞는 미사용 챗
+    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0}).sort(sortByDay);
     if(matches.length>0){chat=matches[0]}
     else{
-      // 2) 같은 캐릭터+act의 미사용 챗 아무거나
-      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&usedEv.indexOf(ecKey(ec))<0});
-      if(matches.length>0){chat=matches[matches.length-1]}
+      // 2) 같은 캐릭터+act에서 호감도 범위 내 미사용 챗 (가장 이른 것부터)
+      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0}).sort(sortByDay);
+      if(matches.length>0){chat=matches[0]}
       else{
-        // 3) 전부 본 경우: 가장 최근 day 범위 챗을 폴백 (재등장 허용)
-        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax});
-        if(matches.length>0)chat=matches[0];
-        else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0});chat=matches.length>0?matches[matches.length-1]:null}
+        // 3) 전부 본 경우: 현재 day 범위 챗 폴백 (재등장 허용)
+        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax}).sort(sortByDay);
+        if(matches.length>0)chat=matches[matches.length-1];
+        else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0}).sort(sortByDay);chat=matches.length>0?matches[matches.length-1]:null}
       }
     }
   }
@@ -244,9 +252,12 @@ function EveningChat(p){
     h('div',{style:{fontSize:13,color:'rgba(157,255,116,.6)',textAlign:'center',marginBottom:20}},'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
     h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
       available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){setSelChar(c);if(p.onChat)p.onChat(c.name);
-        // 선택한 캐릭터의 챗을 사용 완료 마킹
-        var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&usedEv.indexOf(ecKey(ec))<0});
-        if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&usedEv.indexOf(ecKey(ec))<0});
+        // 선택한 캐릭터의 챗을 사용 완료 마킹 (호감도 순서 반영)
+        var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
+        var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
+        var sortD=function(a,b){return a.dayMin-b.dayMin};
+        var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0}).sort(sortD);
+        if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0}).sort(sortD);
         if(m2.length>0&&p.onMarkEvening)p.onMarkEvening(ecKey(m2[0]))},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(145,255,106,.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s'}},
         portrait?h('img',{src:portrait,style:{width:60,height:60,borderRadius:'50%',border:'2px solid rgba(145,255,106,.3)',display:'block',margin:'0 auto 6px',objectFit:'cover'}}):h('div',{style:{width:60,height:60,borderRadius:'50%',background:'#1a2a1a',margin:'0 auto 6px'}}),
         h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
