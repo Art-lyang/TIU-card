@@ -135,3 +135,6 @@ html,body{height:100%;overflow:hidden;background:#050808;color:#33ff33;font-fami
 /* Glitch text effect */
 @keyframes glitchText{0%,100%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(1px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(2px,-1px)}}
 .glitch-text{animation:glitchText 0.15s ease infinite}
+/* Evening Chat character hover */
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(145,255,106,.08)}50%{box-shadow:0 0 16px rgba(145,255,106,.18)}}
+@keyframes typingDot{0%,80%,100%{opacity:.2}40%{opacity:1}}

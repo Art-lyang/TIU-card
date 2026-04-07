@@ -16,6 +16,7 @@ var CARDS_EXTRA = [
     right: { label: "폐기 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
 
   { id: "C-159", act: [1], priority: "하", bg: "base",
+    cond: function(s,g,logs){ return !logs.includes("LOG-078") },
     msg: "요원들이 기지 내 운동 공간 확보를 요청합니다.\n\n\"좁습니다. 사기도 떨어집니다.\"\n\n이미 공간은 제한적입니다.",
     left: { label: "간이 체력장 구성", fx: { c: 0, r: -1, t: 2, o: 0 }, g: -1 },
     right: { label: "기존 배치 유지", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },

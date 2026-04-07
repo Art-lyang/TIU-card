@@ -13,13 +13,14 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
     if(c.req&&!c.req(stats,gi,logs))return false;
+    if(c.cond&&!c.cond(stats,gi,logs))return false;
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&rec.indexOf(c.id)<0&&introOk(c,logs)});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){return!c.req&&!c.transReq&&introOk(c,logs)}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}).slice(0,15));
 };
 
 var Save={
@@ -126,6 +127,50 @@ function App(){
     if(dc==='\uac15\ub3c4\uc724'&&di===0){tryUnlock('LOG-008');tryUnlock('LOG-INTRO-KD')}if(dc==='\uc784\uc7ac\ud601'&&di===0)tryUnlock('LOG-INTRO-IJ');if(dc==='\uc784\uc7ac\ud601'&&di===1)tryUnlock('LOG-012');
     if(g<=-15)tryUnlock('LOG-009');if(g<=-30)tryUnlock('LOG-010');
     if(trust.haeun>=70)tryUnlock('LOG-006');if(trust.sejin>=70)tryUnlock('LOG-007');if(trust.doyun>=65)tryUnlock('LOG-008');
+    // ═══ 체인 카드 LOG 트리거 (data-cards-11.js 연동) ═══
+    // 체인1 신규요원: 기존 카드 → 새 체인
+    if(cid==='C-001'&&dir==='right')tryUnlock('LOG-062');
+    // C-179: left=엄격 재훈련→LOG-063, right=실전 투입→LOG-064
+    if(cid==='C-179'&&dir==='left')tryUnlock('LOG-063');
+    if(cid==='C-179'&&dir==='right')tryUnlock('LOG-064');
+    // C-180: 성공 루트 종료
+    if(cid==='C-180')tryUnlock('LOG-063-DONE');
+    // C-181: 실패→부상→LOG-065
+    if(cid==='C-181')tryUnlock('LOG-065');
+    // C-182: 습격 발생→LOG-065-ATK
+    if(cid==='C-182')tryUnlock('LOG-065-ATK');
+    // C-183: ORACLE 권고 종료→LOG-065-END
+    if(cid==='C-183')tryUnlock('LOG-065-END');
+    // 체인2 식수오염: 기존 카드 → 트리거 플래그
+    if(cid==='C-023'&&dir==='right')tryUnlock('LOG-066');
+    if(cid==='C-145'&&dir==='right')tryUnlock('LOG-067');
+    if(cid==='C-111'&&dir==='right')tryUnlock('LOG-068');
+    // C-184: 식중독→LOG-069
+    if(cid==='C-184')tryUnlock('LOG-069');
+    // C-185: 요원 감소→LOG-069-CREW
+    if(cid==='C-185')tryUnlock('LOG-069-CREW');
+    // C-186: ORACLE 경고 종료→LOG-069-END
+    if(cid==='C-186')tryUnlock('LOG-069-END');
+    // 체인3 야간습격: 기존 카드 → 트리거 플래그
+    if(cid==='C-041'&&dir==='right')tryUnlock('LOG-070');
+    if(cid==='C-163'&&dir==='right')tryUnlock('LOG-071');
+    if(cid==='C-018'&&dir==='right')tryUnlock('LOG-072');
+    if(cid==='C-084'&&dir==='left')tryUnlock('LOG-073');
+    // C-188: 야간 습격→LOG-074
+    if(cid==='C-188')tryUnlock('LOG-074');
+    // C-189: 강도윤 생존→LOG-074-DONE
+    if(cid==='C-189')tryUnlock('LOG-074-DONE');
+    // C-190: 강도윤 사망→LOG-075
+    if(cid==='C-190')tryUnlock('LOG-075');
+    // C-191: 생존 후 ORACLE→LOG-074-ORC
+    if(cid==='C-191')tryUnlock('LOG-074-ORC');
+    // C-192: 사망 후 ORACLE→LOG-075-ORC
+    if(cid==='C-192')tryUnlock('LOG-075-ORC');
+    // 1회성 시설/이벤트 카드
+    if(cid==='C-159')tryUnlock('LOG-078');
+    if(cid==='C-080')tryUnlock('LOG-079');
+    if(cid==='C-201')tryUnlock('LOG-076');
+    if(cid==='C-215')tryUnlock('LOG-077');
   };
   var chk=function(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 — \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null};
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
@@ -133,7 +178,7 @@ function App(){
   var introsDone=function(){return logs.indexOf('LOG-INTRO-SH')>=0&&logs.indexOf('LOG-INTRO-KD')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-INTRO-IJ')>=0};
   var isIntroDlg=function(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci};
   var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&logs.indexOf('LOG-050')>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(!introsDone()){var introAv=av.filter(function(d,idx){return isIntroDlg(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
-  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>20?n.slice(n.length-20):n})}};
+  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>30?n.slice(n.length-30):n})}};
   // Act 전환 체크 — 10일/25일 경과 시 무조건 전환, 조건에 따라 루트 분기
   var checkActTransition=function(s,g,lg,af,curAct){
     if(curAct===1&&s.day>=10){
