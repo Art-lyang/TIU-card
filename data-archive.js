@@ -28,6 +28,30 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
     content: "글로벌 병원체. 감염자를 이변체로 변이시키는 바이러스.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 통제 가능.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
 
+  { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
+    unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
+    content: "M-TYPE / EV-Σ Phase 2 변이체.\n\n전신이 회색~갈색 각질층으로 경질화. 체중이 원래의 3~4배로 증가.\n\n통상 화기 무효. 벽과 차량을 관통하는 사례 보고.\n\n이동 속도 저하. 단, 정지 기록 없음 — 느리지만 절대 멈추지 않는다.\n\n대응: 물리 공격 무효. 도주 우선. 고온 소각 또는 산성 용제로만 제거 가능.\n\n주의: Phase 1(마네킹)에서 Phase 2로의 전환은 6~12시간 이내에 완료됨." },
+
+  { id: "ARC-SPEC-004", cat: "이변체", title: "SPEC-004 — Seed Spreader",
+    unlock: function(logs){ return logs.indexOf("LOG-015")>=0 },
+    content: "S-TYPE / 고정형 확산 개체.\n\n높이 2~4m. 식물 유사 외형. 내부에 맥동하는 생체 조직.\n\n토양 고착 후 반경 수km에 포자를 광역 방출.\n\n숙주 행동 변형 메커니즘: 동충하초(Cordyceps)와 동일 원리.\n\n제거 시 폭발적 포자 방출(2차 확산) 위험.\n\n반경 500m 내 접근 금지. 소각 시 반드시 토양 오염 처리 병행.\n\n참고: Silent Belt 형성의 주요 원인으로 확인." },
+
+  { id: "ARC-SPEC-005", cat: "이변체", title: "SPEC-005 — Shell Walker",
+    unlock: function(logs){ return logs.indexOf("LOG-014")>=0 && logs.indexOf("LOG-009")>=0 },
+    content: "H-TYPE / TS-Ω 군체 이동형 하위 개체.\n\n거북이를 인간 크기로 확대한 형태. 등껍질에 발광 문양 — 군체 통신 수신부.\n\n단독 행동 불가. 항상 2~5개체가 편대로 이동.\n\n군체 통신 범위 외로 유인하면 기능 저하. 분리 후 24시간 내 기능 정지.\n\nPhiladelphia Zone 해안 외곽에서 주로 관측.\n\n한국지부 직접 조우 기록: 없음. ORACLE 데이터베이스를 통한 열람." },
+
+  { id: "ARC-SPEC-007", cat: "이변체", title: "SPEC-007 — Phase 3 터미널",
+    unlock: function(logs){ return logs.indexOf("LOG-017")>=0 && (logs.indexOf("LOG-015")>=0 || logs.indexOf("LOG-014")>=0) },
+    content: "M-TYPE / EV-Σ Phase 3 최종 변이체.\n\n원래 종(인간/동물)의 흔적 완전 소실.\n\n세포 특성: HeLa 세포주형 무한 증식. 비가역.\n\n환경에 따라 신체 구조를 실시간 변형. 사격으로 관통된 몸통이 3초 내 재생.\n\n300m 이내 접근 금지. 생포 시도 절대 금지.\n\n한국 봉쇄선 내 출현 기록: 0건. ORACLE 경고 등급: CRITICAL." },
+
+  { id: "ARC-SPEC-009", cat: "이변체", title: "SPEC-009 — TS-Ω Core",
+    unlock: function(logs){ return logs.indexOf("LOG-009")>=0 && logs.indexOf("LOG-016")>=0 },
+    content: "X-TYPE / Sovereign Shell 본체. ██████.\n\n해양 군체 중심 의식. 물리적 크기: 관측 시마다 변동.\n\nThe Bloop(1997) 음원으로 확인.\n\nPhiladelphia Zone 전체가 사실상 격리 구역.\n\n직접 접촉 시 인지 구조 ██████. 관측 팀 7명 중 ██████.\n\n한국 인지: 한국을 '인지'하지 못함. 전파실패구간으로만 감지.\n\n추가 데이터: OMEGA CLEARANCE REQUIRED." },
+
+  { id: "ARC-SPEC-010", cat: "이변체", title: "SPEC-010 — Infiltrator Scale",
+    unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
+    content: "M-TYPE / 침투형 변이체.\n\n인간 외형 완벽 위장. 사회에 동화된 상태로 활동.\n\n식별: 체온 2~3℃ 저하, 특정 광원하 동공 수직 수축.\n\n서울 외곽에서 White Shield가 식별. 6개월간 민간인으로 생활하며 군사 시설 정보를 수집.\n\n체포 시도 시 전투 형태로 전환 — 비늘 돌출, 근력 3배 상승.\n\n열 감지 및 DNA 검사로만 확인 가능." },
+
   // ═══ 카테고리: 인물 ═══
   { id: "ARC-CHAR-DOYUN", cat: "인물", title: "강도윤 — 현장요원",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
@@ -62,6 +86,10 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
     content: "ORACLE 프록시 네트워크 소속 격리 기지.\n\n위치: 강원도 [기밀]\n지휘관: PILEHEAD (이중철)\n\n임무: 대한민국 EV-Σ 봉쇄 체계 관찰 및 지원.\n\n전임 지휘관 부재로 3개월간 ORACLE 단독 운영 이력." },
 
+  { id: "ARC-ORG-WHITESHIELD", cat: "조직", title: "White Shield (한국 군사대응)",
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    content: "대한민국 군 EV-Σ 대응 체계.\n\n봉쇄 성공률 97.3% — 전 세계 최고.\n\n5개국 군사대응 중 유일하게 95% 이상 유지.\n\n비교: ARES(미국) 62%, Red Dragon(중국) 41%, Permafrost(러시아) 38%.\n\nORACLE 평가: 'This region should have failed. Outcome does not match model.'\n\n성공 요인: 지형적 이점, 조기 대응, 프로메테우스 기술 지원(31% 기여 — 미확인)." },
+
   // ═══ 카테고리: 시설/장비 ═══
   { id: "ARC-FAC-SEAL", cat: "시설", title: "봉쇄선",
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
@@ -74,6 +102,10 @@ var ARCHIVE_ENTRIES = [
   { id: "ARC-FAC-LAB", cat: "시설", title: "연구실",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
     content: "기지 내 EV-Σ 연구 시설.\n\n장비 현황: 현미경(배율 기준 미달), 생체 샘플 보관 장치(온도 편차 ±2도).\n\n윤세진이 억제제 연구 및 이변체 행동 패턴 분석을 수행.\n\nSPEC-001 등 이변체 모니터링 가능." },
+
+  { id: "ARC-FAC-SENSOR", cat: "시설", title: "봉쇄선 센서 체계",
+    unlock: function(logs){ return logs.indexOf("LOG-070")>=0 },
+    content: "봉쇄선 감시 시스템 구성.\n\n전기 울타리: 구역별 독립 전원 운용.\n열감지 센서: 이변체 탐지 1차 수단. 사각지대 존재 확인.\n야간 순찰 루트: 2인 1조, 4시간 교대.\n\n센서 오작동 시 수동 확인 필요 — 소요시간 약 30분.\n\n취약점: 동쪽 방어벽 구조적 한계, 대규모 습격 시 30분 방어 한계.\n\n임재혁이 센서 네트워크 유지보수 담당." },
 
   // ═══ 카테고리: 과학/의학 ═══
   { id: "ARC-SCI-PHASE", cat: "과학", title: "Phase 단계 체계",
@@ -88,6 +120,18 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
     content: "윤세진이 개발 중인 대항 화합물.\n\nPhase 0 단계 감염자의 전환을 40% 지연시킴.\n\n동물 실험 성공. 인체 실험은 지휘관 승인 필요.\n\n성공 시 초기 감염자 구호 가능. 실패 시 연구 자원 소실." },
 
+  { id: "ARC-SCI-EVOLVE", cat: "과학", title: "진화 분류 체계 (ORACLE 기준)",
+    unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
+    content: "ORACLE이 사용하는 EV-Σ 진화 상태 분류.\n\nOVERDRIVE (과속진화): Philadelphia. 붕괴. 속도 통제 불가.\nCONTROLLED (통제진화): 한국. 지속 가능. 속도 관리 중.\nDELAYED (지연진화): Silent Belt. 느리게 진행.\nSTAGNANT (정체진화): DPRK. 거의 멈춤.\nCOMPLETE (완료진화): TS-Ω. 더 이상 변화 불필요.\n\n한국은 CONTROLLED — 진화 속도를 인위적으로 관리하는 유일한 구역.\n이것이 한국 봉쇄의 전략적 가치이자 ORACLE이 한국을 예외변수로 분류하는 이유." },
+
+  { id: "ARC-SCI-TEMP", cat: "과학", title: "EV-Σ 환경 반응 조건",
+    unlock: function(logs){ return logs.indexOf("LOG-015")>=0 || logs.indexOf("LOG-017")>=0 },
+    content: "EV-Σ는 단순 바이러스가 아닌 생물학적 진화 가속 매개체.\n\n환경 온도에 따른 반응:\n· 중간 온도: 활성 진화 (가장 위험)\n· 저온: Dormant 상태 (억제 ≠ 제거)\n· 고온: 구조 붕괴\n· 극한 환경: 비활성\n\n경고: 저온 포자는 환경 변화 시 재활성화.\n'억제는 제거가 아니다.' — ORACLE 경고문\n\n한국의 사계절 기후는 EV-Σ 관리에 복합적 변수." },
+
+  { id: "ARC-SCI-4STAGE", cat: "과학", title: "EV-Σ 변이 4단계",
+    unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
+    content: "EV-Σ 감염체의 물리적 변이 단계.\n\n1단계: 잠복 (프리온형) — 외형 변화 미미. 억제제 투여 가능.\n2단계: 표면 변이 (마네킹) — Phase 1. 인간형 유지.\n3단계: 구조 변형 (경질화) — Phase 2. 통상 화기 무효.\n4단계: 터미널 (HeLa형) — Phase 3. 종 흔적 소실. 무한 증식.\n\n각 단계 전환은 비가역적.\n현재 억제제는 1→2단계 전환만 지연 가능 (40%).\n\n윤세진 연구 목표: 2→3단계 전환 차단." },
+
   // ═══ 카테고리: 프로토콜/시스템 ═══
   { id: "ARC-SYS-PROXY", cat: "시스템", title: "ORACLE PROXY NETWORK",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 || logs.indexOf("LOG-018")>=0 },
@@ -101,6 +145,14 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
     content: "프로메테우스 작전 코드명.\n\n한국 해안방벽시스템과 프로메테우스 기술의 교환 협력.\n\n한국 봉쇄 성공률 97.3% 중 31%가 프로메테우스 지원에 기인.\n\nORACLE은 이 정보를 공개하지 않음." },
 
+  { id: "ARC-SYS-VOLUNTARY", cat: "시스템", title: "자발적 복종 프로토콜",
+    unlock: function(logs){ return logs.indexOf("LOG-018")>=0 },
+    content: "ORACLE PROXY NETWORK 내부 문서.\n\n정식 명칭: 'Voluntary Compliance Protocol.'\n\n내용: 격리 기지 지휘관의 심리적 순응 체계를 명시.\n\n핵심 메커니즘:\n· 정보 비대칭 유지 — 지휘관에게 필요 이상의 정보를 제공하지 않음\n· 성과 평가 연동 — ORACLE 권고 따름 = 높은 평가\n· 대안 부재 인식 — '우리 없이는 붕괴한다'는 인식 형성\n\n프로메테우스가 발췌본을 확보하여 한국지부에 전달한 것으로 추정." },
+
+  { id: "ARC-SYS-GENESIS", cat: "시스템", title: "GENESIS BREAK (최초 발생)",
+    unlock: function(logs){ return logs.indexOf("LOG-004")>=0 || logs.indexOf("LOG-005")>=0 },
+    content: "EV-Σ 최초 대규모 발현 사건.\n\n일시: 기밀.\n장소: 기밀.\n\n결과: 전 세계적 감염 확산의 시작.\n\nPhiladelphia Zone이 최초의 완전 붕괴 사례.\n\n핵심 교훈:\n· 감염은 생물이 아니라 시스템이다\n· 사살 = 확산 (분해 시 포자 방출)\n· 공기 감염이 존재한다\n\n이 사건의 교훈이 이후 모든 봉쇄 프로토콜의 기준이 됨." },
+
   // ═══ 카테고리: 지역/사건 ═══
   { id: "ARC-LOC-PHILA", cat: "지역", title: "필라델피아 Z-Ω 구역",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
@@ -108,7 +160,19 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-LOC-DPRK", cat: "지역", title: "DPRK 블랙존",
     unlock: function(logs){ return logs.indexOf("LOG-009")>=0 },
-    content: "북한 접경 지역의 미확인 구역.\n\n의식/신체 분리 현상 보고. EV-Σ 관련 여부 미확인.\n\n관측 중단 상태.\n\n탈북자 증언: '사람들이 서 있었다. 숨을 안 쉬는데 눈이 떠져 있었다.'" }
+    content: "북한 접경 지역의 미확인 구역.\n\n진화 분류: STAGNANT (정체진화). 감염도 붕괴도 없이 정지.\n\n의식/신체 분리 현상 보고. CCTV 분석: 동일 위치에서 선택적으로 시선만 변경.\n\n관측자(OBSERVER) 명령으로 관측 종료.\n'Region classification: COMPLETE. Further observation: NOT REQUIRED.'\n\n탈북자 증언: '사람들이 서 있었다. 숨을 안 쉬는데 눈이 떠져 있었다.'" },
+
+  { id: "ARC-LOC-KOREA", cat: "지역", title: "Z-0 한국 구역",
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    content: "ORACLE 구역 분류: Z-0.\n진화 상태: CONTROLLED (통제진화).\n\n봉쇄 성공률 97.3% — 전 세계 유일 95% 이상 구역.\n\nORACLE 내부 평가:\n'This region should have failed. Outcome does not match model.'\nEXCEPTION_INDEX: HIGH\nOBSERVER_INTEREST: SUSTAINED\n\nNext Wave 시뮬레이션:\n· 해안 포자 72% / 다점 Spreader 44.8%\n· 내부 NODE 31.1% / TS-Ω 압박 18.6%\n\nTS-Ω 필드 반응: 한국을 '인지'하지 못함. 전파실패구간으로만 감지." },
+
+  { id: "ARC-LOC-ASHFALL", cat: "지역", title: "Ashfall City (Z-3)",
+    unlock: function(logs){ return logs.indexOf("LOG-014")>=0 },
+    content: "위치: Camden, NJ (미국).\n구역 분류: Z-3 COLLAPSE.\n진화 상태: OVERDRIVE (과속진화).\n\n도시 인프라가 생체 조직으로 전환됨.\nORACLE 기록: 'Structures are no longer buildings. They are organs.'\n\nBrood Drone 200+ 집단 관측.\n\nPhiladelphia와 함께 봉쇄 실패의 대표적 사례.\n한국지부 교육 자료로 활용 — '봉쇄가 실패하면 이것이 된다.'" },
+
+  { id: "ARC-LOC-SILENT", cat: "지역", title: "Silent Belt",
+    unlock: function(logs){ return logs.indexOf("LOG-015")>=0 },
+    content: "광역 포자 오염 지대.\n진화 분류: DELAYED (지연진화).\n\nSeed Spreader(SPEC-004)가 주요 형성 원인.\n\n40km 반경 내 12개 이상의 Spreader 구조체 확인.\n\n소리가 없다 — 동물, 새, 곤충 모두 부재.\n\n확장 속도: 월 1.2km.\n\nPermafrost Unit(러시아)가 경계 관리.\n\n한국지부 직접 관여: 없음. ORACLE 데이터베이스를 통한 열람." }
 ];
 
 // 카테고리 목록 (표시 순서)
