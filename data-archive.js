@@ -6,11 +6,11 @@ var ARCHIVE_ENTRIES = [
   // ═══ 카테고리: 이변체 (SPEC) ═══
   { id: "ARC-SPEC-001", cat: "이변체", title: "SPEC-001 — 감염체 마네킹",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
-    content: "M-TYPE / EV-Σ Phase 1 변이체.\n\n인간형 감염체. 자극이 없으면 완전히 정지 상태를 유지하나, 반경 3m 이내 생체 반응 감지 시 0.3초 이내에 공격 상태로 전환.\n\n열감지 스캐너로 식별 가능. 체온이 일반 인간보다 2~3도 낮음.\n\n주의: 시각적 구분이 어려움. 정지 상태에서는 일반 인체와 구분 불가." },
+    content: "M-TYPE / EV-Σ Phase 1 변이체.\n\n인간형 감염체. 자극이 없으면 완전히 정지 상태를 유지하나, 반경 3m 이내 생체 반응 감지 시 0.3초 이내에 공격 상태로 전환.\n\n피부 표면이 플라스틱과 유사한 광택. 동공 완전 확장 고정. 호흡은 감지 불가 수준.\n\n열감지 스캐너로 생체 반응 확인 필수. 시각적 구분이 어려움 — 정지 상태에서는 일반 인체와 구분 불가." },
 
   { id: "ARC-SPEC-003", cat: "이변체", title: "SPEC-003 — Brood Drone",
     unlock: function(logs){ return logs.indexOf("LOG-014")>=0 },
-    content: "H-TYPE / 군집 하위 개체.\n\n인간 체구의 약 60%. 외골격 구조. 단안. 낫 형태의 전면 다리.\n\n독립적 의지 없음. 군집체(Hive)로부터 분리 시 12시간 이내 비활성화.\n\n집단 반응 속도가 인간을 초과함. 개별 대응보다 군집 단위 무력화가 효과적." },
+    content: "H-TYPE / 군집 하위 개체.\n\n인간 체구의 약 60%. 외골격 구조. 단안(單眼). 앞다리가 날카로운 갈고리 형태로 변형.\n\n독립적 의지 없음. 군집체(Hive)로부터 분리 시 12시간 이내 비활성화.\n\n집단 반응 속도가 인간을 초과함. 개별 대응보다 군집 단위 무력화가 효과적." },
 
   { id: "ARC-SPEC-008", cat: "이변체", title: "SPEC-008 — Spore Phantom",
     unlock: function(logs){ return logs.indexOf("LOG-015")>=0 },
@@ -24,13 +24,13 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-005")>=0 },
     content: "환경 오염형 변이체.\n\n붉은 점액질 웅덩이. 소화 효소를 포함하여 유기물을 용해 흡수.\n\n지하 수로를 통해 확장. 토양/수질 변이 확인.\n\n접촉 시 방호복 외층 부식. 소각으로 제거 가능하나, 생체 표본은 연구 가치가 높음." },
 
-  { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (시그마 변이 바이러스)",
+  { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (진화 가속 매개체)",
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
-    content: "글로벌 병원체. 감염자를 이변체로 변이시키는 바이러스.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 통제 가능.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
+    content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n인간에게는 '감염', TS-Ω에게는 '확장', ORACLE에게는 '상태변화'.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 통제 가능.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
 
   { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
-    content: "M-TYPE / EV-Σ Phase 2 변이체.\n\n전신이 회색~갈색 각질층으로 경질화. 체중이 원래의 3~4배로 증가.\n\n통상 화기 무효. 벽과 차량을 관통하는 사례 보고.\n\n이동 속도 저하. 단, 정지 기록 없음 — 느리지만 절대 멈추지 않는다.\n\n대응: 물리 공격 무효. 도주 우선. 고온 소각 또는 산성 용제로만 제거 가능.\n\n주의: Phase 1(마네킹)에서 Phase 2로의 전환은 6~12시간 이내에 완료됨." },
+    content: "M-TYPE / EV-Σ Phase 2 변이체.\n\n전신이 회색~갈색 각질층으로 경질화. 체중이 원래의 3~4배로 증가.\n\n통상 화기 무효. 벽과 차량을 관통하는 사례 보고.\n\n이동 속도 저하. 단, 정지 기록 없음 — 느리지만 절대 멈추지 않는다.\n\n대응: 물리 공격 무효. 도주 우선. 고온 소각 또는 산성 용제로만 제거 가능.\n\n참고: Phase 0에서 Phase 1 완료까지 약 6~12시간 소요." },
 
   { id: "ARC-SPEC-004", cat: "이변체", title: "SPEC-004 — Seed Spreader",
     unlock: function(logs){ return logs.indexOf("LOG-015")>=0 },
