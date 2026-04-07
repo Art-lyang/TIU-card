@@ -55,12 +55,14 @@ function CardC(p){
           return h('div',{key:pi,style:{marginBottom:pi<paras.length-1?10:0}},
             lines.map(function(line,li){
               var s=line.trim();if(!s)return null;
-              // [ORACLE: ...] 스타일
+              // [ORACLE ...] 대괄호 스타일
               if(s.match(/^\[ORACLE[\s:：]/))return h('div',{key:li,style:{color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:12,padding:'6px 10px',margin:'4px 0',background:'rgba(240,160,48,.06)',borderLeft:'2px solid rgba(240,160,48,.3)',borderRadius:2}},s);
-              // 캐릭터: "대사" 스타일 (서하은, 강도윤, 윤세진, 임재혁, etc.)
-              if(s.match(/^(서하은|강도윤|윤세진|임재혁|박소영|마르쿠스 베버|닉 포스터|포스터)\s*[：:]/))return h('div',{key:li,style:{color:'#7ec8e3',padding:'3px 0',margin:'2px 0'}},s);
-              // "인용문" 스타일
-              if(s.match(/^["\"「]/)&&s.match(/["\"\」]$/))return h('div',{key:li,style:{color:'#a0d8a0',fontStyle:'italic',padding:'2px 0'}},s);
+              // ORACLE 분석/권고/통신 등 (대괄호 없는 ORACLE 라인)
+              if(s.match(/^ORACLE[\s]/))return h('div',{key:li,style:{color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:12,padding:'4px 0',margin:'2px 0'}},s);
+              // 캐릭터 대사 — 이름(+직책/수식어) + 콜론
+              if(s.match(/^(서하은|강도윤|윤세진|임재혁|박소영|마르쿠스 베버|닉 포스터|포스터)([\s\u00A0][\uAC00-\uD7A3A-Za-z\s]*)?[：:]/))return h('div',{key:li,style:{color:'#7ec8e3',padding:'3px 0',margin:'2px 0'}},s);
+              // "인용문" — 쌍따옴표로 시작하는 독립 대사
+              if(s.match(/^["\u201C\u300C]/)&&s.match(/["\u201D\u300D]$/))return h('div',{key:li,style:{color:'#a0d8a0',fontStyle:'italic',padding:'2px 0'}},s);
               // 일반 텍스트
               return h('div',{key:li,style:{padding:'1px 0'}},s);
             }));
