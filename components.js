@@ -238,6 +238,7 @@ var EveningAmbient = {
     if (typeof BGM !== 'undefined' && BGM.muted) return;
     try {
       this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      if (this.ctx.state === 'suspended') { this.ctx.resume(); }
       this.active = true;
       var ctx = this.ctx;
       var master = ctx.createGain();
