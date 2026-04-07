@@ -495,7 +495,7 @@ ORACLE 분석: SPEC-012 (Blood Pit). 변이 실패체의 용해 잔해.
 -> ORACLE 분석팀에 전달
 
 [C-066]
-본문: 한국 정규군 합동작전사령부가 공유한 교전 보고.
+본문: White Shield가 공유한 교전 보고.
 
 "Shell Talker의 목소리를 따라간 2명이 계단 하부 Blood Pit에 고착.
 움직이지 못하는 상태에서 Brood Drone 8체 접근. 지원 사격 불가."

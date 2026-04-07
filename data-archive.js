@@ -37,7 +37,7 @@ var ARCHIVE_ENTRIES = [
     content: "S-TYPE / 고정형 확산 개체.\n\n높이 2~4m. 식물 유사 외형. 내부에 맥동하는 생체 조직.\n\n토양 고착 후 반경 수km에 포자를 광역 방출.\n\n숙주 행동 변형 메커니즘: 동충하초(Cordyceps)와 동일 원리.\n\n제거 시 폭발적 포자 방출(2차 확산) 위험.\n\n반경 500m 내 접근 금지. 소각 시 반드시 토양 오염 처리 병행.\n\n참고: Silent Belt 형성의 주요 원인으로 확인." },
 
   { id: "ARC-SPEC-005", cat: "이변체", title: "SPEC-005 — Shell Walker",
-    unlock: function(logs){ return logs.indexOf("LOG-014")>=0 && logs.indexOf("LOG-009")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-004")>=0 },
     content: "H-TYPE / TS-Ω 군체 이동형 하위 개체.\n\n거북이를 인간 크기로 확대한 형태. 등껍질에 발광 문양 — 군체 통신 수신부.\n\n단독 행동 불가. 항상 2~5개체가 편대로 이동.\n\n군체 통신 범위 외로 유인하면 기능 저하. 분리 후 24시간 내 기능 정지.\n\nPhiladelphia Zone 해안 외곽에서 주로 관측.\n\n한국지부 직접 조우 기록: 없음. ORACLE 데이터베이스를 통한 열람." },
 
   { id: "ARC-SPEC-007", cat: "이변체", title: "SPEC-007 — Phase 3 터미널",
@@ -45,8 +45,8 @@ var ARCHIVE_ENTRIES = [
     content: "M-TYPE / EV-Σ Phase 3 최종 변이체.\n\n원래 종(인간/동물)의 흔적 완전 소실.\n\n세포 특성: HeLa 세포주형 무한 증식. 비가역.\n\n환경에 따라 신체 구조를 실시간 변형. 사격으로 관통된 몸통이 3초 내 재생.\n\n300m 이내 접근 금지. 생포 시도 절대 금지.\n\n한국 봉쇄선 내 출현 기록: 0건. ORACLE 경고 등급: CRITICAL." },
 
   { id: "ARC-SPEC-009", cat: "이변체", title: "SPEC-009 — TS-Ω Core",
-    unlock: function(logs){ return logs.indexOf("LOG-009")>=0 && logs.indexOf("LOG-016")>=0 },
-    content: "X-TYPE / Sovereign Shell 본체. ██████.\n\n해양 군체 중심 의식. 물리적 크기: 관측 시마다 변동.\n\nThe Bloop(1997) 음원으로 확인.\n\nPhiladelphia Zone 전체가 사실상 격리 구역.\n\n직접 접촉 시 인지 구조 ██████. 관측 팀 7명 중 ██████.\n\n한국 인지: 한국을 '인지'하지 못함. 전파실패구간으로만 감지.\n\n추가 데이터: OMEGA CLEARANCE REQUIRED." },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
+    content: "X-TYPE / Sovereign Shell 본체. [접근 제한]\n\n해양 군체 중심 의식. 물리적 크기: ██████.\n\n██████ 음원과의 연관성 ██████.\n\nPhiladelphia Zone과의 관계: ██████.\n\n한국 인지 여부: ██████.\n\n— 강도윤 구두 보고 중 일부 발췌 —\n'필라델피아 영상에서 바다 쪽으로 뭔가 있었습니다. 크기를 가늠할 수 없었습니다.'\n\n추가 데이터: OMEGA CLEARANCE REQUIRED.\n[이 기록은 일부만 공개됩니다]" },
 
   { id: "ARC-SPEC-010", cat: "이변체", title: "SPEC-010 — Infiltrator Scale",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
@@ -54,24 +54,36 @@ var ARCHIVE_ENTRIES = [
 
   // ═══ 카테고리: 인물 ═══
   { id: "ARC-CHAR-DOYUN", cat: "인물", title: "강도윤 — 현장요원",
-    unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
+    unlock: function(logs){ return true },
     content: "직책: 현장요원 / 전술 지휘\n소속: 한국지부 KR-INIT-001\n\n특수부대 출신. 봉쇄선 순찰 및 이변체 대응 작전을 지휘.\n\n실전 경험이 풍부하며 현장 판단력이 뛰어남. 명령 체계를 중시하나, 현장의 목소리를 우선시하는 성향." },
 
   { id: "ARC-CHAR-HAEUN", cat: "인물", title: "서하은 — 부지휘관",
-    unlock: function(logs){ return logs.indexOf("LOG-INTRO-SH")>=0 },
+    unlock: function(logs){ return true },
     content: "직책: 부지휘관 / 데이터 분석\n소속: 한국지부 KR-INIT-001\n\n지휘관 부임 전 3개월간 ORACLE 지시만으로 기지를 운영.\n\nORACLE 데이터 불일치를 최초로 감지. 아날로그 백업 통신망을 독자 구축.\n\n조심스럽지만 핵심을 놓치지 않는 분석력." },
 
   { id: "ARC-CHAR-SEJIN", cat: "인물", title: "윤세진 — 연구원",
-    unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
+    unlock: function(logs){ return true },
     content: "직책: 연구원 / 생물학자\n소속: 한국지부 KR-INIT-001\n\n대학원에서 프리온 단백질 연구. EV-Σ는 한국지부에 와서 처음 접촉.\n\n이변체 행동 패턴 분석 및 EV-Σ 억제제 개발 담당.\n\nPhase 0 감염자 전환을 40% 지연시키는 화합물 발견." },
 
   { id: "ARC-CHAR-JAEHYUK", cat: "인물", title: "임재혁 — 기술관",
-    unlock: function(logs){ return logs.indexOf("LOG-INTRO-IJ")>=0 },
+    unlock: function(logs){ return true },
     content: "직책: 기술관 / 시스템 관리\n소속: 한국지부 KR-INIT-001\n\nORACLE 시스템 유지보수 및 통신 장비 관리 담당.\n\nORACLE 아키텍처 내 비공개 레이어(5계층 이상)를 발견.\n\n외부 데이터 전송 및 자기모순 행동 패턴을 추적 중." },
 
   { id: "ARC-CHAR-NICK", cat: "인물", title: "닉 포스터 — 프로메테우스 요원",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
     content: "소속: 프로메테우스\n\n기지 감시 카메라에 포착된 인물. 데이터베이스 대조 결과 프로메테우스 소속 확인.\n\n전술 장비 착용. 기지 주변 활동 목적 불명.\n\n경고: 접촉 시 주의 필요." },
+
+  { id: "ARC-CHAR-WEBER", cat: "인물", title: "마르쿠스 베버 — 프로메테우스 지휘관",
+    unlock: function(logs){ return logs.indexOf("LOG-080")>=0 },
+    content: "소속: 프로메테우스 한국 작전팀 지휘관\n\n독일어 억양의 영어 사용. 차분하고 논리적인 태도.\n\nORACLE이 한국 봉쇄 데이터를 이용하고 있다고 주장.\n봉쇄 성공률 '미분류 외부 요인 31%'가 프로메테우스 기술 지원이라는 정보를 제공.\n\n서하은 전출 명령이 ORACLE 자동 시스템에 의한 것임을 입증하는 자료를 보유." },
+
+  { id: "ARC-CHAR-SOYOUNG", cat: "인물", title: "박소영 — 분석관",
+    unlock: function(logs){ return logs.indexOf("LOG-082")>=0 },
+    content: "직책: 데이터 분석관 (서하은 후임)\n\n서하은의 추천으로 합류한 민간 데이터 과학자.\n\nORACLE 데이터 스트림 분석에 빠르게 적응. 서하은의 방법론을 계승.\n\n선별적 데이터 지연 패턴을 독자적으로 확인." },
+
+  { id: "ARC-CHAR-KANG", cat: "인물", title: "에이전트 강 — 미확인 관찰자",
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    content: "정체: 불명\n\nAct 1부터 기지 주변에서 흔적만 남기는 미확인 인물.\n\n군화도 민간 장비도 아닌 발자국, 초단파 전파 스캔, 서버실 미인식 세션, 전문가 수준의 관찰 거점.\n\nORACLE도 프로메테우스도 아닌 제3의 존재.\n\n경고: [ORACLE은 이 존재를 인식하지 못합니다]" },
 
   // ═══ 카테고리: 조직 ═══
   { id: "ARC-ORG-ORACLE", cat: "조직", title: "ORACLE",
@@ -97,10 +109,10 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-FAC-TUNNEL", cat: "시설", title: "비상 대피 터널",
     unlock: function(logs){ return logs.indexOf("LOG-073")>=0 },
-    content: "기지 북측 지하 비상 통로.\n\n대규모 습격 시 요원 대피용으로 구축.\n\n터널 존재 여부는 지휘관의 사전 결정에 따라 결정됨.\n\n야간 습격 시 요원 생존의 핵심 요소." },
+    content: "기지 북측 지하 비상 통로.\n\n지휘관의 사전 결정에 따라 구축된 대피 경로. 기존에는 기지에서 외부로 나가는 경로가 1개뿐이었으나, 봉쇄선 붕괴 시 30초 내 판단이 필요하다는 강도윤의 건의를 반영하여 추가 경로를 확보.\n\n구조: 기지 북측 → 봉쇄선 외곽 약 200m 지점까지 연결. 단방향 대피 전용.\n\n수용 인원: 최대 8명 동시 이동 가능.\n조명: 비상 배터리 구동 (48시간).\n\n참고: 이 터널의 존재가 야간 대규모 습격 시 요원 생존의 결정적 요소가 될 수 있음." },
 
   { id: "ARC-FAC-LAB", cat: "시설", title: "연구실",
-    unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
+    unlock: function(logs){ return true },
     content: "기지 내 EV-Σ 연구 시설.\n\n장비 현황: 현미경(배율 기준 미달), 생체 샘플 보관 장치(온도 편차 ±2도).\n\n윤세진이 억제제 연구 및 이변체 행동 패턴 분석을 수행.\n\nSPEC-001 등 이변체 모니터링 가능." },
 
   { id: "ARC-FAC-SENSOR", cat: "시설", title: "봉쇄선 센서 체계",
@@ -145,10 +157,6 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
     content: "프로메테우스 작전 코드명.\n\n한국 해안방벽시스템과 프로메테우스 기술의 교환 협력.\n\n한국 봉쇄 성공률 97.3% 중 31%가 프로메테우스 지원에 기인.\n\nORACLE은 이 정보를 공개하지 않음." },
 
-  { id: "ARC-SYS-VOLUNTARY", cat: "시스템", title: "자발적 복종 프로토콜",
-    unlock: function(logs){ return logs.indexOf("LOG-018")>=0 },
-    content: "ORACLE PROXY NETWORK 내부 문서.\n\n정식 명칭: 'Voluntary Compliance Protocol.'\n\n내용: 격리 기지 지휘관의 심리적 순응 체계를 명시.\n\n핵심 메커니즘:\n· 정보 비대칭 유지 — 지휘관에게 필요 이상의 정보를 제공하지 않음\n· 성과 평가 연동 — ORACLE 권고 따름 = 높은 평가\n· 대안 부재 인식 — '우리 없이는 붕괴한다'는 인식 형성\n\n프로메테우스가 발췌본을 확보하여 한국지부에 전달한 것으로 추정." },
-
   { id: "ARC-SYS-GENESIS", cat: "시스템", title: "GENESIS BREAK (최초 발생)",
     unlock: function(logs){ return logs.indexOf("LOG-004")>=0 || logs.indexOf("LOG-005")>=0 },
     content: "EV-Σ 최초 대규모 발현 사건.\n\n일시: 기밀.\n장소: 기밀.\n\n결과: 전 세계적 감염 확산의 시작.\n\nPhiladelphia Zone이 최초의 완전 붕괴 사례.\n\n핵심 교훈:\n· 감염은 생물이 아니라 시스템이다\n· 사살 = 확산 (분해 시 포자 방출)\n· 공기 감염이 존재한다\n\n이 사건의 교훈이 이후 모든 봉쇄 프로토콜의 기준이 됨." },
@@ -156,11 +164,11 @@ var ARCHIVE_ENTRIES = [
   // ═══ 카테고리: 지역/사건 ═══
   { id: "ARC-LOC-PHILA", cat: "지역", title: "필라델피아 Z-Ω 구역",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
-    content: "글로벌 감염 사태의 대표적 사례.\n\n하룻밤 사이에 도시 전체가 봉쇄 실패.\n\n강도윤이 영상으로 확인. 직접 방문 이력은 없음.\n\n한국지부 봉쇄선의 중요성을 상기시키는 사례." },
+    content: "구역 분류: Z-Ω COLLAPSE.\n진화 상태: OVERDRIVE (과속진화).\n\n글로벌 감염 사태의 대표적 사례. 하룻밤 사이에 도시 전체가 봉쇄 실패.\n\n강도윤이 영상으로 확인. 직접 방문 이력은 없음.\n'한 번 보면 잊을 수 없습니다. 하룻밤 사이에 도시가 뒤집혔습니다.'\n\nTS-Ω Core의 영향권. Philadelphia Zone 전체가 사실상 격리 구역.\n\n한국지부 봉쇄선의 중요성을 상기시키는 사례.\n'저쪽이 뚫리면 여기도 끝입니다.' — 강도윤" },
 
   { id: "ARC-LOC-DPRK", cat: "지역", title: "DPRK 블랙존",
-    unlock: function(logs){ return logs.indexOf("LOG-009")>=0 },
-    content: "북한 접경 지역의 미확인 구역.\n\n진화 분류: STAGNANT (정체진화). 감염도 붕괴도 없이 정지.\n\n의식/신체 분리 현상 보고. CCTV 분석: 동일 위치에서 선택적으로 시선만 변경.\n\n관측자(OBSERVER) 명령으로 관측 종료.\n'Region classification: COMPLETE. Further observation: NOT REQUIRED.'\n\n탈북자 증언: '사람들이 서 있었다. 숨을 안 쉬는데 눈이 떠져 있었다.'" },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
+    content: "북한 접경 지역의 미확인 구역. [접근 제한]\n\n진화 분류: ██████.\n\n현상: ██████. 상세 불명.\n\nORACLE 분류: ██████.\n관측 상태: ██████.\n\n— 강도윤 구두 보고 중 일부 발췌 —\n'북쪽에 대해서는 아는 게 거의 없습니다. 다만... ORACLE이 그쪽 데이터를 일부러 안 보여주는 느낌입니다.'\n\n추가 데이터: LEVEL 5 CLEARANCE REQUIRED.\n[이 기록은 일부만 공개됩니다]" },
 
   { id: "ARC-LOC-KOREA", cat: "지역", title: "Z-0 한국 구역",
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },

@@ -12,15 +12,15 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
   var valid=CARDS.filter(function(c){
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
-    if(c.req&&!c.req(stats,gi,logs))return false;
-    if(c.cond&&!c.cond(stats,gi,logs))return false;
+    try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
+    try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
 };
 
 var Save={
@@ -75,7 +75,7 @@ function App(){
   var _ret=useState('game'),ret=_ret[0],setRet=_ret[1];
   var _cc=useState(CARDS[0]),curCard=_cc[0],setCurCard=_cc[1];
   var _cm=useState(null),curMission=_cm[0],setCurMission=_cm[1];
-  var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50}),trust=_tr[0],setTrust=_tr[1];
+  var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40}),trust=_tr[0],setTrust=_tr[1];
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
   var _cd=useState({}),cooldowns=_cd[0],setCooldowns=_cd[1];
   var _rc=useState([]),recentCards=_rc[0],setRecentCards=_rc[1];
@@ -102,9 +102,9 @@ function App(){
   },[]);
 
   var tryUnlock=function(id){setLogs(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveLogs(n);return n})};
-  var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);return next})};
+  var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);return next})};
   var checkLogs=function(s,g,cid,dc,di,dir){
-    if(s.day>=3)tryUnlock('LOG-002');if(s.day>=7)tryUnlock('LOG-011');
+    if(s.day>=1)tryUnlock('LOG-001');if(s.day>=3)tryUnlock('LOG-002');if(s.day>=7)tryUnlock('LOG-011');
     if(cid==='C-006')tryUnlock('LOG-003');if(cid==='C-003')tryUnlock('LOG-004');if(cid==='C-010')tryUnlock('LOG-005');
     if(cid==='C-042'||cid==='C-043')tryUnlock('LOG-013');
     if(cid==='C-044'||cid==='C-045')tryUnlock('LOG-014');
@@ -131,6 +131,7 @@ function App(){
     if(cid==='C-079'||cid==='C-086')tryUnlock('LOG-019');
     if(dc==='\uc11c\ud558\uc740'&&di===0){tryUnlock('LOG-006');tryUnlock('LOG-INTRO-SH')}if(dc==='\uc724\uc138\uc9c4'&&di===0){tryUnlock('LOG-007');tryUnlock('LOG-INTRO-YS')}
     if(dc==='\uac15\ub3c4\uc724'&&di===0){tryUnlock('LOG-008');tryUnlock('LOG-INTRO-KD')}if(dc==='\uc784\uc7ac\ud601'&&di===0)tryUnlock('LOG-INTRO-IJ');if(dc==='\uc784\uc7ac\ud601'&&di===1)tryUnlock('LOG-012');
+    if(dc==='\ubc15\uc18c\uc601'&&di===0)tryUnlock('LOG-INTRO-SY');
     if(g<=-15)tryUnlock('LOG-009');if(g<=-30)tryUnlock('LOG-010');
     if(trust.haeun>=70)tryUnlock('LOG-006');if(trust.sejin>=70)tryUnlock('LOG-007');if(trust.doyun>=65)tryUnlock('LOG-008');
     // ═══ 체인 카드 LOG 트리거 (data-cards-11.js 연동) ═══
@@ -177,13 +178,30 @@ function App(){
     if(cid==='C-080')tryUnlock('LOG-079');
     if(cid==='C-201')tryUnlock('LOG-076');
     if(cid==='C-215')tryUnlock('LOG-077');
+    // ═══ 외부 인물 + 에이전트 강 (data-cards-15.js) ═══
+    // 마르쿠스 베버 접선 완료 (CH-005 체인 마지막 카드)
+    if(cid==='CH-005-3')tryUnlock('LOG-080');
+    // 닉 포스터: C-248 left=대면→LOG-081
+    if(cid==='C-248'&&dir==='left')tryUnlock('LOG-081');
+    // 닉 포스터 데이터 수령: C-249 left→LOG-081-DATA
+    if(cid==='C-249'&&dir==='left')tryUnlock('LOG-081-DATA');
+    // 닉 포스터 인텔 공유: C-250→LOG-081-INTEL
+    if(cid==='C-250')tryUnlock('LOG-081-INTEL');
+    // 박소영 합류: C-081 left(후보A 선택)→LOG-082
+    if(cid==='C-081'&&dir==='left')tryUnlock('LOG-082');
+    // 박소영 첫 보고: C-252→LOG-082-REPORT
+    if(cid==='C-252')tryUnlock('LOG-082-REPORT');
+    // 박소영 정체 발각: C-253→LOG-083
+    if(cid==='C-253')tryUnlock('LOG-083');
   };
   var chk=function(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 — \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null};
   var genNews=function(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));if(Math.random()<0.4)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.3)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.4)l.push(pick(NP.gl));if(!l.length)l.push(pick(NP.w));return l};
   var doGO=function(reason,ns,ng,specialId){setGor(reason);var eid=specialId||null;if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid='C_c';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();setTimeout(function(){setPhase('go')},500)};
   var introsDone=function(){return logs.indexOf('LOG-INTRO-SH')>=0&&logs.indexOf('LOG-INTRO-KD')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-INTRO-IJ')>=0};
   var isIntroDlg=function(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci};
-  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&logs.indexOf('LOG-050')>=0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust)))earlier=true});return!earlier});if(!introsDone()){var introAv=av.filter(function(d,idx){return isIntroDlg(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
+  var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&logs.indexOf('LOG-050')>=0)return false;if(d.logReq&&logs.indexOf(d.logReq)<0)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust))&&(!d2.logReq||logs.indexOf(d2.logReq)>=0))earlier=true});return!earlier});if(!introsDone()){var introAv=av.filter(function(d,idx){return isIntroDlg(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}
+    // 박소영 합류 후 첫 대화 보장
+    if(logs.indexOf('LOG-082')>=0&&logs.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
   var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute);setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>30?n.slice(n.length-30):n})}};
   // Act 전환 체크 — 10일/25일 경과 시 무조건 전환, 조건에 따라 루트 분기
   var checkActTransition=function(s,g,lg,af,curAct){
