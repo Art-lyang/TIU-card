@@ -40,68 +40,66 @@ var BGM = {
   bootAudio: null,
   bootShadow: null,
 
-  // 부팅 시퀀스 사운드 루프 재생 (크로스페이드 루프)
+  // 부팅 시퀀스 사운드 루프 재생 — 듀얼 트랙 크로스페이드
   startBootLoop: function() {
     this.init();
     if (this.muted) return;
     try {
       if (this.bootAudio) { this.bootAudio.pause(); this.bootAudio = null; }
       if (this.bootShadow) { this.bootShadow.pause(); this.bootShadow = null; }
-      var boot = new Audio(BGM_BOOT);
-      boot.loop = false;
-      boot.volume = 0.2;
-      var self = this;
-      // 끝나기 2초 전에 새 인스턴스를 겹쳐 재생
-      boot.addEventListener('timeupdate', function() {
-        if (!boot.duration) return;
-        var remaining = boot.duration - boot.currentTime;
-        if (remaining <= 2 && !self.bootShadow && !self.muted) {
-          var shadow = new Audio(BGM_BOOT);
-          shadow.loop = false;
-          shadow.volume = 0;
-          shadow.play().catch(function(){});
-          self.bootShadow = shadow;
-          self._fadeIn(shadow, 1800, 0.2);
-          self._fadeOut(boot, 1800);
-          // 섀도가 메인이 되고 다시 루프
-          setTimeout(function() {
-            self.bootAudio = shadow;
-            self.bootShadow = null;
-            self._setupBootCrossfade();
-          }, 2000);
-        }
-      });
-      boot.play().catch(function(e) {
-        console.warn('Boot SFX blocked:', e);
-      });
-      this.bootAudio = boot;
+      // 트랙 A: 즉시 재생
+      var a = new Audio(BGM_BOOT);
+      a.loop = false;
+      a.volume = 0.2;
+      a.play().catch(function(e) { console.warn('Boot SFX blocked:', e); });
+      this.bootAudio = a;
+      // 트랙 끝나기 전에 B를 겹쳐서 재생하는 체인
+      this._bootChain(a);
     } catch(e) {}
   },
 
-  _setupBootCrossfade: function() {
+  _bootChain: function(current) {
     var self = this;
-    if (!this.bootAudio) return;
-    var audio = this.bootAudio;
-    var handler = function() {
-      if (!audio.duration) return;
-      var remaining = audio.duration - audio.currentTime;
-      if (remaining <= 2 && !self.bootShadow && !self.muted) {
-        var shadow = new Audio(BGM_BOOT);
-        shadow.loop = false;
-        shadow.volume = 0;
-        shadow.play().catch(function(){});
-        self.bootShadow = shadow;
-        self._fadeIn(shadow, 1800, 0.2);
-        self._fadeOut(audio, 1800);
+    var fired = false;
+    var onTime = function() {
+      if (fired || !current.duration) return;
+      var rem = current.duration - current.currentTime;
+      if (rem <= 1.5) {
+        fired = true;
+        current.removeEventListener('timeupdate', onTime);
+        if (!self.bootAudio && !self.bootShadow) return; // stopped
+        // 새 트랙 B 시작
+        var next = new Audio(BGM_BOOT);
+        next.loop = false;
+        next.volume = 0;
+        next.play().catch(function(){});
+        self.bootShadow = next;
+        // A 페이드아웃, B 페이드인
+        self._fadeOut(current, 1400);
+        self._fadeIn(next, 1400, 0.2);
         setTimeout(function() {
-          self.bootAudio = shadow;
+          self.bootAudio = next;
           self.bootShadow = null;
-          self._setupBootCrossfade();
-        }, 2000);
-        audio.removeEventListener('timeupdate', handler);
+          self._bootChain(next);
+        }, 1500);
       }
     };
-    audio.addEventListener('timeupdate', handler);
+    // ended 이벤트도 걸어서 혹시 timeupdate를 놓쳐도 다시 시작
+    var onEnd = function() {
+      if (fired) return;
+      fired = true;
+      current.removeEventListener('timeupdate', onTime);
+      current.removeEventListener('ended', onEnd);
+      if (!self.bootAudio && !self.bootShadow) return;
+      var next = new Audio(BGM_BOOT);
+      next.loop = false;
+      next.volume = 0.2;
+      next.play().catch(function(){});
+      self.bootAudio = next;
+      self._bootChain(next);
+    };
+    current.addEventListener('timeupdate', onTime);
+    current.addEventListener('ended', onEnd);
   },
 
   // 부팅 사운드 페이드아웃 정지
