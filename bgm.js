@@ -32,7 +32,33 @@ var BGM = {
     }
   },
 
-  // 부팅 시퀀스 사운드 재생 (1회, 루프 아님)
+  bootAudio: null,
+
+  // 부팅 시퀀스 사운드 루프 재생 (부트 화면 진입 시)
+  startBootLoop: function() {
+    this.init();
+    if (this.muted) return;
+    try {
+      if (this.bootAudio) { this.bootAudio.pause(); this.bootAudio = null; }
+      var boot = new Audio(BGM_BOOT);
+      boot.loop = true;
+      boot.volume = 0.2;
+      boot.play().catch(function(e) {
+        console.warn('Boot SFX blocked:', e);
+      });
+      this.bootAudio = boot;
+    } catch(e) {}
+  },
+
+  // 부팅 사운드 페이드아웃 정지
+  stopBootLoop: function() {
+    if (this.bootAudio) {
+      this._fadeOut(this.bootAudio, 800);
+      this.bootAudio = null;
+    }
+  },
+
+  // 부팅 시퀀스 사운드 1회 재생 (하위 호환)
   playBoot: function() {
     this.init();
     if (this.muted) return;
