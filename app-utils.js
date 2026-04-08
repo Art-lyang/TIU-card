@@ -37,7 +37,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,completed
     if(c.transReq&&c.transReq!==tr)return false;
     try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
     try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
-    if(c.tag&&cd[c.tag]){var _cd_map={'spec-011':5,'spec-012':5,'spec-001':5,'spec-003':5,'spec-008':5,'weather':2,'aftermath':5};var _cd_days=_cd_map[c.tag]||3;if((day-cd[c.tag])<_cd_days)return false;}
+    if(c.tag&&cd[c.tag]){var _cd_map={'spec-011':5,'spec-012':5,'spec-001':5,'spec-003':5,'spec-008':5,'weather':2,'aftermath':5};var _cd_days=_cd_map[c.tag]||3;if(c.feReq)_cd_days=999;if((day-cd[c.tag])<_cd_days)return false;}
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     return true;

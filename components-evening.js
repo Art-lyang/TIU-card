@@ -122,7 +122,8 @@ function EveningChat(p){
   var chatLines=chat?(typeof getEveningLines==='function'?getEveningLines(chat,p.trust,p.logs):chat.lines):[];
   // 타이핑 이펙트: ci = 현재 줄의 표시 글자 수
   var s4=useState(0),ci=s4[0],setCi=s4[1];
-  useEffect(function(){if(selChar){setLi(0);setCi(0);setDone(false)}},[selChar]);
+  var s5=useState(null),pickedResp=s5[0],setPickedResp=s5[1];
+  useEffect(function(){if(selChar){setLi(0);setCi(0);setDone(false);setPickedResp(null)}},[selChar]);
   useEffect(function(){if(!chat||!selChar||chatLines.length===0)return;
     var curLine=chatLines[li];if(!curLine)return;
     if(ci<curLine.length){var spd=curLine[ci]==='.'||curLine[ci]==='…'?80:35;var t=setTimeout(function(){setCi(function(v){return v+1})},spd);return function(){clearTimeout(t)}}
@@ -165,6 +166,17 @@ function EveningChat(p){
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'#33ff33',animation:'blink 1s infinite',marginLeft:1}},'█'))
       ):h('div',{style:{fontSize:13,color:'rgba(157,255,116,.4)'}},'...')),
-    done&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'),
+    done&&(function(){
+      var resp=typeof getEveningResponse==='function'?getEveningResponse(chat,p.trust):null;
+      if(!resp)return h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]');
+      if(pickedResp)return h('div',{style:{textAlign:'center',margin:'8px auto',maxWidth:380}},
+        h('div',{style:{fontSize:12,color:'rgba(157,255,116,.5)',fontFamily:"'Share Tech Mono',monospace",margin:'4px 0 6px',letterSpacing:1}},pickedResp.reply),
+        h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
+      return h('div',{style:{display:'flex',flexDirection:'column',gap:6,margin:'8px auto',maxWidth:380}},
+        h('button',{className:'btn',style:{padding:'8px 16px',fontSize:11,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)'},
+          onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);setPickedResp(resp.a)}},'\u25B8 '+resp.a.label),
+        h('button',{className:'btn',style:{padding:'8px 16px',fontSize:11,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)'},
+          onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);setPickedResp(resp.b)}},'\u25B8 '+resp.b.label));
+    })(),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL \u2014 BRANCH KR-INIT-001')));
 }
