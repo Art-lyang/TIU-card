@@ -154,19 +154,19 @@ function EveningChat(p){
       )})),
     h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:p.onDone},'[ \uac74\ub108\ub6f0\uae30 ]'));
   var portrait=CHAR_IMG[selChar.name]||null;
-  var preventH=function(e){if(!e.touches||!e.touches[0])return;var t=e.touches[0];if(!preventH._sx){preventH._sx=t.clientX;preventH._sy=t.clientY;return}var dx=Math.abs(t.clientX-preventH._sx),dy=Math.abs(t.clientY-preventH._sy);if(dx>dy&&dx>8)e.preventDefault()};
+  var preventH=function(e){e.preventDefault()};
   var resetH=function(){preventH._sx=null;preventH._sy=null};
   var choiceBtn=function(label,onClick){return h('div',{onClick:onClick,style:{padding:'10px 14px',cursor:'pointer',borderLeft:'3px solid rgba(145,255,106,.35)',background:'rgba(145,255,106,.03)',marginBottom:0,transition:'background 0.15s'}},
     h('div',{style:{display:'flex',alignItems:'center',gap:8}},
       h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'rgba(145,255,106,.45)',letterSpacing:1,flexShrink:0}},'\u25B8'),
       h('span',{style:{fontSize:12,color:'#9dff74',lineHeight:1.5}},label)))};
-  return h('div',{className:'screen',onTouchStart:resetH,onTouchMove:preventH,onTouchEnd:resetH,style:{touchAction:'pan-y',overflowX:'hidden'}},
+  return h('div',{className:'screen',onTouchStart:resetH,onTouchMove:preventH,onTouchEnd:resetH,style:{touchAction:'none',overflow:'hidden'}},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{textAlign:'center',margin:'8px 0',flexShrink:0}},
       portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80,borderRadius:'50%',objectFit:'cover'}}),
       h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold',marginTop:4}},selChar.name),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#1a8a1a',marginTop:2}},selChar.role)),
-    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px 14px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',overflowX:'hidden',marginBottom:0,WebkitUserSelect:'none',userSelect:'none'}},
+    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px 14px',cursor:'default',display:'flex',flexDirection:'column',overflow:'hidden',marginBottom:0,WebkitUserSelect:'none',userSelect:'none'}},
       h('div',{className:'oracle-card__glow'}),
       chatLines.length>0?h(React.Fragment,null,
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:8}},l)}),
