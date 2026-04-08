@@ -160,7 +160,6 @@ var BGM = {
     var toTrack = this.tracks[toName];
     if (!toTrack) return;
     if (this._transitioning) {
-      // 진행 중이면 기존 fade 취소 후 즉시 전환
       var self = this;
       Object.keys(this.tracks).forEach(function(k) {
         self._clearTimer(self.tracks[k]);
@@ -168,90 +167,15 @@ var BGM = {
     }
     this._transitioning = true;
     var self = this;
-
-    // 현재 트랙 페이드아웃 → pause
     if (this.current && this.tracks[this.current]) {
       this._fadeOut(this.tracks[this.current], 2500, true);
     }
-
-    // 새 트랙 페이드인
     toTrack.volume = 0;
     try { toTrack.play().catch(function(){}); } catch(e) {}
     this._fadeIn(toTrack, 3000, undefined, function() {
       self._transitioning = false;
     });
     this.current = toName;
-  },
-
-  // ═══ _fadeIn: 기존 timer 취소 후 새 timer 시작 ═══
-  _fadeIn: function(audio, dur, targetVol, onDone) {
-    dur = dur || 1500;
-    this._clearTimer(audio);
-    var self = this;
-    var tv = targetVol !== undefined ? targetVol : self.vol;
-    var step = 30;
-    var inc = tv / (dur / step);
-    var iv = setInterval(function() {
-      if (self.muted) { clearInterval(iv); self._removeTimer(audio, iv); return; }
-      var nv = Math.min(tv, audio.volume + inc);
-      try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
-      if (nv >= tv) {
-        clearInterval(iv);
-        self._removeTimer(audio, iv);
-        if (onDone) onDone();
-      }
-    }, step);
-    this._setTimer(audio, iv);
-  },
-
-  // ═══ _fadeOut: 기존 timer 취소 + 완료 시 pause (모바일 슬롯 반환) ═══
-  _fadeOut: function(audio, dur, pauseOnDone) {
-    dur = dur || 1200;
-    this._clearTimer(audio);
-    var startVol = audio.volume;
-    if (startVol <= 0) {
-      if (pauseOnDone) { try { audio.pause(); } catch(e) {} }
-      return;
-    }
-    var step = 30;
-    var dec = startVol / (dur / step);
-    var self = this;
-    var iv = setInterval(function() {
-      var nv = Math.max(0, audio.volume - dec);
-      try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
-      if (nv <= 0) {
-        clearInterval(iv);
-        self._removeTimer(audio, iv);
-        // 볼륨 0이면 확실히 pause — 모바일 오디오 슬롯 반환
-        try { audio.pause(); } catch(e) {}
-      }
-    }, step);
-    this._setTimer(audio, iv);
-  },
-
-  // ═══ Timer 관리 — 트랙별 setInterval ID 추적 ═══
-  _timerKey: function(audio) {
-    // Audio 객체별 고유 키
-    if (!audio._bgmKey) audio._bgmKey = 'bgm_' + (++BGM._keySeq);
-    return audio._bgmKey;
-  },
-  _keySeq: 0,
-
-  _setTimer: function(audio, iv) {
-    var k = this._timerKey(audio);
-    this._timers[k] = iv;
-  },
-
-  _clearTimer: function(audio) {
-    var k = this._timerKey(audio);
-    if (this._timers[k]) {
-      clearInterval(this._timers[k]);
-      delete this._timers[k];
-    }
-  },
-
-  _removeTimer: function(audio, iv) {
-    var k = this._timerKey(audio);
-    if (this._timers[k] === iv) delete this._timers[k];
   }
+  // _fadeIn, _fadeOut, timer 관리 → bgm-fade.js
 };
