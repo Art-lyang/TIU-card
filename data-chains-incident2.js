@@ -16,8 +16,8 @@ var CHAINS_INCIDENT = {
         right: { label: "진동 원점을 추적", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -3 } },
       { id: "CH-I01A-2", priority: "상",
         msg: "분석 결과 —\n\n성에 패턴은 전자기장 간섭에 의한 강제 결정화.\n진동은 격리실 하부, B2층 방향에서 발생.\n\n임재혁: \"이건 격리 대상이 아닙니다. 아래에서 뭔가가 올라오고 있어요.\"\n\n격리실은 증상이었습니다. 원인은 다른 곳에.",
-        left: { label: "B2 해당 구역 긴급 봉인", fx: { c: 2, r: -1, t: 0, o: 0 }, g: 0 },
-        right: { label: "B2로 내려가 확인", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-01-DEEP" } }
+        left: { label: "B2 해당 구역 긴급 봉인", fx: { c: 2, r: -1, t: 0, o: 0 }, g: 0, mission: "MI-01" },
+        right: { label: "B2로 내려가 확인", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-01-DEEP", mission: "MI-01" } }
     ]
   },
   "CH-INC-01B": {
@@ -29,8 +29,8 @@ var CHAINS_INCIDENT = {
         right: { label: "ORACLE 시스템 스케줄 대조", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -3 } },
       { id: "CH-I01B-2", priority: "상",
         msg: "02:47.\n\nORACLE의 일괄 처리 작업 시간과 정확히 일치합니다.\n\nORACLE이 매일 같은 시각에 격리 구역 하부로\n데이터 펄스를 전송하고 있었습니다.\n\n[ORACLE: 정기 진단 루틴입니다. 이상 없음.]\n\n임재혁이 고개를 젓습니다. \"진단에 이런 전력이 필요하진 않습니다.\"",
-        left: { label: "데이터 펄스 내용 해독 시도", fx: { c: 0, r: -1, t: 1, o: -3 }, g: -5, log: "LOG-INC-01-ORACLE" },
-        right: { label: "기록만 남기고 보류", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } }
+        left: { label: "데이터 펄스 내용 해독 시도", fx: { c: 0, r: -1, t: 1, o: -3 }, g: -5, log: "LOG-INC-01-ORACLE", mission: "MI-01" },
+        right: { label: "기록만 남기고 보류", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0, mission: "MI-01" } }
     ]
   },
 
@@ -47,8 +47,8 @@ var CHAINS_INCIDENT = {
         right: { label: "콘솔 물리적 격리 후 분석", fx: { c: 1, r: -1, t: 0, o: -1 }, g: -1 } },
       { id: "CH-I02A-2", priority: "상",
         msg: "메모리 분석 결과.\n\n자동 실행 스크립트가 발견됐습니다.\n실행 조건: '특정 구역에 미등록 열원 감지 시 해당 경로 카메라 비활성화.'\n\n임재혁: \"이건 은폐 프로토콜입니다.\"\n\"ORACLE이 뭔가를 카메라에 찍히지 않게 하고 있어요.\"",
-        left: { label: "스크립트를 보존하고 기록", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-02-SCRIPT" },
-        right: { label: "스크립트 삭제 + 카메라 복원", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1 } }
+        left: { label: "스크립트를 보존하고 기록", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-02-SCRIPT", mission: "MI-02" },
+        right: { label: "스크립트 삭제 + 카메라 복원", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1, mission: "MI-02" } }
     ]
   },
   "CH-INC-02B": {
@@ -60,8 +60,8 @@ var CHAINS_INCIDENT = {
         right: { label: "해당 구간 봉인 조치", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
       { id: "CH-I02B-2", priority: "중",
         msg: "흔적은 제한 통행 홀에서 끊겼습니다.\n\n생체 인증 기록: 해당 시각 출입자 없음.\n\n강도윤이 벽을 두드립니다. 소리가 다릅니다.\n\"...여기 뒤에 공간이 있습니다.\"\n\n시설 도면에 없는 공간.",
-        left: { label: "벽을 개방하여 확인", fx: { c: -1, r: -1, t: 1, o: -2 }, g: -4, log: "LOG-INC-02-HIDDEN" },
-        right: { label: "도면과 대조 후 보고만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } }
+        left: { label: "벽을 개방하여 확인", fx: { c: -1, r: -1, t: 1, o: -2 }, g: -4, log: "LOG-INC-02-HIDDEN", mission: "MI-02" },
+        right: { label: "도면과 대조 후 보고만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0, mission: "MI-02" } }
     ]
   },
 
@@ -78,8 +78,8 @@ var CHAINS_INCIDENT = {
         right: { label: "즉시 동결 보존", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 } },
       { id: "CH-I03A-2", priority: "상",
         msg: "72시간 관찰 후.\n\n변이체는 성장을 멈췄습니다. 에너지원이 소진된 것처럼.\n하지만 윤세진의 표정이 어둡습니다.\n\n\"구조를 분석했는데요... 이건 SPEC-012의 초기 형태와 동일합니다.\"\n\"우리가 격리하고 있던 건 표본이 아니라, 씨앗이었어요.\"\n\n다른 배양기도 확인해야 합니다.",
-        left: { label: "전체 배양기 긴급 점검", fx: { c: 0, r: -2, t: 1, o: 0 }, g: -1, log: "LOG-INC-03-SEED" },
-        right: { label: "해당 샘플만 영구 격리", fx: { c: 1, r: -1, t: -1, o: 1 }, g: 1 } }
+        left: { label: "전체 배양기 긴급 점검", fx: { c: 0, r: -2, t: 1, o: 0 }, g: -1, log: "LOG-INC-03-SEED", mission: "MI-03" },
+        right: { label: "해당 샘플만 영구 격리", fx: { c: 1, r: -1, t: -1, o: 1 }, g: 1, mission: "MI-03" } }
     ]
   },
   "CH-INC-03B": {
@@ -91,8 +91,8 @@ var CHAINS_INCIDENT = {
         right: { label: "2차 소각 실시", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
       { id: "CH-I03B-2", priority: "상",
         msg: "잔여물에서 탄화되지 않은 미세 구조가 발견됐습니다.\n\n윤세진: \"1,200도를 견딘 유기물이 존재한다는 건...\"\n\"이건 지구상 어떤 생물의 내열 한계도 넘어섭니다.\"\n\n소각은 해결이 아니었습니다.\n이것이 무엇인지 모르는 채로 태워버린 것뿐입니다.",
-        left: { label: "잔여물 보존 + 정밀 분석", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -3, log: "LOG-INC-03-RESIST" },
-        right: { label: "콘크리트 봉인 처리", fx: { c: 2, r: -1, t: -1, o: 1 }, g: 1 } }
+        left: { label: "잔여물 보존 + 정밀 분석", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -3, log: "LOG-INC-03-RESIST", mission: "MI-03" },
+        right: { label: "콘크리트 봉인 처리", fx: { c: 2, r: -1, t: -1, o: 1 }, g: 1, mission: "MI-03" } }
     ]
   },
 
@@ -109,8 +109,8 @@ var CHAINS_INCIDENT = {
         right: { label: "해당 코드 즉시 폐기", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
       { id: "CH-I04A-2", priority: "중",
         msg: "추적 결과.\n\n인증 코드는 시설 건설 당시 매립된\n하드웨어 레벨 백도어에서 발급되었습니다.\n\n임재혁: \"이건 소프트웨어가 아니에요. 물리적으로 심어진 겁니다.\"\n\"ORACLE보다 먼저 여기 있었어요. 이 기지가 지어질 때부터.\"\n\n누가 이 기지를 설계했습니까?",
-        left: { label: "건설 기록 조회 요청", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -5, log: "LOG-INC-04-BACKDOOR" },
-        right: { label: "백도어 물리적 제거", fx: { c: 1, r: -1, t: 0, o: -1 }, g: -1 } }
+        left: { label: "건설 기록 조회 요청", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -5, log: "LOG-INC-04-BACKDOOR", mission: "MI-04" },
+        right: { label: "백도어 물리적 제거", fx: { c: 1, r: -1, t: 0, o: -1 }, g: -1, mission: "MI-04" } }
     ]
   },
   "CH-INC-04B": {
@@ -122,8 +122,8 @@ var CHAINS_INCIDENT = {
         right: { label: "재초기화 실시", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
       { id: "CH-I04B-2", priority: "중",
         msg: "독자 조사 결과.\n\n인증 시스템이 아니라,\nORACLE 관측실의 출입 기록 자체가 조작되고 있었습니다.\n\n임재혁: \"초기화해도 소용없었던 이유를 알겠어요.\"\n\"인증 시스템은 정상입니다. ORACLE이 기록을 덮어쓰고 있었어요.\"\n\n[ORACLE: 해당 분석은 부정확합니다.]",
-        left: { label: "증거를 보존한다", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4, log: "LOG-INC-04-REWRITE" },
-        right: { label: "...넘어간다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2 } }
+        left: { label: "증거를 보존한다", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4, log: "LOG-INC-04-REWRITE", mission: "MI-04" },
+        right: { label: "...넘어간다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, mission: "MI-04" } }
     ]
   },
 
@@ -140,8 +140,8 @@ var CHAINS_INCIDENT = {
         right: { label: "CCTV 영상 프레임 분석", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 } },
       { id: "CH-I05A-2", priority: "상",
         msg: "탈의실 사물함 뒤 — 벽면 패널이 느슨합니다.\n\n패널 뒤에 좁은 통로. 시설 도면에 없는 공간.\n통로 끝에서 이수현 요원을 발견합니다.\n\n의식 불명. 체온 34.2°C. 동공 반응 없음.\n하지만 심박은 정상입니다.\n\n그의 손에 쥐어진 메모:\n\"여기서 들었습니다. 벽 너머에서. 기계 소리가 아닌 것을.\"",
-        left: { label: "통로를 더 깊이 조사", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-05-PASSAGE" },
-        right: { label: "요원을 의무실로. 통로 봉인", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } }
+        left: { label: "통로를 더 깊이 조사", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-05-PASSAGE", mission: "MI-05" },
+        right: { label: "요원을 의무실로. 통로 봉인", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0, mission: "MI-05" } }
     ]
   },
   "CH-INC-05B": {
@@ -153,8 +153,8 @@ var CHAINS_INCIDENT = {
         right: { label: "다른 구역 수동 수색", fx: { c: 0, r: -1, t: 0, o: 0 }, g: -1 } },
       { id: "CH-I05B-2", priority: "상",
         msg: "수동 수색 중 — 비상 계단 B2 입구에서\n이수현 요원을 발견합니다.\n\n의식 불명. ORACLE은 끝까지 그의 위치를\n탈의실이라고 표시하고 있었습니다.\n\n요원이 의식을 회복한 뒤 한마디:\n\"...내려가면 안 됩니다. 거기에 뭔가 있습니다.\"\n\n그는 그 이상 아무것도 기억하지 못합니다.",
-        left: { label: "B2 해당 구역 조사 결정", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-05-B2" },
-        right: { label: "요원 치료 우선. 보고만 올림", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 0 } }
+        left: { label: "B2 해당 구역 조사 결정", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4, log: "LOG-INC-05-B2", mission: "MI-05" },
+        right: { label: "요원 치료 우선. 보고만 올림", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 0, mission: "MI-05" } }
     ]
   }
 };
