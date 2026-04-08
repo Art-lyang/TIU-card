@@ -86,8 +86,9 @@ function App(){
   var swipe=function(dir){
     SFX.play('swipe');setToast('');var ch=dir==='left'?curCard.left:curCard.right;
     var fx=ch.fx;
-    // 자원 리스크: r>=2일 때 20% 확률로 실패
-    if(fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;var rm=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)];setToast(rm);setTimeout(function(){setToast('')},2500)}
+    // 자원 리스크: 보급 카드(bg=supply)에서만, r>=2일 때 20% 확률로 실패
+    var riskFired=false;
+    if(curCard.bg==='supply'&&fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;riskFired=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)]}
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);setStats(ns);setGi(ng);
     if(curCard.tag){var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
     checkLogs(ns,ng,curCard.id,null,null,dir);
@@ -105,6 +106,8 @@ function App(){
     else if(!isIntrosDone(logs)){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,logs,cq)},300)}
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,logs,cq)},300)}
     else{nextCard(ns,ng,logs,cq)}
+    // 자원 리스크 토스트: 카드 전환 후 표시 (스포일러 방지)
+    if(riskFired){setTimeout(function(){setToast(riskFired);setTimeout(function(){setToast('')},2800)},600)}
   };
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}updateActFlags(null,curMission,false);Save.saveGame(ns,ng,act,actFlags,transRoute);setCurMission(null);nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
