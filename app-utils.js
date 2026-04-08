@@ -1,6 +1,6 @@
 // TERMINAL SESSION — app-utils.js
 // CARDS 배열, drawCard, Save, SFX 유틸리티
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS).concat(CARDS_NEW_A).concat(CARDS_NEW_B).concat(CARDS_ACT3).concat(CARDS_EXTERNAL).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_MIDGAME!=='undefined'?CARDS_MIDGAME:[]);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS).concat(CARDS_NEW_A).concat(CARDS_NEW_B).concat(CARDS_ACT3).concat(CARDS_EXTERNAL).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_MIDGAME!=='undefined'?CARDS_MIDGAME:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
