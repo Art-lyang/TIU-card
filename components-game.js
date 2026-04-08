@@ -25,17 +25,17 @@ function Stats(p){
     sm.map(function(s){
       var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));
       var ft=typeof getFacilityTag==='function'?getFacilityTag(s.k,v):null;
-      return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
-        h('div',{className:'gauge-icon gauge-icon-'+s.k}),
-        h('span',{className:'gauge-label'},s.l),
-        h('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:2}},
+      return h('div',{key:s.k,style:{marginBottom:ft?2:0}},
+        h('div',{className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+          h('div',{className:'gauge-icon gauge-icon-'+s.k}),
+          h('span',{className:'gauge-label'},s.l),
           h('div',{className:'gauge-bar'},
             h('div',{className:'gauge-bar-inner'},
               delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(80,255,80,0.15)',zIndex:1,transition:'width 0.15s'}}):null,
               h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
               delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-          ft?h('div',{className:ft.cls,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:0.5}},ft.label):null),
-        h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
+          h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v)),
+        ft?h('div',{className:ft.cls,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:0.5,textAlign:'right',paddingRight:28,marginTop:-2}},ft.label):null)})
   );
 }
 function CardC(p){
