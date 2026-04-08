@@ -159,7 +159,7 @@ function App(){
   var renderTrustToast=function(){
     if(!trustToast)return null;
     var tt=trustToast;
-    return h('div',{style:{position:'fixed',top:60,left:'50%',transform:'translateX(-50%)',
+    return h('div',{style:{position:'fixed',bottom:100,left:'50%',transform:'translateX(-50%)',
       background:'rgba(10,18,10,.85)',border:'1px solid '+tt.color,borderRadius:4,
       padding:'6px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:12,
       color:tt.color,letterSpacing:1,zIndex:200,animation:'fadeIn 0.3s ease',
