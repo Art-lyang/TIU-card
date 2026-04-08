@@ -62,6 +62,26 @@ var ENDING_DEFS = {
       "[세션 종료 — OPERATOR STATUS: UNLINKED]"
     ]
   },
+  C_cs: {
+    name: "봉쇄 성공",
+    condition: "봉쇄 포인트 100 도달",
+    narrative: [
+      "[ORACLE ASSESSMENT — CONTAINMENT REPORT]",
+      "",
+      "봉쇄선 완전성: 100%.",
+      "모든 구역이 통제 하에 있습니다.",
+      "",
+      "PILEHEAD, 당신은 완벽한 봉쇄를 달성했습니다.",
+      "어떤 것도 밖으로 나가지 못했고, 어떤 것도 안으로 들어오지 못했습니다.",
+      "",
+      "하지만 봉쇄선 안쪽에서 —",
+      "사람들은 숨을 쉬지 못하고 있습니다.",
+      "",
+      "완벽한 감옥에는 간수도 갇히는 법입니다.",
+      "",
+      "[세션 종료 — CONTAINMENT STATUS: ABSOLUTE]"
+    ]
+  },
   F: {
     name: "[데이터 손상]",
     condition: "Act 3, LOG-012 해금, Observer 카드 조우",
