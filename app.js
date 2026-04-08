@@ -148,10 +148,9 @@ function App(){
     h(Stats,{stats:stats,preview:preview}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},'ACT '+act),
-      h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
+      h('span',{className:'info-tag'},(ct+1)+'/'+cpd),
       h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
-      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return '\uD83D\uDD0D '+uc+(nc>0?' \u25CF':'')})()),
-),
+      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return '\uD83D\uDD0D '+uc+(nc>0?' \u25CF':'')})())),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
     h('div',{className:'footer-frame',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'),h('span',{style:{cursor:'pointer',fontSize:10,opacity:0.5,letterSpacing:1,fontFamily:"'Share Tech Mono',monospace"},onClick:function(){BGM.toggleMute();setToast(BGM.muted?'AUDIO: OFF':'AUDIO: ON');setTimeout(function(){setToast('')},1200)}},BGM.muted?'[MUTE]':'[SND]')));
