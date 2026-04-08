@@ -1,6 +1,4 @@
-// TERMINAL SESSION — app.js (App Component)
-// 순수 로직은 app-logic.js, 유틸리티는 app-utils.js에 분리
-
+// TERMINAL SESSION — app.js (App Component) — 로직: app-logic.js, 유틸: app-utils.js
 function App(){
   var _p=useState('boot'),phase=_p[0],setPhase=_p[1];
   var _s=useState({c:50,r:65,t:50,o:40,day:1}),stats=_s[0],setStats=_s[1];
@@ -182,18 +180,20 @@ function App(){
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
   if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
-  if(phase==='facility')return h(FacilityPanel,{facility:facility,onApprove:approvePending,onClose:function(){setPhase(ret)}});
-  return h('div',{className:'screen'},
-    h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
-    h(Stats,{stats:stats,preview:preview}),
-    h('div',{className:'info-bar'},
-      h('span',{className:'info-tag'},'ACT '+act),
-      h('span',{className:'info-tag'},'카드 '+(ct+1)+'/'+cpd),
-      h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
-      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return '\uc544\uce74\uc774\ube0c '+(nc>0?'\u25CF':'')})()),
-      (facility.pending.length>0||facility.approved.length>0||facility.completed.length>0)&&h('span',{className:'info-tag',style:{color:'#4ae',cursor:'pointer'},onClick:function(){setRet('game');setPhase('facility')}},'시설 '+(facility.pending.length>0?'●':'▸'))),
-    h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
-    toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
-    h('div',{className:'footer-frame',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'),h('span',{style:{cursor:'pointer',fontSize:10,opacity:0.5,letterSpacing:1,fontFamily:"'Share Tech Mono',monospace"},onClick:function(){BGM.toggleMute();setToast(BGM.muted?'AUDIO: OFF':'AUDIO: ON');setTimeout(function(){setToast('')},1200)}},BGM.muted?'[MUTE]':'[SND]')));
+  // facility는 오버레이로 게임 위에 표시 (아래 게임 return에서 렌더링)
+  return h(React.Fragment,null,
+    h('div',{className:'screen'},
+      h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
+      h(Stats,{stats:stats,preview:preview}),
+      h('div',{className:'info-bar'},
+        h('span',{className:'info-tag'},'ACT '+act),
+        h('span',{className:'info-tag'},'카드 '+(ct+1)+'/'+cpd),
+        h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
+        h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return '\uc544\uce74\uc774\ube0c '+(nc>0?'\u25CF':'')})()),
+        h('span',{className:'info-tag',style:{color:'#4ae',cursor:'pointer'},onClick:function(){setPhase(phase==='facility'?'game':'facility')}},'시설'+(facility.pending.length>0?' ●':''))),
+      h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
+      toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
+      h('div',{className:'footer-frame',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'),h('span',{style:{cursor:'pointer',fontSize:10,opacity:0.5,letterSpacing:1,fontFamily:"'Share Tech Mono',monospace"},onClick:function(){BGM.toggleMute();setToast(BGM.muted?'AUDIO: OFF':'AUDIO: ON');setTimeout(function(){setToast('')},1200)}},BGM.muted?'[MUTE]':'[SND]'))),
+    phase==='facility'&&h(FacilityPanel,{facility:facility,onApprove:approvePending,onClose:function(){setPhase('game')}}));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
