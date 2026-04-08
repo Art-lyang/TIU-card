@@ -95,7 +95,6 @@ function App(){
   };
   var swipe=function(dir){
     SFX.play('swipe');setToast('');
-    // 시설 확장 제안 카드 처리
     if(curCard.isFacilityProposal){
       var feId=curCard.feId;
       setFacility(function(prev){
@@ -119,6 +118,8 @@ function App(){
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
     Save.saveGame(ns,ng,act,actFlags,transRoute);
+    // fePropose: 카드 선택지가 시설 확장 제안을 포함하는 경우
+    if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToast('시설 확장이 보상 풀에 등록되었습니다');setTimeout(function(){setToast('')},2200)}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
     var nct=ct+1;setCt(nct);var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
@@ -172,7 +173,7 @@ function App(){
   if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){
       Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
-  if(phase==='news')return h('div',{className:'screen',style:{justifyContent:'center'}},h(News,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
+  if(phase==='news')return h('div',{className:'screen'},h(News,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
   if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,3)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()}}),renderTrustToast());}
   if(phase==='dialogue'&&curDlg)return h(React.Fragment,null,h(Dialogue,{dialogue:curDlg,onChoice:hDlg}),renderTrustToast());
