@@ -44,6 +44,9 @@ function renderMobileGrid(floorId) {
 }
 
 function renderMobileRoomList(floor, grid, dimmed) {
+  var cardGrid = document.createElement("div");
+  cardGrid.className = "mg-card-grid";
+  grid.appendChild(cardGrid);
   floor.rooms.forEach(function(room) {
     var el = document.createElement("div");
     el.className = "mgrid-room" + (dimmed ? " dimmed" : "");
@@ -51,14 +54,15 @@ function renderMobileRoomList(floor, grid, dimmed) {
     var upHtml = room.upgradable
       ? '<div class="mr-upgrade">' + ui("upgradeAvail") + '</div>' : "";
 
+    var artSvg = (typeof ROOM_ART !== 'undefined') ? ROOM_ART.get(room.type) : '';
     el.innerHTML =
-      '<div class="mr-icon" style="border-color:' + tc.border + ';color:' + tc.label + '">' +
-        tType(room.type) +
-      '</div>' +
-      '<div class="mr-info">' +
+      (artSvg ? '<div class="mr-art">' + artSvg + '</div>' : '') +
+      '<div class="mr-info-bar">' +
         '<div class="mr-name" style="color:' + tc.label + '">' + t(room.name) + '</div>' +
-        '<div class="mr-type">' + tType(room.type) + '</div>' +
-      '</div>' + upHtml;
+        '<div class="mr-type-row"><span class="mr-type">' + tType(room.type) + '</span>' +
+        (room.upgradable ? '<span class="mr-up-dot">●</span>' : '') +
+        '</div>' +
+      '</div>';
 
     el.addEventListener("click", function(e) {
       e.stopPropagation();
@@ -68,7 +72,7 @@ function renderMobileRoomList(floor, grid, dimmed) {
       el.classList.add("m-selected");
       openMobileSheet(room);
     });
-    grid.appendChild(el);
+    cardGrid.appendChild(el);
   });
 }
 
