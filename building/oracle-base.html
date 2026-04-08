@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ORACLE Korea Branch — Facility Schematic</title>
+<link rel="stylesheet" href="oracle-base.css">
+<link rel="stylesheet" href="oracle-ext.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- HEADER -->
+  <div id="header">
+    <div class="logo">
+      <div class="logo-icon">O</div>
+      <div>
+        <h1 id="hdr-title">ORACLE Korea Branch</h1>
+        <div class="subtitle" id="hdr-subtitle">Classified Facility Schematic — Gangwon Province</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div id="lang-switch">
+        <div class="lang-tab active" data-lang="en">EN</div>
+        <div class="lang-tab" data-lang="ko">KO</div>
+      </div>
+      <div class="sys-info" id="hdr-sysinfo">
+        SYSTEM: ACTIVE<br>
+        CLEARANCE: LEVEL 3
+      </div>
+    </div>
+  </div>
+
+  <!-- FLOOR TABS -->
+  <div id="floor-tabs">
+    <div class="floor-tab active" data-floor="level1">Level 1</div>
+    <div class="floor-tab" data-floor="b1">B1</div>
+    <div class="floor-tab" data-floor="b2">B2</div>
+    <div class="floor-tab" data-floor="b3">B3</div>
+    <div class="floor-tab restricted" data-floor="restricted" id="tab-restricted">Restricted</div>
+    <div class="floor-tab exterior" data-floor="exterior" id="tab-exterior">Exterior</div>
+  </div>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="map-area">
+      <div id="floor-title"></div>
+      <div id="floor-subtitle"></div>
+      <div id="classification" class="secret">SECRET</div>
+      <div id="map-container"></div>
+    </div>
+    <div id="mobile-grid"></div>
+    <div id="info-panel">
+      <div class="panel-header" id="panel-hdr">Room Information</div>
+      <div class="panel-content">
+        <div class="placeholder" id="panel-placeholder">
+          SELECT A ROOM<br>TO VIEW DETAILS
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOBILE BOTTOM SHEET -->
+  <div id="mobile-sheet">
+    <div class="sheet-handle" id="sheet-handle"></div>
+    <div class="sheet-close" id="sheet-close">&times;</div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+
+</div>
+
+<script src="oracle-data.js"></script>
+<script src="oracle-floors.js"></script>
+<script src="oracle-mobile.js"></script>
+<script src="oracle-gamelink.js"></script>
+<script src="oracle-app.js"></script>
+<script src="oracle-init.js"></script>
+</body>
+</html>

@@ -1,15 +1,38 @@
 // TERMINAL SESSION — app-utils.js
 // CARDS 배열, drawCard, Save, SFX 유틸리티
-var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS).concat(CARDS_NEW_A).concat(CARDS_NEW_B).concat(CARDS_ACT3).concat(CARDS_EXTERNAL);
+var CARDS = CARDS_BASE.concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS).concat(CARDS_NEW_A).concat(CARDS_NEW_B).concat(CARDS_ACT3).concat(CARDS_EXTERNAL).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_MIDGAME!=='undefined'?CARDS_MIDGAME:[]);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
 var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
 var INTRO_FILTER=[{name:'\uc11c\ud558\uc740',log:'LOG-INTRO-SH'},{name:'\uac15\ub3c4\uc724',log:'LOG-INTRO-KD'},{name:'\uc724\uc138\uc9c4',log:'LOG-INTRO-YS'},{name:'\uc784\uc7ac\ud601',log:'LOG-INTRO-IJ'}];
 var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
-var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
-  var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
+// 시설 확장 제안 카드 생성 (30% 확률, 하루 1장)
+var tryFacilityProposal=function(stats,currentAct,facilityData){
+  if(typeof FACILITY_EXPANSIONS==='undefined')return null;
+  var fd=facilityData||{approved:[],pending:[],completed:[],proposed:[]};
+  var day=stats.day||1;var ca=currentAct||1;
+  var available=FACILITY_EXPANSIONS.filter(function(fe){
+    if(fd.approved.indexOf(fe.id)>=0)return false;
+    if(fd.pending.indexOf(fe.id)>=0)return false;
+    if(fd.completed.indexOf(fe.id)>=0)return false;
+    if(fd.proposed.indexOf(fe.id)>=0)return false;
+    if(day<fe.minDay)return false;
+    if(ca<fe.minAct)return false;
+    return true;
+  });
+  if(available.length===0)return null;
+  if(Math.random()>0.30)return null;
+  var fe=pick(available);
+  return{id:'FP-'+fe.id,feId:fe.id,isFacilityProposal:true,msg:fe.cardMsg,bg:'facility',
+    left:{label:fe.cardLeft.label,fx:fe.cardLeft.fx,g:fe.cardLeft.g||0},
+    right:{label:fe.cardRight.label,fx:fe.cardRight.fx,g:fe.cardRight.g||0},
+    hint:fe.hint};
+};
+var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,completedFE){
+  var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';var cfe=completedFE||[];
   var valid=CARDS.filter(function(c){
+    if(c.feReq&&cfe.indexOf(c.feReq)<0)return false;
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
     try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
@@ -37,7 +60,11 @@ var Save={
   incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
   saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
   saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])},
-  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])}
+  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])},
+  saveFacility:function(data){Save.set('ts_facility',data);
+    // 시설도 페이지와 데이터 공유
+    try{localStorage.setItem('tiu_facility_state',JSON.stringify(data))}catch(e){}},
+  getFacility:function(){return Save.get('ts_facility',{approved:[],pending:[],completed:[],proposed:[]});}
 };
 
 var SFX={

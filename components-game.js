@@ -56,7 +56,8 @@ function CardC(p){
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
-      h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},'ORACLE 통신'),h('span',{className:'card-hdr-r'},'우선순위: '+plbl)),
+      card.isFacilityProposal&&h('div',{style:{background:'rgba(74,170,238,.1)',border:'1px solid rgba(74,170,238,.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#4ae',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
+      h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.isFacilityProposal?'시설 확장':'ORACLE 통신'),h('span',{className:'card-hdr-r'},'우선순위: '+plbl)),
       h('div',{className:'card-msg'},function(){
         var msg=card.msg||'';var paras=msg.split('\n\n');
         return paras.map(function(para,pi){
@@ -77,6 +78,7 @@ function CardC(p){
             }));
         });
       }()),
+      card.hint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(74,170,238,.06)',borderLeft:'2px solid rgba(74,170,238,.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#4ae',letterSpacing:0.5}},card.hint),
       (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(145,255,106,.08)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:10,gap:8}},
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(145,255,106,.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(145,255,106,.3)'}},'—')),
@@ -119,6 +121,7 @@ function News(p){
     p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(145,255,106,.08)',animation:'fadeIn 0.4s ease'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
       h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(220,255,220,.75)'}},hl.text))}),
+    shown>=p.headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility}),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(145,255,106,.12)'}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},'[ 다음 사이클 진행 ]')));
 }
@@ -146,7 +149,19 @@ function Tutorial(p){
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
   var count=4;if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=3;if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=2;if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=1;
-  var s0=useState(function(){return pickN(REWARDS,count)}),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
+  var s0=useState(function(){
+    var pool=pickN(REWARDS,count);
+    // 시설 확장 리워드 삽입 (승인됨 & 미완료)
+    if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
+      var fac=p.facility;var feRewards=[];
+      fac.approved.forEach(function(feId){
+        if(fac.completed.indexOf(feId)>=0)return;
+        var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
+        if(fe)feRewards.push({id:'R-'+fe.id,feId:fe.id,title:fe.rewardTitle,desc:fe.rewardDesc,benefit:fe.rewardBenefit,cost:fe.rewardCost,fx:fe.rewardFx})});
+      if(feRewards.length>0){pool=pool.slice(0,Math.max(1,count-feRewards.length)).concat(feRewards.slice(0,count))}
+    }
+    return pool;
+  }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
   var fxList=function(fx){var pos=[],neg=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0)*5;if(v>0)pos.push({k:k,v:v});if(v<0)neg.push({k:k,v:v})});return{pos:pos,neg:neg}};
   var miniBar=function(fx){return h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:4,marginTop:8}},
     ['c','r','t','o'].map(function(k){var cur=p.stats[k];var chg=(fx[k]||0)*5;var nxt=Math.max(0,Math.min(100,cur+chg));var isPos=chg>0;var isNeg=chg<0;
