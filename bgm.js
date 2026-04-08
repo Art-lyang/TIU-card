@@ -1,14 +1,17 @@
-// TERMINAL SESSION — BGM Module
+// TERMINAL SESSION — BGM Module (v2 — 오디오 안정화)
 // Behind The Blast Door (메인 루프), Hydraulic Breach (긴장), Boot Sequence (부팅)
-// 사용: BGM.play('main') / BGM.play('tension') / BGM.playBoot() / BGM.stop() / BGM.setDanger(true/false)
+// 수정: 부팅음 loop=true 단일트랙, fadeTimer 중복방지, setDanger 디바운스, 모바일 pause 안정화
 
 var BGM = {
   tracks: {},       // { main: Audio, tension: Audio }
   current: null,    // 'main' | 'tension' | null
   target: null,     // fade 목표
-  vol: 0.10,        // 기본 볼륨 (낮게 깔리는 배경음)
+  vol: 0.10,        // 기본 볼륨
   muted: false,
-  started: false,   // 유저 인터랙션 후 true
+  started: false,
+  _timers: {},      // 트랙별 fade timer ID — 중복 방지
+  _dangerTs: 0,     // setDanger 디바운스 타임스탬프
+  _transitioning: false, // 크로스페이드 진행 중 플래그
 
   init: function() {
     if (this.tracks.main) return;
@@ -30,74 +33,36 @@ var BGM = {
   },
 
   bootAudio: null,
-  bootShadow: null,
 
-  // 부팅 시퀀스 사운드 루프 — 듀얼 트랙 체인
+  // ═══ 부팅 사운드: loop=true 단일 트랙 (Audio 객체 재생성 제거) ═══
   startBootLoop: function() {
     this.init();
     if (this.muted) return;
     try {
-      this._stopBootTracks();
+      this._stopBootTrack();
       var a = new Audio(BGM_BOOT);
-      a.loop = false;
-      a.volume = 0.2;
-      a.play().catch(function(e) { console.warn('Boot SFX blocked:', e); });
+      a.loop = true;
+      a.volume = 0;
       this.bootAudio = a;
-      this._bootChain(a);
+      a.play().catch(function(e) { console.warn('Boot SFX blocked:', e); });
+      this._fadeIn(a, 800, 0.2);
     } catch(e) {}
   },
 
-  _bootChain: function(current) {
-    var self = this;
-    var fired = false;
-    var onTime = function() {
-      if (fired || !current.duration) return;
-      var rem = current.duration - current.currentTime;
-      if (rem <= 1.5) {
-        fired = true;
-        current.removeEventListener('timeupdate', onTime);
-        if (!self.bootAudio && !self.bootShadow) return;
-        var next = new Audio(BGM_BOOT);
-        next.loop = false;
-        next.volume = 0;
-        next.play().catch(function(){});
-        self.bootShadow = next;
-        self._fadeOut(current, 1400);
-        self._fadeIn(next, 1400, 0.2);
-        setTimeout(function() {
-          self.bootAudio = next;
-          self.bootShadow = null;
-          self._bootChain(next);
-        }, 1500);
-      }
-    };
-    var onEnd = function() {
-      if (fired) return;
-      fired = true;
-      current.removeEventListener('timeupdate', onTime);
-      current.removeEventListener('ended', onEnd);
-      if (!self.bootAudio && !self.bootShadow) return;
-      var next = new Audio(BGM_BOOT);
-      next.loop = false;
-      next.volume = 0.2;
-      next.play().catch(function(){});
-      self.bootAudio = next;
-      self._bootChain(next);
-    };
-    current.addEventListener('timeupdate', onTime);
-    current.addEventListener('ended', onEnd);
-  },
-
-  _stopBootTracks: function() {
-    if (this.bootAudio) { try { this.bootAudio.pause(); } catch(e){} this.bootAudio = null; }
-    if (this.bootShadow) { try { this.bootShadow.pause(); } catch(e){} this.bootShadow = null; }
+  _stopBootTrack: function() {
+    if (this.bootAudio) {
+      this._clearTimer(this.bootAudio);
+      try { this.bootAudio.pause(); this.bootAudio.currentTime = 0; } catch(e) {}
+      this.bootAudio = null;
+    }
   },
 
   stopBootLoop: function() {
-    if (this.bootAudio) this._fadeOut(this.bootAudio, 800);
-    if (this.bootShadow) this._fadeOut(this.bootShadow, 800);
-    var self = this;
-    setTimeout(function() { self._stopBootTracks(); }, 900);
+    if (this.bootAudio) {
+      var self = this;
+      this._fadeOut(this.bootAudio, 800);
+      setTimeout(function() { self._stopBootTrack(); }, 900);
+    }
   },
 
   playBoot: function() {
@@ -128,15 +93,20 @@ var BGM = {
 
   stop: function() {
     this.target = null;
+    this._transitioning = false;
     var self = this;
     Object.keys(this.tracks).forEach(function(k) {
-      self._fadeOut(self.tracks[k]);
+      self._fadeOut(self.tracks[k], 1200, true);
     });
     this.current = null;
   },
 
+  // ═══ setDanger: 800ms 디바운스로 빈번한 전환 방지 ═══
   setDanger: function(isDanger) {
     if (!this.started) return;
+    var now = Date.now();
+    if (now - this._dangerTs < 800) return;
+    this._dangerTs = now;
     this.play(isDanger ? 'tension' : 'main');
   },
 
@@ -157,17 +127,24 @@ var BGM = {
     this.muted = !this.muted;
     var self = this;
     if (this.muted) {
+      // 모든 트랙 즉시 정지
       Object.keys(this.tracks).forEach(function(k) {
+        self._clearTimer(self.tracks[k]);
         self.tracks[k].volume = 0;
         self.tracks[k].pause();
       });
-      if (this.bootAudio) { this.bootAudio.volume = 0; this.bootAudio.pause(); }
-      if (this.bootShadow) { this.bootShadow.volume = 0; this.bootShadow.pause(); }
+      if (this.bootAudio) {
+        this._clearTimer(this.bootAudio);
+        this.bootAudio.volume = 0;
+        this.bootAudio.pause();
+      }
     } else {
+      // 부팅음 복구
       if (this.bootAudio) {
         this.bootAudio.volume = 0.2;
-        try { this.bootAudio.play().catch(function(){}); } catch(e){}
+        try { this.bootAudio.play().catch(function(){}); } catch(e) {}
       }
+      // BGM 복구
       if (this.target && this.tracks[this.target]) {
         this.current = null;
         this.play(this.target);
@@ -178,53 +155,103 @@ var BGM = {
 
   // ─── 내부 함수 ───
 
+  // ═══ 크로스페이드: transitioning 플래그로 중복 방지 ═══
   _crossfade: function(toName) {
     var toTrack = this.tracks[toName];
     if (!toTrack) return;
+    if (this._transitioning) {
+      // 진행 중이면 기존 fade 취소 후 즉시 전환
+      var self = this;
+      Object.keys(this.tracks).forEach(function(k) {
+        self._clearTimer(self.tracks[k]);
+      });
+    }
+    this._transitioning = true;
+    var self = this;
 
-    // 현재 트랙 느린 페이드아웃
+    // 현재 트랙 페이드아웃 → pause
     if (this.current && this.tracks[this.current]) {
-      this._fadeOut(this.tracks[this.current], 2500);
+      this._fadeOut(this.tracks[this.current], 2500, true);
     }
 
-    // 새 트랙 느린 페이드인
+    // 새 트랙 페이드인
     toTrack.volume = 0;
-    try { toTrack.play().catch(function(){}); } catch(e){}
-    this._fadeIn(toTrack, 3000);
+    try { toTrack.play().catch(function(){}); } catch(e) {}
+    this._fadeIn(toTrack, 3000, undefined, function() {
+      self._transitioning = false;
+    });
     this.current = toName;
   },
 
-  _fadeIn: function(audio, dur, targetVol) {
+  // ═══ _fadeIn: 기존 timer 취소 후 새 timer 시작 ═══
+  _fadeIn: function(audio, dur, targetVol, onDone) {
     dur = dur || 1500;
+    this._clearTimer(audio);
     var self = this;
     var tv = targetVol !== undefined ? targetVol : self.vol;
     var step = 30;
     var inc = tv / (dur / step);
     var iv = setInterval(function() {
-      if (self.muted) { clearInterval(iv); return; }
+      if (self.muted) { clearInterval(iv); self._removeTimer(audio, iv); return; }
       var nv = Math.min(tv, audio.volume + inc);
-      try { audio.volume = nv; } catch(e) { clearInterval(iv); return; }
-      if (nv >= tv) clearInterval(iv);
-    }, step);
-  },
-
-  _fadeOut: function(audio, dur) {
-    dur = dur || 1200;
-    var step = 30;
-    var startVol = audio.volume;
-    if (startVol <= 0) return;
-    var dec = startVol / (dur / step);
-    var iv = setInterval(function() {
-      var nv = Math.max(0, audio.volume - dec);
-      try { audio.volume = nv; } catch(e) { clearInterval(iv); return; }
-      if (nv <= 0) {
+      try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
+      if (nv >= tv) {
         clearInterval(iv);
-        // loop=true 트랙은 pause하지 않음 (볼륨 0으로 유지)
-        if (!audio.loop) {
-          audio.pause();
-          audio.currentTime = 0;
-        }
+        self._removeTimer(audio, iv);
+        if (onDone) onDone();
       }
     }, step);
+    this._setTimer(audio, iv);
+  },
+
+  // ═══ _fadeOut: 기존 timer 취소 + 완료 시 pause (모바일 슬롯 반환) ═══
+  _fadeOut: function(audio, dur, pauseOnDone) {
+    dur = dur || 1200;
+    this._clearTimer(audio);
+    var startVol = audio.volume;
+    if (startVol <= 0) {
+      if (pauseOnDone) { try { audio.pause(); } catch(e) {} }
+      return;
+    }
+    var step = 30;
+    var dec = startVol / (dur / step);
+    var self = this;
+    var iv = setInterval(function() {
+      var nv = Math.max(0, audio.volume - dec);
+      try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
+      if (nv <= 0) {
+        clearInterval(iv);
+        self._removeTimer(audio, iv);
+        // 볼륨 0이면 확실히 pause — 모바일 오디오 슬롯 반환
+        try { audio.pause(); } catch(e) {}
+      }
+    }, step);
+    this._setTimer(audio, iv);
+  },
+
+  // ═══ Timer 관리 — 트랙별 setInterval ID 추적 ═══
+  _timerKey: function(audio) {
+    // Audio 객체별 고유 키
+    if (!audio._bgmKey) audio._bgmKey = 'bgm_' + (++BGM._keySeq);
+    return audio._bgmKey;
+  },
+  _keySeq: 0,
+
+  _setTimer: function(audio, iv) {
+    var k = this._timerKey(audio);
+    this._timers[k] = iv;
+  },
+
+  _clearTimer: function(audio) {
+    var k = this._timerKey(audio);
+    if (this._timers[k]) {
+      clearInterval(this._timers[k]);
+      delete this._timers[k];
+    }
+  },
+
+  _removeTimer: function(audio, iv) {
+    var k = this._timerKey(audio);
+    if (this._timers[k] === iv) delete this._timers[k];
   }
 };

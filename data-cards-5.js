@@ -50,6 +50,7 @@ var CARDS_RESOURCE = [
     right: { label: "다음으로 연기", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },
 
   { id: "C-109", act: [1,2], priority: "하",
+    cond: function(s,g,logs){ return logs.indexOf("LOG-GYM")<0 },
     msg: "일반 요원들이 기지 내 체력 단련 시설 설치를 요청했습니다.\n\n\"장기 근무에 체력 유지가 필요합니다.\"\n\n자원이 소모되지만 사기에 도움이 됩니다.",
     left: { label: "간이 체력장 설치", fx: { c: 0, r: -1, t: 2, o: 0 }, g: 0 },
     right: { label: "자원 여유 생기면", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
@@ -72,7 +73,7 @@ var CARDS_RESOURCE = [
   // ═══ 후속 카드 (1회성 이벤트 이후) ═══
   { id: "C-153", act: [1,2], priority: "하", bg: "supply",
     req: function(s,g,logs){ return logs.includes("LOG-025") && s.day >= 5 },
-    msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"더 깊이 들어가면 있을 수 있습니다.\"",
+    msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"아직 수색하지 않은 구역이 남아 있습니다. 물자가 더 있을 가능성이 높습니다.\"",
     left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-154", act: [1,2,3], priority: "하", bg: "lab",

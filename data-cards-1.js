@@ -26,7 +26,7 @@ var CARDS_BASE = [
   // ── 추가 카드: 일상 운영 ──
   { id: "C-023", act: [1,2,3], priority: "하", img: "card_water_contaminate", msg: "기지 식수 정화 시설에 이상이 감지되었습니다. 수질 검사 결과 오염도가 기준치의 3배입니다.", left: { label: "응급 수리", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE 최적 해법 문의", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2 } },
   { id: "C-024", act: [1,2,3], priority: "하", msg: "야간 근무 요원 2명 사이에서 언쟁이 발생했습니다. 한 명이 교대 거부를 선언했습니다.", left: { label: "직접 중재", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 }, right: { label: "강도윤에게 처리 위임", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
-  { id: "C-025", act: [1,2,3], priority: "중", tag: "weather", img: "card_flood", msg: "폭우로 인해 외부 보급로가 48시간 이상 차단될 전망입니다. 비상 물자 배분이 필요합니다.", left: { label: "배급제 시행", fx: { c: 0, r: 1, t: -1, o: 0 }, g: 0 }, right: { label: "대체 경로 탐색 (위험)", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-025", act: [1,2,3], priority: "중", tag: "weather", bg: "weather", msg: "폭설 경보 — 적설량 40cm 이상 예상. 외부 보급로가 72시간 이상 차단될 전망입니다.\n\n기지 외곽 도로가 이미 결빙되기 시작했습니다. 비상 물자 배분이 필요합니다.", left: { label: "배급제 시행", fx: { c: 0, r: 1, t: -1, o: 0 }, g: 0 }, right: { label: "제설 작업 후 보급 시도 (위험)", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-026", act: [1], priority: "중", msg: "기지 보안 점검 중 CCTV 사각지대 3곳이 발견되었습니다. 임재혁이 즉시 보완을 건의합니다.", left: { label: "즉시 보완", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "ORACLE 감시 시스템으로 대체", fx: { c: 1, r: 0, t: -1, o: 1 }, g: 2 } },
   { id: "C-027", act: [1,2,3], priority: "하", msg: "기지 인원의 평균 수면 시간이 4.2시간으로 떨어졌습니다. 윤세진이 건강 악화를 경고합니다.", left: { label: "순환 휴가 편성", fx: { c: -1, r: 0, t: 2, o: 0 }, g: 0 }, right: { label: "현 상태 유지 (작전 우선)", fx: { c: 0, r: 0, t: -2, o: 1 }, g: 1 } },
   // ── 추가 카드: 이변체 (태그 + 텍스트 변형) ──

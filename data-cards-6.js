@@ -94,8 +94,8 @@ var CARDS_ACT1_DAILY = [
     right: { label: "의무실 격리로 충분", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-132", act: [1], priority: "하", bg: "base",
     msg: "기지 비상 발전기 정기 점검일입니다.\n\n임재혁: \"30분이면 끝납니다. 다만 그동안 기지 전체가 정전이에요. 야간에 할지 주간에 할지, 지휘관님이 정해주십시오.\"",
-    left: { label: "주간에 점검", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 0 },
-    right: { label: "연기", fx: { c: 0, r: 0, t: 0, o: -1 }, g: 0 } },
+    left: { label: "주간에 점검", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 1 },
+    right: { label: "야간에 점검", fx: { c: 1, r: 0, t: -1, o: 0 }, g: 0 } },
 
   // ═══ 후속 카드 ═══
   { id: "C-155", act: [1,2], priority: "하", bg: "supply",

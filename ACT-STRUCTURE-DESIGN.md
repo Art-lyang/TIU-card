@@ -1,6 +1,6 @@
 # TERMINAL SESSION — Act 구조 설계서 v2
 
-> 최종 업데이트: 2026-04-04 (구현 반영)
+> 최종 업데이트: 2026-04-08 (v0.5 반영)
 
 ## 설계 원칙 (확정)
 
@@ -18,7 +18,7 @@
 | **Act 2: 충돌** | 프로메테우스 대면, 균열 시작 | 긴장, 의심 | ~110장 | 6장 | c-1, r-1 |
 | **Act 3: 선택** | GI 기반 분기, 엔딩 수렴 | 위기, 선택 | ~60장 | 7장 | c-2, r-2, t-1 |
 
-총 카드: **206장** (9개 파일)
+총 카드: **321장** (15개 카드 파일 + 체인)
 
 ---
 
@@ -96,27 +96,33 @@ drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
 
 ## 3. 카드 풀 배분
 
-### 파일별 구성 (구현 완료)
+### 파일별 구성 (v0.5)
 
 | 파일 | 변수명 | 카드 수 | Act 범위 | 내용 |
 |------|--------|--------|---------|------|
 | data-cards-1.js | CARDS_BASE | 51 | 1,2,3 혼합 | 공통 운영 카드 |
 | data-cards-2.js | CARDS_STORY | 39 | 1→2→3 | 스토리 진행 |
-| data-cards-3.js | CARDS_ENDING | 28 | 3 | 엔딩 루트 |
-| data-cards-4.js | CARDS_INVESTIGATE | 10 | 1,2 | 이변체 연쇄 |
+| data-cards-3.js | CARDS_ENDING | 28 | 3 | 엔딩 루트 (day 최소 조건) |
+| data-cards-4.js | CARDS_INVESTIGATE | 12 | 1,2 | 이변체 연쇄 + 미조우 |
 | data-cards-5.js | CARDS_RESOURCE | 14 | 1,2,3 | 자원/일반 운영 |
 | data-cards-6.js | CARDS_ACT1_DAILY | 22 | 1 | Act 1 일상 |
 | data-cards-7.js | CARDS_ACT2_DAILY | 20 | 2 | Act 2 일상 |
 | data-cards-8.js | CARDS_TRANSITION | 11 | 2,3 | 전환 루트 전용 |
 | data-cards-9.js | CARDS_HAEUN | 11 | 3 | 서하은 분기 |
+| data-cards-10.js | CARDS_EXTRA | 20 | 1,2,3 | 추가 카드 |
+| data-cards-11.js | CARDS_CHAINS | 13 | 1,2,3 | 연계 체인 이벤트 |
+| data-cards-12.js | CARDS_NEW_A | 20 | 1,2 | Act 1~2 신규 |
+| data-cards-13.js | CARDS_NEW_B | 20 | 2,3 | Act 2~3 신규 |
+| data-cards-14.js | CARDS_ACT3 | 15 | 3 | Act 3 보강 |
+| data-cards-15.js | CARDS_EXTERNAL | 12 | 2,3 | 외부 인물 |
 
 ### Act별 활성 카드 풀 (추정)
 
 | Act | 풀 크기 |
 |-----|--------|
-| Act 1 | ~51장 (Core 11 + Act1 전용 7 + 1→2 공유 13 + Daily 22) |
-| Act 2 | ~110장 (Core + 1→2 + Act2 전용 29 + 2→3 17 + Daily 20 + Transition) |
-| Act 3 | ~60장 (Core + 2→3 + Act3 전용 10 + Ending 28 + Haeun 11) |
+| Act 1 | ~75장 (Core + Act1 전용 + 1→2 공유 + Daily + Extra + New12) |
+| Act 2 | ~170장 (Core + 1→2 + Act2 전용 + 2→3 + Daily + Transition + Investigate + Extra + New12/13 + Chain Events + External) |
+| Act 3 | ~100장 (Core + 2→3 + Act3 전용 + Ending + Haeun + Act3 Extra + External + New13) |
 
 ### 카드 조건 시스템
 
@@ -198,6 +204,29 @@ saveData = {
 | 게임오버 | SESSION #1 TERMINATED | SESSION #N TERMINATED |
 | GRANT | — | GRANT: ACTIVE — RENEWAL AVAILABLE |
 | 튜토리얼 | 3단계 | 스킵 버튼 표시 |
+
+---
+
+## v0.5 추가 시스템
+
+### 이브닝 챗
+하루 종료 후 간부 선택 대화. 7인 참여, 신뢰 티어(low/high/bond).
+파일: data-core.js + data-evening-trust-1.js + data-evening-trust-2.js + components-evening.js
+
+### BGM
+Web Audio API 3트랙 (boot/main/tension). Act별 자동 전환.
+파일: bgm.js + bgm_boot.js + bgm_main.js + bgm_tension.js
+
+### ORACLE 아카이브
+LOG 연동 43항목 용어 백과. 파일: data-archive.js + components-archive.js
+
+### LOG 난이도 시스템
+- 복합 조건: 관찰 LOG에 신뢰도 + 포획 연구 LOG 요구
+- GI 상한 잠금: 진실 LOG에 GI 상한 조건 (ORACLE 순응 시 차단)
+- 포획 게이팅: 이변체 연쇄 흐름 변경 (조우→결정→[포획]→관찰)
+
+### Act 3 카드 순서 보장
+엔딩 카드(CE-xxx)에 day 최소 조건 추가. 조기 등장 방지.
 
 ---
 

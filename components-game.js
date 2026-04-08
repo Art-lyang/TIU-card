@@ -22,15 +22,20 @@ function Stats(p){
   var pv=p.preview||{};
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
-      h('div',{className:'gauge-icon gauge-icon-'+s.k}),
-      h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},
-        h('div',{className:'gauge-bar-inner'},
-          delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(80,255,80,0.15)',zIndex:1,transition:'width 0.15s'}}):null,
-          h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
-          delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
+    sm.map(function(s){
+      var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));
+      var ft=typeof getFacilityTag==='function'?getFacilityTag(s.k,v):null;
+      return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+        h('div',{className:'gauge-icon gauge-icon-'+s.k}),
+        h('span',{className:'gauge-label'},s.l),
+        h('div',{style:{flex:1,display:'flex',flexDirection:'column',gap:2}},
+          h('div',{className:'gauge-bar'},
+            h('div',{className:'gauge-bar-inner'},
+              delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(80,255,80,0.15)',zIndex:1,transition:'width 0.15s'}}):null,
+              h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
+              delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
+          ft?h('div',{className:ft.cls,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:0.5}},ft.label):null),
+        h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'#50ff50':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
   );
 }
 function CardC(p){
@@ -105,6 +110,16 @@ function News(p){
       h('div',{style:{display:'flex',flexDirection:'column',gap:4}},
         statBar('c',st.c||50,'봉쇄'),statBar('r',st.r||60,'자원'),statBar('t',st.t||50,'신뢰'),statBar('o',st.o||40,'평가')),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(157,255,116,.55)',marginTop:8,fontStyle:'italic'}},assess)),
+    (function(){
+      var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
+      if(sitLines.length===0)return null;
+      return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(145,255,106,.08)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:6}},'[SITUATION REPORT]'),
+        sitLines.map(function(line,i){
+          var isWarn=line.indexOf('⚠')>=0;
+          return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'rgba(220,255,220,.7)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+        }))
+    })(),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
     p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(145,255,106,.08)',animation:'fadeIn 0.4s ease'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(157,255,116,.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),

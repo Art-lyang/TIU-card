@@ -1,11 +1,11 @@
-# TERMINAL SESSION — 카드 설계 가이드 v2
+# TERMINAL SESSION — 카드 설계 가이드 v3
 
-> 최종 업데이트: 2026-04-05 (226장 반영)
+> 최종 업데이트: 2026-04-08 (321장 반영)
 
 ## 카드 구조
 
 ```js
-{ 
+{
   id: "C-XXX",              // 고유 ID
   act: [1,2],               // Act 소속 (필수)
   priority: "상/중/하",      // 카드 상단 표시
@@ -14,10 +14,10 @@
   transReq: "B",            // 전환 루트 전용 (선택)
   req: (s,g,logs) => ...,   // 출현 조건 (선택)
   msg: "카드 본문",          // \n으로 줄바꿈
-  left: { 
-    label: "선택지", 
-    fx: { c:0, r:0, t:0, o:0 }, 
-    g: 0, 
+  left: {
+    label: "선택지",
+    fx: { c:0, r:0, t:0, o:0 },
+    g: 0,
     mission: "M-XXX",       // 미션 트리거 (선택)
     trust: 10               // 신뢰도 변동 (선택)
   },
@@ -77,13 +77,19 @@
 | `C-091~100` | data-cards-4.js | 이변체 연쇄 |
 | `C-101~156` | data-cards-5/6.js | 자원/Act1 일상 |
 | `C-133~152` | data-cards-7.js | Act2 일상 |
+| `C-157~176` | data-cards-10.js | 추가 카드 |
+| `C-177~178` | data-cards-4.js | 이변체 미조우 |
+| `C-179~192` | data-cards-11.js | 연계 체인 이벤트 |
+| `C-193~214` | data-cards-12.js | Act 1~2 신규 |
+| `C-213~232` | data-cards-13.js | Act 2~3 신규 |
+| `C-233~247` | data-cards-14.js | Act 3 보강 |
+| `C-248~260` | data-cards-15.js | 외부 인물 |
 | `CE-001~028` | data-cards-3.js | 엔딩 루트 |
 | `CT-001~011` | data-cards-8.js | 전환 루트 |
 | `CS-001~015` | data-cards-9.js | 서하은 분기 |
-| `C-157~176` | data-cards-10.js | 추가 카드 |
 | `CH-XXX-N` | data-chains.js | 연쇄 카드 내부 |
 
-## 카드 카테고리별 현황 (226장)
+## 카드 카테고리별 현황 (321장)
 
 | 카테고리 | 수 | 파일 |
 |----------|----|----|
@@ -94,14 +100,19 @@
 | Act 2→3 공유 | 17 | cards-1/2 |
 | Act 3 전용 | 10 | cards-2 |
 | 엔딩 루트 | 28 | cards-3 |
-| 이변체 연쇄 | 10 | cards-4 |
+| 이변체 연쇄 | 12 | cards-4 |
 | 자원/일반 운영 | 14 | cards-5 |
 | Act 1 일상 | 22 | cards-6 |
 | Act 2 일상 | 20 | cards-7 |
 | 전환 루트 | 11 | cards-8 |
 | 서하은 분기 | 11 | cards-9 |
 | 추가 카드 | 20 | cards-10 |
-| 잠금 | 2 | cards-1 |
+| 연계 체인 | 13 | cards-11 |
+| Act 1~2 신규 | 20 | cards-12 |
+| Act 2~3 신규 | 20 | cards-13 |
+| Act 3 보강 | 15 | cards-14 |
+| 외부 인물 | 12 | cards-15 |
+| 체인 카드 | 13 | chains |
 
 ## 연쇄 카드 (CHAINS)
 
@@ -130,23 +141,36 @@ CHAINS["CH-XXX"] = {
 | `LOG-INTRO-KD` | 강도윤 간부 자기소개 완료 |
 | `LOG-INTRO-YS` | 윤세진 간부 자기소개 완료 |
 | `LOG-INTRO-IJ` | 임재혁 간부 자기소개 완료 |
+| `LOG-INTRO-SY` | 박소영 자기소개 완료 |
 
 자기소개 완료 전에는 해당 간부 이름이 포함된 카드가 등장하지 않습니다.
 
 ## 미션 트리거
 
-| 카드 | 미션 | 방향 |
+| 카드 | 미션 | 비고 |
 |------|------|------|
-| C-003 | M-002 (Shell Talker) | right |
-| C-010 | M-001 (Blood Pit) | right |
-| C-042 | M-003 (미분류 흔적) | left |
-| C-044 | M-004 (Mannequin) | right |
-| C-046 | M-005 (Brood Drone) | right |
-| C-048 | M-006 (Spore Phantom) | left |
-| CE 카드 | M-007 (결정적 타격, GI≥40) | left |
-| CE 카드 | M-008 (관측중지, GI≤30) | left |
+| C-096 | M-001 (Blood Pit) | left/right 각각 다른 접근 |
+| C-097 | M-002 (Shell Talker) | left/right 각각 |
+| C-098 | M-004 (Mannequin) | left/right 각각 |
+| C-099 | M-005 (Brood Drone) | left/right 각각 |
+| C-100 | M-006 (Spore Phantom) | left/right 각각 |
+| C-042 left | M-003 (미분류 흔적) | |
+| CE 카드 | M-007 (결정적 타격, GI≥40) | |
+| CE 카드 | M-008 (관측중지, GI≤30) | |
 
-## 로그 해금 매핑
+## 미션 3선택지 시스템 (v0.5)
+
+M-001, M-002, M-004에 적용:
+
+| 선택 | 결과 | 추가 LOG |
+|------|------|---------|
+| 제거 작전 | c+2, r-1, o+1 | 기본 LOG만 |
+| 연구용 확보 | r-2, t+1, o-1 | LOG-RES-xxx 추가 |
+| ORACLE 원격 (g+2) | c+1, t-1, o+2 | 기본 LOG만 |
+
+포획 연구 LOG: LOG-RES-012(Blood Pit), LOG-RES-011(Shell Talker), LOG-RES-001(Mannequin)
+
+## LOG 해금 매핑
 
 ### 카드 기반
 | 카드 | LOG | 비고 |
@@ -157,11 +181,24 @@ CHAINS["CH-XXX"] = {
 | C-042/043 | LOG-013 | SPEC-001 |
 | C-044/045 | LOG-014 | SPEC-003 |
 | C-046/047 | LOG-015 | SPEC-008 |
-| C-091~095 | LOG-020~024 | 이변체 관찰 |
-| C-102 | LOG-025 | 1회성 이벤트 |
-| C-106 | LOG-026 | 약초 재배 |
-| C-114 | LOG-027 | 군부대 물자 |
-| C-124 | LOG-028 | 동물 사체 |
+
+### 관찰 LOG (복합 조건, v0.5)
+| 카드 | LOG | 조건 |
+|------|-----|------|
+| C-091 | LOG-020 | LOG-RES-012 + sejin ≥ 40 |
+| C-092 | LOG-021 | LOG-RES-011 + jaehyuk ≥ 40 |
+| C-093 | LOG-022 | LOG-RES-001 + sejin ≥ 50 |
+| C-094 | LOG-023 | doyun ≥ 50 |
+| C-095 | LOG-024 | sejin ≥ 55 |
+
+### 진실 LOG (GI 상한 잠금, v0.5)
+| 카드 | LOG | GI 상한 |
+|------|-----|---------|
+| CH-004-2 | LOG-009 | g ≤ 5 |
+| C-053/CH-005-2 | LOG-016 | g ≤ 10 |
+| C-067 | LOG-017 | g ≤ 5 |
+| C-074/CH-006-2 | LOG-018 | g ≤ 0 |
+| C-079/C-086 | LOG-019 | g ≤ -5 |
 
 ### 전환 루트 카드
 | 카드 | LOG |
@@ -180,9 +217,49 @@ CHAINS["CH-XXX"] = {
 | CS-010 | LOG-056 | 임재혁 인수 |
 | CS-013~015 | LOG-057~059 | 간부 반응 |
 
+### 외부 인물 LOG (v0.5)
+| 카드 | LOG | 인물 |
+|------|-----|------|
+| CH-005-3 | LOG-080 | 베버 접선 완료 |
+| C-248 left | LOG-081 | 포스터 대면 |
+| C-249 left | LOG-081-DATA | 포스터 데이터 수령 |
+| C-250 | LOG-081-INTEL | 포스터 인텔 공유 |
+| C-081 left | LOG-082 | 박소영 합류 |
+| C-252 | LOG-082-REPORT | 박소영 첫 보고 |
+| C-253 | LOG-083 | 박소영 정체 발각 |
+
+### 연계 체인 LOG (v0.5)
+| 카드 | LOG | 체인 |
+|------|-----|------|
+| C-001 right | LOG-062 | 신규요원 트리거 |
+| C-109/C-159 | LOG-GYM | 체력단련 |
+| C-174/C-140 | LOG-FREEZER | 냉장실 |
+| C-179 left | LOG-063 | 엄격 재훈련 |
+| C-179 right | LOG-064 | 실전 투입 |
+| C-180 | LOG-063-DONE | 성공 |
+| C-181 | LOG-065 | 부상 |
+| C-182 | LOG-065-ATK | 습격 |
+| C-183 | LOG-065-END | ORACLE 종료 |
+| C-023 right | LOG-066 | 식수 오염 트리거 |
+| C-145 right | LOG-067 | 식수 오염 2 |
+| C-111 right | LOG-068 | 식수 오염 3 |
+| C-184 | LOG-069 | 식중독 |
+| C-185 | LOG-069-CREW | 요원 감소 |
+| C-186 | LOG-069-END | ORACLE 경고 |
+| C-041 right | LOG-070 | 야간 습격 트리거 |
+| C-163 right | LOG-071 | 야간 습격 2 |
+| C-018 right | LOG-072 | 야간 습격 3 |
+| C-084 left | LOG-073 | 야간 습격 4 |
+| C-188 | LOG-074 | 야간 습격 발생 |
+| C-189 | LOG-074-DONE | 강도윤 생존 |
+| C-190 | LOG-075 | 강도윤 사망 |
+| C-191 | LOG-074-ORC | 생존 후 ORACLE |
+| C-192 | LOG-075-ORC | 사망 후 ORACLE |
+
 ### 기타
 | 조건 | LOG |
 |------|-----|
+| day≥1 | LOG-001 |
 | day≥3 | LOG-002 |
 | day≥7 | LOG-011 |
 | GI≤-15 | LOG-009 |
@@ -190,7 +267,7 @@ CHAINS["CH-XXX"] = {
 | 서하은 신뢰 ≥70 | LOG-006 |
 | 윤세진 신뢰 ≥70 | LOG-007 |
 | 강도윤 신뢰 ≥65 | LOG-008 |
-| 임재혁 신뢰 ≥70 | LOG-012 |
+| 임재혁 대화 2단계 | LOG-012 |
 
 ## 카드 중복 방지 시스템
 
@@ -207,9 +284,10 @@ CHAINS["CH-XXX"] = {
 ## 새 카드 추가 규칙
 
 1. 적절한 data-cards-N.js 파일에 추가
-2. 해당 배열 변수에 포함 (CARDS_BASE, CARDS_STORY, CARDS_EXTRA 등)
-3. app.js의 CARDS 병합에 CARDS_EXTRA 포함 확인
+2. 해당 배열 변수에 포함
+3. app-utils.js의 CARDS 병합에 해당 변수 포함 확인
 4. `act` 필드 필수
-5. 1회성 이벤트는 `req`에 LOG 조건 + checkLogs에 해금 추가
+5. 1회성 이벤트는 `req`에 LOG 조건 + app.js checkLogs에 해금 추가
 6. 연쇄는 data-chains.js에 추가
 7. 파일이 200줄 초과 시 새 파일 분리 → index.html에 스크립트 추가
+8. 미션 log 필드: 단일 문자열 또는 배열 가능 (v0.5, 포획 경로 등)

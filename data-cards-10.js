@@ -16,7 +16,7 @@ var CARDS_EXTRA = [
     right: { label: "폐기 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
 
   { id: "C-159", act: [1], priority: "하", bg: "base",
-    cond: function(s,g,logs){ return !logs.includes("LOG-078") },
+    cond: function(s,g,logs){ return !logs.includes("LOG-078") && logs.indexOf("LOG-GYM")<0 },
     msg: "요원들이 기지 내 운동 공간 확보를 요청합니다.\n\n\"좁습니다. 사기도 떨어집니다.\"\n\n이미 공간은 제한적입니다.",
     left: { label: "간이 체력장 구성", fx: { c: 0, r: -1, t: 2, o: 0 }, g: -1 },
     right: { label: "기존 배치 유지", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
@@ -96,6 +96,7 @@ var CARDS_EXTRA = [
     right: { label: "소각 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   { id: "C-174", act: [1,2,3], priority: "중", bg: "lab",
+    cond: function(s,g,logs){ return logs.indexOf("LOG-FREEZER")<0 },
     msg: "의료실 냉동고 전력 소비가 급증합니다.\n\n윤세진: \"샘플이 너무 많아졌어요. 냉동고가 풀가동인데도 온도가 올라가고 있습니다. 이러다 기존 표본까지 손상됩니다.\"",
     left: { label: "추가 냉동고 설치", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
     right: { label: "일부 샘플 처리", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
