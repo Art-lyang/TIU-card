@@ -160,23 +160,23 @@ function EveningChat(p){
       portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80,borderRadius:'50%',objectFit:'cover'}}),
       h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold',marginTop:4}},selChar.name),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#1a8a1a',marginTop:2}},selChar.role)),
-    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',marginBottom:0}},
+    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',marginBottom:0,touchAction:'pan-y',WebkitUserSelect:'none',userSelect:'none'}},
       h('div',{className:'oracle-card__glow'}),
       chatLines.length>0?h(React.Fragment,null,
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'#33ff33',animation:'blink 1s infinite',marginLeft:1}},'█'))
-      ):h('div',{style:{fontSize:13,color:'rgba(157,255,116,.4)'}},'...')),
-    done&&(function(){
-      var resp=typeof getEveningResponse==='function'?getEveningResponse(chat,p.trust):null;
-      if(!resp)return h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]');
-      if(pickedResp)return h('div',{style:{textAlign:'center',margin:'8px auto',maxWidth:380}},
-        h('div',{style:{fontSize:12,color:'rgba(157,255,116,.5)',fontFamily:"'Share Tech Mono',monospace",margin:'4px 0 6px',letterSpacing:1}},pickedResp.reply),
-        h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
-      return h('div',{style:{display:'flex',flexDirection:'column',gap:6,margin:'8px auto',maxWidth:380}},
-        h('button',{className:'btn',style:{padding:'8px 16px',fontSize:11,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)'},
-          onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);setPickedResp(resp.a)}},'\u25B8 '+resp.a.label),
-        h('button',{className:'btn',style:{padding:'8px 16px',fontSize:11,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)'},
-          onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);setPickedResp(resp.b)}},'\u25B8 '+resp.b.label));
-    })(),
+      ):h('div',{style:{fontSize:13,color:'rgba(157,255,116,.4)'}},'...'),
+      done&&(function(){
+        var resp=typeof getEveningResponse==='function'?getEveningResponse(chat,p.trust):null;
+        if(!resp)return h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto 0',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]');
+        if(pickedResp)return h('div',{style:{textAlign:'center',marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.1)'}},
+          h('div',{style:{fontSize:12,color:'rgba(157,255,116,.5)',fontFamily:"'Share Tech Mono',monospace",margin:'4px 0 8px',letterSpacing:.5,lineHeight:1.6}},pickedResp.reply),
+          h('button',{className:'btn btn-amber',style:{margin:'4px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
+        return h('div',{style:{marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.1)',display:'flex',flexDirection:'column',gap:8}},
+          h('button',{className:'btn',style:{padding:'10px 14px',fontSize:12,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)',lineHeight:1.4},
+            onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);setPickedResp(resp.a)}},'\u25B8 '+resp.a.label),
+          h('button',{className:'btn',style:{padding:'10px 14px',fontSize:12,textAlign:'left',color:'#9dff74',border:'1px solid rgba(145,255,106,.2)',background:'rgba(145,255,106,.04)',lineHeight:1.4},
+            onClick:function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);setPickedResp(resp.b)}},'\u25B8 '+resp.b.label));
+      })()),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL \u2014 BRANCH KR-INIT-001')));
 }
