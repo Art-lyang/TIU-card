@@ -43,14 +43,27 @@ function EvidenceTable(p) {
   var catColor = { oracle: '#f0a030', field: '#50ff50', external: '#4ae', incident: '#ff6666', internal: '#c080ff' };
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
 
-  // 접힌 상태: 토글 버튼만 (forceOpen이면 항상 펼침)
-  if (!show && !p.forceOpen) return h('div', { onClick: function() { setShow(true) },
-    style: { margin: '12px auto 0', padding: '8px 16px', cursor: 'pointer',
-      border: '1px solid rgba(145,255,106,.15)', background: 'rgba(145,255,106,.02)',
-      textAlign: 'center', maxWidth: 440, borderRadius: 3 } },
-    h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-      color: 'rgba(145,255,106,.5)', letterSpacing: 2 } },
-      '\u25BC EVIDENCE TABLE (' + collected.length + ')'));
+  // 접힌 상태: 증거 미리보기 + 토글 (펼친 크기와 유사한 공간 확보)
+  if (!show && !p.forceOpen) return h('div', { style: { margin: '12px auto 0', maxWidth: 440,
+    border: '1px solid rgba(145,255,106,.12)', background: 'rgba(10,18,10,.8)',
+    borderRadius: 3, padding: '10px 12px' } },
+    h('div', { onClick: function() { setShow(true) }, style: { cursor: 'pointer',
+      marginBottom: 8, display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+      h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
+        color: 'rgba(145,255,106,.5)', letterSpacing: 2 } },
+        'EVIDENCE TABLE (' + collected.length + ')'),
+      h('span', { style: { fontSize: 9, color: 'rgba(145,255,106,.4)' } }, '\u25BC OPEN')),
+    h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, opacity: 0.4 } },
+      collected.slice(0, 4).map(function(ev) {
+        var cc = catColor[ev.cat] || '#9dff74';
+        return h('div', { key: ev.id, onClick: function() { setShow(true) },
+          style: { flex: '0 0 calc(50% - 3px)', padding: '4px 6px', cursor: 'pointer',
+            border: '1px solid rgba(145,255,106,.06)', borderRadius: 2 } },
+          h('div', { style: { fontSize: 10, color: 'rgba(220,255,220,.5)', lineHeight: 1.3 } }, ev.name));
+      })),
+    collected.length > 4 && h('div', { style: { fontSize: 9, color: 'rgba(145,255,106,.25)',
+      textAlign: 'center', marginTop: 4, fontFamily: "'Share Tech Mono',monospace" } },
+      '+ ' + (collected.length - 4) + ' more'));
 
   return h('div', { style: { margin: '12px auto 0', maxWidth: 440, border: '1px solid rgba(145,255,106,.12)',
     background: 'rgba(10,18,10,.8)', borderRadius: 3, padding: '10px 12px' } },
