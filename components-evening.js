@@ -87,6 +87,7 @@ function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
+  var _cd=useState(false),chatDone=_cd[0],setChatDone=_cd[1];
   // 이브닝 앰비언트 사운드 시작/정지
   useEffect(function(){ EveningAmbient.start(); return function(){ EveningAmbient.stop(); }; },[]);
   var chars=[{name:'\uc11c\ud558\uc740',key:'haeun',role:'\ubd80\uc9c0\ud718\uad00'},{name:'\uac15\ub3c4\uc724',key:'doyun',role:'\ud604\uc7a5\uc694\uc6d0'},{name:'\uc724\uc138\uc9c4',key:'sejin',role:'\uc5f0\uad6c\uc6d0'},{name:'\uc784\uc7ac\ud601',key:'jaehyuk',role:'\uae30\uc220\uad00'},{name:'\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84',key:'weber',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ub2c9 \ud3ec\uc2a4\ud130',key:'foster',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ubc15\uc18c\uc601',key:'soyoung',role:'\ubd84\uc11d\uad00'}];
@@ -132,9 +133,9 @@ function EveningChat(p){
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(220,255,220,.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' \uc885\ub8cc'),
-    h('div',{style:{fontSize:13,color:'rgba(157,255,116,.6)',textAlign:'center',marginBottom:20}},'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
-    h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
-      available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){setSelChar(c);if(p.onChat)p.onChat(c.name);
+    h('div',{style:{fontSize:13,color:'rgba(157,255,116,.6)',textAlign:'center',marginBottom:20}},chatDone?'대화를 마쳤습니다.':'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
+    h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto',opacity:chatDone?0.3:1,pointerEvents:chatDone?'none':'auto'}},
+      available.map(function(c){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){if(chatDone)return;setSelChar(c);if(p.onChat)p.onChat(c.name);
         // 선택한 캐릭터의 챗을 사용 완료 마킹 (호감도 순서 반영)
         var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
         var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
@@ -153,7 +154,7 @@ function EveningChat(p){
         })()
       )})),
     typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,onTrust:p.onTrustMod,onGi:p.onGiMod,unlocked:p.logs.indexOf('LOG-EV-UNLOCK')>=0}),
-    h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:p.onDone},'[ \uac74\ub108\ub6f0\uae30 ]'));
+    h('button',{className:'btn'+(chatDone?' btn-amber':''),style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:chatDone?1:0.5},onClick:p.onDone},chatDone?'[ \ub2e4\uc74c \ub0a0\ub85c ]':'[ \uac74\ub108\ub6f0\uae30 ]'));
   var portrait=CHAR_IMG[selChar.name]||null;
   var preventH=function(e){e.preventDefault()};
   var resetH=function(){preventH._sx=null;preventH._sy=null};
@@ -175,10 +176,11 @@ function EveningChat(p){
       ):h('div',{style:{fontSize:13,color:'rgba(157,255,116,.4)'}},'...'),
       done&&(function(){
         var resp=typeof getEveningResponse==='function'?getEveningResponse(chat,p.trust):null;
-        if(!resp)return h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto 0',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]');
+        var backToSel=function(){setChatDone(true);setSelChar(null)};
+        if(!resp)return h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto 0',padding:'10px 28px'},onClick:backToSel},'[ \ub2e4\uc74c ]');
         if(pickedResp)return h('div',{style:{marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.1)'}},
           h('div',{style:{fontSize:12,color:'rgba(157,255,116,.5)',fontFamily:"'Share Tech Mono',monospace",padding:'8px 14px',borderLeft:'3px solid rgba(145,255,106,.15)',background:'rgba(145,255,106,.02)',lineHeight:1.6,marginBottom:10}},pickedResp.reply),
-          h('button',{className:'btn btn-amber',style:{display:'block',margin:'0 auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
+          h('button',{className:'btn btn-amber',style:{display:'block',margin:'0 auto',padding:'10px 28px'},onClick:backToSel},'[ \ub2e4\uc74c ]'));
         return h('div',{style:{marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.08)',display:'flex',flexDirection:'column',gap:6}},
           choiceBtn(resp.a.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);if(resp.a.log&&p.onLog)p.onLog(resp.a.log);setPickedResp(resp.a)}),
           choiceBtn(resp.b.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);if(resp.b.log&&p.onLog)p.onLog(resp.b.log);setPickedResp(resp.b)}));
