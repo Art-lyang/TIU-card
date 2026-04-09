@@ -150,8 +150,11 @@ function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
   var count=4;if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=3;if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=2;if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=1;
   var s0=useState(function(){
-    var pool=pickN(REWARDS,count);
-    // 시설 확장 리워드 삽입 (승인됨 & 미완료)
+    // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
+    var basePool=REWARDS.slice();
+    if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
+    var pool=pickN(basePool,count);
+    // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
       var fac=p.facility;var feRewards=[];
       fac.approved.forEach(function(feId){
@@ -159,8 +162,6 @@ function RewardScreen(p){
         var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
         if(fe)feRewards.push({id:'R-'+fe.id,feId:fe.id,title:fe.rewardTitle,desc:fe.rewardDesc,benefit:fe.rewardBenefit,cost:fe.rewardCost,fx:fe.rewardFx})});
       if(feRewards.length>0){pool=pool.slice(0,Math.max(1,count-feRewards.length)).concat(feRewards.slice(0,count))}
-      // 시설 완료 후 보너스 보상 추가
-      if(typeof REWARDS_FACILITY_BONUS!=='undefined'){var compB=REWARDS_FACILITY_BONUS.filter(function(r){return fac.completed.indexOf(r.feReq)>=0});if(compB.length>0)pool=pool.concat(pickN(compB,1))}
     }
     return pool;
   }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
