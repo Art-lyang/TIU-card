@@ -152,7 +152,7 @@ function EveningChat(p){
             tags.map(function(tg,ti){return h('span',{key:ti,className:tg.cls,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:8,padding:'1px 4px',borderRadius:2,letterSpacing:0.5}},tg.label)}))
         })()
       )})),
-    typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,onTrust:p.onTrustMod,onGi:p.onGiMod,unlocked:(p.usedEvening||[]).some(function(k){return k.indexOf('\uc784\uc7ac\ud601')===0})}),
+    typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,onTrust:p.onTrustMod,onGi:p.onGiMod,unlocked:p.logs.indexOf('LOG-EV-UNLOCK')>=0}),
     h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:p.onDone},'[ \uac74\ub108\ub6f0\uae30 ]'));
   var portrait=CHAR_IMG[selChar.name]||null;
   var preventH=function(e){e.preventDefault()};
@@ -180,8 +180,8 @@ function EveningChat(p){
           h('div',{style:{fontSize:12,color:'rgba(157,255,116,.5)',fontFamily:"'Share Tech Mono',monospace",padding:'8px 14px',borderLeft:'3px solid rgba(145,255,106,.15)',background:'rgba(145,255,106,.02)',lineHeight:1.6,marginBottom:10}},pickedResp.reply),
           h('button',{className:'btn btn-amber',style:{display:'block',margin:'0 auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
         return h('div',{style:{marginTop:'auto',paddingTop:10,borderTop:'1px solid rgba(145,255,106,.08)',display:'flex',flexDirection:'column',gap:6}},
-          choiceBtn(resp.a.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);setPickedResp(resp.a)}),
-          choiceBtn(resp.b.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);setPickedResp(resp.b)}));
+          choiceBtn(resp.a.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.a.trust);if(resp.a.log&&p.onLog)p.onLog(resp.a.log);setPickedResp(resp.a)}),
+          choiceBtn(resp.b.label,function(){if(p.onResponse)p.onResponse(selChar.name,resp.b.trust);if(resp.b.log&&p.onLog)p.onLog(resp.b.log);setPickedResp(resp.b)}));
       })()),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL \u2014 BRANCH KR-INIT-001')));
 }

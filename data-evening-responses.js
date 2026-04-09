@@ -40,6 +40,10 @@ var EVENING_RESPONSES = {
     a: { label: '나도 같은 의문이 있다.', trust: 2, reply: '...역시. 지휘관님도 느끼신 거군요.' },
     b: { label: '시스템 점검에 집중해.', trust: 0, reply: '알겠습니다.' }
   },
+  'jaehyuk_1_5-8': {
+    a: { label: '좋다. 바로 구축해.', trust: 2, reply: '감사합니다. 단말기에 증거 분석 모듈을 올리겠습니다.', log: 'LOG-EV-UNLOCK' },
+    b: { label: '허가한다. 단, 보안에 주의해.', trust: 1, reply: '물론입니다. 접근 권한은 지휘관님 전용으로 설정하겠습니다.', log: 'LOG-EV-UNLOCK' }
+  },
   'jaehyuk_1_7-10': {
     a: { label: '같이 찾아보자.', trust: 2, reply: '감사합니다. 기술자로서... 꼭 알고 싶습니다.' },
     b: { label: '위험할 수 있다. 조심해.', trust: 1, reply: '네, 조심하겠습니다.' }

@@ -58,6 +58,7 @@ var ORACLE_LOGS = [
   { id: "LOG-017", title: "EV-Σ 억제제 연구 노트", content: "[연구 기록 — 윤세진]\n\nPhase 전환 지연 화합물 발견.\n혈중 EV-Σ 프리온 자기 변형 속도를 40% 감소.\n\n시제품 단계. 현장 테스트 필요.\n\n이것이 되면 Phase 0 감염자를 구할 수 있다." },
   { id: "LOG-018", title: "서하은 최종 보고서", content: "[비공식 — 암호화 보관]\n\nORACLE이 삭제한 데이터 목록:\n1. 프로메테우스 COASTAL MIRROR 작전 정보\n2. 한국 해안 방벽 기술 데이터 전송 기록\n3. GRANT 임시 권한 전체 내용\n4. 지부 설립 이전 한국 관련 ORACLE 활동 기록\n\n결론: ORACLE은 한국을 보호하는 것이 아니라\n한국의 기밀을 수집하는 동시에 봉쇄를 유지하고 있다.\n\n— 서하은" },
   { id: "LOG-019", title: "ORACLE 은폐 통신 기록", content: "[임재혁 기술 분석]\n\n매일 02:00~04:00 외부 통신 확인.\n통신 대상: ORACLE 본부 (추정)\n\n전송 데이터 추정 목록:\n- 한국 군사 네트워크 접속 데이터\n- 해안 방벽 기술 사양\n- 지부 운영 전 로그\n- 요원 행동 패턴 + 충성도 지표\n\nORACLE은 우리를 통해 한국을 감시하고 있다." },
+  { id: "LOG-EV-UNLOCK", title: "증거 분석 모듈 가동", content: "[기술 보고 — 임재혁]\n\n증거 분석 프레임워크 v1.0 단말기 탑재 완료.\n\n기능: 수집된 데이터 조각 교차 분석\n접근 권한: 지휘관 전용\n\n산재한 로그, 관측 기록, 사건 보고서를\n조합하여 패턴을 도출할 수 있습니다.\n\n이브닝 세션에서 증거 조합이 가능합니다.\n게임 중 자료수집 탭에서 수집 현황을 확인할 수 있습니다." },
 ];
 
 var EVENING_CHATS = [
@@ -117,6 +118,8 @@ var EVENING_CHATS = [
     lines: ["\uae30\uc9c0 \uc778\ud504\ub77c \uc810\uac80 \uacb0\uacfc \ub9d0\uc500\ub4dc\ub824\ub3c4 \ub420\uae4c\uc694.", "\ubc30\uad00\uc774 3\uacf3 \ubd80\uc2dd\ub410\uace0, \uc804\ub825 \ubd84\ubc30\uae30 2\uac1c\uac00 \uad50\uccb4 \uc2dc\uae30\ub97c \ub118\uacbc\uc2b5\ub2c8\ub2e4.", "\uc804\uc784 \uc9c0\ud718\uad00 \uc5c6\uc774 3\uac1c\uc6d4... \uc720\uc9c0\ubcf4\uc218 \uacf5\ubc31\uc774 \uaf3d \uc2ec\ud569\ub2c8\ub2e4."] },
   { char: '\uc784\uc7ac\ud601', act: [1], dayMin: 4, dayMax: 6,
     lines: ["ORACLE \uc2dc\uc2a4\ud15c \ucc98\uc74c \ub9cc\uc84c\uc744 \ub54c \ub180\ub798\uc2b5\ub2c8\ub2e4.", "\uc774 \uaddc\ubaa8\uc758 \uae30\uc9c0\uc5d0 \uc774 \uc218\uc900\uc758 AI \uc2dc\uc2a4\ud15c\uc774\ub77c\ub2c8. \uacfc\ubd84\ud558\ub2e4\uace0 \ub290\uaf08\uc2b5\ub2c8\ub2e4.", "\uadfc\ub370 \uc694\uc998\ub294... \uc65c \uc774\ub7f0 \uc2dc\uc2a4\ud15c\uc744 \uc5ec\uae30\uc5d0 \ubc30\uce58\ud588\uc744\uae4c, \uadf8 \uc774\uc720\uac00 \uada4\uae08\ud569\ub2c8\ub2e4."] },
+  { char: '\uc784\uc7ac\ud601', act: [1], dayMin: 5, dayMax: 8,
+    lines: ["지휘관님, 하나 제안드려도 될까요.", "기지 운영하면서 여러 시스템에서 데이터 조각들이 쌓이고 있습니다.", "로그, 관측 기록, 사건 보고서... 따로 보면 의미 없는데, 모아놓으면 패턴이 보일 수 있습니다.", "단말기에 증거 분석 프레임워크를 구축할 수 있습니다. 허가해주시겠습니까?"] },
   { char: '\uc784\uc7ac\ud601', act: [1], dayMin: 7, dayMax: 10,
     lines: ["\ub2e8\ub9d0\uae30 \uc544\ud0a4\ud14d\ucc98\ub97c \ubd84\uc11d\ud558\uace0 \uc788\ub294\ub370\uc694.", "\uc2dc\uc2a4\ud15c \uad6c\uc870\uac00 \uc880 \uc774\uc0c1\ud569\ub2c8\ub2e4. \ud45c\uba74\uc801\uc73c\ub860 3\uacc4\uce35\uc778\ub370, \uc2e4\uc81c\ub860 5\uacc4\uce35 \uc774\uc0c1\uc774\uc5d0\uc694.", "\uc811\uadfc \ubabb\ud558\ub294 \ub808\uc774\uc5b4\uac00 \uc788\uc2b5\ub2c8\ub2e4. \uc81c \uad8c\ud55c\uc73c\ub85c\ub294."] },
   { char: '\uc784\uc7ac\ud601', act: [2], dayMin: 11, dayMax: 17,
