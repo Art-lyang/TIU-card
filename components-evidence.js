@@ -7,9 +7,9 @@ function EvidenceTable(p) {
   var unlocked = getUnlockedCombos();
   var s1 = useState([]), selected = s1[0], setSelected = s1[1];
   var s2 = useState(null), result = s2[0], setResult = s2[1];
-  var s3 = useState(false), show = s3[0], setShow = s3[1];
+  var s3 = useState(!!p.forceOpen), show = s3[0], setShow = s3[1];
 
-  if (collected.length < 2) return null;
+  if (!p.unlocked || collected.length < 2) return null;
 
   var toggle = function(evId) {
     if (result) return;
@@ -43,8 +43,8 @@ function EvidenceTable(p) {
   var catColor = { oracle: '#f0a030', field: '#50ff50', external: '#4ae', incident: '#ff6666', internal: '#c080ff' };
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
 
-  // 접힌 상태: 토글 버튼만
-  if (!show) return h('div', { onClick: function() { setShow(true) },
+  // 접힌 상태: 토글 버튼만 (forceOpen이면 항상 펼침)
+  if (!show && !p.forceOpen) return h('div', { onClick: function() { setShow(true) },
     style: { margin: '12px auto 0', padding: '8px 16px', cursor: 'pointer',
       border: '1px solid rgba(145,255,106,.15)', background: 'rgba(145,255,106,.02)',
       textAlign: 'center', maxWidth: 440, borderRadius: 3 } },
@@ -129,4 +129,22 @@ function EvidenceTable(p) {
           marginBottom: 2 } }, '\u2713 ' + c.name);
       }))
   );
+}
+
+// 게임 화면용 증거 패널 오버레이
+function EvidencePanel(p) {
+  return h('div', { style: { position: 'fixed', inset: 0, zIndex: 100,
+    background: 'rgba(5,10,5,.95)', overflowY: 'auto', padding: '20px 16px' } },
+    h('div', { style: { maxWidth: 440, margin: '0 auto' } },
+      h('div', { style: { display: 'flex', justifyContent: 'space-between',
+        alignItems: 'center', marginBottom: 16, paddingBottom: 8,
+        borderBottom: '1px solid rgba(145,255,106,.15)' } },
+        h('span', { style: { fontFamily: "'Share Tech Mono',monospace",
+          fontSize: 13, color: '#9dff74', letterSpacing: 2 } }, 'EVIDENCE TABLE'),
+        h('span', { onClick: p.onClose, style: { cursor: 'pointer',
+          fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
+          color: 'rgba(145,255,106,.5)', padding: '4px 8px',
+          border: '1px solid rgba(145,255,106,.2)' } }, '[ CLOSE ]')),
+      h(EvidenceTable, { logs: p.logs, onTrust: p.onTrust, onGi: p.onGi,
+        unlocked: true, forceOpen: true })));
 }

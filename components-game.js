@@ -159,6 +159,8 @@ function RewardScreen(p){
         var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
         if(fe)feRewards.push({id:'R-'+fe.id,feId:fe.id,title:fe.rewardTitle,desc:fe.rewardDesc,benefit:fe.rewardBenefit,cost:fe.rewardCost,fx:fe.rewardFx})});
       if(feRewards.length>0){pool=pool.slice(0,Math.max(1,count-feRewards.length)).concat(feRewards.slice(0,count))}
+      // 시설 완료 후 보너스 보상 추가
+      if(typeof REWARDS_FACILITY_BONUS!=='undefined'){var compB=REWARDS_FACILITY_BONUS.filter(function(r){return fac.completed.indexOf(r.feReq)>=0});if(compB.length>0)pool=pool.concat(pickN(compB,1))}
     }
     return pool;
   }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];

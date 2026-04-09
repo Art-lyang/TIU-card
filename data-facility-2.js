@@ -94,6 +94,26 @@ function getFacilityStatusLines(stats, completedFE, approvedFE) {
   return lines;
 }
 
+// ── 시설 완료 후 추가 보상 카드 (REWARDS 풀 확장) ──
+var REWARDS_FACILITY_BONUS = [
+  { id: "RF-001", feReq: "FE-001", title: "냉동고 연구 데이터", desc: "저온 보관 샘플에서 새로운 분석 결과를 확보합니다.",
+    benefit: "평가 +10", cost: "자원 -5", fx: { c: 0, r: -1, t: 0, o: 2 } },
+  { id: "RF-002", feReq: "FE-002", title: "전투 태세 강화", desc: "훈련장 요원들의 대응력이 향상되었습니다.",
+    benefit: "봉쇄 +10, 신뢰 +5", cost: "자원 -5", fx: { c: 2, r: -1, t: 1, o: 0 } },
+  { id: "RF-003", feReq: "FE-003", title: "센서 경보 분석", desc: "고감도 센서가 새로운 패턴을 포착했습니다.",
+    benefit: "봉쇄 +10, 평가 +5", cost: "", fx: { c: 2, r: 0, t: 0, o: 1 } },
+  { id: "RF-004", feReq: "FE-004", title: "격리동 의료 보고", desc: "격리동의 정밀 검사로 감염 대응력이 개선됩니다.",
+    benefit: "신뢰 +10", cost: "자원 -5", fx: { c: 0, r: -1, t: 2, o: 0 } },
+  { id: "RF-005", feReq: "FE-005", title: "2차 보급로 물자", desc: "산악 경로를 통한 추가 물자가 도착했습니다.",
+    benefit: "자원 +15", cost: "봉쇄 -5", fx: { c: -1, r: 3, t: 0, o: 0 } },
+  { id: "RF-006", feReq: "FE-006", title: "AI 감시 보고서", desc: "AI CCTV가 분석한 행동 패턴 보고서입니다.",
+    benefit: "봉쇄 +10, 평가 +5", cost: "", fx: { c: 2, r: 0, t: 0, o: 1 } },
+  { id: "RF-007", feReq: "FE-007", title: "벙커 비축품 점검", desc: "비상 벙커의 비축 물자를 점검하고 보충합니다.",
+    benefit: "신뢰 +5, 봉쇄 +5", cost: "자원 -5", fx: { c: 1, r: -1, t: 1, o: 0 } },
+  { id: "RF-008", feReq: "FE-008", title: "전진 관측 보고", desc: "확장 순찰로에서 수집한 정보를 분석합니다.",
+    benefit: "봉쇄 +15", cost: "자원 -5", fx: { c: 3, r: -1, t: 0, o: 0 } }
+];
+
 // ORACLE_LOGS에 커버 스토리 추가 (data-core.js 이후 로드됨)
 if (typeof ORACLE_LOGS !== 'undefined') {
   COVER_LOGS.forEach(function(log) { ORACLE_LOGS.push(log); });

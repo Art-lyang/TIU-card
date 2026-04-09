@@ -152,7 +152,7 @@ function EveningChat(p){
             tags.map(function(tg,ti){return h('span',{key:ti,className:tg.cls,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:8,padding:'1px 4px',borderRadius:2,letterSpacing:0.5}},tg.label)}))
         })()
       )})),
-    typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,onTrust:p.onTrustMod,onGi:p.onGiMod}),
+    typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,onTrust:p.onTrustMod,onGi:p.onGiMod,unlocked:(p.usedEvening||[]).some(function(k){return k.indexOf('\uc784\uc7ac\ud601')===0})}),
     h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:p.onDone},'[ \uac74\ub108\ub6f0\uae30 ]'));
   var portrait=CHAR_IMG[selChar.name]||null;
   var preventH=function(e){e.preventDefault()};
