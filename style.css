@@ -121,6 +121,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .mission-img{height:180px}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
+/* Font size settings */
+.fs-small .card-msg{font-size:12px}.fs-small .oracle-card__title{font-size:14px}.fs-small .oracle-card__desc{font-size:10px}
+.fs-large .card-msg{font-size:16px}.fs-large .oracle-card__title{font-size:18px}.fs-large .oracle-card__desc{font-size:14px}
 /* ── Choice Cards (Reward Screen) ── */
 .oracle-card{position:relative;padding:16px 18px 14px;border:1px solid rgba(133,255,92,.22);background:linear-gradient(180deg,rgba(145,255,106,.05),rgba(145,255,106,.01)),linear-gradient(90deg,rgba(145,255,106,.03),transparent 45%);box-shadow:0 0 10px rgba(145,255,106,.12),inset 0 0 20px rgba(145,255,106,.03);cursor:pointer;transition:all .16s ease;overflow:hidden;margin-bottom:8px}
 .oracle-card::before,.oracle-card::after{content:"";position:absolute;width:20px;height:20px;border-color:rgba(145,255,106,.45);pointer-events:none}
