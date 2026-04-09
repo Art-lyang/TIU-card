@@ -181,7 +181,7 @@ function App(){
   // facility는 오버레이로 게임 위에 표시 (아래 게임 return에서 렌더링)
   return h(React.Fragment,null,
     h('div',{className:'screen'},
-      h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
+      h('div',{style:{position:'relative',width:'100%',maxWidth:460}},h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),h('button',{className:'settings-btn',onClick:function(){setShowSettings(true)}},'⚙')),
       h(Stats,{stats:stats,preview:preview}),
       h('div',{className:'info-bar'},
         h('span',{className:'info-tag'},'ACT '+act),
@@ -192,7 +192,7 @@ function App(){
         logs.indexOf('LOG-EV-UNLOCK')>=0&&h('span',{className:'info-tag',style:{color:'#f0a030',cursor:'pointer'},onClick:function(){setPhase(phase==='evidence'?'game':'evidence')}},'자료수집')),
       h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
       toast&&h('div',{style:{position:'fixed',bottom:80,left:'50%',transform:'translateX(-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
-      h('div',{className:'footer-frame',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'),h('span',{style:{cursor:'pointer',fontSize:10,opacity:0.6,letterSpacing:1,fontFamily:"'Share Tech Mono',monospace",border:'1px solid rgba(var(--ui-rgb),0.2)',padding:'2px 6px'},onClick:function(){setShowSettings(true)}},'[SET]'))),
+      h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'))),
     phase==='facility'&&h(FacilityPanel,{facility:facility,onApprove:approvePending,onClose:function(){setPhase('game')}}),
     phase==='evidence'&&typeof EvidencePanel==='function'&&h(EvidencePanel,{logs:logs,onClose:function(){setPhase('game')}}),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onReset:restart,onFullReset:fullReset}));

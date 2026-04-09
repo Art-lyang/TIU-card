@@ -121,6 +121,10 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .mission-img{height:180px}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
+/* Settings Button */
+.settings-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:rgba(var(--ui-rgb),0.06);border:1px solid rgba(var(--ui-rgb),0.25);color:var(--ui);font-size:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;border-radius:2px;padding:0;line-height:1;text-shadow:0 0 6px var(--ui-glow);-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15);z-index:2}
+.settings-btn:active{background:rgba(var(--ui-rgb),0.15);border-color:rgba(var(--ui-rgb),0.5)}
+@media(max-width:430px){.settings-btn{width:28px;height:28px;font-size:14px;right:4px}}
 /* Font size settings */
 .fs-small .card-msg{font-size:12px}.fs-small .oracle-card__title{font-size:14px}.fs-small .oracle-card__desc{font-size:10px}
 .fs-large .card-msg{font-size:16px}.fs-large .oracle-card__title{font-size:18px}.fs-large .oracle-card__desc{font-size:14px}
