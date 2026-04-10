@@ -1,6 +1,8 @@
 // TERMINAL SESSION — app-utils.js
 // Utils, Save, SFX
 // NOTE: CARDS is defined in app.js (loaded after this file)
+// React aliases — must be defined before any component file
+var h=React.createElement,useState=React.useState,useEffect=React.useEffect,useRef=React.useRef,useCallback=React.useCallback;
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};

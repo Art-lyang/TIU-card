@@ -176,7 +176,7 @@ var BGM = {
       self._transitioning = false;
     });
     this.current = toName;
-  }
+  },
   // _fadeIn, _fadeOut, timer 관리 → bgm-fade.js
 
   // toggle: toggleMute alias (app.js 호환)
