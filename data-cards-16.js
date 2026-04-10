@@ -80,3 +80,4 @@ var CARDS_MIDGAME = [
     right: { label: "개별 면담으로 조용히 파악", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } }
 
 ];
+if(typeof CARDS !== 'undefined') CARDS = CARDS.concat(CARDS_MIDGAME);
