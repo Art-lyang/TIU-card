@@ -1,6 +1,6 @@
-# TERMINAL SESSION — 카드 Act 배분표 v2
+# TERMINAL SESSION — 카드 Act 배분표 v3
 
-> 최종 업데이트: 2026-04-04 (206장 반영)
+> 최종 업데이트: 2026-04-08 (321장 반영)
 
 ## 파일 구조
 
@@ -8,13 +8,19 @@
 |------|--------|--------|------|
 | data-cards-1.js | CARDS_BASE | 51 | 공통 운영 (Core 11 + Act1 7 + 1→2 13 + Act2 29 + 2→3 17 등) |
 | data-cards-2.js | CARDS_STORY | 39 | 스토리 진행 (프로메 + 서하은 + ORACLE + 엔딩 루트 접근) |
-| data-cards-3.js | CARDS_ENDING | 28 | 엔딩 루트 카드 (CE-001~028) |
-| data-cards-4.js | CARDS_INVESTIGATE | 10 | 이변체 연쇄 (첫 조우 5 + 결정 5) |
+| data-cards-3.js | CARDS_ENDING | 28 | 엔딩 루트 카드 (CE-001~028, day 최소 조건 포함) |
+| data-cards-4.js | CARDS_INVESTIGATE | 12 | 이변체 연쇄 (관찰5 + 결정5 + 미조우2) |
 | data-cards-5.js | CARDS_RESOURCE | 14 | 자원 회복 + 일반 운영 + 후속 |
 | data-cards-6.js | CARDS_ACT1_DAILY | 22 | Act 1 일상 (보급/인사/시설/순찰/날씨/통신/훈련) |
 | data-cards-7.js | CARDS_ACT2_DAILY | 20 | Act 2 일상 (보급지연/연구/정비/봉쇄/날씨/자원회복) |
 | data-cards-8.js | CARDS_TRANSITION | 11 | 전환 루트 전용 (CT-001~011) |
 | data-cards-9.js | CARDS_HAEUN | 11 | 서하은 분기 (CS-001~015) |
+| data-cards-10.js | CARDS_EXTRA | 20 | 추가 카드 (C-157~176) |
+| data-cards-11.js | CARDS_CHAINS | 13 | 연계 체인 이벤트 (C-179~192) |
+| data-cards-12.js | CARDS_NEW_A | 20 | Act 1~2 신규 (C-193~214) |
+| data-cards-13.js | CARDS_NEW_B | 20 | Act 2~3 신규 (C-213~232) |
+| data-cards-14.js | CARDS_ACT3 | 15 | Act 3 보강 (C-233~247) |
+| data-cards-15.js | CARDS_EXTERNAL | 12 | 외부 인물 (C-248~260) |
 
 ---
 
@@ -22,9 +28,9 @@
 
 | Act | 풀 크기 | 구성 |
 |-----|--------|------|
-| **Act 1** | ~51장 | Core 11 + Act1 전용 7 + 1→2 공유 13 + Act1 Daily 22 |
-| **Act 2** | ~110장 | Core 11 + 1→2 13 + Act2 전용 29 + 2→3 17 + Act2 Daily 20 + Transition 루트별 2~3 + Investigate 10 |
-| **Act 3** | ~60장 | Core 11 + 2→3 17 + Act3 전용 10 + Ending 28 + Haeun 루트별 2~6 |
+| **Act 1** | ~75장 | Core + Act1 전용 + 1→2 공유 + Daily + Extra(Act1) + New12(Act1) |
+| **Act 2** | ~170장 | Core + 1→2 + Act2 전용 + 2→3 + Daily + Transition + Investigate + Extra + New12 + New13 + Chain Events |
+| **Act 3** | ~100장 | Core + 2→3 + Act3 전용 + Ending + Haeun + Act3 Extra + External + New13(Act3) |
 
 ---
 
@@ -46,88 +52,40 @@
 
 ---
 
-## Act 1 전용 (7장)
+## 이변체 연쇄 (12장, data-cards-4.js)
 
-| ID | 내용 | 비고 |
-|----|------|------|
-| C-003 | Shell Talker 첫 보고 + M-002 | 1회성 (LOG-004) |
-| C-005 | ORACLE 펌웨어 업데이트 | |
-| C-007 | 강도윤 단독 정찰 | |
-| C-010 | Blood Pit 샘플 채취 + M-001 | 1회성 (LOG-005) |
-| C-014 | 윤세진 개인 기록 | |
-| C-026 | CCTV 사각지대 | |
-| C-041 | 강도윤 부상 | |
+v0.5 흐름 변경: 조우 → 결정(미션) → [포획 시] 관찰
 
----
-
-## Act 1 일상 (22장, data-cards-6.js)
-
-| ID | 카테고리 | bg |
-|----|---------|-----|
-| C-113~C-116 | 보급/자원 | supply |
-| C-117~C-119 | 인사/사기 | base |
-| C-120~C-122 | 시설/정비 | base, lab |
-| C-123~C-125 | 순찰/봉쇄 | forest |
-| C-126~C-127 | 날씨 | weather (tag: weather) |
-| C-128~C-129 | 통신/ORACLE | comms |
-| C-130~C-132 | 훈련/대비 | base, lab |
-| C-155~C-156 | 후속 카드 (1회성 이벤트 이후) | supply, forest |
+| ID | 이변체 | 단계 | req 변경 |
+|----|--------|------|---------|
+| C-091 | Blood Pit | 관찰 | LOG-RES-012 필요 (포획 시에만) |
+| C-092 | Shell Talker | 관찰 | LOG-RES-011 필요 |
+| C-093 | Mannequin | 관찰 | LOG-RES-001 필요 |
+| C-094 | Brood Drone | 관찰 | trust.doyun ≥ 50 |
+| C-095 | Spore Phantom | 관찰 | trust.sejin ≥ 55 |
+| C-096~100 | 5종 각 1장 | 결정 | 기본 LOG만 필요 (관찰 LOG 불필요) |
+| C-177 | 미조우 Act2 진입 | 특수 | 이변체 미접촉 시 |
+| C-178 | 잔해 분석 | 특수 | LOG-060 후속 |
 
 ---
 
-## Act 2 일상 (20장, data-cards-7.js)
+## 연계 체인 (13장, data-cards-11.js)
 
-| ID | 카테고리 | bg |
-|----|---------|-----|
-| C-133~C-136 | 보급/자원 | supply |
-| C-137~C-139 | 인사/사기 | base |
-| C-140~C-142 | 연구/의료 | lab |
-| C-143~C-145 | 정비/기술 | comms, base |
-| C-146~C-148 | 봉쇄/외부 | forest |
-| C-149~C-150 | 날씨 | weather (tag: weather) |
-| C-151~C-152 | 자원 회복 보너스 | supply, base |
+| 체인 | 카드 ID | 트리거 LOG | 내용 |
+|------|---------|-----------|------|
+| 신규요원 훈련 | C-179~183 | LOG-062, LOG-GYM 등 | 훈련→성공/실패→부상→습격 |
+| 식수 오염 | C-184~186 | LOG-066~068 | 식중독→요원 감소→ORACLE 경고 |
+| 야간 습격 | C-188~192 | LOG-070~073 | 야간 습격→강도윤 생존/사망 분기 |
 
 ---
 
-## 이변체 연쇄 (10장, data-cards-4.js)
+## 외부 인물 (12장, data-cards-15.js)
 
-| ID | 이변체 | 단계 |
-|----|--------|------|
-| C-091~C-095 | 5종 각 1장 | 관찰/연구 (LOG-020~024 해금) |
-| C-096~C-100 | 5종 각 1장 | 제거 or 격리 결정 (미션 트리거) |
-
----
-
-## 자원/일반 (14장, data-cards-5.js)
-
-| ID | 내용 | 비고 |
-|----|------|------|
-| C-101~C-106 | 자원 회복 6장 | C-102, C-106 1회성 |
-| C-107~C-112 | 일반 운영 6장 | |
-| C-153~C-154 | 후속 카드 | LOG-025, LOG-026 이후 |
-
----
-
-## 전환 루트 전용 (11장, data-cards-8.js)
-
-| ID | 루트 | Act | 내용 |
-|----|------|-----|------|
-| CT-001~002 | B (Act1→2) | 2 | 경험 부족 → 급조 프로토콜 |
-| CT-003~004 | C (Act1→2) | 2 | 정보 부재 → 프로메 기습 |
-| CT-005~007 | D (Act1→2) | 2 | 동시다발 위기 → 문책 → ORACLE 개입 |
-| CT-008 | B (Act2→3) | 3 | ORACLE 문책 |
-| CT-009 | C (Act2→3) | 3 | 서하은 아크 지연 |
-| CT-010~011 | D (Act2→3) | 3 | 지휘관 교체 → 간부진 결속 |
-
----
-
-## 서하은 분기 (11장, data-cards-9.js)
-
-| ID | 경로 | 내용 |
-|----|------|------|
-| CS-001~003 | 전출 저지 | 공식 이의 → 강도윤 합류 → 최종 결정 |
-| CS-004~005 | 잔류 후속 | 감사 인사 → 삭제 데이터 복구 |
-| CS-010~015 | 부재 대체 | 임재혁 인수 → 해독 지연 → 이상 놓침 → 간부 3인 반응 |
+| ID | 인물 | 내용 | 핵심 LOG |
+|----|------|------|---------|
+| C-248~250 | 닉 포스터 | 접촉→데이터 수령→인텔 공유 | LOG-081 |
+| C-081, C-252~253 | 박소영 | 합류→보고→정체 발각 | LOG-082~083 |
+| C-254~260 | 에이전트 강 | 관찰 흔적만 (정체 미공개) | — |
 
 ---
 
@@ -146,16 +104,16 @@
 
 ## 미션 배분
 
-| 미션 | 트리거 | Act |
-|------|--------|-----|
-| M-001 Blood Pit | C-003 right | 1 |
-| M-002 Shell Talker | C-010 right | 1 |
-| M-003 미분류 흔적 | C-042 left | 2 |
-| M-004 Mannequin | C-044 right | 2 |
-| M-005 Brood Drone | C-046 right | 2 |
-| M-006 Spore Phantom | C-048 left | 2 |
-| M-007 결정적 타격 | CE 카드 (GI≥40) | 3 |
-| M-008 관측중지 | CE 카드 (GI≤30) | 3 |
+| 미션 | 트리거 | Act | 선택지 |
+|------|--------|-----|--------|
+| M-001 Blood Pit | C-096 | 1,2 | 제거/포획/ORACLE |
+| M-002 Shell Talker | C-097 | 1,2 | 제거/포획/ORACLE |
+| M-003 미분류 흔적 | C-042 left | 2 | 산/마을/ORACLE |
+| M-004 Mannequin | C-098 | 2 | 제거/포획/ORACLE |
+| M-005 Brood Drone | C-099 | 2 | 분산/수색/ORACLE |
+| M-006 Spore Phantom | C-100 | 2 | 다양 |
+| M-007 결정적 타격 | CE 카드 (GI≥40) | 3 | 전원출격/정찰/ORACLE전술 |
+| M-008 관측중지 | CE 카드 (GI≤30) | 3 | 구역진입/외곽계측/ORACLE원격 |
 
 ---
 
@@ -171,10 +129,16 @@
 | Act 3 전용 | 10 |
 | Act 1 Daily | 22 |
 | Act 2 Daily | 20 |
-| 이변체 연쇄 | 10 |
+| 이변체 연쇄 | 12 |
 | 자원/일반 | 14 |
 | 엔딩 루트 | 28 |
 | 전환 루트 | 11 |
 | 서하은 분기 | 11 |
-| 잠금 | 2 |
-| **총계** | **206** |
+| 추가 카드 (10) | 20 |
+| 연계 체인 (11) | 13 |
+| Act 1~2 신규 (12) | 20 |
+| Act 2~3 신규 (13) | 20 |
+| Act 3 보강 (14) | 15 |
+| 외부 인물 (15) | 12 |
+| 체인 카드 | 13 |
+| **총계** | **321** |

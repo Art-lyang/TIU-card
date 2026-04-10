@@ -1,6 +1,6 @@
 # Act 3 신규 미션 설계 v2
 
-> 최종 업데이트: 2026-04-04 (구현 완료 반영)
+> 최종 업데이트: 2026-04-08 (v0.5 반영 — 3선택지 구조 + 포획 게이팅)
 > 구현 파일: data-missions-3.js
 
 ---
@@ -113,13 +113,40 @@ M-007과 M-008의 트리거는 data-cards-3.js (CARDS_ENDING)의 CE 카드에서
 
 ## 전체 미션 현황 (8개)
 
-| 미션 | Act | 파일 | 상태 |
-|------|-----|------|------|
-| M-001 Blood Pit | 1 | data-missions.js | ✅ |
-| M-002 Shell Talker | 1 | data-missions.js | ✅ |
-| M-003 미분류 흔적 | 2 | data-missions.js | ✅ |
-| M-004 Mannequin | 2 | data-missions-2.js | ✅ |
-| M-005 Brood Drone | 2 | data-missions-2.js | ✅ |
-| M-006 Spore Phantom | 2 | data-missions.js | ✅ |
-| M-007 결정적 타격 | 3 (GI≥40) | data-missions-3.js | ✅ |
-| M-008 관측중지 | 3 (GI≤30) | data-missions-3.js | ✅ |
+| 미션 | Act | 파일 | 상태 | 선택지 |
+|------|-----|------|------|--------|
+| M-001 Blood Pit | 1,2 | data-missions.js | ✅ | 제거/포획/ORACLE |
+| M-002 Shell Talker | 1,2 | data-missions.js | ✅ | 제거/포획/ORACLE |
+| M-003 미분류 흔적 | 2 | data-missions.js | ✅ | 산/마을/ORACLE |
+| M-004 Mannequin | 2 | data-missions.js | ✅ | 제거/포획/ORACLE |
+| M-005 Brood Drone | 2 | data-missions-2.js | ✅ | 분산/수색/ORACLE |
+| M-006 Spore Phantom | 2 | data-missions-2.js | ✅ | 다양 |
+| M-007 결정적 타격 | 3 (GI≥40) | data-missions-3.js | ✅ | 출격/정찰/ORACLE전술 |
+| M-008 관측중지 | 3 (GI≤30) | data-missions-3.js | ✅ | 진입/계측/ORACLE원격 |
+
+---
+
+## v0.5 변경사항: 포획 게이팅
+
+### 미션 3선택지 구조 (M-001, M-002, M-004)
+
+| 경로 | 결과 | 추가 LOG |
+|------|------|---------|
+| 제거 작전 | c+2, r-1, o+1 | 기본 LOG만 |
+| 연구용 확보 | r-2, t+1, o-1 | LOG-RES-xxx 추가 해금 |
+| ORACLE 원격 (g+2) | c+1, t-1, o+2 | 기본 LOG만 |
+
+### 포획 연구 LOG
+
+| 미션 | 포획 시 추가 LOG | 이후 관찰 카드 |
+|------|-----------------|-------------|
+| M-001 | LOG-RES-012 | C-091 (sejin≥40 추가 필요) |
+| M-002 | LOG-RES-011 | C-092 (jaehyuk≥40 추가 필요) |
+| M-004 | LOG-RES-001 | C-093 (sejin≥50 추가 필요) |
+
+### 이변체 연쇄 흐름 변경
+
+기존: 조우 → 관찰(자동 LOG) → 결정 → 미션
+변경: 조우 → 결정 → 미션(포획 시 연구 LOG) → [포획 시만] 관찰(복합 조건)
+
+**제거 경로 선택 시**: 관찰 카드 자체가 등장하지 않음 → 연구 LOG 영구 차단
