@@ -89,3 +89,11 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     if(cid==='C-252')tryUnlock('LOG-082-REPORT');
     if(cid==='C-253')tryUnlock('LOG-083');
 }
+
+// ═══ app.js 호환 alias (함수명 불일치 수정) ═══
+var checkLogsAll=function(s,g,cid,dc,di,dir,logs,trust,tryUnlock){checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock)};
+var chkGameOver=chk;
+var genNewsHeadlines=genNews;
+var checkActTransitionLogic=checkActTransition;
+var isIntrosDone=introsDone;
+var isIntroDlgCheck=isIntroDlg;

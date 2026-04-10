@@ -178,4 +178,7 @@ var BGM = {
     this.current = toName;
   }
   // _fadeIn, _fadeOut, timer 관리 → bgm-fade.js
+
+  // toggle: toggleMute alias (app.js 호환)
+  toggle: function() { return this.toggleMute(); }
 };
