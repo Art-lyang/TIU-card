@@ -5,32 +5,32 @@
 var CARDS_PROLOGUE = [
 
   // ═══ 기지 적응 / 도착 (CA-001~CA-006) ═══
-  { id: "CA-001", act: [1], priority: "중", bg: "base",
+  { id: "CA-001", act: [1], priority: "중", bg: "base", once: true,
     msg: "기지 도착 첫날.\n\n[ORACLE: 지휘관 이중철 취임을 기록합니다. KR-INIT-001 운영 정상화 절차를 개시합니다. 초기화 완료율 97.1%.]\n\n간부진이 사무실 앞에 정렬해 있습니다.",
     left: { label: "즉시 현황 보고 받기", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1 },
     right: { label: "먼저 기지를 직접 둘러보겠다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
 
-  { id: "CA-002", act: [1], priority: "하", bg: "base",
+  { id: "CA-002", act: [1], priority: "하", bg: "base", once: true,
     msg: "부지휘관이 3개월간의 공백 기간 운영 개요를 설명합니다.\n\n\"ORACLE 지시만으로 운영했습니다. 기지 기능은 유지됐지만, 판단이 필요한 부분들은 보류 상태입니다.\"\n\n[ORACLE: 보류 항목 12건. 우선순위 자동 분류 완료. 지휘관 결재를 요청합니다.]",
     left: { label: "ORACLE 분류 그대로 처리", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1 },
     right: { label: "부지휘관과 함께 직접 검토", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 } },
 
-  { id: "CA-003", act: [1], priority: "하", bg: "comms",
+  { id: "CA-003", act: [1], priority: "하", bg: "comms", once: true,
     msg: "기술관이 ORACLE 단말기 앞에 서 있습니다.\n\n\"지휘관님, ORACLE 시스템 소개드릴까요? 솔직히 이 규모의 기지에 이 수준의 AI는 과분합니다. 어떤 질문이든 물어보시면 됩니다.\"\n\n[ORACLE: 초기 적응 지원 모드를 활성화합니다.]",
     left: { label: "소개받겠다", fx: { c: 0, r: 0, t: 1, o: 1 }, g: 1 },
     right: { label: "나중에. 현장부터 확인한다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },
 
-  { id: "CA-004", act: [1], priority: "하", bg: "forest",
+  { id: "CA-004", act: [1], priority: "하", bg: "forest", once: true,
     msg: "현장요원이 봉쇄선 외부를 안내합니다.\n\n\"동측 순찰 루트입니다. 이변체 활동 징후 없음.\"\n\n[ORACLE: 봉쇄선 안정도 93%. 현재 위협도 LOW. 특이사항 없습니다.]\n\n거울처럼 잔잔한 숲입니다.",
     left: { label: "루트 점검 승인", fx: { c: 1, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "ORACLE 감시망으로 보완", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "CA-005", act: [1], priority: "하", bg: "lab",
+  { id: "CA-005", act: [1], priority: "하", bg: "lab", once: true,
     msg: "연구원이 연구실을 소개합니다.\n\n\"현재 활성 샘플은 없고요. ORACLE이 위협도를 낮게 평가해서 그런지, 요즘은 조용합니다.\"\n\n[ORACLE: 이변체 활동 지수 0.7. 역대 최저 수준입니다.]",
     left: { label: "연구 현황 보고 받기", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "ORACLE 평가 기준 열람", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "CA-006", act: [1], priority: "하", bg: "supply",
+  { id: "CA-006", act: [1], priority: "하", bg: "supply", once: true,
     msg: "[ORACLE: 오늘의 작전 권고 — 봉쇄선 동측 경량 감시 강화, 보급 예비량 재고 확인.]\n\n모든 항목이 우선순위별로 정렬되어 있습니다.\n\n[ORACLE: 위협도 LOW. 예측 신뢰도 97.1%. 권고 이행 시 기지 안정성 +2 예상.]",
     left: { label: "권고대로 진행", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 2 },
     right: { label: "직접 판단하겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 } },
@@ -68,7 +68,7 @@ var CARDS_PROLOGUE = [
 
   { id: "CA-013", act: [1], priority: "중", bg: "forest",
     msg: "봉쇄선 북측 외곽에서 낙뢰로 인한 감시 카메라 손상이 보고됐습니다.\n\n[ORACLE: 현장 점검 및 임시 수리를 권고합니다. 위협도 LOW.]\n\n강도윤: \"제가 나가겠습니다.\"",
-    left: { label: "강도윤 파견", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0, mission: "M-001" },
+    left: { label: "강도윤 파견", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0 },
     right: { label: "원격 임시 조치만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // ═══ ORACLE 이상 징후 — Act 1 후반 (CA-014~CA-018) ═══

@@ -9,6 +9,8 @@ var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
 var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
 var INTRO_FILTER=[{name:'\uc11c\ud558\uc740',log:'LOG-INTRO-SH'},{name:'\uac15\ub3c4\uc724',log:'LOG-INTRO-KD'},{name:'\uc724\uc138\uc9c4',log:'LOG-INTRO-YS'},{name:'\uc784\uc7ac\ud601',log:'LOG-INTRO-IJ'}];
 var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
+var _onceShown=(function(){try{var d=localStorage.getItem('ts_onceShown');return d?JSON.parse(d):[]}catch(e){return[]}})();
+var markOnce=function(id){if(_onceShown.indexOf(id)<0){_onceShown.push(id);try{localStorage.setItem('ts_onceShown',JSON.stringify(_onceShown))}catch(e){}}};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var valid=CARDS.filter(function(c){
@@ -18,11 +20,14 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
     try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     if(rec.indexOf(c.id)>=0)return false;
+    if(c.once&&_onceShown.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&!(c.once&&_onceShown.indexOf(c.id)>=0)&&introOk(c,logs)}catch(e){return false}});
+  var card=pick(valid.length>0?valid:CARDS.filter(function(c){try{return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&!(c.once&&_onceShown.indexOf(c.id)>=0)&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
+  if(card&&card.once)markOnce(card.id);
+  return card;
 };
 
 var Save={
@@ -30,7 +35,7 @@ var Save={
   get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||''})},
-  clearGame:function(){Save.del('ts_game')},
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');_onceShown.length=0},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
