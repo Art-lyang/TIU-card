@@ -5,8 +5,8 @@
 
 var EVENING_RESPONSES = {
   'doyun_1_1-3': {
-    a: { label: '봉쇄선은 반드시 지킨다.', trust: 2, reply: '...그 말씀, 믿겠습니다.' },
-    b: { label: '필라델피아 보고서를 보여줘.', trust: 1, reply: '알겠습니다. 준비해두겠습니다.' }
+    a: { label: '잘 부탁한다. 믿고 맡기겠다.', trust: 2, reply: '...감사합니다. 기대에 부응하겠습니다.' },
+    b: { label: '현장 상황 보고 부탁한다.', trust: 1, reply: '알겠습니다. 내일까지 정리해서 올리겠습니다.' }
   },
   'doyun_1_4-6': {
     a: { label: '좋은 판단이었다.', trust: 2, reply: '...감사합니다, 지휘관님.' },
@@ -25,16 +25,16 @@ var EVENING_RESPONSES = {
     b: { label: '증거 없으면 보류.', trust: -1, reply: '...네, 좀더 지켜보겠습니다.' }
   },
   'sejin_1_1-3': {
-    a: { label: '위험하지 않나?', trust: 2, reply: '위험은 있어요. 하지만 가치도 있습니다.' },
-    b: { label: '연구 성과를 기대한다.', trust: 1, reply: '최선을 다하겠습니다.' }
+    a: { label: '잘 부탁한다. 앞으로 잘 지내봅시다.', trust: 2, reply: '네! 잘 부탁드려요, 지휘관님.' },
+    b: { label: '연구 현황을 알려줘.', trust: 1, reply: '네, 정리해서 보고드리겠습니다.' }
   },
   'sejin_1_4-6': {
     a: { label: '무리하지 마.', trust: 2, reply: '...감사합니다. 그런 말 처음 들어요.' },
     b: { label: '결과가 나오면 보고해.', trust: 0, reply: '네, 알겠습니다.' }
   },
   'jaehyuk_1_1-3': {
-    a: { label: '체계적으로 복구하자.', trust: 2, reply: '네, 계획 세워서 보고드리겠습니다.' },
-    b: { label: '급한 것부터 처리해.', trust: 1, reply: '알겠습니다. 우선순위 정리하겠습니다.' }
+    a: { label: '잘 부탁한다. 시스템은 맡기겠다.', trust: 2, reply: '감사합니다. 책임지겠습니다.' },
+    b: { label: '시스템 현황 보고 부탁한다.', trust: 1, reply: '알겠습니다. 정리해서 올리겠습니다.' }
   },
   'jaehyuk_1_4-6': {
     a: { label: '점검 수고했다.', trust: 2, reply: '감사합니다. 계속 관리하겠습니다.' },
