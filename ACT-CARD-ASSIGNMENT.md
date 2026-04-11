@@ -1,6 +1,6 @@
-# TERMINAL SESSION — 카드 Act 배분표 v3
+# TERMINAL SESSION — 카드 Act 배분표 v4
 
-> 최종 업데이트: 2026-04-08 (321장 반영)
+> 최종 업데이트: 2026-04-12 (4-Act 구조 반영, 321장+)
 
 ## 파일 구조
 
@@ -26,11 +26,12 @@
 
 ## Act별 활성 카드 풀
 
-| Act | 풀 크기 | 구성 |
-|-----|--------|------|
-| **Act 1** | ~75장 | Core + Act1 전용 + 1→2 공유 + Daily + Extra(Act1) + New12(Act1) |
-| **Act 2** | ~170장 | Core + 1→2 + Act2 전용 + 2→3 + Daily + Transition + Investigate + Extra + New12 + New13 + Chain Events |
-| **Act 3** | ~100장 | Core + 2→3 + Act3 전용 + Ending + Haeun + Act3 Extra + External + New13(Act3) |
+| Act | 풀 크기 | 하루 카드 | 구성 |
+|-----|--------|----------|------|
+| **Act 1 (프롤로그/일상)** | ~18장 | 4장 | 프롤로그 전용 (CA-001~006 once 카드 포함) |
+| **Act 2 (의혹)** | ~75장 | 5장 | Core + Act2 전용 + Daily + Investigate + Extra + New12 |
+| **Act 3 (진실)** | ~170장 | 6장 | Core + Act3 전용 + Daily + Transition + Chain + External + New13 |
+| **Act 4 (최종)** | ~100장 | 7장 | Core + Ending + Haeun + Act4 Extra + External |
 
 ---
 
@@ -106,14 +107,14 @@ v0.5 흐름 변경: 조우 → 결정(미션) → [포획 시] 관찰
 
 | 미션 | 트리거 | Act | 선택지 |
 |------|--------|-----|--------|
-| M-001 Blood Pit | C-096 | 1,2 | 제거/포획/ORACLE |
-| M-002 Shell Talker | C-097 | 1,2 | 제거/포획/ORACLE |
-| M-003 미분류 흔적 | C-042 left | 2 | 산/마을/ORACLE |
-| M-004 Mannequin | C-098 | 2 | 제거/포획/ORACLE |
-| M-005 Brood Drone | C-099 | 2 | 분산/수색/ORACLE |
-| M-006 Spore Phantom | C-100 | 2 | 다양 |
-| M-007 결정적 타격 | CE 카드 (GI≥40) | 3 | 전원출격/정찰/ORACLE전술 |
-| M-008 관측중지 | CE 카드 (GI≤30) | 3 | 구역진입/외곽계측/ORACLE원격 |
+| M-001 Blood Pit | C-096 | 2,3 | 제거/포획/ORACLE |
+| M-002 Shell Talker | C-097 | 2,3 | 제거/포획/ORACLE |
+| M-003 미분류 흔적 | C-042 left | 3 | 산/마을/ORACLE |
+| M-004 Mannequin | C-098 | 3 | 제거/포획/ORACLE |
+| M-005 Brood Drone | C-099 | 3 | 분산/수색/ORACLE |
+| M-006 Spore Phantom | C-100 | 3 | 다양 |
+| M-007 결정적 타격 | CE 카드 (GI≥40) | 4 | 전원출격/정찰/ORACLE전술 |
+| M-008 관측중지 | CE 카드 (GI≤30) | 4 | 구역진입/외곽계측/ORACLE원격 |
 
 ---
 
