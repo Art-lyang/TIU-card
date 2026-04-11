@@ -10,6 +10,8 @@ var INTRO_FILTER=[{name:'\uc11c\ud558\uc740',log:'LOG-INTRO-SH'},{name:'\uac15\u
 var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
+  // 게임 시작 첫 번째 카드는 반드시 CA-001 (기지 도착 첫날)
+  if(day===1&&rec.indexOf('CA-001')<0){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
   var valid=CARDS.filter(function(c){
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
