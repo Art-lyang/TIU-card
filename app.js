@@ -48,6 +48,8 @@ function App(){
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
     var sf=Save.getFacility();if(sf)setFacility(sf);
     var sg=Save.get('ts_game',null);
+    // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
+    if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
     else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     var initAct=(sg&&sg.act)||1;
