@@ -59,6 +59,23 @@ function SettingsInfoTab() {
       h('div', { style: { marginTop: 8, fontSize: 10 } }, 'Developed by ArtRyangRyang')));
 }
 
+function SettingsDataTab(p) {
+  var logs = Save.getLogs();
+  var seenArchive = Save.getSeenArchive();
+  var totalArchive = typeof ARCHIVE_ENTRIES !== 'undefined' ? ARCHIVE_ENTRIES.filter(function(a){return !a.req || logs.indexOf(a.req) >= 0}).length : 0;
+  var newArchive = totalArchive - (seenArchive ? seenArchive.length : 0);
+  if (newArchive < 0) newArchive = 0;
+  var mono = { fontFamily: "'Share Tech Mono',monospace", fontSize: 13, color: 'var(--ui)' };
+  return h('div', null,
+    _settingsRow('해금된 LOG', h('span', { style: mono }, (logs ? logs.length : 0) + '/' + ORACLE_LOGS.length)),
+    _settingsRow('아카이브', h('span', { style: mono }, newArchive > 0 ? newArchive + ' NEW' : '—')),
+    h('div', { style: { marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 } },
+      h('button', { className: 'btn', style: { fontSize: 11, padding: '8px 16px', width: '100%' },
+        onClick: function () { if (p.onLogs) p.onLogs(); } }, 'LOG 열람'),
+      h('button', { className: 'btn', style: { fontSize: 11, padding: '8px 16px', width: '100%' },
+        onClick: function () { if (p.onArchive) p.onArchive(); } }, 'ARCHIVE 열람')));
+}
+
 // ═══ 메인 패널 ═══
 function SettingsPanel(p) {
   var _tab = useState('sound'), tab = _tab[0], setTab = _tab[1];
@@ -92,6 +109,8 @@ function SettingsPanel(p) {
   var content = null;
   if (tab === 'sound') content = h(SettingsSoundTab,
     { muted: muted, vol: vol, onToggleMute: toggleMute, onVolChange: changeVol });
+  if (tab === 'data') content = h(SettingsDataTab,
+    { onLogs: p.onLogs, onArchive: p.onArchive });
   if (tab === 'save') content = h(SettingsSaveTab,
     { onReset: p.onReset, onFullReset: p.onFullReset, onClose: p.onClose });
   if (tab === 'display') content = h(SettingsDisplayTab);
@@ -120,6 +139,7 @@ function SettingsPanel(p) {
       // 탭
       h('div', { style: { display: 'flex', gap: 4, marginBottom: 12, flexWrap: 'wrap' } },
         _settingsTabBtn('sound', 'SOUND', tab, setTab),
+        _settingsTabBtn('data', 'DATA', tab, setTab),
         _settingsTabBtn('save', 'SAVE', tab, setTab),
         _settingsTabBtn('display', 'DISPLAY', tab, setTab),
         _settingsTabBtn('info', 'INFO', tab, setTab)),

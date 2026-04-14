@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(head -20 grep -r \"prologue\\\\|프롤로그\\\\|act.*0\\\\|ACT.*0\\\\|Act 0\" C:UsersAdministratorTIU_CARD.claudeworktreesamazing-johnson)"
+    ]
+  }
+}

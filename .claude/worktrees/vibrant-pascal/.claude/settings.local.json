@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(wc -l *.js)",
+      "Bash(perl -i -pe ':*)",
+      "Bash(python _patch_evening.py)"
+    ]
+  }
+}

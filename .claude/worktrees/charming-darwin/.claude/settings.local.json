@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls C:UsersAdministratorTIU_CARD/*.js)",
+      "Bash(ls /c/Users/Administrator/TIU_CARD/*.js)",
+      "Bash(grep -rn \"CARDS_CHAINS\\\\|CARDS_NEW_A\\\\|CARDS_NEW_B\\\\|CARDS_ACT3\\\\|CARDS_EXTERNAL\\\\|CARDS_MIDGAME\" /c/Users/Administrator/TIU_CARD/*.js)",
+      "Bash(grep -rn \"getTrustTier\\\\|DOYUN_INJURED_LINES\" /c/Users/Administrator/TIU_CARD/*.js)"
+    ]
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Read(//c/Users/Administrator/**)",
+      "Read(//c/Users/Administrator/.claude/**)"
+    ]
+  }
+}

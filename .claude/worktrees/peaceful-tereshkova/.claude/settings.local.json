@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(find C:UsersAdministratorTIU_CARD -maxdepth 2 -newer C:UsersAdministratorTIU_CARD.gitCOMMIT_EDITMSG -not -path */.git/* -not -path */.claude/* -type f)",
+      "Bash(python -c \"import zipfile; z=zipfile.ZipFile\\(''260410-전체백업.zip''\\); names=[n for n in z.namelist\\(\\) if not n.endswith\\(''/''\\)]; print\\(''\\\\n''.join\\(names[:50]\\)\\)\")",
+      "Bash(python -c \"import zipfile; z=zipfile.ZipFile\\(''260410-전체백업.zip''\\); names=[n for n in z.namelist\\(\\) if not n.endswith\\(''/''\\)]; print\\(''\\\\n''.join\\(names[50:]\\)\\)\")",
+      "Bash(ls \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\.claude\\\\worktrees\"\" && echo \"---\" && git -C \"C:UsersAdministratorTIU_CARD.claudeworktreeshopeful-lamport\" status --short 2>&1 | head -10 && echo \"---\" && git -C \"C:UsersAdministratorTIU_CARD.claudeworktreesvigorous-kapitsa \" status --short)",
+      "Bash(for wt:*)",
+      "Bash(do echo:*)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck diff --stat HEAD)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon diff --stat HEAD)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon status --short)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/vibrant-pascal diff --stat HEAD)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck diff HEAD -- app.js)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/vibrant-pascal diff HEAD -- app.js)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon diff HEAD -- index.html)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(cp /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon/$f /c/Users/Administrator/TIU_CARD/$f)",
+      "Bash(echo \"복사: $f\")",
+      "Bash(done)"
+    ]
+  }
+}

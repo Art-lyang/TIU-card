@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls /c/Users/Administrator/TIU_CARD/*.md /c/Users/Administrator/TIU_CARD/*.js)",
+      "Bash(zip -j \"TIU-GDD-스토리라인.zip\" TIU-GAME-GDD.md TIU-GAME-GDD-v05.md GAMEPLAY-REVIEW.md TIU-WORLDBUILDING-SUMMARY.md TIU-CANON-STORYLINE.md TIU-CANON-STORYLINE-2.md ACT-STRUCTURE-DESIGN.md ACT-CARD-ASSIGNMENT.md ACT3-MISSIONS-DESIGN.md AFTERMATH-CARDS-DESIGN.md FACILITY-INTEGRATION-DESIGN.md TIU-CARD-DESIGN-GUIDE.md README.md)",
+      "Bash(powershell -Command \"Compress-Archive -Path 'TIU-GAME-GDD.md','TIU-GAME-GDD-v05.md','GAMEPLAY-REVIEW.md','TIU-WORLDBUILDING-SUMMARY.md','TIU-CANON-STORYLINE.md','TIU-CANON-STORYLINE-2.md','ACT-STRUCTURE-DESIGN.md','ACT-CARD-ASSIGNMENT.md','ACT3-MISSIONS-DESIGN.md','AFTERMATH-CARDS-DESIGN.md','FACILITY-INTEGRATION-DESIGN.md','TIU-CARD-DESIGN-GUIDE.md','README.md' -DestinationPath 'TIU-GDD-스토리라인.zip' -Force\")",
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m ':*)"
+    ]
+  }
+}

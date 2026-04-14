@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(git -C /c/Users/Administrator/TIU_CARD show --stat d24da42)"
+    ]
+  }
+}

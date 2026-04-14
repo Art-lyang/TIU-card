@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(for f:*)",
+      "Bash(do node:*)",
+      "Bash(grep -v ^$)",
+      "Bash(done)",
+      "Bash(grep -h \"^var \" *.js)",
+      "Bash(grep -rn \"^var BGM\" *.js)",
+      "Bash(grep -n \"getFacility\\\\|saveFacility\" *.js)",
+      "Bash(grep -n \"^var h\\\\b\\\\|^var useState\\\\|^var useEffect\\\\|React\\\\.createElement\\\\|React\\\\.useState\\\\|React\\\\.useEffect\" *.js)",
+      "Bash(grep -rn \"function checkLogsAll\\\\|function chkGameOver\\\\|function checkActTransitionLogic\\\\|function isIntrosDone\\\\|function isIntroDlgCheck\\\\|function genNewsHeadlines\" *.js)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

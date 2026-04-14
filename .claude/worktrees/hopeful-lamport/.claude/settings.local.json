@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls /mnt/)",
+      "Read(//c/Users/Administrator/**)",
+      "Bash(find /home -name \"*oracle*\")",
+      "Bash(find /root -name \"*oracle*\")",
+      "Bash(ls /home/)",
+      "Bash(ls /root/)",
+      "Read(//c//**)",
+      "Read(//cygdrive/c/Users/**)",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\outputs\\\\ 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\uploads\\\\ 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\Downloads\\\\*oracle* 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\Documents\\\\*oracle* 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\Desktop\\\\*oracle* 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\outputs\\\\ 2>nul\")",
+      "Bash(cmd.exe /c \"dir C:\\\\Users\\\\Administrator\\\\TIU\\\\outputs\\\\ 2>nul\")"
+    ]
+  }
+}

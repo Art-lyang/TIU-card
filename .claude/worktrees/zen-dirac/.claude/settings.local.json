@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(powershell -Command \":*)",
+      "Bash(powershell -Command \"\\(Get-Item ''C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\GDD-MD-파일모음.zip''\\).Length / 1KB\")"
+    ]
+  }
+}

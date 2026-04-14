@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls -lh /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon/*.js)",
+      "Bash(grep -l \"^var CARDS_\" /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon/data-*.js)",
+      "Bash(grep -l \"^var DIALOGUES\" /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon/data-*.js)",
+      "Bash(grep -l \"^var MISSIONS\" /c/Users/Administrator/TIU_CARD/.claude/worktrees/peaceful-shannon/data-*.js)"
+    ]
+  }
+}

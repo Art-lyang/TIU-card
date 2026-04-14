@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(for wt:*)",
+      "Bash(do echo:*)",
+      "Bash(__NEW_LINE_37b261e54b839cad__ cd:*)",
+      "Bash(__NEW_LINE_37b261e54b839cad__ git:*)",
+      "Bash(__NEW_LINE_37b261e54b839cad__ echo:*)",
+      "Bash(__NEW_LINE_37b261e54b839cad__ done:*)",
+      "Bash(cp /c/Users/Administrator/TIU_CARD/.claude/worktrees/amazing-johnson/TIU-GAME-GDD.md /c/Users/Administrator/TIU_CARD/TIU-GAME-GDD.md)",
+      "Bash(cp /c/Users/Administrator/TIU_CARD/.claude/worktrees/amazing-johnson/GAMEPLAY-REVIEW.md /c/Users/Administrator/TIU_CARD/GAMEPLAY-REVIEW.md)",
+      "Bash(cp /c/Users/Administrator/TIU_CARD/.claude/worktrees/amazing-johnson/TIU-GAME-GDD-v05.md /c/Users/Administrator/TIU_CARD/TIU-GAME-GDD-v05.md)",
+      "Bash(cp /c/Users/Administrator/TIU_CARD/.claude/worktrees/amazing-johnson/TIU-WORLDBUILDING-SUMMARY.md /c/Users/Administrator/TIU_CARD/TIU-WORLDBUILDING-SUMMARY.md)"
+    ]
+  }
+}

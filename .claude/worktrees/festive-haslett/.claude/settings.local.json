@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(git -C \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\" push origin main)"
+    ]
+  }
+}

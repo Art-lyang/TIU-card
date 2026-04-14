@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(git -C \"C:/Users/Administrator/TIU_CARD\" archive --format=zip --output=\"C:/Users/Administrator/TIU_CARD/260411-전체백업.zip\" main)",
+      "Read(//c/Users/Administrator/TIU_CARD/**)",
+      "Bash(unzip -l \"C:/Users/Administrator/TIU_CARD/260411-전체백업.zip\")"
+    ]
+  }
+}

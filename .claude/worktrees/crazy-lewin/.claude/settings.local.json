@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls C:UsersAdministratorTIU_CARD.claudeworktreescrazy-lewin/*.js)",
+      "Bash(grep \"\\\\.js$\")"
+    ]
+  }
+}

@@ -1,0 +1,239 @@
+# TERMINAL SESSION — Act 구조 설계서 v2
+
+> 최종 업데이트: 2026-04-08 (v0.5 반영)
+
+## 설계 원칙 (확정)
+
+- **전환 기준**: 일수 기반 무조건 전환 + 조건에 따른 4루트 분기
+- **카드 풀**: 교체형 (act 필드 기반 필터링)
+- **전환 알림**: ORACLE 브리핑 화면 (루트별 텍스트 분기)
+
+---
+
+## 1. Act 개요
+
+| Act | 서사 | 톤 | 카드 수 | 하루 카드 | 감쇠 |
+|-----|------|----|--------|----------|------|
+| **Act 1: 부임** | 지부 세팅, ORACLE 신뢰 구축 | 안정, 일상 | ~51장 | 5장 | 없음 |
+| **Act 2: 충돌** | 프로메테우스 대면, 균열 시작 | 긴장, 의심 | ~110장 | 6장 | c-1, r-1 |
+| **Act 3: 선택** | GI 기반 분기, 엔딩 수렴 | 위기, 선택 | ~60장 | 7장 | c-2, r-2, t-1 |
+
+총 카드: **321장** (15개 카드 파일 + 체인)
+
+---
+
+## 2. Act 전환 시스템 (구현 완료)
+
+### 핵심 변경: 무조건 전환 + 4루트 분기
+
+Day ≥ 10 (Act1→2) 또는 Day ≥ 25 (Act2→3) 도달 시 **무조건 전환**. 조건 달성도에 따라 4루트 분기.
+
+### Act 1 → Act 2 (Day ≥ 10)
+
+| 루트 | 조건 | 페널티 | 전용 카드 | 브리핑 톤 |
+|------|------|--------|---------|----------|
+| **A 정상** | 프로메테우스 접촉 + 미션 완료 | 0 | 없음 | 안정적 전환 |
+| **B 경험 부족** | 프로메테우스만 접촉 | 전체 -2 | CT-001~002 | "현장 데이터 부족" |
+| **C 정보 부재** | 미션만 완료 | 전체 -2 | CT-003~004 | "미확인 세력 급증" |
+| **D 강제** | 둘 다 안 함 | 전체 -4 | CT-005~007 | "상황 악화 — 긴급 재편" |
+
+조건 판별 코드:
+```js
+var route = af.prom_met && af.mission_done ? 'A'
+          : af.prom_met ? 'B'
+          : af.mission_done ? 'C'
+          : 'D';
+```
+
+### Act 2 → Act 3 (Day ≥ 25)
+
+| 루트 | 조건 | 페널티 | 전용 카드 |
+|------|------|--------|---------|
+| **A 정상** | 연쇄 완료 + 프로메테우스 미션 | -3 (Act3 기본) | 없음 |
+| **B 연쇄 미완** | 연쇄만 완료 | -3 -2 = -5 | CT-008 |
+| **C 미션 미완** | 프로메테우스 미션만 | -3 -2 = -5 | CT-009 |
+| **D 강제** | 둘 다 안 함 | -3 -4 = -7 | CT-010~011 |
+
+### 전환 루트 전용 카드 (data-cards-8.js, 11장)
+
+| ID | 루트 | Act | 내용 |
+|----|------|-----|------|
+| CT-001 | B (Act1→2) | 2 | 이변체 급조 대응 |
+| CT-002 | B (Act1→2) | 2 | 윤세진 급조 프로토콜 |
+| CT-003 | C (Act1→2) | 2 | 봉쇄선 절단 기습 |
+| CT-004 | C (Act1→2) | 2 | 서하은 프로메테우스 파악 |
+| CT-005 | D (Act1→2) | 2 | 동시다발 위기 |
+| CT-006 | D (Act1→2) | 2 | 강도윤 문책 |
+| CT-007 | D (Act1→2) | 2 | ORACLE 권한 이관 |
+| CT-008 | B (Act2→3) | 3 | ORACLE 문책 통신 |
+| CT-009 | C (Act2→3) | 3 | 서하은 조사 중단 |
+| CT-010 | D (Act2→3) | 3 | 지휘관 교체 검토 |
+| CT-011 | D (Act2→3) | 3 | 간부진 결속 |
+
+카드에 `transReq` 필드로 루트 제한:
+```js
+{ id: "CT-001", transReq: "B", ... }
+```
+drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
+
+### 전환 연출: ORACLE 브리핑 (루트별 분기)
+
+| 루트 | Act 2 브리핑 메시지 |
+|------|-------------------|
+| A | "초기 안정화 단계 완료. 새로운 변수가 감지되었습니다." |
+| B | "현장 경험 부족. 이변체 대응 데이터가 부족합니다." |
+| C | "미확인 세력 급증 감지. 정보전 역량 강화가 시급합니다." |
+| D | "경고: 상황 악화. 현장 데이터 부재 + 외부 위협 미파악." |
+
+| 루트 | Act 3 브리핑 메시지 |
+|------|-------------------|
+| A | "프로메테우스 위협이 직접적 수준에 도달했습니다." |
+| B | "ORACLE 권고 미이행 누적. 재평가가 예정되어 있습니다." |
+| C | "정보 부족 상태로 최종 국면 진입." |
+| D | "지휘관 교체 검토 중. 모든 지표에서 심각한 이탈." |
+
+---
+
+## 3. 카드 풀 배분
+
+### 파일별 구성 (v0.5)
+
+| 파일 | 변수명 | 카드 수 | Act 범위 | 내용 |
+|------|--------|--------|---------|------|
+| data-cards-1.js | CARDS_BASE | 51 | 1,2,3 혼합 | 공통 운영 카드 |
+| data-cards-2.js | CARDS_STORY | 39 | 1→2→3 | 스토리 진행 |
+| data-cards-3.js | CARDS_ENDING | 28 | 3 | 엔딩 루트 (day 최소 조건) |
+| data-cards-4.js | CARDS_INVESTIGATE | 12 | 1,2 | 이변체 연쇄 + 미조우 |
+| data-cards-5.js | CARDS_RESOURCE | 14 | 1,2,3 | 자원/일반 운영 |
+| data-cards-6.js | CARDS_ACT1_DAILY | 22 | 1 | Act 1 일상 |
+| data-cards-7.js | CARDS_ACT2_DAILY | 20 | 2 | Act 2 일상 |
+| data-cards-8.js | CARDS_TRANSITION | 11 | 2,3 | 전환 루트 전용 |
+| data-cards-9.js | CARDS_HAEUN | 11 | 3 | 서하은 분기 |
+| data-cards-10.js | CARDS_EXTRA | 20 | 1,2,3 | 추가 카드 |
+| data-cards-11.js | CARDS_CHAINS | 13 | 1,2,3 | 연계 체인 이벤트 |
+| data-cards-12.js | CARDS_NEW_A | 20 | 1,2 | Act 1~2 신규 |
+| data-cards-13.js | CARDS_NEW_B | 20 | 2,3 | Act 2~3 신규 |
+| data-cards-14.js | CARDS_ACT3 | 15 | 3 | Act 3 보강 |
+| data-cards-15.js | CARDS_EXTERNAL | 12 | 2,3 | 외부 인물 |
+
+### Act별 활성 카드 풀 (추정)
+
+| Act | 풀 크기 |
+|-----|--------|
+| Act 1 | ~75장 (Core + Act1 전용 + 1→2 공유 + Daily + Extra + New12) |
+| Act 2 | ~170장 (Core + 1→2 + Act2 전용 + 2→3 + Daily + Transition + Investigate + Extra + New12/13 + Chain Events + External) |
+| Act 3 | ~100장 (Core + 2→3 + Act3 전용 + Ending + Haeun + Act3 Extra + External + New13) |
+
+### 카드 조건 시스템
+
+| 필드 | 용도 |
+|------|------|
+| `act: [1,2]` | Act 소속 |
+| `req: (s,g,logs) => ...` | 스탯/GI/LOG 조건 |
+| `transReq: "B"` | 전환 루트 전용 |
+| `tag: "weather"` | 쿨다운 태그 (3일) |
+| `bg: "forest"` | 배경 이미지 |
+
+---
+
+## 4. Act별 시스템 변화
+
+### 난이도 곡선 (구현 완료)
+
+| 요소 | Act 1 | Act 2 | Act 3 |
+|------|-------|-------|-------|
+| **하루 카드 수** | 5장 | 6장 | 7장 |
+| **일일 감쇠** | 없음 | c-1, r-1 | c-2, r-2, t-1 |
+| **전환 페널티** | — | 루트별 0/-2/-4 | 기본 -3 + 루트별 |
+| **자원 리스크** | 20% | 20% | 20% |
+| **카드 중복 방지** | 20장 버퍼 | 20장 버퍼 | 20장 버퍼 |
+
+### ORACLE 한줄평 (구현 완료)
+
+GI 구간별 4종 × 4등급 = 16종 랜덤 메시지.
+
+---
+
+## 5. 서하은 분기 아크 (구현 완료)
+
+Act 3의 핵심 분기. C-073 (전출 명령)에서 시작. data-cards-9.js.
+
+| 경로 | LOG | 카드 | 결과 |
+|------|-----|------|------|
+| 전출 저지 시도 | LOG-051 | CS-001→002→003 | 잔류 (LOG-052) |
+| 잔류 후속 | LOG-055 | CS-004→005 | ORACLE 삭제 데이터 복구 |
+| 전출 확정 | LOG-050 | C-074 + CS-010~015 | 정보 분석 역량 저하 |
+
+전출 후: 서하은 대화 이벤트 자동 차단.
+
+---
+
+## 6. 세이브 데이터 구조 (구현 완료)
+
+```js
+saveData = {
+  stats: { c, r, t, o, day },
+  gi: 0,
+  act: 1,
+  actFlags: {
+    prom_met: false,
+    mission_done: false,
+    chain_done: false,
+    prom_mission: false,
+  },
+  transRoute: '',  // 'A'/'B'/'C'/'D'
+}
+// 별도 저장:
+// ts_trust: { haeun, doyun, sejin, jaehyuk }
+// ts_usedDlg: [인덱스 배열]
+// ts_logs: [LOG-001, ...]
+// ts_endings: [엔딩 ID 배열]
+// ts_sessions: 숫자
+```
+
+---
+
+## 7. 리플레이 시스템 (구현 완료)
+
+| 항목 | 1회차 | 2회차+ |
+|------|-------|--------|
+| 부팅 | GRANT: ACTIVE — TEMPORARY ACCESS | GRANT: ACTIVE — RENEWAL DETECTED |
+| 세션 | TERMINAL SESSION — INITIATING | [OBSERVER: SESSION RESUMED] |
+| 인사 | WELCOME, COMMANDER. | WELCOME BACK, COMMANDER. |
+| 버튼 | [ 세션 1 시작 ] | [ 세션 N 시작 ] |
+| 게임오버 | SESSION #1 TERMINATED | SESSION #N TERMINATED |
+| GRANT | — | GRANT: ACTIVE — RENEWAL AVAILABLE |
+| 튜토리얼 | 3단계 | 스킵 버튼 표시 |
+
+---
+
+## v0.5 추가 시스템
+
+### 이브닝 챗
+하루 종료 후 간부 선택 대화. 7인 참여, 신뢰 티어(low/high/bond).
+파일: data-core.js + data-evening-trust-1.js + data-evening-trust-2.js + components-evening.js
+
+### BGM
+Web Audio API 3트랙 (boot/main/tension). Act별 자동 전환.
+파일: bgm.js + bgm_boot.js + bgm_main.js + bgm_tension.js
+
+### ORACLE 아카이브
+LOG 연동 43항목 용어 백과. 파일: data-archive.js + components-archive.js
+
+### LOG 난이도 시스템
+- 복합 조건: 관찰 LOG에 신뢰도 + 포획 연구 LOG 요구
+- GI 상한 잠금: 진실 LOG에 GI 상한 조건 (ORACLE 순응 시 차단)
+- 포획 게이팅: 이변체 연쇄 흐름 변경 (조우→결정→[포획]→관찰)
+
+### Act 3 카드 순서 보장
+엔딩 카드(CE-xxx)에 day 최소 조건 추가. 조기 등장 방지.
+
+---
+
+## 미결 사항
+
+- [ ] 이변체 3~5종 추가 (현재 5종)
+- [ ] 현장 미션 확장 (현재 8개)
+- [ ] 유도 지수 UI 노출 (3회차)
+- [ ] OBSERVER ACCESS 잔향 (4회차+)
+- [ ] 2회차+ Observer 암시 카드 2~3장

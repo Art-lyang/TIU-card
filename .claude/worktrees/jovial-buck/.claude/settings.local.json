@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(git -C \"C:/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck\" log --oneline -10)",
+      "Bash(grep -h \"act:\" \"C:/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck/data-cards-\"*.js)",
+      "Bash(grep -n \"act: \\\\[1\\\\]\" \"C:/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck/data-cards-\"*.js)",
+      "Bash(cd \"C:/Users/Administrator/TIU_CARD/.claude/worktrees/jovial-buck\" echo \"=== 임재혁 조사 테이블 act 확인 \\(Act 2부터만\\) ===\" grep \"CARDS_INVESTIGATE\\\\|id.*C-09[1-7]\\\\|id.*C-10[0-0]\" data-cards-4.js)"
+    ]
+  }
+}

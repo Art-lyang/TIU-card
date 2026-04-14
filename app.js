@@ -1,68 +1,4 @@
-// TERMINAL SESSION — app.js
-// Utils, Save, SFX, App
-var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]);
-var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
-var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
-var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
-var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
-var INTRO_FILTER=[{name:'\uc11c\ud558\uc740',log:'LOG-INTRO-SH'},{name:'\uac15\ub3c4\uc724',log:'LOG-INTRO-KD'},{name:'\uc724\uc138\uc9c4',log:'LOG-INTRO-YS'},{name:'\uc784\uc7ac\ud601',log:'LOG-INTRO-IJ'}];
-var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
-var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
-  var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
-  // 게임 시작 첫 번째 카드는 반드시 CA-001 (기지 도착 첫날)
-  if(day===1&&rec.indexOf('CA-001')<0){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
-  var valid=CARDS.filter(function(c){
-    if(c.act&&c.act.indexOf(ca)<0)return false;
-    if(c.transReq&&c.transReq!==tr)return false;
-    try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
-    try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
-    if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
-    if(rec.indexOf(c.id)>=0)return false;
-    if(!introOk(c,logs))return false;
-    return true;
-  });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
-};
-
-var Save={
-  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
-  del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af,tr){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||''})},
-  clearGame:function(){Save.del('ts_game')},
-  saveLogs:function(ids){Save.set('ts_logs',ids)},
-  getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
-  saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
-  getEndings:function(){return Save.get('ts_endings',[])},
-  getSessions:function(){return Save.get('ts_sessions',0)},
-  incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
-  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
-  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])},
-  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])},
-  getFacility:function(){return Save.get('ts_facility',null)},
-  saveFacility:function(data){Save.set('ts_facility',data)}
-};
-
-var SFX={
-  ctx:null,
-  init:function(){if(!this.ctx)try{this.ctx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){}},
-  tone:function(freq,dur,type,vol){this.init();if(!this.ctx)return;var o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type||'sine';o.frequency.value=freq;g.gain.setValueAtTime(vol||0.15,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);o.connect(g);g.connect(this.ctx.destination);o.start();o.stop(this.ctx.currentTime+dur)},
-  noise:function(dur,vol){this.init();if(!this.ctx)return;var buf=this.ctx.createBuffer(1,this.ctx.sampleRate*dur,this.ctx.sampleRate),d=buf.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(vol||0.08);var s=this.ctx.createBufferSource();s.buffer=buf;var g=this.ctx.createGain();g.gain.setValueAtTime(vol||0.08,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);s.connect(g);g.connect(this.ctx.destination);s.start()},
-  play:function(name){try{var self=this;switch(name){
-    case'swipe':self.tone(200,0.08,'square',0.06);setTimeout(function(){self.tone(300,0.06,'square',0.04)},40);break;
-    case'news':self.tone(800,0.03,'square',0.04);break;
-    case'dialogue':self.tone(500,0.1,'sine',0.08);setTimeout(function(){self.tone(700,0.12,'sine',0.06)},80);break;
-    case'reward':self.tone(400,0.1,'sine',0.1);setTimeout(function(){self.tone(600,0.1,'sine',0.08)},100);setTimeout(function(){self.tone(800,0.15,'sine',0.06)},200);break;
-    case'gameover':self.tone(300,0.3,'sawtooth',0.1);setTimeout(function(){self.tone(150,0.5,'sawtooth',0.08)},200);setTimeout(function(){self.noise(0.3,0.06)},500);break;
-    case'glitch':self.noise(0.15,0.1);self.tone(60,0.1,'square',0.08);break;
-    case'mission':self.tone(100,0.4,'sine',0.08);self.tone(150,0.3,'sine',0.06);break;
-  }}catch(e){}}
-};
-
-// ═══ BGM 시스템: bgm.js에서 정의됨 (startBootLoop, stopBootLoop, setTempVolume, restoreVolume, toggleMute 포함) ═══
-
+// TERMINAL SESSION — app.js (App 컴포넌트, 글로벌 유틸은 app-init.js)
 function App(){
   var _p=useState('boot'),phase=_p[0],setPhase=_p[1];
   var _s=useState({c:50,r:65,t:50,o:40,day:1}),stats=_s[0],setStats=_s[1];
@@ -94,16 +30,14 @@ function App(){
   var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
   var _fac=useState({approved:[],pending:[],completed:[],proposed:[]}),facility=_fac[0],setFacility=_fac[1];
   var _fot=useState(false),facOfferedToday=_fot[0],setFacOfferedToday=_fot[1];
+  var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
   var _tt=useState(null),trustToast=_tt[0],setTrustToast=_tt[1];
   var _ps=useState(null),prevStats=_ps[0],setPrevStats=_ps[1];
   var cpd=act===1?5:act===2?5:act===3?6:7;
-
-  // Act별 UI 컬러 적용
   useEffect(function(){
     var root=document.getElementById('root');
     if(root){root.className='act-'+act}
   },[act]);
-
   useEffect(function(){
     var sl=Save.getLogs();if(sl)setLogs(sl);
     var se=Save.getEndings();if(se)setEndings(se);
@@ -119,16 +53,12 @@ function App(){
     var initAct=(sg&&sg.act)||1;
     setCurCard(drawCard({c:50,r:65,t:50,o:40,day:1},0,sl||['LOG-001'],{},[], initAct));
   },[]);
-
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];
-  // 설정 복원 + ESC 키 바인딩
   useEffect(function(){var sv=Save.get('ts_volume',null);if(sv!==null&&typeof BGM!=='undefined')BGM.vol=sv/100;var sm=Save.get('ts_muted',null);if(sm===true&&typeof BGM!=='undefined'){BGM.muted=true;setBgmMuted(true)};var fs=Save.get('ts_fontSize','normal');if(fs!=='normal'){var r=document.getElementById('root');if(r)r.classList.add('fs-'+fs)}},[]);
   useEffect(function(){var h2=function(e){if(e.key==='Escape'&&phase==='game'&&!showSettings)setShowSettings(true)};window.addEventListener('keydown',h2);return function(){window.removeEventListener('keydown',h2)}},[phase,showSettings]);
-
   var tryUnlock=function(id){setLogs(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveLogs(n);return n})};
   var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);
-    // trust 변화 토스트 피드백
     var arrow=delta>0?'▲':'▼';var color=delta>0?'#9dff74':'#ff6644';
     setTrustToast({char:char,delta:delta,arrow:arrow,color:color});
     setTimeout(function(){setTrustToast(null)},1800);
@@ -192,16 +122,18 @@ function App(){
     }
     var ch=dir==='left'?curCard.left:curCard.right;
     var fx=ch.fx;
-    // 자원 리스크: 보급 카드(bg=supply)에서만, r>=2일 때 20% 확률로 실패
     var riskFired=false;
     if(curCard.bg==='supply'&&fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;riskFired=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)]}
-    var ns=applyFx(stats,fx),ng=gi+(ch.g||0);setStats(ns);setGi(ng);
+    var ns=applyFx(stats,fx),ng=gi+(ch.g||0);
+    if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToast(pbMsg);setTimeout(function(){setToast('')},2400)},600)}
+    setStats(ns);setGi(ng);
     if(curCard.tag){var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
     checkLogs(ns,ng,curCard.id,null,null,dir);
+    if(curCard.once)tryUnlock('ONCE-'+curCard.id);
+    var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey])setPendingBonus(REFUSAL_BONUSES[rwdKey]);
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
     Save.saveGame(ns,ng,act,actFlags,transRoute);
-    // fePropose: 카드 선택지가 시설 확장 제안을 포함하는 경우
     if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToast('시설 확장이 보상 풀에 등록되었습니다');setTimeout(function(){setToast('')},2200)}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
     var nct=ct+1;setCt(nct);var go=chkGameOver(ns);
@@ -240,21 +172,7 @@ function App(){
   // ═══ 렌더링 (phase 라우팅) ═══
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
-  if(phase==='briefing')return h('div',{className:'screen'},
-    h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
-    h('div',{style:{width:'100%',maxWidth:440,background:'url(panel_frame_medium.png) center/100% 100% no-repeat',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
-      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:12}},
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2}},'ACT '+act+' BRIEFING'),
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:act===3?'#ff4444':'rgba(157,255,116,.6)',letterSpacing:1}},'PRIORITY: '+(act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL'))),
-      h('div',{style:{fontSize:13,color:'#9dff74',lineHeight:2,borderLeft:'2px solid rgba(145,255,106,.3)',paddingLeft:14,marginBottom:16}},
-        '\uc9c0\ub09c '+(stats.day-1)+'\uc77c\uac04\uc758 \uc6b4\uc601 \ub370\uc774\ud130\ub97c \ubd84\uc11d\ud588\uc2b5\ub2c8\ub2e4.'),
-      h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:16}},
-        ['c','r','t','o'].map(function(k){var nm={c:'\ubd09\uc1c4 \uc548\uc815\uc131',r:'\uc790\uc6d0 \uc794\ub7c9',t:'\uc778\uc6d0 \uc2e0\ub8b0\ub3c4',o:'ORACLE \ud3c9\uac00'};var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'#33ff33',padding:'4px 0'}},nm[k]+': '+v+'%')})),
-      h('div',{style:{fontSize:12,color:transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030',lineHeight:2,borderLeft:'2px solid '+(transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)'),paddingLeft:14,marginBottom:16,whiteSpace:'pre-wrap'}},
-        act===2?'\uc801\uc751 \uae30\uac04 \uc644\ub8cc.\n\uae30\uc9c0 \uc6b4\uc601 \uc815\uc0c1\ud654.\nAct 2 \uc791\uc804 \ub2e8\uacc4\ub85c \uc9c4\uc785\ud569\ub2c8\ub2e4.':act===3?(transRoute==='A'?'\ucd08\uae30 \uc548\uc815\ud654 \ub2e8\uacc4 \uc644\ub8cc.\n\uc0c8\ub85c\uc6b4 \ubcc0\uc218\uac00 \uac10\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.\n\ud504\ub85c\ud1a0\ucf5c\uc744 \uc7ac\uc870\uc815\ud569\ub2c8\ub2e4.':transRoute==='B'?'\ud604\uc7a5 \uacbd\ud5d8 \ubd80\uc871. \uc774\ubcc0\uccb4 \ub300\uc751 \ub370\uc774\ud130\uac00 \ubd80\uc871\ud569\ub2c8\ub2e4.\n\uae34\uae09 \ud604\uc7a5 \uc801\uc751\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.':transRoute==='C'?'\ubbf8\ud655\uc778 \uc138\ub825 \uae09\uc99d \uac10\uc9c0.\n\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \uc815\ubcf4 \ubd80\uc7ac.\n\uc815\ubcf4\uc804 \uc5ed\ub7c9 \uac15\ud654\uac00 \uc2dc\uae09\ud569\ub2c8\ub2e4.':'\uacbd\uace0: \uc0c1\ud669 \uc545\ud654.\n\ud604\uc7a5 \ub370\uc774\ud130 \ubd80\uc7ac + \uc678\ubd80 \uc704\ud611 \ubbf8\ud30c\uc545.\n\uae34\uae09 \uc7ac\ud3b8\uc744 \uc2dc\ud589\ud569\ub2c8\ub2e4.'):(transRoute==='A'?'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \uc704\ud611\uc774 \uc9c1\uc811\uc801 \uc218\uc900\uc5d0 \ub3c4\ub2ec\ud588\uc2b5\ub2c8\ub2e4.\n\uacb0\uc815\uc801 \uc870\uce58\uac00 \ud544\uc694\ud569\ub2c8\ub2e4.':transRoute==='B'?'ORACLE \uad8c\uace0 \ubbf8\uc774\ud589 \ub204\uc801.\n\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4 \ub300\uc751 \uc2e4\ud328.\n\uc7ac\ud3c9\uac00\uac00 \uc608\uc815\ub418\uc5b4 \uc788\uc2b5\ub2c8\ub2e4.':transRoute==='C'?'\uc815\ubcf4 \ubd80\uc871 \uc0c1\ud0dc\ub85c \ucd5c\uc885 \uad6d\uba74 \uc9c4\uc785.\n\uc11c\ud558\uc740 \uc544\ud06c \uc9c0\uc5f0 \uac00\ub2a5\uc131.':'\uc9c0\ud718\uad00 \uad50\uccb4 \uac80\ud1a0 \uc911.\n\ubaa8\ub4e0 \uc9c0\ud45c\uc5d0\uc11c \uc2ec\uac01\ud55c \uc774\ud0c8\uc774 \uac10\uc9c0\ub418\uc5c8\uc2b5\ub2c8\ub2e4.'))),
-    h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){
-      Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game');
-    }},'[ ENTER ]'));
+  if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){Save.saveGame(stats,gi,act,actFlags,transRoute);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(News,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
@@ -270,11 +188,10 @@ function App(){
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},'ACT '+act),
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
-      h('span',{className:'info-tag info-tag-log',onClick:function(){setRet('game');setPhase('logs')}},'LOG '+ORACLE_LOGS.filter(function(l){return logs.indexOf(l.id)>=0}).length+'/'+ORACLE_LOGS.length),
-      h('span',{className:'info-tag info-tag-archive',onClick:function(){setRet('game');setPhase('archive')}},(function(){var uc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)}).length:0;var nc=typeof ARCHIVE_ENTRIES!=='undefined'?ARCHIVE_ENTRIES.filter(function(e){return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}).length:0;return 'ARCHIVE '+uc+(nc>0?' ●':'')})()),
-      h('span',{className:'info-tag',style:{cursor:'pointer',opacity:bgmMuted?0.4:1},onClick:function(){var m=BGM.toggle();setBgmMuted(m)}},bgmMuted?'♪ OFF':'♪ ON')),
+      h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     toast&&h('div',{style:{position:'fixed',top:'50%',left:'50%',transform:'translate(-50%,-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
-    h('div',{className:'footer-frame',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'),h('span',{style:{cursor:'pointer',fontSize:10,opacity:0.5,letterSpacing:1,fontFamily:"'Share Tech Mono',monospace"},onClick:function(){BGM.toggleMute();setToast(BGM.muted?'AUDIO: OFF':'AUDIO: ON');setTimeout(function(){setToast('')},1200)}},BGM.muted?'[MUTE]':'[SND]')));
+    renderTrustToast(),
+    showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')}}));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));

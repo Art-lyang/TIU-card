@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(copy \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\TIU-GDD-스토리라인.zip\" \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\TIU-GDD-스토리라인.zip\")",
+      "Bash(cp \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\TIU-GDD-스토리라인.zip\" \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\TIU-GDD-스토리라인.zip\")",
+      "Bash(unzip -l \"C:\\\\Users\\\\Administrator\\\\TIU_CARD\\\\TIU-GDD-스토리라인.zip\")"
+    ]
+  }
+}

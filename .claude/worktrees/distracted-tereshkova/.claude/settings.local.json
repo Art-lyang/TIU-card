@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Bash(ls *.js)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Bash(node -c \"$f\")",
+      "Bash(done)",
+      "Bash(grep -n 'var BGM' C:/Users/Administrator/TIU_CARD/*.js)",
+      "Bash(ls C:/Users/Administrator/TIU_CARD/*.html)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(where.exe python:*)",
+      "mcp__Claude_Preview__preview_start"
+    ]
+  }
+}

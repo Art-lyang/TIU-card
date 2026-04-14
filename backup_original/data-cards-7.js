@@ -1,0 +1,97 @@
+// data-cards-7.js — Act 2 일상 카드 (C-133~C-152)
+
+var CARDS_ACT2_DAILY = [
+  // ═══ 보급 / 자원 ═══
+  { id: "C-133", act: [2], priority: "하", bg: "supply",
+    msg: "보급 지연 통보. 예정보다 3일 늦습니다.\n\n[ORACLE: 타 지부 우선 배정. 양해 바랍니다.]",
+    left: { label: "비축분으로 버틴다", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
+    right: { label: "ORACLE에 우선 배정 요청", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 1 } },
+  { id: "C-134", act: [2], priority: "하", bg: "supply",
+    msg: "강도윤이 봉쇄선 외곽에서 사용 가능한 차량을 발견했습니다.\n\n\"연료가 절반. 수리하면 씁니다.\"",
+    left: { label: "수리 + 활용", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
+    right: { label: "부품만 해체", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
+  { id: "C-135", act: [2], priority: "하", bg: "supply", req: function(s){ return s.day >= 4 },
+    msg: "마을 이장이 교환을 제안합니다.\n\n\"겨울 채소가 있습니다. 의약품과 바꾸실 수 있습니까?\"",
+    left: { label: "교환 수락", fx: { c: 0, r: 2, t: 1, o: -1 }, g: -1 },
+    right: { label: "규정상 불가", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+  { id: "C-136", act: [2], priority: "하", bg: "supply", req: function(s){ return s.day >= 6 },
+    msg: "임재혁이 폐기 장비에서 부품을 재활용했습니다.\n\n\"통신 안테나 2기 추가 제작 가능합니다.\"",
+    left: { label: "봉쇄선 배치", fx: { c: 2, r: 0, t: 0, o: 1 }, g: 1 },
+    right: { label: "기지 백업용 보관", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
+
+  // ═══ 인사 / 사기 ═══
+  { id: "C-137", act: [2], priority: "하", bg: "base",
+    msg: "야간 근무조에서 탈진자가 발생했습니다.\n\n윤세진: \"48시간 안정이 필요합니다.\"",
+    left: { label: "교대 인원 재배치", fx: { c: -1, r: 0, t: 1, o: 0 }, g: 0 },
+    right: { label: "최소 인원으로 버틴다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
+  { id: "C-138", act: [2], priority: "하", bg: "base",
+    msg: "요원 두 명 사이에 마찰이 발생했습니다.\n\n순찰 구역 배정 문제.",
+    left: { label: "직접 중재", fx: { c: 0, r: 0, t: 2, o: 0 }, g: 0 },
+    right: { label: "강도윤에게 처리 지시", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
+  { id: "C-139", act: [2], priority: "하", bg: "base", req: function(s){ return s.day >= 5 },
+    msg: "요원들이 기지 내 간이 게시판 설치를 요청합니다.\n\n\"정보 공유가 빨라집니다.\"",
+    left: { label: "설치 허가", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 },
+    right: { label: "보안상 불허", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
+  // ═══ 연구 / 의료 ═══
+  { id: "C-140", act: [2], priority: "중", bg: "lab", req: function(s){ return s.day >= 4 },
+    msg: "윤세진: \"기존 샘플의 보관 기한이 다가옵니다.\"\n\n\"냉동 장비를 업그레이드하거나, 분석을 서두르거나.\"",
+    left: { label: "냉동 장비 투자", fx: { c: 0, r: -2, t: 0, o: 1 }, g: 1 },
+    right: { label: "분석 우선 진행", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 } },
+  { id: "C-141", act: [2], priority: "중", bg: "lab", req: function(s){ return s.day >= 6 },
+    msg: "윤세진이 이변체 해부 보고서를 완성했습니다.\n\n\"ORACLE 모델에 없는 신경 경로를 발견했습니다.\"\n\n\"보고하면 데이터가 돌아오지 않을 수 있습니다.\"",
+    left: { label: "기지 내 보관", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
+    right: { label: "ORACLE에 공유", fx: { c: 0, r: 1, t: 0, o: 2 }, g: 2 } },
+  { id: "C-142", act: [2], priority: "하", bg: "lab",
+    msg: "기지 의무실에 감기 환자가 늘고 있습니다.\n\n윤세진: \"항생제 비축량을 확인해야 합니다.\"",
+    left: { label: "항생제 확보 우선", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
+    right: { label: "자연 회복 대기", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
+
+  // ═══ 정비 / 기술 ═══
+  { id: "C-143", act: [2], priority: "하", bg: "comms", req: function(s){ return s.day >= 3 },
+    msg: "임재혁: \"봉쇄선 카메라 3대 고장입니다.\"\n\n\"현장 수리 가능하지만, 순찰조 호위가 필요합니다.\"",
+    left: { label: "수리팀 파견", fx: { c: 2, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "여유 카메라로 대체", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
+  { id: "C-144", act: [2], priority: "하", bg: "comms",
+    msg: "ORACLE이 시스템 업데이트를 푸시합니다.\n\n임재혁: \"변경 사항이 문서화되어 있지 않습니다.\"",
+    left: { label: "업데이트 보류", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -2 },
+    right: { label: "업데이트 적용", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
+  { id: "C-145", act: [2], priority: "하", bg: "base", req: function(s){ return s.day >= 5 },
+    msg: "기지 정수 시설에서 수질 이상 감지.\n\n\"미량의 유기물 오염. 아직 음용 기준 이내.\"",
+    left: { label: "필터 교체 실시", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 },
+    right: { label: "모니터링 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  // ═══ 봉쇄 / 외부 ═══
+  { id: "C-146", act: [2], priority: "중", bg: "forest", req: function(s){ return s.day >= 4 },
+    msg: "봉쇄선 남쪽에서 소규모 산불 발생.\n\n자연 발화 추정. 봉쇄 장비에 영향 가능.",
+    left: { label: "진화팀 투입", fx: { c: 1, r: -2, t: 0, o: 0 }, g: 0 },
+    right: { label: "자연 소화 대기", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-147", act: [2], priority: "하", bg: "forest",
+    msg: "민간 등산객이 봉쇄선 경고를 무시하고 접근했습니다.\n\n\"사진 찍으려고 왔다\"고 주장.",
+    left: { label: "경고 후 하산 조치", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
+    right: { label: "신원 확인 후 보고", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+  { id: "C-148", act: [2], priority: "중", bg: "forest", req: function(s){ return s.day >= 7 },
+    msg: "봉쇄선 서쪽 구간에서 땅이 꺼졌습니다.\n\n\"지하 수로 침식. 차량 통행 불가.\"",
+    left: { label: "긴급 복구 공사", fx: { c: 2, r: -2, t: 0, o: 1 }, g: 0 },
+    right: { label: "우회 경로 설정", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 } },
+
+  // ═══ 날씨 / 환경 ═══
+  { id: "C-149", act: [2], priority: "하", bg: "weather", tag: "weather",
+    msg: "장마철이 시작되었습니다.\n\n기지 지하 침수 위험. 배수 펌프 가동 필요.",
+    left: { label: "24시간 펌프 가동", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "침수 시 대응", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-150", act: [2], priority: "하", bg: "weather", tag: "weather",
+    msg: "낙뢰로 외곽 통신탑이 손상되었습니다.\n\n임재혁: \"수리에 자재가 필요합니다.\"",
+    left: { label: "자재 투입 수리", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 0 },
+    right: { label: "예비 통신으로 대체", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  // ═══ 자원 회복 보너스 ═══
+  { id: "C-151", act: [2], priority: "하", bg: "supply", req: function(s){ return s.day >= 8 },
+    msg: "ORACLE 긴급 보급 도착.\n\n[ORACLE: 현장 상황을 고려한 추가 물자입니다.]",
+    left: { label: "전량 수령", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 1 },
+    right: { label: "필요분만 수령", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } },
+  { id: "C-152", act: [2], priority: "하", bg: "base", req: function(s){ return s.r <= 40 },
+    msg: "임재혁이 기지 물자 재고 정리를 완료했습니다.\n\n\"미사용 장비를 해체해서 자원으로 전환했습니다.\"",
+    left: { label: "잘했다", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
+    right: { label: "다른 용도 검토", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } }
+];

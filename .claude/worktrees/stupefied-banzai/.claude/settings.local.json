@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git checkout:*)",
+      "Bash(git reset:*)",
+      "Read(//c/Users/Administrator/TIU_CARD/**)",
+      "Bash(ls *.md)",
+      "Bash(zip TIU-GDD-스토리라인.zip *.md)",
+      "Bash(powershell.exe -Command \"Compress-Archive -Path '*.md' -DestinationPath 'TIU-GDD-스토리라인.zip' -Force\")"
+    ]
+  }
+}
