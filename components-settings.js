@@ -38,7 +38,8 @@ function SettingsSoundTab(p) {
     !p.muted && _settingsRow('볼륨',
       h('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
         h('input', { type: 'range', min: 0, max: 100, value: p.vol,
-          style: { width: 100, accentColor: 'var(--ui)' },
+          style: { width: 100, accentColor: 'var(--ui)', touchAction: 'none' },
+          onInput: function (e) { p.onVolChange(parseInt(e.target.value)); },
           onChange: function (e) { p.onVolChange(parseInt(e.target.value)); } }),
         h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11,
           color: 'var(--ui)', width: 30, textAlign: 'right' } }, p.vol + '%'))));
