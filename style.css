@@ -1,5 +1,5 @@
 /* TERMINAL SESSION — style.css (Asset-based UI) */
-*{margin:0;padding:0;box-sizing:border-box}
+*{margin:0;padding:0;box-sizing:border-box;word-break:keep-all}
 :root{--ui:#33ff33;--ui-rgb:51,255,51;--ui-dim:#1a8a1a;--ui-border:#1a3a1a;--ui-bg:rgba(13,26,13,0.6);--ui-glow:rgba(51,255,51,0.3);--ui-text:#ccddcc;--ui-label:#aaddaa;--ui-foot:#1a4a1a;--ui-section:#1a8a1a;--ui-scroll:rgba(51,255,51,0.15)}
 .act-2{--ui:#e6c030;--ui-rgb:230,192,48;--ui-dim:#8a7a1a;--ui-border:#3a3a1a;--ui-bg:rgba(26,24,10,0.6);--ui-glow:rgba(230,192,48,0.3);--ui-text:#ddd8c0;--ui-label:#bbaa66;--ui-foot:#4a4a1a;--ui-section:#8a7a1a;--ui-scroll:rgba(230,192,48,0.15)}
 .act-3{--ui:#ff4444;--ui-rgb:255,68,68;--ui-dim:#8a1a1a;--ui-border:#3a1a1a;--ui-bg:rgba(26,10,10,0.6);--ui-glow:rgba(255,68,68,0.3);--ui-text:#ddcccc;--ui-label:#bb6666;--ui-foot:#4a1a1a;--ui-section:#8a1a1a;--ui-scroll:rgba(255,68,68,0.15)}
