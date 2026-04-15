@@ -6,6 +6,7 @@ var CARDS_PROLOGUE = [
 
   // ═══ 기지 적응 / 도착 (CA-001~CA-006) ═══
   { id: "CA-001", act: [1], priority: "중", bg: "base", once: true,
+    req: function(s){ return s.day <= 1; },
     msg: "기지 도착 첫날.\n\n[ORACLE: 지휘관 이중철 취임을 기록합니다. KR-INIT-001 운영 정상화 절차를 개시합니다. 초기화 완료율 97.1%.]\n\n간부진이 사무실 앞에 정렬해 있습니다.",
     left: { label: "즉시 현황 보고 받기", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1 },
     right: { label: "먼저 기지를 직접 둘러보겠다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
