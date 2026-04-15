@@ -128,6 +128,8 @@ function App(){
     if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);setTimeout(function(){setToast('')},2400)},600)}
     setStats(ns);setGi(ng);
     if(curCard.tag){var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
+    if(ch.log){var clogs=Array.isArray(ch.log)?ch.log:[ch.log];clogs.forEach(function(l){tryUnlock(l)})}
+    if(ch.trust){var ct2=ch.trust;setTrust(function(prev){var next={};for(var k in prev)next[k]=prev[k];for(var ck in ct2){if(ck in next)next[ck]=Math.max(0,Math.min(100,next[ck]+(ct2[ck]||0)))}Save.set('ts_trust',next);return next})}
     checkLogs(ns,ng,curCard.id,null,null,dir);
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
     var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey])setPendingBonus(REFUSAL_BONUSES[rwdKey]);

@@ -19,7 +19,11 @@ function EveningChat(p){
     var sortByDay=function(a,b){return a.dayMin-b.dayMin};
     var introLog=INTRO_LOG_MAP[selChar.name];var introDone=introLog&&p.logs.indexOf(introLog)>=0;
     var skipIntro=function(ec){return!(introDone&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
-    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)}).sort(sortByDay);
+    // priority 이벤트 먼저 체크 (조건 충족 시 일반 이브닝보다 우선 표시)
+    var priorityMatches=EVENING_CHATS.filter(function(ec){return ec.priority&&ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&usedEv.indexOf(ecKey(ec))<0&&(!ec.cond||ec.cond(p.logs,p.trust))}).sort(sortByDay);
+    if(priorityMatches.length>0){chat=priorityMatches[0]}
+    else{
+    var matches=EVENING_CHATS.filter(function(ec){return !ec.priority&&ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)}).sort(sortByDay);
     if(matches.length>0){chat=matches[0]}
     else{
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)}).sort(sortByDay);
@@ -30,7 +34,7 @@ function EveningChat(p){
         else{matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&skipIntro(ec)}).sort(sortByDay);chat=matches.length>0?matches[matches.length-1]:null}
       }
     }
-  }
+  }}
   var chatLines=chat?(typeof getEveningLines==='function'?getEveningLines(chat,p.trust,p.logs):chat.lines):[];
   var resp=(chat&&typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null;
   var s4=useState(0),ci=s4[0],setCi=s4[1];
@@ -52,9 +56,12 @@ function EveningChat(p){
         var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
         var sortD=function(a,b){return a.dayMin-b.dayMin};
         var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
-        var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
-        if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
-        if(m2.length>0&&p.onMarkEvening)p.onMarkEvening(ecKey(m2[0]))},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(145,255,106,.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s'}},
+        var pm2=EVENING_CHATS.filter(function(ec){return ec.priority&&ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&usedEv.indexOf(ecKey(ec))<0&&(!ec.cond||ec.cond(p.logs,p.trust))}).sort(sortD);
+        if(pm2.length>0){if(p.onMarkEvening)p.onMarkEvening(ecKey(pm2[0]))}
+        else{
+        var m2=EVENING_CHATS.filter(function(ec){return !ec.priority&&ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
+        if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return !ec.priority&&ec.char===c.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
+        if(m2.length>0&&p.onMarkEvening)p.onMarkEvening(ecKey(m2[0]))}},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(145,255,106,.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s'}},
         portrait?h('img',{src:portrait,style:{width:60,height:60,borderRadius:'50%',border:'2px solid rgba(145,255,106,.3)',display:'block',margin:'0 auto 6px',objectFit:'cover'}}):h('div',{style:{width:60,height:60,borderRadius:'50%',background:'#1a2a1a',margin:'0 auto 6px'}}),
         h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#1a8a1a',marginTop:2}},c.role))})),

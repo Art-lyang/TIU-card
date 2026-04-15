@@ -183,5 +183,4 @@ var ARCHIVE_ENTRIES = [
     content: "광역 포자 오염 지대.\n진화 분류: DELAYED (지연진화).\n\nSeed Spreader(SPEC-004)가 주요 형성 원인.\n\n40km 반경 내 12개 이상의 Spreader 구조체 확인.\n\n소리가 없다 — 동물, 새, 곤충 모두 부재.\n\n확장 속도: 월 1.2km.\n\nPermafrost Unit(러시아)가 경계 관리.\n\n한국지부 직접 관여: 없음. ORACLE 데이터베이스를 통한 열람." }
 ];
 
-// 카테고리 목록 (표시 순서)
 var ARCHIVE_CATEGORIES = ["이변체", "인물", "조직", "시설", "과학", "시스템", "지역"];
