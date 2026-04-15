@@ -22,8 +22,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
     if(!introOk(c,logs))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
 };
 
 var Save={
