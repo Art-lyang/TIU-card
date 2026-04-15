@@ -32,17 +32,21 @@ var _settingsTabBtn = function (id, label, curTab, setTab) {
   }, onClick: function () { setTab(id); } }, label);
 };
 
+function _volSlider(val, onChange) {
+  return h('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
+    h('input', { type: 'range', min: 0, max: 100, value: val,
+      style: { width: 100, accentColor: 'var(--ui)', touchAction: 'none' },
+      onInput: function (e) { onChange(parseInt(e.target.value)); },
+      onChange: function (e) { onChange(parseInt(e.target.value)); } }),
+    h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11,
+      color: 'var(--ui)', width: 30, textAlign: 'right' } }, val + '%'));
+}
+
 function SettingsSoundTab(p) {
   return h('div', null,
     _settingsRow('사운드', _settingsToggle(!p.muted, p.onToggleMute)),
-    !p.muted && _settingsRow('볼륨',
-      h('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
-        h('input', { type: 'range', min: 0, max: 100, value: p.vol,
-          style: { width: 100, accentColor: 'var(--ui)', touchAction: 'none' },
-          onInput: function (e) { p.onVolChange(parseInt(e.target.value)); },
-          onChange: function (e) { p.onVolChange(parseInt(e.target.value)); } }),
-        h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11,
-          color: 'var(--ui)', width: 30, textAlign: 'right' } }, p.vol + '%'))));
+    !p.muted && _settingsRow('배경음악', _volSlider(p.vol, p.onVolChange)),
+    !p.muted && _settingsRow('효과음', _volSlider(p.sfxVol, p.onSfxVolChange)));
 }
 
 function SettingsDisplayTab() {

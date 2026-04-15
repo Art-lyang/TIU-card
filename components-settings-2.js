@@ -98,6 +98,8 @@ function SettingsPanel(p) {
       muted = _muted[0], setMuted = _muted[1];
   var _vol = useState(function () { return Save.get('ts_volume', 10); }),
       vol = _vol[0], setVol = _vol[1];
+  var _sfxVol = useState(function () { return Save.get('ts_sfxVol', 50); }),
+      sfxVol = _sfxVol[0], setSfxVol = _sfxVol[1];
 
   // ESC 키로 닫기
   useEffect(function () {
@@ -109,6 +111,7 @@ function SettingsPanel(p) {
   var toggleMute = function () {
     if (typeof BGM !== 'undefined') {
       var m = BGM.toggleMute(); setMuted(m); Save.set('ts_muted', m);
+      if (typeof SFX !== 'undefined') SFX.muted = m;
     }
   };
   var changeVol = function (v) {
@@ -120,10 +123,15 @@ function SettingsPanel(p) {
       Save.set('ts_volume', nv);
     }
   };
+  var changeSfxVol = function (v) {
+    var nv = Math.max(0, Math.min(100, v)); setSfxVol(nv);
+    if (typeof SFX !== 'undefined') { SFX.vol = nv / 100; Save.set('ts_sfxVol', nv); }
+  };
 
   var content = null;
   if (tab === 'sound') content = h(SettingsSoundTab,
-    { muted: muted, vol: vol, onToggleMute: toggleMute, onVolChange: changeVol });
+    { muted: muted, vol: vol, sfxVol: sfxVol, onToggleMute: toggleMute,
+      onVolChange: changeVol, onSfxVolChange: changeSfxVol });
   if (tab === 'data') content = h(SettingsDataTab,
     { onLogs: p.onLogs, onArchive: p.onArchive });
   if (tab === 'save') content = h(SettingsSaveTab,
