@@ -1,5 +1,5 @@
 # TERMINAL SESSION
-## Game Design Document v0.6
+## Game Design Document v0.7
 
 > **장르**: 하이브리드 — 카드 스와이프 의사결정 + 텍스트 어드벤처 탐사
 > **플랫폼**: 웹 게임 (GitHub Pages 배포)
@@ -381,26 +381,40 @@ GI 구간별 4종 × 4등급 = **16종 랜덤** 메시지.
 
 ### 4.2 자동 전환
 
-- 봉쇄(c) ≤ 20 **또는** 자원(r) ≤ 20 → 긴장 BGM 전환
+- 봉쇄(c) ≤ 20 **또는** 자원(r) ≤ 20 → 긴장 BGM 전환 (800ms 디바운스)
 - 위험 해소 시 메인 BGM 복귀
-- Crossfade 전환 (즉각 컷이 아닌 부드러운 전환)
+- Crossfade 전환 (fadeOut 2500ms + fadeIn 3000ms, transitioning 플래그로 중복 방지)
 
-### 4.3 음소거 토글
+### 4.3 설정 패널 (v0.7)
 
-UI 우상단 버튼. 전체 BGM ON/OFF. localStorage 저장.
+☰ 메뉴 버튼 → 5탭 설정 패널:
+- **SOUND**: 음소거 토글 + 볼륨 슬라이더 (0~100%, 모바일 드래그 지원)
+- **DATA**: LOG 열람 + ARCHIVE 열람 (해금 카운트 표시)
+- **SAVE**: 세션 초기화 / 전체 데이터 삭제 (확인 모달)
+- **DISPLAY**: 글자 크기 조절 (작게/보통/크게)
+- **INFO**: 버전, 엔진, 개발자 정보
+
+볼륨/음소거 설정은 localStorage 저장. ESC 키로 닫기 지원.
 
 ---
 
 ## 5. 엔딩 시스템 (8종)
 
-### 스탯 0 엔딩 (즉시)
+### 스탯 0 엔딩 (즉시 — 4종)
 
 | 엔딩 | 조건 |
 |------|------|
-| C_c | 봉쇄 = 0 |
-| C_r | 자원 = 0 |
-| C_t | 신뢰 = 0 |
-| C_o | 평가 = 0 |
+| C_c 봉쇄 붕괴 | 봉쇄 = 0 |
+| C_r 자원 고갈 | 자원 = 0 |
+| C_t 신뢰 상실 | 신뢰 = 0 |
+| C_o 접속 차단 | 평가 = 0 |
+
+### 봉쇄 100 엔딩 (v0.7 — 2종)
+
+| 엔딩 | 조건 |
+|------|------|
+| **C_cs 봉쇄 성공** | 봉쇄 100 (기본) |
+| **C_cst 자충수** | 봉쇄 100 + LOG-050 + LOG-082 |
 
 ### 특수 엔딩 (일 종료 시 체크, 우선순위: F > D > B)
 
@@ -410,6 +424,8 @@ UI 우상단 버튼. 전체 BGM ON/OFF. localStorage 저장.
 | **B. 각성** | Act 4 + GI ≤ -15 + 신뢰65+ 2명 + LOG 6개+ + Day ≥ 28 |
 | **D. 조용한 자유** | Act 4 + GI ≤ -30 + 신뢰60+ 3명 + LOG 8개+ + Day ≥ 32 |
 | **F. [데이터 손상]** | Act 4 + LOG-012 + LOG-013 + GI ≤ 0 + Day ≥ 30 |
+
+**엔딩 스크린 (EndingScreen)**: 10종 전체 표시 (A/B/C_cs/C_cst/C_c/C_r/C_t/C_o/D/F)
 
 ---
 
@@ -486,80 +502,104 @@ GRANT: ACTIVE — RENEWAL AVAILABLE
 
 | 항목 | 목표 | 현재 |
 |------|------|------|
-| 기지 카드 | 150~200장 | **230장+** ✅ |
-| 현장 미션 | 20~25개 | **8개** ⚠️ |
-| 이변체 | 8~10종 | **5종 (직접)** ⚠️ |
-| 엔딩 | 8종 | **8종** ✅ |
-| 연쇄 카드 | — | **6개 체인** ✅ |
-| ORACLE 로그 | 12종 | **19종** ✅ |
-| 인물 대화 | 8종 | **12종** ✅ |
-| 이브닝 챗 | — | **4인 × 5구간 = 20종** ✅ |
+| 기지 카드 | 150~200장 | **337장** ✅ |
+| 현장 미션 | 20~25개 | **8개 (M) + 5개 (MI)** ⚠️ |
+| 이변체 | 8~10종 | **5종 (직접) + 6종 (아카이브)** ⚠️ |
+| 엔딩 | 10종 표시 | **10종 (서사6+즉사4)** ✅ |
+| 연쇄 카드 | — | **6개 체인 + 기지 사건 체인** ✅ |
+| ORACLE 로그 | 12종 | **26종** ✅ |
+| 인물 대화 | 8종 | **14종** ✅ |
+| 이브닝 챗 | — | **40종(기본36+추가4) + 신뢰변형 52세트** ✅ |
+| 이브닝 선택지 | — | **38종 (19+19 추가)** ✅ |
+| 아카이브 | — | **43종** ✅ |
+| 증거 | — | **28종** ✅ |
+| 시설 탐사 | — | **29 노드** ✅ |
+| 히든 스토리 | — | **10종** ✅ |
 | 배경 이미지 | — | **9장** ✅ |
 | 카드 이미지 | — | **56장 (img/)** ✅ |
-| BGM | — | **2트랙 (main/crisis)** ✅ |
+| BGM | — | **3트랙 (main/tension/boot, base64)** ✅ |
 
 ---
 
-## 9. 파일 구조
+## 9. 파일 구조 (총 63개 JS 파일, 전부 200줄 이하)
 
 ```
 TIU-card/
-├── index.html                  — HTML 셸 + 스크립트 로드
-├── style.css                   — 전체 스타일
+├── index.html                  — HTML 셸 + 스크립트 로드 (캐시버스트 ?v=10)
+├── style.css                   — 전체 스타일 + 반응형
 │
-├── [앱 로직 — app.js에서 4분리]
+├── [앱 로직]
+├── app.js                      — React App 컴포넌트 (메인 상태 관리)
+├── app-init.js                 — 글로벌 유틸, CARDS 배열, drawCard, Save, SFX
 ├── app-utils.js                — 유틸 함수 (pick, drawCard, INTRO_FILTER 등)
-├── app-save.js                 — Save 객체 (localStorage)
-├── app-sfx.js                  — SFX 객체 (Web Audio API 7종)
-├── app-main.js                 — React App 컴포넌트
+├── app-logic.js                — Act 전환, 엔딩 체크, 게임 로직
+├── app-bgm.js                  — BGM 연동 로직
 │
-├── [UI 컴포넌트 — components.js에서 3분리]
-├── components-boot.js          — Boot, Tutorial, GameOver
+├── [UI 컴포넌트]
+├── components.js               — Boot, Tutorial, GameOver, TrustToast
 ├── components-game.js          — StatBar, GaugeBar, CardView, SwipeArea
-├── components-ui.js            — News, Reward, Archive, Dialogue, EveningChat
+├── components-dialogue.js      — Dialogue, LogViewer, EndingScreen, FieldMission
+├── components-evening.js       — EveningChat (이브닝 챗 + 선택지 통일 스타일)
+├── components-briefing.js      — DayBriefing
 ├── components-archive.js       — 아카이브 전용 컴포넌트
+├── components-evidence.js      — 증거 수집 컴포넌트
+├── components-facility.js      — 시설 탐사 컴포넌트
+├── components-settings.js      — 설정 Sound/Display 탭 + 공통 헬퍼
+├── components-settings-2.js    — 설정 Save/Data/Info 탭 + SettingsPanel 메인
 │
-├── [BGM]
-├── bgm.js                      — BGM 시스템 (crossfade, 음소거)
-├── bgm_main.mp3                — 메인 BGM
-├── bgm_crisis.mp3              — 긴장 BGM
+├── [BGM — base64 인코딩]
+├── bgm.js                      — BGM 시스템 (crossfade, 디바운스)
+├── bgm-fade.js                 — fadeIn/fadeOut/timer 관리
+├── bgm_main.js                 — 메인 BGM (base64)
+├── bgm_tension.js              — 긴장 BGM (base64)
+├── bgm_boot.js                 — 부팅 사운드 (base64)
 │
 ├── [게임 데이터]
-├── data-core.js                — 부팅 텍스트, 로그, 대화, 뉴스 풀
+├── data-core.js                — NP, REWARDS, DIALOGUES(14), LOGS(26), EVENING_CHATS(36)
 ├── data-cards-prologue.js      — Act 1 프롤로그 카드
-├── data-cards-1.js             — 공통 운영 카드 (51장)
-├── data-cards-2.js             — 스토리 진행 카드 (39장)
-├── data-cards-3.js             — 엔딩 루트 카드 (28장)
-├── data-cards-4.js             — 이변체 연쇄 카드 (10장)
-├── data-cards-5.js             — 자원/일반 운영 카드 (14장)
-├── data-cards-6.js             — 부임기 일상 카드 (22장)
-├── data-cards-7.js             — 충돌기 일상 카드 (20장)
-├── data-cards-8.js             — 전환 루트 전용 카드 (11장)
-├── data-cards-9.js             — 서하은 분기 카드 (11장)
-├── data-cards-10.js ~ 15.js   — 추가 확장 카드
-├── data-chains.js              — 연쇄 카드 정의 (6체인)
-├── data-missions.js            — 미션 1~3
-├── data-missions-2.js          — 미션 4~6
-├── data-missions-3.js          — 미션 7~8
-├── data-endings.js             — 엔딩 정의 + 특수 엔딩 체크
-├── data-archive.js             — ORACLE 아카이브 (ARC-*)
+├── data-cards-1.js ~ 16.js    — 카드 데이터 (총 337장)
+├── data-chains.js              — 연쇄 카드 정의 (CH-001~006)
+├── data-chains-incident.js     — 기지 내부 사건 체인 트리거 (C-301~305)
+├── data-chains-incident2.js    — 기지 내부 사건 체인 분기
+├── data-missions.js            — 현장 임무 M-001~M-004
+├── data-missions-2.js          — 현장 임무 M-005~M-006
+├── data-missions-3.js          — 현장 임무 M-007~M-008
+├── data-missions-incident.js   — 기지 사건 임무 MI-01~MI-05
+├── data-endings.js             — 엔딩 6종 서사 + 특수 엔딩 체크
+├── data-archive.js             — ORACLE 아카이브 (43종)
+├── data-rewards.js             — 보상/감시/정보해금
+├── data-status-tags.js         — 상태 태그 시스템
+├── data-evidence.js            — 증거 데이터 (28종)
+├── data-facility.js            — 시설 탐사 기본 (8 노드)
+├── data-facility-2.js          — 시설 탐사 확장 (21 노드)
+├── data-hidden-story.js        — 히든 스토리 (10종)
 │
-├── [이브닝 챗 — data-evening-trust.js에서 3분리]
-├── data-evening-trust-1.js     — getTrustTier + 강도윤 대사
-├── data-evening-trust-2.js     — 서하은 대사
+├── [이브닝 챗 시스템]
+├── data-evening-trust-1.js     — getTrustTier + 강도윤 Act 1-2 대사
+├── data-evening-trust-1b.js    — 강도윤 Act 3-4 + 추가 대사
+├── data-evening-trust-2.js     — 서하은 신뢰도별 대사
 ├── data-evening-trust-3.js     — 윤세진·임재혁·박소영 대사
+├── data-evening-responses.js   — 이브닝 챗 선택지 (19종)
+├── data-evening-extra.js       — 추가 이브닝 챗(4) + 추가 선택지(19)
+├── evening-lines.js            — getEveningLines (신뢰도 기반 대사 변형)
 │
 ├── [이미지]
-├── images.js                   — 이변체/캐릭터 이미지 (base64, 21장)
-├── images_bg.js                — 카드 배경 이미지 (base64, 9장)
-├── images_cards.js             — 카드 개별 이미지
+├── images.js                   — 이변체/캐릭터 이미지 (base64) + CHAR_IMG
+├── images_bg.js                — 카드 배경 이미지 (base64)
+├── images_cards.js             — 카드 개별 이미지 (base64)
 ├── img/                        — 카드 일러스트 PNG (56장)
 │   ├── scene_*.png             — 장면 이미지
 │   ├── char_*.png              — 캐릭터 이미지
 │   └── anomaly_*.png           — 이변체 이미지
 │
-└── [UI 에셋]
-    └── *.png                   — 버튼, 게이지, 패널 등 UI 에셋
+└── [문서]
+    ├── TIU-GAME-GDD.md         — 요약 GDD
+    ├── TIU-GAME-GDD-v05.md     — 상세 GDD (본 문서)
+    ├── TIU-CARD-DESIGN-GUIDE.md — 디자인 가이드
+    ├── TIU-CANON-STORYLINE.md   — 캐논 스토리라인
+    ├── TIU-CANON-STORYLINE-2.md — 캐논 스토리라인 2
+    ├── TIU-WORLDBUILDING-SUMMARY.md — 세계관 요약
+    └── *.md                    — 기타 설계 문서
 ```
 
 ---
@@ -596,22 +636,42 @@ TIU-card/
 - [x] **Act 1 간부진 인트로 대사** → ORACLE 의심 멘트 제거, 인사/업무보고 톤
 - [x] **Act 2부터 ORACLE 의심** → 서하은·윤세진·임재혁이 이상 징후 감지
 - [x] **윤세진 설정 수정** → "오라클보다 23% 높은 독자 예측 모델" → "오라클 데이터를 보완하는 현장 관측 기반 분석 기법"
-- [x] **once 카드 시스템** → 소개카드 등 1회성 카드 중복 방지 (`once: true` + `_onceShown` 배열)
+- [x] **once 카드 시스템** → 소개카드 등 1회성 카드 중복 방지 (`once: true` + `ONCE-{cardId}` LOG 추적)
 - [x] **Act 1 현장임무 미발생** → FIELD MISSION은 Act 2부터 발생
 - [x] **서하은 = 부지휘관** 확정 (박소영은 분석관)
 - [x] **Act 전환 일수 조정** → Day 5/14/29 (기존 10/25 → 5/14/29)
 
+### v0.7 신규 확정
+
+- [x] **설정 패널 (5탭)** → ☰ 메뉴 → SOUND/DATA/SAVE/DISPLAY/INFO
+- [x] **INFO-BAR 슬림화** → LOG/ARCHIVE/♪ 버튼 제거, 설정 패널 DATA 탭으로 이동
+- [x] **이브닝 챗 선택지** → EVENING_RESPONSES 38종 (19 기본 + 19 추가)
+- [x] **이브닝 챗 인트로 스킵** → INTRO_LOG_MAP으로 자기소개 1회 표시 후 Act 1 반복 방지
+- [x] **이브닝 선택지 스타일 통일** → Dialogue 스타일과 동일 (중앙정렬, 배경/테두리 색상)
+- [x] **봉쇄100 엔딩 분기** → C_cs(봉쇄 성공) / C_cst(자충수, LOG-050+LOG-082 조건)
+- [x] **엔딩 스크린 10종 표시** → A/B/C_cs/C_cst/C_c/C_r/C_t/C_o/D/F
+- [x] **ONCE 세이브 마이그레이션** → 기존 세이브에 ONCE 플래그 자동 추가
+- [x] **모바일 볼륨 슬라이더 드래그** → onInput + touch-action:none
+- [x] **BGM 3트랙 base64** → bgm_main.js / bgm_tension.js / bgm_boot.js
+- [x] **시설 탐사 시스템** → 29 노드, 구역별 인터랙티브 탐색
+- [x] **증거 수집 시스템** → 28종 증거 아이템
+- [x] **기지 사건 체인** → 트리거 카드(C-301~305) + 분기 체인 + 사건 임무(MI-01~05)
+- [x] **히든 스토리** → 10종 숨겨진 서사 요소
+- [x] **캐시버스트 v10** → 모든 스크립트 태그 ?v=10으로 갱신
+
 ### 잔여 미결
 
 - [ ] 이변체 3~5종 추가 (현재 5종 직접 조우 → 목표 8~10종)
-- [ ] 현장 미션 확장 (현재 8개 → 목표 20~25개)
+- [ ] 현장 미션 확장 (현재 M-001~008 + MI-01~05 → 목표 20~25개)
 - [ ] 유도 지수 UI 노출 (3회차)
 - [ ] OBSERVER ACCESS 잔향 (4회차+)
 - [ ] 2회차+ 전용 Observer 암시 카드 2~3장
 - [ ] 유니버스 HTML 페이지 (TIU-WORLDBUILDING-SUMMARY.md 기반)
 - [ ] 웹사이트 ↔ 게임 크로스 레퍼런스
+- [ ] 오프라인/모바일(앱스토어) → PC(스팀) 배포 준비
+- [ ] 모드/DLC 시스템 설계
 
 ---
 
 *본 문서는 TIU 확정 로어를 기반으로 작성되었으며, 모든 설정 변경은 TIU 마스터 문서와의 정합성 검증 후 적용.*
-*v0.6 업데이트: 2026-04-12*
+*v0.7 업데이트: 2026-04-15*
