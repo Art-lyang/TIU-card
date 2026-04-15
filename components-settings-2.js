@@ -3,6 +3,7 @@
 
 function SettingsSaveTab(p) {
   var _cf = useState(null), cfm = _cf[0], setCfm = _cf[1];
+  var _ci = useState(''), cfmInput = _ci[0], setCfmInput = _ci[1];
   var sessions = Save.getSessions();
   var endings = Save.getEndings();
   var logs = Save.getLogs();
@@ -10,19 +11,32 @@ function SettingsSaveTab(p) {
 
   var cfmModal = function () {
     if (!cfm) return null;
+    var needInput = !!cfm.inputKey;
+    var inputOk = !needInput || cfmInput === cfm.inputKey;
     return h('div', { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 310 } },
       h('div', { style: { background: '#0a120a', border: '1px solid rgba(255,68,68,0.4)',
         padding: '20px 24px', maxWidth: 300, textAlign: 'center' } },
         h('div', { style: { fontSize: 13, color: '#ff4444', marginBottom: 16,
           whiteSpace: 'pre-wrap', lineHeight: 1.7 } }, cfm.msg),
+        needInput && h('div', { style: { marginBottom: 12 } },
+          h('div', { style: { fontSize: 11, color: 'rgba(255,68,68,0.6)', marginBottom: 6 } },
+            '"삭제"를 입력하세요'),
+          h('input', { type: 'text', value: cfmInput, maxLength: 4,
+            style: { width: '100%', background: 'rgba(255,68,68,0.08)',
+              border: '1px solid rgba(255,68,68,0.3)', color: '#ff4444',
+              fontFamily: "'Share Tech Mono',monospace", fontSize: 13,
+              padding: '6px 10px', textAlign: 'center', outline: 'none' },
+            onChange: function (e) { setCfmInput(e.target.value); } })),
         h('div', { style: { display: 'flex', gap: 10, justifyContent: 'center' } },
           h('button', { className: 'btn',
             style: { fontSize: 11, padding: '8px 16px', marginTop: 0 },
-            onClick: function () { setCfm(null); } }, '취소'),
+            onClick: function () { setCfm(null); setCfmInput(''); } }, '취소'),
           h('button', { className: 'btn btn-amber',
-            style: { fontSize: 11, padding: '8px 16px', marginTop: 0 },
-            onClick: function () { cfm.action(); setCfm(null); } }, '확인'))));
+            disabled: !inputOk,
+            style: { fontSize: 11, padding: '8px 16px', marginTop: 0,
+              opacity: inputOk ? 1 : 0.3, cursor: inputOk ? 'pointer' : 'not-allowed' },
+            onClick: function () { if (!inputOk) return; cfm.action(); setCfm(null); setCfmInput(''); } }, '확인'))));
   };
 
   return h('div', null,
@@ -42,6 +56,7 @@ function SettingsSaveTab(p) {
         style: { fontSize: 11, padding: '8px 16px', marginTop: 0, width: '100%', color: '#ff4444' },
         onClick: function () {
           setCfm({ msg: '모든 데이터를 삭제합니다.\nLOG, 엔딩, 세션 기록이 모두 사라집니다.\n이 작업은 되돌릴 수 없습니다.',
+            inputKey: '삭제',
             action: function () { if (p.onFullReset) p.onFullReset(); p.onClose(); } });
         } }, '전체 데이터 삭제')),
     cfmModal());
