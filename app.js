@@ -31,7 +31,7 @@ function App(){
   var _fac=useState({approved:[],pending:[],completed:[],proposed:[]}),facility=_fac[0],setFacility=_fac[1];
   var _fot=useState(false),facOfferedToday=_fot[0],setFacOfferedToday=_fot[1];
   var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
-  var _tt=useState(null),trustToast=_tt[0],setTrustToast=_tt[1];
+  // 신뢰도 변화는 플레이어에게 표시하지 않음 (GI처럼 숨김)
   var _ps=useState(null),prevStats=_ps[0],setPrevStats=_ps[1];
   var cpd=act===1?5:act===2?5:act===3?6:7;
   useEffect(function(){
@@ -61,9 +61,6 @@ function App(){
   useEffect(function(){var h2=function(e){if(e.key==='Escape'&&phase==='game'&&!showSettings)setShowSettings(true)};window.addEventListener('keydown',h2);return function(){window.removeEventListener('keydown',h2)}},[phase,showSettings]);
   var tryUnlock=function(id){setLogs(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveLogs(n);return n})};
   var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);
-    var arrow=delta>0?'▲':'▼';var color=delta>0?'#9dff74':'#ff6644';
-    setTrustToast({char:char,delta:delta,arrow:arrow,color:color});
-    setTimeout(function(){setTrustToast(null)},1800);
     return next})};
   // checkLogs 래퍼: app-logic.js의 checkLogsAll 호출
   var checkLogs=function(s,g,cid,dc,di,dir){checkLogsAll(s,g,cid,dc,di,dir,logs,trust,tryUnlock)};
@@ -168,8 +165,7 @@ function App(){
     var next={approved:prev.approved.concat([feId]),pending:prev.pending.filter(function(id){return id!==feId}),completed:prev.completed.slice(),proposed:prev.proposed.slice()};
     Save.saveFacility(next);return next});setToast('시설 확장이 보상 풀에 추가되었습니다');setTimeout(function(){setToast('')},2200)};
 
-  var renderTrustToast=function(){if(!trustToast)return null;var tt=trustToast;
-    return h('div',{style:{position:'fixed',bottom:100,left:'50%',transform:'translateX(-50%)',background:'rgba(10,18,10,.85)',border:'1px solid '+tt.color,borderRadius:4,padding:'6px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:tt.color,letterSpacing:1,zIndex:200,animation:'fadeIn 0.3s ease',textAlign:'center',boxShadow:'0 0 12px '+(tt.delta>0?'rgba(157,255,116,.2)':'rgba(255,102,68,.2)')}},tt.char+' '+tt.arrow+(tt.delta>0?'+':'')+tt.delta)};
+
 
   // ═══ 렌더링 (phase 라우팅) ═══
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();if(fp){setPhase('tutorial')}else{setPhase('game')}}});
@@ -178,8 +174,8 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(News,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
-  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}),renderTrustToast());}
-  if(phase==='dialogue'&&curDlg)return h(React.Fragment,null,h(Dialogue,{dialogue:curDlg,onChoice:hDlg}),renderTrustToast());
+  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
+  if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,onComplete:hMission});
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
   if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
@@ -193,7 +189,6 @@ function App(){
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
     toast&&h('div',{style:{position:'fixed',top:'50%',left:'50%',transform:'translate(-50%,-50%)',background:'rgba(255,68,68,0.15)',border:'1px solid rgba(255,68,68,0.4)',borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:300}},toast),
-    renderTrustToast(),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')}}));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
