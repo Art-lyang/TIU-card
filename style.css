@@ -49,7 +49,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .stat-icon-inline-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .stat-icon-inline-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 /* Info Bar */
-.info-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:6px auto;flex-shrink:0;max-width:440px;width:100%}
+.info-bar{display:flex;gap:6px;margin:6px auto;flex-shrink:0;max-width:440px;width:100%;align-items:center}
 .info-tag{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui);border:1px solid var(--ui-border);padding:6px 2px;letter-spacing:0;background:var(--ui-bg);text-align:center;white-space:nowrap}
 .info-tag-log{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15);text-decoration:underline;text-decoration-color:rgba(var(--ui-rgb),0.2);text-underline-offset:3px}
 .info-tag-log:active{background:rgba(var(--ui-rgb),0.1);border-color:rgba(var(--ui-rgb),0.4)}
