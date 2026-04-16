@@ -85,7 +85,7 @@ var EVENING_RESPONSES = {
 // 현재 챗에 맞는 응답 찾기
 function getEveningResponse(chat, trust) {
   if (!chat || !EVENING_RESPONSES) return null;
-  var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk'};
+  var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var ck = charKeyMap[chat.char];
   if (!ck) return null;
   // key 매칭: "charKey_act_dayRange"

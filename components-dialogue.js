@@ -11,6 +11,17 @@ function Dialogue(p){
   useEffect(function(){if(!chosen||!chosen.reply)return;var txt=chosen.reply;var i=0;var t=setInterval(function(){if(i<txt.length){i++;setRTxt(txt.substring(0,i))}else{clearInterval(t);setTimeout(function(){setRDone(true)},800)}},30);return function(){clearInterval(t)}},[chosen]);
   useEffect(function(){if(rDone&&chosen){var t=setTimeout(function(){p.onChoice(chosen)},1400);return function(){clearTimeout(t)}}},[rDone]);
   var handlePick=function(c,i){if(picked>=0)return;setPicked(i);setTimeout(function(){setChosen(c)},500)};
+  useEffect(function(){
+    var onKey=function(e){
+      if(!sc||picked>=0||chosen)return;
+      var idx=-1;
+      if(e.key==='1'||e.code==='Numpad1'||e.key==='ArrowLeft')idx=0;
+      else if(e.key==='2'||e.code==='Numpad2'||e.key==='ArrowRight')idx=1;
+      if(idx>=0&&d.choices[idx]){e.preventDefault();handlePick(d.choices[idx],idx)}
+    };
+    window.addEventListener('keydown',onKey);
+    return function(){window.removeEventListener('keydown',onKey)};
+  },[sc,picked,chosen,d]);
   var fxTags=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){if(fx[k]&&fx[k]!==0){tags.push({key:k,val:fx[k],name:SN[k].l,cls:SN[k].cls})}});if(!tags.length)return null;return h('div',{style:{display:'flex',gap:10,marginTop:8,flexWrap:'wrap',animation:'fadeIn 0.5s ease'}},tags.map(function(t){var pos=t.val>0;return h('span',{key:t.key,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:pos?'#50ff50':'#ff4444',textShadow:'0 0 6px '+(pos?'rgba(80,255,80,0.4)':'rgba(255,68,68,0.4)'),letterSpacing:1,display:'inline-flex',alignItems:'center',gap:2}},h('span',{className:'stat-icon-inline '+t.cls}),t.name+(pos?'+':'')+t.val)}))};
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // COMMUNICATION')),
@@ -18,7 +29,7 @@ function Dialogue(p){
       portrait&&h('img',{src:portrait,className:'portrait',alt:d.char,style:{width:90,height:90}}),
       h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold'}},d.char),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#1a8a1a',marginTop:2}},d.role)),
-    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:100,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'auto',marginBottom:0}},
+    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:100,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'hidden',marginBottom:0,userSelect:'none',WebkitUserSelect:'none',touchAction:'none'}},
       h('div',{className:'oracle-card__glow'}),
       h('div',{style:{flex:1}},
         d.lines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(220,255,220,.8)',marginBottom:6,animation:'fadeIn 0.3s ease'}},String(l))}),

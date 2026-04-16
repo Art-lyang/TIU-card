@@ -34,6 +34,29 @@ function CardC(p){
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   useEffect(function(){setBlockCount(0);setShaking(false)},[card.id]);
+  useEffect(function(){
+    var onKey=function(e){
+      if(chosen||shaking)return;
+      var kdir=null;
+      if(e.key==='ArrowLeft')kdir='left';
+      else if(e.key==='ArrowRight')kdir='right';
+      if(!kdir)return;
+      e.preventDefault();
+      var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
+      if(shouldBlock){
+        var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];
+        var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];
+        setBlockCount(blockCount+1);
+        if(p.onOracleBlock)p.onOracleBlock(bmsg);
+        setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
+      }else{
+        setChosen(kdir);
+        setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},300);
+      }
+    };
+    window.addEventListener('keydown',onKey);
+    return function(){window.removeEventListener('keydown',onKey)};
+  },[card,chosen,shaking,blockCount]);
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
@@ -128,7 +151,11 @@ function GameOver(p){
   var msg=p.gi>50?"요원의 헌신적 복무에 감사드립니다.":p.gi>25?"세션이 종료됩니다. 결과가 기록되었습니다.":"비표준 운영 패턴 감지. 세션 데이터 분석 중...";
   var narr=p.endNarr;
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
-  var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},h('button',{className:'btn btn-amber',onClick:p.onRestart},'[ 세션 재개시 — ACT 1 ]'),p.canSkipToAct2&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#33cccc',color:'#33cccc'},onClick:p.onRestartAct2},'[ 2차 배치 — ACT 2 투입 ]'),h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},'기록'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},'아카이브'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},'엔딩')));
+  var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
+    h('button',{className:'btn btn-amber',onClick:p.onRestart},'[ 세션 재개시 — ACT 1 ]'),
+    p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},'[ NEW GAME+ — 강화 시작 ]'),
+    p.canSkipToAct2&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#33cccc',color:'#33cccc'},onClick:p.onRestartAct2},'[ 2차 배치 — ACT 2 투입 ]'),
+    h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},'기록'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},'아카이브'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},'엔딩')));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#1a6a1a',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'#33ff33',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
   var goImg=null;if(p.reason&&p.reason.indexOf('봉쇄')>=0)goImg=IMG.ending_C_c;else if(p.reason&&p.reason.indexOf('자원')>=0)goImg=IMG.ending_C_r;else if(p.reason&&p.reason.indexOf('신뢰')>=0)goImg=IMG.ending_C_t;else if(p.reason&&(p.reason.indexOf('평가')>=0||p.reason.indexOf('접속')>=0))goImg=IMG.ending_C_o;
   return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───'),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},'── ORACLE 최종 보고 ──'),h('div',{className:'go-stat'},'운영 기간: '+p.stats.day+'일'),h('div',{className:'go-stat'},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},'GRANT: ACTIVE — RENEWAL AVAILABLE')),btns);
@@ -200,9 +227,6 @@ function RewardScreen(p){
           fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})
         ),
         miniBar(r.fx),
-        willEnd&&h('div',{style:{marginTop:6,padding:'4px 6px',background:'rgba(157,255,116,.06)',borderLeft:'2px solid rgba(157,255,116,.35)',fontSize:9,fontFamily:"'Share Tech Mono',monospace",color:'rgba(157,255,116,.65)',letterSpacing:.5,lineHeight:1.6}},
-          '◈ 선택 시 봉쇄 100% 달성 — GRANT EXPIRED 즉시 발동'
-        ),
         isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
       )})
     ),
