@@ -39,8 +39,8 @@ function App(){
   var cpd=act===1?5:act===2?5:act===3?6:7;
   useEffect(function(){
     var root=document.getElementById('root');
-    if(root){root.className='act-'+act}
-  },[act]);
+    if(root){root.className=phase==='go'?'act-1':'act-'+act}
+  },[act,phase]);
   useEffect(function(){
     var sl=Save.getLogs();if(sl)setLogs(sl);
     var se=Save.getEndings();if(se)setEndings(se);
