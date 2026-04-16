@@ -195,7 +195,7 @@ function App(){
       h('span',{className:'info-tag'},'ACT '+act),
       h('span',{className:'info-tag'},'카드 '+(ct+1)+' / '+cpd),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto',padding:'6px 10px'},onClick:function(){setShowSettings(true)}},'☰')),
-    h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day}),
+    h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);setTimeout(function(){setToast('')},2600)}}),
     toast&&h('div',{style:(function(){var isGreen=toastType==='result'||toastType==='oracle';return{position:'fixed',top:isGreen?'auto':'50%',bottom:isGreen?60:'auto',left:'50%',transform:isGreen?'translateX(-50%)':'translate(-50%,-50%)',background:isGreen?'rgba(10,18,10,.88)':'rgba(255,68,68,0.15)',border:'1px solid '+(isGreen?'rgba(145,255,106,.3)':'rgba(255,68,68,0.4)'),borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:isGreen?'rgba(157,255,116,.8)':'#ff6644',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320}})()},toast),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')}}));
 }

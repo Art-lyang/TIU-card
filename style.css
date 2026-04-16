@@ -12,6 +12,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 @keyframes cardEnter{from{opacity:0;transform:scale(0.94) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
 @keyframes dangerPulse{0%,100%{text-shadow:0 0 4px rgba(255,68,68,0.3)}50%{text-shadow:0 0 12px rgba(255,68,68,0.8)}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes oracleShake{0%{transform:translateX(0) rotate(0deg)}10%{transform:translateX(-22px) rotate(-2.5deg)}22%{transform:translateX(17px) rotate(2deg)}34%{transform:translateX(-13px) rotate(-1.5deg)}47%{transform:translateX(9px) rotate(1deg)}60%{transform:translateX(-5px) rotate(-0.5deg)}74%{transform:translateX(3px) rotate(0.3deg)}88%{transform:translateX(-1px) rotate(-0.1deg)}100%{transform:translateX(0) rotate(0deg)}}
 .screen{display:flex;flex-direction:column;align-items:center;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;padding:0 12px;padding-top:max(4px,env(safe-area-inset-top));padding-bottom:max(4px,env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
 .screen::-webkit-scrollbar{width:3px}
 .screen::-webkit-scrollbar-track{background:transparent}
