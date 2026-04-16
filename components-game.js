@@ -164,6 +164,7 @@ function RewardScreen(p){
     }
     return pool;
   }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
+  var dangerC=av.some(function(r){return p.stats.c+(r.fx.c||0)*5>=100});
   var fxList=function(fx){var pos=[],neg=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0)*5;if(v>0)pos.push({k:k,v:v});if(v<0)neg.push({k:k,v:v})});return{pos:pos,neg:neg}};
   var miniBar=function(fx){return h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:4,marginTop:8}},
     ['c','r','t','o'].map(function(k){var cur=p.stats[k];var chg=(fx[k]||0)*5;var nxt=Math.max(0,Math.min(100,cur+chg));var isPos=chg>0;var isNeg=chg<0;
@@ -180,8 +181,14 @@ function RewardScreen(p){
     h('div',{style:{width:'100%',maxWidth:440,display:'flex',justifyContent:'center',gap:12,margin:'4px 0',flexShrink:0,flexWrap:'wrap'}},
       ['c','r','t','o'].map(function(k){var v=p.stats[k];var nm={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};var d=v<=20;return h('span',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'rgba(157,255,116,.7)',letterSpacing:1}},nm[k]+':'+v)})),
     h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
+    dangerC&&h('div',{style:{background:'rgba(157,255,116,.05)',border:'1px solid rgba(157,255,116,.22)',borderRadius:3,padding:'8px 12px',margin:'0 0 8px',maxWidth:440,width:'100%',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.8)',letterSpacing:.5,lineHeight:1.7,boxSizing:'border-box'}},
+      h('div',{style:{color:'rgba(157,255,116,.4)',fontSize:9,marginBottom:4,letterSpacing:1}},'[ ORACLE // 운영 상태 경보 ]'),
+      h('div',null,'KR-INIT-001 봉쇄 완전성 임계 도달 예측.'),
+      h('div',null,'한국지부 안정화 100% — 임시 운영 권한 자동 만료 절차 개시.'),
+      h('div',{style:{marginTop:5,color:'rgba(157,255,116,.4)',fontSize:9}},'GRANT EXPIRED 절차 준비 중. 선택에 유의하십시오.')
+    ),
     h('div',{style:{flex:1,width:'100%',maxWidth:440,overflowY:'auto',minHeight:0,padding:'0 2px'}},
-      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
+      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
         h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
         h('div',{className:'oracle-card__title'},r.title),
@@ -191,6 +198,9 @@ function RewardScreen(p){
           fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})
         ),
         miniBar(r.fx),
+        willEnd&&h('div',{style:{marginTop:6,padding:'4px 6px',background:'rgba(157,255,116,.06)',borderLeft:'2px solid rgba(157,255,116,.35)',fontSize:9,fontFamily:"'Share Tech Mono',monospace",color:'rgba(157,255,116,.65)',letterSpacing:.5,lineHeight:1.6}},
+          '◈ 선택 시 봉쇄 100% 달성 — GRANT EXPIRED 즉시 발동'
+        ),
         isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
       )})
     ),
