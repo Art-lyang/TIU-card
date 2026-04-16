@@ -102,9 +102,9 @@ function App(){
     if(newAct===2){tryUnlock('LOG-ACT2');Save.set('ts_act2_reached',true);}
     if(newAct===3)tryUnlock('LOG-ACT3');
     if(newAct===4)tryUnlock('LOG-ACT4');
-    var penalty=route==='A'?0:route==='B'||route==='C'?2:4;
-    if(newAct===3)penalty+=3;
-    if(newAct===4)penalty+=5;
+    var penalty=newAct===4
+      ?(route==='A4_COMPLY'?0:route==='A4_GREY'?3:route==='A4_RESIST'?5:7)
+      :(route==='A'?0:route==='B'||route==='C'?2:4)+(newAct===3?3:0);
     if(penalty>0){var ns={c:clamp(s.c-penalty),r:clamp(s.r-penalty),t:clamp(s.t-penalty),o:clamp(s.o-penalty),day:s.day};setStats(ns)}
     setPhase('briefing');
   };
@@ -139,7 +139,11 @@ function App(){
     Save.saveGame(ns,ng,act,actFlags,transRoute);
     if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToastType('');setToast('시설 확장이 보상 풀에 등록되었습니다');setTimeout(function(){setToast('')},2200)}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
-    var nct=ct+1;setCt(nct);var go=chkGameOver(ns);
+    var nct=ct+1;setCt(nct);
+    // endTrigger: 루트 클라이맥스 카드 → 해당 엔딩 강제 발동 (게임오버 체크 우선)
+    var et=ch.endTrigger||curCard.endTrigger;
+    if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
+    var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('mission');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
     var triggerKey=curCard.id+'-'+dir;var chain=null;

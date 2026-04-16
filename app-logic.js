@@ -18,6 +18,11 @@ function checkActTransition(s,g,lg,af,curAct){
     var route=af.chain_done&&af.prom_mission?'A':af.chain_done?'B':af.prom_mission?'C':'D';
     return{act:3,route:route};
   }
+  if(curAct===3&&s.day>=30){
+    // GI 수치 기반 Act 4 루트 결정
+    var route=g>=10?'A4_COMPLY':g>=-15?'A4_GREY':g>=-30?'A4_RESIST':'A4_OBSERVER';
+    return{act:4,route:route};
+  }
   return null;
 }
 
