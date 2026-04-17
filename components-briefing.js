@@ -40,6 +40,7 @@ function BriefingImage(p){
 
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
+  useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();onEnter()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[onEnter]);
   var nm={c:'봉쇄 안정성',r:'자원 잔량',t:'인원 신뢰도',o:'ORACLE 평가'};
   var prioColor=act===3?'#ff4444':'rgba(var(--ui-rgb),.6)';
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
