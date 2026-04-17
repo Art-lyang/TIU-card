@@ -1,6 +1,6 @@
-# TERMINAL SESSION — 카드 설계 가이드 v3
+# TERMINAL SESSION — 카드 설계 가이드 v4
 
-> 최종 업데이트: 2026-04-08 (321장 반영)
+> 최종 업데이트: 2026-04-17 (337장+ 반영, Act 4 캐논 카드 추가)
 
 ## 카드 구조
 
@@ -87,9 +87,13 @@
 | `CE-001~028` | data-cards-3.js | 엔딩 루트 |
 | `CT-001~011` | data-cards-8.js | 전환 루트 |
 | `CS-001~015` | data-cards-9.js | 서하은 분기 |
+| `CA4-C001~` | data-cards-act4.js | **Act 4 캐논 COMPLY 루트** |
+| `CA4-G001~` | data-cards-act4.js | **Act 4 캐논 GREY 루트** |
+| `CA4-R001~` | data-cards-act4.js | **Act 4 캐논 RESIST 루트** |
+| `CA4-O001~` | data-cards-act4.js | **Act 4 캐논 OBSERVER 루트** |
 | `CH-XXX-N` | data-chains.js | 연쇄 카드 내부 |
 
-## 카드 카테고리별 현황 (321장)
+## 카드 카테고리별 현황 (337장+)
 
 | 카테고리 | 수 | 파일 |
 |----------|----|----|
@@ -112,6 +116,8 @@
 | Act 2~3 신규 | 20 | cards-13 |
 | Act 3 보강 | 15 | cards-14 |
 | 외부 인물 | 12 | cards-15 |
+| 중반 보강 | ~ | cards-16 |
+| **Act 4 캐논** | ~20 | **cards-act4** |
 | 체인 카드 | 13 | chains |
 
 ## 연쇄 카드 (CHAINS)
@@ -281,13 +287,36 @@ M-001, M-002, M-004에 적용:
 
 `r >= 2` 획득 시 20% 확률로 실패. 해당 카드의 r만 0으로, 다른 스탯 정상 적용. 빨간 토스트 2.5초.
 
+## Act 4 캐논 카드 규칙 (v0.9)
+
+Act 4 루트별 선형 시퀀스. `data-cards-act4.js`의 `CARDS_ACT4` 배열.
+
+```js
+{
+  id: "CA4-C001",         // 루트 접두사 + 순번
+  act: [4],               // 항상 Act 4
+  once: true,             // 필수 — 1회만 등장
+  transReq: "A4_COMPLY",  // 루트 제한 필수
+  req: (s,g,logs) => logs.indexOf('ONCE-CA4-C000') >= 0,  // 이전 카드 의존
+  priority: "상",
+  msg: "...",
+  left: { ... },
+  right: { ... }
+}
+```
+
+- 첫 카드는 `req` 없음 (해당 루트 진입 후 즉시 등장)
+- 이후 카드는 이전 카드 ONCE 로그를 `req`로 확인
+- 루트: `A4_COMPLY` / `A4_GREY` / `A4_RESIST` / `A4_OBSERVER`
+
 ## 새 카드 추가 규칙
 
 1. 적절한 data-cards-N.js 파일에 추가
 2. 해당 배열 변수에 포함
-3. app-utils.js의 CARDS 병합에 해당 변수 포함 확인
+3. app-init.js의 CARDS 병합에 해당 변수 포함 확인
 4. `act` 필드 필수
 5. 1회성 이벤트는 `req`에 LOG 조건 + app.js checkLogs에 해금 추가
 6. 연쇄는 data-chains.js에 추가
 7. 파일이 200줄 초과 시 새 파일 분리 → index.html에 스크립트 추가
-8. 미션 log 필드: 단일 문자열 또는 배열 가능 (v0.5, 포획 경로 등)
+8. 미션 log 필드: 단일 문자열 또는 배열 가능 (포획 경로 등)
+9. Act 4 캐논 카드는 data-cards-act4.js에만, `once:true` + `transReq` 필수

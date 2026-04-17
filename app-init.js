@@ -50,6 +50,7 @@ var Save={
     var pack={
       version:1,
       timestamp:Date.now(),
+      sessions:Save.getSessions(),
       game:Save.get('ts_game',null),
       logs:Save.get('ts_logs',['LOG-001']),
       trust:Save.get('ts_trust',null),
@@ -82,18 +83,26 @@ var Save={
 };
 
 var SFX={
-  ctx:null,masterGain:null,vol:0.5,muted:false,
+  ctx:null,masterGain:null,vol:0.5,muted:false,_cache:{},
   init:function(){if(!this.ctx)try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this.masterGain=this.ctx.createGain();this.masterGain.connect(this.ctx.destination);var sv=Save.get('ts_sfxVol',null);if(sv!==null)this.vol=sv/100}catch(e){}},
   _out:function(){return this.masterGain||this.ctx.destination},
   tone:function(freq,dur,type,vol){this.init();if(!this.ctx||this.muted)return;var o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type||'sine';o.frequency.value=freq;var v=(vol||0.15)*this.vol;g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);o.connect(g);g.connect(this._out());o.start();o.stop(this.ctx.currentTime+dur)},
   noise:function(dur,vol){this.init();if(!this.ctx||this.muted)return;var buf=this.ctx.createBuffer(1,this.ctx.sampleRate*dur,this.ctx.sampleRate),d=buf.getChannelData(0);var v=(vol||0.08)*this.vol;for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*v;var s=this.ctx.createBufferSource();s.buffer=buf;var g=this.ctx.createGain();g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);s.connect(g);g.connect(this._out());s.start()},
+  playFile:function(name,vol,maxDur){try{if(this.muted)return;if(typeof SFX_PATHS==='undefined'||!SFX_PATHS[name])return;var a=this._cache[name];if(!a){a=new Audio(SFX_PATHS[name]);a.preload='auto';this._cache[name]=a;}a.volume=Math.min(1,(vol||0.6)*this.vol);try{a.pause();a.currentTime=0;}catch(e){}if(maxDur){var _a=a;setTimeout(function(){try{_a.pause();_a.currentTime=0;}catch(e){}},maxDur*1000);}a.play().catch(function(){});}catch(e){}},
   play:function(name){try{var self=this;switch(name){
-    case'swipe':self.tone(200,0.08,'square',0.06);setTimeout(function(){self.tone(300,0.06,'square',0.04)},40);break;
-    case'news':self.tone(800,0.03,'square',0.04);break;
+    case'swipe':self.playFile('swipe',0.7);break;
+    case'alarm':self.playFile('alarm',0.8);break;
+    case'btn_on':self.playFile('btn_on',0.6);break;
+    case'btn_off':self.playFile('btn_off',0.6);break;
+    case'check':self.playFile('check',0.8);break;
+    case'radio':self.playFile('radio',0.5);break;
+    case'reload':self.playFile('reload',0.7,3);break;
+    case'rifle':self.playFile('rifle',0.7);break;
+    case'news':self.playFile('radio',0.4);break;
+    case'mission':self.playFile('reload',0.7,3);break;
+    case'gameover':self.playFile('rifle',0.8);setTimeout(function(){self.tone(150,0.5,'sawtooth',0.08)},400);break;
     case'dialogue':self.tone(500,0.1,'sine',0.08);setTimeout(function(){self.tone(700,0.12,'sine',0.06)},80);break;
     case'reward':self.tone(400,0.1,'sine',0.1);setTimeout(function(){self.tone(600,0.1,'sine',0.08)},100);setTimeout(function(){self.tone(800,0.15,'sine',0.06)},200);break;
-    case'gameover':self.tone(300,0.3,'sawtooth',0.1);setTimeout(function(){self.tone(150,0.5,'sawtooth',0.08)},200);setTimeout(function(){self.noise(0.3,0.06)},500);break;
     case'glitch':self.noise(0.15,0.1);self.tone(60,0.1,'square',0.08);break;
-    case'mission':self.tone(100,0.4,'sine',0.08);self.tone(150,0.3,'sine',0.06);break;
   }}catch(e){}}
 };
