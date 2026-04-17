@@ -20,7 +20,7 @@
     { id:"LOG-ESCAPE-FAIL", title:"탈출 작전 — 표적 무력화",
       content:"[ORACLE FINAL LOG]\n\nSIGNAL ACQUIRED.\nTARGET NEUTRALIZED.\n\n세션 작전 종료.\n재배치 불가." },
     { id:"LOG-ESCAPE-UNLUCKY", title:"탈출 작전 — LOST IN TRANSIT",
-      content:"[기록 공백]\n\n작전 중단 지점 불명.\n사전 경고 누락 — 음성 모방형 개체와의 조우.\n\n회수된 음성 로그 마지막 3초:\n\"박상훈 중위. 들립니까. ...지휘관님.\"\n\n[그 뒤는 기록되지 않음]" }
+      content:"[기록 공백]\n\n작전 중단 지점 불명.\n사전 경고 누락 — 음성 모방형 개체와의 조우.\n\n회수된 음성 로그 마지막 3초:\n\"지휘관님. 접니다. 박상훈입니다. ...들립니까.\"\n\n[그 뒤는 기록되지 않음]" }
   ];
   if(typeof ORACLE_LOGS!=='undefined') newLogs.forEach(function(l){ ORACLE_LOGS.push(l); });
 })();
@@ -71,9 +71,9 @@ if(typeof ENDING_DEFS!=='undefined'){
     narrative:[
       "격리실 너머에서 목소리가 들렸다.",
       "",
-      "\"지휘관님. 저입니다. 박상훈입니다.\"",
+      "\"지휘관님. 접니다. 박상훈입니다.\"",
       "",
-      "그 이름은 오래 전에 사망 처리되었다.",
+      "당신의 부하였다. 3년 전 실종 처리된 병사.",
       "당신은 그것을 알고 있었다. 그랬다면 —",
       "",
       "망설임. 0.4초.",
