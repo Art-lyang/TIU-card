@@ -21,6 +21,23 @@ var BRIEFING_TEXT = {
   }
 };
 
+var BRIEFING_IMG={
+  1:{a:'img/act1.png'},
+  2:{a:'img/act2a.png',b:'img/act2b.png'},
+  3:{a:'img/act3a.png',b:'img/act3b.png'},
+  4:{a:'img/act4a.png',b:'img/act4b.png'}
+};
+
+function BriefingImage(p){
+  var bi=BRIEFING_IMG[p.act];if(!bi)return null;
+  if(!bi.b)return h('div',{style:{width:'100%',maxWidth:440,marginBottom:12,flexShrink:0}},
+    h('img',{src:bi.a,alt:'Act '+p.act,className:'briefing-img',style:{width:'100%',display:'block'}}));
+  return h('div',{className:'briefing-flicker',style:{marginBottom:12,flexShrink:0}},
+    h('div',{style:{position:'relative'}},
+      h('img',{src:bi.a,alt:'Act '+p.act+' A',style:{width:'100%',display:'block',borderRadius:4,border:'1px solid rgba(var(--ui-rgb),.2)',boxShadow:'0 0 20px rgba(var(--ui-rgb),.1)',animation:'bfFlicker 3s ease-in-out infinite'}}),
+      h('img',{src:bi.b,alt:'Act '+p.act+' B',style:{width:'100%',display:'block',borderRadius:4,border:'1px solid rgba(var(--ui-rgb),.2)',boxShadow:'0 0 20px rgba(var(--ui-rgb),.1)',position:'absolute',top:0,left:0,animation:'bfFlicker 3s ease-in-out infinite',animationDelay:'1.5s',opacity:0}})));
+}
+
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
   var nm={c:'봉쇄 안정성',r:'자원 잔량',t:'인원 신뢰도',o:'ORACLE 평가'};
@@ -29,8 +46,9 @@ function BriefingScreen(p){
   var routeColor=transRoute==='A4_COMPLY'?'#9dff74':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030';
   var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
   var msg=act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'');
-  return h('div',{className:'screen'},
+  return h('div',{className:'screen',style:{overflowY:'auto'}},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
+    h(BriefingImage,{act:act}),
     h('div',{style:{width:'100%',maxWidth:440,background:'url(panel_frame_medium.png) center/100% 100% no-repeat',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
       h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:12}},
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2}},'ACT '+act+' BRIEFING'),

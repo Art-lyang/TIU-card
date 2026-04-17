@@ -177,6 +177,10 @@ function Tutorial(p){
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
   var count=4;if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=3;if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=2;if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=1;
+  var _scrollRef=useRef(null);
+  var _sc=useState({top:false,bottom:false}),scrollHint=_sc[0],setScrollHint=_sc[1];
+  var checkScroll=function(){var el=_scrollRef.current;if(!el)return;var st=el.scrollTop>4;var sb=el.scrollTop+el.clientHeight<el.scrollHeight-4;setScrollHint({top:st,bottom:sb})};
+  useEffect(function(){var el=_scrollRef.current;if(!el)return;var t=setTimeout(checkScroll,100);el.addEventListener('scroll',checkScroll);return function(){clearTimeout(t);el.removeEventListener('scroll',checkScroll)}},[]);
   var s0=useState(function(){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
@@ -216,7 +220,12 @@ function RewardScreen(p){
       h('div',null,'한국지부 안정화 100% — 임시 운영 권한 자동 만료 절차 개시.'),
       h('div',{style:{marginTop:5,color:'rgba(157,255,116,.4)',fontSize:9}},'GRANT EXPIRED 절차 준비 중. 선택에 유의하십시오.')
     ),
-    h('div',{style:{flex:1,width:'100%',maxWidth:440,overflowY:'auto',minHeight:0,padding:'0 2px'}},
+    h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',minHeight:0}},
+      scrollHint.top&&h('div',{style:{position:'absolute',top:0,left:0,right:0,zIndex:3,textAlign:'center',pointerEvents:'none',animation:'scrollArrowBlink 1.2s ease-in-out infinite'}},
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'var(--ui)',textShadow:'0 0 8px var(--ui)',letterSpacing:4}},'▲  ▲  ▲')),
+      scrollHint.bottom&&h('div',{style:{position:'absolute',bottom:0,left:0,right:0,zIndex:3,textAlign:'center',pointerEvents:'none',animation:'scrollArrowBlink 1.2s ease-in-out infinite'}},
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'var(--ui)',textShadow:'0 0 8px var(--ui)',letterSpacing:4}},'▼  ▼  ▼')),
+      h('div',{ref:_scrollRef,style:{height:'100%',overflowY:'auto',padding:'0 2px'}},
       av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
         h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
@@ -228,7 +237,7 @@ function RewardScreen(p){
         ),
         miniBar(r.fx),
         isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
-      )})
+      )}))
     ),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'))
   );
