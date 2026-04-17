@@ -1,6 +1,6 @@
-# TERMINAL SESSION — Act 구조 설계서 v3
+# TERMINAL SESSION — Act 구조 설계서 v4
 
-> 최종 업데이트: 2026-04-12 (v0.6 반영 — 4-Act 구조 확정)
+> 최종 업데이트: 2026-04-17 (v0.9 반영 — Act 4 캐논 카드, 브리핑 이미지, 저장 슬롯, NG+ 업적)
 
 ## 설계 원칙 (확정)
 
@@ -21,7 +21,7 @@
 | **Act 3: 진실** | 프로메테우스 대면, 서하은 분기, ORACLE 실체 | 긴장, 의심 | ~29일 | 6장 | c-1, r-1 |
 | **Act 4: 최종** | GI 기반 분기, 엔딩 수렴, 최종 프로토콜 | 위기, 선택 | Day 30+ | 7장 | c-2, r-2, t-1 |
 
-총 카드: **321장+** (15개 카드 파일 + 프롤로그 + 체인)
+총 카드: **337장+** (16개 카드 파일 + 프롤로그 + Act4 캐논 + 체인)
 
 ### Act 1 특수 규칙
 - **현장임무(FIELD MISSION) 미발생**: 이변체 조우 및 미션은 Act 2부터
@@ -85,6 +85,8 @@ drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
 
 ### 전환 연출: ORACLE 브리핑 (루트별 분기)
 
+브리핑 화면(`BriefingScreen`)에 **Act별 이미지**와 루트 색상 강조 표시.
+
 | 루트 | Act 2→3 브리핑 메시지 |
 |------|----------------------|
 | A | "초기 안정화 단계 완료. 새로운 변수가 감지되었습니다." |
@@ -98,6 +100,24 @@ drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
 | B | "ORACLE 권고 미이행 누적. 재평가가 예정되어 있습니다." |
 | C | "정보 부족 상태로 최종 국면 진입." |
 | D | "지휘관 교체 검토 중. 모든 지표에서 심각한 이탈." |
+
+| 루트 | Act 4 루트 브리핑 메시지 |
+|------|------------------------|
+| A4_COMPLY | "[ORACLE: COMPLIANCE OPTIMAL] 최종 안정화 단계로 진입합니다." |
+| A4_GREY | "[WARNING: AMBIGUOUS OPERATOR PATTERN] 신뢰도 재산정 예정." |
+| A4_RESIST | "[ALERT: SYSTEMIC DEVIATION DETECTED] 최종 대응 단계 준비 중." |
+| A4_OBSERVER | "[CRITICAL: UNCLASSIFIED INTERFERENCE] 시스템 격리 프로토콜 대기 중." |
+
+### 브리핑 이미지 시스템 (v0.9)
+
+`BRIEFING_IMG` 객체로 Act → 이미지 경로 매핑. Act 2~4는 두 이미지 플리커(CSS bfFlicker):
+
+```js
+1: { a:'img/act1.png' }
+2: { a:'img/act2a.png', b:'img/act2b.png' }
+3: { a:'img/act3a.png', b:'img/act3b.png' }
+4: { a:'img/act4a.png', b:'img/act4b.png' }
+```
 
 ---
 
@@ -117,7 +137,8 @@ drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
 | data-cards-7.js | CARDS_ACT2_DAILY | 20 | 3 | 진실기 일상 |
 | data-cards-8.js | CARDS_TRANSITION | 11 | 3,4 | 전환 루트 전용 |
 | data-cards-9.js | CARDS_HAEUN | 11 | 4 | 서하은 분기 |
-| data-cards-10~15.js | 추가 카드 | 100 | 혼합 | 확장 카드 |
+| data-cards-10~16.js | 추가 카드 | 100+ | 혼합 | 확장 카드 |
+| data-cards-act4.js | CARDS_ACT4 | 4 | Act 4 전용 | 캐논 루트 시퀀스 (CA4-C/G/R/O) |
 
 ### Act별 활성 카드 풀 (추정)
 
@@ -176,6 +197,7 @@ Act 4의 핵심 분기. C-073 (전출 명령)에서 시작. data-cards-9.js.
 ## 6. 세이브 데이터 구조 (구현 완료)
 
 ```js
+// ts_game (메인 진행상황)
 saveData = {
   stats: { c, r, t, o, day },
   gi: 0,
@@ -186,7 +208,7 @@ saveData = {
     chain_done: false,
     prom_mission: false,
   },
-  transRoute: '',  // 'A'/'B'/'C'/'D'
+  transRoute: '',  // 'A'/'B'/'C'/'D' / 'A4_COMPLY' / 'A4_GREY' / 'A4_RESIST' / 'A4_OBSERVER'
 }
 // 별도 저장:
 // ts_trust: { haeun, doyun, sejin, jaehyuk }
@@ -194,6 +216,29 @@ saveData = {
 // ts_logs: [LOG-001, ...]
 // ts_endings: [엔딩 ID 배열]
 // ts_sessions: 숫자
+// ts_achievements: [업적 ID 배열]
+// ts_facility: { completed: [...] }
+// ts_seenArchive: [아카이브 ID 배열]
+// ts_usedEvening: [이브닝 챗 ID 배열]
+// ts_onceShown: [once 카드 ID 배열]
+```
+
+### 스냅샷 슬롯 구조 (v0.9 신규)
+
+```js
+// ts_snap_1 / ts_snap_2 / ts_snap_3
+snapshot = {
+  version: 1,
+  timestamp: Date.now(),
+  label: "DAY 14 · ACT 2",
+  game: { /* ts_game */ },
+  logs: [...],
+  trust: { ... },
+  usedDlg: [...],
+  usedEvening: [...],
+  facility: { ... },
+  onceShown: [...]
+}
 ```
 
 ---
@@ -234,6 +279,17 @@ LOG 연동 43항목 용어 백과. 파일: data-archive.js + components-archive.
 엔딩 카드(CE-xxx)에 day 최소 조건 추가. 조기 등장 방지.
 
 ---
+
+## v0.9 추가 사항 (구현 완료)
+
+- [x] **Act 4 캐논 카드** — data-cards-act4.js, CA4-C/G/R/O 루트별 선형 시퀀스
+- [x] **브리핑 이미지** — BRIEFING_IMG 7장, Act 2~4 플리커 효과
+- [x] **스냅샷 슬롯 3개** — ts_snap_1/2/3, 분기 비교 저장/로드
+- [x] **NG+ 플래그** — ngPlus:true, HIDDEN_REWIND 업적
+- [x] **업적 시스템** — data-achievements.js, 29개, Steam steamId
+- [x] **히든 로그** — LOG-090~093 전임 지휘관 서사
+- [x] **Act 1 블루 UI** — --ui-rgb 청록색 테마
+- [x] **보상 스크롤 인디케이터** — 모바일 보상 화면 UX
 
 ## 미결 사항
 

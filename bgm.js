@@ -3,12 +3,13 @@
 // 수정: 부팅음 loop=true 단일트랙, fadeTimer 중복방지, setDanger 디바운스, 모바일 pause 안정화
 
 var BGM = {
-  tracks: {},       // { main: Audio, tension: Audio }
-  current: null,    // 'main' | 'tension' | null
-  target: null,     // fade 목표
-  vol: 0.10,        // 기본 볼륨
+  tracks: {},       // { main, tension, act1~4 }
+  current: null,
+  target: null,
+  vol: 0.10,
   muted: false,
   started: false,
+  currentAct: 1,   // 현재 Act (playAct()로 관리)
   _timers: {},      // 트랙별 fade timer ID — 중복 방지
   _dangerTs: 0,     // setDanger 디바운스 타임스탬프
   _transitioning: false, // 크로스페이드 진행 중 플래그
@@ -80,7 +81,11 @@ var BGM = {
     if (this.started) return;
     this.init();
     this.started = true;
-    this.play('main');
+    if (typeof BGM_ACT1 !== 'undefined' && this.playAct) {
+      this.playAct(this.currentAct);
+    } else {
+      this.play('main');
+    }
   },
 
   play: function(name) {
@@ -107,7 +112,13 @@ var BGM = {
     var now = Date.now();
     if (now - this._dangerTs < 800) return;
     this._dangerTs = now;
-    this.play(isDanger ? 'tension' : 'main');
+    if (isDanger) {
+      this.play('tension');
+    } else {
+      var safeTrack = (typeof BGM_ACT1 !== 'undefined' && this.tracks['act' + this.currentAct])
+        ? ('act' + this.currentAct) : 'main';
+      this.play(safeTrack);
+    }
   },
 
   // 볼륨 임시 조절 (이브닝 챗 등)

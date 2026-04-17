@@ -40,6 +40,7 @@ function BriefingImage(p){
 
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
+  useEffect(function(){if(typeof SFX!=='undefined')SFX.play('radio');},[]);
   var nm={c:'봉쇄 안정성',r:'자원 잔량',t:'인원 신뢰도',o:'ORACLE 평가'};
   var prioColor=act===3?'#ff4444':'rgba(157,255,116,.6)';
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
@@ -58,5 +59,5 @@ function BriefingScreen(p){
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:16}},
         ['c','r','t','o'].map(function(k){var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'#33ff33',padding:'4px 0'}},nm[k]+': '+v+'%')})),
       h('div',{style:{fontSize:12,color:routeColor,lineHeight:2,borderLeft:'2px solid '+borderColor,paddingLeft:14,marginBottom:16,whiteSpace:'pre-wrap'}},msg)),
-    h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:onEnter},'[ ENTER ]'));
+    h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){if(typeof SFX!=='undefined')SFX.play('btn_on');onEnter();}},'[ ENTER ]'));
 }

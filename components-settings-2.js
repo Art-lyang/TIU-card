@@ -39,21 +39,22 @@ function SettingsSaveTab(p) {
             onClick: function () { if (!inputOk) return; cfm.action(); setCfm(null); setCfmInput(''); } }, '확인'))));
   };
 
-  var snaps = Save.listSnapshots();
+  var _snaps = useState(function(){return Save.listSnapshots()}), snaps = _snaps[0], setSnaps = _snaps[1];
   var fmtTime = function(ts){if(!ts)return '';var d=new Date(ts);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
   var slotRow = function(s){
     var data = s.data;
     var label = data ? data.label : '빈 슬롯';
     var timeStr = data ? fmtTime(data.timestamp) : '';
+    var sesStr = (data && data.sessions != null) ? ' · 세션 '+data.sessions+'회' : '';
     return h('div',{key:s.slot,style:{display:'flex',alignItems:'center',gap:6,padding:'8px 10px',marginBottom:6,background:data?'rgba(145,255,106,.05)':'rgba(255,255,255,.02)',border:'1px solid '+(data?'rgba(145,255,106,.2)':'rgba(255,255,255,.08)'),borderRadius:2}},
       h('div',{style:{flex:1,minWidth:0}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.5)',letterSpacing:1}},'SLOT '+s.slot),
         h('div',{style:{fontSize:12,color:data?'var(--ui)':'rgba(255,255,255,.3)',fontWeight:'bold',marginTop:2}},label),
-        data&&h('div',{style:{fontSize:10,color:'rgba(157,255,116,.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr)
+        data&&h('div',{style:{fontSize:10,color:'rgba(157,255,116,.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr+sesStr)
       ),
-      h('button',{style:{background:'rgba(145,255,106,.1)',border:'1px solid rgba(145,255,106,.3)',color:'#9dff74',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+'에 현재 상황을 저장합니다.\n'+(data?'기존 데이터를 덮어씁니다.':''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);p.onClose()}})}},'저장'),
+      h('button',{style:{background:'rgba(145,255,106,.1)',border:'1px solid rgba(145,255,106,.3)',color:'#9dff74',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+'에 현재 상황을 저장합니다.\n'+(data?'기존 데이터를 덮어씁니다.':''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);setSnaps(Save.listSnapshots());}})}},'저장'),
       data&&h('button',{style:{background:'rgba(240,160,48,.1)',border:'1px solid rgba(240,160,48,.3)',color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+' 데이터를 불러옵니다.\n현재 진행 상황은 덮어써집니다.',action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},'로드'),
-      data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);p.onClose()}},'삭제')
+      data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);setSnaps(Save.listSnapshots());}},'삭제')
     );
   };
 

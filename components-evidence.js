@@ -32,8 +32,10 @@ function EvidenceTable(p) {
           if (combo.reward.g && p.onGi) p.onGi(combo.reward.g);
         }
       }
+      if(typeof SFX!=='undefined')SFX.play('check');
       setResult({ success: true, combo: combo });
     } else {
+      if(typeof SFX!=='undefined')SFX.play('btn_off');
       setResult({ success: false });
     }
   };
