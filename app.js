@@ -165,8 +165,8 @@ function App(){
     if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
     // CH-007-3: 낙오 판정 (trust 기반 roll → ACCOMP-* 로그 부여, 체인 흐름은 계속)
     if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast('[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']');setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast('[간부진 전원 동행 확정]');setTimeout(function(){setToast('')},2800)},800)}}
-    // CH-007-5: 탈출 결과 동적 판정 (shellTalkerKnown × 루트 확률 roll → 엔딩 E / E_c / E_bad)
-    if(curCard.id==='CH-007-5'&&typeof window.resolveEscape==='function'){var _esc=window.resolveEscape(nextLogs);tryUnlock(_esc.log);if(_esc.ending==='E'&&typeof window.buildEEnding==='function'){ENDING_DEFS.E.narrative=window.buildEEnding(nextLogs.concat([_esc.log]))}SFX.play('gameover');doGO(ENDING_DEFS[_esc.ending].name,ns,ng,_esc.ending);return}
+    // CH-007-5: 탈출 미니게임 진입 (iframe 연동) — 결과는 postMessage로 수신
+    if(curCard.id==='CH-007-5'){setPhase('escape_game');return}
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('mission');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
@@ -255,6 +255,28 @@ function App(){
 
 
 
+  // ═══ CH-007 미니게임 결과 수신 핸들러 ═══
+  var onEscapeResult=function(r){
+    BGM.stop();
+    // outcome → 엔딩 매핑
+    var endingMap={success:'E',fail_normal:'E_c',fail_unlucky:'E_bad'};
+    var eid=endingMap[r.outcome]||'E_c';
+    // 폴백 (확률 시뮬로 진행된 경우)
+    if(r.fallbackEnding){eid=r.fallbackEnding;if(r.fallbackLog)tryUnlock(r.fallbackLog)}
+    // 결과 로그 부여
+    var logMap={success:'LOG-ESCAPE-CLEAR',fail_normal:'LOG-ESCAPE-FAIL',fail_unlucky:'LOG-ESCAPE-UNLUCKY'};
+    if(logMap[r.outcome])tryUnlock(logMap[r.outcome]);
+    // 동행자 로그 부여 (미니게임에서 최종 생존한 간부)
+    var compLogMap={haeun:'ACCOMP-HAEUN',doyun:'ACCOMP-DOYUN',sejin:'ACCOMP-SEJIN',jaehyuk:'ACCOMP-JAEHYUK'};
+    (r.companionsFinal||[]).forEach(function(id){if(compLogMap[id])tryUnlock(compLogMap[id])});
+    // 엔딩 E 동적 텍스트 조립
+    if(eid==='E'&&typeof window.buildEEnding==='function'){
+      var curLogs=logs.slice();if(logMap[r.outcome])curLogs.push(logMap[r.outcome]);
+      (r.companionsFinal||[]).forEach(function(id){if(compLogMap[id])curLogs.push(compLogMap[id])});
+      ENDING_DEFS.E.narrative=window.buildEEnding(curLogs);
+    }
+    SFX.play('gameover');doGO(ENDING_DEFS[eid].name,stats,gi,eid);
+  };
   // ═══ 렌더링 (phase 라우팅) ═══
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();if(fp){setPhase('tutorial')}else{setPhase('game')}}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
@@ -265,6 +287,7 @@ function App(){
   if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,onComplete:hMission});
+  if(phase==='escape_game')return h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult});
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,onClose:function(){setPhase(ret)}});
   if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
