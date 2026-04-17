@@ -13,6 +13,12 @@ function ArchiveViewer(p) {
   useEffect(function() {
     var newOnes = unlocked.filter(function(e) { return prevUnlocked.indexOf(e.id) < 0 });
     if (newOnes.length > 0) setNewUnlock(newOnes.length);
+    // 아카이브 진입 시 모든 해금 항목을 읽음 처리
+    if (p.onMarkSeen) {
+      unlocked.forEach(function(e) {
+        if (prevUnlocked.indexOf(e.id) < 0) p.onMarkSeen(e.id);
+      });
+    }
   }, []);
 
   // 개별 항목 상세 보기
@@ -48,7 +54,7 @@ function ArchiveViewer(p) {
         h('div', { style: { fontSize: 12, color: '#888', textAlign: 'center', marginBottom: 20 } }, catEntries.length + '건 해금' + (catLocked > 0 ? ' / ' + catLocked + '건 미발견' : '')),
         catEntries.map(function(e) {
           var isNew = prevUnlocked.indexOf(e.id) < 0;
-          return h('div', { key: e.id, onClick: function() { setSelEntry(e.id) }, style: { background: 'var(--ui-bg)', border: '1px solid ' + (isNew ? '#2a5a1a' : 'var(--ui-border)'), borderRadius: 4, padding: '12px 16px', marginBottom: 8, cursor: 'pointer', position: 'relative' } },
+          return h('div', { key: e.id, onClick: function() { setSelEntry(e.id) }, style: { background: 'var(--ui-bg)', border: '1px solid ' + (isNew ? 'var(--ui-dim)' : 'var(--ui-border)'), borderRadius: 4, padding: '12px 16px', marginBottom: 8, cursor: 'pointer', position: 'relative' } },
             h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
               h('span', { style: { fontSize: 13, color: 'var(--ui)' } }, e.title),
               isNew && h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 9, color: '#f0a030', background: 'rgba(240,160,48,0.1)', border: '1px solid rgba(240,160,48,0.3)', borderRadius: 3, padding: '1px 6px' } }, 'NEW')
@@ -75,7 +81,7 @@ function ArchiveViewer(p) {
         var catTotal = ARCHIVE_ENTRIES.filter(function(e) { return e.cat === cat }).length;
         var catNew = unlocked.filter(function(e) { return e.cat === cat && prevUnlocked.indexOf(e.id) < 0 }).length;
         var isEmpty = catUnlocked === 0;
-        return h('div', { key: cat, onClick: isEmpty ? null : function() { setSelCat(cat) }, style: { background: isEmpty ? '#080808' : 'var(--ui-bg)', border: '1px solid ' + (isEmpty ? '#111' : catNew > 0 ? '#2a5a1a' : 'var(--ui-border)'), borderRadius: 4, padding: '14px 16px', marginBottom: 8, cursor: isEmpty ? 'default' : 'pointer', opacity: isEmpty ? 0.5 : 1 } },
+        return h('div', { key: cat, onClick: isEmpty ? null : function() { setSelCat(cat) }, style: { background: isEmpty ? '#080808' : 'var(--ui-bg)', border: '1px solid ' + (isEmpty ? '#111' : catNew > 0 ? 'var(--ui-dim)' : 'var(--ui-border)'), borderRadius: 4, padding: '14px 16px', marginBottom: 8, cursor: isEmpty ? 'default' : 'pointer', opacity: isEmpty ? 0.5 : 1 } },
           h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
             h('span', { style: { fontSize: 14, color: isEmpty ? '#333' : 'var(--ui)', fontWeight: 'bold' } }, cat),
             h('div', { style: { display: 'flex', alignItems: 'center', gap: 8 } },
