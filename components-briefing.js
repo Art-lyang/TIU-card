@@ -41,9 +41,9 @@ function BriefingImage(p){
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
   var nm={c:'봉쇄 안정성',r:'자원 잔량',t:'인원 신뢰도',o:'ORACLE 평가'};
-  var prioColor=act===3?'#ff4444':'rgba(157,255,116,.6)';
+  var prioColor=act===3?'#ff4444':'rgba(var(--ui-rgb),.6)';
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
-  var routeColor=transRoute==='A4_COMPLY'?'#9dff74':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030';
+  var routeColor=transRoute==='A4_COMPLY'?'var(--ui)':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'var(--ui)':'#f0a030';
   var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
   var msg=act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'');
   return h('div',{className:'screen',style:{overflowY:'auto'}},
@@ -53,10 +53,10 @@ function BriefingScreen(p){
       h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:12}},
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2}},'ACT '+act+' BRIEFING'),
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:prioColor,letterSpacing:1}},'PRIORITY: '+prioLabel)),
-      h('div',{style:{fontSize:13,color:'#9dff74',lineHeight:2,borderLeft:'2px solid rgba(145,255,106,.3)',paddingLeft:14,marginBottom:16}},
+      h('div',{style:{fontSize:13,color:'var(--ui)',lineHeight:2,borderLeft:'2px solid rgba(var(--ui-rgb),.3)',paddingLeft:14,marginBottom:16}},
         '지난 '+(stats.day-1)+'일간의 운영 데이터를 분석했습니다.'),
       h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:16}},
-        ['c','r','t','o'].map(function(k){var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'#33ff33',padding:'4px 0'}},nm[k]+': '+v+'%')})),
+        ['c','r','t','o'].map(function(k){var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'var(--ui)',padding:'4px 0'}},nm[k]+': '+v+'%')})),
       h('div',{style:{fontSize:12,color:routeColor,lineHeight:2,borderLeft:'2px solid '+borderColor,paddingLeft:14,marginBottom:16,whiteSpace:'pre-wrap'}},msg)),
     h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:onEnter},'[ ENTER ]'));
 }

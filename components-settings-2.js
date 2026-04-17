@@ -45,13 +45,13 @@ function SettingsSaveTab(p) {
     var data = s.data;
     var label = data ? data.label : '빈 슬롯';
     var timeStr = data ? fmtTime(data.timestamp) : '';
-    return h('div',{key:s.slot,style:{display:'flex',alignItems:'center',gap:6,padding:'8px 10px',marginBottom:6,background:data?'rgba(145,255,106,.05)':'rgba(255,255,255,.02)',border:'1px solid '+(data?'rgba(145,255,106,.2)':'rgba(255,255,255,.08)'),borderRadius:2}},
+    return h('div',{key:s.slot,style:{display:'flex',alignItems:'center',gap:6,padding:'8px 10px',marginBottom:6,background:data?'rgba(var(--ui-rgb),.05)':'rgba(255,255,255,.02)',border:'1px solid '+(data?'rgba(var(--ui-rgb),.2)':'rgba(255,255,255,.08)'),borderRadius:2}},
       h('div',{style:{flex:1,minWidth:0}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.5)',letterSpacing:1}},'SLOT '+s.slot),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'SLOT '+s.slot),
         h('div',{style:{fontSize:12,color:data?'var(--ui)':'rgba(255,255,255,.3)',fontWeight:'bold',marginTop:2}},label),
-        data&&h('div',{style:{fontSize:10,color:'rgba(157,255,116,.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr)
+        data&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr)
       ),
-      h('button',{style:{background:'rgba(145,255,106,.1)',border:'1px solid rgba(145,255,106,.3)',color:'#9dff74',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+'에 현재 상황을 저장합니다.\n'+(data?'기존 데이터를 덮어씁니다.':''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);p.onClose()}})}},'저장'),
+      h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+'에 현재 상황을 저장합니다.\n'+(data?'기존 데이터를 덮어씁니다.':''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);p.onClose()}})}},'저장'),
       data&&h('button',{style:{background:'rgba(240,160,48,.1)',border:'1px solid rgba(240,160,48,.3)',color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+' 데이터를 불러옵니다.\n현재 진행 상황은 덮어써집니다.',action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},'로드'),
       data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);p.onClose()}},'삭제')
     );
@@ -64,9 +64,9 @@ function SettingsSaveTab(p) {
     _settingsRow('발견 엔딩',
       h('span', { style: mono }, (endings ? endings.length : 0) + '/10')),
     // ═══ 스냅샷 슬롯 ═══
-    h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(145,255,106,.15)'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.6)',letterSpacing:2,marginBottom:8}},'SNAPSHOT SLOTS'),
-      h('div',{style:{fontSize:10,color:'rgba(157,255,116,.4)',marginBottom:10,lineHeight:1.6}},'원하는 DAY에 저장했다가 분기 선택 비교 용도로 다시 불러올 수 있습니다.'),
+    h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},'SNAPSHOT SLOTS'),
+      h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},'원하는 DAY에 저장했다가 분기 선택 비교 용도로 다시 불러올 수 있습니다.'),
       snaps.map(slotRow)),
     h('div', { style: { marginTop: 16, display: 'flex', flexDirection: 'column', gap: 8 } },
       h('button', { className: 'btn',
