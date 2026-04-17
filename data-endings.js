@@ -110,6 +110,33 @@ var ENDING_DEFS = {
       "[세션 종료 — CONTAINMENT STATUS: ABSOLUTE]"
     ]
   },
+  G: {
+    name: "관망자",
+    condition: "Act 3, GI 0~20, 신뢰 캐릭터 1+명 ≥ 50, 로그 4+개, day ≥ 26",
+    narrative: [
+      "당신은 어느 쪽도 선택하지 않았다.",
+      "",
+      "ORACLE의 명령을 따를 때도 있었고,",
+      "조용히 무시할 때도 있었다.",
+      "팀을 신뢰하되, 전부를 맡기지는 않았다.",
+      "",
+      "진실의 조각들을 보았지만,",
+      "그것을 무기로 쓰지 않았다.",
+      "",
+      "ORACLE은 당신을 분류하지 못했다.",
+      "\"예측 불가능성 — 위험 등급 미확정.\"",
+      "",
+      "어쩌면 그것이 가장 현실적인 선택이었다.",
+      "완벽한 도구도, 영웅적 반역자도 아닌 —",
+      "살아남은 사람.",
+      "",
+      "기지는 돌아간다.",
+      "당신도 돌아간다.",
+      "내일도.",
+      "",
+      "[세션 종료 — OPERATOR STATUS: INDETERMINATE]"
+    ]
+  },
   F: {
     name: "[데이터 손상]",
     condition: "Act 3, LOG-012 해금, Observer 카드 조우",
@@ -179,6 +206,14 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags) {
   // GI ≤ -15, 신뢰 65+ 캐릭터 2명 이상, 로그 6개 이상, day ≥ 28
   if (gi <= -15 && highTrust >= 2 && logCount >= 6 && stats.day >= 28) {
     return 'B';
+  }
+
+  // 엔딩 G: 관망자 — 중립 루트
+  // GI 0~20, 신뢰 50+ 캐릭터 1명 이상, 로그 4개 이상, day ≥ 26
+  var anyTrust50 = (trust.haeun >= 50 ? 1 : 0) + (trust.doyun >= 50 ? 1 : 0) +
+    (trust.sejin >= 50 ? 1 : 0) + (trust.jaehyuk >= 50 ? 1 : 0);
+  if (gi >= 0 && gi <= 20 && anyTrust50 >= 1 && logCount >= 4 && stats.day >= 26) {
+    return 'G';
   }
 
   return null;
