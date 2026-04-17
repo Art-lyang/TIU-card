@@ -205,6 +205,8 @@ function RewardScreen(p){
     var idx=-1;
     if(/^[1-9]$/.test(e.key))idx=parseInt(e.key,10)-1;
     else if(e.code&&/^Numpad[1-9]$/.test(e.code))idx=parseInt(e.code.slice(6),10)-1;
+    else if(e.key==='ArrowDown'){e.preventDefault();setSel(function(v){var nv=v<av.length-1?v+1:0;setTimeout(function(){var el=document.querySelector('.oracle-card.is-selected');if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'})},50);return nv});return}
+    else if(e.key==='ArrowUp'){e.preventDefault();setSel(function(v){var nv=v>0?v-1:av.length-1;setTimeout(function(){var el=document.querySelector('.oracle-card.is-selected');if(el)el.scrollIntoView({block:'nearest',behavior:'smooth'})},50);return nv});return}
     if(idx>=0&&idx<av.length){e.preventDefault();setSel(idx);return}
     if((e.key==='Enter'||e.key===' ')&&sel>=0&&av[sel]){e.preventDefault();p.onPick(av[sel])}
   };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[av,sel]);
