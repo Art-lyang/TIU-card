@@ -39,6 +39,7 @@ var CARDS_HAEUN = [
 
   { id: "CS-005", act: [4], priority: "상",
     req: function(s,g,logs){ return logs.includes("LOG-055") && s.day >= 13 },
+    oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 해당 데이터 신뢰도 0% — 열람 금지]","[ORACLE: 프로메테우스 출처 정보 — 접근 불허]","[ORACLE: 경고 — 비인가 데이터 열람 기록 중]"],
     msg: "서하은이 ORACLE 삭제 데이터 복구에 성공했습니다.\n\n\"지휘관님. 이건 보셔야 합니다.\"\n\"ORACLE이 프로메테우스를 적으로 분류한 진짜 이유가 여기 있습니다.\"\n\n\"그들은 치료제를 만들고 있었습니다.\"",
     left: { label: "전문을 확인한다", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -6 },
     right: { label: "이 정보를 어떻게 쓸지 고민한다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 } },

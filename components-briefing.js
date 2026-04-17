@@ -13,7 +13,11 @@ var BRIEFING_TEXT = {
     A: '프로메테우스 위협이 직접적 수준에 도달했습니다.\n결정적 조치가 필요합니다.',
     B: 'ORACLE 권고 미이행 누적.\n프로메테우스 대응 실패.\n재평가가 예정되어 있습니다.',
     C: '정보 부족 상태로 최종 국면 진입.\n서하은 아크 지연 가능성.',
-    D: '지휘관 교체 검토 중.\n모든 지표에서 심각한 이탈이 감지되었습니다.'
+    D: '지휘관 교체 검토 중.\n모든 지표에서 심각한 이탈이 감지되었습니다.',
+    A4_COMPLY: '[ORACLE: COMPLIANCE OPTIMAL]\n모든 명령이 적절히 이행되었습니다.\n최종 안정화 단계로 진입합니다.',
+    A4_GREY:   '[WARNING: AMBIGUOUS OPERATOR PATTERN]\n표준 이탈 지수 경계 범위.\n신뢰도 재산정이 예정되어 있습니다.',
+    A4_RESIST: '[ALERT: SYSTEMIC DEVIATION DETECTED]\nORACLE 프로토콜 위반 패턴 다수 감지.\n최종 대응 단계 준비 중.',
+    A4_OBSERVER:'[CRITICAL: UNCLASSIFIED INTERFERENCE]\n분류 불가 데이터 활동 감지.\n시스템 격리 프로토콜 대기 중.'
   }
 };
 
@@ -22,8 +26,8 @@ function BriefingScreen(p){
   var nm={c:'봉쇄 안정성',r:'자원 잔량',t:'인원 신뢰도',o:'ORACLE 평가'};
   var prioColor=act===3?'#ff4444':'rgba(157,255,116,.6)';
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
-  var routeColor=transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030';
-  var borderColor=transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
+  var routeColor=transRoute==='A4_COMPLY'?'#9dff74':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'#9dff74':'#f0a030';
+  var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
   var msg=act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'');
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),

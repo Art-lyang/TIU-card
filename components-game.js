@@ -32,10 +32,35 @@ function Stats(p){
 function CardC(p){
   var card=p.card,gi=p.gi||0;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
+  var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
+  useEffect(function(){setBlockCount(0);setShaking(false)},[card.id]);
+  useEffect(function(){
+    var onKey=function(e){
+      if(chosen||shaking)return;
+      var kdir=null;
+      if(e.key==='ArrowLeft')kdir='left';
+      else if(e.key==='ArrowRight')kdir='right';
+      if(!kdir)return;
+      e.preventDefault();
+      var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
+      if(shouldBlock){
+        var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];
+        var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];
+        setBlockCount(blockCount+1);
+        if(p.onOracleBlock)p.onOracleBlock(bmsg);
+        setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
+      }else{
+        setChosen(kdir);
+        setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},300);
+      }
+    };
+    window.addEventListener('keydown',onKey);
+    return function(){window.removeEventListener('keydown',onKey)};
+  },[card,chosen,shaking,blockCount]);
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
-  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){setChosen(dir);setTimeout(function(){p.onSwipe(dir);setDx(0);setChosen(null)},300)}else setDx(0)};
+  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setChosen(dir);setTimeout(function(){p.onSwipe(dir);setDx(0);setChosen(null)},300)}}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   var plbl=card.priority==='상'?'상 ■':card.priority==='중'?'중 ■':'하';
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit};
@@ -48,7 +73,7 @@ function CardC(p){
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'#33ff33',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+card.left.label),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'#33ff33',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},card.right.label+' →'),
-    h('div',{className:'card-panel'+pcClass,style:{transform:'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',transition:dragging?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'pan-y'},
+    h('div',{className:'card-panel'+pcClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'pan-y'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
@@ -126,7 +151,11 @@ function GameOver(p){
   var msg=p.gi>50?"요원의 헌신적 복무에 감사드립니다.":p.gi>25?"세션이 종료됩니다. 결과가 기록되었습니다.":"비표준 운영 패턴 감지. 세션 데이터 분석 중...";
   var narr=p.endNarr;
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
-  var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},h('button',{className:'btn btn-amber',onClick:p.onRestart},'[ 세션 재개시 ]'),h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},'기록'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},'아카이브'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},'엔딩')));
+  var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
+    h('button',{className:'btn btn-amber',onClick:p.onRestart},'[ 세션 재개시 — ACT 1 ]'),
+    p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},'[ NEW GAME+ — 강화 시작 ]'),
+    p.canSkipToAct2&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#33cccc',color:'#33cccc'},onClick:p.onRestartAct2},'[ 2차 배치 — ACT 2 투입 ]'),
+    h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},'기록'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},'아카이브'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},'엔딩')));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#1a6a1a',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'#33ff33',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
   var goImg=null;if(p.reason&&p.reason.indexOf('봉쇄')>=0)goImg=IMG.ending_C_c;else if(p.reason&&p.reason.indexOf('자원')>=0)goImg=IMG.ending_C_r;else if(p.reason&&p.reason.indexOf('신뢰')>=0)goImg=IMG.ending_C_t;else if(p.reason&&(p.reason.indexOf('평가')>=0||p.reason.indexOf('접속')>=0))goImg=IMG.ending_C_o;
   return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───'),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},'── ORACLE 최종 보고 ──'),h('div',{className:'go-stat'},'운영 기간: '+p.stats.day+'일'),h('div',{className:'go-stat'},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},'GRANT: ACTIVE — RENEWAL AVAILABLE')),btns);
@@ -164,6 +193,7 @@ function RewardScreen(p){
     }
     return pool;
   }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
+  var dangerC=av.some(function(r){return p.stats.c+(r.fx.c||0)*5>=100});
   var fxList=function(fx){var pos=[],neg=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0)*5;if(v>0)pos.push({k:k,v:v});if(v<0)neg.push({k:k,v:v})});return{pos:pos,neg:neg}};
   var miniBar=function(fx){return h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:4,marginTop:8}},
     ['c','r','t','o'].map(function(k){var cur=p.stats[k];var chg=(fx[k]||0)*5;var nxt=Math.max(0,Math.min(100,cur+chg));var isPos=chg>0;var isNeg=chg<0;
@@ -180,8 +210,14 @@ function RewardScreen(p){
     h('div',{style:{width:'100%',maxWidth:440,display:'flex',justifyContent:'center',gap:12,margin:'4px 0',flexShrink:0,flexWrap:'wrap'}},
       ['c','r','t','o'].map(function(k){var v=p.stats[k];var nm={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};var d=v<=20;return h('span',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'rgba(157,255,116,.7)',letterSpacing:1}},nm[k]+':'+v)})),
     h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
+    dangerC&&h('div',{style:{background:'rgba(157,255,116,.05)',border:'1px solid rgba(157,255,116,.22)',borderRadius:3,padding:'8px 12px',margin:'0 0 8px',maxWidth:440,width:'100%',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(157,255,116,.8)',letterSpacing:.5,lineHeight:1.7,boxSizing:'border-box'}},
+      h('div',{style:{color:'rgba(157,255,116,.4)',fontSize:9,marginBottom:4,letterSpacing:1}},'[ ORACLE // 운영 상태 경보 ]'),
+      h('div',null,'KR-INIT-001 봉쇄 완전성 임계 도달 예측.'),
+      h('div',null,'한국지부 안정화 100% — 임시 운영 권한 자동 만료 절차 개시.'),
+      h('div',{style:{marginTop:5,color:'rgba(157,255,116,.4)',fontSize:9}},'GRANT EXPIRED 절차 준비 중. 선택에 유의하십시오.')
+    ),
     h('div',{style:{flex:1,width:'100%',maxWidth:440,overflowY:'auto',minHeight:0,padding:'0 2px'}},
-      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
+      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
         h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
         h('div',{className:'oracle-card__title'},r.title),

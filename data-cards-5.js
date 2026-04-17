@@ -5,37 +5,37 @@ var CARDS_RESOURCE = [
 
   // ═══ 자원 확보 카드 ═══
 
-  { id: "C-101", act: [2,3,4], priority: "하", img: "card_supply_regular",
+  { id: "C-101", act: [2,3,4], priority: "하", bg: "supply", img: "card_supply_regular",
     msg: "ORACLE 정기 보급 알림.\n\n예정된 보급 물자가 도착했습니다. 식량, 의약품, 기본 장비.\n\n[ORACLE: 물자 배분은 지휘관 재량입니다.]",
     left: { label: "의료 물자 우선 배분", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
     right: { label: "봉쇄 장비 우선 배분", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-102", act: [2,3], priority: "하",
+  { id: "C-102", act: [2,3], priority: "하", bg: "supply",
     req: function(s,g,logs){ return !logs.includes("LOG-025") },
     msg: "기지 외곽 순찰 중 폐건물에서 군용 물자를 발견했습니다.\n\n강도윤: \"이전 부대가 남긴 것 같습니다. 상태가 양호합니다.\"\n\n식량 3상자, 의약품 1상자, 통신장비 부품.",
-    left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
-    right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 1 } },
+    left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: -1, o: -1 }, g: -1 },
+    right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-103", act: [3,4], priority: "하", req: function(s){ return s.day >= 5 },
+  { id: "C-103", act: [3,4], priority: "하", bg: "supply", req: function(s){ return s.day >= 5 },
     msg: "임재혁이 기지 에너지 효율화 작업을 완료했습니다.\n\n\"발전기 출력을 12% 개선했습니다. 잉여 전력을 물 정화에 돌릴 수 있습니다.\"\n\n[ORACLE: 효율적인 자원 관리입니다.]",
-    left: { label: "물 정화 시스템 가동", fx: { c: 0, r: 2, t: 1, o: 1 }, g: 1 },
+    left: { label: "물 정화 시스템 가동", fx: { c: 0, r: 1, t: 1, o: 1 }, g: 1 },
     right: { label: "잉여 전력을 비축", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-104", act: [2,3,4], priority: "하",
+  { id: "C-104", act: [2,3,4], priority: "하", bg: "supply",
     msg: "강원도 내 협력 마을에서 농산물을 보내왔습니다.\n\n\"봉쇄 구역 덕분에 안전합니다. 감사의 표시입니다.\"\n\n기지 식량에 여유가 생겼습니다.",
-    left: { label: "감사 인사 + 관계 유지", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
-    right: { label: "추가 물물교환 제안", fx: { c: 0, r: 2, t: 0, o: -1 }, g: -1 } },
+    left: { label: "감사 인사 + 관계 유지", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 },
+    right: { label: "추가 물물교환 제안", fx: { c: -1, r: 2, t: 0, o: -1 }, g: -1 } },
 
-  { id: "C-105", act: [3,4], priority: "하", req: function(s){ return s.day >= 7 },
+  { id: "C-105", act: [3,4], priority: "하", bg: "supply", req: function(s){ return s.day >= 7 },
     msg: "ORACLE 본부에서 특별 자원 패키지가 도착했습니다.\n\n내용: 고급 분석 장비, 봉쇄 자재, 비상 의약품.\n\n[ORACLE: 한국 지부의 성과를 인정합니다.]",
-    left: { label: "연구 장비 우선 배치", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 2 },
-    right: { label: "봉쇄 자재 우선 배치", fx: { c: 2, r: 1, t: 0, o: 1 }, g: 1 } },
+    left: { label: "연구 장비 우선 배치", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 2 },
+    right: { label: "봉쇄 자재 우선 배치", fx: { c: 2, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-106", act: [2,3,4], priority: "하",
+  { id: "C-106", act: [2,3,4], priority: "하", bg: "supply",
     req: function(s,g,logs){ return !logs.includes("LOG-026") },
     msg: "윤세진이 기지 내 약초 재배 실험에 성공했습니다.\n\n\"기본 해열제와 소독제를 자체 생산할 수 있게 됐습니다.\"\n\n\"작지만 꾸준한 자원입니다.\"",
-    left: { label: "재배 규모 확대", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
-    right: { label: "현 규모 유지", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
+    left: { label: "재배 규모 확대", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 },
+    right: { label: "현 규모 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // ═══ 일반 운영 카드 ═══
 
