@@ -163,6 +163,10 @@ function App(){
     // endTrigger: 루트 클라이맥스 카드 → 해당 엔딩 강제 발동 (게임오버 체크 우선)
     var et=ch.endTrigger||curCard.endTrigger;
     if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
+    // CH-007-3: 낙오 판정 (trust 기반 roll → ACCOMP-* 로그 부여, 체인 흐름은 계속)
+    if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast('[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']');setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast('[간부진 전원 동행 확정]');setTimeout(function(){setToast('')},2800)},800)}}
+    // CH-007-5: 탈출 결과 동적 판정 (shellTalkerKnown × 루트 확률 roll → 엔딩 E / E_c / E_bad)
+    if(curCard.id==='CH-007-5'&&typeof window.resolveEscape==='function'){var _esc=window.resolveEscape(nextLogs);tryUnlock(_esc.log);if(_esc.ending==='E'&&typeof window.buildEEnding==='function'){ENDING_DEFS.E.narrative=window.buildEEnding(nextLogs.concat([_esc.log]))}SFX.play('gameover');doGO(ENDING_DEFS[_esc.ending].name,ns,ng,_esc.ending);return}
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('mission');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
