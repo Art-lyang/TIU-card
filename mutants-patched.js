@@ -59,7 +59,7 @@ function spawnMutantOfType(type, opts) {
     }
     state.mutants.push(boss);
 
-    // 음성 모사 COMMS (박상훈 일병 — 이중철 지휘관 전임 부하)
+    // 음성 모사 COMMS (한동혁 일병 — 이중철 지휘관 전임 부하)
     if (typeof commsSay === 'function') {
       setTimeout(function() {
         commsSay('— "지휘관님, 여깁니다."', 2500);
