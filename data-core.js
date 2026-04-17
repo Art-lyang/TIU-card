@@ -65,6 +65,7 @@ var ORACLE_LOGS = [
   { id: "LOG-RECON-S1", title: "윤세진 관찰 기록 보존", content: "[보존된 비공식 기록]\n\n윤세진 이변체 행동 관찰 일지 사본.\nORACLE 보고 대상에서 제외된 원본 데이터 포함.\n\n예측 모델 편향 — 의도적 조정 증거.\n이 기록은 ORACLE에 보고되지 않았다." },
   { id: "LOG-RECON-P3", title: "프로메테우스 주파수 대역 분석", content: "[독자 분석 기록]\n\n주파수 변경 패턴 해독 진행률: 40%\n사용 대역: 민간 대역 내 은닉 채널\n\n독자 분석이 아니었다면 발견 불가능.\nORACLE 감시 범위 밖의 통신." },
   { id: "LOG-RECON-L1", title: "이변체 독립 연구 데이터", content: "[독자 연구 기록]\n\n해부 결과 독립 분석 — ORACLE 필터 적용 전 원본.\n조직 구조에서 EV-Σ Phase 전환 억제 인자 검출.\n\nORACLE 보고서에는 이 데이터가 누락되어 있었다.\n독립 연구의 가치가 입증되었다." },
+  { id: "LOG-025", title: "SPEC-004 관측 기록", content: "CODENAME: Seed Spreader\nTYPE: D-TYPE — 고정형 산포체\n위험도: CRITICAL\n\n외형: 높이 2~4m. 식물 유사 구조. 내부 맥동하는 생체 조직.\n상부에서 불규칙 포자 구름 방출.\n\n행동: 이동 능력 없음. 풍력에 의한 포자 분산 반경 수 km.\n노출 생물의 행동 변형 유도 (동충하초 메커니즘).\nSilent Belt 형성의 주요 원인으로 추정.\n\n격리: 반경 500m 접근 금지. 제거 시 소각 + 토양 오염 처리 필수.\n경고: 소각 시 폭발적 2차 포자 방출 위험.\n포자 흡입 = 즉시 감염.\n\n[LOG-004A] 최초 발견: Silent Belt 경계. 반경 3km 내 모든 동물 실종.\n[LOG-004B] 소각 시도 중 폭발적 포자 방출. 즉시 감염 4명.\n→ 방호복 착용 의무화." },
 ];
 
 var EVENING_CHATS = [

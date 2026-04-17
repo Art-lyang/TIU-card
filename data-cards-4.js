@@ -84,5 +84,19 @@ var CARDS_INVESTIGATE = [
       return logs.includes("LOG-060") && !logs.includes("LOG-061") },
     msg: "윤세진이 야간 습격 잔해를 분석했습니다.\n\n\"두 종류의 시그니처가 확인됩니다.\"\n\"하나는 음파 기반 — 인간 음성을 모방합니다.\"\n\"다른 하나는 점액질 — 유기물 용해 능력 보유.\"\n\n\"어느 쪽을 먼저 추적하시겠습니까?\"",
     left: { label: "음파 개체 추적 (Shell Talker)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
-    right: { label: "점액질 개체 추적 (Blood Pit)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } }
+    right: { label: "점액질 개체 추적 (Blood Pit)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
+
+  // ═══ SPEC-004 Seed Spreader 연쇄 ═══
+
+  { id: "C-179", act: [3], priority: "상", tag: "spec-004",
+    req: function(s,g,logs){ return s.day >= 10 && logs.includes("LOG-015") && !logs.includes("LOG-025") },
+    msg: "윤세진 긴급 보고.\n\n\"포자 지대 조사 데이터를 분석했습니다.\"\n\"포자의 원천 — SPEC-004, Seed Spreader를 식별했습니다.\"\n\n\"이건 단순한 이변체가 아닙니다. EV-Σ 바이러스를 퍼뜨리는 산포체예요.\"\n\"다른 이변체를 만드는 근원입니다.\"\n\n\"봉쇄선 안쪽에서 발견됐다는 건... 이미 침투했다는 뜻입니다.\"",
+    left: { label: "즉시 위치 특정", fx: { c: 1, r: -1, t: 0, o: 0 }, g: -1, log: "LOG-025" },
+    right: { label: "ORACLE에 분석 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, log: "LOG-025" } },
+
+  { id: "C-180", act: [3,4], priority: "상", tag: "spec-004",
+    req: function(s,g,logs){ return s.day >= 12 && logs.includes("LOG-025") && !logs.includes("LOG-026") },
+    msg: "Seed Spreader 좌표 확정. 봉쇄선 북동 2.4km.\n\n위성 관측: 반경 500m 내 모든 생명 반응 소멸. 토양 회색 변색.\n\n강도윤: \"확보도 연구도 의미 없습니다. 이건 제거 대상입니다.\"\n\"이것이 계속 포자를 뿌리면, 봉쇄선 안쪽에 새로운 이변체가 생깁니다.\"\n\n윤세진: \"소각 시 2차 포자 폭발이 일어납니다. 신중해야 해요.\"\n\n강도윤의 말이 맞습니다. 이것은 확보할 대상이 아닙니다.",
+    left: { label: "제거 작전 개시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0, mission: "M-009" },
+    right: { label: "ORACLE 원격 타격 요청", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, mission: "M-009" } }
 ];
