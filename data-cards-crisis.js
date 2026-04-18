@@ -51,8 +51,8 @@ var CARDS_CRISIS = [
 
   { id: "CA-SEED-02", act: [1], priority: "중", once: true,
     req: function(s){ return s.day >= 2 && s.day <= 5; },
-    msg: "사무실 책상 서랍에서 전임 지휘관의 메모가 발견되었습니다.\n\n대부분 업무 인수인계 내용이지만, 마지막 줄만 다릅니다:\n\n\"B3 — 확인 필요. 도면에 없음.\"",
-    left: { label: "인수인계 문서로 정리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
+    msg: "사무실 책상 서랍 깊숙이에서 메모지가 발견되었습니다.\n\n작성자 불명. 날짜도 없습니다. 글씨가 급하게 쓴 듯 흐릿합니다.\n\n이상하네? 전임 지휘관이 없을 텐데...\n\n마지막 줄만 또렷합니다:\n\n\"B3 — 확인 필요. 도면에 없음.\"",
+    left: { label: "그냥 넘긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "B3가 뭔지 찾아보겠다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
 
   { id: "CA-SEED-03", act: [1], priority: "하", once: true,

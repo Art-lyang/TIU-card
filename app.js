@@ -55,9 +55,13 @@ function App(){
     if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
     else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
+    // ═══ 세이브 복원: stats/gi 로드 (기존 누락 수정) ═══
+    var initStats={c:50,r:65,t:50,o:40,day:1};
+    var initGi=0;
+    if(sg&&sg.stats){initStats=sg.stats;setStats(sg.stats);initGi=sg.gi||0;setGi(initGi)}
     var initAct=(sg&&sg.act)||1;
     loadActiveSpecs();
-    setCurCard(drawCard({c:50,r:65,t:50,o:40,day:1},0,sl||['LOG-001'],{},[], initAct, '', sf||{approved:[],pending:[],completed:[],proposed:[]}));
+    setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],{},[], initAct, '', sf||{approved:[],pending:[],completed:[],proposed:[]}));
   },[]);
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];

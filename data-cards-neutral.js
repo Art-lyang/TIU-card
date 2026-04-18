@@ -39,7 +39,8 @@ var CARDS_NEUTRAL = [
   { id: "CA-OBS-PROTO", act: [1,2,3,4], priority: "하", once: true,
     glitch: true,
     req: function(s,g,logs){
-      try{ return !localStorage.getItem('ts_observer_proto') }catch(e){ return true }
+      try{ if(localStorage.getItem('ts_observer_proto')) return false }catch(e){}
+      return Math.random() < 0.05;
     },
     msg: "[ERR:0x8F2A — UNREGISTERED PROTOCOL DETECTED]\n\nPROTOCOL: OBSERVER\n접속 승인 요청\n\n출처: ████████\n프로토콜: 미등록\n보안 등급: ████\n인증 상태: BYPASSED\n\nORACLE 승인 없이\n외부 접속이 시도되고 있습니다.\n\n승인하시겠습니까?",
     left: { label: "승인 허가", fx: {c:0,r:0,t:0,o:0}, g: 0 },
