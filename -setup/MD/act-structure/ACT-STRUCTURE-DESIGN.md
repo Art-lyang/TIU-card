@@ -1,0 +1,300 @@
+# TERMINAL SESSION — Act 구조 설계서 v4
+
+> 최종 업데이트: 2026-04-17 (v0.9 반영 — Act 4 캐논 카드, 브리핑 이미지, 저장 슬롯, NG+ 업적)
+
+## 설계 원칙 (확정)
+
+- **전환 기준**: 일수 기반 무조건 전환 + 조건에 따른 4루트 분기
+- **카드 풀**: 교체형 (act 필드 기반 필터링)
+- **전환 알림**: ORACLE 브리핑 화면 (루트별 텍스트 분기)
+- **CA-001 강제 배치**: 게임 시작 시 "기지 도착 첫날" 카드 첫 장 고정
+- **once 카드 시스템**: CA-001~CA-006 인트로 카드는 1회만 출현 (`once: true`)
+
+---
+
+## 1. Act 개요
+
+| Act | 서사 | 톤 | 기간 | 하루 카드 | 감쇠 |
+|-----|------|----|------|----------|------|
+| **Act 1: 프롤로그/일상** | 기지 도착, ORACLE 첫 접속, 간부 자기소개 | 차분, 일상 | ~5일 | 4장 | 없음 |
+| **Act 2: 의혹** | 이변체 첫 조우, ORACLE 의심 시작 | 불안, 긴장 | ~14일 | 5장 | 없음 |
+| **Act 3: 진실** | 프로메테우스 대면, 서하은 분기, ORACLE 실체 | 긴장, 의심 | ~29일 | 6장 | c-1, r-1 |
+| **Act 4: 최종** | GI 기반 분기, 엔딩 수렴, 최종 프로토콜 | 위기, 선택 | Day 30+ | 7장 | c-2, r-2, t-1 |
+
+총 카드: **337장+** (16개 카드 파일 + 프롤로그 + Act4 캐논 + 체인)
+
+### Act 1 특수 규칙
+- **현장임무(FIELD MISSION) 미발생**: 이변체 조우 및 미션은 Act 2부터
+- **간부진 이브닝챗**: ORACLE 의심 없음, 순수한 자기소개+업무보고 톤
+  - 강도윤: 전술지휘관, 현장작전 및 봉쇄선 관리
+  - 서하은: 부지휘관, 데이터 분석 및 브리핑
+  - 윤세진: 연구원 겸 의료관, EV-Σ 생물학 연구와 기지 의료
+  - 임재혁: 정보분석관, 기지 보안 시스템과 정보 수집·분석
+
+---
+
+## 2. Act 전환 시스템 (구현 완료)
+
+### 핵심: 무조건 전환 + 4루트 분기
+
+Act 1→2: ~5일 경과 시 자동 전환 (루트 A 고정, 페널티 없음)
+Act 2→3: ~14일 도달 시 무조건 전환. 조건 달성도에 따라 4루트 분기.
+Act 3→4: ~29일 도달 시 무조건 전환. 조건 달성도에 따라 4루트 분기.
+
+### Act 2 → Act 3 (~14일)
+
+| 루트 | 조건 | 페널티 | 전용 카드 | 브리핑 톤 |
+|------|------|--------|---------|----------|
+| **A 정상** | 프로메테우스 접촉 + 미션 완료 | 0 | 없음 | 안정적 전환 |
+| **B 경험 부족** | 프로메테우스만 접촉 | 전체 -2 | CT-001~002 | "현장 데이터 부족" |
+| **C 정보 부재** | 미션만 완료 | 전체 -2 | CT-003~004 | "미확인 세력 급증" |
+| **D 강제** | 둘 다 안 함 | 전체 -4 | CT-005~007 | "상황 악화 — 긴급 재편" |
+
+### Act 3 → Act 4 (~29일)
+
+| 루트 | 조건 | 페널티 | 전용 카드 |
+|------|------|--------|---------|
+| **A 정상** | 연쇄 완료 + 프로메테우스 미션 | -3 (기본) | 없음 |
+| **B 연쇄 미완** | 연쇄만 완료 | -3 -2 = -5 | CT-008 |
+| **C 미션 미완** | 프로메테우스 미션만 | -3 -2 = -5 | CT-009 |
+| **D 강제** | 둘 다 안 함 | -3 -4 = -7 | CT-010~011 |
+
+Act 4 진입 시 추가 전체 -5 페널티.
+
+### 전환 루트 전용 카드 (data-cards-8.js, 11장)
+
+| ID | 루트 | Act | 내용 |
+|----|------|-----|------|
+| CT-001 | B (Act2→3) | 3 | 이변체 급조 대응 |
+| CT-002 | B (Act2→3) | 3 | 윤세진 급조 프로토콜 |
+| CT-003 | C (Act2→3) | 3 | 봉쇄선 절단 기습 |
+| CT-004 | C (Act2→3) | 3 | 서하은 프로메테우스 파악 |
+| CT-005 | D (Act2→3) | 3 | 동시다발 위기 |
+| CT-006 | D (Act2→3) | 3 | 강도윤 문책 |
+| CT-007 | D (Act2→3) | 3 | ORACLE 권한 이관 |
+| CT-008 | B (Act3→4) | 4 | ORACLE 문책 통신 |
+| CT-009 | C (Act3→4) | 4 | 서하은 조사 중단 |
+| CT-010 | D (Act3→4) | 4 | 지휘관 교체 검토 |
+| CT-011 | D (Act3→4) | 4 | 간부진 결속 |
+
+카드에 `transReq` 필드로 루트 제한:
+```js
+{ id: "CT-001", transReq: "B", ... }
+```
+drawCard에서 `transRoute`와 매칭하여 해당 루트에서만 등장.
+
+### 전환 연출: ORACLE 브리핑 (루트별 분기)
+
+브리핑 화면(`BriefingScreen`)에 **Act별 이미지**와 루트 색상 강조 표시.
+
+| 루트 | Act 2→3 브리핑 메시지 |
+|------|----------------------|
+| A | "초기 안정화 단계 완료. 새로운 변수가 감지되었습니다." |
+| B | "현장 경험 부족. 이변체 대응 데이터가 부족합니다." |
+| C | "미확인 세력 급증 감지. 정보전 역량 강화가 시급합니다." |
+| D | "경고: 상황 악화. 현장 데이터 부재 + 외부 위협 미파악." |
+
+| 루트 | Act 3→4 브리핑 메시지 |
+|------|----------------------|
+| A | "프로메테우스 위협이 직접적 수준에 도달했습니다." |
+| B | "ORACLE 권고 미이행 누적. 재평가가 예정되어 있습니다." |
+| C | "정보 부족 상태로 최종 국면 진입." |
+| D | "지휘관 교체 검토 중. 모든 지표에서 심각한 이탈." |
+
+| 루트 | Act 4 루트 브리핑 메시지 |
+|------|------------------------|
+| A4_COMPLY | "[ORACLE: COMPLIANCE OPTIMAL] 최종 안정화 단계로 진입합니다." |
+| A4_GREY | "[WARNING: AMBIGUOUS OPERATOR PATTERN] 신뢰도 재산정 예정." |
+| A4_RESIST | "[ALERT: SYSTEMIC DEVIATION DETECTED] 최종 대응 단계 준비 중." |
+| A4_OBSERVER | "[CRITICAL: UNCLASSIFIED INTERFERENCE] 시스템 격리 프로토콜 대기 중." |
+
+### 브리핑 이미지 시스템 (v0.9)
+
+`BRIEFING_IMG` 객체로 Act → 이미지 경로 매핑. Act 2~4는 두 이미지 플리커(CSS bfFlicker):
+
+```js
+1: { a:'img/act1.png' }
+2: { a:'img/act2a.png', b:'img/act2b.png' }
+3: { a:'img/act3a.png', b:'img/act3b.png' }
+4: { a:'img/act4a.png', b:'img/act4b.png' }
+```
+
+---
+
+## 3. 카드 풀 배분
+
+### 파일별 구성 (v0.6)
+
+| 파일 | 변수명 | 카드 수 | Act 범위 | 내용 |
+|------|--------|--------|---------|------|
+| data-cards-prologue.js | CARDS_PROLOGUE | ~18 | 1 | 프롤로그 전용 (CA-001~006 포함) |
+| data-cards-1.js | CARDS_BASE | 51 | 2,3,4 혼합 | 공통 운영 카드 |
+| data-cards-2.js | CARDS_STORY | 39 | 2→3→4 | 스토리 진행 |
+| data-cards-3.js | CARDS_ENDING | 28 | 4 | 엔딩 루트 (day 최소 조건) |
+| data-cards-4.js | CARDS_INVESTIGATE | 12 | 2,3 | 이변체 연쇄 + 미조우 |
+| data-cards-5.js | CARDS_RESOURCE | 14 | 2,3,4 | 자원/일반 운영 |
+| data-cards-6.js | CARDS_ACT1_DAILY | 22 | 2 | 의혹기 일상 |
+| data-cards-7.js | CARDS_ACT2_DAILY | 20 | 3 | 진실기 일상 |
+| data-cards-8.js | CARDS_TRANSITION | 11 | 3,4 | 전환 루트 전용 |
+| data-cards-9.js | CARDS_HAEUN | 11 | 4 | 서하은 분기 |
+| data-cards-10~16.js | 추가 카드 | 100+ | 혼합 | 확장 카드 |
+| data-cards-act4.js | CARDS_ACT4 | 4 | Act 4 전용 | 캐논 루트 시퀀스 (CA4-C/G/R/O) |
+
+### Act별 활성 카드 풀 (추정)
+
+| Act | 풀 크기 |
+|-----|--------|
+| Act 1 (프롤로그/일상) | ~18장 (프롤로그 전용, CA-001~006 once 카드 포함) |
+| Act 2 (의혹) | ~75장 (Core + 의혹기 Daily + Investigate + Extra + New) |
+| Act 3 (진실) | ~170장 (Core + 진실기 Daily + Transition + Chain + External) |
+| Act 4 (최종) | ~100장 (Core + Ending + Haeun + Act4 Extra) |
+
+### 카드 조건 시스템
+
+| 필드 | 용도 |
+|------|------|
+| `act: [1,2]` | Act 소속 |
+| `req: (s,g,logs) => ...` | 스탯/GI/LOG 조건 |
+| `transReq: "B"` | 전환 루트 전용 |
+| `tag: "weather"` | 쿨다운 태그 (3일) |
+| `bg: "forest"` | 배경 이미지 |
+| `once: true` | 1회만 출현 (인트로 카드 등) |
+
+---
+
+## 4. Act별 시스템 변화
+
+### 난이도 곡선 (구현 완료)
+
+| 요소 | Act 1 | Act 2 | Act 3 | Act 4 |
+|------|-------|-------|-------|-------|
+| **하루 카드 수** | 4장 | 5장 | 6장 | 7장 |
+| **일일 감쇠** | 없음 | 없음 | c-1, r-1 | c-2, r-2, t-1 |
+| **전환 페널티** | — | 없음 (A고정) | 루트별 0/-2/-4 | 기본 -3(-5) + 루트별 |
+| **자원 리스크** | 20% | 20% | 20% | 20% |
+| **현장 미션** | 없음 | 있음 | 있음 | 있음 |
+
+### ORACLE 한줄평 (구현 완료)
+
+GI 구간별 4종 × 4등급 = 16종 랜덤 메시지.
+
+---
+
+## 5. 서하은 분기 아크 (구현 완료)
+
+Act 4의 핵심 분기. C-073 (전출 명령)에서 시작. data-cards-9.js.
+
+| 경로 | LOG | 카드 | 결과 |
+|------|-----|------|------|
+| 전출 저지 시도 | LOG-051 | CS-001→002→003 | 잔류 (LOG-052) |
+| 잔류 후속 | LOG-055 | CS-004→005 | ORACLE 삭제 데이터 복구 |
+| 전출 확정 | LOG-050 | C-074 + CS-010~015 | 정보 분석 역량 저하 |
+
+전출 후: 서하은 대화 이벤트 자동 차단.
+
+---
+
+## 6. 세이브 데이터 구조 (구현 완료)
+
+```js
+// ts_game (메인 진행상황)
+saveData = {
+  stats: { c, r, t, o, day },
+  gi: 0,
+  act: 1,
+  actFlags: {
+    prom_met: false,
+    mission_done: false,
+    chain_done: false,
+    prom_mission: false,
+  },
+  transRoute: '',  // 'A'/'B'/'C'/'D' / 'A4_COMPLY' / 'A4_GREY' / 'A4_RESIST' / 'A4_OBSERVER'
+}
+// 별도 저장:
+// ts_trust: { haeun, doyun, sejin, jaehyuk }
+// ts_usedDlg: [인덱스 배열]
+// ts_logs: [LOG-001, ...]
+// ts_endings: [엔딩 ID 배열]
+// ts_sessions: 숫자
+// ts_achievements: [업적 ID 배열]
+// ts_facility: { completed: [...] }
+// ts_seenArchive: [아카이브 ID 배열]
+// ts_usedEvening: [이브닝 챗 ID 배열]
+// ts_onceShown: [once 카드 ID 배열]
+```
+
+### 스냅샷 슬롯 구조 (v0.9 신규)
+
+```js
+// ts_snap_1 / ts_snap_2 / ts_snap_3
+snapshot = {
+  version: 1,
+  timestamp: Date.now(),
+  label: "DAY 14 · ACT 2",
+  game: { /* ts_game */ },
+  logs: [...],
+  trust: { ... },
+  usedDlg: [...],
+  usedEvening: [...],
+  facility: { ... },
+  onceShown: [...]
+}
+```
+
+---
+
+## 7. 리플레이 시스템 (구현 완료)
+
+| 항목 | 1회차 | 2회차+ |
+|------|-------|--------|
+| 부팅 | GRANT: ACTIVE — TEMPORARY ACCESS | GRANT: ACTIVE — RENEWAL DETECTED |
+| 세션 | TERMINAL SESSION — INITIATING | [OBSERVER: SESSION RESUMED] |
+| 인사 | WELCOME, COMMANDER. | WELCOME BACK, COMMANDER. |
+| 버튼 | [ 세션 1 시작 ] | [ 세션 N 시작 ] |
+| 게임오버 | SESSION #1 TERMINATED | SESSION #N TERMINATED |
+| GRANT | — | GRANT: ACTIVE — RENEWAL AVAILABLE |
+| 튜토리얼 | 3단계 | 스킵 버튼 표시 |
+
+---
+
+## v0.5 추가 시스템
+
+### 이브닝 챗
+하루 종료 후 간부 선택 대화. 7인 참여, 신뢰 티어(low/high/bond).
+파일: data-core.js + data-evening-trust-1.js + data-evening-trust-2.js + components-evening.js
+
+### BGM
+Web Audio API 3트랙 (boot/main/tension). Act별 자동 전환.
+파일: bgm.js + bgm_boot.js + bgm_main.js + bgm_tension.js
+
+### ORACLE 아카이브
+LOG 연동 43항목 용어 백과. 파일: data-archive.js + components-archive.js
+
+### LOG 난이도 시스템
+- 복합 조건: 관찰 LOG에 신뢰도 + 포획 연구 LOG 요구
+- GI 상한 잠금: 진실 LOG에 GI 상한 조건 (ORACLE 순응 시 차단)
+- 포획 게이팅: 이변체 연쇄 흐름 변경 (조우→결정→[포획]→관찰)
+
+### Act 3 카드 순서 보장
+엔딩 카드(CE-xxx)에 day 최소 조건 추가. 조기 등장 방지.
+
+---
+
+## v0.9 추가 사항 (구현 완료)
+
+- [x] **Act 4 캐논 카드** — data-cards-act4.js, CA4-C/G/R/O 루트별 선형 시퀀스
+- [x] **브리핑 이미지** — BRIEFING_IMG 7장, Act 2~4 플리커 효과
+- [x] **스냅샷 슬롯 3개** — ts_snap_1/2/3, 분기 비교 저장/로드
+- [x] **NG+ 플래그** — ngPlus:true, HIDDEN_REWIND 업적
+- [x] **업적 시스템** — data-achievements.js, 29개, Steam steamId
+- [x] **히든 로그** — LOG-090~093 전임 지휘관 서사
+- [x] **Act 1 블루 UI** — --ui-rgb 청록색 테마
+- [x] **보상 스크롤 인디케이터** — 모바일 보상 화면 UX
+
+## 미결 사항
+
+- [ ] 이변체 3~5종 추가 (현재 5종)
+- [ ] 현장 미션 확장 (현재 8개)
+- [ ] 유도 지수 UI 노출 (3회차)
+- [ ] OBSERVER ACCESS 잔향 (4회차+)
+- [ ] 2회차+ Observer 암시 카드 2~3장
