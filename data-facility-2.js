@@ -47,7 +47,32 @@ var CARDS_FACILITY = [
   // FE-008: 순찰 확장
   { id: "C-FE008-A", act: [1,2,3], feReq: "FE-008", tag: "fe008a", msg: "강도윤: 확장 순찰 보고.\n\n\"북측 능선에서 새로운 관측점을 확보했습니다.\n봉쇄 구역 전체를 조망할 수 있는 위치입니다.\"", bg: "default",
     left: { label: "관측점 유지", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 },
-    right: { label: "전진 초소 설치", fx: { c: 2, r: -1, t: 0, o: 0 }, g: -1 } }
+    right: { label: "전진 초소 설치", fx: { c: 2, r: -1, t: 0, o: 0 }, g: -1 } },
+
+  // FE-009: 격리실 이중 차폐
+  { id: "C-FE009-A", act: [2,3], feReq: "FE-009", tag: "fe009a", msg: "윤세진: 이중 차폐 가동 보고.\n\n\"격리 샘플 반응이 안정되었습니다. 다만 차폐층 유지에 전력 소모가 늘었어요.\"", bg: "research",
+    left: { label: "정상 가동", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "저전력 모드", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  // FE-010: 연구 데이터 백업실
+  { id: "C-FE010-A", act: [2,3], feReq: "FE-010", tag: "fe010a", msg: "임재혁: 백업실 점검 보고.\n\n\"로컬 백업이 정상 가동 중입니다. 본부 전송 전 이중 확인이 가능해졌습니다.\"", bg: "research",
+    left: { label: "기존 주기 유지", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
+    right: { label: "백업 빈도 증가", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1 } },
+
+  // FE-012: 자체 서버룸 (uprising)
+  { id: "C-FE012-A", act: [2,3], feReq: "FE-012", tag: "fe012a", msg: "임재혁: 자체 서버룸 운영 보고.\n\n\"로컬 서버에 독립 백업이 쌓이고 있습니다. ORACLE에도 원하는 만큼만 공유할 수 있어요.\"", bg: "research",
+    left: { label: "ORACLE 공유 유지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 },
+    right: { label: "로컬 우선 운영", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2 } },
+
+  // FE-013: 독립 통신실 (uprising)
+  { id: "C-FE013-A", act: [2,3], feReq: "FE-013", tag: "fe013a", msg: "서하은: 단파 통신실 보고.\n\n\"외부 접선용 채널이 확보되었습니다. 프로메테우스 측 주파수도 감지 가능합니다.\"", bg: "default",
+    left: { label: "수신만 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
+    right: { label: "양방향 시험 운용", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2 } },
+
+  // FE-016: 무기고 확장 (uprising)
+  { id: "C-FE016-A", act: [2,3], feReq: "FE-016", tag: "fe016a", msg: "강도윤: 무기고 정비 보고.\n\n\"대인 장비 비축분이 충분합니다. 다만 — 언제 이걸 쓰게 될지가 문제입니다.\"", bg: "default",
+    left: { label: "훈련에만 사용", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0 },
+    right: { label: "비상 배치 준비", fx: { c: 2, r: -1, t: 0, o: -1 }, g: -1 } }
 ];
 
 // ── 민간 위장 커버 스토리 LOG ──
@@ -111,7 +136,23 @@ var REWARDS_FACILITY_BONUS = [
   { id: "RF-007", feReq: "FE-007", title: "벙커 비축품 점검", desc: "비상 벙커의 비축 물자를 점검하고 보충합니다.",
     benefit: "신뢰 +5, 봉쇄 +5", cost: "자원 -5", fx: { c: 1, r: -1, t: 1, o: 0 } },
   { id: "RF-008", feReq: "FE-008", title: "전진 관측 보고", desc: "확장 순찰로에서 수집한 정보를 분석합니다.",
-    benefit: "봉쇄 +15", cost: "자원 -5", fx: { c: 3, r: -1, t: 0, o: 0 } }
+    benefit: "봉쇄 +15", cost: "자원 -5", fx: { c: 3, r: -1, t: 0, o: 0 } },
+  { id: "RF-009", feReq: "FE-009", title: "이중 차폐 가동 보고", desc: "격리실 전자기 차폐가 안정적으로 작동합니다.",
+    benefit: "봉쇄 +5", cost: "자원 -5", fx: { c: 1, r: -1, t: 0, o: 0 } },
+  { id: "RF-010", feReq: "FE-010", title: "로컬 백업 검증", desc: "로컬 백업된 연구 데이터를 이중 검증합니다.",
+    benefit: "신뢰 +5", cost: "자원 -5", fx: { c: 0, r: -1, t: 1, o: 0 } },
+  { id: "RF-011", feReq: "FE-011", title: "환기 효율 점검", desc: "B3 환기 시스템 효율을 최종 점검합니다.",
+    benefit: "봉쇄 +5", cost: "자원 -5", fx: { c: 1, r: -1, t: 0, o: 0 } },
+  { id: "RF-012", feReq: "FE-012", title: "자체 서버 백업", desc: "로컬 서버에 독립 백업을 축적합니다.",
+    benefit: "신뢰 +5", cost: "자원 -5", fx: { c: 0, r: -1, t: 1, o: 0 } },
+  { id: "RF-013", feReq: "FE-013", title: "단파 통신 점검", desc: "독립 통신실의 외부 채널을 점검합니다.",
+    benefit: "신뢰 +5", cost: "자원 -5", fx: { c: 0, r: -1, t: 1, o: 0 } },
+  { id: "RF-014", feReq: "FE-014", title: "예비 전원 시험 가동", desc: "비상 발전기를 72시간 모의 가동합니다.",
+    benefit: "봉쇄 +5, 신뢰 +5", cost: "자원 -10", fx: { c: 1, r: -2, t: 1, o: 0 } },
+  { id: "RF-015", feReq: "FE-015", title: "차폐 회의록", desc: "차폐 회의실에서 간부 회의를 진행합니다.",
+    benefit: "신뢰 +10", cost: "자원 -5", fx: { c: 0, r: -1, t: 2, o: 0 } },
+  { id: "RF-016", feReq: "FE-016", title: "무기고 정비", desc: "비축 장비를 점검하고 훈련에 활용합니다.",
+    benefit: "봉쇄 +5, 신뢰 +5", cost: "자원 -5", fx: { c: 1, r: -1, t: 1, o: 0 } }
 ];
 
 // ORACLE_LOGS에 커버 스토리 추가 (data-core.js 이후 로드됨)

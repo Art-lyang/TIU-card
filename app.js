@@ -277,7 +277,7 @@ function App(){
     var ng=gi;
     if(feDef&&feDef.uprising){ng=gi-2;setGi(ng)}
     Save.saveGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
-    SFX.play('reward');setToastType('');setToast('[시설 증축 완료] 자원 -'+cost);setTimeout(function(){setToast('')},2400);
+    SFX.play('reward');setToastType('');setToast('[시설 증축 완료] 자원 -'+cost+(feDef&&feDef.uprising?' | GI -2':''));setTimeout(function(){setToast('')},2400);
   };
 
   // ═══ CH-007 미니게임 결과 수신 핸들러 ═══

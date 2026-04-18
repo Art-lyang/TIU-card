@@ -85,10 +85,10 @@ function FacilityManageTab(p) {
       h('div', { style: lbl }, '[대기 중 — 승인 가능]'),
       pending.map(function(fe) {
         var isUp = !!fe.uprising;
-        var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.35)' } : {};
+        var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.2)' } : {};
         return h('div', { key: fe.id, style: Object.assign({}, itm, upStyle) },
           h('div', { style: nm }, fe.name),
-          isUp && h('div', { style: { fontSize: 10, color: '#f0a030', letterSpacing: 1, marginBottom: 4 } }, '▸ 독립 인프라'),
+          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, '▸ 독립 인프라'),
           h('div', { style: ds }, fe.desc),
           h('div', { style: { fontSize: 10, color: '#4ae', marginTop: 4 } }, fe.hint),
           h('button', {
@@ -102,10 +102,10 @@ function FacilityManageTab(p) {
         var cost = fe.upgradeCost || 10;
         var canAfford = curR >= cost;
         var isUp = !!fe.uprising;
-        var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.35)' } : {};
+        var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.2)' } : {};
         return h('div', { key: fe.id, style: Object.assign({}, itm, upStyle) },
           h('div', { style: nm }, fe.name),
-          isUp && h('div', { style: { fontSize: 10, color: '#f0a030', letterSpacing: 1, marginBottom: 4 } }, '▸ 독립 인프라'),
+          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, '▸ 독립 인프라'),
           h('div', { style: ds }, fe.desc),
           h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.45)', marginTop: 6 } }, '리워드에서도 선택 가능'),
           h('div', { style: { display: 'flex', gap: 8, marginTop: 8, alignItems: 'center' } },
