@@ -57,7 +57,7 @@ function App(){
     // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
     if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
-    else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
+    else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     // ═══ 세이브 복원: stats/gi/cooldowns/recentCards/ct 로드 ═══
     var initStats={c:50,r:65,t:50,o:40,day:1};
     var initGi=0;
