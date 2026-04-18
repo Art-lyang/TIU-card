@@ -1,1 +1,3 @@
 -Backup_all/
+__pycache__/
+*.pyc
