@@ -26,6 +26,7 @@ var FACILITY_EXPANSIONS = [
     facilityAction: "add",
     // 등장 조건
     minDay: 5, minAct: 1,
+    upgradeCost: 15,
     // 민간 위장 LOG
     coverLog: "LOG-COVER-001"
   },
@@ -46,6 +47,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "exterior",
     facilityRoom: "training_ground",
     facilityAction: "add",
+    upgradeCost: 10,
     minDay: 3, minAct: 1,
     coverLog: "LOG-COVER-002"
   },
@@ -66,6 +68,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "exterior",
     facilityRoom: "sensor_array",
     facilityAction: "add",
+    upgradeCost: 15,
     minDay: 8, minAct: 1,
     coverLog: null
   },
@@ -86,6 +89,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "level1",
     facilityRoom: "medical_bay",
     facilityAction: "upgrade",
+    upgradeCost: 10,
     minDay: 6, minAct: 1,
     coverLog: null
   },
@@ -106,6 +110,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "exterior",
     facilityRoom: "supply_route_b",
     facilityAction: "add",
+    upgradeCost: 10,
     minDay: 10, minAct: 2,
     coverLog: "LOG-COVER-003"
   },
@@ -126,6 +131,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "level1",
     facilityRoom: "cctv_control",
     facilityAction: "upgrade",
+    upgradeCost: 10,
     minDay: 12, minAct: 2,
     coverLog: null
   },
@@ -146,6 +152,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "b3",
     facilityRoom: "emergency_bunker",
     facilityAction: "add",
+    upgradeCost: 15,
     minDay: 15, minAct: 2,
     coverLog: null
   },
@@ -166,6 +173,7 @@ var FACILITY_EXPANSIONS = [
     facilityFloor: "exterior",
     facilityRoom: "north_patrol",
     facilityAction: "add",
+    upgradeCost: 10,
     minDay: 7, minAct: 1,
     coverLog: null
   }

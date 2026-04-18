@@ -19,6 +19,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var facComp=(facility&&facility.completed)||[];
   if(day===1&&logs.indexOf('ONCE-CA-001')<0){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
   var valid=CARDS.filter(function(c){
+    if(c.id==='CA-001'&&day>1)return false;
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.once&&logs.indexOf('ONCE-'+c.id)>=0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
@@ -31,16 +32,16 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(!specOk(c))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
 };
 
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
   get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af,tr){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||''})},
-  clearGame:function(){Save.del('ts_game')},
+  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[]})},
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown')},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},

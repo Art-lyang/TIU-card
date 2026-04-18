@@ -47,7 +47,7 @@ function BriefingScreen(p){
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
   var routeColor=transRoute==='A4_COMPLY'?'var(--ui)':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'var(--ui)':'#f0a030';
   var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
-  var msg=act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'');
+  var msg=act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||'새로운 국면이 시작됩니다. 운영 데이터를 확인하십시오.'):(BRIEFING_TEXT.act4[transRoute]||'최종 국면입니다. 모든 선택이 결과를 결정합니다.');
   return h('div',{className:'screen',style:{overflowY:'auto'}},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
     h(BriefingImage,{act:act}),
