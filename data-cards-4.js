@@ -98,5 +98,28 @@ var CARDS_INVESTIGATE = [
     req: function(s,g,logs){ return s.day >= 12 && logs.includes("LOG-025") && !logs.includes("LOG-026") },
     msg: "Seed Spreader 좌표 확정. 봉쇄선 북동 2.4km.\n\n위성 관측: 반경 500m 내 모든 생명 반응 소멸. 토양 회색 변색.\n\n강도윤: \"확보도 연구도 의미 없습니다. 이건 제거 대상입니다.\"\n\"이것이 계속 포자를 뿌리면, 봉쇄선 안쪽에 새로운 이변체가 생깁니다.\"\n\n윤세진: \"소각 시 2차 포자 폭발이 일어납니다. 신중해야 해요.\"\n\n강도윤의 말이 맞습니다. 이것은 확보할 대상이 아닙니다.",
     left: { label: "제거 작전 개시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0, mission: "M-009" },
-    right: { label: "ORACLE 원격 타격 요청", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, mission: "M-009" } }
+    right: { label: "ORACLE 원격 타격 요청", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, mission: "M-009" } },
+
+  // ═══ SPEC-015 Brain Seeker 연쇄 ═══
+
+  // 첫 조우 — 도시 하수구 정찰 보고
+  { id: "C-181", act: [2,3], priority: "상", tag: "spec-015", bg: "forest",
+    req: function(s,g,logs){ return s.day >= 8 && !logs.includes("LOG-029") },
+    msg: "강도윤 긴급 보고.\n\n\"봉쇄선 남측 하수구 정찰 중 — 비정상 발견입니다.\"\n\"시신 3구. 전부 두개골만 비어 있습니다. 다른 외상 없음.\"\n\n\"그리고 수로 안쪽에서 — 뭔가를 봤습니다.\"\n\"바다거북 같은 두개골. 등껍질은 없고 — 사람 얼굴이 붙어 있었습니다.\"\n\"물속으로 사라졌습니다.\"\n\n윤세진: \"뇌만 선택적으로 섭취... 이건 새로운 종입니다.\"",
+    left: { label: "현장 표본 + 데이터 수집", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1, log: "LOG-029" },
+    right: { label: "하수구 전면 봉쇄", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0, log: "LOG-029" } },
+
+  // 관찰 — 행동 패턴 분석
+  { id: "C-182", act: [2,3], priority: "상", tag: "spec-015",
+    req: function(s,g,logs){ return s.day >= 10 && logs.includes("LOG-029") && !logs.includes("LOG-041") },
+    msg: "윤세진이 Brain Seeker 분석을 보고합니다.\n\n\"SPEC-015로 분류했습니다. TS-Ω 계열 거북 변이체의 이탈 개체예요.\"\n\"등껍질이 없습니다 — 군체 통신 기관이 없다는 뜻이에요.\"\n\"군체에 속하지 못한 거북. 단독 사냥꾼입니다.\"\n\n\"가장 위험한 건 — 뇌를 섭취할수록 지능이 올라갑니다.\"\n\"이 개체의 매복 패턴이 우리 순찰 시간과 일치하기 시작했습니다.\"\n\n강도윤: \"학습하고 있다는 겁니까?\"\n윤세진: \"...네.\"",
+    left: { label: "매복 지점 열화상 매핑", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
+    right: { label: "순찰 경로 변경 + 미끼 설치", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0 } },
+
+  // 제거/확보 결정 — 미션 트리거
+  { id: "C-183", act: [3], priority: "상", tag: "spec-015",
+    req: function(s,g,logs){ return s.day >= 13 && logs.includes("LOG-029") && !logs.includes("LOG-041") },
+    msg: "ORACLE 긴급 통보.\n\n[SPEC-015 위협 등급 변경: HIGH → CRITICAL]\n[NAMED SPECIMEN 등록: BS-GANGWON-01]\n[추정 누적 포식: 12+. 학습 단계 진입 확인]\n\n강도윤: \"이 개체는 시간이 지날수록 강해집니다. 지금 잡아야 합니다.\"\n\n윤세진: \"뇌 섭취 메커니즘은 연구 가치가 높아요.\"\n\"두개골이 없으니 척추 직접 타격으로 무력화할 수 있습니다.\"\n\"하지만 물속에서 싸우면 우리가 불리합니다.\"\n\n결정해야 합니다.",
+    left: { label: "제거 작전 — 하수구 소탕", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-010" },
+    right: { label: "생포 작전 — 미끼 유인 포획", fx: { c: 0, r: -2, t: 1, o: -1 }, g: -1, mission: "M-010" } }
 ];
