@@ -12,7 +12,7 @@ var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INT
 var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
 var ACTIVE_SPECS=[];
 var initActiveSpecs=function(){var n=2+Math.floor(Math.random()*2);ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,n).slice();try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
-var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){ACTIVE_SPECS=JSON.parse(d)}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
+var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);if(Array.isArray(parsed)&&parsed.length>=2){ACTIVE_SPECS=parsed}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
@@ -31,8 +31,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(!specOk(c))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
 };
 
 var Save={
@@ -65,6 +65,7 @@ var Save={
       usedEvening:Save.get('ts_usedEvening',[]),
       facility:Save.get('ts_facility',null),
       onceShown:Save.get('ts_onceShown',[]),
+      activeSpecs:Save.get('ts_activeSpecs',null),
       label:data&&data.label||('DAY '+((data&&data.day)||'?')+' · ACT '+((data&&data.act)||'?'))
     };
     Save.set('ts_snap_'+slot,pack);
@@ -82,6 +83,7 @@ var Save={
     if(pack.usedEvening)Save.set('ts_usedEvening',pack.usedEvening);
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
     if(pack.onceShown)Save.set('ts_onceShown',pack.onceShown);
+    if(pack.activeSpecs){Save.set('ts_activeSpecs',pack.activeSpecs);ACTIVE_SPECS=pack.activeSpecs}
     return pack;
   },
   // ═══ 업적 ═══
