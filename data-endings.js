@@ -172,8 +172,13 @@ var ENDING_DEFS = {
 
 // 엔딩 B/D/F 조건 체크 — 일일 보상(hReward) 시점에서 호출
 // 반환: 엔딩 ID 문자열 또는 null
-function chkSpecialEnding(stats, gi, act, trust, logs, actFlags) {
+function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   if (act < 3) return null;
+
+  // 엔딩 H: 기지 점거 (폐쇄회로 완료) — 최우선 체크
+  if (typeof chkUprisingEnding === 'function' && facility) {
+    if (chkUprisingEnding(logs, trust, facility)) return 'H';
+  }
 
   var highTrust = 0;
   var midTrust = 0;

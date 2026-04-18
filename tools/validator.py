@@ -29,7 +29,7 @@ DATA_FILES = [
     'data-archive.js', 'data-missions.js', 'data-missions-2.js', 'data-missions-3.js',
     'data-missions-incident.js', 'data-missions-4.js', 'data-missions-5.js', 'data-missions-variants.js',
     'data-endings.js', 'data-act4-escape.js', 'data-achievements.js', 'data-evidence.js',
-    'data-facility.js', 'data-facility-2.js', 'data-hidden-story.js',
+    'data-facility.js', 'data-facility-2.js', 'data-facility-uprising.js', 'data-hidden-story.js',
     'data-evening-trust-1.js', 'data-evening-trust-1b.js', 'data-evening-trust-2.js', 'data-evening-trust-3.js',
     'data-evening-responses.js', 'data-evening-extra.js', 'data-evening-responses-2.js', 'evening-lines.js',
     'data-result-text.js', 'data-result-story-1.js', 'data-result-story-2.js', 'data-result-story-3.js',

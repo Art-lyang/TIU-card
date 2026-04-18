@@ -33,7 +33,12 @@ const IMG = {
   ending_C_r: "ending_C_r.png",
   ending_C_t: "ending_C_t.png",
   ending_D: "ending_D.png",
+  ending_E: "ending_E.png",
+  ending_E_bad: "ending_E_bad.png",
+  ending_E_c: "ending_E_c.png",
   ending_F: "ending_F.png",
+  ending_G: "ending_G.png",
+  ending_H: "ending_H.png",
 };
 
 const CHAR_IMG = {

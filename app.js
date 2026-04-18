@@ -170,6 +170,17 @@ function App(){
     if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast('[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']');setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast('[간부진 전원 동행 확정]');setTimeout(function(){setToast('')},2800)},800)}}
     // CH-007-5: 탈출 미니게임 진입 (iframe 연동) — 결과는 postMessage로 수신
     if(curCard.id==='CH-007-5'){setPhase('escape_game');return}
+    // ═══ 폐쇄회로 발각 체크: PHASE1 이후 GI ≤ -40이면 ORACLE 감지 ═══
+    if(typeof UPRISING_FAIL_CARD!=='undefined'
+      && nextLogs.indexOf('LOG-UPRISING-PHASE1')>=0
+      && nextLogs.indexOf('LOG-UPRISING-FAIL')<0
+      && nextLogs.indexOf('LOG-UPRISING-CLEAR')<0
+      && ng<=-40){
+      tryUnlock('LOG-UPRISING-FAIL');
+      SFX.play('glitch');
+      setCurCard(UPRISING_FAIL_CARD);
+      return;
+    }
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
@@ -196,7 +207,7 @@ function App(){
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
     var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,gi);return}
     setPhase('evening')};
-  var hEvening=function(){var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}var trans=checkActTransitionLogic(stats,gi,logs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,logs,actFlags);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'\uc138\uc158 \uc885\ub8cc',stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast('[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]');setTimeout(function(){setToast('')},3800)},700)}
+  var hEvening=function(){var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}var trans=checkActTransitionLogic(stats,gi,logs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,logs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:'\uc138\uc158 \uc885\ub8cc',stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast('[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]');setTimeout(function(){setToast('')},3800)},700)}
   nextCard(stats,gi,logs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
     var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedDlg.indexOf(i)<0}).length;
@@ -261,7 +272,11 @@ function App(){
       var nxt={approved:prev.approved.filter(function(id){return id!==feId}),pending:prev.pending.slice(),completed:prev.completed.concat([feId]),proposed:prev.proposed.slice()};
       Save.saveFacility(nxt);return nxt;
     });
-    Save.saveGame(ns,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
+    // uprising 시설은 GI 하락 (ORACLE 독립 = 충성도 감소)
+    var feDef=(typeof FACILITY_EXPANSIONS!=='undefined')?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;
+    var ng=gi;
+    if(feDef&&feDef.uprising){ng=gi-2;setGi(ng)}
+    Save.saveGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
     SFX.play('reward');setToastType('');setToast('[시설 증축 완료] 자원 -'+cost);setTimeout(function(){setToast('')},2400);
   };
 
