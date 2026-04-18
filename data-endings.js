@@ -209,11 +209,11 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags) {
     return 'B';
   }
 
-  // 엔딩 G: 관망자 — 중립 루트
-  // GI 0~20, 신뢰 50+ 캐릭터 1명 이상, 로그 4개 이상, day ≥ 26
-  var anyTrust50 = (trust.haeun >= 50 ? 1 : 0) + (trust.doyun >= 50 ? 1 : 0) +
-    (trust.sejin >= 50 ? 1 : 0) + (trust.jaehyuk >= 50 ? 1 : 0);
-  if (gi >= 0 && gi <= 20 && anyTrust50 >= 1 && logCount >= 4 && stats.day >= 26) {
+  // 엔딩 G: 관망자 — 중립 루트 (Act4 진입 후)
+  // GI 0~20, 신뢰 55+ 캐릭터 1명 이상, 로그 7개 이상, day ≥ 30
+  var anyTrust55 = (trust.haeun >= 55 ? 1 : 0) + (trust.doyun >= 55 ? 1 : 0) +
+    (trust.sejin >= 55 ? 1 : 0) + (trust.jaehyuk >= 55 ? 1 : 0);
+  if (gi >= 0 && gi <= 20 && anyTrust55 >= 1 && logCount >= 7 && stats.day >= 30) {
     return 'G';
   }
 

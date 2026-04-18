@@ -27,6 +27,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
     try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
+    // 범용 데일리(태그 없고 act 전체 포함) = 한 판 1회만. 그 외 무태그 = 15일 쿨다운
+    if(!c.tag){var isGenericDaily=c.act&&c.act.length>=3;if(isGenericDaily){if(cd[c.id])return false}else if(cd[c.id]&&(day-cd[c.id])<15)return false}
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     if(!specOk(c))return false;

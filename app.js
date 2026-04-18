@@ -93,7 +93,7 @@ function App(){
   var tryDlg=function(){var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&logs.indexOf('LOG-050')>=0)return false;if(d.logReq&&logs.indexOf(d.logReq)<0)return false;if(d.actReq&&act<d.actReq)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust))&&(!d2.logReq||logs.indexOf(d2.logReq)>=0))earlier=true});return!earlier});if(!isIntrosDone(logs)){var introAv=av.filter(function(d){return isIntroDlgCheck(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}
     // 박소영 합류 후 첫 대화 보장
     if(logs.indexOf('LOG-082')>=0&&logs.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
-  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute,facility);if(!c){c={id:'SYS-FALLBACK',msg:'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...',left:{label:'대기',fx:{},g:0},right:{label:'재접속 시도',fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>30?n.slice(n.length-30):n})}};
+  var nextCard=function(s,g,lg,cq,curAct){var a=curAct||act;if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,lg,cooldowns,recentCards,a,transRoute,facility);if(!c){c={id:'SYS-FALLBACK',msg:'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...',left:{label:'대기',fx:{},g:0},right:{label:'재접속 시도',fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var n=p.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}};
   // Act 전환: checkActTransitionLogic (app-logic.js) 사용 — 10/25/30일, GI 기반 Act4 루트
   var doBriefing=function(newAct,s,route){
     setAct(newAct);setTransRoute(route);
@@ -139,7 +139,7 @@ function App(){
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);
     if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);setTimeout(function(){setToast('')},2400)},600)}
     setStats(ns);setGi(ng);
-    var ncd=cooldowns;if(curCard.tag){ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}
+    var ncd=cooldowns;if(curCard.tag){ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}else if(curCard.id){ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.id]=stats.day;setCooldowns(ncd)}
     checkLogs(ns,ng,curCard.id,null,null,dir);
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
     var nextLogs=curCard.once&&logs.indexOf('ONCE-'+curCard.id)<0?logs.concat(['ONCE-'+curCard.id]):logs;

@@ -78,7 +78,7 @@ var CARDS_EXTERNAL = [
     left: { label: "역추적을 시도한다", fx: { c: 0, r: -1, t: 0, o: -2 }, g: -4 },
     right: { label: "기록만 남기고 경계 강화", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-260", act: [4], priority: "하", bg: "base",
+  { id: "C-276", act: [4], priority: "하", bg: "base",
     cond: function(s,g,logs){ return s.day>=35 },
     msg: "아침 점검. 지휘관실 책상 위에 놓인 종이 한 장.\n\n어젯밤 누구도 이 방에 들어온 기록이 없습니다.\n\n메모:\n\"당신은 올바른 질문을 하고 있습니다.\n계속하십시오.\n— 強\"",
     left: { label: "필적을 분석한다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 },
