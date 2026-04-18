@@ -8,6 +8,12 @@ var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
 var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
 var INTRO_FILTER=[{name:'서하은',log:'LOG-INTRO-SH'},{name:'강도윤',log:'LOG-INTRO-KD'},{name:'윤세진',log:'LOG-INTRO-YS'},{name:'임재혁',log:'LOG-INTRO-IJ'}];
 var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
+// ═══ 세션별 변이체 체인 제한 (2~3개 랜덤) ═══
+var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
+var ACTIVE_SPECS=[];
+var initActiveSpecs=function(){var n=2+Math.floor(Math.random()*2);ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,n).slice();try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
+var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){ACTIVE_SPECS=JSON.parse(d)}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
+var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
@@ -22,6 +28,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
+    if(!specOk(c))return false;
     return true;
   });
   if(valid.length===0)valid=CARDS.filter(function(c){try{return(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)}catch(e){return false}});
