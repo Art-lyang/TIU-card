@@ -191,8 +191,9 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags) {
   var hasLog13 = logs.indexOf('LOG-013') >= 0;
 
   // 엔딩 F: 가장 희귀 — Observer 레이어 발견
-  // LOG-012(임재혁 UI 레이어) + LOG-013(Observer 프로세스) + day ≥ 30
-  if (hasLog12 && hasLog13 && stats.day >= 30 && gi <= 0) {
+  // LOG-012 + LOG-013 + OBSERVER 접속승인(LOG-OBSERVER-APPROVED) + day ≥ 30
+  var hasObsApproved = logs.indexOf('LOG-OBSERVER-APPROVED') >= 0;
+  if (hasLog12 && hasLog13 && hasObsApproved && stats.day >= 30 && gi <= 0) {
     return 'F';
   }
 

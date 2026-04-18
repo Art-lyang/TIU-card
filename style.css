@@ -157,6 +157,13 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 /* Glitch text effect */
 @keyframes glitchText{0%,100%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(1px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(2px,-1px)}}
 .glitch-text{animation:glitchText 0.15s ease infinite}
+/* Card glitch — OBSERVER 접속승인 등 오류처럼 보이는 특수 카드 */
+@keyframes glitchCard{0%,100%{transform:translate(0);filter:none}15%{transform:translate(-1px,1px);filter:hue-rotate(90deg)}30%{transform:translate(1px,-1px)}45%{filter:hue-rotate(-90deg) brightness(1.2)}60%{transform:translate(-1px,0)}75%{filter:brightness(0.8)}90%{transform:translate(1px,1px);filter:hue-rotate(45deg)}}
+@keyframes scanFlicker{0%{opacity:1}4%{opacity:0.6}8%{opacity:1}50%{opacity:1}52%{opacity:0.7}54%{opacity:1}}
+.card-glitch{animation:glitchCard 2s ease infinite,scanFlicker 4s ease infinite;border-color:rgba(255,60,60,.3) !important;box-shadow:0 0 20px rgba(255,0,0,.08),inset 0 0 30px rgba(255,0,0,.03) !important}
+.card-glitch .card-hdr{border-color:rgba(255,60,60,.2) !important}
+.card-glitch .card-hdr-l{color:#ff4444 !important;animation:glitchText 0.3s ease infinite}
+.card-glitch .card-msg{color:rgba(255,200,200,.85) !important}
 /* Evening Chat character hover */
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(var(--ui-rgb),.08)}50%{box-shadow:0 0 16px rgba(var(--ui-rgb),.18)}}
 @keyframes typingDot{0%,80%,100%{opacity:.2}40%{opacity:1}}

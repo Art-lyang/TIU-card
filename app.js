@@ -155,6 +155,8 @@ function App(){
     checkLogs(ns,ng,curCard.id,null,null,dir);
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
     var nextLogs=curCard.once&&logs.indexOf('ONCE-'+curCard.id)<0?logs.concat(['ONCE-'+curCard.id]):logs;
+    // ═══ OBSERVER 접속승인 카드 — 전 세션 1회 특수 처리 ═══
+    if(curCard.id==='CA-OBS-PROTO'){try{localStorage.setItem('ts_observer_proto','seen')}catch(e){}if(dir==='left'){tryUnlock('LOG-OBSERVER-APPROVED')}SFX.play('glitch');setTimeout(function(){setToastType('alert');setToast('[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]');setTimeout(function(){setToast('')},3200)},500)}
     var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey])setPendingBonus(REFUSAL_BONUSES[rwdKey]);
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
@@ -205,7 +207,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,logs,chainQueue);setPhase('game')},200);return}
     nextCard(ns,ng,logs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached'].forEach(function(k){Save.del(k)});window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto'].forEach(function(k){Save.del(k)});window.location.reload()};
   var restart=function(){BGM.stop();BGM.started=false;initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
   var restartAct2=function(){BGM.stop();BGM.started=false;initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:11};var af2={prom_met:false,mission_done:false,chain_done:false,prom_mission:false};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(2);setTransRoute('A');setActFlags(af2);setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});if(rl.indexOf('LOG-ACT2')<0)rl=rl.concat(['LOG-ACT2']);setLogs(rl);Save.saveLogs(rl);Save.saveGame(ns,0,2,af2,'A');setPhase('briefing')};
   // ═══ 스냅샷 세이브 (3슬롯) ═══

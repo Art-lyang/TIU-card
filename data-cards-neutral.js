@@ -33,5 +33,15 @@ var CARDS_NEUTRAL = [
     req: function(s,g,logs){ return g >= -5 && g <= 15 && s.day >= 15 && logs.length >= 4; },
     msg: "강도윤이 단독 보고를 요청합니다.\n\n\"지휘관님. 솔직히 여쭐게요.\"\n\"ORACLE 쪽도 프로메테우스 쪽도 아닌 거... 의도적인 겁니까?\"\n\"아니면 아직 결정을 못 내린 겁니까?\"",
     left: { label: "의도적이다. 양쪽을 본다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: 0 },
-    right: { label: "... 모르겠다, 솔직히", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -1 } }
+    right: { label: "... 모르겠다, 솔직히", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -1 } },
+
+  // ═══ OBSERVER 접속승인 — 히든 카드 (전 액트, 전 세션 1회, fullReset만 초기화) ═══
+  { id: "CA-OBS-PROTO", act: [1,2,3,4], priority: "하", once: true,
+    glitch: true,
+    req: function(s,g,logs){
+      try{ return !localStorage.getItem('ts_observer_proto') }catch(e){ return true }
+    },
+    msg: "[ERR:0x8F2A — UNREGISTERED PROTOCOL DETECTED]\n\nPROTOCOL: OBSERVER\n접속 승인 요청\n\n출처: ████████\n프로토콜: 미등록\n보안 등급: ████\n인증 상태: BYPASSED\n\nORACLE 승인 없이\n외부 접속이 시도되고 있습니다.\n\n승인하시겠습니까?",
+    left: { label: "승인 허가", fx: {c:0,r:0,t:0,o:0}, g: 0 },
+    right: { label: "거절", fx: {c:0,r:0,t:0,o:0}, g: 0 } }
 ];
