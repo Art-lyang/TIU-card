@@ -24,7 +24,8 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 DATA_FILES = [
     'data-core.js', 'data-status-tags.js', 'data-cards-prologue.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
+    'data-cards-crisis.js', 'data-cards-neutral.js',
     'data-rewards.js', 'data-chains.js', 'data-chains-incident.js', 'data-chains-incident2.js',
     'data-archive.js', 'data-missions.js', 'data-missions-2.js', 'data-missions-3.js',
     'data-missions-incident.js', 'data-missions-4.js', 'data-missions-5.js', 'data-missions-variants.js',
@@ -39,7 +40,8 @@ DATA_FILES = [
 CARD_FILES = [
     'data-cards-prologue.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
+    'data-cards-crisis.js', 'data-cards-neutral.js',
     'data-act4-escape.js', 'data-chains-incident.js',
 ]
 

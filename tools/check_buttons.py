@@ -20,7 +20,8 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 CARD_FILES = [
     'data-cards-prologue.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
+    'data-cards-crisis.js', 'data-cards-neutral.js',
     'data-chains.js', 'data-chains-incident.js', 'data-chains-incident2.js',
     'data-act4-escape.js',
 ]
