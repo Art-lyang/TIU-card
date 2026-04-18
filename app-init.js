@@ -17,7 +17,7 @@ var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTI
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
-  if(day===1){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
+  if(day===1&&logs.indexOf('ONCE-CA-001')<0){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
   var valid=CARDS.filter(function(c){
     if(c.id==='CA-001'&&day>1)return false;
     if(c.act&&c.act.indexOf(ca)<0)return false;
