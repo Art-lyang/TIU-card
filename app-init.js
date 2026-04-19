@@ -17,9 +17,14 @@ var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTI
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
-  if(day===1&&logs.indexOf('ONCE-CA-001')<0){var ca001=CARDS.filter(function(c){return c.id==='CA-001'})[0];if(ca001)return ca001;}
+  // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
+  if(day===1){
+    var sess=(typeof Save!=='undefined'?Save.getSessions():0);
+    var firstId=sess>=1?'CA-001B':'CA-001';
+    if(logs.indexOf('ONCE-'+firstId)<0){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
+  }
   var valid=CARDS.filter(function(c){
-    if(c.id==='CA-001'&&day>1)return false;
+    if((c.id==='CA-001'||c.id==='CA-001B')&&day>1)return false;
     if(c.act&&c.act.indexOf(ca)<0)return false;
     if(c.once&&logs.indexOf('ONCE-'+c.id)>=0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
@@ -34,8 +39,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(!specOk(c))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
+  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
 };
 
 var Save={

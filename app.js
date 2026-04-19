@@ -52,7 +52,7 @@ function App(){
     var sf=Save.getFacility();if(sf)setFacility(sf);
     var sg=Save.get('ts_game',null);
     // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
-    if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
+    if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(sg.transRoute)setTransRoute(sg.transRoute)}
     else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     // ═══ 세이브 복원: stats/gi 로드 (기존 누락 수정) ═══
@@ -176,6 +176,12 @@ function App(){
     if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast('[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']');setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast('[간부진 전원 동행 확정]');setTimeout(function(){setToast('')},2800)},800)}}
     // CH-007-5: 탈출 미니게임 진입 (iframe 연동) — 결과는 postMessage로 수신
     if(curCard.id==='CH-007-5'){setPhase('escape_game');return}
+    // CA-001B right: 2회차+ ORACLE 적응기간 생략 — Act 2 직행
+    if(curCard.id==='CA-001B'&&dir==='right'){
+      tryUnlock('LOG-ACT1-SKIP');
+      setTimeout(function(){doBriefing(2,ns,'A')},500);
+      return;
+    }
     // ═══ 폐쇄회로 발각 체크: PHASE1 이후 GI ≤ -40이면 ORACLE 감지 ═══
     if(typeof UPRISING_FAIL_CARD!=='undefined'
       && nextLogs.indexOf('LOG-UPRISING-PHASE1')>=0
