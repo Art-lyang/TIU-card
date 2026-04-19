@@ -38,7 +38,7 @@ var CARDS_HAEUN = [
     right: { label: "무리하지 마라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
 
   { id: "CS-005", act: [4], priority: "상",
-    req: function(s,g,logs){ return logs.includes("LOG-055") && s.day >= 9 },
+    req: function(s,g,logs){ return logs.includes("LOG-055") && s.day >= 13 },
     oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 해당 데이터 신뢰도 0% — 열람 금지]","[ORACLE: 프로메테우스 출처 정보 — 접근 불허]","[ORACLE: 경고 — 비인가 데이터 열람 기록 중]"],
     msg: "서하은이 ORACLE 삭제 데이터 복구에 성공했습니다.\n\n\"지휘관님. 이건 보셔야 합니다.\"\n\"ORACLE이 프로메테우스를 적으로 분류한 진짜 이유가 여기 있습니다.\"\n\n\"그들은 치료제를 만들고 있었습니다.\"",
     left: { label: "전문을 확인한다", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -6 },
@@ -57,35 +57,35 @@ var CARDS_HAEUN = [
 
   // 프로메테우스 정보 분석 → 불완전
   { id: "CS-011", act: [4], priority: "중", bg: "comms",
-    req: function(s,g,logs){ return logs.includes("LOG-050") && logs.includes("LOG-056") && s.day >= 8 },
+    req: function(s,g,logs){ return logs.includes("LOG-050") && logs.includes("LOG-056") && s.day >= 12 },
     msg: "프로메테우스 관련 통신이 수신되었습니다.\n\n임재혁: \"해독을 시도했는데... 서하은 씨였으면 30분이면 됐을 겁니다.\"\n\"제가 하면 이틀은 걸립니다.\"\n\n핵심 정보에 접근하는 속도가 현저히 느려졌습니다.",
     left: { label: "할 수 있는 만큼 해", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "ORACLE 자동 해독 요청", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2 } },
 
   // ORACLE 이상 감지 → 놓침
   { id: "CS-012", act: [4], priority: "중", bg: "comms",
-    req: function(s,g,logs){ return logs.includes("LOG-050") && s.day >= 9 },
+    req: function(s,g,logs){ return logs.includes("LOG-050") && s.day >= 13 },
     msg: "[시스템 알림] 비정상 데이터 패턴 감지.\n\n서하은이 있었다면 즉시 분석했을 항목입니다.\n\n임재혁: \"감지는 했는데 무슨 의미인지 모르겠습니다.\"\n\"...분석 인력이 필요합니다.\"",
     left: { label: "윤세진에게도 협조 요청", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "무시하고 진행", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // 강도윤 반응
   { id: "CS-013", act: [4], priority: "중", bg: "base",
-    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-057") && s.day >= 8 },
+    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-057") && s.day >= 12 },
     msg: "강도윤이 복도에서 말합니다.\n\n\"서하은이 없으니 데이터 분석이 2배 걸립니다.\"\n\"현장에서 판단할 정보가 부족합니다.\"\n\n\"...지키지 못한 건 지휘관님 탓이 아닙니다.\"",
     left: { label: "내 탓이다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1 },
     right: { label: "앞으로를 보자", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
 
   // 윤세진 반응
   { id: "CS-014", act: [4], priority: "중", bg: "lab",
-    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-058") && s.day >= 8 },
+    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-058") && s.day >= 12 },
     msg: "윤세진이 연구실에서 서하은의 분석 노트를 읽고 있습니다.\n\n\"서하은 씨가 남긴 프레임워크를 쓰고 있습니다.\"\n\"...부족하지만, 이것이라도 없었으면 아무것도 못 했을 거예요.\"",
     left: { label: "서하은의 기여를 기록해두자", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "네 역할에 집중해", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // 임재혁 반응
   { id: "CS-015", act: [4], priority: "중", bg: "comms",
-    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-059") && s.day >= 9 },
+    req: function(s,g,logs){ return logs.includes("LOG-050") && !logs.includes("LOG-059") && s.day >= 13 },
     msg: "임재혁이 야근 중입니다.\n\n\"서하은이 추적하던 ORACLE 삭제 흔적... 제가 이어받겠습니다.\"\n\"시간은 걸리겠지만, 포기하지 않겠습니다.\"",
     left: { label: "고맙다, 임재혁", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "무리하지 마라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } }

@@ -56,7 +56,7 @@ function FacilityPanel(p) {
         background: '#0a0f0a'
       }
     }) : h(FacilityManageTab, {
-      facility: fac, stats: p.stats, onApprove: p.onApprove, onDirectUpgrade: p.onDirectUpgrade
+      facility: fac, onApprove: p.onApprove
     })
   );
 }
@@ -64,7 +64,6 @@ function FacilityPanel(p) {
 // 확장 관리 탭 (기존 FacilityPanel 내용)
 function FacilityManageTab(p) {
   var fac = p.facility;
-  var curR = p.stats ? p.stats.r : 0;
   var FE = typeof FACILITY_EXPANSIONS !== 'undefined' ? FACILITY_EXPANSIONS : [];
   var getExp = function(id) { return FE.filter(function(f) { return f.id === id; })[0]; };
 
@@ -94,28 +93,12 @@ function FacilityManageTab(p) {
           }, '[ 승인하기 ]'));
       })),
     approved.length > 0 && h('div', { style: sec },
-      h('div', { style: lbl }, '[승인됨 — 증축 가능]'),
+      h('div', { style: lbl }, '[진행 중 — 리워드 선택 대기]'),
       approved.map(function(fe) {
-        var cost = fe.upgradeCost || 10;
-        var canAfford = curR >= cost;
         return h('div', { key: fe.id, style: itm },
           h('div', { style: nm }, fe.name),
           h('div', { style: ds }, fe.desc),
-          h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.45)', marginTop: 6, marginBottom: 8 } }, '리워드에서도 선택 가능'),
-          h('button', {
-            className: 'btn',
-            disabled: !canAfford,
-            onClick: function() { if (canAfford && p.onDirectUpgrade) p.onDirectUpgrade(fe.id, cost); },
-            style: {
-              display: 'block', width: '100%', padding: '10px 16px', fontSize: 12, letterSpacing: 1,
-              cursor: canAfford ? 'pointer' : 'not-allowed',
-              background: canAfford ? 'rgba(240,160,48,.12)' : 'rgba(255,255,255,.03)',
-              border: '1px solid ' + (canAfford ? '#f0a030' : 'rgba(255,255,255,.1)'),
-              color: canAfford ? '#f0a030' : 'rgba(255,255,255,.25)',
-              opacity: canAfford ? 1 : 0.5,
-              textAlign: 'center', boxSizing: 'border-box'
-            }
-          }, '[ 즉시 증축 ]  —  자원 -' + cost + (canAfford ? '' : ' (부족)')));
+          h('div', { style: { fontSize: 10, color: '#f0a030', marginTop: 4 } }, '다음 리워드에서 선택 가능'));
       })),
     completed.length > 0 && h('div', { style: sec },
       h('div', { style: lbl }, '[완료]'),

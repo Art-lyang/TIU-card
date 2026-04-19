@@ -79,31 +79,31 @@ var CARDS_PROLOGUE = [
 
   // ═══ ORACLE 이상 징후 — Act 1 후반 (CA-014~CA-018) ═══
   { id: "CA-014", act: [1], priority: "하", bg: "comms", once: true, glitch: 1,
-    req: function(s){ return s.day >= 3 },
+    req: function(s){ return s.day >= 5 },
     msg: "임재혁이 시스템 로그를 확인하다 잠시 멈췄습니다.\n\n\"지휘관님, 어제 02:17분에 ORACLE 응답이 0.8초 지연됐습니다. 기록상 처음이에요.\"\n\n잠깐 침묵이 흘렀습니다.\n\n\"...아마 서버 부하겠죠. 별거 아닐 겁니다.\"",
     left: { label: "기록해두라고 한다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
     right: { label: "정상 범주로 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 1 } },
 
   { id: "CA-015", act: [1], priority: "하", bg: "comms", once: true, glitch: 1,
-    req: function(s){ return s.day >= 3 },
+    req: function(s){ return s.day >= 5 },
     msg: "[ORACLE: 봉쇄선 서측 이상 반응 감지.]\n\n강도윤이 확인하고 돌아왔습니다.\n\n\"이상 없습니다. 아까 제가 직접 점검하고 온 구역이에요.\"\n\n잠시 후 단말기가 자동 업데이트됩니다.\n\n[ORACLE: 경보 취소. 오감지로 분류 완료.]",
     left: { label: "기록은 남겨두겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "오감지로 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-016", act: [1], priority: "중", bg: "base", once: true, glitch: 1,
-    req: function(s){ return s.day >= 5 },
+    req: function(s){ return s.day >= 6 },
     msg: "서하은이 ORACLE 데이터 요약본을 검토하다 화면을 응시했습니다.\n\n\"이상하다고 할 정도는 아닌데요. 같은 시간대 데이터인데 요약본이랑 원본이 수치가 살짝 다릅니다.\"\n\n\"...제가 잘못 읽은 거겠죠.\"",
     left: { label: "같이 다시 확인해보자", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -3 },
     right: { label: "재확인은 불필요하다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-017", act: [1], priority: "중", bg: "base", once: true, glitch: 1,
-    req: function(s){ return s.day >= 5 },
+    req: function(s){ return s.day >= 6 },
     msg: "야간 점검 중 기지 내부 온도 센서가 잠깐 이상값을 표시했습니다.\n\n[ORACLE: 센서 캘리브레이션 오류. 자동 보정 완료.]\n\n임재혁: \"뭐... ORACLE이 알아서 처리하긴 했는데요.\"\n\n그가 조금 오래 화면을 바라봅니다.",
     left: { label: "센서 수동 점검 지시", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 },
     right: { label: "ORACLE이 처리했으니 넘어가자", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-018", act: [1], priority: "상", bg: "comms", once: true, glitch: 2,
-    req: function(s){ return s.day >= 5 },
+    req: function(s){ return s.day >= 7 },
     msg: "[ORACLE: 주간 운영 요약. 모든 지표 정상. 지휘관 적응도 평가: 상.]\n\n화면 하단에 짧은 문구가 깜박입니다.\n\n[OBSERVER NOTE: 편차 0.4% — 분류 보류]\n\n0.3초 후 문구가 사라졌습니다.\n\n단말기가 평소처럼 돌아갑니다.",
     left: { label: "...지금 뭔가 봤다. 기록한다", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -5 },
     right: { label: "화면 잔상으로 처리한다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
