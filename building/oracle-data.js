@@ -3,7 +3,7 @@
    ================================================================ */
 
 // ── LANGUAGE STATE ──
-var currentLang = "en";
+var currentLang = "ko";
 
 // ── i18n: UI STRINGS ──
 var UI = {

@@ -40,9 +40,12 @@ body::before{
 /* ====== LANGUAGE SWITCH ====== */
 #lang-switch{display:flex;gap:0;border:1px solid #1a3a1a;border-radius:2px;overflow:hidden}
 .lang-tab{
-  padding:4px 10px;font-size:9px;letter-spacing:1px;
+  padding:4px 10px;font-size:9px;letter-spacing:1px;line-height:1.4;
   color:#1a6a2a;cursor:pointer;transition:all 0.25s;
-  border-right:1px solid #1a3a1a;text-transform:uppercase
+  border-right:1px solid #1a3a1a;text-transform:uppercase;
+  min-width:36px;box-sizing:border-box;text-align:center;
+  font-family:'Courier New',monospace;
+  display:flex;align-items:center;justify-content:center
 }
 .lang-tab:last-child{border-right:none}
 .lang-tab:hover{color:#33ff66;background:rgba(51,255,102,0.05)}
