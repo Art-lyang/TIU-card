@@ -19,8 +19,12 @@ function EveningChat(p){
     var sortByDay=function(a,b){return a.dayMin-b.dayMin};
     var introLog=INTRO_LOG_MAP[selChar.name];var introDone=introLog&&p.logs.indexOf(introLog)>=0;
     var skipIntro=function(ec){return!(introDone&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
-    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)}).sort(sortByDay);
-    if(matches.length>0){chat=matches[0]}
+    var evalCond=function(ec){if(!ec.condFn)return true;try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
+    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+    // 이벤트성 이브닝(priority:'event') 우선 선정
+    var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
+    if(eventMatches.length>0){chat=eventMatches[0]}
+    else if(matches.length>0){chat=matches[0]}
     else{
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
@@ -48,9 +52,13 @@ function EveningChat(p){
     var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
     var sortD=function(a,b){return a.dayMin-b.dayMin};
     var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
-    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
-    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);
-    if(m2.length>0&&p.onMarkEvening)p.onMarkEvening(ecKey(m2[0]))
+    var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
+    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
+    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
+    // 이벤트성 이브닝 우선 마크
+    var evM=m2.filter(function(ec){return ec.priority==='event'});
+    var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
+    if(pick&&p.onMarkEvening)p.onMarkEvening(ecKey(pick))
   };
   var pickResp=function(opt){
     var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
