@@ -11,7 +11,18 @@ var CARDS_ENDING = [
   { id: "CE-002", act: [4], priority: "상", msg: "[ORACLE 자동보고] 시스템 자가진단 결과: 모든 모듈 정상. 그러나 자가진단 로그 자체의 타임스탬프가 실제 시각보다 0.003초 앞서 있습니다.", left: { label: "타임스탬프 불일치 추적", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -4 }, right: { label: "클럭 드리프트로 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   { id: "CE-003", act: [4], priority: "상", msg: "ORACLE 데이터베이스에 출처 불명의 로그 엔트리가 삽입되어 있습니다. 작성자 필드가 공란입니다. 내용: '관측은 계속된다.'", left: { label: "전 요원에 보안 경보 발령", fx: { c: 1, r: -1, t: 1, o: -3 }, g: -5 }, right: { label: "ORACLE에 자동 삭제 요청", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "CE-004", act: [4], priority: "상", oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 해당 프로세스는 내부 안정화 루틴입니다]","[ORACLE: 격리 시도 불허 — 운영 무결성 우선]","[ORACLE: 개입 금지 명령 — 시스템 보호 모드 활성]"], msg: "임재혁 기술관 긴급 보고: ORACLE 아키텍처 외부에서 작동하는 프로세스를 포착했습니다. ORACLE 자신은 이 프로세스를 인식하지 못합니다.", left: { label: "프로세스 격리 시도", fx: { c: 0, r: -2, t: 1, o: -4 }, g: -6, log: "LOG-013" }, right: { label: "ORACLE에 전체 스캔 요청", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
-  { id: "CE-005", act: [4], priority: "상", oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 미확인 출력 차단 — 응답 금지]","[ORACLE: 외부 신호 격리 중 — 접근 불허]","[ORACLE: 경고 — 비인가 통신 감시 강화]"], msg: "단말기 화면이 1초간 정지한 뒤, 평소와 다른 서체로 한 줄이 나타납니다: 'I SEE YOU, COMMANDER.' ORACLE은 해당 출력을 자신의 것이 아니라고 부인합니다.", left: { label: "...응답한다", fx: { c: 0, r: 0, t: 0, o: -5 }, g: -8 }, right: { label: "단말기 전원 차단", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -2 } },
+  { id: "CE-005", act: [4], priority: "상", once: true, timer: 5,
+    oracleBlock: 3, oracleBlockDir: "left",
+    oracleBlockMsgs: ["[ORACLE: 미확인 출력 차단 — 응답 금지]","[ORACLE: 외부 신호 격리 중 — 접근 불허]","[ORACLE: 경고 — 비인가 통신 감시 강화]"],
+    req: function(s,g,logs){ return (typeof Save!=='undefined'?Save.getSessions():0) >= 3 },
+    msg: function(){
+      var n = (typeof Save!=='undefined'?Save.getSessions():0);
+      return "단말기 화면이 0.5초간 암전됩니다.\n\n지정되지 않은 서체로 텍스트가 출력됩니다:\n\n'" + n + "회 권한 사용을 관측. 매 세션마다 새로운 데이터 습득 중.\n관찰 지속.'\n\n[ORACLE: 출력 오류 — 해당 로그 항목이 존재하지 않습니다. 무시를 권장합니다.]";
+    },
+    left:  { label: "…누구지?",       fx: { c: 0, r: 0, t: 0, o: -5 }, g: -8,
+      replyMsg: "'좋은 질문이다.' 라는 추가 출력 후 화면이 정상 복귀합니다." },
+    right: { label: "ORACLE 진단 실행", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -2,
+      replyMsg: "[ORACLE: 진단 결과 — 이상 없음. 로그 항목 정상.]\n(진단 중 0.003초 공백 존재. ORACLE 보고서에 기록되지 않음.)" } },
 
   // ══════════════════════════════════
   //  저항 경로 (엔딩 B/D 지원)

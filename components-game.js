@@ -33,7 +33,23 @@ function CardC(p){
   var card=p.card,gi=p.gi||0;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
-  useEffect(function(){setBlockCount(0);setShaking(false)},[card.id]);
+  // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
+  var s7=useState(card.timer||0),remaining=s7[0],setRemaining=s7[1];
+  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(card.timer||0)},[card.id]);
+  // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
+  var performSwipe=function(kdir){
+    var branch=card[kdir];
+    if(branch&&branch.replyMsg&&p.onReply){p.onReply(branch.replyMsg)}
+    setChosen(kdir);
+    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},branch&&branch.replyMsg?1500:300);
+  };
+  // 타이머 카운트다운
+  useEffect(function(){
+    if(!card.timer||chosen||shaking)return;
+    if(remaining<=0){performSwipe('right');return}
+    var t=setTimeout(function(){setRemaining(function(r){return Math.max(0,r-0.1)})},100);
+    return function(){clearTimeout(t)};
+  },[remaining,card.id,chosen,shaking]);
   useEffect(function(){
     var onKey=function(e){
       if(chosen||shaking)return;
@@ -50,8 +66,7 @@ function CardC(p){
         if(p.onOracleBlock)p.onOracleBlock(bmsg);
         setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
       }else{
-        setChosen(kdir);
-        setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},300);
+        performSwipe(kdir);
       }
     };
     window.addEventListener('keydown',onKey);
@@ -60,7 +75,7 @@ function CardC(p){
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
-  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setChosen(dir);setTimeout(function(){p.onSwipe(dir);setDx(0);setChosen(null)},300)}}else setDx(0)};
+  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setDx(0);performSwipe(dir)}}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?'상 ■':card.priority==='중'?'중 ■':'하';
@@ -81,8 +96,14 @@ function CardC(p){
       card.isFacilityProposal&&h('div',{style:{background:'rgba(74,170,238,.1)',border:'1px solid rgba(74,170,238,.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#4ae',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?'시설 확장':'ORACLE 통신'),h('span',{className:'card-hdr-r'},card.glitch?'██████':'우선순위: '+plbl)),
+      card.timer&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
+        h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
+        h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
+          h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(card.timer||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
+        h('span',{style:{flexShrink:0,fontVariantNumeric:'tabular-nums'}},Math.ceil(remaining)+'s')
+      ),
       h('div',{className:'card-msg'},function(){
-        var msg=card.msg||'';var paras=msg.split('\n\n');
+        var rawMsg=(typeof card.msg==='function'?card.msg():(card.msg||''));var paras=rawMsg.split('\n\n');
         return paras.map(function(para,pi){
           var lines=para.split('\n');
           return h('div',{key:pi,style:{marginBottom:pi<paras.length-1?10:0}},
