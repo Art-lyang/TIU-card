@@ -44,25 +44,25 @@ var CARDS_CRISIS = [
   // ═══ Act 1 미스터리 씨앗 (개선안 #2A) ═══
 
   { id: "CA-SEED-01", act: [1], priority: "중", once: true,
-    req: function(s){ return s.day >= 4 && s.day <= 7; },
+    req: function(s){ return s.day >= 3 && s.day <= 5; },
     msg: "야간 당직 보고서에 이상한 항목이 있습니다.\n\n\"02:47 — 시스템 자가 진단 기록. 담당자 없음.\"\n\n02:47에 예약된 자가 진단은 운영 매뉴얼에 없습니다.",
     left: { label: "오류로 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "기록 보관", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
 
   { id: "CA-SEED-02", act: [1], priority: "중", once: true,
-    req: function(s){ return s.day >= 4 && s.day <= 8; },
+    req: function(s){ return s.day >= 3 && s.day <= 5; },
     msg: "사무실 책상 서랍 깊숙이에서 메모지가 발견되었습니다.\n\n작성자 불명. 날짜도 없습니다. 글씨가 급하게 쓴 듯 흐릿합니다.\n\n이상하네? 전임 지휘관이 없을 텐데...\n\n마지막 줄만 또렷합니다:\n\n\"B3 — 확인 필요. 도면에 없음.\"",
     left: { label: "그냥 넘긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "B3가 뭔지 찾아보겠다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
 
   { id: "CA-SEED-03", act: [1], priority: "하", once: true,
-    req: function(s){ return s.day >= 3 && s.day <= 6; },
+    req: function(s){ return s.day >= 2 && s.day <= 5; },
     msg: "임재혁이 단말기 점검 중 잠깐 멈칫합니다.\n\n\"... 아, 아닙니다. 펌웨어 버전 번호가 좀 이상해서요.\"\n\n\"공식 릴리즈 기록에 없는 빌드입니다. 보통 이런 건 없는데.\"",
     left: { label: "네가 판단해라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "ORACLE에 문의", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-SEED-04", act: [1], priority: "하", once: true,
-    req: function(s){ return s.day >= 3 && s.day <= 7; },
+    req: function(s){ return s.day >= 2 && s.day <= 5; },
     msg: "서하은이 일일 보고서를 제출하면서 한마디 덧붙입니다.\n\n\"데이터 정리하다 보니... ORACLE 로그 타임스탬프에 간헐적 불연속이 있어요.\"\n\"밀리초 단위라 운영엔 영향 없지만, 좀 신경 쓰이네요.\"",
     left: { label: "참고하겠다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "공식 보고할 필요 없다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } }

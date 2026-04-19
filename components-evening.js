@@ -14,7 +14,7 @@ function EveningChat(p){
   if(selChar){
     var ck=charKeyMap2[selChar.name]||'';
     var tier=(typeof getTrustTier==='function'&&ck)?getTrustTier(p.trust,ck):'mid';
-    var tierDayCap={low:10,mid:24,high:99,bond:99};
+    var tierDayCap={low:5,mid:20,high:99,bond:99};
     var dayCap=tierDayCap[tier]||99;
     var sortByDay=function(a,b){return a.dayMin-b.dayMin};
     var introLog=INTRO_LOG_MAP[selChar.name];var introDone=introLog&&p.logs.indexOf(introLog)>=0;
@@ -45,7 +45,7 @@ function EveningChat(p){
   var pickChar=function(c){
     setSelChar(c);if(p.onChat)p.onChat(c.name);
     var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
-    var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
+    var dayCap2=({low:5,mid:20,high:99,bond:99})[tier2]||99;
     var sortD=function(a,b){return a.dayMin-b.dayMin};
     var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
     var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)}).sort(sortD);

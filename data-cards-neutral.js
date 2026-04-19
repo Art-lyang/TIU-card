@@ -18,19 +18,19 @@ var CARDS_NEUTRAL = [
     right: { label: "판단은 내가 한다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 } },
 
   { id: "CN-003", act: [3,4], priority: "중",
-    req: function(s,g){ return g >= -10 && g <= 20 && s.day >= 10; },
+    req: function(s,g){ return g >= -10 && g <= 20 && s.day >= 6; },
     msg: "ORACLE이 이례적인 통신을 보냈습니다.\n\n\"지휘관의 의사결정 패턴이 기존 모델에 부합하지 않습니다.\"\n\"예측 불가능성 — 이것이 위험인지 자산인지 분석 중입니다.\"\n\n[통신 종료]",
     left: { label: "그것도 ORACLE이 판단하겠지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "예측 불가능하게 유지하겠다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 } },
 
   { id: "CN-004", act: [3], priority: "중",
-    req: function(s,g){ return g >= 0 && g <= 20 && s.day >= 12; },
+    req: function(s,g){ return g >= 0 && g <= 20 && s.day >= 8; },
     msg: "임재혁이 저녁 식사 자리에서 말합니다.\n\n\"지휘관님 스타일이 재밌어요.\"\n\"ORACLE한테 전적으로 따르지도 않고, 대놓고 거부하지도 않고.\"\n\"줄타기? 아니면 진짜 모르는 건가.\"",
     left: { label: "둘 다일 수도 있지", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "알아서 잘 하고 있다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   { id: "CN-005", act: [3,4], priority: "상",
-    req: function(s,g,logs){ return g >= -5 && g <= 15 && s.day >= 15 && logs.length >= 4; },
+    req: function(s,g,logs){ return g >= -5 && g <= 15 && s.day >= 11 && logs.length >= 4; },
     msg: "강도윤이 단독 보고를 요청합니다.\n\n\"지휘관님. 솔직히 여쭐게요.\"\n\"ORACLE 쪽도 프로메테우스 쪽도 아닌 거... 의도적인 겁니까?\"\n\"아니면 아직 결정을 못 내린 겁니까?\"",
     left: { label: "의도적이다. 양쪽을 본다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: 0 },
     right: { label: "... 모르겠다, 솔직히", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -1 } },
