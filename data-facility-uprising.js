@@ -3,10 +3,11 @@
 // 흐름: 이브닝챗 → 체인 CH-008 (설치 3장 + ORACLE 확인 3장) → 엔딩 H
 // Depends on: data-facility.js, data-chains.js, data-endings.js, evening system
 
-// ═══ Uprising 시설 5개 정의 (FE-012~016) — data-facility.js 200줄 룰로 분리 ═══
-if (typeof FACILITY_EXPANSIONS !== 'undefined') {
+// ═══ Uprising 시설 5개 정의 (FE-012~016) — data-facility.js 에 통합됨 (main 머지 후)
+// 아래 블록은 중복이므로 비활성화. data-facility.js 에서 직접 정의
+if (false && typeof FACILITY_EXPANSIONS !== 'undefined') {
   FACILITY_EXPANSIONS.push(
-    { id: "FE-012", uprising: true,
+    { id: "FE-012-DISABLED", uprising: true,
       name: "자체 서버룸",
       desc: "ORACLE과 분리된 독립 데이터 서버룸을 B2에 구축합니다.",
       hint: "▸ 승인 시 로컬 백업/독립 운영 기반",

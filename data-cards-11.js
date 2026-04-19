@@ -75,7 +75,7 @@ var CARDS_CHAINS = [
       if(logs.includes("LOG-070")) cnt++;
       if(logs.includes("LOG-071")) cnt++;
       if(logs.includes("LOG-072")) cnt++;
-      return cnt >= 2 && !logs.includes("LOG-074") && !logs.includes("LOG-075") && s.day >= 14 },
+      return cnt >= 2 && !logs.includes("LOG-074") && !logs.includes("LOG-075") && s.day >= 21 },
     msg: "\uc57c\uac04 \uacbd\ubcf4 \ubc1c\ub839.\n\n\ubd09\uc1c4\uc120 \uc804 \uad6c\uc5ed\uc5d0\uc11c \ub3d9\uc2dc\ub2e4\ubc1c \uc0dd\uccb4 \ubc18\uc751 \uac10\uc9c0. \uc774\uc804 \uacbd\ud5d8\uacfc\ub294 \uaddc\ubaa8\uac00 \ub2e4\ub985\ub2c8\ub2e4.\n\n\uac15\ub3c4\uc724: \"\uc804 \ubc29\uc704\uc785\ub2c8\ub2e4! \uc22b\uc790\uac00 \ub108\ubb34 \ub9ce\uc2b5\ub2c8\ub2e4 \u2014 \uc0ac\uac01\uc9c0\ub300\ub85c \ubab0\ub824\ub4e4\uace0 \uc788\uc2b5\ub2c8\ub2e4!\"\n\n\uc57c\uac04 \uc21c\ucc30 \ub8e8\ud2b8\uc758 \ud5c8\uc810\uc744 \uc815\ud655\ud788 \ud30c\uace0\ub4e0 \uc2b5\uaca9\uc785\ub2c8\ub2e4.",
     left: { label: "\uc804\uc6d0 \uc804\ud22c \ubc30\uce58", fx: { c: -2, r: -2, t: 0, o: 0 }, g: 0 },
     right: { label: "\ubc29\uc5b4 \uac70\uc810 \uc9d1\uc911", fx: { c: -1, r: -1, t: -1, o: 0 }, g: 0 } },

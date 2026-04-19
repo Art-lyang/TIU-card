@@ -106,6 +106,5 @@ function EveningChat(p){
         var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
         if(opt.log&&p.onLog)p.onLog(opt.log);
         setReplyLine(opt.reply||'');setChoiceDone(true)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function'&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod}),
     done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
 }

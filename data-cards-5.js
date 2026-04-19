@@ -16,7 +16,7 @@ var CARDS_RESOURCE = [
     left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: -1, o: -1 }, g: -1 },
     right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-103", act: [3,4], priority: "하", bg: "supply", req: function(s){ return s.day >= 5 },
+  { id: "C-103", act: [3,4], priority: "하", bg: "supply",
     msg: "임재혁이 기지 에너지 효율화 작업을 완료했습니다.\n\n\"발전기 출력을 12% 개선했습니다. 잉여 전력을 물 정화에 돌릴 수 있습니다.\"\n\n[ORACLE: 효율적인 자원 관리입니다.]",
     left: { label: "물 정화 시스템 가동", fx: { c: 0, r: 1, t: 1, o: 1 }, g: 1 },
     right: { label: "잉여 전력을 비축", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 } },
@@ -26,7 +26,7 @@ var CARDS_RESOURCE = [
     left: { label: "감사 인사 + 관계 유지", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 },
     right: { label: "추가 물물교환 제안", fx: { c: -1, r: 2, t: 0, o: -1 }, g: -1 } },
 
-  { id: "C-105", act: [3,4], priority: "하", bg: "supply", req: function(s){ return s.day >= 7 },
+  { id: "C-105", act: [3,4], priority: "하", bg: "supply",
     msg: "ORACLE 본부에서 특별 자원 패키지가 도착했습니다.\n\n내용: 고급 분석 장비, 봉쇄 자재, 비상 의약품.\n\n[ORACLE: 한국 지부의 성과를 인정합니다.]",
     left: { label: "연구 장비 우선 배치", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 2 },
     right: { label: "봉쇄 자재 우선 배치", fx: { c: 2, r: 0, t: 0, o: 1 }, g: 1 } },
@@ -64,14 +64,14 @@ var CARDS_RESOURCE = [
     left: { label: "정화 실시", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 },
     right: { label: "다음 주기에", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-112", act: [3,4], priority: "하", req: function(s){ return s.day >= 6 },
+  { id: "C-112", act: [3,4], priority: "하",
     msg: "일반 요원 중 한 명이 가족에게 편지를 보내고 싶어합니다.\n\n보안 규정상 외부 통신은 금지되어 있습니다.\n\n\"한 줄이면 됩니다. 살아 있다는 것만...\"",
     left: { label: "비공식으로 허용", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 },
     right: { label: "규정을 지켜야 한다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // ═══ 후속 카드 (1회성 이벤트 이후) ═══
   { id: "C-153", act: [2,3], priority: "하", bg: "supply",
-    req: function(s,g,logs){ return logs.includes("LOG-025") && s.day >= 5 },
+    req: function(s,g,logs){ return logs.includes("LOG-025") },
     msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"아직 수색하지 않은 구역이 남아 있습니다. 물자가 더 있을 가능성이 높습니다.\"",
     left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
