@@ -31,11 +31,16 @@ function Stats(p){
 }
 function CardC(p){
   var card=p.card,gi=p.gi||0;
+  // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
+  var resolveVal=function(v){return typeof v==='function'?v():v};
+  var timerTotal=resolveVal(card.timer)||0;
+  var leftLabel=resolveVal(card.left&&leftLabel)||'';
+  var rightLabel=resolveVal(card.right&&rightLabel)||'';
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
-  var s7=useState(card.timer||0),remaining=s7[0],setRemaining=s7[1];
-  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(card.timer||0)},[card.id]);
+  var s7=useState(timerTotal),remaining=s7[0],setRemaining=s7[1];
+  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal)},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];
@@ -45,7 +50,7 @@ function CardC(p){
   };
   // 타이머 카운트다운
   useEffect(function(){
-    if(!card.timer||chosen||shaking)return;
+    if(!timerTotal||chosen||shaking)return;
     if(remaining<=0){performSwipe('right');return}
     var t=setTimeout(function(){setRemaining(function(r){return Math.max(0,r-0.1)})},100);
     return function(){clearTimeout(t)};
@@ -87,8 +92,8 @@ function CardC(p){
   var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);var abs=Math.abs(v);if(v>0)tags.push(h('span',{key:k,style:{color:'var(--ui)'}},SN[k]+(abs>=2?'↑↑':'↑')));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+(abs>=2?'↓↓':'↓')))});return tags.length?tags:null};
   var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
-    h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+card.left.label),
-    h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},card.right.label+' →'),
+    h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
+    h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
     h('div',{className:'card-panel'+pcClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
@@ -96,10 +101,10 @@ function CardC(p){
       card.isFacilityProposal&&h('div',{style:{background:'rgba(74,170,238,.1)',border:'1px solid rgba(74,170,238,.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#4ae',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?'시설 확장':'ORACLE 통신'),h('span',{className:'card-hdr-r'},card.glitch?'██████':'우선순위: '+plbl)),
-      card.timer&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
+      timerTotal&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
-          h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(card.timer||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
+          h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(timerTotal||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
         h('span',{style:{flexShrink:0,fontVariantNumeric:'tabular-nums'}},Math.ceil(remaining)+'s')
       ),
       h('div',{className:'card-msg'},function(){
@@ -128,8 +133,8 @@ function CardC(p){
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9}},'→')))),
       h('div',{style:{display:'flex',justifyContent:'space-between',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,pointerEvents:'none'}},
-        h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},'← '+card.left.label),
-        h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},card.right.label+' →'))
+        h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},'← '+leftLabel),
+        h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},rightLabel+' →'))
     ));
 }
 function News(p){

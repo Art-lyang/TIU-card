@@ -52,10 +52,15 @@ def extract_cards(path):
         i = end
     return cards
 
-# 라벨 추출 (이스케이프 보존)
+# 라벨 추출 (이스케이프 보존). label이 함수일 경우 "<function>" sentinel 반환
 def extract_label(body, side):
+    # 문자열 label
     m = re.search(r'\b' + side + r':\s*\{\s*label:\s*"((?:[^"\\]|\\.)*)"', body)
-    return m.group(1) if m else None
+    if m: return m.group(1)
+    # 함수 label (세션 분기용) — 존재 여부만 확인
+    fm = re.search(r'\b' + side + r':\s*\{\s*label:\s*function\s*\(', body)
+    if fm: return '<function>'
+    return None
 
 def has_fx_or_log(body, side):
     m = re.search(r'\b' + side + r':\s*\{([^{}]*(?:\{[^}]*\}[^{}]*)*)\}', body)

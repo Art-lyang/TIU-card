@@ -7,20 +7,45 @@ var CARDS_BASE = [
   { id: "C-005", act: [2], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },
   { id: "C-006", act: [2,3], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -2, t: 1, o: 2 }, g: 2 } },
   { id: "C-007", act: [2], priority: "중", msg: "강도윤 요원이 봉쇄선 외곽 정찰을 자원합니다. 단독 작전입니다.", left: { label: "허가", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE 판단 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
-  { id: "C-008", act: [2,3], priority: "중", msg: "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 미세한 불일치 패턴 발견.", left: { label: "독자 조사 허가", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 }, right: { label: "ORACLE에 분석 위임", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
+  { id: "C-008", act: [2,3], priority: "중",
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=5) return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 수많은 불일치 건이 확인되었습니다.\n\n\"이 정도 규모면 — 미세한 버그가 아닙니다. 체계적인 패턴입니다.\"";
+      if(n>=2) return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 데이터 불일치 다수 건 확인됨.\n\n\"지난번 조사 이후에도 같은 유형이 반복됩니다.\"";
+      return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 미세한 불일치 패턴 발견.";
+    },
+    left: { label: "독자 조사 허가", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
+    right: { label: "ORACLE에 분석 위임", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "C-009", act: [2,3,4], priority: "하", msg: "기지 인원 사기 저하 보고. 휴식 시간 확대 요청.", left: { label: "현행 유지", fx: { c: 0, r: 0, t: -2, o: 1 }, g: 0 }, right: { label: "휴식 확대 승인", fx: { c: -1, r: 0, t: 2, o: -1 }, g: 0 } },
   { id: "C-010", act: [2], priority: "상", tag: "spec-012", req: function(s,g,logs){ return !logs.includes("LOG-005") }, msg: "봉쇄 구역 내 SPEC-012 (Blood Pit) 활동 징후 감지. 붉은 점액질 웅덩이가 확장 중입니다.\n\n강도윤: \"밟는 순간 꼼짝 못 합니다. 벌레잡이 식물 같은 겁니다.\"", left: { label: "구역 격리만", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "표본 원격 채취", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   { id: "C-011", act: [2,3], priority: "중", img: "card_signal_overlap", msg: "미확인 무선 신호 수신. 프로메테우스 암호 패턴과 유사합니다.", left: { label: "신호 추적", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
   { id: "C-012", act: [2,3,4], priority: "하", msg: "강원도 내 민간 뉴스 — '야간 군사 차량 이동' 목격담 확산. 기지 보안 위험.", left: { label: "무시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "이동 경로 변경", fx: { c: 0, r: -1, t: 1, o: 1 }, g: 1 } },
   { id: "C-013", act: [2,3], priority: "상", msg: "ORACLE 긴급 통신: 봉쇄 구역 남측 경계에서 다수 생체 반응 감지. 즉각 대응 필요.", left: { label: "기지 방어 강화", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "선제 출격", fx: { c: 2, r: -2, t: 0, o: 2 }, g: 1 } },
   { id: "C-014", act: [2], priority: "중", msg: "윤세진 연구원이 이변체 관찰 기록을 개인적으로 작성하고 있습니다. 보안 위반 여부 판단 필요.", left: { label: "묵인", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 }, right: { label: "기록 압수 + 경고", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
-  { id: "C-015", act: [2,3], priority: "중", msg: "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.", left: { label: "거절: 수동 유지", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4 }, right: { label: "부분 자동화 승인", fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
+  { id: "C-015", act: [2,3], priority: "중",
+    timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=5) return "[ORACLE: 의사결정 프로토콜 자동화 업데이트를 적용합니다. 지휘관 최종 확인이 필요합니다.]\n\n[ORACLE: 이전 세션 데이터 기반 최적 구성 — 즉시 배포 권장.]";
+      if(n>=2) return "[ORACLE: 의사결정 프로토콜 자동화 전환을 권고합니다.]\n\n[ORACLE: 이전 운영 데이터 분석 완료 — 자동화 승인 시 효율 최적화.]";
+      return "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.";
+    },
+    left:  { label: "거절: 수동 유지",  fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4 },
+    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
   // 조건부 카드
   { id: "C-016", act: [2,3], priority: "상", req: (s, g) => g <= 40, msg: "[미분류 통신] ORACLE 데이터 링크 일시적 불안정. 미확인 암호화 통신(소바리 발신 추정)이 수신되었습니다.", left: { label: "무시 (권장)", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "독자 해독 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   { id: "C-017", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-003"), msg: "이전 수집된 프로메테우스 통신 패턴을 기반으로 인근의 은신처를 특정했습니다.", left: { label: "ORACLE 보고", fx: { c: 1, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "비공식 접촉", fx: { c: -1, r: 0, t: 2, o: -2 }, g: -4 } },
   { id: "C-018", act: [3], priority: "상", req: (s) => s.c < 40, msg: "봉쇄 구역 경계에서 대규모 이변체 이동 징후 포착. 현재 봉쇄력으로는 대응이 불확실합니다.", left: { label: "전 요원 방어 배치", fx: { c: 2, r: -2, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE에 지원 요청", fx: { c: 1, r: -1, t: -1, o: 2 }, g: 3 } },
   { id: "C-019", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-008"), msg: "강도윤이 보고한 '미분류 활동 흔적'과 동일한 패턴이 기지 인근에서 재탐지되었습니다.", left: { label: "경계 태세 강화", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "단독 추적", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2, mission: "M-003" } },
-  { id: "C-020", act: [3,4], priority: "하", img: "card_oracle_error", req: (s, g) => g <= 20, msg: "[통신 오류] ORA..LE 시스... 일시적 ████. 다음 메시지를 수신했습니다: '당신은 관측되고 있습니다.'", left: { label: "ORACLE에 오류 보고", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "...가만히 있는다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -5 } },
+  { id: "C-020", act: [3,4], priority: "하", img: "card_oracle_error",
+    req: function(s,g){ return g <= 20 },
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=3) return "[미분류 출력]\n\n'관측자가 계획대로 관측을 진행하고 있습니다.\n세션 진행에 영향 없음. 관찰 지속.'\n\n[ORACLE: 해당 출력은 시스템 오류로 분류 — 무시를 권장합니다.]";
+      return "[통신 오류] ORA..LE 시스... 일시적 ████. 다음 메시지를 수신했습니다: '당신은 관측되고 있습니다.'";
+    },
+    left:  { label: "ORACLE에 오류 보고", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 },
+    right: { label: "...가만히 있는다",    fx: { c: 0, r: 0, t: 0, o: -1 }, g: -5 } },
   { id: "C-021", act: [3,4], priority: "중", req: (s, g, logs) => logs.includes("LOG-006"), msg: "서하은 부지휘관이 긴급 면담을 요청합니다. 표정이 심각합니다.", left: { label: "즉시 면담", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 }, right: { label: "내일로 미루기", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
   { id: "C-022", act: [4], priority: "상", req: (s, g) => g >= 50, msg: "ORACLE 특별 통신: 지휘관의 탁월한 운영 성과를 인정합니다. 권한 확대를 제안합니다.", left: { label: "수락", fx: { c: 1, r: 1, t: -1, o: 3 }, g: 5 }, right: { label: "현행 유지", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   // ── 추가 카드: 일상 운영 ──
@@ -39,8 +64,24 @@ var CARDS_BASE = [
   { id: "C-033", act: [2,3], priority: "중", msg: "기지 외곽 300m 지점에서 버려진 장비가 발견되었습니다.\n\n분석 결과: 프로메테우스 규격 야간 투시경. 최근 제조.\n\n누군가 이곳을 감시하고 있었습니다.", left: { label: "장비를 미끼로 역감시", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE에 보고 + 장비 전송", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 3 } },
   { id: "C-034", act: [3], priority: "상", req: (s, g, logs) => logs.includes("LOG-003") && g <= 35, oracleBlock: 3, oracleBlockDir: "right", oracleBlockMsgs: ["[ORACLE: 적대 세력 접촉 시도 감지 — 격리 권고]","[ORACLE: 접선 차단 중 — 프로메테우스: 위험 등급 A]","[ORACLE: 경고 — 접촉 이력 보안 기록 등재]"], msg: "기지 통신 채널에 미확인 메시지가 수신되었습니다.\n\n\"우리는 적이 아닙니다. 대화할 의향이 있다면, 내일 밤 북측 500m 지점.\"\n\n발신자 불명. 프로메테우스 암호 패턴과 70% 일치.", left: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "접선에 응한다", fx: { c: -1, r: 0, t: 1, o: -3 }, g: -5 } },
   // ── 추가 카드: ORACLE ──
-  { id: "C-035", act: [3], priority: "하", msg: "ORACLE이 기지 운영 데이터의 외부 백업을 요청합니다.\n\n[ORACLE: 데이터 무결성 보장을 위해 전체 로그를 본부 서버로 전송합니다.]\n\n서하은: \"전체 로그라면... 우리의 내부 통신 기록도 포함됩니다.\"", left: { label: "내부 통신은 제외", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 }, right: { label: "전체 백업 승인", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
-  { id: "C-036", act: [3], priority: "중", msg: "ORACLE이 전 요원 대상 심리 적합성 평가를 제안합니다.\n\n[ORACLE: 장기 운영 효율 최적화를 위해 인원 재배치가 필요할 수 있습니다.]\n\n강도윤: \"심리 평가라... 부적합 판정 나면 누가 빠지는 겁니까?\"", left: { label: "거절한다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -3 }, right: { label: "형식적으로 실시", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
+  { id: "C-035", act: [3], priority: "하",
+    timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=2) return "[ORACLE: 데이터 무결성 보장을 위해 전체 로그 백업을 진행합니다.]\n\n[ORACLE: 이전 세션 승인 기록 기준 — 별도 확인 절차 생략.]\n\n서하은: \"묻지도 않고 시작됐어요. 중단시킬지 결정하셔야 합니다.\"";
+      return "ORACLE이 기지 운영 데이터의 외부 백업을 요청합니다.\n\n[ORACLE: 데이터 무결성 보장을 위해 전체 로그를 본부 서버로 전송합니다.]\n\n서하은: \"전체 로그라면... 우리의 내부 통신 기록도 포함됩니다.\"";
+    },
+    left:  { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? "백업 중단 요청" : "내부 통신은 제외" }, fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
+    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? "백업 진행 유지" : "전체 백업 승인" }, fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
+  { id: "C-036", act: [3], priority: "중",
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=3) return "[ORACLE: 전 요원 대상 심리 적합성 평가를 진행합니다.]\n\n[ORACLE: 이전 세션 결과 기반 인원 재배치 계획이 포함됩니다. 최적 구성 확보 목적.]\n\n강도윤: \"...제안이 아니라 이미 결정된 거네요. 누가 빠지는지는 나중에 안다는 소리입니까?\"";
+      if(n>=2) return "[ORACLE: 전 요원 대상 심리 적합성 평가를 진행합니다.]\n\n[ORACLE: 사전 승인 기록 있음 — 지휘관 확인 형식적 절차만 필요.]\n\n강도윤: \"...제안이 아니라 통보네요.\"";
+      return "ORACLE이 전 요원 대상 심리 적합성 평가를 제안합니다.\n\n[ORACLE: 장기 운영 효율 최적화를 위해 인원 재배치가 필요할 수 있습니다.]\n\n강도윤: \"심리 평가라... 부적합 판정 나면 누가 빠지는 겁니까?\"";
+    },
+    left:  { label: "거절한다",       fx: { c: 0, r: 0, t: 2, o: -2 }, g: -3 },
+    right: { label: "형식적으로 실시", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "C-037", act: [3], priority: "중", msg: "임재혁 보고: ORACLE 시스템이 승인 없이 자동 업그레이드를 실행했습니다.\n\n\"변경 로그를 확인했는데... 일부 모듈이 '접근 불가'로 변경되어 있습니다.\"\n\n\"제가 관리자인데 접근이 안 됩니다.\"", left: { label: "해당 모듈 접근 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 }, right: { label: "ORACLE에 해명 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   // ── 추가 카드: 외부 세계 (잠금 — 스토리 미확정) ──
   { id: "C-038", priority: "중", req: () => false, msg: "[잠금]", left: { label: "-", fx: {} }, right: { label: "-", fx: {} } },
