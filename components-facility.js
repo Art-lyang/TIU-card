@@ -101,26 +101,21 @@ function FacilityManageTab(p) {
         return h('div', { key: fe.id, style: itm },
           h('div', { style: nm }, fe.name),
           h('div', { style: ds }, fe.desc),
-          h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.45)', marginTop: 6 } }, '리워드에서도 선택 가능'),
-          h('div', { style: { display: 'flex', gap: 8, marginTop: 8, alignItems: 'center' } },
-            h('button', {
-              className: 'btn',
-              disabled: !canAfford,
-              onClick: function() { if (canAfford && p.onDirectUpgrade) p.onDirectUpgrade(fe.id, cost); },
-              style: {
-                padding: '6px 16px', fontSize: 10, letterSpacing: 1, cursor: canAfford ? 'pointer' : 'not-allowed',
-                background: canAfford ? 'rgba(240,160,48,.12)' : 'rgba(255,255,255,.03)',
-                border: '1px solid ' + (canAfford ? '#f0a030' : 'rgba(255,255,255,.1)'),
-                color: canAfford ? '#f0a030' : 'rgba(255,255,255,.25)',
-                opacity: canAfford ? 1 : 0.6
-              }
-            }, '[ 즉시 증축 ]'),
-            h('span', {
-              style: {
-                fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-                color: canAfford ? 'rgba(255,141,97,.8)' : 'rgba(255,80,80,.7)'
-              }
-            }, '자원 -' + cost + (canAfford ? '' : ' (부족)'))));
+          h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.45)', marginTop: 6, marginBottom: 8 } }, '리워드에서도 선택 가능'),
+          h('button', {
+            className: 'btn',
+            disabled: !canAfford,
+            onClick: function() { if (canAfford && p.onDirectUpgrade) p.onDirectUpgrade(fe.id, cost); },
+            style: {
+              display: 'block', width: '100%', padding: '10px 16px', fontSize: 12, letterSpacing: 1,
+              cursor: canAfford ? 'pointer' : 'not-allowed',
+              background: canAfford ? 'rgba(240,160,48,.12)' : 'rgba(255,255,255,.03)',
+              border: '1px solid ' + (canAfford ? '#f0a030' : 'rgba(255,255,255,.1)'),
+              color: canAfford ? '#f0a030' : 'rgba(255,255,255,.25)',
+              opacity: canAfford ? 1 : 0.5,
+              textAlign: 'center', boxSizing: 'border-box'
+            }
+          }, '[ 즉시 증축 ]  —  자원 -' + cost + (canAfford ? '' : ' (부족)')));
       })),
     completed.length > 0 && h('div', { style: sec },
       h('div', { style: lbl }, '[완료]'),
