@@ -36,7 +36,7 @@ var EVENING_RESPONSES = {
     a: { label: '잘 부탁한다. 시스템은 맡기겠다.', trust: 2, reply: '감사합니다. 책임지겠습니다.' },
     b: { label: '시스템 현황 보고 부탁한다.', trust: 1, reply: '알겠습니다. 정리해서 올리겠습니다.' }
   },
-  'jaehyuk_1_2-4': {
+  'jaehyuk_1_3-3': {
     a: { label: '점검 수고했다.', trust: 2, reply: '감사합니다. 계속 관리하겠습니다.' },
     b: { label: '이상 있으면 바로 보고해.', trust: 1, reply: '네, 알겠습니다.' }
   },

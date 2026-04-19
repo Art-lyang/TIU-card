@@ -69,7 +69,11 @@ function App(){
     if(sg&&sg.chainQueue&&sg.chainQueue.length>0){setChainQueue(sg.chainQueue)}
     var initAct=(sg&&sg.act)||1;
     loadActiveSpecs();
-    setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRc, initAct, '', sf||{approved:[],pending:[],completed:[],proposed:[]}));
+    var initLogs=sl||['LOG-001'];
+    var initCard=drawCard(initStats,initGi,initLogs,initCd,initRc, initAct, '', sf||{approved:[],pending:[],completed:[],proposed:[]});
+    setCurCard(initCard);
+    // CA-001 중복 방지: 초기 드로우 시 ONCE 플래그 즉시 추가
+    if(initCard&&initCard.once&&initLogs.indexOf('ONCE-'+initCard.id)<0){initLogs.push('ONCE-'+initCard.id);Save.saveLogs(initLogs);setLogs(initLogs)}
   },[]);
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];

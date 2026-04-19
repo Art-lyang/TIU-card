@@ -85,7 +85,7 @@ var _ER_EXTRA = {
     a: { label: '무리하지 마.', trust: 2, reply: '...감사합니다. 가끔 이런 말이 필요한 것 같아요.' },
     b: { label: '집중력이 중요하다.', trust: 0, reply: '네... 알겠습니다.' }
   },
-  'haeun_1_4-5': {
+  'haeun_1_4-4': {
     a: { label: '수고했다. 정리되면 보고해.', trust: 2, reply: '네, 완료되면 바로 올리겠습니다.' },
     b: { label: '우선순위 높은 것부터 해.', trust: 1, reply: '네, 알겠습니다.' }
   },
@@ -121,10 +121,7 @@ var _ER_EXTRA = {
     a: { label: '진행해.', trust: 2, reply: '감사합니다. 내일까지 작업 완료하겠습니다.' },
     b: { label: '현재 상태로 유지해.', trust: -1, reply: '...알겠습니다. 허가 나면 진행하겠습니다.' }
   },
-  'jaehyuk_1_3-5': {
-    a: { label: '유지보수 계획 올려.', trust: 2, reply: '네, 내일까지 정리해서 보고드리겠습니다.' },
-    b: { label: '현재 상태로 충분한가?', trust: 1, reply: '당장은 괜찮지만, 정기 점검은 필요합니다.' }
-  },
+  // jaehyuk_1_3-5 삭제 — _ER_MISSING의 jaehyuk_1_3-4가 커버, LOG-EV-UNLOCK 키 보호
   'jaehyuk_2_9-13': {
     a: { label: '왜 잠갔는지 알아봐.', trust: 2, reply: '네, 조심히 확인해보겠습니다.' },
     b: { label: '보안상 이유가 있겠지.', trust: -1, reply: '...그럴 수도 있죠.' }
