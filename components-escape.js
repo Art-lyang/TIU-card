@@ -1,139 +1,239 @@
-// TERMINAL SESSION — components-escape.js
-// CH-007 탈출 미니게임 iframe 연동 컴포넌트
-// postMessage 스키마:
-//   카드게임 → iframe: { type:'tiu-escape-init', gi, day, survivors, flags, ammo, hp }
-//   iframe → 카드게임: { type:'tiu-escape-result', outcome, route, companionsFinal, casualtiesFinal, ... }
-//   또는 WAVE모드: { type:'tiu-field-mission-result', victory, kills, wave, ... }
-
-// 미니게임 배포 URL — GitHub Pages 기준 (로컬 테스트 시 오버라이드 가능)
-var ESCAPE_GAME_URL = (function(){
-  try{ var u=new URLSearchParams(window.location.search).get('escapeUrl');if(u)return u; }catch(e){}
-  return 'https://art-lyang.github.io/tiu-field-mission/';
-})();
+// components-escape.js — B안 Suzerain식 텍스트 어드벤처 탈출 모드
+// 기존 iframe 기반 슈팅 대체. 카드 스와이프와 시각/상호작용 완전 차별화.
+// 듀얼 타이머: 글로벌 06:00 카운트다운 + 노드별 결정 타이머 15~40s.
+// app.js onEscapeResult 스키마 호환 유지.
 
 function EscapeGameScreen(p){
-  var stats=p.stats,gi=p.gi,logs=p.logs,trust=p.trust,onResult=p.onResult;
-  var iframeRef=useRef(null);
-  var _ready=useState(false),ready=_ready[0],setReady=_ready[1];
-  var _err=useState(false),hasErr=_err[0],setErr=_err[1];
-  var resultHandled=useRef(false);
+  var stats=p.stats, gi=p.gi, logs=p.logs, trust=p.trust, onResult=p.onResult;
+  var resultSent = useRef(false);
+  var stateRef = useRef(null);
 
-  // shellTalkerKnown 판정
-  var shellTalkerKnown=logs.indexOf('LOG-SHELLTALKER-CAP')>=0;
-  // B3 루트 판정
-  var isB3=logs.indexOf('LOG-B3-ROUTE')>=0;
-
-  // iframe URL 조립
-  var sectorParam='act4_escape';
-  var iframeUrl=ESCAPE_GAME_URL
-    +'?sector='+sectorParam
-    +'&shellTalkerKnown='+(shellTalkerKnown?'1':'0');
-
-  // 간부진 상태 조립 (trust 기반)
-  var buildSurvivors=function(){
+  // 초기 state 세팅
+  var _state = useState(function(){
     return {
-      haeun:  {alive:true, trust:trust.haeun||50, departed:logs.indexOf('LOG-050')>=0},
-      doyun:  {alive:true, trust:trust.doyun||50, injured:false},
-      sejin:  {alive:true, trust:trust.sejin||50},
-      jaehyuk:{alive:true, trust:trust.jaehyuk||50}
+      nodeId: ESCAPE_NODES.start,
+      hp: 100,
+      ammo: 12,
+      detection: 0,
+      globalTimer: ESCAPE_GLOBAL_TIMER_START,
+      companions: window.buildEscapeCompanions(trust, logs),
+      casualties: [],
+      routeHistory: [],
+      markUnlucky: false,
+      logs: []
     };
-  };
+  });
+  var state = _state[0], setState = _state[1];
+  stateRef.current = state;
 
-  // iframe 로드 완료 시 초기 데이터 전송
-  var sendInit=function(){
-    if(!iframeRef.current)return;
-    var payload={
-      type:'tiu-escape-init',
-      gi:gi,
-      day:stats.day,
-      survivors:buildSurvivors(),
-      flags:{
-        promMet:logs.indexOf('ONCE-CH-005-3')>=0,
-        haeunStayed:logs.indexOf('LOG-052')>=0,
-        shellTalkerKnown:shellTalkerKnown
-      },
-      ammo:12,
-      hp:100
-    };
-    try{
-      iframeRef.current.contentWindow.postMessage(payload,'*');
-    }catch(e){console.warn('escape init postMessage fail',e)}
-  };
+  // phase: 'reading' 타이핑 / 'choices' 선택 / 'rolling' 롤 / 'resolving' 결과 서사
+  var _phase = useState('reading');
+  var phase = _phase[0], setPhase = _phase[1];
+  var _typed = useState(0); var typedLines = _typed[0], setTypedLines = _typed[1];
+  var _rollRes = useState(null); var rollResult = _rollRes[0], setRollResult = _rollRes[1];
+  var _resolveTxt = useState([]); var resolveTxt = _resolveTxt[0], setResolveTxt = _resolveTxt[1];
+  var _decSec = useState(30); var decSec = _decSec[0], setDecSec = _decSec[1];
+  var _pickedIdx = useState(-1); var pickedIdx = _pickedIdx[0], setPickedIdx = _pickedIdx[1];
 
-  // postMessage 수신 핸들러
+  var node = ESCAPE_NODES[state.nodeId];
+
+  // 노드 진입 — globalCost 차감 + companion drop + 타이핑 리셋
   useEffect(function(){
-    var handler=function(e){
-      var d=e.data;if(!d)return;
-      // Act4 탈출 결과 수신
-      if(d.type==='tiu-escape-result'&&!resultHandled.current){
-        resultHandled.current=true;
-        onResult({
-          outcome:d.outcome,
-          route:d.route,
-          companionsFinal:d.companionsFinal||[],
-          casualtiesFinal:d.casualtiesFinal||[],
-          detection:d.detection||0,
-          flags:d.flags||{},
-          kills:d.kills||0,
-          accuracy:d.accuracy||0,
-          hp:d.hp||0
-        });
-      }
-      // WAVE 모드 폴백 결과 (sector07 등으로 잘못 로드된 경우)
-      if(d.type==='tiu-field-mission-result'&&!resultHandled.current){
-        resultHandled.current=true;
-        var outcome=d.victory?'success':'fail_normal';
-        onResult({outcome:outcome,route:null,companionsFinal:[],
-          casualtiesFinal:[],detection:0,flags:{},
-          kills:d.kills||0,accuracy:d.accuracy||0,hp:d.hp||0});
-      }
-    };
-    window.addEventListener('message',handler);
-    return function(){window.removeEventListener('message',handler)};
-  },[]);
+    if (!node) return;
+    setState(function(s){
+      var ns = Object.assign({}, s);
+      ns.globalTimer = s.globalTimer - (node.globalCost || 0);
+      ns.routeHistory = s.routeHistory.concat([state.nodeId]);
+      // companion drop
+      var difficulty = node.type === 'check' ? 1.2 : 0.6;
+      window.rollEscapeCompanionDrop(ns, difficulty);
+      return ns;
+    });
+    setTypedLines(0);
+    setPhase('reading');
+    setDecSec(node.decisionSec || 30);
+    setPickedIdx(-1);
+    setResolveTxt([]);
+    setRollResult(null);
+  }, [state.nodeId]);
 
-  // iframe 로드 타임아웃 (10초)
+  // 타이핑 효과 — 0.8초 간격으로 body[] 한 줄씩 노출
   useEffect(function(){
-    var t=setTimeout(function(){if(!ready)setErr(true)},10000);
-    return function(){clearTimeout(t)};
-  },[]);
-
-  var onLoad=function(){
-    setReady(true);
-    // 약간 딜레이 후 init 전송 (iframe 내부 초기화 대기)
-    setTimeout(sendInit,500);
-  };
-
-  // 폴백: 미니게임 로드 실패 시 기존 확률 시뮬로 대체
-  var fallbackResolve=function(){
-    if(resultHandled.current)return;
-    resultHandled.current=true;
-    if(typeof window.resolveEscape==='function'){
-      var esc=window.resolveEscape(logs);
-      onResult({outcome:esc.ending==='E'?'success':
-        esc.ending==='E_bad'?'fail_unlucky':'fail_normal',
-        route:isB3?'emergency':'general',
-        companionsFinal:[],casualtiesFinal:[],
-        detection:0,flags:{},kills:0,accuracy:0,hp:0,
-        fallbackLog:esc.log,fallbackEnding:esc.ending});
+    if (phase !== 'reading' || !node) return;
+    if (typedLines >= node.body.length) {
+      var t = setTimeout(function(){ setPhase('choices'); }, 400);
+      return function(){ clearTimeout(t); };
     }
-  };
+    var t = setTimeout(function(){ setTypedLines(function(n){ return n+1; }); }, 700);
+    return function(){ clearTimeout(t); };
+  }, [phase, typedLines, state.nodeId]);
 
-  return h('div',{className:'escape-game-wrap'},
-    // 로딩 오버레이
-    !ready&&h('div',{className:'escape-loading'},
-      h('div',{className:'escape-loading-text'},
-        hasErr?'미니게임 로드 실패':'작전 준비 중...'),
-      hasErr&&h('button',{className:'btn btn-amber',
-        style:{marginTop:16,padding:'10px 24px'},
-        onClick:fallbackResolve},'[ 확률 판정으로 진행 ]')),
-    // iframe
-    h('iframe',{
-      ref:iframeRef,
-      src:iframeUrl,
-      className:'escape-iframe'+(ready?' loaded':''),
-      onLoad:onLoad,
-      allow:'autoplay',
-      sandbox:'allow-scripts allow-same-origin'
-    }));
+  // 글로벌 타이머 — 1초마다 감소, 항상 동작
+  useEffect(function(){
+    if (resultSent.current) return;
+    var t = setInterval(function(){
+      setState(function(s){ return Object.assign({}, s, { globalTimer: s.globalTimer - 1 }); });
+    }, 1000);
+    return function(){ clearInterval(t); };
+  }, []);
+
+  // 노드 결정 타이머 — choices phase 에만 카운트
+  useEffect(function(){
+    if (phase !== 'choices') return;
+    if (decSec <= 0) {
+      // 시간초과 — 첫 선택지 자동 선택
+      pickChoice(0, true);
+      return;
+    }
+    var t = setTimeout(function(){ setDecSec(function(n){ return n-1; }); }, 1000);
+    return function(){ clearTimeout(t); };
+  }, [phase, decSec]);
+
+  // 종료 조건 감시 — hp/detection/timer
+  useEffect(function(){
+    if (resultSent.current) return;
+    if (state.hp <= 0 || state.detection >= ESCAPE_DETECTION_LIMIT || state.globalTimer <= ESCAPE_OVERTIME_LIMIT) {
+      finalizeEnding();
+    }
+  }, [state.hp, state.detection, state.globalTimer]);
+
+  // 선택 처리
+  function pickChoice(idx, timeout){
+    if (phase !== 'choices') return;
+    if (!node.choices || !node.choices[idx]) { finalizeEnding(); return; }
+    var ch = node.choices[idx];
+    setPickedIdx(idx);
+    // 롤 없으면 바로 resolve
+    if (!ch.roll) { applyChoice(ch, null, true); return; }
+    // 롤 수행
+    var ctx = { stats: stats, trust: trust, logs: logs, detection: state.detection };
+    var r = window.performEscapeRoll(ch.roll, ctx);
+    setRollResult(r);
+    setPhase('rolling');
+  }
+
+  // 롤 애니 끝난 뒤 결과 적용
+  function onRollDone(){
+    var ch = node.choices[pickedIdx];
+    var pass = rollResult.outcome === 'critical' || rollResult.outcome === 'success';
+    applyChoice(ch, rollResult, pass);
+  }
+
+  function applyChoice(ch, roll, pass){
+    setState(function(s){
+      var ns = Object.assign({}, s);
+      var eff = ch.effect || {};
+      Object.keys(eff).forEach(function(k){
+        if (k === 'hp') ns.hp = Math.max(0, Math.min(100, ns.hp + eff[k]));
+        else if (k === 'ammo') ns.ammo = Math.max(0, ns.ammo + eff[k]);
+        else if (k === 'detection') ns.detection = Math.max(0, Math.min(100, ns.detection + eff[k]));
+      });
+      if (!pass && ch.failEffect) {
+        var fe = ch.failEffect;
+        if (fe.hp) ns.hp = Math.max(0, Math.min(100, ns.hp + fe.hp));
+        if (fe.ammo) ns.ammo = Math.max(0, ns.ammo + fe.ammo);
+        if (fe.detection) ns.detection = Math.max(0, Math.min(100, ns.detection + fe.detection));
+        if (fe.markUnlucky && !(logs.indexOf('LOG-SHELLTALKER-CAP') >= 0) && roll && roll.outcome === 'fail') {
+          ns.markUnlucky = true;
+        }
+        ns.globalTimer -= ESCAPE_FAIL_PENALTY_SEC;
+      }
+      if (ch.extraGlobalCost) ns.globalTimer -= ch.extraGlobalCost;
+      if (ch.log && ns.logs.indexOf(ch.log) < 0) ns.logs.push(ch.log);
+      return ns;
+    });
+    setResolveTxt(pass ? (ch.onSuccess || []) : (ch.onFail || ch.onSuccess || []));
+    setPhase('resolving');
+    // 3초 후 다음 노드로
+    setTimeout(function(){
+      if (resultSent.current) return;
+      if (ch.to === 'ENDING') { finalizeEnding(); return; }
+      setState(function(s){ return Object.assign({}, s, { nodeId: ch.to }); });
+    }, 2800);
+  }
+
+  function finalizeEnding(){
+    if (resultSent.current) return;
+    resultSent.current = true;
+    // 항상 최신 state 사용 — setTimeout 콜백에서 closure stale state 방지
+    var s = stateRef.current || state;
+    var es = {
+      hp: s.hp, detection: s.detection, globalTimer: s.globalTimer,
+      markUnlucky: s.markUnlucky, companions: s.companions,
+      casualties: s.casualties, currentRoute: s.routeHistory
+    };
+    var ending = window.computeEscapeEnding(es);
+    var allLogs = (s.logs || []).concat(ending.logs || []);
+    onResult({
+      outcome: ending.outcome, route: s.routeHistory[1] || null,
+      companionsFinal: (s.companions || []).map(function(c){return c.id;}),
+      casualtiesFinal: (s.casualties || []).map(function(c){return c.id;}),
+      detection: s.detection, hp: s.hp,
+      flags: { logs: allLogs }, kills: 0, accuracy: 0
+    });
+  }
+
+  if (!node) return h('div',{className:'escape-text-wrap'}, 'NODE ERROR: '+state.nodeId);
+
+  // 시간 포맷
+  function fmt(sec){
+    if (sec < 0) return '-' + fmt(-sec);
+    var m = Math.floor(sec/60), s = sec%60;
+    return (m<10?'0':'')+m + ':' + (s<10?'0':'')+s;
+  }
+  var timerWarn = state.globalTimer < 60;
+  var detWarn = state.detection >= ESCAPE_DETECTION_WARNING;
+
+  return h('div',{className:'escape-text-wrap'},
+    // 상단 HUD
+    h('div',{className:'escape-hud'},
+      h('div',{className:'escape-hud-cctv'}, '● REC ' + (node.simTime || '--:--')),
+      h('div',{className:'escape-hud-timer' + (timerWarn?' warn':'')},
+        'T-' + fmt(Math.max(state.globalTimer, -99))),
+      h('div',{className:'escape-hud-stats'},
+        h('span',{className:'hud-hp'}, 'HP ' + state.hp),
+        h('span',{className:'hud-ammo'}, 'AMMO ' + state.ammo),
+        h('span',{className:'hud-det' + (detWarn?' warn':'')}, 'DET ' + state.detection + '%')
+      )
+    ),
+    // 타이틀
+    h('div',{className:'escape-title'}, node.title),
+    // 본문
+    h('div',{className:'escape-body'},
+      (node.body||[]).slice(0, typedLines).map(function(line,i){
+        return h('div',{key:i,className:'escape-line'}, line || '\u00A0');
+      })
+    ),
+    // 결과 서사
+    phase==='resolving' && h('div',{className:'escape-resolve'},
+      resolveTxt.map(function(line,i){
+        return h('div',{key:i,className:'escape-line resolve'}, line);
+      })
+    ),
+    // 선택지
+    phase==='choices' && h('div',{className:'escape-choices'},
+      h('div',{className:'escape-dec-timer' + (decSec<=5?' warn':'')},
+        '결정 ' + decSec + 's'),
+      node.choices.map(function(ch, i){
+        return h('button',{
+          key:i, className:'escape-choice-btn',
+          onClick: function(){ pickChoice(i, false); }
+        },
+          h('div',{className:'choice-label'}, ch.label),
+          ch.hint && h('div',{className:'choice-hint'}, ch.hint)
+        );
+      })
+    ),
+    // 동행자 바
+    h('div',{className:'escape-companions'},
+      state.companions.map(function(c){
+        return h('span',{
+          key:c.id,
+          className:'comp-chip '+(c.status==='at_risk'?'risk':'')
+        }, c.name);
+      })
+    ),
+    // 롤 오버레이
+    phase==='rolling' && h(EscapeRollDisplay,{result: rollResult, onDone: onRollDone})
+  );
 }

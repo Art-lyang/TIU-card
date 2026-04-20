@@ -231,7 +231,7 @@ function App(){
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);Save.saveGame(ns,ng,act,actFlags,transRoute);
     var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedDlg.indexOf(i)<0}).length;
     setCurDlg(null);
-    if(wasIntro&&remainingIntros>0){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,logs,chainQueue);setPhase('game')},200);return}
+    if(wasIntro&&remainingIntros>0){setTimeout(function(){if(!tryDlg()){nextCard(ns,ng,logs,chainQueue);setPhase('game')}},200);return}
     nextCard(ns,ng,logs,chainQueue);setPhase('game')};
   var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto'].forEach(function(k){Save.del(k)});window.location.reload()};
   var restart=function(){BGM.stop();BGM.started=false;initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
@@ -295,6 +295,10 @@ function App(){
     // 결과 로그 부여
     var logMap={success:'LOG-ESCAPE-CLEAR',fail_normal:'LOG-ESCAPE-FAIL',fail_unlucky:'LOG-ESCAPE-UNLUCKY'};
     if(logMap[r.outcome])tryUnlock(logMap[r.outcome]);
+    // 미니게임 내부에서 축적된 LOG 부여 (LOG-GENERAL-ROUTE / LOG-B3-ROUTE 등)
+    if(r.flags && Array.isArray(r.flags.logs)){
+      r.flags.logs.forEach(function(lid){if(typeof lid==='string')tryUnlock(lid)});
+    }
     // 동행자 로그 부여 (미니게임에서 최종 생존한 간부)
     var compLogMap={haeun:'ACCOMP-HAEUN',doyun:'ACCOMP-DOYUN',sejin:'ACCOMP-SEJIN',jaehyuk:'ACCOMP-JAEHYUK'};
     (r.companionsFinal||[]).forEach(function(id){if(compLogMap[id])tryUnlock(compLogMap[id])});

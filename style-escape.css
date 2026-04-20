@@ -1,0 +1,238 @@
+/* style-escape.css — B안 탈출 모드 텍스트 어드벤처 전용 스타일
+   딥 마룬 톤 + 스캔라인 + CCTV 미학 — 카드 스와이프와 완전 차별화 */
+
+/* ═══════════════ 컨테이너 ═══════════════ */
+.escape-text-wrap{
+  position:fixed; inset:0;
+  background:
+    radial-gradient(ellipse at center, #2a0d10 0%, #0f0305 70%, #050102 100%),
+    linear-gradient(180deg, rgba(60,10,15,0.35), rgba(0,0,0,0.8));
+  color:#f4d9c9;
+  font-family:'Share Tech Mono','Noto Sans KR',monospace;
+  padding:14px 18px 70px; overflow-y:auto;
+  z-index:100;
+  animation: escape-fade-in 0.8s ease-out;
+}
+.escape-text-wrap::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:1;
+  background:repeating-linear-gradient(0deg,
+    rgba(200,50,40,0.04) 0, rgba(200,50,40,0.04) 1px,
+    transparent 1px, transparent 3px);
+  mix-blend-mode:screen;
+}
+.escape-text-wrap::after{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:2;
+  background:radial-gradient(ellipse at center, transparent 45%, rgba(0,0,0,0.7) 100%);
+}
+@keyframes escape-fade-in {
+  from { opacity:0; filter:blur(6px); }
+  to   { opacity:1; filter:blur(0); }
+}
+
+.escape-text-wrap > *{ position:relative; z-index:3; }
+
+/* ═══════════════ HUD ═══════════════ */
+.escape-hud{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:10px 14px; margin-bottom:14px;
+  background:rgba(20,4,6,0.75);
+  border:1px solid rgba(200,80,70,0.4);
+  border-radius:3px;
+  font-size:12px; letter-spacing:0.08em;
+}
+.escape-hud-cctv{
+  color:#ff4444;
+  font-weight:700;
+  animation: rec-blink 1.2s infinite;
+}
+@keyframes rec-blink { 0%,70%{opacity:1} 75%,100%{opacity:0.4} }
+
+.escape-hud-timer{
+  font-size:22px; font-weight:700; letter-spacing:0.1em;
+  color:#ffc7a3; text-shadow:0 0 10px rgba(255,100,60,0.5);
+  font-variant-numeric:tabular-nums;
+}
+.escape-hud-timer.warn{
+  color:#ff5a5a; text-shadow:0 0 14px rgba(255,40,40,0.8);
+  animation: timer-pulse 0.6s infinite alternate;
+}
+@keyframes timer-pulse { to { transform:scale(1.08); } }
+
+.escape-hud-stats{ display:flex; gap:14px; font-size:13px; }
+.escape-hud-stats .hud-hp{ color:#ffaba0; }
+.escape-hud-stats .hud-ammo{ color:#d8c08a; }
+.escape-hud-stats .hud-det{ color:#b8c4a0; }
+.escape-hud-stats .hud-det.warn{
+  color:#ff6a3a; text-shadow:0 0 8px rgba(255,80,40,0.7);
+  animation: det-flash 0.8s infinite;
+}
+@keyframes det-flash { 50% { opacity:0.5; } }
+
+/* ═══════════════ 타이틀 / 본문 ═══════════════ */
+.escape-title{
+  font-size:16px; font-weight:700; letter-spacing:0.12em;
+  color:#ff9978; margin:6px 0 18px;
+  padding:8px 0; border-top:1px dashed rgba(200,100,80,0.35);
+  border-bottom:1px dashed rgba(200,100,80,0.35);
+  text-align:center;
+  text-shadow:0 0 6px rgba(255,100,60,0.4);
+}
+.escape-body{
+  font-size:15px; line-height:1.75; letter-spacing:0.01em;
+  color:#ead4c4;
+  max-width:640px; margin:0 auto;
+}
+.escape-line{
+  margin-bottom:8px;
+  animation: line-in 0.45s ease-out;
+}
+.escape-line.resolve{
+  color:#ffb894;
+  font-style:italic;
+  padding-left:12px; border-left:2px solid rgba(255,120,80,0.5);
+  margin-top:6px;
+}
+@keyframes line-in {
+  from { opacity:0; transform:translateY(6px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.escape-resolve{
+  margin:18px auto; padding:10px 14px;
+  max-width:640px;
+  background:rgba(40,10,12,0.6);
+  border-left:3px solid #ff7a50;
+  border-radius:2px;
+}
+
+/* ═══════════════ 선택지 ═══════════════ */
+.escape-choices{
+  margin:24px auto 12px; max-width:640px;
+  display:flex; flex-direction:column; gap:10px;
+  animation: choices-in 0.5s ease-out;
+}
+@keyframes choices-in {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.escape-dec-timer{
+  align-self:flex-end; font-size:11px; color:#c0a090;
+  letter-spacing:0.1em; margin-bottom:4px;
+  font-variant-numeric:tabular-nums;
+}
+.escape-dec-timer.warn{
+  color:#ff5050; font-size:13px; font-weight:700;
+  animation: timer-pulse 0.4s infinite alternate;
+}
+.escape-choice-btn{
+  display:block; width:100%;
+  padding:14px 16px;
+  background:linear-gradient(180deg, rgba(50,12,16,0.95), rgba(30,8,10,0.9));
+  border:1px solid rgba(200,90,70,0.5);
+  border-left:3px solid #c85540;
+  color:#f5dcc9;
+  text-align:left;
+  font-family:inherit; font-size:14px;
+  cursor:pointer;
+  transition:all 0.18s ease;
+}
+.escape-choice-btn:hover{
+  background:linear-gradient(180deg, rgba(80,20,24,1), rgba(50,12,16,1));
+  border-color:#ff8060; border-left-color:#ffaa80;
+  transform:translateX(3px);
+  box-shadow:-4px 0 14px rgba(255,100,60,0.3);
+}
+.escape-choice-btn:active{ transform:translateX(1px) scale(0.99); }
+
+.choice-label{ font-weight:700; letter-spacing:0.04em; margin-bottom:4px; }
+.choice-hint{ font-size:12px; color:#b89080; letter-spacing:0.05em; }
+
+/* ═══════════════ 동행자 바 ═══════════════ */
+.escape-companions{
+  position:fixed; bottom:12px; left:50%; transform:translateX(-50%);
+  display:flex; gap:6px; padding:6px 12px;
+  background:rgba(20,4,6,0.85);
+  border:1px solid rgba(180,80,70,0.35); border-radius:20px;
+  z-index:4;
+}
+.comp-chip{
+  font-size:11px; letter-spacing:0.08em;
+  padding:3px 10px; border-radius:12px;
+  background:rgba(80,40,30,0.6); color:#e8ccb8;
+  border:1px solid rgba(200,150,120,0.35);
+}
+.comp-chip.risk{
+  background:rgba(120,30,30,0.65); color:#ffb0a0;
+  border-color:rgba(255,100,80,0.6);
+  animation: risk-flicker 2s infinite;
+}
+@keyframes risk-flicker { 40%,60% { opacity:0.55; } }
+
+/* ═══════════════ d100 롤 오버레이 ═══════════════ */
+.escape-roll-overlay{
+  position:fixed; inset:0; z-index:10;
+  background:rgba(0,0,0,0.78);
+  display:flex; align-items:center; justify-content:center;
+  animation: roll-fade-in 0.25s ease-out;
+}
+@keyframes roll-fade-in { from { opacity:0; } to { opacity:1; } }
+
+.escape-roll-box{
+  background:linear-gradient(180deg, #2a0a0d, #140406);
+  border:2px solid #ff7050; border-radius:6px;
+  padding:28px 42px; min-width:280px;
+  text-align:center;
+  box-shadow:0 0 40px rgba(255,100,60,0.4), inset 0 0 20px rgba(60,10,10,0.8);
+}
+.escape-roll-label{
+  font-size:12px; letter-spacing:0.3em; color:#b08070;
+  margin-bottom:14px;
+}
+.escape-roll-dice{
+  font-size:64px; font-weight:700; font-family:'Share Tech Mono',monospace;
+  color:#ffcba3; line-height:1;
+  text-shadow:0 0 18px rgba(255,120,80,0.7);
+  margin-bottom:12px;
+  font-variant-numeric:tabular-nums;
+  animation: dice-shake 0.04s infinite;
+}
+.escape-roll-dice.done{
+  animation: dice-settle 0.4s ease-out forwards;
+}
+@keyframes dice-shake {
+  0%,100% { transform:translate(0,0) rotate(0deg); }
+  25% { transform:translate(-2px,1px) rotate(-1deg); }
+  75% { transform:translate(2px,-1px) rotate(1deg); }
+}
+@keyframes dice-settle {
+  0% { transform:scale(1.25); color:#ffffff; }
+  100% { transform:scale(1); color:#ffcba3; }
+}
+.escape-roll-math{
+  font-size:13px; color:#d8b090; letter-spacing:0.08em;
+  margin-bottom:10px;
+  animation: line-in 0.3s ease-out;
+}
+.escape-roll-outcome{
+  font-size:24px; font-weight:700; letter-spacing:0.25em;
+  text-shadow:0 0 12px currentColor;
+  animation: outcome-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+@keyframes outcome-pop {
+  0% { opacity:0; transform:scale(0.5); }
+  60% { transform:scale(1.15); }
+  100% { opacity:1; transform:scale(1); }
+}
+
+/* ═══════════════ 모바일 대응 ═══════════════ */
+@media (max-width:480px){
+  .escape-text-wrap{ padding:10px 12px 80px; }
+  .escape-hud{ padding:8px 10px; font-size:11px; }
+  .escape-hud-timer{ font-size:18px; }
+  .escape-title{ font-size:14px; }
+  .escape-body{ font-size:14px; line-height:1.65; }
+  .escape-choice-btn{ padding:12px 14px; font-size:13px; }
+  .escape-roll-box{ padding:22px 28px; min-width:220px; }
+  .escape-roll-dice{ font-size:52px; }
+  .escape-roll-outcome{ font-size:20px; }
+}
