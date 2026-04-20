@@ -40,10 +40,7 @@ var EVENING_RESPONSES = {
     a: { label: '점검 수고했다.', trust: 2, reply: '감사합니다. 계속 관리하겠습니다.' },
     b: { label: '이상 있으면 바로 보고해.', trust: 1, reply: '네, 알겠습니다.' }
   },
-  'jaehyuk_1_5-8': {
-    a: { label: '좋다. 유지보수 계획 진행해.', trust: 2, reply: '감사합니다. 단말기에 시스템 진단 모듈을 올리겠습니다.', log: 'LOG-EV-UNLOCK' },
-    b: { label: '허가한다. 단, 보안에 주의해.', trust: 1, reply: '물론입니다. 접근 권한은 지휘관님 전용으로 설정하겠습니다.', log: 'LOG-EV-UNLOCK' }
-  },
+  // (삭제) 'jaehyuk_1_5-8' 고아 응답 제거 — 조사테이블 해금 응답은 data-evening-extra-2a.js의 'jaehyuk_1_5-99'/'jaehyuk_2_5-99'로 단일화
   'jaehyuk_1_7-10': {
     a: { label: '보고서 기대한다.', trust: 2, reply: '감사합니다. 꼼꼼하게 정리하겠습니다.' },
     b: { label: '일정에 맞춰 진행해.', trust: 1, reply: '네, 알겠습니다.' }

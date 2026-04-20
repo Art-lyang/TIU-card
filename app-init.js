@@ -1,7 +1,7 @@
 // TERMINAL SESSION — app-init.js
 // 글로벌 유틸리티, CARDS 배열, drawCard, Save, SFX
 var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(CARDS_ACT4||[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(CARDS_ACT4||[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]).concat(typeof CARDS_FACILITY_PROPOSE!=='undefined'?CARDS_FACILITY_PROPOSE:[]);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
@@ -17,13 +17,28 @@ var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTI
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
+  var facApr=(facility&&facility.approved)||[];
+  var facPrp=(facility&&facility.proposed)||[];
+  var facPnd=(facility&&facility.pending)||[];
+  // 시설확장 제안 중복 방지: 선택지에 fePropose가 있고, 해당 feId가 이미 제안/승인/완료된 경우 카드 자체 제외
+  var feProposedBlocked=function(c){
+    var fe1=c.left&&c.left.fePropose, fe2=c.right&&c.right.fePropose;
+    if(!fe1&&!fe2)return false;
+    var blocked=function(id){return !id?false:(facApr.indexOf(id)>=0||facPrp.indexOf(id)>=0||facComp.indexOf(id)>=0||facPnd.indexOf(id)>=0)};
+    // 양쪽 모두 fePropose인 경우 — 둘 다 막혔을 때만 제외
+    if(fe1&&fe2)return blocked(fe1)&&blocked(fe2);
+    return blocked(fe1||fe2);
+  };
   // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
   // (localStorage를 직접 조회 — React closure stale logs 회피)
   if(day===1){
     var sess=(typeof Save!=='undefined'?Save.getSessions():0);
     var firstId=sess>=1?'CA-001B':'CA-001';
     var liveLogs=(typeof Save!=='undefined'?(Save.getLogs()||logs):logs)||[];
-    var alreadyShown=liveLogs.indexOf('ONCE-'+firstId)>=0 || logs.indexOf('ONCE-'+firstId)>=0;
+    // 3중 방어: localStorage logs + React closure logs + recentCards
+    var alreadyShown=liveLogs.indexOf('ONCE-'+firstId)>=0
+                    || logs.indexOf('ONCE-'+firstId)>=0
+                    || rec.indexOf(firstId)>=0;
     if(!alreadyShown){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
   }
   var valid=CARDS.filter(function(c){
@@ -40,6 +55,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs))return false;
     if(!specOk(c))return false;
+    if(feProposedBlocked(c))return false;
     return true;
   });
   if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});

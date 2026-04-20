@@ -95,7 +95,7 @@ var CARDS_EXTRA = [
     left: { label: "물품 샘플 분석", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 },
     right: { label: "소각 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-174", act: [1,2,3], priority: "중", bg: "lab",
+  { id: "C-174", act: [2,3], priority: "중", bg: "lab",
     msg: "의료실 냉동고 전력 소비가 급증합니다.\n\n윤세진: \"샘플이 너무 많아졌어요. 냉동고가 풀가동인데도 온도가 올라가고 있습니다. 이러다 기존 표본까지 손상됩니다.\"",
     hint: "▸ 추가 냉동고 설치 시 시설 확장 [저온 냉동고] 제안",
     left: { label: "추가 냉동고 설치", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0, fePropose: "FE-001" },

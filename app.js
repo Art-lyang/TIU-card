@@ -245,8 +245,36 @@ function App(){
     setToastType('');setToast('슬롯 '+slot+' 저장 완료 (DAY '+stats.day+')');setTimeout(function(){setToast('')},2400);
   };
   var loadSnapshot=function(slot){
-    var pack=Save.loadSnapshot(slot);if(!pack){setToastType('');setToast('슬롯 '+slot+' 비어있음');setTimeout(function(){setToast('')},1800);return}
-    BGM.stop();BGM.started=false;window.location.reload();
+    var pack=Save.loadSnapshot(slot);
+    if(!pack){setToastType('');setToast('슬롯 '+slot+' 비어있음');setTimeout(function(){setToast('')},1800);return}
+    BGM.stop();BGM.started=false;
+    // pack 내용으로 React state 직접 복원 (reload 없이)
+    var pg=pack.game||{};
+    var ps=pg.stats||{c:50,r:65,t:50,o:40,day:1};
+    var pgi=pg.gi||0;
+    var pact=pg.act||1;
+    var paf=pg.actFlags||{prom_met:false,mission_done:false,chain_done:false,prom_mission:false};
+    var ptr=pg.transRoute||'';
+    var pcd=pg.cooldowns||{};
+    var prc=pg.recentCards||[];
+    var pcq=pg.chainQueue||[];
+    var plogs=pack.logs||['LOG-001'];
+    var ptrust=pack.trust||{haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40};
+    var pud=pack.usedDlg||[];
+    var pue=pack.usedEvening||[];
+    var pfac=pack.facility||{approved:[],pending:[],completed:[],proposed:[]};
+    setStats(ps);setGi(pgi);setAct(pact);setActFlags(paf);setTransRoute(ptr);
+    setCooldowns(pcd);setRecentCards(prc);setChainQueue(pcq);
+    setLogs(plogs);setTrust(ptrust);setUsedDlg(pud);setUsedEvening(pue);setFacility(pfac);
+    setCt(0);setCurDlg(null);setCurMission(null);setPendingBonus(null);
+    setFp(false);setShowSettings(false);
+    // 첫 카드 다시 뽑기 (복원된 로그/스탯 기준)
+    var nc=drawCard(ps,pgi,plogs,pcd,prc,pact,ptr,pfac);
+    if(nc)setCurCard(nc);
+    if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(pact);
+    setPhase('game');
+    setToastType('');setToast('슬롯 '+slot+' 로드 완료 (DAY '+ps.day+')');
+    setTimeout(function(){setToast('')},2200);
   };
   // ═══ 업적 체크 — 주요 상태 변경 시 자동 트리거 ═══
   useEffect(function(){
