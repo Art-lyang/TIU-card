@@ -208,7 +208,12 @@ function Tutorial(p){
 }
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
-  var count=4;if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=3;if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=2;if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=1;
+  // 기본 6개 | 스탯 하락 시 선택지 축소 (절망 표현)
+  var count=6;
+  if(p.stats.c<40||p.stats.r<40||p.stats.t<40||p.stats.o<40)count=5;
+  if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=4;
+  if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=3;
+  if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=2;
   var _scrollRef=useRef(null);
   var _sc=useState({top:false,bottom:false}),scrollHint=_sc[0],setScrollHint=_sc[1];
   var checkScroll=function(){var el=_scrollRef.current;if(!el)return;var st=el.scrollTop>4;var sb=el.scrollTop+el.clientHeight<el.scrollHeight-4;setScrollHint({top:st,bottom:sb})};
