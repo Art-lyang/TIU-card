@@ -18,10 +18,13 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
   // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
+  // (localStorage를 직접 조회 — React closure stale logs 회피)
   if(day===1){
     var sess=(typeof Save!=='undefined'?Save.getSessions():0);
     var firstId=sess>=1?'CA-001B':'CA-001';
-    if(logs.indexOf('ONCE-'+firstId)<0){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
+    var liveLogs=(typeof Save!=='undefined'?(Save.getLogs()||logs):logs)||[];
+    var alreadyShown=liveLogs.indexOf('ONCE-'+firstId)>=0 || logs.indexOf('ONCE-'+firstId)>=0;
+    if(!alreadyShown){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
   }
   var valid=CARDS.filter(function(c){
     if((c.id==='CA-001'||c.id==='CA-001B')&&day>1)return false;
