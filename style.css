@@ -62,8 +62,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .stat-icon-inline-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .stat-icon-inline-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 /* Info Bar */
-.info-bar{display:flex;gap:5px;margin:6px auto;flex-shrink:0;max-width:440px;width:100%;align-items:center;flex-wrap:wrap;row-gap:4px}
-.info-tag{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui);border:1px solid var(--ui-border);padding:5px 7px;letter-spacing:0;background:var(--ui-bg);text-align:center;white-space:nowrap}
+.info-bar{display:flex;gap:4px;margin:6px auto;flex-shrink:0;max-width:440px;width:100%;align-items:center;flex-wrap:wrap;row-gap:4px}
+.info-tag{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui);border:1px solid var(--ui-border);padding:4px 6px;letter-spacing:0;background:var(--ui-bg);text-align:center;white-space:nowrap;flex-shrink:0}
+.info-tag-menu{margin-left:auto;min-width:26px;font-size:12px;padding:3px 8px}
 .info-tag-log{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15);text-decoration:underline;text-decoration-color:rgba(var(--ui-rgb),0.2);text-underline-offset:3px}
 .info-tag-log:active{background:rgba(var(--ui-rgb),0.1);border-color:rgba(var(--ui-rgb),0.4)}
 .info-tag-archive{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(240,160,48,0.15);text-decoration:underline;text-decoration-color:rgba(240,160,48,0.2);text-underline-offset:3px;color:#f0a030!important}
@@ -121,7 +122,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .gauge-bar{height:16px}
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
   .info-bar{margin:4px 0;gap:3px}
-  .info-tag{font-size:9px;padding:4px 1px}
+  .info-tag{font-size:9px;padding:3px 4px}
+  .info-tag-menu{font-size:11px;padding:2px 6px}
   .card-panel{padding:14px 16px;min-height:160px}
   .card-hdr{margin-bottom:6px}
   .card-msg{font-size:13px;line-height:1.7}
