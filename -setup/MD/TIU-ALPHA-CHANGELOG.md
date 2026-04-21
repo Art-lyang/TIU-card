@@ -1,10 +1,68 @@
 # TIU-CARD — Alpha 마일스톤 체인지로그
 
-> 스냅샷: 2026-04-19
+> 최신 스냅샷: **2026-04-20 (2차)** (BUILD_VER=22)
+> 이전 스냅샷: 2026-04-20 (1차, BUILD_VER=21) / 2026-04-19
 > 브랜치: `claude/magical-cray-74f8c4`
-> 대상 빌드: **TIU-Alpha**
+> 대상 빌드: **TIU-Alpha → v1.0 출시 준비**
+> 대응 GDD: `-setup/GDD/TIU-GAME-GDD-v10.md`
 
 ---
+
+## 2026-04-20 (2차) 패치 (BUILD_VER 21→22) — Act4 탈출 미니게임 인라인 배포
+
+### 🚨 Critical 수정
+- **Act4 탈출 미니게임 복구**: 기존 외부 URL `https://art-lyang.github.io/tiu-field-mission/`가 **HTTP 404 (저장소 자체 미존재)** — CH-007-5 도달 시 플레이어가 GitHub 404 화면에서 영구 정지, 엔딩 E/E_c/E_bad 도달 불가 문제 해결
+  - iframe `onload`가 404 HTML에 대해서도 발화해 `setErr` 분기 차단 → 10초 폴백도 무력화됐던 것이 근본 원인
+- **조치 (B안: 저장소 내부 인라인)**
+  - `field-mission/` 신규 폴더로 미니게임 본체 45개 파일 인라인 (7.1MB)
+    - `index.html` + `css/style.css` + `js/` 17개 + `assets/` (배경 1 + 라이플 3 + 바리케이드 2 + bound_shellwalker 스프라이트 12프레임)
+  - `components-escape.js`: `ESCAPE_GAME_URL='field-mission/index.html'` + 6초 내 iframe 전역 미검출 시 폴백 UI 노출 가드
+  - `app.js` `onEscapeResult`: `flags.logs` 언팩 → `tryUnlock` 루프 추가 (미니게임 내부 축적 LOG 카드게임 반영)
+  - `mutants-patched.js` (209줄) 삭제 — field-mission/js/mutants.js와 중복된 옛 복사본
+  - BUILD_VER 21→22, `components-escape.js?v=1→v=2`
+
+### 🐛 postMessage 스키마 검증 (로컬 Preview)
+- `tiu-escape-init` 송신 → iframe `escapeState` 초기화 확인 (동행자 4명, trust 값 전달)
+- sectorId='ACT4-ESCAPE', isNodeMapSector=true, ACT4_NODEMAP 전역 존재
+- 작전 개시 → `commander_office` intro 노드 진입 + 선택지 2개 표시
+
+### ⚠️ 이월 과제 (미니게임 내부 미완)
+- **노드 배경 6장 미제작**: commander_office / base_interior / base_exterior / b3_descent / emergency_corridor / coast — onerror만 로그, 배경이 sector07로 유지됨 (플레이는 가능)
+- **dmz 섹터 배경** (Act3 사용 시)
+- **임시 엔딩 화면**: `field-mission/js/flow.js:102` "CCTV 엔딩 엔진은 다음 세션 작업" — 미니게임 내부 end 오버레이 placeholder (카드게임 결과 postMessage는 정상)
+- **뮤턴트 스프라이트 제한**: bound_shellwalker만 PNG, drone/runner는 procedural canvas
+- **루트 선택 UX 중복**: 카드 CH-007이 이미 LOG-GENERAL-ROUTE / LOG-B3-ROUTE 부여하는데 미니게임 `commander_office`가 동일 선택 재질문. init payload에 preselectedRoute 주입 → commander_office 스킵 패치 권장
+
+---
+
+## 2026-04-20 (1차) 패치 (커밋 `9fb54a8`, BUILD_VER 20→21)
+
+### 🐛 버그 수정 (Critical)
+- **Day 1 CA-001 카드 5장 중 3장 중복 출현** 수정
+  - 원인: React 함수형 컴포넌트의 closure stale (`performSwipe` setTimeout / `hDlg`가 stale `logs` 참조 → `ONCE-CA-001` 플래그 누락)
+  - 수정: `app-init.js` drawCard 강제 첫 카드 블록에서 `Save.getLogs()` localStorage 직접 조회로 closure 우회
+- **시설 설계도 한국어 기본화 + 한영 토글 버튼 깨짐** 수정 (커밋 `b6c3da7`)
+
+### 🔨 파일 분리 (200줄 룰)
+| 원본 | 줄수 | → 분리 결과 |
+|---|---|---|
+| `data-evening-extra-2.js` | 486 | `2a` (139) + `2b` (121) + `2c` (80) + `2d` (147) |
+| `data-facility-uprising.js` | 293 | `-a` (107) + `-b` (132) |
+| `data-cards-prologue.js` | 202 | 본체 (118, CA-001~018) + `-2` (90, CA-019~033) |
+
+### 📚 문서
+- **HANDOFF.md** 신규 (worktree + 로컬 루트 양쪽)
+- **TIU-GAME-GDD-v10.md** 신규 (v0.9 → v1.0 출시 준비 마일스톤)
+- **README.md** 신규 (루트, 프로젝트 개요)
+
+### 잔여 200줄 초과 파일 (기술 부채 — 2차 후 갱신)
+- `data-facility.js` (360), `app.js` (341), `components-game.js` (285), `data-endings.js` (226)
+- (~~`mutants-patched.js` (209)~~ — 2차에서 삭제됨)
+- 권장 우선순위: `data-endings.js` F/G 분리 → 나머지 보류
+
+---
+
+## 2026-04-19 스냅샷
 
 ## 핵심 수치
 
