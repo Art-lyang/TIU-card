@@ -3,7 +3,7 @@
 
 // 이브닝 챗 대사에 신뢰도 구간을 적용하는 함수
 function getEveningLines(chat, trust, logs) {
-  var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk'};
+  var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var charKey = charKeyMap[chat.char];
   if (!charKey) return chat.lines;
 
