@@ -5,7 +5,7 @@ var CARDS_EXTERNAL = [
 
   // ═══ 닉 포스터 — 굴욕을 삼키고 정보를 얻다 ═══
 
-  { id: "C-248", act: [3], priority: "상", bg: "forest",
+  { id: "C-248", act: [3,4], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-016')>=0 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-081')<0 },
     msg: "기지 외곽 감시 카메라. 닉 포스터가 다시 잡혔습니다.\n\n이번엔 담배도 없습니다. 손을 들어 보이고 있습니다.\n\n임재혁: \"접근 의사를 표시하는 겁니다. 비무장이에요.\"\n\n... 그 얼굴을 보면 옛 기억이 떠오릅니다.",
     left: { label: "만난다 — 과거는 묻는다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
@@ -53,20 +53,20 @@ var CARDS_EXTERNAL = [
     right: { label: "모니터링 강화만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // Act 2: 관찰이 구체화
-  { id: "C-256", act: [2], priority: "하", bg: "restricted",
+  { id: "C-256", act: [2,3], priority: "하", bg: "restricted",
     cond: function(s,g,logs){ return s.day>=13 },
     msg: "서버실 접근 로그에 이상 기록.\n\n임재혁: \"02:41. 인식 불가 세션이 0.3초 접속했습니다.\"\n\n인증 토큰이 없습니다. 하지만 차단되지도 않았습니다.\n\n\"마치... 시스템이 이 접근을 허용한 것처럼 보입니다.\"\n\n[ORACLE: 정기 자가 진단 세션입니다. 이상 없음.]",
     left: { label: "ORACLE 설명을 의심한다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -3 },
     right: { label: "ORACLE 설명을 받아들인다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-257", act: [2], priority: "하", bg: "forest",
+  { id: "C-257", act: [2,3], priority: "하", bg: "forest",
     cond: function(s,g,logs){ return s.day>=17 },
     msg: "강도윤이 기지 북동측 고지대에서 무언가를 발견했습니다.\n\n\"관찰 거점입니다. 최소 2주 이상 사용된 흔적.\"\n\n방수포 흔적, 압축된 풀, 배수구까지 파여 있습니다.\n\n\"전문가 수준입니다. 그런데 물건은 하나도 안 남겼어요.\"\n\n이 거점에서 기지 전체가 내려다보입니다.",
     left: { label: "함정을 설치한다", fx: { c: 1, r: -1, t: 0, o: 0 }, g: -1 },
     right: { label: "건드리지 않고 감시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // Act 3: 존재감이 짙어짐
-  { id: "C-258", act: [3], priority: "중", bg: "comms",
+  { id: "C-258", act: [3,4], priority: "중", bg: "comms",
     cond: function(s,g,logs){ return s.day>=26 },
     msg: "임재혁이 긴급 보고.\n\n\"기지 내부에서 소형 감청 장비 조각을 발견했습니다.\"\n\n회의실 환기구 안. 이미 작동을 멈춘 상태입니다.\n\n\"제조사 마킹이 없습니다. 군용도 아니고 시판품도 아닙니다.\"\n\n누군가 우리 안에 들어왔다 나갔습니다.\n\n[ORACLE: 내부 보안 점검에서 탐지된 이상 없음.]",
     left: { label: "전체 기지 보안 수색", fx: { c: -1, r: -2, t: 1, o: 0 }, g: -2 },

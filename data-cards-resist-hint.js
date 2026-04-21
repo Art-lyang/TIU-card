@@ -50,8 +50,9 @@ var CARDS_RESIST_HINT = [
   //  Phase 5 — 엔딩 H 디스커버러빌리티 힌트
   // ════════════════════════════════
 
-  // HH-01: 임재혁 초기 암시 (Act 2, day 12+) — "독립 인프라"라는 단어 노출
-  { id: "HH-01", act: [2], priority: "중", tag: "uprising-hint", once: true,
+  // HH-01: 임재혁 초기 암시 (Act 2~3, day 12+) — "독립 인프라"라는 단어 노출
+  // v1.1: Act2가 5-12로 축소됨에 따라 act:[2,3]으로 확장 (day 12 한정 Act2, 13+ Act3)
+  { id: "HH-01", act: [2,3], priority: "중", tag: "uprising-hint", once: true,
     req: function(s,g,logs){ return s.day >= 12 },
     msg: "임재혁이 혼잣말처럼 말합니다.\n\n\"지휘관님. 이상한 생각인데 —\n이 기지의 전원, 통신, 서버. 전부 ORACLE 제어입니다.\"\n\"만약 ORACLE이 — 하루만 꺼진다면, 우리는 아무것도 못 합니다.\"\n\n\"언젠가 **독립 인프라**를 하나씩 갖춰두면 좋을 것 같습니다.\"",
     left:  { label: "검토해둬라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1, trust: 3 },
