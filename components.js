@@ -30,10 +30,47 @@ function Dialogue(p){
         h('span',null,c.label))}))
   );
 }
+// v1.1 — LOG 카테고리 추론 (ID/제목 기반)
+function logCategory(log){
+  var id=log.id||'',title=log.title||'',ct=log.content||'';
+  if(id.indexOf('LOG-INTRO-')===0)return'인트로';
+  if(title.indexOf('SPEC-')>=0||id.indexOf('LOG-SPEC')===0)return'이변체';
+  if(id.indexOf('LOG-DG-')===0||id.indexOf('LOG-MD-')===0||id.indexOf('LOG-SUPPLY-')===0||title.indexOf('대가')>=0||title.indexOf('메리디안')>=0)return'세력·기업';
+  if(id.indexOf('LOG-AUDIT-')===0||id.indexOf('LOG-UPRISING-')===0||id.indexOf('LOG-OBSERVER-')===0)return'감사·봉쇄';
+  if(id.indexOf('LOG-RECON-')===0||title.indexOf('감시')>=0||title.indexOf('정찰')>=0)return'독자 조사';
+  if(title.indexOf('프로메테우스')>=0||title.indexOf('COASTAL')>=0||ct.indexOf('프로메테우스')>=0&&id!=='LOG-003')return'프로메테우스';
+  if(title.indexOf('서하은')>=0||title.indexOf('강도윤')>=0||title.indexOf('윤세진')>=0||title.indexOf('임재혁')>=0||title.indexOf('박소영')>=0)return'간부·인물';
+  if(title.indexOf('ORACLE')>=0||title.indexOf('GRANT')>=0||title.indexOf('단말기')>=0||title.indexOf('권한')>=0||id==='LOG-001'||id==='LOG-002'||id==='LOG-010'||id==='LOG-011'||id==='LOG-012'||id==='LOG-019'||id==='LOG-003')return'ORACLE 시스템';
+  if(title.indexOf('EV-Σ')>=0||title.indexOf('억제제')>=0||title.indexOf('바이러스')>=0)return'EV-Σ 연구';
+  return'기타';
+}
+var LOG_CAT_ORDER=['전체','ORACLE 시스템','간부·인물','이변체','프로메테우스','세력·기업','독자 조사','EV-Σ 연구','감사·봉쇄','인트로','기타'];
 function LogViewer(p){
-  var s1=useState(null),sel=s1[0],setSel=s1[1];var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ul.length;
-  if(sel){var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:16}},'ORACLE DATABASE — RECORD VIEW'),h('div',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold',textAlign:'center',marginBottom:16}},log.title),h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},log.content),h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},'← 목록'),h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},'닫기'))));}
-  return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'),ul.map(function(l){return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between'}},h('span',{style:{fontSize:13,color:'var(--ui)'}},l.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)'}},l.id)))}),lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},lk+'건의 기록이 잠겨 있습니다'),(p.sessions||0)>=1&&lk>0&&h('div',{style:{marginTop:16,padding:'10px 12px',background:'rgba(var(--ui-rgb),.03)',border:'1px solid rgba(var(--ui-rgb),.1)',borderRadius:3,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.45)',lineHeight:1.8,letterSpacing:.5}},h('div',{style:{marginBottom:4,color:'rgba(var(--ui-rgb),.3)',fontSize:9}},'[이전 세션 분석]'),lk>=8?'다수의 미발견 기록 존재. 간부 신뢰도와 독자적 판단이 새로운 정보를 열 수 있습니다.':lk>=4?'일부 기록은 특정 조건 하에서만 접근 가능합니다. [편집됨] 조건을 충족하십시오.':'거의 모든 기록에 접근했습니다. 남은 기록은 극히 제한된 상황에서만 해금됩니다.'),h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},'닫기')));
+  var s1=useState(null),sel=s1[0],setSel=s1[1];
+  var s2=useState('전체'),cat=s2[0],setCat=s2[1];
+  var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0});var lk=ORACLE_LOGS.length-ul.length;
+  // 카테고리별 해금 카운트
+  var catCounts={};ul.forEach(function(l){var c=logCategory(l);catCounts[c]=(catCounts[c]||0)+1});
+  var visCats=LOG_CAT_ORDER.filter(function(c){return c==='전체'||(catCounts[c]||0)>0});
+  var filtered=cat==='전체'?ul:ul.filter(function(l){return logCategory(l)===cat});
+  if(sel){var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:10}},'ORACLE DATABASE — RECORD VIEW'),h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:8,marginBottom:14,flexWrap:'wrap'}},h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:3,padding:'2px 8px'}},logCategory(log)),h('span',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold'}},log.title)),h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},log.content),h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},'← 목록'),h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},'닫기'))));}
+  return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
+    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:12}},ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'),
+    // 카테고리 필터 탭
+    h('div',{style:{display:'flex',gap:4,flexWrap:'wrap',marginBottom:14,justifyContent:'center'}},visCats.map(function(c){
+      var isSel=c===cat;var cnt=c==='전체'?ul.length:(catCounts[c]||0);
+      return h('button',{key:c,onClick:function(){setCat(c)},style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'4px 9px',background:isSel?'rgba(var(--ui-rgb),.12)':'transparent',border:'1px solid '+(isSel?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.18)'),borderRadius:3,color:isSel?'var(--ui)':'rgba(var(--ui-rgb),.55)',cursor:'pointer',letterSpacing:.5}},c+' '+cnt);
+    })),
+    filtered.length===0&&h('div',{style:{fontSize:12,color:'#555',textAlign:'center',padding:'20px 0',fontStyle:'italic'}},'해당 카테고리에 해금된 기록 없음'),
+    filtered.map(function(l){var lcat=logCategory(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},
+      h('div',{style:{display:'flex',alignItems:'center',gap:6,marginBottom:3}},
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'rgba(var(--ui-rgb),.6)',background:'rgba(var(--ui-rgb),.06)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,padding:'1px 5px',letterSpacing:.5}},lcat),
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginLeft:'auto'}},l.id)),
+      h('div',{style:{fontSize:13,color:'var(--ui)'}},l.title))}),
+    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},lk+'건의 기록이 잠겨 있습니다'),
+    (p.sessions||0)>=1&&lk>0&&h('div',{style:{marginTop:16,padding:'10px 12px',background:'rgba(var(--ui-rgb),.03)',border:'1px solid rgba(var(--ui-rgb),.1)',borderRadius:3,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.45)',lineHeight:1.8,letterSpacing:.5}},h('div',{style:{marginBottom:4,color:'rgba(var(--ui-rgb),.3)',fontSize:9}},'[이전 세션 분석]'),lk>=8?'다수의 미발견 기록 존재. 간부 신뢰도와 독자적 판단이 새로운 정보를 열 수 있습니다.':lk>=4?'일부 기록은 특정 조건 하에서만 접근 가능합니다. [편집됨] 조건을 충족하십시오.':'거의 모든 기록에 접근했습니다. 남은 기록은 극히 제한된 상황에서만 해금됩니다.'),
+    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},'닫기')));
 }
 function EndingScreen(p){
   var all=[{id:'A',name:'완벽한 도구',hint:'ORACLE의 최고 신임을 얻으라'},{id:'B',name:'각성',hint:'진실의 단편을 목격하라'},{id:'C_c',name:'봉쇄 붕괴',hint:'봉쇄선이 무너지다'},{id:'C_cs',name:'봉쇄 성공',hint:'완벽한 봉쇄를 달성하다'},{id:'C_cst',name:'자충수',hint:'소 잃고 외양간 고치다'},{id:'C_r',name:'자원 고갈',hint:'기지가 기능을 잃다'},{id:'C_t',name:'신뢰 상실',hint:'동료들이 떠나다'},{id:'C_o',name:'접속 차단',hint:'ORACLE이 당신을 버리다'},{id:'D',name:'조용한 자유',hint:'반란 속의 해방'},{id:'G',name:'관망자',hint:'어느 쪽도 선택하지 않다'},{id:'F',name:'[데이터 손상]',hint:'???'}];
