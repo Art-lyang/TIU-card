@@ -46,7 +46,7 @@ var EVENING_RESPONSES = {
     b: { label: '일정에 맞춰 진행해.', trust: 1, reply: '네, 알겠습니다.' }
   },
   'doyun_2_11-17': {
-    a: { label: '함께 지킨다.', trust: 2, reply: '...네. 함께라면.' },
+    a: { label: '함께 지킨다.', trust: 2, reply: '...알겠습니다. 지휘관님 결정 따르겠습니다.' },
     b: { label: '전략을 세우자.', trust: 1, reply: '알겠습니다. 작전안 준비하겠습니다.' }
   },
   'doyun_2_18-24': {
@@ -54,7 +54,7 @@ var EVENING_RESPONSES = {
     b: { label: '좀더 신중하게.', trust: 0, reply: '...알겠습니다.' }
   },
   'haeun_2_11-17': {
-    a: { label: '함께 확인하자.', trust: 2, reply: '네... 지휘관님이 함께라면 용기가 납니다.' },
+    a: { label: '함께 확인하자.', trust: 2, reply: '네, 같이 봐주시면 분석이 빨라질 것 같습니다.' },
     b: { label: '증거를 더 모아.', trust: 0, reply: '알겠습니다. 더 조사해보겠습니다.' }
   },
   'haeun_2_18-24': {
@@ -63,10 +63,10 @@ var EVENING_RESPONSES = {
   },
   'sejin_2_11-17': {
     a: { label: '연구를 계속해.', trust: 2, reply: '감사합니다. 결과가 나오면 바로 알려드릴게요.' },
-    b: { label: '건강 먼저 챙겨.', trust: 2, reply: '...감사합니다. 그런 걱정... 오랜만이에요.' }
+    b: { label: '건강 먼저 챙겨.', trust: 2, reply: '...네, 주의하겠습니다.' }
   },
   'sejin_2_18-24': {
-    a: { label: '윤세진을 믿는다.', trust: 2, reply: '...감사합니다. 실망시키지 않겠습니다.' },
+    a: { label: '그 오차, 계속 추적해.', trust: 2, reply: '네, 패턴 잡히는 대로 보고드리겠습니다.' },
     b: { label: '보고서로 정리해줘.', trust: 0, reply: '네, 정리하겠습니다.' }
   },
   'jaehyuk_2_11-17': {
