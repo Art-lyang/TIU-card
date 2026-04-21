@@ -115,6 +115,14 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     if(cid==='CA23-DV-02'&&dir==='left')tryUnlock('LOG-DV-02-MED');
     if(cid==='CA23-DV-03'&&dir==='left')tryUnlock('LOG-DV-03-MED');
     if(cid==='CA23-DV-04'&&dir==='left')tryUnlock('LOG-DV-04-MED');
+    // ═══ 큰 분기 CHAINS 파생 LOG (data-chains-branch.js v1.0) ═══
+    if(cid==='CH-DG-04-L-2'&&dir==='left')tryUnlock('LOG-DG-HISTORY-DEEP');
+    if(cid==='CH-MD-03-L-2'&&dir==='left')tryUnlock('LOG-DG-RETALIATE');
+    if(cid==='CH-SUP-DG-1-R-2'&&dir==='left')tryUnlock('LOG-DG-LEDGER');
+    if(cid==='CH-MD-04-R-1'&&dir==='left')tryUnlock('LOG-MD-BACKCHANNEL');
+    if(cid==='CH-MD-04-R-2'&&dir==='left')tryUnlock('LOG-DG-DECRYPT');
+    if(cid==='CH-DG-WARN-R-1'&&dir==='left')tryUnlock('LOG-AUDIT-COMPLY');
+    if(cid==='CH-DG-WARN-R-2'&&dir==='left')tryUnlock('LOG-AUDIT-ALLY');
 }
 
 // ═══ app.js 호환 alias (함수명 불일치 수정) ═══
