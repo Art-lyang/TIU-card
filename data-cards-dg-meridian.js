@@ -113,7 +113,7 @@ var CARDS_DG_MERIDIAN = [
   // SUP-DM-01 : 기초 보급 택일 (Act 2 후반)
   { id: "SUP-DM-01", act: [2,3], priority: "중", bg: "base", once: true,
     req: function(s,g,logs){ return s.day >= 13 && logs.indexOf('LOG-DG-CONTACT') >= 0 && logs.indexOf('LOG-MD-CONTACT') >= 0; },
-    msg: "보급품 재고가 임박했습니다. 같은 날, 두 세력에서 동시에 물자 제안이 들어왔습니다.\n\nDr. Park(메리디안): \"의료 키트 500셋 + WHO 인증 백신 샘플. 전량 공식 루트로, ORACLE 사전 승인까지 확보했어요.\"\n\n대가 방산부문: \"전투 식량 1톤, 탄약, 정비 부품. 오늘 밤 안에 기지 도착 가능합니다. 서류는 사후 처리하시죠.\"\n\n강도윤: \"지휘관님. 고를 수 있는 건 한쪽입니다. 양쪽 동시 수령은 위장 들킵니다.\"",
+    msg: "보급품 재고가 임박했습니다. 같은 날, 두 세력에서 동시에 물자 제안이 들어왔습니다.\n\nDr. Park(메리디안): \"의료 키트 500셋 + 기본 의료물자 패키지. 전량 공식 루트로, ORACLE 사전 승인까지 확보했어요.\"\n\n대가 방산부문: \"전투 식량 1톤, 탄약, 정비 부품. 오늘 밤 안에 기지 도착 가능합니다. 서류는 사후 처리하시죠.\"\n\n강도윤: \"지휘관님. 고를 수 있는 건 한쪽입니다. 양쪽 동시 수령은 위장 들킵니다.\"",
     left:  { label: "메리디안 — 공식 의료 보급", fx: { c: 0, r: 1, t: 0, o: 3 }, g: 1, logMsg: "LOG-SUPPLY-MD" },
     right: { label: "대가 — 현장 즉시 보급", fx: { c: 0, r: 2, t: 3, o: -1 }, g: -1, logMsg: "LOG-SUPPLY-DG" } },
 
