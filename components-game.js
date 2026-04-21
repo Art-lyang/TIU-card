@@ -16,17 +16,41 @@ function Boot(p){
 function Stats(p){
   var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
   var pv=p.preview||{};
+  // v1.0 — 확정 델타 플로팅: 실제 스탯 변화 감지 시 +N / -N 1.5초 플로트
+  var prevRef=useRef(null);
+  var dState=useState({tick:0,deltas:null}),dBox=dState[0],setDBox=dState[1];
+  useEffect(function(){
+    var cur={c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o};
+    if(!prevRef.current){prevRef.current=cur;return}
+    var d={},changed=false;
+    ['c','r','t','o'].forEach(function(k){var diff=cur[k]-prevRef.current[k];if(diff!==0){d[k]=diff;changed=true}});
+    prevRef.current=cur;
+    if(changed){
+      setDBox(function(prev){return{tick:prev.tick+1,deltas:d}});
+      var t=setTimeout(function(){setDBox(function(prev){return{tick:prev.tick,deltas:null}})},1500);
+      return function(){clearTimeout(t)};
+    }
+  },[p.stats.c,p.stats.r,p.stats.t,p.stats.o]);
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
-      h('div',{className:'gauge-icon gauge-icon-'+s.k}),
-      h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},
-        h('div',{className:'gauge-bar-inner'},
-          delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(var(--ui-rgb),0.15)',zIndex:1,transition:'width 0.15s'}}):null,
-          h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
-          delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
+    sm.map(function(s){
+      var v=p.stats[s.k],d=v<=15,hi=v>=85;
+      // 상한 임계 경고: 봉쇄/평가는 85+ 도달 시 엔딩 분기 신호 → 주황 경고색
+      var critHi=(s.k==='c'||s.k==='o')&&v>=85;
+      var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));
+      var realDelta=dBox.deltas&&dBox.deltas[s.k];
+      return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')+(critHi?' gauge-critical-hi':'')},
+        h('div',{className:'gauge-icon gauge-icon-'+s.k}),
+        h('span',{className:'gauge-label'},s.l),
+        h('div',{className:'gauge-bar'},
+          h('div',{className:'gauge-bar-inner'},
+            delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(var(--ui-rgb),0.15)',zIndex:1,transition:'width 0.15s'}}):null,
+            h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
+            delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
+        h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v),
+        realDelta?h('span',{key:'delta-'+dBox.tick+'-'+s.k,className:'delta-float '+(realDelta>0?'delta-up':'delta-down')},(realDelta>0?'+':'')+realDelta):null
+      )
+    })
   );
 }
 function CardC(p){

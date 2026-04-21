@@ -44,6 +44,17 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .gauge-danger .gauge-fill{filter:hue-rotate(280deg) saturate(2)}
 .gauge-danger .gauge-val{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.4);animation:dangerPulse 1.5s ease-in-out infinite}
 .gauge-high .gauge-val{color:var(--ui);text-shadow:0 0 8px var(--ui-glow)}
+/* 임계 경고 (c/o ≥85) — 엔딩 분기 진입 신호, 주황 글로우 */
+.gauge-critical-hi .gauge-val{color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.5);animation:criticalPulse 1.2s ease-in-out infinite}
+.gauge-critical-hi .gauge-fill{filter:hue-rotate(-60deg) saturate(1.6) brightness(1.1)}
+.gauge-critical-hi .gauge-icon{filter:drop-shadow(0 0 4px rgba(240,160,48,0.7)) drop-shadow(0 0 10px rgba(240,160,48,0.35))}
+@keyframes criticalPulse{0%,100%{opacity:1}50%{opacity:0.55}}
+/* 확정 스탯 변화 플로팅 — +N/-N이 게이지 값 위로 올라가며 페이드 */
+.gauge-row{position:relative}
+.delta-float{position:absolute;right:30px;top:50%;font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:bold;pointer-events:none;animation:deltaFloatUp 1.5s ease-out forwards;z-index:3;text-shadow:0 0 6px currentColor}
+.delta-float.delta-up{color:#7fd47f}
+.delta-float.delta-down{color:#ff7a7a}
+@keyframes deltaFloatUp{0%{transform:translateY(-50%);opacity:0}15%{transform:translateY(-120%);opacity:1}80%{transform:translateY(-220%);opacity:1}100%{transform:translateY(-280%);opacity:0}}
 /* Inline Stat Icons */
 .stat-icon-inline{display:inline-block;width:14px;height:14px;background-size:contain;background-repeat:no-repeat;background-position:center;vertical-align:middle;margin-right:3px;filter:drop-shadow(0 0 3px rgba(var(--ui-rgb),0.4))}
 .stat-icon-inline-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
