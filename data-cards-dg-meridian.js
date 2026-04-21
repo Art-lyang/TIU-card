@@ -1,4 +1,4 @@
-// data-cards-dg-meridian.js — 대가 인더스트리(DG) + 메리디안 카드 (v1.2 / 2026-04-21)
+// data-cards-dg-meridian.js — 대가 인더스트리(DG) + 메리디안 카드 (v1.3 / 2026-04-21)
 // 한국 캐논(TIU-KOREA-DAEGA.md, TIU-KOREA-DAEGA-HISTORY.md) 반영
 //
 // 설계 원칙:
@@ -9,6 +9,10 @@
 //     플레이어에게 DG 견제 위한 정보/물자 제공 제안 → ORACLE 평가는 중립~상승(o+)
 //     but GI(본부 평가)는 외세 협력이라 감소(g↓). DG와 양자 택일 긴장 구조
 //
+// v1.3 추가: 메리디안 vs DG 물자 택일 카드 3장 (SUP-DM-01~03)
+//   - 메리디안: o(평가)↑ — 공식 루트, ORACLE 승인 기반
+//   - 대가:     t(신뢰)↑ + r(자원)↑ — 현장 직공급, 비공식 호의
+//
 // LOG 네트워크:
 //   LOG-DG-CONTACT   : DG와 첫 접촉 (DG-01 left 선택)
 //   LOG-DG-DEAL      : DG 공식 협력 수락 (DG-02/03)
@@ -17,6 +21,8 @@
 //   LOG-MD-INTEL     : 메리디안 정보 수용 (MD-02)
 //   LOG-MD-REJECT    : 메리디안 명시적 거절 (MD-03 right)
 //   LOG-DG-VS-MD     : DG·메리디안 충돌 중재 (MD-04 분기)
+//   LOG-SUPPLY-MD    : 메리디안 보급 수령 (SUP-DM-01/02/03 left)
+//   LOG-SUPPLY-DG    : 대가 보급 수령 (SUP-DM-01/02/03 right)
 
 var CARDS_DG_MERIDIAN = [
 
@@ -96,7 +102,34 @@ var CARDS_DG_MERIDIAN = [
     req: function(s,g,logs){ return s.day >= 27 && logs.indexOf('LOG-MD-INTEL') >= 0 && logs.indexOf('LOG-MD-REJECT') < 0; },
     msg: "암호화된 외부 통신. Dr. Park의 목소리입니다.\n\n\"지휘관님. 상황이 나빠진 거 알아요. ORACLE 평가가 바닥이라는 것도.\"\n\n\"저희가 — 공식적으로 말씀드릴게요. 한국 외부로 나오시면, 메리디안이 신원을 보장합니다. 요원들도 포함해서요.\"\n\n\"결정은 지휘관님 몫이에요. 하지만 문은 열려 있어요. 48시간.\"\n\n[ORACLE: ...분석 데이터 불충분. 권고 생성 실패.]",
     left:  { label: "제안을 숙고 — 문을 열어둔다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
-    right: { label: "제안을 즉각 거절", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } }
+    right: { label: "제안을 즉각 거절", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+
+  // ═══════════════════════════════════════════════════════════
+  //  Supply Choice — 메리디안 vs DG 물자 택일 (3장)
+  //  설계: 양측 동시 접촉 성립 후, 동일 타이밍에 보급을 제안.
+  //        플레이어가 축(o vs t·r)을 선택하도록 강제하는 순간.
+  // ═══════════════════════════════════════════════════════════
+
+  // SUP-DM-01 : 기초 보급 택일 (Act 2 후반)
+  { id: "SUP-DM-01", act: [2,3], priority: "중", bg: "base", once: true,
+    req: function(s,g,logs){ return s.day >= 13 && logs.indexOf('LOG-DG-CONTACT') >= 0 && logs.indexOf('LOG-MD-CONTACT') >= 0; },
+    msg: "보급품 재고가 임박했습니다. 같은 날, 두 세력에서 동시에 물자 제안이 들어왔습니다.\n\nDr. Park(메리디안): \"의료 키트 500셋 + WHO 인증 백신 샘플. 전량 공식 루트로, ORACLE 사전 승인까지 확보했어요.\"\n\n대가 방산부문: \"전투 식량 1톤, 탄약, 정비 부품. 오늘 밤 안에 기지 도착 가능합니다. 서류는 사후 처리하시죠.\"\n\n강도윤: \"지휘관님. 고를 수 있는 건 한쪽입니다. 양쪽 동시 수령은 위장 들킵니다.\"",
+    left:  { label: "메리디안 — 공식 의료 보급", fx: { c: 0, r: 1, t: 0, o: 3 }, g: 1, logMsg: "LOG-SUPPLY-MD" },
+    right: { label: "대가 — 현장 즉시 보급", fx: { c: 0, r: 2, t: 3, o: -1 }, g: -1, logMsg: "LOG-SUPPLY-DG" } },
+
+  // SUP-DM-02 : 중장기 장비 택일 (Act 3)
+  { id: "SUP-DM-02", act: [3], priority: "상", bg: "comms", once: true,
+    req: function(s,g,logs){ return s.day >= 18 && logs.indexOf('LOG-DG-CONTACT') >= 0 && logs.indexOf('LOG-MD-CONTACT') >= 0; },
+    msg: "기지 방어선 보강 장비가 필요한 시점. 양측이 또 경쟁적으로 제안합니다.\n\nDr. Park: \"저희 유럽 공장에서 나오는 전술 드론 12기. ORACLE 프로토콜에 100% 호환됩니다. 통신 로그 전부 공유 조건으로요.\"\n\n대가 CEO 서한: \"한국방벽용 차세대 자동포탑 4기 — 무상 대여. 한국 실증 데이터만 주시면 됩니다.\"\n\n임재혁: \"메리디안은 — ORACLE이 우리 감청까지 들을 수 있다는 뜻이에요. 대가는 장비는 확실한데, 데이터가 ORACLE 밖으로 새고요.\"",
+    left:  { label: "메리디안 드론 — 통신 투명성", fx: { c: 1, r: 1, t: -1, o: 4 }, g: 2, logMsg: "LOG-SUPPLY-MD" },
+    right: { label: "대가 자동포탑 — 데이터 대가", fx: { c: 2, r: 3, t: 2, o: -2 }, g: -2, logMsg: "LOG-SUPPLY-DG" } },
+
+  // SUP-DM-03 : 긴급 물자 택일 (Act 3 후반 / Act 4)
+  { id: "SUP-DM-03", act: [3,4], priority: "상", bg: "restricted", once: true,
+    req: function(s,g,logs){ return s.day >= 24 && (logs.indexOf('LOG-DG-DEAL') >= 0 || logs.indexOf('LOG-MD-INTEL') >= 0); },
+    msg: "자원 고갈 경보. 선택의 여유가 없습니다.\n\n\"마지막 한 번입니다, 지휘관님.\" — Dr. Park의 암호 통신.\n\"메리디안 긴급 수송기 한 대. 의료품·식량 통합 패키지. ORACLE이 착륙 승인까지 해줄 거예요.\"\n\n대가 회장의 전화: \"이건 거래가 아닙니다. 우리 땅의 일이에요. 오늘 밤 헬기 세 대를 띄웁니다. 수리 부품부터 치료제까지 전부 실려 있습니다.\"\n\n서하은: \"...선택은 지휘관님께 달려있습니다.\"",
+    left:  { label: "메리디안 수송기 — 공식 루트", fx: { c: 1, r: 2, t: -1, o: 5 }, g: 2, logMsg: "LOG-SUPPLY-MD" },
+    right: { label: "대가 헬기 — 동포의 손", fx: { c: 2, r: 4, t: 4, o: -3 }, g: -3, logMsg: "LOG-SUPPLY-DG" } }
 
 ];
 

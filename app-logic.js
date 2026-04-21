@@ -107,6 +107,9 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     if(cid==='MD-02'&&dir==='left')tryUnlock('LOG-MD-INTEL');
     if(cid==='MD-03'&&dir==='right')tryUnlock('LOG-MD-REJECT');
     if(cid==='MD-04'&&dir==='left')tryUnlock('LOG-DG-VS-MD');
+    // ═══ 물자 택일 (SUP-DM v1.3) ═══
+    if((cid==='SUP-DM-01'||cid==='SUP-DM-02'||cid==='SUP-DM-03')&&dir==='left')tryUnlock('LOG-SUPPLY-MD');
+    if((cid==='SUP-DM-01'||cid==='SUP-DM-02'||cid==='SUP-DM-03')&&dir==='right')tryUnlock('LOG-SUPPLY-DG');
 }
 
 // ═══ app.js 호환 alias (함수명 불일치 수정) ═══
