@@ -15,9 +15,16 @@ TIU_CARD 몬테카를로 시뮬레이션
       P3 "충성" — gi 증가량이 가장 큰 것 (ORACLE 친화 = r+,o+)
       P4 "저항" — gi 감소량이 가장 큰 것 (인간 편 = t+, o-)
   - 스탯 하락 규칙 (Act3 c-2,r-3 / Act4 c-3,r-5,t-2)
-  - Act 전환: day 5/14/29
+  - Act 전환: day 5/13/24 (35일 캡)
   - 게임오버: c<=0/c>=100/r<=0/t<=0/o<=0
-  - 엔딩 판정: gi>=60 → A, gi<=-30 & Act3+ → D, gi<=-15 & Act3+ → B, else 생존
+  - 엔딩 판정 (35캡 기준):
+      A 정상형: Act4+day>=30+GI>=55+c>=70+o>=60
+      A 파탄형: c>=100+GI>=60 (doGO)
+      B 정상: day>=25+GI<=-15+highTrust>=2+log>=6 / 변형: day>=28+GI<=-25+highTrust<=1+log>=10
+      D 정상: day>=28+GI<=-30+midTrust>=3+log>=8 / 변형: day>=30+GI<=-35+r>=35+anyTrust70>=1+log>=10
+      F 정상: day>=28+LOG12+13+OBS + GI<=0 / 변형: day>=33+LOG12+13+GI<=-20+highTrust>=2
+      G 정상: day>=28+GI 0~20+anyTrust55>=1+log>=7 / 변형: day>=31+GI -5~25+anyTrust55>=2+log>=9
+      TIME_UP: day>35 강제 — GI>=40→A / GI<=-20&highT>=1→D / GI<=-15→B / else→G
 -----------------------------------------------------------
 """
 import random, json, os, re, sys, statistics
@@ -63,15 +70,26 @@ def clamp(v, lo=0, hi=100): return max(lo, min(hi, v))
 def play_once(policy='P1', seed=None):
     if seed is not None: random.seed(seed)
     s = {'c':50, 'r':65, 't':50, 'o':40}
+    # trust 및 logs 근사값 (신뢰는 policy 편향 + 무작위, logs는 day 기반 카운트)
+    trust = {'haeun':50,'doyun':50,'sejin':50,'jaehyuk':50}
+    logs = 1  # LOG-001 기본
     day = 1
     gi = 0
     act = 1
-    # 최대 60일 (안전)
-    for day in range(1, 61):
-        # Act 전환
+    # 35일 캡 — day 36 진입 시 TIME_UP
+    for day in range(1, 37):
+        # Act 전환 (35일 캡 스케줄)
         if day >= 5: act = max(act, 2)
-        if day >= 14: act = max(act, 3)
-        if day >= 29: act = max(act, 4)
+        if day >= 13: act = max(act, 3)
+        if day >= 24: act = max(act, 4)
+        # day 36 = TIME_UP 강제
+        if day > 35:
+            highT = sum(1 for k in trust if trust[k] >= 65)
+            if gi >= 40: te = 'A'
+            elif gi <= -20 and highT >= 1: te = 'D'
+            elif gi <= -15: te = 'B'
+            else: te = 'G'
+            return {'ending': te + '_timeup', 'day': day, 'act': act, 'stats': s, 'gi': round(gi,1)}
 
         # 하루 카드 10회 — 플레이어는 스탯 위험을 피하는 쪽을 고름
         for _ in range(10):
@@ -140,11 +158,42 @@ def play_once(policy='P1', seed=None):
         if s['c'] <= 0 or s['c'] >= 100 or s['r'] <= 0 or s['t'] <= 0 or s['o'] <= 0:
             return {'ending': 'GO_rew', 'day': day, 'act': act, 'stats': s, 'gi': round(gi,1)}
 
-    # 60일 생존
+        # trust/logs 근사 업데이트 — policy/gi 기반 편향 + 무작위
+        logs = min(15, 1 + day // 3)
+        for k in trust:
+            drift = 0
+            if policy == 'P3': drift = 1  # 충성 → 전원 친화
+            elif policy == 'P4': drift = 1 if k in ('jaehyuk','haeun') else 0  # 저항 → 저항 계열만
+            elif policy == 'P2': drift = 1 if k in ('haeun','sejin') else 0
+            trust[k] = max(0, min(100, trust[k] + drift + random.randint(-1,2)))
+
+        # chkSpecialEnding 근사 (Act 3+)
+        if act >= 3:
+            highT = sum(1 for k in trust if trust[k] >= 65)
+            midT  = sum(1 for k in trust if trust[k] >= 60)
+            any55 = sum(1 for k in trust if trust[k] >= 55)
+            any70 = sum(1 for k in trust if trust[k] >= 70)
+            # A 정상형
+            if act >= 4 and day >= 30 and gi >= 55 and s['c'] >= 70 and s['o'] >= 60:
+                return {'ending':'A','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            # D 정상/변형
+            if gi <= -30 and midT >= 3 and logs >= 8 and day >= 28:
+                return {'ending':'D','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            if gi <= -35 and s['r'] >= 35 and any70 >= 1 and logs >= 10 and day >= 30:
+                return {'ending':'D','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            # B 정상/변형
+            if gi <= -15 and highT >= 2 and logs >= 6 and day >= 25:
+                return {'ending':'B','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            if gi <= -25 and highT <= 1 and logs >= 10 and day >= 28:
+                return {'ending':'B','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            # G 정상/변형
+            if 0 <= gi <= 20 and any55 >= 1 and logs >= 7 and day >= 28:
+                return {'ending':'G','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+            if -5 <= gi <= 25 and any55 >= 2 and logs >= 9 and day >= 31:
+                return {'ending':'G','day':day,'act':act,'stats':s,'gi':round(gi,1)}
+
+    # 35일 생존 — TIME_UP 디스패치가 위에서 처리됨
     ending = 'survive'
-    if gi >= 60: ending = 'A'
-    elif gi <= -30 and act >= 3: ending = 'D'
-    elif gi <= -15 and act >= 3: ending = 'B'
     return {'ending': ending, 'day': day, 'act': act, 'stats': s, 'gi': round(gi,1)}
 
 def run(N=5000):

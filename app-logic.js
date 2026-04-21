@@ -10,16 +10,16 @@ function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\
 function introsDone(logs){return logs.indexOf('LOG-INTRO-SH')>=0&&logs.indexOf('LOG-INTRO-KD')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-INTRO-IJ')>=0}
 
 function checkActTransition(s,g,lg,af,curAct){
-  // 디스패치 타임라인 시프트: Act1 10→5일, Act2 25→14일, Act3 30→29일
+  // 디스패치 타임라인: 35일 캡 적용 (Act1→5, Act2→13, Act3→24, Act4 종료 day>35)
   if(curAct===1&&s.day>=5){
     var route=af.prom_met&&af.mission_done?'A':af.prom_met?'B':af.mission_done?'C':'D';
     return{act:2,route:route};
   }
-  if(curAct===2&&s.day>=14){
+  if(curAct===2&&s.day>=13){
     var route=af.chain_done&&af.prom_mission?'A':af.chain_done?'B':af.prom_mission?'C':'D';
     return{act:3,route:route};
   }
-  if(curAct===3&&s.day>=29){
+  if(curAct===3&&s.day>=24){
     // GI 수치 기반 Act 4 루트 결정
     var route=g>=10?'A4_COMPLY':g>=-15?'A4_GREY':g>=-30?'A4_RESIST':'A4_OBSERVER';
     return{act:4,route:route};
