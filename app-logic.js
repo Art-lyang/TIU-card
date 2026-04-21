@@ -110,6 +110,11 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     // ═══ 물자 택일 (SUP-DM v1.3) ═══
     if((cid==='SUP-DM-01'||cid==='SUP-DM-02'||cid==='SUP-DM-03')&&dir==='left')tryUnlock('LOG-SUPPLY-MD');
     if((cid==='SUP-DM-01'||cid==='SUP-DM-02'||cid==='SUP-DM-03')&&dir==='right')tryUnlock('LOG-SUPPLY-DG');
+    // ═══ 내부분열 중재 (CA23-DV v1.0) — 좌 선택 시 해결 체인 LOG ═══
+    if(cid==='CA23-DV-01'&&dir==='left')tryUnlock('LOG-DV-01-MED');
+    if(cid==='CA23-DV-02'&&dir==='left')tryUnlock('LOG-DV-02-MED');
+    if(cid==='CA23-DV-03'&&dir==='left')tryUnlock('LOG-DV-03-MED');
+    if(cid==='CA23-DV-04'&&dir==='left')tryUnlock('LOG-DV-04-MED');
 }
 
 // ═══ app.js 호환 alias (함수명 불일치 수정) ═══
