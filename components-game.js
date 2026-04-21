@@ -165,7 +165,48 @@ function News(p){
   var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
   useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
   useEffect(function(){var onKey=function(e){if(shown>=p.headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,p.headlines.length]);
-  var parseHL=function(raw){var s=String(raw||'');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false}}return{tag:'INTEL-01',text:s,gl:false}};
+  // v1.1 — 헤드라인 뱃지(시간/출처/중요도) 파싱: raw 문자열 그대로 두고 렌더링에만 메타 부여
+  var NEWS_TIMES=['06:14','09:42','11:20','13:05','15:30','17:48','20:12','22:55'];
+  var HI_KW=['붕괴','실패','침투','침입','고장','두절','폭발','위협','경고','긴급','폐쇄','반발','적발','조사 착수','의혹','하락','공방','붕','0건'];
+  var LO_KW=['협력','합의','성공','효율','보급률','최고치','호조','강화','재확인','개시','돌파','경신','향상','감소세','유지율','완성 임박','완성'];
+  var parseHL=function(raw,idx){
+    var s=String(raw||'');
+    var isGl=s.indexOf('분류 오류')>=0||s.indexOf('삭제됨')>=0;
+    if(isGl)return{tag:'REDACTED',text:s,gl:true,sev:'X',src:'ORACLE:AUTO',time:'--:--'};
+    var isForeign=s.indexOf('[해외]')>=0,isDomestic=s.indexOf('[국내]')>=0;
+    var clean=s.replace('[국내] ','').replace('[해외] ','');
+    var tag;
+    if(isForeign){fIdx++;tag='FOREIGN-0'+fIdx}
+    else if(isDomestic){dIdx++;tag='DOMESTIC-0'+dIdx}
+    else tag='INTEL-01';
+    var time=NEWS_TIMES[idx%NEWS_TIMES.length];
+    // 출처 추론 — 본문 키워드 매핑
+    var src;
+    if(isForeign){
+      if(clean.indexOf('WHO')>=0)src='WHO';
+      else if(clean.indexOf('메리디안')>=0||clean.indexOf('Meridian')>=0)src='MERIDIAN';
+      else if(clean.indexOf('유럽')>=0||clean.indexOf('EU')>=0)src='EU-NET';
+      else if(clean.indexOf('미국')>=0||clean.indexOf('ARES')>=0)src='US-GOV';
+      else if(clean.indexOf('일본')>=0||clean.indexOf('큐슈')>=0)src='JP-NHK';
+      else if(clean.indexOf('중국')>=0||clean.indexOf('NADL')>=0)src='CN-FEED';
+      else src='INTL-WIRE';
+    } else if(clean.indexOf('익명 제보')>=0||clean.indexOf('비등록')>=0||clean.indexOf('정체불명')>=0||clean.indexOf('미확인')>=0)src='ANON';
+    else if(clean.indexOf('White Shield')>=0)src='WS-IR';
+    else if(clean.indexOf('대가')>=0||clean.indexOf('DG')>=0)src='DG-PR';
+    else if(clean.indexOf('국회')>=0||clean.indexOf('공정위')>=0)src='NA-REL';
+    else if(clean.indexOf('군 ')>=0||clean.indexOf('방산')>=0||clean.indexOf('특재사')>=0||clean.indexOf('DMZ')>=0)src='MND';
+    else src='KOR-NEWS';
+    // 중요도 — 키워드 가중치 (HI 우선)
+    var sev='중';
+    for(var k=0;k<HI_KW.length;k++){if(clean.indexOf(HI_KW[k])>=0){sev='상';break}}
+    if(sev==='중'){for(var k2=0;k2<LO_KW.length;k2++){if(clean.indexOf(LO_KW[k2])>=0){sev='하';break}}}
+    return{tag:tag,text:clean,gl:false,sev:sev,src:src,time:time};
+  };
+  // 뱃지 스타일 헬퍼
+  var sevColor=function(sev){return sev==='상'?'#ff6644':sev==='하'?'rgba(var(--ui-rgb),.75)':'#f0a030'};
+  var sevBorder=function(sev){return sev==='상'?'rgba(255,102,68,.5)':sev==='하'?'rgba(var(--ui-rgb),.3)':'rgba(240,160,48,.5)'};
+  var sevLabel=function(sev){return sev==='상'?'HI':sev==='하'?'LO':sev==='X'?'X':'MID'};
+  var badge=function(txt,col,bd){return h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:col,border:'1px solid '+bd,borderRadius:2,padding:'1px 5px',letterSpacing:1,lineHeight:1.4,whiteSpace:'nowrap'}},txt)};
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={h:["운영 효율 양호. 현행 유지 권고.","ORACLE 권고 이행률 우수. 한국 지부 성과 상위권.","지휘관 판단 신뢰도 높음. 현 운영 방침 유지.","기지 안정성 확인. 추가 권한 부여 검토 중."],m:["운영 안정. 일부 비표준 패턴 감지.","전반적 안정. 독립적 판단 빈도 소폭 증가.","기지 운영 정상 범위. 일부 지표 변동 주시 중.","ORACLE 권고 이행률 보통. 관찰 지속."],l:["비표준 판단 빈도 증가. 모니터링 강화.","독자적 의사결정 패턴 감지. 분석 중.","ORACLE 권고 이탈 빈도 상승. 기록 중.","운영 데이터 분석 — 비표준 항목 다수 확인."],v:["비표준 운영 패턴 다수 감지. 주의 요망.","지휘관 신뢰 지표 하락 중. 재평가 예정.","ORACLE 권고 무시 빈도 위험 수준 접근.","운영 이상 감지. 본부 보고 검토 중."]};
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=aPool[Math.floor(Math.random()*aPool.length)];
@@ -193,9 +234,15 @@ function News(p){
           }))
       })(),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
-      p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
-        h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(var(--ui-rgb),.85)'}},hl.text))}),
+      p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l,i);
+        var sc=sevColor(hl.sev),sb=sevBorder(hl.sev);
+        return h('div',{key:i,style:{padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+          h('div',{style:{display:'flex',gap:4,alignItems:'center',flexWrap:'wrap',marginBottom:4}},
+            badge(hl.time,'rgba(var(--ui-rgb),.7)','rgba(var(--ui-rgb),.25)'),
+            badge(hl.src,hl.gl?'#ff6644':'rgba(var(--ui-rgb),.75)',hl.gl?'rgba(255,102,68,.4)':'rgba(var(--ui-rgb),.25)'),
+            badge(sevLabel(hl.sev),sc,sb),
+            h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.45)',letterSpacing:1,marginLeft:'auto'}},'['+hl.tag+']')),
+          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(var(--ui-rgb),.9)',borderLeft:'2px solid '+sb,paddingLeft:8}},hl.text))}),
       shown>=p.headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},'[ 다음 사이클 진행 ]')));
