@@ -153,7 +153,7 @@ function App(){
         else{next.pending.push(feId);setToastType('');setToast('확장 제안이 대기 목록에 추가되었습니다');setTimeout(function(){setToast('')},2200)}
         Save.saveFacility(next);return next});
       var nct=ct+1;setCt(nct);
-      if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(stats,gi));setTimeout(function(){setPhase('news')},400)}
+      if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(stats,gi,logs));setTimeout(function(){setPhase('news')},400)}
       else{nextCard(stats,gi,logs,chainQueue)}
       return;
     }
@@ -207,7 +207,7 @@ function App(){
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
     var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq)}
-    if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng));setTimeout(function(){setPhase('news')},400)}
+    if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
     else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,nextLogs,cq)},300)}
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg())nextCard(ns,ng,nextLogs,cq)},300)}
     else{nextCard(ns,ng,nextLogs,cq)}

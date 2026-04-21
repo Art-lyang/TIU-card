@@ -3,7 +3,12 @@
 
 function chk(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 \u2014 \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED \u2014 UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null}
 
-function genNews(s,g){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));return l}
+function genNews(s,g,logs){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));
+  // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
+  var lg=logs||[];
+  if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)l.push(pick(NP.dg));
+  if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)l.push(pick(NP.md));
+  return l}
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}
 
@@ -94,6 +99,14 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     if(cid==='C-081'&&dir==='left')tryUnlock('LOG-082');
     if(cid==='C-252')tryUnlock('LOG-082-REPORT');
     if(cid==='C-253')tryUnlock('LOG-083');
+    // ═══ DG·Meridian (data-cards-dg-meridian.js v1.2) ═══
+    if(cid==='DG-01'&&dir==='left')tryUnlock('LOG-DG-CONTACT');
+    if((cid==='DG-02'||cid==='DG-03')&&dir==='left')tryUnlock('LOG-DG-DEAL');
+    if(cid==='DG-04'&&dir==='left')tryUnlock('LOG-DG-HISTORY');
+    if(cid==='MD-01'&&dir==='left')tryUnlock('LOG-MD-CONTACT');
+    if(cid==='MD-02'&&dir==='left')tryUnlock('LOG-MD-INTEL');
+    if(cid==='MD-03'&&dir==='right')tryUnlock('LOG-MD-REJECT');
+    if(cid==='MD-04'&&dir==='left')tryUnlock('LOG-DG-VS-MD');
 }
 
 // ═══ app.js 호환 alias (함수명 불일치 수정) ═══
