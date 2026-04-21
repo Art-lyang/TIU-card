@@ -16,41 +16,17 @@ function Boot(p){
 function Stats(p){
   var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
   var pv=p.preview||{};
-  // v1.0 — 확정 델타 플로팅: 실제 스탯 변화 감지 시 +N / -N 1.5초 플로트
-  var prevRef=useRef(null);
-  var dState=useState({tick:0,deltas:null}),dBox=dState[0],setDBox=dState[1];
-  useEffect(function(){
-    var cur={c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o};
-    if(!prevRef.current){prevRef.current=cur;return}
-    var d={},changed=false;
-    ['c','r','t','o'].forEach(function(k){var diff=cur[k]-prevRef.current[k];if(diff!==0){d[k]=diff;changed=true}});
-    prevRef.current=cur;
-    if(changed){
-      setDBox(function(prev){return{tick:prev.tick+1,deltas:d}});
-      var t=setTimeout(function(){setDBox(function(prev){return{tick:prev.tick,deltas:null}})},1500);
-      return function(){clearTimeout(t)};
-    }
-  },[p.stats.c,p.stats.r,p.stats.t,p.stats.o]);
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
-    sm.map(function(s){
-      var v=p.stats[s.k],d=v<=15,hi=v>=85;
-      // 상한 임계 경고: 봉쇄만 85+ 도달 시 엔딩 분기 신호 → 주황 경고색 (평가는 색 변경 제외)
-      var critHi=s.k==='c'&&v>=85;
-      var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));
-      var realDelta=dBox.deltas&&dBox.deltas[s.k];
-      return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')+(critHi?' gauge-critical-hi':'')},
-        h('div',{className:'gauge-icon gauge-icon-'+s.k}),
-        h('span',{className:'gauge-label'},s.l),
-        h('div',{className:'gauge-bar'},
-          h('div',{className:'gauge-bar-inner'},
-            delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(var(--ui-rgb),0.15)',zIndex:1,transition:'width 0.15s'}}):null,
-            h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
-            delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-        h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v),
-        realDelta?h('span',{key:'delta-'+dBox.tick+'-'+s.k,className:'delta-float '+(realDelta>0?'delta-up':'delta-down')},(realDelta>0?'+':'')+realDelta):null
-      )
-    })
+    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+      h('div',{className:'gauge-icon gauge-icon-'+s.k}),
+      h('span',{className:'gauge-label'},s.l),
+      h('div',{className:'gauge-bar'},
+        h('div',{className:'gauge-bar-inner'},
+          delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(var(--ui-rgb),0.15)',zIndex:1,transition:'width 0.15s'}}):null,
+          h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
+          delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
+      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
   );
 }
 function CardC(p){
@@ -58,8 +34,8 @@ function CardC(p){
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
   var resolveVal=function(v){return typeof v==='function'?v():v};
   var timerTotal=resolveVal(card.timer)||0;
-  var leftLabel=resolveVal(card.left&&card.left.label)||'';
-  var rightLabel=resolveVal(card.right&&card.right.label)||'';
+  var leftLabel=resolveVal(card.left&&leftLabel)||'';
+  var rightLabel=resolveVal(card.right&&rightLabel)||'';
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
@@ -122,10 +98,10 @@ function CardC(p){
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
-      card.isFacilityProposal&&h('div',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui)',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
+      card.isFacilityProposal&&h('div',{style:{background:'rgba(74,170,238,.1)',border:'1px solid rgba(74,170,238,.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#4ae',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?'시설 확장':'ORACLE 통신'),h('span',{className:'card-hdr-r'},card.glitch?'██████':'우선순위: '+plbl)),
-      timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
+      timerTotal&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
           h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(timerTotal||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
@@ -151,7 +127,7 @@ function CardC(p){
             }));
         });
       }()),
-      card.hint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(var(--ui-rgb),.06)',borderLeft:'2px solid rgba(var(--ui-rgb),.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:0.5}},card.hint),
+      card.hint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(74,170,238,.06)',borderLeft:'2px solid rgba(74,170,238,.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#4ae',letterSpacing:0.5}},card.hint),
       (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:10,gap:8}},
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
@@ -165,48 +141,7 @@ function News(p){
   var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
   useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
   useEffect(function(){var onKey=function(e){if(shown>=p.headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,p.headlines.length]);
-  // v1.1 — 헤드라인 뱃지(시간/출처/중요도) 파싱: raw 문자열 그대로 두고 렌더링에만 메타 부여
-  var NEWS_TIMES=['06:14','09:42','11:20','13:05','15:30','17:48','20:12','22:55'];
-  var HI_KW=['붕괴','실패','침투','침입','고장','두절','폭발','위협','경고','긴급','폐쇄','반발','적발','조사 착수','의혹','하락','공방','붕','0건'];
-  var LO_KW=['협력','합의','성공','효율','보급률','최고치','호조','강화','재확인','개시','돌파','경신','향상','감소세','유지율','완성 임박','완성'];
-  var parseHL=function(raw,idx){
-    var s=String(raw||'');
-    var isGl=s.indexOf('분류 오류')>=0||s.indexOf('삭제됨')>=0;
-    if(isGl)return{tag:'REDACTED',text:s,gl:true,sev:'X',src:'ORACLE:AUTO',time:'--:--'};
-    var isForeign=s.indexOf('[해외]')>=0,isDomestic=s.indexOf('[국내]')>=0;
-    var clean=s.replace('[국내] ','').replace('[해외] ','');
-    var tag;
-    if(isForeign){fIdx++;tag='FOREIGN-0'+fIdx}
-    else if(isDomestic){dIdx++;tag='DOMESTIC-0'+dIdx}
-    else tag='INTEL-01';
-    var time=NEWS_TIMES[idx%NEWS_TIMES.length];
-    // 출처 추론 — 본문 키워드 매핑
-    var src;
-    if(isForeign){
-      if(clean.indexOf('WHO')>=0)src='WHO';
-      else if(clean.indexOf('메리디안')>=0||clean.indexOf('Meridian')>=0)src='MERIDIAN';
-      else if(clean.indexOf('유럽')>=0||clean.indexOf('EU')>=0)src='EU-NET';
-      else if(clean.indexOf('미국')>=0||clean.indexOf('ARES')>=0)src='US-GOV';
-      else if(clean.indexOf('일본')>=0||clean.indexOf('큐슈')>=0)src='JP-NHK';
-      else if(clean.indexOf('중국')>=0||clean.indexOf('NADL')>=0)src='CN-FEED';
-      else src='INTL-WIRE';
-    } else if(clean.indexOf('익명 제보')>=0||clean.indexOf('비등록')>=0||clean.indexOf('정체불명')>=0||clean.indexOf('미확인')>=0)src='ANON';
-    else if(clean.indexOf('White Shield')>=0)src='WS-IR';
-    else if(clean.indexOf('대가')>=0||clean.indexOf('DG')>=0)src='DG-PR';
-    else if(clean.indexOf('국회')>=0||clean.indexOf('공정위')>=0)src='NA-REL';
-    else if(clean.indexOf('군 ')>=0||clean.indexOf('방산')>=0||clean.indexOf('특재사')>=0||clean.indexOf('DMZ')>=0)src='MND';
-    else src='KOR-NEWS';
-    // 중요도 — 키워드 가중치 (HI 우선)
-    var sev='중';
-    for(var k=0;k<HI_KW.length;k++){if(clean.indexOf(HI_KW[k])>=0){sev='상';break}}
-    if(sev==='중'){for(var k2=0;k2<LO_KW.length;k2++){if(clean.indexOf(LO_KW[k2])>=0){sev='하';break}}}
-    return{tag:tag,text:clean,gl:false,sev:sev,src:src,time:time};
-  };
-  // 뱃지 스타일 헬퍼
-  var sevColor=function(sev){return sev==='상'?'#ff6644':sev==='하'?'rgba(var(--ui-rgb),.75)':'#f0a030'};
-  var sevBorder=function(sev){return sev==='상'?'rgba(255,102,68,.5)':sev==='하'?'rgba(var(--ui-rgb),.3)':'rgba(240,160,48,.5)'};
-  var sevLabel=function(sev){return sev==='상'?'HI':sev==='하'?'LO':sev==='X'?'X':'MID'};
-  var badge=function(txt,col,bd){return h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:col,border:'1px solid '+bd,borderRadius:2,padding:'1px 5px',letterSpacing:1,lineHeight:1.4,whiteSpace:'nowrap'}},txt)};
+  var parseHL=function(raw){var s=String(raw||'');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false}}return{tag:'INTEL-01',text:s,gl:false}};
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={h:["운영 효율 양호. 현행 유지 권고.","ORACLE 권고 이행률 우수. 한국 지부 성과 상위권.","지휘관 판단 신뢰도 높음. 현 운영 방침 유지.","기지 안정성 확인. 추가 권한 부여 검토 중."],m:["운영 안정. 일부 비표준 패턴 감지.","전반적 안정. 독립적 판단 빈도 소폭 증가.","기지 운영 정상 범위. 일부 지표 변동 주시 중.","ORACLE 권고 이행률 보통. 관찰 지속."],l:["비표준 판단 빈도 증가. 모니터링 강화.","독자적 의사결정 패턴 감지. 분석 중.","ORACLE 권고 이탈 빈도 상승. 기록 중.","운영 데이터 분석 — 비표준 항목 다수 확인."],v:["비표준 운영 패턴 다수 감지. 주의 요망.","지휘관 신뢰 지표 하락 중. 재평가 예정.","ORACLE 권고 무시 빈도 위험 수준 접근.","운영 이상 감지. 본부 보고 검토 중."]};
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=aPool[Math.floor(Math.random()*aPool.length)];
@@ -230,19 +165,13 @@ function News(p){
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[SITUATION REPORT]'),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('⚠')>=0;
-            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'rgba(var(--ui-rgb),.8)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'rgba(220,255,220,.7)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
           }))
       })(),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
-      p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l,i);
-        var sc=sevColor(hl.sev),sb=sevBorder(hl.sev);
-        return h('div',{key:i,style:{padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
-          h('div',{style:{display:'flex',gap:4,alignItems:'center',flexWrap:'wrap',marginBottom:4}},
-            badge(hl.time,'rgba(var(--ui-rgb),.7)','rgba(var(--ui-rgb),.25)'),
-            badge(hl.src,hl.gl?'#ff6644':'rgba(var(--ui-rgb),.75)',hl.gl?'rgba(255,102,68,.4)':'rgba(var(--ui-rgb),.25)'),
-            badge(sevLabel(hl.sev),sc,sb),
-            h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.45)',letterSpacing:1,marginLeft:'auto'}},'['+hl.tag+']')),
-          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(var(--ui-rgb),.9)',borderLeft:'2px solid '+sb,paddingLeft:8}},hl.text))}),
+      p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+        h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(220,255,220,.75)'}},hl.text))}),
       shown>=p.headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},'[ 다음 사이클 진행 ]')));
@@ -268,7 +197,7 @@ function Tutorial(p){
     {lines:["[임무 브리핑]","","ORACLE은 프로메테우스를","적대 세력으로 분류하고 있습니다.","","당신의 임무:","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 운영 총괄","▸ ORACLE 지시 이행 및 외부 위협 감시","","간부진 4명이 당신을 보좌합니다."],choices:[{label:"계속",next:2}]},
     {lines:["4가지 핵심 지표를 관리합니다.","","{{icon-c}} 봉쇄 — 봉쇄선 유지도","{{icon-r}} 자원 — 식량, 의약품, 장비","{{icon-t}} 신뢰 — 기지 인원의 신뢰도","{{icon-o}} 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","","← 왼쪽 / 오른쪽 →","카드를 밀어 선택하십시오."],choices:[{label:"세션 시작",next:-1}]}
   ];
-  var uiC=getComputedStyle(document.getElementById('root')||document.documentElement).getPropertyValue('--ui').trim()||'#33ff33';
+  var uiC=getComputedStyle(document.documentElement).getPropertyValue('--ui').trim()||'#33ff33';
   var HL=[['PILEHEAD','#f0a030'],['ORACLE',uiC],['EV-\u03A3','#33cccc'],['이변체','#33cccc'],['프로메테우스','#ff6644'],['[검열됨]','#ff4444'],['봉쇄선',uiC],['봉쇄',uiC],['자원',uiC],['신뢰도',uiC],['신뢰',uiC],['평가',uiC]];
   var hilite=function(txt){var ICON_MAP={'{{icon-c}}':'stat-icon-inline-c','{{icon-r}}':'stat-icon-inline-r','{{icon-t}}':'stat-icon-inline-t','{{icon-o}}':'stat-icon-inline-o'};var result=[];var s=txt;var ik;for(ik in ICON_MAP){while(s.indexOf(ik)>=0){var idx=s.indexOf(ik);if(idx>0)result.push(s.substring(0,idx));result.push(h('span',{key:'ic'+result.length,className:'stat-icon-inline '+ICON_MAP[ik]}));s=s.substring(idx+ik.length)}}if(result.length>0){if(s.length>0)result.push(s);txt=result}var inp=typeof txt==='string'?txt:null;if(!inp)return txt;var parts=[{t:inp,c:null}];HL.forEach(function(pair){var nw=[];parts.forEach(function(p){if(p.c){nw.push(p);return}var s=p.t,k=pair[0],idx=s.indexOf(k);while(idx>=0){if(idx>0)nw.push({t:s.substring(0,idx),c:null});nw.push({t:k,c:pair[1]});s=s.substring(idx+k.length);idx=s.indexOf(k)}if(s.length>0)nw.push({t:s,c:null})});parts=nw});return parts.map(function(p,i){return p.c?h('span',{key:i,style:{color:p.c,fontWeight:'bold',textShadow:'0 0 6px '+p.c+'44'}},p.t):p.t})};
   var st=steps[step];var s2=useState(0),shown=s2[0],setShown=s2[1];var s3=useState(false),bv=s3[0],setBv=s3[1];
@@ -279,12 +208,7 @@ function Tutorial(p){
 }
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
-  // 기본 6개 | 스탯 하락 시 선택지 축소 (절망 표현)
-  var count=6;
-  if(p.stats.c<40||p.stats.r<40||p.stats.t<40||p.stats.o<40)count=5;
-  if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=4;
-  if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=3;
-  if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=2;
+  var count=4;if(p.stats.c<30||p.stats.r<30||p.stats.t<30||p.stats.o<30)count=3;if(p.stats.c<20||p.stats.r<20||p.stats.t<20||p.stats.o<20)count=2;if(p.stats.c<10||p.stats.r<10||p.stats.t<10||p.stats.o<10)count=1;
   var _scrollRef=useRef(null);
   var _sc=useState({top:false,bottom:false}),scrollHint=_sc[0],setScrollHint=_sc[1];
   var checkScroll=function(){var el=_scrollRef.current;if(!el)return;var st=el.scrollTop>4;var sb=el.scrollTop+el.clientHeight<el.scrollHeight-4;setScrollHint({top:st,bottom:sb})};
@@ -330,7 +254,7 @@ function RewardScreen(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // RESOURCE DIRECTIVE')),
     h('div',{style:{width:'100%',maxWidth:440,display:'flex',justifyContent:'center',gap:12,margin:'4px 0',flexShrink:0,flexWrap:'wrap'}},
       ['c','r','t','o'].map(function(k){var v=p.stats[k];var nm={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};var d=v<=20;return h('span',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'rgba(var(--ui-rgb),.7)',letterSpacing:1}},nm[k]+':'+v)})),
-    h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
+    h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
     dangerC&&h('div',{style:{background:'rgba(var(--ui-rgb),.05)',border:'1px solid rgba(var(--ui-rgb),.22)',borderRadius:3,padding:'8px 12px',margin:'0 0 8px',maxWidth:440,width:'100%',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.8)',letterSpacing:.5,lineHeight:1.7,boxSizing:'border-box'}},
       h('div',{style:{color:'rgba(var(--ui-rgb),.4)',fontSize:9,marginBottom:4,letterSpacing:1}},'[ ORACLE // 운영 상태 경보 ]'),
       h('div',null,'KR-INIT-001 봉쇄 완전성 임계 도달 예측.'),
