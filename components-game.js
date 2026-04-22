@@ -34,8 +34,8 @@ function CardC(p){
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
   var resolveVal=function(v){return typeof v==='function'?v():v};
   var timerTotal=resolveVal(card.timer)||0;
-  var leftLabel=resolveVal(card.left&&leftLabel)||'';
-  var rightLabel=resolveVal(card.right&&rightLabel)||'';
+  var leftLabel=resolveVal(card.left&&card.left.label)||'';
+  var rightLabel=resolveVal(card.right&&card.right.label)||'';
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══

@@ -1,19 +1,30 @@
 // TERMINAL SESSION — app-init.js
 // 글로벌 유틸리티, CARDS 배열, drawCard, Save, SFX
 var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(CARDS_ACT4||[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(CARDS_ACT4||[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
+var pickWeighted=function(a){if(!a||a.length===0)return null;var total=0;for(var i=0;i<a.length;i++){total+=cardWeight(a[i])}var roll=Math.random()*total;for(var j=0;j<a.length;j++){roll-=cardWeight(a[j]);if(roll<=0)return a[j]}return a[a.length-1]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
 var clamp=function(v,lo,hi){return Math.max(lo||0,Math.min(hi||100,v))};
 var applyFx=function(s,fx,m){m=m||5;return{c:clamp(s.c+(fx.c||0)*m),r:clamp(s.r+(fx.r||0)*m),t:clamp(s.t+(fx.t||0)*m),o:clamp(s.o+(fx.o||0)*m),day:s.day}};
 var INTRO_FILTER=[{name:'서하은',log:'LOG-INTRO-SH'},{name:'강도윤',log:'LOG-INTRO-KD'},{name:'윤세진',log:'LOG-INTRO-YS'},{name:'임재혁',log:'LOG-INTRO-IJ'}];
-var introOk=function(c,logs){for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&c.msg&&c.msg.indexOf(f.name)>=0)return false}return true};
+var _introMsgText=function(c,stats,gi,logs){
+  try{
+    if(!c||c.msg===undefined||c.msg===null)return '';
+    if(typeof c.msg==='string')return c.msg;
+    if(typeof c.msg==='function')return String(c.msg(stats||{c:50,r:50,t:50,o:50,day:1},gi||0,logs||[])||'');
+    if(Array.isArray(c.msg))return c.msg.join(' ');
+    return String(c.msg);
+  }catch(e){return ''}
+};
+var introOk=function(c,logs,stats,gi){var txt=_introMsgText(c,stats,gi,logs);for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&txt.indexOf(f.name)>=0)return false}return true};
 // ═══ 세션별 변이체 체인 제한 (2종 고정) ═══
 var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
 var ACTIVE_SPECS=[];
 var initActiveSpecs=function(){ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,2).slice();try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);if(Array.isArray(parsed)&&parsed.length>=2){ACTIVE_SPECS=parsed}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
+var cardWeight=function(c){var w=1;if(!c)return w;if(c.priority==='상')w+=5;else if(c.priority==='중')w+=2;else if(c.priority==='event')w+=6;if(c.once)w+=2;if(c.transReq)w+=4;if(c.glitch)w+=1;return w};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
@@ -38,12 +49,12 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     // 범용 데일리(태그 없고 act 전체 포함) = 한 판 1회만. 그 외 무태그 = 15일 쿨다운
     if(!c.tag){var isGenericDaily=c.act&&c.act.length>=3;if(isGenericDaily){if(cd[c.id])return false}else if(cd[c.id]&&(day-cd[c.id])<15)return false}
     if(rec.indexOf(c.id)>=0)return false;
-    if(!introOk(c,logs))return false;
+    if(!introOk(c,logs,stats,gi))return false;
     if(!specOk(c))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs)&&specOk(c)}catch(e){return false}});
-  return pick(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs)&&specOk(c)}catch(e){return false}}).slice(0,15));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  return pickWeighted(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}}));
 };
 
 var Save={

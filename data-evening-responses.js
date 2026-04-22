@@ -20,10 +20,6 @@ var EVENING_RESPONSES = {
     a: { label: '무리하지 마. 쉴 때 쉬어야지.', trust: 2, reply: '...감사합니다. 가끔 이런 말이 필요한 것 같아요.' },
     b: { label: '컨디션 관리 잘 해.', trust: 0, reply: '네, 알겠습니다.' }
   },
-  'haeun_1_7-10': {
-    a: { label: '조심히 분석해. 돕겠다.', trust: 2, reply: '...감사합니다. 안심이 됩니다.' },
-    b: { label: '증거 없으면 보류.', trust: -1, reply: '...네, 좀더 지켜보겠습니다.' }
-  },
   'sejin_1_1-3': {
     a: { label: '잘 부탁한다. 앞으로 잘 지내봅시다.', trust: 2, reply: '네! 잘 부탁드려요, 지휘관님.' },
     b: { label: '연구 현황을 알려줘.', trust: 1, reply: '네, 정리해서 보고드리겠습니다.' }
@@ -36,38 +32,18 @@ var EVENING_RESPONSES = {
     a: { label: '잘 부탁한다. 시스템은 맡기겠다.', trust: 2, reply: '감사합니다. 책임지겠습니다.' },
     b: { label: '시스템 현황 보고 부탁한다.', trust: 1, reply: '알겠습니다. 정리해서 올리겠습니다.' }
   },
-  'jaehyuk_1_4-6': {
-    a: { label: '점검 수고했다.', trust: 2, reply: '감사합니다. 계속 관리하겠습니다.' },
-    b: { label: '이상 있으면 바로 보고해.', trust: 1, reply: '네, 알겠습니다.' }
-  },
   // (삭제) 'jaehyuk_1_5-8' 고아 응답 제거 — 조사테이블 해금 응답은 data-evening-extra-2a.js의 'jaehyuk_1_5-99'/'jaehyuk_2_5-99'로 단일화
-  'jaehyuk_1_7-10': {
-    a: { label: '보고서 기대한다.', trust: 2, reply: '감사합니다. 꼼꼼하게 정리하겠습니다.' },
-    b: { label: '일정에 맞춰 진행해.', trust: 1, reply: '네, 알겠습니다.' }
-  },
   'doyun_2_11-17': {
     a: { label: '함께 지킨다.', trust: 2, reply: '...알겠습니다. 지휘관님 결정 따르겠습니다.' },
     b: { label: '전략을 세우자.', trust: 1, reply: '알겠습니다. 작전안 준비하겠습니다.' }
-  },
-  'doyun_2_18-24': {
-    a: { label: '네 판단을 믿는다.', trust: 2, reply: '...감사합니다, 지휘관님.' },
-    b: { label: '좀더 신중하게.', trust: 0, reply: '...알겠습니다.' }
   },
   'haeun_2_11-17': {
     a: { label: '함께 확인하자.', trust: 2, reply: '네, 같이 봐주시면 분석이 빨라질 것 같습니다.' },
     b: { label: '증거를 더 모아.', trust: 0, reply: '알겠습니다. 더 조사해보겠습니다.' }
   },
-  'haeun_2_18-24': {
-    a: { label: '진실을 알아야 한다.', trust: 2, reply: '...맞아요. 무서워도.' },
-    b: { label: '안전이 우선이다.', trust: 1, reply: '네, 조심하겠습니다.' }
-  },
   'sejin_2_11-17': {
     a: { label: '연구를 계속해.', trust: 2, reply: '감사합니다. 결과가 나오면 바로 알려드릴게요.' },
     b: { label: '건강 먼저 챙겨.', trust: 2, reply: '...네, 주의하겠습니다.' }
-  },
-  'sejin_2_18-24': {
-    a: { label: '그 오차, 계속 추적해.', trust: 2, reply: '네, 패턴 잡히는 대로 보고드리겠습니다.' },
-    b: { label: '보고서로 정리해줘.', trust: 0, reply: '네, 정리하겠습니다.' }
   },
   'jaehyuk_2_11-17': {
     a: { label: '좋은 발견이다.', trust: 2, reply: '감사합니다. 더 파보겠습니다.' },

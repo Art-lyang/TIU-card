@@ -25,7 +25,7 @@ var CARDS_EXTERNAL = [
 
   // ═══ 박소영 — C-081에서 후보 A 선택 시 합류 (LOG-082) ═══
 
-  { id: "C-252", act: [3], priority: "상", bg: "base",
+  { id: "C-252", act: [4], priority: "상", bg: "base",
     cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-082-REPORT')<0 },
     msg: "박소영이 합류한 지 이틀째.\n\n첫 보고가 올라왔습니다.\n\n\"ORACLE 데이터 스트림 구조를 파악했습니다. 서하은 선배의 분석 로그가 큰 도움이 됐어요.\"\n\n임재혁: \"솔직히 놀랐습니다. 외부인이 이렇게 빨리 적응하는 건 처음 봅니다.\"\n\n... 유능합니다. 의심할 이유가 없습니다.",
     left: { label: "핵심 데이터 접근 허가", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2 },
@@ -46,8 +46,8 @@ var CARDS_EXTERNAL = [
     left: { label: "정밀 수색 — 3시간", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "기록만 남긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-255", act: [1], priority: "하", bg: "comms",
-    cond: function(s,g,logs){ return s.day>=6 },
+  { id: "C-255", act: [1,2], priority: "하", bg: "comms",
+    cond: function(s,g,logs){ return s.day>=4 },
     msg: "임재혁이 야간 통신 로그를 분석하던 중.\n\n\"03:14에 0.7초간 외부 전파 교란이 있었습니다.\"\n\n자연 현상으로 보기엔 너무 깨끗한 파형입니다.\n\n\"누군가 우리 통신 주파수를 스캔한 겁니다. 단, 감청까지는 아닙니다.\"\n\n[ORACLE: 해당 시간대 이상 기록 없음.]",
     left: { label: "통신 암호 교체", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 0 },
     right: { label: "모니터링 강화만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },

@@ -1,66 +1,33 @@
-// data-cards-facility-propose.js
-// FACILITY_EXPANSIONS 데이터로부터 시설 확장 제안 카드를 자동 생성
-// 기존 수동 카드: C-174 (FE-001 냉동고), C-131 (FE-004 격리실)
-// 이 파일은 FE-002, FE-003, FE-005 ~ FE-016 중 수동 카드가 없는 FE에 대해 제안 카드를 생성
+// data-cards-facility-propose.js — facility proposal cards auto-generator
+var CARDS_FACILITY_PROPOSALS = [];
+(function(){
+  if (typeof FACILITY_EXPANSIONS === 'undefined') return;
 
-var CARDS_FACILITY_PROPOSE = (function(){
-  if (typeof FACILITY_EXPANSIONS === 'undefined') return [];
-  var out = [];
-  // 이미 전용 카드가 있는 FE는 제외
-  var EXCLUDE = { 'FE-001': 1, 'FE-004': 1 };
-
-  // 시설 위치별 배경 매핑
-  var bgMap = {
-    'b2': 'lab',     'b3': 'lab',
-    'exterior': 'forest', 'level1': 'base'
-  };
-
-  for (var i = 0; i < FACILITY_EXPANSIONS.length; i++) {
-    var fe = FACILITY_EXPANSIONS[i];
-    if (EXCLUDE[fe.id]) continue;
-    if (!fe.cardMsg || !fe.cardLeft || !fe.cardRight) continue;
-
-    var minDay = fe.minDay || 5;
-    var minAct = fe.minAct || 1;
-    var actList = [];
-    for (var a = minAct; a <= 4; a++) actList.push(a);
-
-    var cardId = 'C-FEP-' + fe.id.replace('FE-', '');
-    var bgKey = bgMap[fe.facilityFloor] || 'base';
-
-    // uprising 라인은 신뢰 높음 또는 저항 조짐 로그가 있을 때만 제안되도록 제한
-    var reqFn = (function(md, upr){
-      return function(s, g, logs){
-        if (s.day < md) return false;
-        if (upr) {
-          if (s.t >= 70) return true;
-          if (logs.indexOf('LOG-RESISTANCE-A') >= 0) return true;
-          if (logs.indexOf('LOG-RESISTANCE-B') >= 0) return true;
-          if (logs.indexOf('LOG-UPRISING-SEED') >= 0) return true;
-          return false;
-        }
-        return true;
-      };
-    })(minDay, !!fe.uprising);
-
-    var card = {
-      id: cardId,
-      act: actList,
-      priority: '중',
-      once: true,
-      bg: bgKey,
-      req: reqFn,
-      msg: fe.cardMsg,
-      hint: fe.hint || ('▸ 승인 시 [' + fe.name + '] 시설 확장 제안'),
-      left:  { label: fe.cardLeft.label,
-               fx: fe.cardLeft.fx || { c:0, r:0, t:0, o:0 },
-               g: typeof fe.cardLeft.g === 'number' ? fe.cardLeft.g : 0 },
-      right: { label: fe.cardRight.label,
-               fx: fe.cardRight.fx || { c:0, r:0, t:0, o:0 },
-               g: typeof fe.cardRight.g === 'number' ? fe.cardRight.g : 0,
-               fePropose: fe.id }
-    };
-    out.push(card);
+  function isUnavailable(feId){
+    try{
+      var fac = (typeof Save !== 'undefined' && Save.getFacility) ? Save.getFacility() : null;
+      if(!fac) return false;
+      var all = [].concat(fac.approved||[], fac.pending||[], fac.completed||[], fac.proposed||[]);
+      return all.indexOf(feId) >= 0;
+    }catch(err){ return false; }
   }
-  return out;
+
+  FACILITY_EXPANSIONS.forEach(function(fe, idx){
+    CARDS_FACILITY_PROPOSALS.push({
+      id: 'FP-' + fe.id,
+      act: [1,2,3],
+      priority: idx < 4 ? '중' : '하',
+      isFacilityProposal: true,
+      feId: fe.id,
+      tag: 'facility-proposal-' + fe.id,
+      req: function(s){
+        var minDay = fe.minDay || 1;
+        var minAct = fe.minAct || 1;
+        return s.day >= minDay && (s.day <= 29) && minAct <= ((s.day >= 29) ? 4 : (s.day >= 14 ? 3 : (s.day >= 5 ? 2 : 1))) && !isUnavailable(fe.id);
+      },
+      msg: fe.cardMsg || (fe.name + ' 확장 제안이 도착했습니다.'),
+      left: fe.cardLeft || { label:'보류', fx:{}, g:0 },
+      right: fe.cardRight || { label:'승인', fx:{}, g:0 }
+    });
+  });
 })();

@@ -105,7 +105,7 @@ var CARDS_ESCAPE_EXTRA = [
     req:function(s,g,logs){
       return s.day>=22
         && g<=-10
-        && logs.indexOf('ONCE-CH-005-3')>=0
+        && logs.indexOf('LOG-080')>=0
         && logs.indexOf('LOG-SHELLTALKER-CAP')>=0
         && logs.indexOf('LOG-VOSS-STANDBY')<0;
     },

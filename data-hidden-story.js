@@ -1,4 +1,10 @@
 // data-hidden-story.js — 숨겨진 스토리 라인
+if (typeof ORACLE_LOGS === 'undefined') var ORACLE_LOGS = [];
+if (typeof EVENING_CHATS === 'undefined') var EVENING_CHATS = [];
+if (typeof EVENING_TRUST_LINES === 'undefined') var EVENING_TRUST_LINES = {};
+if (typeof EVENING_RESPONSES === 'undefined') var EVENING_RESPONSES = {};
+if (typeof EVIDENCE === 'undefined') var EVIDENCE = [];
+if (typeof EVIDENCE_COMBOS === 'undefined') var EVIDENCE_COMBOS = [];
 // 1) 전임 지휘관 기록 (LOG-090~091)
 // 2) 02:47 직접 목격 (LOG-092~093)
 
@@ -18,18 +24,18 @@ ORACLE_LOGS.push(
 );
 
 // ═══ 해금 이브닝 챗 ═══
-// 전임 지휘관: 서하은, Act 2, day 20-24 (삭제 로그 발견 후 심화)
+// 전임 지휘관: 서하은, Act 3, day 20-24 (삭제 로그 발견 후 심화)
 // 조건: LOG-INC-05-DONE(직원 실종 해결) 또는 day >= 20
 EVENING_CHATS.push(
-  { char: '서하은', act: [2], dayMin: 20, dayMax: 24,
+  { char: '서하은', act: [3], dayMin: 20, dayMax: 24,
     lines: ["지휘관님... 이건 공식 보고가 아닙니다.",
       "삭제된 운영 로그를 복원하다가 하나 찾았어요.",
       "지휘관님 부임 전... 이 기지에 지휘관이 '없었던' 게 아닙니다.",
       "있었어요. 기록이 삭제된 겁니다.",
       "그리고 그 사람도... 지휘관님과 똑같은 의문을 품었습니다."] },
-  // 02:47 잠복: 임재혁, Act 2, day 18-24
+  // 02:47 잠복: 임재혁, Act 3, day 19-23
   // 조건: LOG-INC-02-DONE 또는 LOG-INC-04-DONE (02:47 패턴 발견 후)
-  { char: '임재혁', act: [2], dayMin: 19, dayMax: 23,
+  { char: '임재혁', act: [3], dayMin: 19, dayMax: 23,
     lines: ["지휘관님. 02시 47분.",
       "그 시간에 서버실에서 뭔가가 일어난다는 거, 기억하시죠.",
       "잠복했습니다. 3일 동안. 혼자.",
@@ -38,7 +44,7 @@ EVENING_CHATS.push(
 );
 
 // ═══ 신뢰도 변형 ═══
-EVENING_TRUST_LINES['haeun_2_20-24'] = {
+EVENING_TRUST_LINES['haeun_3_20-24'] = {
   low: ["보고드립니다.", "삭제 로그에서 전임 지휘관 기록을 발견했습니다.",
     "전출이 아니라 실종으로 보입니다.", "추가 지시 부탁드립니다."],
   high: ["지휘관님... 이건 공식 보고가 아닙니다.",
@@ -54,7 +60,7 @@ EVENING_TRUST_LINES['haeun_2_20-24'] = {
     "하지만... 그래서 더 무섭습니다. 같은 패턴이라는 게."]
 };
 
-EVENING_TRUST_LINES['jaehyuk_2_19-23'] = {
+EVENING_TRUST_LINES['jaehyuk_3_19-23'] = {
   low: ["02:47 잠복 결과 보고합니다.",
     "서버 랙에서 비인가 프로세스를 확인했습니다.",
     "캡처 데이터를 제출합니다."],
@@ -73,7 +79,7 @@ EVENING_TRUST_LINES['jaehyuk_2_19-23'] = {
 };
 
 // ═══ 이브닝 응답 ═══
-EVENING_RESPONSES['haeun_2_20-24'] = {
+EVENING_RESPONSES['haeun_3_20-24'] = {
   a: { label: '전임 지휘관 기록을 보여줘.', trust: 2,
     reply: '여기요. 음성 메모까지 복원했어요. ...준비하시고 보세요.',
     log: 'LOG-090' },
@@ -82,7 +88,7 @@ EVENING_RESPONSES['haeun_2_20-24'] = {
     log: 'LOG-091' }
 };
 
-EVENING_RESPONSES['jaehyuk_2_19-23'] = {
+EVENING_RESPONSES['jaehyuk_3_19-23'] = {
   a: { label: '캡처한 화면을 봐야겠다.', trust: 2,
     reply: '여기 있습니다. 38초간의 기록. 전부 캡처했습니다.',
     log: 'LOG-092' },

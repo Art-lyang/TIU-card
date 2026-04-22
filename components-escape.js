@@ -10,8 +10,11 @@ function EscapeGameScreen(p){
 
   // 초기 state 세팅
   var _state = useState(function(){
+    var initialNodeId = (logs.indexOf('LOG-B3-ROUTE') >= 0 && ESCAPE_NODES.b3_entry) ? 'b3_entry'
+      : (logs.indexOf('LOG-GENERAL-ROUTE') >= 0 && ESCAPE_NODES.general_entry) ? 'general_entry'
+      : ESCAPE_NODES.start;
     return {
-      nodeId: ESCAPE_NODES.start,
+      nodeId: initialNodeId,
       hp: 100,
       ammo: 12,
       detection: 0,
