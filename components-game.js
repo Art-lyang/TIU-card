@@ -21,8 +21,9 @@ function ScenarioHub(p){
   var _sx=useState(0),sx=_sx[0],setSx=_sx[1];
   var _anim=useState(null),anim=_anim[0],setAnim=_anim[1];
   var scenarios=[
-    {id:'main',title:'TERMINAL SESSION',sub:'ORACLE // PILEHEAD',desc:'한국 지부 봉쇄 구역 관리 시나리오',active:true},
-    {id:'dlc1',title:'COMING SOON',sub:'DLC SCENARIO',desc:'새로운 시나리오가 준비 중입니다',active:false}
+    {id:'main',title:'TERMINAL SESSION',sub:'MISSION: KOREAN BRANCH STABILIZATION',desc:'한국 지부 봉쇄 구역 관리 시나리오',active:true,img:IMG.hub_main},
+    {id:'dlc_green',title:'GREEN THRESHOLD',sub:'MISSION: SOVARI BLIND ZONE',desc:'아프리카 소바리 폐허 — EV-Σ 잔류 구역 탐사',active:false,img:IMG.hub_dlc_green},
+    {id:'dlc_north',title:'NORTHERN FRONT',sub:'MISSION: SITE-7/13',desc:'러시아 북극권 — 신호 차단 구역 침투',active:false,img:IMG.hub_dlc_north}
   ];
   var _idx=useState(0),idx=_idx[0],setIdx=_idx[1];
   // 스와이프 핸들링
@@ -50,10 +51,8 @@ function ScenarioHub(p){
   };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[mode,idx,p.hasSave]);
   var mono={fontFamily:"'Share Tech Mono',monospace"};
   // 메인 스토리 진입 하위 메뉴
-  if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'center',gap:16}},
-    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'SCENARIO SELECT'),
-    h('div',{style:Object.assign({},mono,{fontSize:16,color:'var(--ui)',textAlign:'center',letterSpacing:2})},'TERMINAL SESSION'),
-    h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.5)',textAlign:'center',marginBottom:8}},'한국 지부 봉쇄 구역 관리 시나리오'),
+  if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:16,gap:10,overflowY:'auto'}},
+    IMG.hub_main&&h('img',{src:IMG.hub_main,alt:'TERMINAL SESSION',style:{width:'100%',maxWidth:380,borderRadius:6,border:'1px solid rgba(var(--ui-rgb),.2)',filter:'brightness(0.85)',flexShrink:0}}),
     h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:8}},
       p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},'[ 이어서 플레이 ]'),
       h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?'[ 새로 시작 ]':'[ 시작하기 ]'),
@@ -61,22 +60,22 @@ function ScenarioHub(p){
     h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:16,textAlign:'center'})},'← 시나리오 선택으로'));
   // 시나리오 카드 뷰
   var sc=scenarios[idx];
-  var cardStyle={width:'100%',maxWidth:380,padding:'32px 24px',border:'1px solid '+(sc.active?'rgba(var(--ui-rgb),.3)':'rgba(var(--ui-rgb),.1)'),
-    borderRadius:4,background:sc.active?'rgba(var(--ui-rgb),.03)':'rgba(var(--ui-rgb),.01)',
-    textAlign:'center',transform:'translateX('+(dragging?dx:0)+'px)',
+  var cardStyle={width:'100%',maxWidth:380,border:'1px solid '+(sc.active?'rgba(var(--ui-rgb),.3)':'rgba(var(--ui-rgb),.1)'),
+    borderRadius:6,background:'rgba(5,10,5,.9)',overflow:'hidden',
+    transform:'translateX('+(dragging?dx:0)+'px)',
     transition:dragging?'none':'transform 0.3s ease',cursor:'grab',userSelect:'none'};
-  return h('div',{className:'boot',style:{justifyContent:'center',gap:12}},
+  return h('div',{className:'boot',style:{justifyContent:'center',gap:10}},
     h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'SCENARIO SELECT'),
-    h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',textAlign:'center',marginBottom:4})},
+    h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',textAlign:'center',marginBottom:2})},
       (idx+1)+' / '+scenarios.length),
     h('div',{style:cardStyle,
       onMouseDown:function(e){onStart(e.clientX)},onMouseMove:function(e){onMove(e.clientX)},onMouseUp:onEnd,onMouseLeave:function(){if(dragging)onEnd()},
       onTouchStart:function(e){onStart(e.touches[0].clientX)},onTouchMove:function(e){onMove(e.touches[0].clientX)},onTouchEnd:onEnd},
-      h('div',{style:Object.assign({},mono,{fontSize:14,color:sc.active?'var(--ui)':'rgba(var(--ui-rgb),.3)',letterSpacing:2,marginBottom:8})},sc.title),
-      h('div',{style:Object.assign({},mono,{fontSize:10,color:sc.active?'rgba(var(--ui-rgb),.5)':'rgba(var(--ui-rgb),.2)',letterSpacing:1,marginBottom:12})},sc.sub),
-      h('div',{style:{fontSize:12,color:sc.active?'rgba(var(--ui-rgb),.6)':'rgba(var(--ui-rgb),.2)',lineHeight:1.6}},sc.desc),
-      !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.15)',marginTop:16,letterSpacing:2})},'LOCKED')),
-    h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'8px 0'}},
+      sc.img&&h('img',{src:sc.img,alt:sc.title,style:{width:'100%',display:'block',filter:sc.active?'brightness(0.9)':'brightness(0.4) grayscale(0.6)',transition:'filter 0.3s'}}),
+      !sc.img&&h('div',{style:{padding:'60px 24px',textAlign:'center'}},
+        h('div',{style:Object.assign({},mono,{fontSize:14,color:sc.active?'var(--ui)':'rgba(var(--ui-rgb),.3)',letterSpacing:2,marginBottom:8})},sc.title),
+        h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.4)',lineHeight:1.6}},sc.desc))),
+    h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'6px 0'}},
       scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
         background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
     sc.active&&h('button',{className:'btn btn-amber',onClick:function(){setMode('main')}},'[ 진입 ]'),
