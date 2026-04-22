@@ -53,7 +53,7 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
     if(cid==='CS-001')tryUnlock('LOG-053');if(cid==='CS-002')tryUnlock('LOG-054');if(cid==='CS-003')tryUnlock('LOG-052');
     if(cid==='CS-004')tryUnlock('LOG-055');if(cid==='CS-010')tryUnlock('LOG-056');
     if(cid==='CS-013')tryUnlock('LOG-057');if(cid==='CS-014')tryUnlock('LOG-058');if(cid==='CS-015')tryUnlock('LOG-059');
-    if(cid==='CH-004-2')tryUnlock('LOG-009');
+    if(cid==='CH-004-2'){tryUnlock('LOG-009');tryUnlock('LOG-DEFECTOR-1')}
     if(cid==='C-053'||cid==='CH-005-2')tryUnlock('LOG-016');
     if(cid==='C-067')tryUnlock('LOG-017');
     if(cid==='C-074'||cid==='CH-006-2')tryUnlock('LOG-018');

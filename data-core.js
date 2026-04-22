@@ -53,6 +53,7 @@ var ORACLE_LOGS = [
   { id: "LOG-007", title: "윤세진 관찰 일지 발췌", content: "[개인 기록 — 비공식]\n이변체 행동 패턴이 ORACLE 예측 모델과 미세하게 다름.\n오차의 방향이 항상 같다는 점이 신경 쓰인다.\n— 윤세진" },
   { id: "LOG-008", title: "미분류 활동 보고", content: "봉쇄선 외곽 — 미확인 활동 흔적 감지\n패턴 일치: 0건. 기존 DB 매칭 불가.\n잔류 흔적 분석: 전문적 은폐 기술 사용." },
   { id: "LOG-009", title: "DPRK 블랙존 참조 파일", content: "[접근 제한 — LEVEL 5]\n함경북도 접경 이상 현상: 의식/육체 분리 보고 다수\n원인: EV-Σ 관련 추정 [확인 불가]\n[OBSERVATION SUSPENDED — SESSION TERMINATED]" },
+  { id: "LOG-DEFECTOR-1", title: "탈북자 심문 기록", content: "[현장 기록]\n북한 함경북도 접경 출신 탈북자 1명 확보.\n증언: '서 있는 사람들' — 의식 상실 상태의 주민 다수 목격.\n블랙존 내부 상황 최초 증언.\n— 강도윤 현장 보고" },
   { id: "LOG-010", title: "임시 권한 기록 [단편]", content: "[LOG FRAGMENT — PARTIALLY CORRUPTED]\nGRANT — TEMP_AUTHOR...\nBRANCH_KR_IN...\nSOURCE: [RE████ED]\nEXPIRY: UPON_FULL_EST... || OBSER...\n[END FRAGMENT]" },
   { id: "LOG-011", title: "한국 방어 성과 분석", content: "대한민국 봉쇄 성공률: 97.3%\n미분류 외부 요인: 31%\n상세: [데이터 부족 — 추가 수집 필요]" },
   { id: "LOG-012", title: "단말기 이상 UI 보고", content: "[기술 보고 — 임재혁]\n화면 하단 미등록 UI 요소 출현.\n재현 불가. 판단: 캐시 오류.\n\n[ORACLE 주석: 해당 UI 요소는 본 시스템에 등록되지 않았습니다.]" },
