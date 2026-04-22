@@ -170,17 +170,14 @@ var BGM = {
   _crossfade: function(toName) {
     var toTrack = this.tracks[toName];
     if (!toTrack) return;
-    if (this._transitioning) {
-      var self = this;
-      Object.keys(this.tracks).forEach(function(k) {
-        self._clearTimer(self.tracks[k]);
-      });
-    }
-    this._transitioning = true;
     var self = this;
-    if (this.current && this.tracks[this.current]) {
-      this._fadeOut(this.tracks[this.current], 2500, true);
-    }
+    // 진행 중이든 아니든, 타겟 외 모든 트랙 정지
+    Object.keys(this.tracks).forEach(function(k) {
+      if (k === toName) return;
+      self._clearTimer(self.tracks[k]);
+      try { self.tracks[k].pause(); self.tracks[k].volume = 0; } catch(e) {}
+    });
+    this._transitioning = true;
     toTrack.volume = 0;
     try { toTrack.play().catch(function(){}); } catch(e) {}
     this._fadeIn(toTrack, 3000, undefined, function() {

@@ -6,14 +6,19 @@ BGM._fadeIn = function(audio, dur, targetVol, onDone) {
   dur = dur || 1500;
   this._clearTimer(audio);
   var self = this;
-  var tv = targetVol !== undefined ? targetVol : self.vol;
+  var fixedVol = targetVol !== undefined ? targetVol : null;
   var step = 30;
-  var inc = tv / (dur / step);
+  var totalSteps = dur / step;
+  var curStep = 0;
   var iv = setInterval(function() {
     if (self.muted) { clearInterval(iv); self._removeTimer(audio, iv); return; }
-    var nv = Math.min(tv, audio.volume + inc);
+    curStep++;
+    // fixedVol이 없으면 매 스텝마다 BGM.vol 참조 (슬라이더 실시간 반영)
+    var tv = fixedVol !== null ? fixedVol : self.vol;
+    var nv = Math.min(tv, tv * (curStep / totalSteps));
     try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
-    if (nv >= tv) {
+    if (curStep >= totalSteps) {
+      try { audio.volume = tv; } catch(e) {}
       clearInterval(iv);
       self._removeTimer(audio, iv);
       if (onDone) onDone();
