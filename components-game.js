@@ -72,7 +72,7 @@ function ScenarioHub(p){
     h('div',{style:cardStyle,
       onMouseDown:function(e){onStart(e.clientX)},onMouseMove:function(e){onMove(e.clientX)},onMouseUp:onEnd,onMouseLeave:function(){if(dragging)onEnd()},
       onTouchStart:function(e){onStart(e.touches[0].clientX)},onTouchMove:function(e){onMove(e.touches[0].clientX)},onTouchEnd:onEnd},
-      sc.img&&h('img',{src:sc.img,alt:sc.title,style:{width:'100%',display:'block',borderRadius:4,filter:sc.active?'brightness(0.9)':'brightness(0.4) grayscale(0.6)',transition:'filter 0.3s'}})),
+      sc.img&&h('img',{src:sc.img,alt:sc.title,style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.9)',transition:'filter 0.3s'}})),
     h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'8px 0',flexShrink:0}},
       scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
         background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
