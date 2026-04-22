@@ -61,7 +61,7 @@ function EvidenceTable(p) {
         return h('div', { key: ev.id, onClick: function() { setShow(true) },
           style: { flex: '0 0 calc(50% - 3px)', padding: '4px 6px', cursor: 'pointer',
             border: '1px solid rgba(var(--ui-rgb),.06)', borderRadius: 2 } },
-          h('div', { style: { fontSize: 10, color: 'rgba(220,255,220,.5)', lineHeight: 1.3 } }, ev.name));
+          h('div', { style: { fontSize: 10, color: 'var(--ui-text)', lineHeight: 1.3 } }, ev.name));
       })),
     collected.length > 4 && h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)',
       textAlign: 'center', marginTop: 4, fontFamily: "'Share Tech Mono',monospace" } },
@@ -91,7 +91,7 @@ function EvidenceTable(p) {
               background: isSel ? cc : 'rgba(var(--ui-rgb),.2)', flexShrink: 0 } }),
             h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 8,
               color: cc, letterSpacing: 0.5 } }, catName[ev.cat] || '')),
-          h('div', { style: { fontSize: 11, color: isSel ? '#e0ffe0' : 'rgba(220,255,220,.7)',
+          h('div', { style: { fontSize: 11, color: isSel ? 'var(--ui)' : 'var(--ui-text)',
             lineHeight: 1.4 } }, ev.name),
           h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.3)',
             marginTop: 2, lineHeight: 1.3 } }, ev.desc));
@@ -114,7 +114,7 @@ function EvidenceTable(p) {
       h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
         color: '#f0a030', letterSpacing: 1, marginBottom: 4 } },
         '\u25B8 ' + result.combo.name),
-      h('div', { style: { fontSize: 12, color: 'rgba(220,255,220,.85)',
+      h('div', { style: { fontSize: 12, color: 'var(--ui-text)',
         lineHeight: 1.6 } }, result.combo.result),
       unlocked.indexOf(result.combo.id) < 0 &&
         h('div', { style: { fontSize: 9, color: 'var(--ui)', marginTop: 6,
@@ -177,7 +177,7 @@ function EvidencePanel(p) {
             h('div', { style: { display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 } },
               h('span', { style: { width: 6, height: 6, borderRadius: '50%', background: cc, flexShrink: 0 } }),
               h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: cc } }, catName[ev.cat])),
-            h('div', { style: { fontSize: 11, color: '#e0ffe0', lineHeight: 1.4 } }, ev.name),
+            h('div', { style: { fontSize: 11, color: 'var(--ui)', lineHeight: 1.4 } }, ev.name),
             h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.3)', marginTop: 2 } }, ev.desc));
         })),
       unlocked.length > 0 && h('div', { style: { marginTop: 14, paddingTop: 10,

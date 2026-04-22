@@ -165,13 +165,13 @@ function News(p){
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[SITUATION REPORT]'),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('⚠')>=0;
-            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'rgba(220,255,220,.7)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
           }))
       })(),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
       p.headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
-        h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'rgba(220,255,220,.75)'}},hl.text))}),
+        h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))}),
       shown>=p.headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},'[ 다음 사이클 진행 ]')));
@@ -254,7 +254,7 @@ function RewardScreen(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // RESOURCE DIRECTIVE')),
     h('div',{style:{width:'100%',maxWidth:440,display:'flex',justifyContent:'center',gap:12,margin:'4px 0',flexShrink:0,flexWrap:'wrap'}},
       ['c','r','t','o'].map(function(k){var v=p.stats[k];var nm={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};var d=v<=20;return h('span',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'rgba(var(--ui-rgb),.7)',letterSpacing:1}},nm[k]+':'+v)})),
-    h('div',{style:{fontSize:13,color:'rgba(220,255,220,.85)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
+    h('div',{style:{fontSize:13,color:'var(--ui-text)',textAlign:'center',margin:'4px 0 8px'}},count+'개 중 선택'),
     dangerC&&h('div',{style:{background:'rgba(var(--ui-rgb),.05)',border:'1px solid rgba(var(--ui-rgb),.22)',borderRadius:3,padding:'8px 12px',margin:'0 0 8px',maxWidth:440,width:'100%',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.8)',letterSpacing:.5,lineHeight:1.7,boxSizing:'border-box'}},
       h('div',{style:{color:'rgba(var(--ui-rgb),.4)',fontSize:9,marginBottom:4,letterSpacing:1}},'[ ORACLE // 운영 상태 경보 ]'),
       h('div',null,'KR-INIT-001 봉쇄 완전성 임계 도달 예측.'),

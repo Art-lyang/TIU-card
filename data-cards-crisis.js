@@ -49,8 +49,8 @@ var CARDS_CRISIS = [
     left: { label: "오류로 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "기록 보관", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
 
-  { id: "CA-SEED-02", act: [1], priority: "중", once: true,
-    req: function(s){ return s.day >= 4 && s.day <= 8; },
+  { id: "CA-SEED-02", act: [2,3], priority: "중", once: true,
+    req: function(s){ return s.day >= 6 && s.day <= 14; },
     msg: "사무실 책상 서랍 깊숙이에서 메모지가 발견되었습니다.\n\n작성자 불명. 날짜도 없습니다. 글씨가 급하게 쓴 듯 흐릿합니다.\n\n이상하네? 전임 지휘관이 없을 텐데...\n\n마지막 줄만 또렷합니다:\n\n\"B3 — 내부에 도면에 없는 구역이 있다. 제한구역 안쪽. 확인 필요.\"",
     left: { label: "그냥 넘긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "B3 제한구역을 확인해보겠다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
