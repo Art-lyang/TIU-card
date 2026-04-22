@@ -13,6 +13,75 @@ function Boot(p){
   return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
     IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},'[ 세션 '+(sn+1)+' 시작 ]'));
 }
+// ═══ 시나리오 허브 — DLC 확장용 ═══
+function ScenarioHub(p){
+  var _m=useState('select'),mode=_m[0],setMode=_m[1]; // 'select' | 'main'
+  var _dx=useState(0),dx=_dx[0],setDx=_dx[1];
+  var _drag=useState(false),dragging=_drag[0],setDrag=_drag[1];
+  var _sx=useState(0),sx=_sx[0],setSx=_sx[1];
+  var _anim=useState(null),anim=_anim[0],setAnim=_anim[1];
+  var scenarios=[
+    {id:'main',title:'TERMINAL SESSION',sub:'ORACLE // PILEHEAD',desc:'한국 지부 봉쇄 구역 관리 시나리오',active:true},
+    {id:'dlc1',title:'COMING SOON',sub:'DLC SCENARIO',desc:'새로운 시나리오가 준비 중입니다',active:false}
+  ];
+  var _idx=useState(0),idx=_idx[0],setIdx=_idx[1];
+  // 스와이프 핸들링
+  var onStart=function(x){setSx(x);setDrag(true)};
+  var onMove=function(x){if(dragging)setDx(x-sx)};
+  var onEnd=function(){
+    setDrag(false);
+    if(dx<-60&&idx<scenarios.length-1){setAnim('left');setIdx(idx+1)}
+    else if(dx>60&&idx>0){setAnim('right');setIdx(idx-1)}
+    setDx(0);
+    setTimeout(function(){setAnim(null)},300);
+  };
+  // 키보드
+  useEffect(function(){var onKey=function(e){
+    if(mode==='main'){
+      if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();setMode('select');return}
+      if(e.key==='1'){e.preventDefault();if(p.hasSave)p.onContinue();else p.onTutorial();return}
+      if(e.key==='2'){e.preventDefault();if(p.hasSave)p.onNew();return}
+      if(e.key==='3'){e.preventDefault();p.onTutorial();return}
+      return;
+    }
+    if(e.key==='ArrowRight'&&idx<scenarios.length-1){e.preventDefault();setAnim('left');setIdx(function(v){return v+1});setTimeout(function(){setAnim(null)},300)}
+    if(e.key==='ArrowLeft'&&idx>0){e.preventDefault();setAnim('right');setIdx(function(v){return v-1});setTimeout(function(){setAnim(null)},300)}
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();if(scenarios[idx].active)setMode('main')}
+  };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[mode,idx,p.hasSave]);
+  var mono={fontFamily:"'Share Tech Mono',monospace"};
+  // 메인 스토리 진입 하위 메뉴
+  if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'center',gap:16}},
+    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'SCENARIO SELECT'),
+    h('div',{style:Object.assign({},mono,{fontSize:16,color:'var(--ui)',textAlign:'center',letterSpacing:2})},'TERMINAL SESSION'),
+    h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.5)',textAlign:'center',marginBottom:8}},'한국 지부 봉쇄 구역 관리 시나리오'),
+    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:8}},
+      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},'[ 이어서 플레이 ]'),
+      h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?'[ 새로 시작 ]':'[ 시작하기 ]'),
+      p.hasSave&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},'[ 튜토리얼 다시 보기 ]')),
+    h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:16,textAlign:'center'})},'← 시나리오 선택으로'));
+  // 시나리오 카드 뷰
+  var sc=scenarios[idx];
+  var cardStyle={width:'100%',maxWidth:380,padding:'32px 24px',border:'1px solid '+(sc.active?'rgba(var(--ui-rgb),.3)':'rgba(var(--ui-rgb),.1)'),
+    borderRadius:4,background:sc.active?'rgba(var(--ui-rgb),.03)':'rgba(var(--ui-rgb),.01)',
+    textAlign:'center',transform:'translateX('+(dragging?dx:0)+'px)',
+    transition:dragging?'none':'transform 0.3s ease',cursor:'grab',userSelect:'none'};
+  return h('div',{className:'boot',style:{justifyContent:'center',gap:12}},
+    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'SCENARIO SELECT'),
+    h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',textAlign:'center',marginBottom:4})},
+      (idx+1)+' / '+scenarios.length),
+    h('div',{style:cardStyle,
+      onMouseDown:function(e){onStart(e.clientX)},onMouseMove:function(e){onMove(e.clientX)},onMouseUp:onEnd,onMouseLeave:function(){if(dragging)onEnd()},
+      onTouchStart:function(e){onStart(e.touches[0].clientX)},onTouchMove:function(e){onMove(e.touches[0].clientX)},onTouchEnd:onEnd},
+      h('div',{style:Object.assign({},mono,{fontSize:14,color:sc.active?'var(--ui)':'rgba(var(--ui-rgb),.3)',letterSpacing:2,marginBottom:8})},sc.title),
+      h('div',{style:Object.assign({},mono,{fontSize:10,color:sc.active?'rgba(var(--ui-rgb),.5)':'rgba(var(--ui-rgb),.2)',letterSpacing:1,marginBottom:12})},sc.sub),
+      h('div',{style:{fontSize:12,color:sc.active?'rgba(var(--ui-rgb),.6)':'rgba(var(--ui-rgb),.2)',lineHeight:1.6}},sc.desc),
+      !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.15)',marginTop:16,letterSpacing:2})},'LOCKED')),
+    h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'8px 0'}},
+      scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
+        background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
+    sc.active&&h('button',{className:'btn btn-amber',onClick:function(){setMode('main')}},'[ 진입 ]'),
+    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center'})},'← 스와이프하여 시나리오 탐색 →'));
+}
 function Stats(p){
   var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
   var pv=p.preview||{};
