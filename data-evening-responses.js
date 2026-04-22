@@ -58,10 +58,16 @@ var EVENING_RESPONSES = {
 // 현재 챗에 맞는 응답 찾기
 function getEveningResponse(chat, trust) {
   if (!chat || !EVENING_RESPONSES) return null;
+  // 이벤트 챗에 responseKey가 지정되어 있으면 직접 매칭
+  if (chat.responseKey && EVENING_RESPONSES[chat.responseKey]) {
+    return EVENING_RESPONSES[chat.responseKey];
+  }
   var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var ck = charKeyMap[chat.char];
   if (!ck) return null;
-  // key 매칭: "charKey_act_dayRange"
+  // key 매칭: "charKey_act_dayRange" — 정확 매칭 우선, fallback으로 범위 매칭
+  var exactKey = ck + '_' + chat.act[0] + '_' + chat.dayMin + '-' + chat.dayMax;
+  if (EVENING_RESPONSES[exactKey]) return EVENING_RESPONSES[exactKey];
   var keys = Object.keys(EVENING_RESPONSES);
   for (var i = 0; i < keys.length; i++) {
     var k = keys[i];

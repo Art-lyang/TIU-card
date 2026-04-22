@@ -7,6 +7,7 @@
 EVENING_CHATS.push(
   { char: '임재혁', act: [2,3], dayMin: 5, dayMax: 99,
     priority: 'event',
+    responseKey: 'jaehyuk_2_5-99',
     condFn: function(p){ return p.logs.indexOf('LOG-EV-UNLOCK') < 0 },
     lines: [
       "지휘관님. 야근하다 뭐 하나 만들었습니다.",
