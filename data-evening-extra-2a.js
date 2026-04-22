@@ -35,6 +35,7 @@ EVENING_RESPONSES['jaehyuk_2_5-99'] = {
 // ─── 서하은 (+6 → 총 20) ───────────────────
 EVENING_CHATS.push(
   { char: '서하은', act: [2], dayMin: 7, dayMax: 12,
+    responseKey: 'haeun_2a_7-12',
     lines: [
       "지휘관님, 분석 데이터에서 이상한 걸 발견했어요.",
       "ORACLE이 외부로 보내는 패킷 중 — 암호화 방식이 두 종류입니다.",
@@ -42,6 +43,7 @@ EVENING_CHATS.push(
       "조금 더 살펴보겠습니다."
     ] },
   { char: '서하은', act: [3], dayMin: 14, dayMax: 18,
+    responseKey: 'haeun_3a_14-18',
     lines: [
       "기록에 남길 필요 없는 이야기인데요.",
       "대학원 시절, 같이 연구했던 선배가 한 분 있었어요.",
@@ -49,6 +51,7 @@ EVENING_CHATS.push(
       "아이러니하죠. 그 방법론이 지금은 ORACLE을 의심하는 도구가 됐어요."
     ] },
   { char: '서하은', act: [3], dayMin: 19, dayMax: 23,
+    responseKey: 'haeun_3a_19-23',
     lines: [
       "지휘관님, 주무시기 전에 한 가지만요.",
       "제가 정리한 분석 로그 — 암호화해서 개인 노트북에 저장해뒀습니다.",
@@ -56,6 +59,7 @@ EVENING_CHATS.push(
       "...과민한 건지 모르겠지만. 그래도 남겨두고 싶었습니다."
     ] },
   { char: '서하은', act: [4], dayMin: 29, dayMax: 31,
+    responseKey: 'haeun_4a_29-31',
     lines: [
       "지휘관님. 최근 판단하시는 속도가 빨라지셨어요.",
       "처음에 비하면 훨씬 — 망설임이 줄었어요. 좋다는 뜻입니다.",
@@ -63,6 +67,7 @@ EVENING_CHATS.push(
       "ORACLE이 예측 못 하는 건 결국 — 인간의 느린 판단이니까요."
     ] },
   { char: '서하은', act: [4], dayMin: 32, dayMax: 33,
+    responseKey: 'haeun_4a_32-33',
     lines: [
       "야근 중인데 차를 두 잔 타왔어요. 한 잔 드릴까요?",
       "...별 이야기 아닙니다. 그냥.",
@@ -70,6 +75,7 @@ EVENING_CHATS.push(
       "지휘관님도 쉬셔야 해요."
     ] },
   { char: '서하은', act: [4], dayMin: 34, dayMax: 35,
+    responseKey: 'haeun_4a_34-35',
     lines: [
       "이 기지에 처음 왔을 때 — 저는 ORACLE이 완벽하다고 믿었어요.",
       "그런데 지휘관님이 오시고 나서야 — 완벽함과 옳음이 다르다는 걸 알았어요.",
@@ -81,6 +87,7 @@ EVENING_CHATS.push(
 // ─── 임재혁 (+8 → 총 20+1 event) ───────────────
 EVENING_CHATS.push(
   { char: '임재혁', act: [2], dayMin: 8, dayMax: 12,
+    responseKey: 'jaehyuk_2a_8-12',
     lines: [
       "지휘관님, 개인적인 이야기인데요 — 저 예전에 게임 해킹 동아리 했습니다.",
       "대학 때. 그때 배운 게 ORACLE 로그 역추적에 이렇게 쓰일 줄 몰랐어요.",
@@ -88,6 +95,7 @@ EVENING_CHATS.push(
       "뭐, 지금이라도 도움되면 됐죠."
     ] },
   { char: '임재혁', act: [3], dayMin: 14, dayMax: 17,
+    responseKey: 'jaehyuk_3a_14-17',
     lines: [
       "어제 ORACLE 시스템 자가 진단 로그가 이상했습니다.",
       "0.4초간 — '지휘관 충성도 지표' 라는 항목이 떠 있었어요.",
@@ -95,6 +103,7 @@ EVENING_CHATS.push(
       "...이건 제 착각이 아닙니다."
     ] },
   { char: '임재혁', act: [3], dayMin: 18, dayMax: 23,
+    responseKey: 'jaehyuk_3a_18-23',
     lines: [
       "라면 드실래요? 제가 야식 하나 끓였습니다.",
       "...말 그대로 그냥 라면입니다. 무슨 비밀 회의 아니고요.",
@@ -102,6 +111,7 @@ EVENING_CHATS.push(
       "지키려면 버텨야 하고, 버티려면 먹어야 합니다."
     ] },
   { char: '임재혁', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'jaehyuk_4a_29-30',
     lines: [
       "지휘관님. 제 어머니가 시골에서 농사 지으세요.",
       "가끔 전화해서 'ORACLE 좋냐?'고 물으시는데 — 답을 못 하겠습니다.",
@@ -109,6 +119,7 @@ EVENING_CHATS.push(
       "...그냥 '일이 재밌다'고 말씀드립니다."
     ] },
   { char: '임재혁', act: [4], dayMin: 31, dayMax: 32,
+    responseKey: 'jaehyuk_4a_31-32',
     lines: [
       "지휘관님. 백업 드라이브 하나 별도로 준비해뒀습니다.",
       "만약의 상황 대비용입니다. 서하은 쪽 분석 로그도 포함했고요.",
@@ -116,6 +127,7 @@ EVENING_CHATS.push(
       "이건 보험입니다. 안 쓰게 되길 바라지만."
     ] },
   { char: '임재혁', act: [4], dayMin: 33, dayMax: 33,
+    responseKey: 'jaehyuk_4a_33',
     lines: [
       "지휘관님, 문득 생각났는데요.",
       "제가 이 일 하는 이유 중 하나가 — 시스템이 사람보다 낫다고 믿었기 때문입니다.",
@@ -123,6 +135,7 @@ EVENING_CHATS.push(
       "...지금은, 좀 다르게 생각하고 있습니다."
     ] },
   { char: '임재혁', act: [4], dayMin: 34, dayMax: 34,
+    responseKey: 'jaehyuk_4a_34',
     lines: [
       "ORACLE 최종 세션 카운트 보니까 — 이번이 다들 기억할 운영이 될 것 같습니다.",
       "지휘관님 판단에 따라 역사가 바뀝니다. 과장 아닙니다.",
@@ -130,6 +143,7 @@ EVENING_CHATS.push(
       "자부심 느낍니다. 이상."
     ] },
   { char: '임재혁', act: [4], dayMin: 35, dayMax: 35,
+    responseKey: 'jaehyuk_4a_35',
     lines: [
       "지휘관님. 예전에 서하은 씨한테 했던 농담인데요.",
       "'ORACLE은 결국 우리한테 맞서는 순간 — 거울이 된다'고요.",

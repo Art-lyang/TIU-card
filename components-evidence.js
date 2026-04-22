@@ -84,8 +84,8 @@ function EvidenceTable(p) {
         fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.6)', letterSpacing: 1 } }, '\u25B2 CLOSE')),
 
-    // 스크롤 영역
-    h('div', { style: { maxHeight: 200, overflowY: 'auto', paddingRight: 2 } },
+    // 스크롤 영역 (증거 카드 + 결과)
+    h('div', { style: { maxHeight: 340, overflowY: 'auto', paddingRight: 2 } },
       // 증거 카드 그리드
       h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 } },
         collected.map(function(ev) {

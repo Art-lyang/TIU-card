@@ -89,7 +89,11 @@ function SettingsDisplayTab(p) {
       color: 'rgba(var(--ui-rgb),0.55)', lineHeight: 1.6, fontFamily: "'Share Tech Mono',monospace" } },
       '\u26A0 화면 깜박임·흔들림에 민감하시면 [축소] 또는 [끔]을 선택하세요.'),
     h('div', { style: { marginTop: 12, padding: 10, background: 'rgba(var(--ui-rgb),0.03)',
-      border: '1px solid rgba(var(--ui-rgb),0.08)', fontSize: 12,
-      color: 'var(--ui-text)', lineHeight: 1.7 } },
+      border: '1px solid rgba(var(--ui-rgb),0.08)',
+      fontSize: fontSize === 'small' ? 10 : fontSize === 'large' ? 15 : 12,
+      color: 'var(--ui-text)', lineHeight: 1.7,
+      animation: fxMode === 'full' ? 'flicker 4s infinite' : 'none',
+      textShadow: fxMode === 'full' ? '0 0 4px var(--ui-glow)' : fxMode === 'reduced' ? '0 0 2px var(--ui-glow)' : 'none',
+      transition: 'font-size 0.2s ease' } },
       '미리보기: ORACLE TERMINAL SESSION 텍스트입니다.'));
 }

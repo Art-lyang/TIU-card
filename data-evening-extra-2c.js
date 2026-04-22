@@ -6,6 +6,7 @@
 // ─── 마르쿠스 베버 (+3 → 총 5) ────────────
 EVENING_CHATS.push(
   { char: '마르쿠스 베버', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'weber_4c_29-30',
     lines: [
       "프로메테우스는 정부가 아닙니다. 민간 조직입니다.",
       "가입이 아니라 — 협조를 요청하는 겁니다.",
@@ -13,6 +14,7 @@ EVENING_CHATS.push(
       "당신은 이해할 거라고 생각했습니다."
     ] },
   { char: '마르쿠스 베버', act: [4], dayMin: 31, dayMax: 33,
+    responseKey: 'weber_4c_31-33',
     lines: [
       "당신네 나라 해안 방벽 — 설계도를 우리가 보강했습니다.",
       "기술적인 부분입니다. 보상 없이.",
@@ -20,6 +22,7 @@ EVENING_CHATS.push(
       "우리도 이해관계가 있습니다. 정확합니다."
     ] },
   { char: '마르쿠스 베버', act: [4], dayMin: 34, dayMax: 35,
+    responseKey: 'weber_4c_34-35',
     lines: [
       "내가 독일에서 프로메테우스에 들어온 이유 — 별거 없습니다.",
       "형이 라인강 변이체 사고로 죽었습니다. 2029년.",
@@ -31,6 +34,7 @@ EVENING_CHATS.push(
 // ─── 닉 포스터 (+3 → 총 5) ────────────────
 EVENING_CHATS.push(
   { char: '닉 포스터', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'foster_4c_29-30',
     lines: [
       "이중철. 내가 그때 당신 부대 찾아간 거 — 실수였습니다.",
       "오해하지 마세요. 사과 아닙니다. 분석 결과예요.",
@@ -38,6 +42,7 @@ EVENING_CHATS.push(
       "우리 둘 다 여기까진 못 왔을 겁니다."
     ] },
   { char: '닉 포스터', act: [4], dayMin: 31, dayMax: 33,
+    responseKey: 'foster_4c_31-33',
     lines: [
       "베버는 전략가입니다. 나는 — 그 밑에서 일하는 사람이고요.",
       "차이는 분명합니다. 베버는 죽어도 대체됩니다.",
@@ -45,6 +50,7 @@ EVENING_CHATS.push(
       "그래서 더 조심합니다. 그것만 알아두세요."
     ] },
   { char: '닉 포스터', act: [4], dayMin: 34, dayMax: 35,
+    responseKey: 'foster_4c_34-35',
     lines: [
       "당신이 내 정보를 쓰든 말든 — 제 책임은 다한 겁니다.",
       "다만, 부탁 하나만.",
@@ -56,6 +62,7 @@ EVENING_CHATS.push(
 // ─── 박소영 (+3 → 총 5) ─────────────────
 EVENING_CHATS.push(
   { char: '박소영', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'soyoung_4c_29-30',
     lines: [
       "지휘관님, 서하은 선배 소식 들으셨어요?",
       "타 지부 배치 — 형식적으론 그렇지만 연락이 잘 안 돼요.",
@@ -63,6 +70,7 @@ EVENING_CHATS.push(
       "저는 — 선배가 못 끝낸 걸 대신 하고 싶을 뿐입니다."
     ] },
   { char: '박소영', act: [4], dayMin: 31, dayMax: 33,
+    responseKey: 'soyoung_4c_31-33',
     lines: [
       "ORACLE 쿼리 구조 보다가 — 반복되는 패턴 하나 발견했어요.",
       "매 세션마다 지휘관의 '이례적 판단'을 카탈로그화하고 있습니다.",
@@ -70,6 +78,7 @@ EVENING_CHATS.push(
       "...이건 단순 로깅이 아닙니다."
     ] },
   { char: '박소영', act: [4], dayMin: 34, dayMax: 35,
+    responseKey: 'soyoung_4c_34-35',
     lines: [
       "지휘관님. 저는 — 여기 오기까지 여러 이유가 있었어요.",
       "서하은 선배의 부탁도, 제 궁금증도, 그리고 — 다른 이유도.",

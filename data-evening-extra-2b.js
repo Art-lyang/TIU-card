@@ -2,6 +2,7 @@
 // ─── 강도윤 (+8 → 총 20) ───────────────────
 EVENING_CHATS.push(
   { char: '강도윤', act: [2], dayMin: 8, dayMax: 11,
+    responseKey: 'doyun_2b_8-11',
     lines: [
       "지휘관. 오늘 순찰조 복귀가 30분 늦었습니다.",
       "전파 간섭 때문인지 통신 2회 끊겼고요.",
@@ -9,6 +10,7 @@ EVENING_CHATS.push(
       "이상 없음, 으로 보고할게요."
     ] },
   { char: '강도윤', act: [3], dayMin: 14, dayMax: 16,
+    responseKey: 'doyun_3b_14-16',
     lines: [
       "지휘관. 저 전역 당시 이야기 한 번도 안 했었죠.",
       "부대원한테 누가 모욕을 퍼부었을 때 — 저는 앞에 서 있었습니다.",
@@ -16,6 +18,7 @@ EVENING_CHATS.push(
       "...그래서 여기 오셨을 때 어색하지 않았습니다."
     ] },
   { char: '강도윤', act: [3], dayMin: 19, dayMax: 23,
+    responseKey: 'doyun_3b_19-23',
     lines: [
       "요즘 요원들 사이에서 — 지휘관님 별명이 생겼습니다.",
       "'안 꺾이는 사람'이라고요.",
@@ -23,6 +26,7 @@ EVENING_CHATS.push(
       "...자랑스러워들 합니다. 전하고 싶었어요."
     ] },
   { char: '강도윤', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'doyun_4b_29-30',
     lines: [
       "봉쇄선 점검하고 왔습니다. 외곽 기상 악화 예보 있습니다.",
       "...근데 그거 말고, 개인 이야기 하나만.",
@@ -30,6 +34,7 @@ EVENING_CHATS.push(
       "지금은 — 이 팀이 제 인생에서 제일 깁니다. 현역 5년 중에."
     ] },
   { char: '강도윤', act: [4], dayMin: 31, dayMax: 32,
+    responseKey: 'doyun_4b_31-32',
     lines: [
       "지휘관. 현장에서 공포 관리 하는 법 하나 알려드릴까요.",
       "숨 세 번 천천히 쉬고 — 발바닥 감각에 집중합니다.",
@@ -37,6 +42,7 @@ EVENING_CHATS.push(
       "...요즘 지휘관님 안색이 피곤해 보여서요."
     ] },
   { char: '강도윤', act: [4], dayMin: 33, dayMax: 33,
+    responseKey: 'doyun_4b_33',
     lines: [
       "오늘 외곽 초소에서 별 봤습니다. 오랜만에.",
       "서울 살 때는 별 안 보이잖아요. 여긴 선명해요.",
@@ -44,6 +50,7 @@ EVENING_CHATS.push(
       "우리가 지키는 이유 중에 그런 것도 있다고 생각해요."
     ] },
   { char: '강도윤', act: [4], dayMin: 34, dayMax: 34,
+    responseKey: 'doyun_4b_34',
     lines: [
       "지휘관. 저 예전 상관이 한 말이 있습니다.",
       "'작전은 계획대로 안 간다. 리더가 흔들리면 작전은 끝난다.'",
@@ -51,6 +58,7 @@ EVENING_CHATS.push(
       "...저도, 안 흔들리겠습니다."
     ] },
   { char: '강도윤', act: [4], dayMin: 35, dayMax: 35,
+    responseKey: 'doyun_4b_35',
     lines: [
       "마지막에 한 가지만 말씀드리겠습니다.",
       "만약에 — 만약에요, 이 기지가 끝나도.",
@@ -62,6 +70,7 @@ EVENING_CHATS.push(
 // ─── 윤세진 (+8 → 총 20) ───────────────────
 EVENING_CHATS.push(
   { char: '윤세진', act: [2], dayMin: 9, dayMax: 12,
+    responseKey: 'sejin_2b_9-12',
     lines: [
       "지휘관님, 오늘 실험실 창가에 새가 앉았어요.",
       "이 기지 근처엔 야생 조류가 잘 안 보이는데 — 무심코 기뻤어요.",
@@ -69,6 +78,7 @@ EVENING_CHATS.push(
       "...별 의미 없는 이야기 죄송해요."
     ] },
   { char: '윤세진', act: [3], dayMin: 13, dayMax: 16,
+    responseKey: 'sejin_3b_13-16',
     lines: [
       "지휘관님, 의학적 판단이 필요한 순간이 있으실 때 말씀해 주세요.",
       "요원들 정신건강도 — 전투력만큼 중요합니다.",
@@ -76,6 +86,7 @@ EVENING_CHATS.push(
       "이건 그냥 알려드리려고요."
     ] },
   { char: '윤세진', act: [3], dayMin: 17, dayMax: 23,
+    responseKey: 'sejin_3b_17-23',
     lines: [
       "지휘관님, 이상하게 들릴 수 있는데 — 저는 이변체가 무섭지 않아요.",
       "무서운 건 — 그것들이 왜 이런 모습인지 '이해될 때'예요.",
@@ -83,6 +94,7 @@ EVENING_CHATS.push(
       "그게 윤리 교과서에 없는 영역이더라고요."
     ] },
   { char: '윤세진', act: [4], dayMin: 29, dayMax: 30,
+    responseKey: 'sejin_4b_29-30',
     lines: [
       "지휘관님. 혹시 지휘관님 가족 — 지금 어디 계세요?",
       "...죄송해요, 사적인 거 물어서.",
@@ -90,6 +102,7 @@ EVENING_CHATS.push(
       "그래서 더 지키고 싶어요. 이 사람들을."
     ] },
   { char: '윤세진', act: [4], dayMin: 31, dayMax: 32,
+    responseKey: 'sejin_4b_31-32',
     lines: [
       "실험실에 꽃 화분 하나 가져왔어요. 수국이에요.",
       "요원들이 오가면서 — '뭔가 따뜻해졌다'고 하더라고요.",
@@ -97,6 +110,7 @@ EVENING_CHATS.push(
       "ORACLE은 그런 걸 계산 안 하잖아요."
     ] },
   { char: '윤세진', act: [4], dayMin: 33, dayMax: 33,
+    responseKey: 'sejin_4b_33',
     lines: [
       "지휘관님, 이변체 연구 와중에 발견한 이상한 사실 하나.",
       "특정 개체들이 — 자기들끼리 '치유' 비슷한 행동을 해요.",
@@ -104,6 +118,7 @@ EVENING_CHATS.push(
       "...이 종이 인간이었을 가능성을 — 배제하기 어려워요."
     ] },
   { char: '윤세진', act: [4], dayMin: 34, dayMax: 34,
+    responseKey: 'sejin_4b_34',
     lines: [
       "저는 의사인데 — 여기선 의사 역할을 제대로 못 한 것 같아요.",
       "연구가 앞서서요. 윤리 저널 투고했어도 거절당할 거예요.",
@@ -111,6 +126,7 @@ EVENING_CHATS.push(
       "저도 그 자리에 있고 싶습니다."
     ] },
   { char: '윤세진', act: [4], dayMin: 35, dayMax: 35,
+    responseKey: 'sejin_4b_35',
     lines: [
       "지휘관님. 제 논문 초고 원고가 있어요. 제목이 '위험의 언어'예요.",
       "ORACLE이 사용하는 언어가 어떻게 위험을 평범하게 만드는지 — 그런 내용입니다.",
