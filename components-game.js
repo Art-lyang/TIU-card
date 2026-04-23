@@ -266,7 +266,7 @@ function News(p){
       h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[STATUS OVERVIEW]'),
         h('div',{style:{display:'flex',flexDirection:'column',gap:4}},
-          statBar('c',st.c||50,tt('stats.c',null,'봉쇄')),statBar('r',st.r||60,tt('stats.r',null,'자원')),statBar('t',st.t||50,tt('stats.t',null,'신뢰')),statBar('o',st.o||40,tt('stats.o',null,'평가'))),
+          statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'봉쇄')),statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'자원')),statBar('t',(st.t==null?50:st.t),tt('stats.t',null,'신뢰')),statBar('o',(st.o==null?40:st.o),tt('stats.o',null,'평가'))),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
@@ -367,10 +367,10 @@ function NewsReport(p){
       h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
-          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
-          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
-          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
-          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+          statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
+          statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
+          statBar('t',(st.t==null?50:st.t),tt('stats.t',null,'Trust')),
+          statBar('o',(st.o==null?40:st.o),tt('stats.o',null,'Evaluation'))),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
@@ -471,10 +471,10 @@ function NewsReport2(p){
       h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
-          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
-          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
-          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
-          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+          statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
+          statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
+          statBar('t',(st.t==null?50:st.t),tt('stats.t',null,'Trust')),
+          statBar('o',(st.o==null?40:st.o),tt('stats.o',null,'Evaluation'))),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
@@ -591,10 +591,10 @@ function NewsReport3(p){
       h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:6}},
-          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
-          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
-          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
-          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+          statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
+          statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
+          statBar('t',(st.t==null?50:st.t),tt('stats.t',null,'Trust')),
+          statBar('o',(st.o==null?40:st.o),tt('stats.o',null,'Evaluation'))),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
