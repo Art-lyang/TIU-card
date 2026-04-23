@@ -1,16 +1,59 @@
 # TERMINAL SESSION — Game Design Document v1.0
 
-> **버전**: v1.0 (출시 준비 마일스톤)
-> **최종 업데이트**: 2026-04-20 (2차)
-> **빌드**: BUILD_VER=22
-> **브랜치**: `claude/magical-cray-74f8c4`
+> **버전**: v1.0 (출시 준비 마일스톤) — *2026-04-24 증보*
+> **최종 업데이트**: 2026-04-24 (필드 미니게임 프로덕션 통합 + 아카이브 언락 교정 + 결과 서사 다국어화)
+> **빌드**: BUILD_VER=59 (이전 스냅샷: 54 → 22)
+> **브랜치**: `main`
 > **이전 버전**: v0.9 (`TIU-GAME-GDD-v05.md`, 2026-04-17)
+> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷
 
 ---
 
-## 0. 변경 요약 (v0.9 → v1.0)
+## 0. 변경 요약
 
-이전 버전 대비 추가/수정된 핵심 사항:
+### 0.1a 2026-04-24 증보 (BUILD_VER 54 → 59)
+
+2026-04-23 증보 이후 단일 푸시 커밋 `cbead05` *"Add minigame prototypes and improve English i18n support"* 중심 변경. 보조 핫픽스 10건은 세 번째 컬럼에 묶음 표기.
+
+| 분류 | 변경 | 근거 커밋 |
+|---|---|---|
+| **🎮 필드 미션 미니게임 시스템 통합** | `components-minigames.js` / `data-minigame-rewards.js` / `components-fieldmission-minigame-patch.js` 3파일 신규. 3종 미니게임 — `signal` (SPEC-011 음향 패턴 정렬), `sequence` (격리 봉인 수동 시퀀스), `breach` (ORACLE 권한 흔적 추적) — 을 **M-002 / MI-01 / MI-04** 3개 미션의 선택 노드에 연결. 4랭크(great/success/partial/fail) 평가 → 원래 선택 보상에 추가 보너스 합산(`mergeMissionBonus`) + 랭크별 textSuffix·endLabel 서사 주입 | `cbead05` |
+| **MI-04 본문 교정** | "두 가지 선택지" → "세 가지 선택지" — 실제 노드 수(remove/trap/oracle) 일치 | `cbead05` |
+| **📚 아카이브 언락 타이트닝** | 인물 4종(ARC-CHAR-DOYUN/HAEUN/SEJIN/JAEHYUK) 무조건 공개 → `LOG-INTRO-KD/SH/YS/IJ` 전제. ARC-EVS `LOG-001 → LOG-013`, ARC-ORG-ORACLE `LOG-001 → LOG-006 \|\| LOG-INTRO-SH`, ARC-ORG-BRANCH `LOG-001 → LOG-001 && LOG-INTRO-KD`, ARC-ORG-WHITESHIELD `LOG-001 → LOG-016`, ARC-FAC-SEAL `LOG-001 → LOG-070 \|\| LOG-073`, ARC-FAC-LAB `true → LOG-INTRO-YS` | `cbead05` |
+| **💬 결과 토스트 다국어화** | `data-result-text.js` "자동 생성 폴백 함수" 방식 → `_rtLocale()`/`_rtPool()` 기반 한·영 이중 풀. 4스탯 × 긍/부 × 한/영 각 4문장 | `cbead05` |
+| **🌐 MainMenu 평탄화** | `records` 서브뷰 제거 → 세션 선택/이어하기/아카이브/로그/SETTINGS 를 루트에 직접 노출. SettingsPanel에 `onMainMenu` 복귀 콜백. 토큰 `menu.startGame`/`menu.continue`/`boot.startGame` 추가 | `cbead05` |
+| **🌐 ScenarioHub 한국어 복원** | 메인 뷰의 "MISSION: KOREAN BRANCH STABILIZATION" 등 하드코딩 영어 문자열을 `isKo` locale 분기로 교체 | `cbead05` |
+| **🌐 이브닝챗 영어 폴백** | `components-evening.js` `resolveEveningBucketEntry()` — responseKey 우선, 실패 시 영어 콘텐츠 풀에서 `{char}_{act}_` 접두어 + day 범위 best-match | `cbead05` |
+| **🌐 일일 보고 토큰 보강** | `lang-ui-ko.js` `assess.high1~veryLow4` 16개 평가 라인, `archiveNew`/`dayReport`/섹션 라벨, `headlineWarn3` (GRANT EXPIRED) | `cbead05` |
+| **🛠️ i18n 핫픽스 스택** | 설정 패널 닫힘/저장 시 `applyLocale()` 보장, 영어 레이아웃 핫픽스 CSS 2종, 게이지 컬럼 정렬 단순화(style.css 45→8줄), index.html 에셋 버전 bump | `7d67294` `eb6b94d` `f985def` `25aed56` `bcd00d7` `f102261` `b9a6a68` `b17270b` `04ae5b8` `1a89a4f` |
+| **🖼️ 이미지 에셋 대량 추가** | backgrounds 14 / cards 10 / characters 10 / specs 7 / hub 3 (jpg). `getMissionImage()`에서 specs를 M-001/M-002/M-004/M-005/M-006/M-009/M-010 미션과 연결 | `cbead05` |
+| **📦 TEST/ 프로토타입 동봉** | `TEST/minigame-demo.js` (984줄) + 스크린샷 14장 + 정적 에셋 4종. 레퍼런스 목적, 빌드 번들 포함 여부 후속 결정 | `cbead05` |
+
+**신규 추적 파일** (이 스냅샷에서 추가):
+`components-minigames.js`, `data-minigame-rewards.js`, `components-fieldmission-minigame-patch.js`, `TEST/minigame-demo.js`, `TEST/index.html`, `TEST/styles.css`, 신규 이미지 에셋 44종 (`assets/images/{backgrounds,cards,characters,specs,hub}/*.jpg`)
+
+### 0.1 2026-04-23 증보 (BUILD_VER 22 → 54)
+
+이전 v1.0 작성 시점(BUILD_VER=22) 이후 원본 체인지로그 대응 변경:
+
+| 분류 | 변경 | 근거 커밋 |
+|---|---|---|
+| **🌐 i18n 인프라** | `i18n-runtime.js` 런타임 코어 + `lang-ui-ko.js`/`lang-ui-en.js` UI 언어팩 + `lang-content-en-all.js` (207KB) / `lang-content-en-dialogues.js` 콘텐츠 영어 오버레이. 설정 > 디스플레이에 언어 토글 추가 | `0429de2` `0d571cd` `f46f19b` |
+| **🎬 플로우 개편** | Boot → **MainMenu** → **ScenarioHub** → (진입) → Tutorial/Briefing/Game. 게임 시작 전 설정 접근, RECORDS 서브뷰(logs/archive/endings) | `8f50656` `11c5708` |
+| **DLC 확장 슬롯** | ScenarioHub에 DLC 슬롯 2종 locked 등록: `dlc_green` (GREEN THRESHOLD — 아프리카 소바리 폐허 / EV-Σ 잔류), `dlc_north` (NORTHERN FRONT — 러시아 북극권 / SITE-7/13). 허브 카드 이미지 3종 추가 | `f931bd1` `0551058` |
+| **Act2 restart 삭제** | GameOver 화면의 "Act2 재시작(2차 배치)" 옵션 제거 → 엔딩 직접 재시작 루트만 유지 | `313feb5` |
+| **C-060 체인 버그 수정** | "두 번째 탈북자" 카드가 첫 탈북자 미경험 상태에서 등장하던 버그. `LOG-DEFECTOR-1` 신규 + CH-004-2가 `LOG-009`/`LOG-DEFECTOR-1` 양쪽 해금, C-060 조건을 체인 전용 `LOG-DEFECTOR-1`로 교체 | `d350ef4` |
+| **CA-SEED-02 act 보정** | 전임지휘관 B3 메모 `act:[1]` → `act:[2,3]`, day 6~14. Act 1 노출 시 과도한 스포일러 | `a2167db` |
+| **C-236 텍스트** | 실제 기지명 `KR-INIT-001 기지 주의` 본문 노출 제거 → 간접 정보 누출 묘사 | `b8de4b9` |
+| **이브닝챗 응답 매칭** | 2a/2b/2c의 39개 엔트리 `responseKey` 전수 부여 + `data-evening-responses-3.js` 신규 (192줄) | `3f013f7` |
+| **글리치 정리** | CA-014~017 프롤로그 시각 왜곡 제거, 용어 통일 "아베란트 → 변이체" | `6439d31` |
+| **오디오 수정** | `_crossfade` 겹침 수정(타겟 외 트랙 즉시 pause), SFX 볼륨 슬라이더 실시간 반영 | `7c6c720` |
+| **UI 정비** | 타이머 없는 카드에 `0` 렌더 버그, info-bar 태그 높이 통일, 간부진 인트로 연쇄 재생 제거, 텍스트 컬러 `var(--ui-text)` 전환 | `3c4ce93` `037780c` `42c0ced` `a2167db` |
+
+**신규 추적 파일** (이 스냅샷에서 추가):
+`i18n-runtime.js`, `lang-ui-ko.js`, `lang-ui-en.js`, `lang-content-en-all.js`, `lang-content-en-dialogues.js`, `style-i18n-hotfix.css`, `style-i18n-locale-hotfix.css`, `components-settings-hotfix.js`, `data-evening-responses-3.js`, `images_hub.js`
+
+### 0.2 v0.9 → v1.0 (BUILD_VER 22 시점)
 
 | 분류 | 변경 |
 |---|---|
@@ -42,6 +85,24 @@
 ---
 
 ## 2. 게임 구조
+
+### 2.0 진입 플로우 (2026-04-23 개편 → 2026-04-24 평탄화)
+
+```
+Boot (타이틀 + 로그 스크롤)
+ ↓
+MainMenu (게임 시작 / 이어하기 / 아카이브 / 로그 / SETTINGS)
+ ↓  ※ "게임 시작" 선택 시
+ScenarioHub (스와이프로 시나리오 선택: main / dlc_green / dlc_north)
+ ↓ (active 시나리오 "진입" 선택)
+메인 스토리 서브메뉴 (이어서 플레이 / 새로 시작 / 튜토리얼 다시 보기)
+ ↓
+Tutorial → Briefing → Game
+```
+
+- **MainMenu** (2026-04-24 `cbead05` 평탄화): `records` 서브뷰 제거 → 아카이브/로그/이어하기를 루트에 직접 버튼으로 노출. 게임 시작 전에도 언어/디스플레이/사운드 설정 접근. SettingsPanel에는 메인 메뉴 복귀 콜백 `onMainMenu` 노출
+- **ScenarioHub** (2026-04-24 i18n 복원): 스와이프(60px 임계) + 화살표 키 + 숫자키 1/2/3 지원. `Escape`/`Backspace`로 상위 이동. 메인 뷰 하드코딩 영어 문구는 `isKo` locale 분기로 한/영 전환
+- DLC 슬롯(`dlc_green`, `dlc_north`)은 locked. 현재는 허브 UI/이미지만 존재 (콘텐츠 본체 미제작)
 
 ### 2.1 사이클 (1일 = 1 사이클)
 
@@ -191,9 +252,27 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 ## 5. 파일 구조
 
 ### 5.1 코어
-- `index.html` — HTML 셸 + 스크립트 로드 (BUILD_VER=22 캐시 버스트)
-- `style.css` + `style-glitch.css` — 전체 스타일
+- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=59** 캐시 버스트)
+- `style.css` + `style-glitch.css` + `style-escape.css` — 기본 스타일
+- `style-i18n-hotfix.css` + `style-i18n-locale-hotfix.css` — 영어 레이아웃 핫픽스 (게이지/모바일 선택지 버튼, `lang=en` 속성 기반 오버라이드)
 - `field-mission/` — Act4 탈출 미니게임 인라인 (index.html + css/ + js/ 17개 + assets/ 45파일 / 7.1MB). postMessage로 카드게임과 상태 교환
+
+### 5.1a i18n 런타임 (2026-04-23 신규)
+- `i18n-runtime.js` — `locale` 변수, `t()`/`tt()`/`tc()` 헬퍼, `ts-locale-changed` broadcast 이벤트
+- `lang-ui-ko.js` / `lang-ui-en.js` — UI 문자열 (메뉴/버튼/라벨/상태 태그). 2026-04-24에 `menu.*` / `assess.high1~veryLow4` / `boot.startGame` / 섹션 라벨 추가
+- `lang-content-en-all.js` (207KB) — 카드 msg/leftLabel/rightLabel, 뉴스 헤드라인, 다이얼로그 등 콘텐츠 영어 오버레이 (18개 phase 통합)
+- `lang-content-en-dialogues.js` — 초기 통신 대화 영어
+- `components-settings-hotfix.js` — 설정 패널 닫힘/저장 시 locale 지연 적용 및 저장 번역
+
+### 5.1b 필드 미션 미니게임 (2026-04-24 신규, `cbead05`)
+- `components-minigames.js` (429줄) — 3종 React 미니게임 컴포넌트 + `MiniPanel` 오버레이 + `mergeMissionBonus()` 보상 합성
+  - `signal` (SPEC-011 음향 패턴 정렬) — 왕복 커서를 안정 밴드에 정지
+  - `sequence` (격리 봉인 수동 시퀀스) — 패널 지시문대로 버튼 입력
+  - `breach` (ORACLE 권한 흔적 추적) — 인접 노드 이동 + KEY 수집 → EXIT
+- `data-minigame-rewards.js` (350줄) — `FIELD_MINIGAME_CONFIGS` (미션→노드→미니게임 매핑) + `FIELD_MINIGAME_REWARDS` (4랭크 보너스) + `FIELD_MINIGAME_NARRATIVES` (랭크별 textSuffix/endLabel)
+  - **통합 미션**: M-002(`analyze`→signal_scan), MI-01(`shield`/`seal`/`oracle`→seal_sequence), MI-04(`remove`/`trap`/`oracle`→authority_trace)
+  - **전용 로그**: `LOG-MG-011-AUDIO`, `LOG-MG-INC-01-SEAL`, `LOG-MG-INC-04-TRACE`, `LOG-MG-DLG-SEJIN-SIGNAL`, `LOG-MG-DLG-JAEHYUK-SEAL`, `LOG-MG-DLG-HAEUN-TRACE`
+- `components-fieldmission-minigame-patch.js` (167줄) — 기존 `FieldMission` 재정의 패치. `localizeMissionNode()`에서 `tc()` 언어팩 + 정적 오버라이드 + 미니게임 결과 서사 3단 병합. **로드 순서 민감**: 반드시 `components-escape.js` 이후 로드
 
 ### 5.2 앱 로직
 - `app.js` — React App 메인 컴포넌트 (33개 useState)
@@ -202,8 +281,8 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 - `app-logic.js` — Act 전환, 엔딩 체크, 게임 로직
 - `app-bgm.js` — BGM 연동
 
-### 5.3 컴포넌트 (13개)
-`components.js`, `components-game.js`, `components-dialogue.js`, `components-evening.js`, `components-briefing.js`, `components-archive.js`, `components-evidence.js`, `components-facility.js`, `components-settings.js`, `components-settings-2.js`, `components-endings.js`, `components-glitch.js`, `components-escape.js`
+### 5.3 컴포넌트 (16개)
+`components.js`, `components-game.js`, `components-dialogue.js`, `components-evening.js`, `components-briefing.js`, `components-archive.js`, `components-evidence.js`, `components-facility.js`, `components-settings.js`, `components-settings-2.js`, `components-settings-hotfix.js`, `components-endings.js`, `components-glitch.js`, `components-escape.js`, `components-escape-roll.js`, `components-minigames.js`, `components-fieldmission-minigame-patch.js`
 
 ### 5.4 데이터 (분리됨, 200줄 룰)
 
@@ -222,14 +301,15 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 
 **이브닝 챗**:
 - `data-evening-trust-1/1b/2/3.js` (캐릭터별 신뢰도 변형)
-- `data-evening-responses.js` + `-2.js`
+- `data-evening-responses.js` + `-2.js` + **`-3.js`** (2026-04-23 신규, 2a/2b/2c 39개 responseKey 매칭 응답 192개)
 - `data-evening-extra.js` + `-extra-2a/2b/2c/2d.js` (분리됨, 각 ≤200줄)
 - `evening-lines.js` — getEveningLines
 
 **기타**:
-- `data-core.js`, `data-status-tags.js`, `data-rewards.js`, `data-archive.js`
+- `data-core.js`, `data-status-tags.js`, `data-rewards.js`, `data-archive.js` (2026-04-24 언락 조건 교정, 인물 4종·시설 2종·조직 3종·EV-Σ 1종)
 - `data-evidence.js`, `data-hidden-story.js`, `data-achievements.js`
-- `data-result-text.js` + `-story-1/2/3.js`
+- `data-result-text.js` (2026-04-24 한·영 풀 재작성, `_rtLocale()`/`_rtPool()` 기반) + `-story-1/2/3.js`
+- `data-minigame-rewards.js` (2026-04-24 신규) — 필드 미션 미니게임 설정/보상/서사
 
 ### 5.5 자산
 - 이미지: `images.js`, `images_bg.js`, `images_cards.js` (base64) + `img/` 34장 PNG
@@ -281,7 +361,8 @@ setTimeout/event handler closure에서 logs 의존 분기 시 **반드시 `Save.
 - [x] QA 도구 5종
 
 ### 7.2 출시 전 필수 (P0)
-- [ ] **영어 로컬라이제이션** (i18n 시스템 + 번역) — 최우선
+- [x] **i18n 인프라 구축** (2026-04-23, `i18n-runtime.js` + UI 언어팩 + 콘텐츠 영어 오버레이)
+- [ ] 영어 번역 품질 감수 (콘텐츠 오버레이 207KB 자동 생성분 QA)
 - [ ] Steam 캡슐 그래픽 4종 (Header/Capsule/Library/Page Bg)
 - [ ] 스크린샷 5장 + GIF 2개
 - [ ] 트레일러 60초
@@ -340,6 +421,8 @@ Trust 65+ 달성률    99%
 
 ---
 
-*v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)***
-*본 문서는 BUILD_VER=22 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증 완료.*
-*문의/수정: claude/magical-cray-74f8c4 브랜치 HANDOFF.md 참조*
+*v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)** → v1.0 증보 (2026-04-23) → v1.0 증보 (2026-04-24)*
+*본 문서는 **BUILD_VER=59** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증 완료.*
+*2026-04-23 증보분: i18n 인프라 구축, MainMenu/ScenarioHub 플로우 개편, 카드 체인 버그 수정 (C-060/CA-SEED-02/C-236), 이브닝챗 응답 매칭, 오디오/UI 정비.*
+*2026-04-24 증보분: 필드 미션 미니게임(signal/sequence/breach) 프로덕션 통합 (M-002/MI-01/MI-04), 아카이브 언락 타이트닝, 결과 토스트 서사 한·영 풀 재작성, MainMenu 평탄화, ScenarioHub 한국어 복원.*
+*변경 이력 상세: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷*
