@@ -18,50 +18,41 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .screen::-webkit-scrollbar{width:3px}
 .screen::-webkit-scrollbar-track{background:transparent}
 .screen::-webkit-scrollbar-thumb{background:var(--ui-scroll);border-radius:2px}
-/* Hide scrollbars globally (keep scroll functional) */
 .screen *{scrollbar-width:none}
 .screen *::-webkit-scrollbar{display:none}
-/* Title Frame */
 .title-frame{width:100%;max-width:460px;height:44px;background:url('title_frame.png') center/contain no-repeat;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(var(--ui-rgb),0.15);border-radius:2px}
 .title-frame span{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui);letter-spacing:3px;text-shadow:0 0 8px var(--ui-glow)}
-/* Section Header */
 .section-hdr{width:100%;max-width:440px;height:26px;background:url('header_capsule.png') center/contain no-repeat;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:2px 0;border-bottom:1px solid rgba(var(--ui-rgb),0.12)}
 .section-hdr span{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-section);letter-spacing:2px}
-/* Stat Gauges */
-.gauge-row{display:flex;align-items:center;gap:6px;width:100%;max-width:420px;height:26px}
+.gauge-row{display:grid;grid-template-columns:26px 108px minmax(0,1fr) 32px;align-items:center;column-gap:6px;width:100%;max-width:420px;height:26px;position:relative}
 .gauge-icon{width:26px;height:26px;background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(var(--ui-rgb),0.5)) drop-shadow(0 0 8px rgba(var(--ui-rgb),0.2))}
 .gauge-icon-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
 .gauge-icon-r{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_jawon.png')}
 .gauge-icon-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .gauge-icon-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 .gauge-danger .gauge-icon{filter:drop-shadow(0 0 4px rgba(255,68,68,0.6)) drop-shadow(0 0 8px rgba(255,68,68,0.3))}
-.gauge-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui-label);min-width:26px;max-width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.gauge-bar{flex:1;height:20px;background:url('gauge_track.png') left center/100% 100% no-repeat;position:relative;overflow:hidden}
+.gauge-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-label);width:108px;min-width:108px;max-width:108px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;letter-spacing:.2px}
+.gauge-bar{min-width:0;width:100%;height:20px;background:url('gauge_track.png') left center/100% 100% no-repeat;position:relative;overflow:hidden}
 .gauge-bar-inner{position:absolute;left:2px;right:2px;top:1px;bottom:1px;overflow:hidden}
 .gauge-fill{height:100%;background:url('gauge_fill.png') left center/100% 100% no-repeat;transition:width 0.6s ease;position:relative}
 .gauge-fill::after{display:none}
-.gauge-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--ui);width:28px;text-align:right;flex-shrink:0;text-shadow:0 0 6px rgba(var(--ui-rgb),0.4)}
+.gauge-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--ui);width:32px;min-width:32px;text-align:right;flex-shrink:0;text-shadow:0 0 6px rgba(var(--ui-rgb),0.4)}
 .gauge-danger .gauge-fill{filter:hue-rotate(280deg) saturate(2)}
 .gauge-danger .gauge-val{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.4);animation:dangerPulse 1.5s ease-in-out infinite}
 .gauge-high .gauge-val{color:var(--ui);text-shadow:0 0 8px var(--ui-glow)}
-/* 임계 경고 (c/o ≥85) — 엔딩 분기 진입 신호, 주황 글로우 */
 .gauge-critical-hi .gauge-val{color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.5);animation:criticalPulse 1.2s ease-in-out infinite}
 .gauge-critical-hi .gauge-fill{filter:hue-rotate(-60deg) saturate(1.6) brightness(1.1)}
 .gauge-critical-hi .gauge-icon{filter:drop-shadow(0 0 4px rgba(240,160,48,0.7)) drop-shadow(0 0 10px rgba(240,160,48,0.35))}
 @keyframes criticalPulse{0%,100%{opacity:1}50%{opacity:0.55}}
-/* 확정 스탯 변화 플로팅 — +N/-N이 게이지 값 위로 올라가며 페이드 */
-.gauge-row{position:relative}
 .delta-float{position:absolute;right:30px;top:50%;font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:bold;pointer-events:none;animation:deltaFloatUp 1.5s ease-out forwards;z-index:3;text-shadow:0 0 6px currentColor}
 .delta-float.delta-up{color:#7fd47f}
 .delta-float.delta-down{color:#ff7a7a}
 @keyframes deltaFloatUp{0%{transform:translateY(-50%);opacity:0}15%{transform:translateY(-120%);opacity:1}80%{transform:translateY(-220%);opacity:1}100%{transform:translateY(-280%);opacity:0}}
-/* Inline Stat Icons */
 .stat-icon-inline{display:inline-block;width:14px;height:14px;background-size:contain;background-repeat:no-repeat;background-position:center;vertical-align:middle;margin-right:3px;filter:drop-shadow(0 0 3px rgba(var(--ui-rgb),0.4))}
 .stat-icon-inline-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
 .stat-icon-inline-r{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_jawon.png')}
 .stat-icon-inline-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .stat-icon-inline-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
-/* Info Bar */
 .info-bar{display:flex;gap:4px;margin:6px auto;flex-shrink:0;max-width:440px;width:100%;align-items:center;flex-wrap:wrap;row-gap:4px}
 .info-tag{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui);border:1px solid var(--ui-border);padding:4px 8px;letter-spacing:0;background:var(--ui-bg);text-align:center;white-space:nowrap;flex-shrink:0;min-height:28px;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box}
 .info-tag-menu{margin-left:auto;min-width:26px;font-size:12px;padding:3px 8px}
@@ -69,7 +60,6 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .info-tag-log:active{background:rgba(var(--ui-rgb),0.1);border-color:rgba(var(--ui-rgb),0.4)}
 .info-tag-archive{cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:rgba(240,160,48,0.15);text-decoration:underline;text-decoration-color:rgba(240,160,48,0.2);text-underline-offset:3px;color:#f0a030!important}
 .info-tag-archive:active{background:rgba(240,160,48,0.1);border-color:rgba(240,160,48,0.4)}
-/* Card Panel */
 .card-panel{width:100%;max-width:440px;flex:1;min-height:180px;position:relative;padding:20px 24px;display:flex;flex-direction:column;animation:cardEnter 0.35s ease;background:url('panel_frame_large.png') center/100% 100% no-repeat}
 .card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .card-hdr-l{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui);letter-spacing:1px}
@@ -83,42 +73,35 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .act-2 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.3) brightness(0.7)}
 .act-3 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.4) brightness(0.6)}
 .act-4 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.5) brightness(0.5)}
-/* Utility */
 .bg-overlay{position:absolute;inset:0;background-size:cover;background-position:center;pointer-events:none;z-index:0}
-/* Footer */
 .footer-frame{width:100%;max-width:460px;height:28px;background:url('footer_line.png') center/contain no-repeat;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:auto;padding-top:4px}
 .footer-frame span{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--ui-foot);letter-spacing:2px}
-/* Boot */
 .boot{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px 20px}
-/* Buttons */
 .btn{background:url('button_default.png') center/100% 100% no-repeat;border:none;color:var(--ui);font-family:'Noto Sans KR',sans-serif;font-size:14px;padding:14px 28px;cursor:pointer;letter-spacing:1px;margin-top:24px;transition:all 0.2s;min-height:44px;text-shadow:0 0 8px var(--ui-glow);-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15)}
 .btn:active{background-image:url('button_active.png');color:#050808;text-shadow:none}
 .btn-amber{color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.3)}
 .btn-amber:active{color:#050808}
-/* Game Over */
 .go-title{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:3px;color:#ff4444;margin-bottom:16px}
 .go-reason{color:#ccddcc;margin-bottom:20px;font-size:14px;line-height:1.6}
 .go-section{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-dim);margin-bottom:12px;letter-spacing:2px}
 .go-stat{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--ui);margin-bottom:6px}
 .go-msg{font-style:italic;color:var(--ui-dim);margin-top:16px;font-size:13px}
-/* Portrait & Mission */
 .portrait{width:110px;height:110px;border-radius:50%;object-fit:cover;object-position:center 20%;border:2px solid var(--ui-border);filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.55) brightness(0.85);margin-bottom:10px;box-shadow:0 0 16px rgba(var(--ui-rgb),0.08)}
 .act-1 .portrait{filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.55) brightness(0.85)}
 .act-2 .portrait{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8)}
 .act-3 .portrait{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.6) brightness(0.8)}
 .act-4 .portrait{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.8) brightness(0.7)}
 .mission-img{width:100%;max-width:480px;height:220px;object-fit:cover;object-position:center;margin-top:6px;border-radius:4px;border:1px solid var(--ui-border);filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.6);background:#060a06}
-/* Mobile */
 @media(max-width:430px){
   .screen{padding:0 8px;padding-bottom:max(12px,env(safe-area-inset-bottom))}
   .title-frame{height:36px;margin-bottom:0}
   .title-frame span{font-size:10px;letter-spacing:2px}
   .section-hdr{height:22px;margin:1px 0}
   .section-hdr span{font-size:9px}
-  .gauge-row{height:22px;gap:4px}
+  .gauge-row{grid-template-columns:22px 100px minmax(0,1fr) 28px;height:22px;column-gap:4px}
   .gauge-icon{width:22px;height:22px}
-  .gauge-label{font-size:10px;min-width:24px;max-width:70px}
-  .gauge-val{font-size:12px;width:24px}
+  .gauge-label{font-size:9px;width:100px;min-width:100px;max-width:100px;letter-spacing:0}
+  .gauge-val{font-size:12px;width:28px;min-width:28px}
   .gauge-bar{height:16px}
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
   .info-bar{margin:4px 0;gap:3px}
@@ -140,14 +123,11 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .mission-img{height:180px}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
-/* Settings Button */
 .settings-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:rgba(var(--ui-rgb),0.06);border:1px solid rgba(var(--ui-rgb),0.25);color:var(--ui);font-size:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;border-radius:2px;padding:0;line-height:1;text-shadow:0 0 6px var(--ui-glow);-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15);z-index:2}
 .settings-btn:active{background:rgba(var(--ui-rgb),0.15);border-color:rgba(var(--ui-rgb),0.5)}
 @media(max-width:430px){.settings-btn{width:28px;height:28px;font-size:14px;right:4px}}
-/* Font size settings */
 .fs-small .card-msg{font-size:12px}.fs-small .oracle-card__title{font-size:14px}.fs-small .oracle-card__desc{font-size:10px}
 .fs-large .card-msg{font-size:16px}.fs-large .oracle-card__title{font-size:18px}.fs-large .oracle-card__desc{font-size:14px}
-/* ── Choice Cards (Reward Screen) ── */
 .oracle-card{position:relative;padding:16px 18px 14px;border:1px solid rgba(var(--ui-rgb),.22);background:linear-gradient(180deg,rgba(var(--ui-rgb),.05),rgba(var(--ui-rgb),.01)),linear-gradient(90deg,rgba(var(--ui-rgb),.03),transparent 45%);box-shadow:0 0 10px rgba(var(--ui-rgb),.12),inset 0 0 20px rgba(var(--ui-rgb),.03);cursor:pointer;transition:all .16s ease;overflow:hidden;margin-bottom:8px}
 .oracle-card::before,.oracle-card::after{content:"";position:absolute;width:20px;height:20px;border-color:rgba(var(--ui-rgb),.45);pointer-events:none}
 .oracle-card::before{left:8px;top:8px;border-left:2px solid;border-top:2px solid}
@@ -164,28 +144,22 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .oracle-card__effect--neg{color:rgba(255,141,97,.9)}
 .oracle-card__execute{appearance:none;display:block;margin:12px auto 0;border:1px solid rgba(var(--ui-rgb),.4);background:var(--ui-bg);color:var(--ui-text);font-family:'Share Tech Mono',monospace;letter-spacing:.08em;font-size:13px;padding:10px 20px;box-shadow:0 0 8px rgba(var(--ui-rgb),.1);cursor:pointer;transition:all .16s;-webkit-tap-highlight-color:rgba(var(--ui-rgb),.15);border-radius:2px}
 .oracle-card__execute:active{color:#fff;border-color:rgba(var(--ui-rgb),.7);box-shadow:0 0 16px rgba(var(--ui-rgb),.2);background:rgba(var(--ui-rgb),.08)}
-/* Card priority accent */
 .card-p-high{box-shadow:inset 0 1px 0 rgba(255,68,68,0.15)}
 .card-p-mid{box-shadow:inset 0 1px 0 rgba(240,160,48,0.1)}
-/* Glitch text effect */
 @keyframes glitchText{0%,100%{transform:translate(0)}20%{transform:translate(-2px,1px)}40%{transform:translate(1px,-1px)}60%{transform:translate(-1px,2px)}80%{transform:translate(2px,-1px)}}
 .glitch-text{animation:glitchText 0.15s ease infinite}
-/* Card glitch — OBSERVER 접속승인 등 오류처럼 보이는 특수 카드 */
 @keyframes glitchCard{0%,100%{transform:translate(0);filter:none}15%{transform:translate(-1px,1px);filter:hue-rotate(90deg)}30%{transform:translate(1px,-1px)}45%{filter:hue-rotate(-90deg) brightness(1.2)}60%{transform:translate(-1px,0)}75%{filter:brightness(0.8)}90%{transform:translate(1px,1px);filter:hue-rotate(45deg)}}
 @keyframes scanFlicker{0%{opacity:1}4%{opacity:0.6}8%{opacity:1}50%{opacity:1}52%{opacity:0.7}54%{opacity:1}}
 .card-glitch{animation:glitchCard 2s ease infinite,scanFlicker 4s ease infinite;border-color:rgba(255,60,60,.3) !important;box-shadow:0 0 20px rgba(255,0,0,.08),inset 0 0 30px rgba(255,0,0,.03) !important}
 .card-glitch .card-hdr{border-color:rgba(255,60,60,.2) !important}
 .card-glitch .card-hdr-l{color:#ff4444 !important;animation:glitchText 0.3s ease infinite}
 .card-glitch .card-msg{color:rgba(255,200,200,.85) !important}
-/* Evening Chat character hover */
 @keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(var(--ui-rgb),.08)}50%{box-shadow:0 0 16px rgba(var(--ui-rgb),.18)}}
 @keyframes typingDot{0%,80%,100%{opacity:.2}40%{opacity:1}}
-/* ═══ Facility Status Tags ═══ */
 .ftag-safe{color:rgba(var(--ui-rgb),.6)}
 .ftag-warn{color:rgba(240,200,80,.6)}
 .ftag-danger{color:rgba(255,141,97,.7)}
 .ftag-critical{color:#ff4444;animation:blink 1.5s infinite}
-/* ═══ Character Status Tags ═══ */
 .ctag-low{color:var(--ui-dim);background:rgba(255,68,68,.25);border:1px solid rgba(255,68,68,.3)}
 .ctag-mid{color:rgba(var(--ui-rgb),.7);background:rgba(var(--ui-rgb),.06);border:1px solid rgba(var(--ui-rgb),.15)}
 .ctag-high{color:rgba(var(--ui-rgb),.9);background:rgba(var(--ui-rgb),.1);border:1px solid rgba(var(--ui-rgb),.25)}
@@ -193,16 +167,13 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .ctag-special{color:#33cccc;background:rgba(51,204,204,.08);border:1px solid rgba(51,204,204,.2)}
 .ctag-danger{color:#ff6644;background:rgba(255,68,68,.08);border:1px solid rgba(255,68,68,.2)}
 .ctag-warn{color:#f0a030;background:rgba(240,160,48,.06);border:1px solid rgba(240,160,48,.15)}
-/* Scroll arrow indicator blink */
 @keyframes scrollArrowBlink{0%,100%{opacity:0.2}50%{opacity:0.9}}
-/* Escape game iframe */
 .escape-game-wrap{position:fixed;inset:0;z-index:100;background:#000}
 .escape-iframe{width:100%;height:100%;border:none;opacity:0;transition:opacity .6s ease}
 .escape-iframe.loaded{opacity:1}
-.escape-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:101}
+.escape-loading{position:absolute;inset:0;display:flex;flex-direction:column;alignItems:center;justify-content:center;z-index:101}
 .escape-loading-text{font-family:'Share Tech Mono',monospace;font-size:13px;color:rgba(var(--ui-rgb),.7);letter-spacing:3px;animation:escapePulse 1.5s ease-in-out infinite}
 @keyframes escapePulse{0%,100%{opacity:.4}50%{opacity:1}}
-/* Briefing image flicker */
 .briefing-img{width:100%;max-width:440;border-radius:4px;border:1px solid rgba(var(--ui-rgb),.2);box-shadow:0 0 20px rgba(var(--ui-rgb),.1)}
 .briefing-flicker{position:relative;width:100%;max-width:440px}
 .briefing-flicker img{width:100%;display:block;border-radius:4px;border:1px solid rgba(var(--ui-rgb),.2);box-shadow:0 0 20px rgba(var(--ui-rgb),.1)}
