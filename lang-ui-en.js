@@ -41,7 +41,7 @@ window.TS_I18N.mergeUI('en', {
     mission:'MIS {current}/{total}',
     log:'LOG {current}/{total}',
     archive:'ARC',
-    archiveNew:'ARC {count} @',
+    archiveNew:'ARC {count} ●',
     facility:'FAC {done}/{total}',
     evidence:'EVD {count}',
     menu:'☰'
@@ -57,11 +57,35 @@ window.TS_I18N.mergeUI('en', {
     highlights:['PILEHEAD','ORACLE','EV-Σ','PROMETHEUS','[REDACTED]','Containment','Resources','Trust','Evaluation']
   },
   news:{
+    header:'[ORACLE // DAILY REPORT]',
+    dayReport:'DAY {day} REPORT',
+    sectionStatus:'[STATUS OVERVIEW]',
+    sectionSituation:'[SITUATION REPORT]',
+    sectionIntel:'[INTEL BRIEFING]',
+    sectionFacility:'[FACILITY STATUS]',
     nextCycle:'[ PROCEED TO NEXT CYCLE ]',
     headlineAlert:'[ ORACLE // OPERATIONAL ALERT ]',
     headlineWarn1:'KR-INIT-001 containment integrity approaching threshold.',
     headlineWarn2:'Korean branch stabilization projected at 100% — temporary command privileges nearing expiration.',
-    headlineWarn3:'Preparing GRANT EXPIRED sequence. Exercise caution in your choice.'
+    headlineWarn3:'Preparing GRANT EXPIRED sequence. Exercise caution in your choice.',
+    assess:{
+      high1:'Operational efficiency stable. Maintain current directive.',
+      high2:'High compliance with ORACLE advisories. Korea Branch performance remains above average.',
+      high3:'Commander trust index elevated. Expanded authority under review.',
+      high4:'Branch stability reconfirmed. Additional clearance being considered.',
+      mid1:'Operations stable. Minor nonstandard signals detected.',
+      mid2:'Overall conditions nominal. Decision variance among personnel has slightly increased.',
+      mid3:'Branch remains within normal bounds. Select indicators under observation.',
+      mid4:'Average ORACLE compliance rate. Continued monitoring advised.',
+      low1:'Nonstandard decision frequency increasing. Monitoring intensified.',
+      low2:'Independent command patterns detected. Analysis ongoing.',
+      low3:'Repeated deviation from ORACLE advisories logged.',
+      low4:'Several nonstandard operational markers identified in branch telemetry.',
+      veryLow1:'Multiple abnormal operational patterns detected. Caution advised.',
+      veryLow2:'Commander trust index declining. Reassessment pending.',
+      veryLow3:'ORACLE advisory override frequency entering risk threshold.',
+      veryLow4:'Operational anomaly detected. Headquarters review under consideration.'
+    }
   },
   reward:{ c:'Containment', r:'Resources', t:'Trust', o:'Evaluation', pickCount:'Choose 1 of {count}', footer:'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001' },
   fieldMission:{ title:'FIELD MISSION', trustTag:'[TRUST]', footer:'ORACLE REMOTE TERMINAL — FIELD OPS' },

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko" data-locale="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TIU Field Mini-Game Prototype</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">ORACLE FIELD OPS // TEST BUILD</p>
+        <h1 id="app-title">TIU Field Mini-Game Prototype</h1>
+      </div>
+      <div class="top-actions">
+        <button id="lang-toggle" class="ghost">EN</button>
+        <a id="home-link" class="ghost" href="../index.html">Back to main</a>
+      </div>
+    </header>
+
+    <section class="brief">
+      <p id="app-desc"></p>
+    </section>
+
+    <nav id="mission-tabs" class="tabs" aria-label="mini game examples"></nav>
+
+    <section class="terminal">
+      <div class="terminal-header">
+        <span id="mission-id">M-002</span>
+        <span id="mission-kind">SIGNAL ALIGNMENT</span>
+      </div>
+      <div class="mission-copy">
+        <h2 id="mission-title"></h2>
+        <p id="mission-intro"></p>
+      </div>
+
+      <div id="game-stage" class="game-stage"></div>
+
+      <div class="result-panel">
+        <div>
+          <p id="result-rank" class="result-rank">READY</p>
+          <p id="result-text" class="result-text"></p>
+        </div>
+        <button id="reset-btn" class="primary">Retry</button>
+      </div>
+    </section>
+
+    <section class="notes">
+      <h3 id="notes-title"></h3>
+      <ul id="notes-list"></ul>
+    </section>
+  </main>
+
+  <script src="minigame-demo.js"></script>
+</body>
+</html>

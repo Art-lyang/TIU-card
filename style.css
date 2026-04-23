@@ -24,19 +24,21 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .title-frame span{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui);letter-spacing:3px;text-shadow:0 0 8px var(--ui-glow)}
 .section-hdr{width:100%;max-width:440px;height:26px;background:url('header_capsule.png') center/contain no-repeat;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin:2px 0;border-bottom:1px solid rgba(var(--ui-rgb),0.12)}
 .section-hdr span{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-section);letter-spacing:2px}
-.gauge-row{display:grid;grid-template-columns:26px 108px minmax(0,1fr) 32px;align-items:center;column-gap:6px;width:100%;max-width:420px;height:26px;position:relative}
+.gauge-row{display:grid;grid-template-columns:26px 94px minmax(0,1fr) 32px;align-items:center;column-gap:6px;width:100%;max-width:420px;height:26px;position:relative}
 .gauge-icon{width:26px;height:26px;background-size:contain;background-repeat:no-repeat;background-position:center;flex-shrink:0;filter:drop-shadow(0 0 4px rgba(var(--ui-rgb),0.5)) drop-shadow(0 0 8px rgba(var(--ui-rgb),0.2))}
 .gauge-icon-c{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_bongsoe.png')}
 .gauge-icon-r{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_jawon.png')}
 .gauge-icon-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .gauge-icon-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 .gauge-danger .gauge-icon{filter:drop-shadow(0 0 4px rgba(255,68,68,0.6)) drop-shadow(0 0 8px rgba(255,68,68,0.3))}
-.gauge-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-label);width:108px;min-width:108px;max-width:108px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;letter-spacing:.2px}
+.gauge-label{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--ui-label);width:94px;min-width:94px;max-width:94px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left;letter-spacing:.2px}
 .gauge-bar{min-width:0;width:100%;height:20px;background:url('gauge_track.png') left center/100% 100% no-repeat;position:relative;overflow:hidden}
 .gauge-bar-inner{position:absolute;left:2px;right:2px;top:1px;bottom:1px;overflow:hidden}
 .gauge-fill{height:100%;background:url('gauge_fill.png') left center/100% 100% no-repeat;transition:width 0.6s ease;position:relative}
 .gauge-fill::after{display:none}
 .gauge-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--ui);width:32px;min-width:32px;text-align:right;flex-shrink:0;text-shadow:0 0 6px rgba(var(--ui-rgb),0.4)}
+.stats-pane-ko .gauge-row{grid-template-columns:26px 72px minmax(0,1fr) 32px}
+.stats-pane-ko .gauge-label{width:72px;min-width:72px;max-width:72px;letter-spacing:0}
 .gauge-danger .gauge-fill{filter:hue-rotate(280deg) saturate(2)}
 .gauge-danger .gauge-val{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.4);animation:dangerPulse 1.5s ease-in-out infinite}
 .gauge-high .gauge-val{color:var(--ui);text-shadow:0 0 8px var(--ui-glow)}
@@ -98,12 +100,14 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .title-frame span{font-size:10px;letter-spacing:2px}
   .section-hdr{height:22px;margin:1px 0}
   .section-hdr span{font-size:9px}
-  .gauge-row{grid-template-columns:22px 100px minmax(0,1fr) 28px;height:22px;column-gap:4px}
+  .gauge-row{grid-template-columns:22px 88px minmax(0,1fr) 28px;height:22px;column-gap:4px}
   .gauge-icon{width:22px;height:22px}
-  .gauge-label{font-size:9px;width:100px;min-width:100px;max-width:100px;letter-spacing:0}
+  .gauge-label{font-size:9px;width:88px;min-width:88px;max-width:88px;letter-spacing:0}
   .gauge-val{font-size:12px;width:28px;min-width:28px}
   .gauge-bar{height:16px}
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
+  .stats-pane-ko .gauge-row{grid-template-columns:22px 62px minmax(0,1fr) 28px}
+  .stats-pane-ko .gauge-label{width:62px;min-width:62px;max-width:62px}
   .info-bar{margin:4px 0;gap:3px}
   .info-tag{font-size:9px;padding:3px 4px;min-height:24px}
   .info-tag-menu{font-size:11px;padding:2px 6px}

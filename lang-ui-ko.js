@@ -41,7 +41,7 @@ window.TS_I18N.mergeUI('ko', {
     mission:'MIS {current}/{total}',
     log:'LOG {current}/{total}',
     archive:'ARC',
-    archiveNew:'ARC {count} @',
+    archiveNew:'ARC {count} ●',
     facility:'시설 {done}/{total}',
     evidence:'증거 {count}',
     menu:'☰'
@@ -66,11 +66,35 @@ window.TS_I18N.mergeUI('ko', {
     highlights:['PILEHEAD','ORACLE','EV-Σ','이변체','프로메테우스','[검열됨]','봉쇄선','봉쇄','자원','신뢰도','신뢰','평가']
   },
   news:{
+    header:'[ORACLE // 일일 보고]',
+    dayReport:'DAY {day} REPORT',
+    sectionStatus:'[상태 개요]',
+    sectionSituation:'[상황 보고]',
+    sectionIntel:'[정보 브리핑]',
+    sectionFacility:'[시설 현황]',
     nextCycle:'[ 다음 사이클 진행 ]',
     headlineAlert:'[ ORACLE // 운영 상태 경보 ]',
     headlineWarn1:'KR-INIT-001 봉쇄 완전성 임계 도달 예측.',
     headlineWarn2:'한국지부 안정화 100% — 임시 운영 권한 자동 만료 절차 개시.',
-    headlineWarn3:'GRANT EXPIRED 절차 준비 중. 선택에 유의하십시오.'
+    headlineWarn3:'GRANT EXPIRED 절차 준비 중. 선택에 유의하십시오.',
+    assess:{
+      high1:'운영 효율 양호. 현행 유지 권고.',
+      high2:'ORACLE 권고 이행률이 우수. 한국 지부 성과 상위권.',
+      high3:'지휘관 판단 신뢰도가 높음. 추가 운영 방침 유효.',
+      high4:'기지 안정성 재확인. 추가 권한 부여 검토 중.',
+      mid1:'운영 안정. 일부 비표준 징후 감지.',
+      mid2:'전반적 안정. 인원들의 판단 빈도 소폭 증가.',
+      mid3:'기지 운영 정상 범위. 일부 지표 변동 주시 중.',
+      mid4:'ORACLE 권고 이행률이 보통. 관찰 지속.',
+      low1:'비표준 판단 빈도 증가. 모니터링 강화.',
+      low2:'독자적 의사결정 패턴 감지. 분석 중.',
+      low3:'ORACLE 권고 이탈 빈도 축적. 기록 중.',
+      low4:'운영 데이터 분석 중 비표준 항목 다수 확인.',
+      veryLow1:'비표준 운영 패턴 다수 감지. 주의 요망.',
+      veryLow2:'지휘관 신뢰 지수 하락 중. 재평가 예정.',
+      veryLow3:'ORACLE 권고 무시 빈도 위험 수치 진입.',
+      veryLow4:'운영 이상 감지. 본부 보고 검토 중.'
+    }
   },
   reward:{
     c:'봉쇄', r:'자원', t:'신뢰', o:'평가',

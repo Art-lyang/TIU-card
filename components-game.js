@@ -13,7 +13,7 @@ function Boot(p){
   var tryBootAudio=function(){if(!audioUnlocked.current&&p.onBoot){audioUnlocked.current=true;p.onBoot()}};
   useEffect(function(){var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[]);
   return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
-    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},tt('boot.startSession',{session:sn+1},'[ 세션 '+(sn+1)+' 시작 ]')));
+    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},tt('boot.startGame',null,'[ ?? ?? ]')));
 }
 // ═══ 시나리오 허브 — DLC 확장용 ═══
 function ScenarioHub(p){
@@ -52,31 +52,32 @@ function ScenarioHub(p){
     if(e.key==='Enter'||e.key===' '){e.preventDefault();if(scenarios[idx].active)setMode('main')}
   };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[mode,idx,p.hasSave]);
   var mono={fontFamily:"'Share Tech Mono',monospace"};
-  // 메인 스토리 진입 하위 메뉴
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var isKo=locale==='ko';
+  // ?? ??? ?? ?? ??
   var entryImg=IMG.hub_main;
   if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'8px 0',gap:0,overflowY:'auto'}},
     entryImg&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,position:'relative',borderRadius:4,overflow:'hidden'}},
       h('img',{src:entryImg,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.35)'}}),
       h('div',{style:{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',padding:'20px 24px',gap:6}},
         h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.4)',letterSpacing:3})},'ORACLE PROTOCOL // EYES ONLY'),
-        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',letterSpacing:1,marginTop:4})},'KOREAN BRANCH OPERATION'),
-        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,marginTop:4,textAlign:'center'})},'MISSION: KOREAN BRANCH'),
-        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,textAlign:'center'})},'STABILIZATION'),
+        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',letterSpacing:1,marginTop:4})},isKo?'?? ?? ??':'KOREAN BRANCH OPERATION'),
+        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,marginTop:4,textAlign:'center'})},isKo?'??: ?? ??':'MISSION: KOREAN BRANCH'),
+        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,textAlign:'center'})},isKo?'??? ??':'STABILIZATION'),
         h('div',{style:{width:40,height:1,background:'rgba(var(--ui-rgb),.2)',margin:'8px 0'}}),
-        h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui)',letterSpacing:1})},'TERMINAL SESSION'),
+        h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui)',letterSpacing:1})},isKo?'?? ???':'TERMINAL SESSION'),
         h('div',{style:{marginTop:6,textAlign:'center',lineHeight:1.8}},
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.35)'})},'ORACLE KOREA BRANCH / GANGWON SECTOR'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ZONE: PRIMARY COMMAND'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'STATUS: ACTIVE WATCH'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(255,100,68,.4)'})},'THREAT INDEX: ELEVATED'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ACCESS: MAIN CAMPAIGN'))),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.35)'})},isKo?'ORACLE ?? ?? / ?? ??':'ORACLE KOREA BRANCH / GANGWON SECTOR'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},isKo?'??: ? ???':'ZONE: PRIMARY COMMAND'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},isKo?'??: ?? ??':'STATUS: ACTIVE WATCH'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(255,100,68,.4)'})},isKo?'?? ??: ??':'THREAT INDEX: ELEVATED'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},isKo?'?? ??: ?? ???':'ACCESS: MAIN CAMPAIGN'))),
       h('div',{style:{position:'absolute',bottom:0,left:0,right:0,height:'30%',background:'linear-gradient(transparent,rgba(5,10,5,.95))'}})),
     h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:4,flexShrink:0,paddingBottom:20}},
-      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},tt('hub.continue',null,'[ 이어서 플레이 ]')),
-      h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?tt('hub.newGame',null,'[ 새로 시작 ]'):tt('hub.start',null,'[ 시작하기 ]')),
-      p.hasSave&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},tt('hub.replayTutorial',null,'[ 튜토리얼 다시 보기 ]')),
-      h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:6})},tt('hub.backToSelect',null,'← 시나리오 선택으로'))));
-  // 시나리오 카드 뷰
+      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},tt('hub.continue',null,isKo?'[ ???? ]':'[ Continue ]')),
+      h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?tt('hub.newGame',null,isKo?'[ ? ?? ?? ]':'[ New Game ]'):tt('hub.start',null,isKo?'[ ???? ]':'[ Start ]')),
+      p.hasSave&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},tt('hub.replayTutorial',null,isKo?'[ ???? ?? ?? ]':'[ Replay Tutorial ]')),
+      h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:6})},tt('hub.backToSelect',null,isKo?'? ???? ????':'? Back to Scenario Select'))));
   var sc=scenarios[idx];
   var cardStyle={width:'100%',maxWidth:440,overflow:'hidden',
     transform:'translateX('+(dragging?dx:0)+'px)',
@@ -104,30 +105,27 @@ function MainMenu(p){
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
       onLogs:function(){setSub(null);p.onLogs()},onArchive:function(){setSub(null);p.onArchive()},
-      onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange}));
-  // 기록 서브뷰
-  if(sub==='records')return h('div',{className:'boot',style:{justifyContent:'center',gap:12}},
-    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'RECORDS'),
-    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:8}},
-      h('button',{className:'btn',style:{minWidth:220},onClick:p.onLogs},tt('gameOver.logs',null,'기록')+' (LOG)'),
-      h('button',{className:'btn',style:{minWidth:220},onClick:p.onArchive},tt('settings.archive',null,'아카이브')+' (ARCHIVE)'),
-      h('button',{className:'btn',style:{minWidth:220},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩')+' (ENDINGS)'),
-      h('div',{onClick:function(){setSub(null)},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:10})},'← MAIN MENU')));
+      onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange,
+      onMainMenu:function(){setSub(null);if(p.onMainMenu)p.onMainMenu();}}));
   // 메인 메뉴
   return h('div',{className:'boot',style:{justifyContent:'center',gap:0}},
     IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:360,marginBottom:20,flexShrink:0}},
       h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.8) contrast(1.1)',opacity:0.9}})),
     h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center',marginBottom:16})},'MAIN MENU'),
     h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center'}},
-      h('button',{className:'btn btn-amber',style:{minWidth:240,fontSize:13},onClick:p.onPlay},tt('hub.enter',null,'[ 세션 선택 ]')),
+      h('button',{className:'btn btn-amber',style:{minWidth:240,fontSize:13},onClick:p.onPlay},tt('menu.startGame',null,'[ 게임 시작 ]')),
+      p.hasSave&&h('button',{className:'btn',style:{minWidth:240},onClick:p.onContinue},tt('menu.continue',null,'[ 이어하기 ]')),
+      h('button',{className:'btn',style:{minWidth:240},onClick:p.onArchive},tt('settings.archive',null,'아카이브')),
+      h('button',{className:'btn',style:{minWidth:240},onClick:p.onLogs},tt('gameOver.logs',null,'로그')),
       h('button',{className:'btn',style:{minWidth:240},onClick:function(){setSub('settings')}},tt('settings.title',null,'SETTINGS')),
-      p.sessions>0&&h('button',{className:'btn',style:{minWidth:240},onClick:function(){setSub('records')}},'RECORDS'),
       h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.2)',marginTop:16,textAlign:'center'})},'TERMINAL SESSION v'+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))));
 }
 function Stats(p){
-  var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
+  var sm=[{k:'c',l:tt('stats.c',null,'??')},{k:'r',l:tt('stats.r',null,'??')},{k:'t',l:tt('stats.t',null,'??')},{k:'o',l:tt('stats.o',null,'??')}];
   var pv=p.preview||{};
-  return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var isKo=locale==='ko';
+  return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
     sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
@@ -241,10 +239,10 @@ function CardC(p){
       }()),
       card.hint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(74,170,238,.06)',borderLeft:'2px solid rgba(74,170,238,.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#4ae',letterSpacing:0.5}},card.hint),
       (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(var(--ui-rgb),.08)'}},
-        h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:10,gap:8}},
+        h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',fontFamily:"'Share Tech Mono',monospace",fontSize:9,columnGap:10,rowGap:3,alignItems:'center'}},
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
           h('div',{style:{display:'flex',gap:6,alignItems:'center',opacity:0.7}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9}},'→')))),
-      h('div',{style:{display:'flex',justifyContent:'space-between',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,pointerEvents:'none'}},
+      h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:9,pointerEvents:'none',columnGap:10,alignItems:'center'}},
         h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},'← '+leftLabel),
         h('span',{style:{color:'rgba(var(--ui-rgb),.45)'}},rightLabel+' →'))
     ));
@@ -287,6 +285,337 @@ function News(p){
       shown>=p.headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ 다음 사이클 진행 ]'))));
+}
+function NewsReport(p){
+  var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
+  useEffect(function(){var onKey=function(e){if(shown>=p.headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,p.headlines.length]);
+  var parseHL=function(raw){
+    var s=String(raw||'');
+    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var body=view&&view.text?view.text:s;
+    var type=view&&view.type?view.type:null;
+    var isGl=s.indexOf('분류 오류')>=0;
+    var isDel=s.indexOf('삭제됨')>=0;
+    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true};
+    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}}
+    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}}
+    return{tag:'INTEL-01',text:body,gl:false}
+  };
+  var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
+  var AP={
+    h:[tt('news.assess.high1',null,'Operational efficiency stable. Maintain current directive.'),tt('news.assess.high2',null,'High compliance with ORACLE advisories. Korea Branch performance remains above average.'),tt('news.assess.high3',null,'Commander trust index elevated. Expanded authority under review.'),tt('news.assess.high4',null,'Branch stability reconfirmed. Additional clearance being considered.')],
+    m:[tt('news.assess.mid1',null,'Operations stable. Minor nonstandard signals detected.'),tt('news.assess.mid2',null,'Overall conditions nominal. Decision variance among personnel has slightly increased.'),tt('news.assess.mid3',null,'Branch remains within normal bounds. Select indicators under observation.'),tt('news.assess.mid4',null,'Average ORACLE compliance rate. Continued monitoring advised.')],
+    l:[tt('news.assess.low1',null,'Nonstandard decision frequency increasing. Monitoring intensified.'),tt('news.assess.low2',null,'Independent command patterns detected. Analysis ongoing.'),tt('news.assess.low3',null,'Repeated deviation from ORACLE advisories logged.'),tt('news.assess.low4',null,'Several nonstandard operational markers identified in branch telemetry.')],
+    v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
+  };
+  var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
+  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var statBar=function(k,v,nm){
+    var d=v<=20;
+    return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
+      h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},nm),
+      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:28,textAlign:'right',fontSize:9}},v)
+    )
+  };
+  var facilitySection=(function(){
+    var fac=p.facility||{};
+    var comp=fac.completed||[];
+    var appr=fac.approved||[];
+    var lines=[];
+    var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
+    var feNameMapEn={
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
+      'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
+      'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
+    };
+    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    if(locale==='en'){
+      if(st.c<=15)lines.push({text:'Security Sector — breach risk [CRITICAL]',color:'red',blink:true});
+      else if(st.c<=25)lines.push({text:'Security Sector — containment instability warning',color:'orange'});
+      if(st.r<=15)lines.push({text:'Supply Depot — reserves depleted [CRITICAL]',color:'red',blink:true});
+      else if(st.r<=30)lines.push({text:'Supply Depot — resource shortage warning',color:'orange'});
+      if(st.t<=15)lines.push({text:'Personnel Cohesion — desertion risk',color:'red'});
+      else if(st.t<=25)lines.push({text:'Personnel Cohesion — morale decline detected',color:'orange'});
+      if(st.o<=30)lines.push({text:'Comms Layer — ORACLE relay unstable',color:'orange'});
+      comp.forEach(function(feId){var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' — online ✓',color:'green'})});
+      appr.forEach(function(feId){if(comp.indexOf(feId)>=0)return;var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' — expansion pending',color:'gray'})});
+      if(lines.length===0)lines.push({text:'All sectors operating normally',color:'green'});
+    }else{
+      if(typeof getFacilityStatusLines!=='function')return null;
+      lines=getFacilityStatusLines(st,comp,appr)||[];
+      if(!lines.length)return null;
+    }
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+      lines.map(function(line,i){
+        return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'▸ '+line.text)
+      })
+    );
+  })();
+  return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginTop:'auto',marginBottom:'auto',display:'flex',flexDirection:'column',maxHeight:'calc(100vh - 60px)',overflow:'hidden'}},
+    h('div',{className:'oracle-card__glow'}),
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}},
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:1}},tt('news.header',null,'[ORACLE // DAILY REPORT]')),
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
+    h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+        h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
+          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
+          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
+          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
+          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
+      (function(){
+        var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
+        if(sitLines.length===0)return null;
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+          sitLines.map(function(line,i){
+            var isWarn=line.indexOf('⚠')>=0;
+            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+          }))
+      })(),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      p.headlines.slice(0,shown).map(function(l,i){
+        var hl=parseHL(l);
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
+      }),
+      shown>=p.headlines.length&&facilitySection),
+    shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
+      h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ PROCEED TO NEXT CYCLE ]'))));
+}
+function NewsReport2(p){
+  var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
+  useEffect(function(){var onKey=function(e){if(shown>=p.headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,p.headlines.length]);
+  var parseHL=function(raw){
+    var s=String(raw||'');
+    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var body=view&&view.text?view.text:s;
+    var type=view&&view.type?view.type:null;
+    var isGl=s.indexOf('분류 오류')>=0;
+    var isDel=s.indexOf('삭제됨')>=0;
+    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true};
+    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}};
+    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}};
+    return{tag:'INTEL-01',text:body,gl:false};
+  };
+  var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
+  var AP={
+    h:[tt('news.assess.high1',null,'Operational efficiency stable. Maintain current directive.'),tt('news.assess.high2',null,'High compliance with ORACLE advisories. Korea Branch performance remains above average.'),tt('news.assess.high3',null,'Commander trust index elevated. Expanded authority under review.'),tt('news.assess.high4',null,'Branch stability reconfirmed. Additional clearance being considered.')],
+    m:[tt('news.assess.mid1',null,'Operations stable. Minor nonstandard signals detected.'),tt('news.assess.mid2',null,'Overall conditions nominal. Decision variance among personnel has slightly increased.'),tt('news.assess.mid3',null,'Branch remains within normal bounds. Select indicators under observation.'),tt('news.assess.mid4',null,'Average ORACLE compliance rate. Continued monitoring advised.')],
+    l:[tt('news.assess.low1',null,'Nonstandard decision frequency increasing. Monitoring intensified.'),tt('news.assess.low2',null,'Independent command patterns detected. Analysis ongoing.'),tt('news.assess.low3',null,'Repeated deviation from ORACLE advisories logged.'),tt('news.assess.low4',null,'Several nonstandard operational markers identified in branch telemetry.')],
+    v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
+  };
+  var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
+  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var statBar=function(k,v,nm){
+    var d=v<=20;
+    return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
+      h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},nm),
+      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:28,textAlign:'right',fontSize:9}},v)
+    );
+  };
+  var facilitySection=(function(){
+    var fac=p.facility||{},comp=fac.completed||[],appr=fac.approved||[],lines=[];
+    var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
+    var feNameMapEn={
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
+      'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
+      'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
+    };
+    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    if(locale==='en'){
+      if(st.c<=15)lines.push({text:'Security Sector - breach risk [CRITICAL]',color:'red',blink:true});
+      else if(st.c<=25)lines.push({text:'Security Sector - containment instability warning',color:'orange'});
+      if(st.r<=15)lines.push({text:'Supply Depot - reserves depleted [CRITICAL]',color:'red',blink:true});
+      else if(st.r<=30)lines.push({text:'Supply Depot - resource shortage warning',color:'orange'});
+      if(st.t<=15)lines.push({text:'Personnel Cohesion - desertion risk',color:'red'});
+      else if(st.t<=25)lines.push({text:'Personnel Cohesion - morale decline detected',color:'orange'});
+      if(st.o<=30)lines.push({text:'Comms Layer - ORACLE relay unstable',color:'orange'});
+      comp.forEach(function(feId){var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' - online',color:'green'})});
+      appr.forEach(function(feId){if(comp.indexOf(feId)>=0)return;var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' - expansion pending',color:'gray'})});
+      if(lines.length===0)lines.push({text:'All sectors operating normally',color:'green'});
+    }else{
+      if(typeof getFacilityStatusLines!=='function')return null;
+      lines=getFacilityStatusLines(st,comp,appr)||[];
+      if(!lines.length)return null;
+    }
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+      lines.map(function(line,i){
+        return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'▸ '+line.text)
+      })
+    );
+  })();
+  return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginTop:'auto',marginBottom:'auto',display:'flex',flexDirection:'column',maxHeight:'calc(100vh - 60px)',overflow:'hidden'}},
+    h('div',{className:'oracle-card__glow'}),
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}},
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:1}},tt('news.header',null,'[ORACLE // DAILY REPORT]')),
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
+    h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+        h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
+          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
+          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
+          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
+          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
+      (function(){
+        var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
+        if(sitLines.length===0)return null;
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+          sitLines.map(function(line,i){
+            var isWarn=line.indexOf('⚠')>=0;
+            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+          }))
+      })(),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      p.headlines.slice(0,shown).map(function(l,i){
+        var hl=parseHL(l);
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
+      }),
+      shown>=p.headlines.length&&facilitySection),
+    shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
+      h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ PROCEED TO NEXT CYCLE ]'))));
+}
+function NewsReport3(p){
+  var s=useState(0),shown=s[0],setShown=s[1];var dIdx=0,fIdx=0;
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  useEffect(function(){if(shown<p.headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,p.headlines.length]);
+  useEffect(function(){var onKey=function(e){if(shown>=p.headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,p.headlines.length]);
+  var resolveNewsView=function(raw){
+    if(locale!=='en')return null;
+    var s=String(raw||'');
+    if(typeof tc==='function'){
+      var direct=tc('newsItems',s,null);
+      if(direct&&direct.text)return direct;
+    }
+    var bucket=window.TS_I18N&&window.TS_I18N.content&&window.TS_I18N.content.en&&window.TS_I18N.content.en.newsItems;
+    if(!bucket||typeof NP==='undefined')return null;
+    var sourceList=[];
+    ['gc','bc','br','w','p','gl','dg','md'].forEach(function(key){
+      if(Array.isArray(NP[key]))sourceList=sourceList.concat(NP[key]);
+    });
+    var translatedList=Object.keys(bucket).map(function(key){return bucket[key]});
+    var mapIdx=sourceList.indexOf(s);
+    return mapIdx>=0?translatedList[mapIdx]||null:null;
+  };
+  var parseHL=function(raw){
+    var s=String(raw||'');
+    var view=resolveNewsView(s);
+    var body=view&&view.text?view.text:s;
+    var type=view&&view.type?view.type:null;
+    var isGl=type==='redacted'||s.indexOf('분류 오류')>=0||s.indexOf('[삭제됨]')>=0;
+    if(isGl)return{tag:'REDACTED',text:body,gl:true};
+    if(type==='foreign'||s.indexOf('[해외]')===0||s.indexOf('[OVERSEAS]')===0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}};
+    if(type==='domestic'||s.indexOf('[국내]')===0||s.indexOf('[DOMESTIC]')===0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}};
+    return{tag:'INTEL-01',text:body,gl:false};
+  };
+  var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
+  var AP={
+    h:[tt('news.assess.high1',null,'Operational efficiency stable. Maintain current directive.'),tt('news.assess.high2',null,'High compliance with ORACLE advisories. Korea Branch performance remains above average.'),tt('news.assess.high3',null,'Commander trust index elevated. Expanded authority under review.'),tt('news.assess.high4',null,'Branch stability reconfirmed. Additional clearance being considered.')],
+    m:[tt('news.assess.mid1',null,'Operations stable. Minor nonstandard signals detected.'),tt('news.assess.mid2',null,'Overall conditions nominal. Decision variance among personnel has slightly increased.'),tt('news.assess.mid3',null,'Branch remains within normal bounds. Select indicators under observation.'),tt('news.assess.mid4',null,'Average ORACLE compliance rate. Continued monitoring advised.')],
+    l:[tt('news.assess.low1',null,'Nonstandard decision frequency increasing. Monitoring intensified.'),tt('news.assess.low2',null,'Independent command patterns detected. Analysis ongoing.'),tt('news.assess.low3',null,'Repeated deviation from ORACLE advisories logged.'),tt('news.assess.low4',null,'Several nonstandard operational markers identified in branch telemetry.')],
+    v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
+  };
+  var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
+  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var statBar=function(k,v,nm){
+    var d=v<=20;
+    return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'96px minmax(0,1fr) 32px',alignItems:'center',columnGap:10,fontFamily:"'Share Tech Mono',monospace",fontSize:10,lineHeight:1.2}},
+      h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',paddingRight:2}},nm),
+      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:32,textAlign:'right',fontSize:9}},v)
+    );
+  };
+  var facilitySection=(function(){
+    var fac=p.facility||{},comp=fac.completed||[],appr=fac.approved||[],lines=[];
+    var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
+    var feNameMapEn={
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
+      'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
+      'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
+    };
+    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    if(locale==='en'){
+      if(st.c<=15)lines.push({text:'Security Sector - breach risk [CRITICAL]',color:'red',blink:true});
+      else if(st.c<=25)lines.push({text:'Security Sector - containment instability warning',color:'orange'});
+      if(st.r<=15)lines.push({text:'Supply Depot - reserves depleted [CRITICAL]',color:'red',blink:true});
+      else if(st.r<=30)lines.push({text:'Supply Depot - resource shortage warning',color:'orange'});
+      if(st.t<=15)lines.push({text:'Personnel Cohesion - desertion risk',color:'red'});
+      else if(st.t<=25)lines.push({text:'Personnel Cohesion - morale decline detected',color:'orange'});
+      if(st.o<=30)lines.push({text:'Comms Layer - ORACLE relay unstable',color:'orange'});
+      comp.forEach(function(feId){var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' - online',color:'green'})});
+      appr.forEach(function(feId){if(comp.indexOf(feId)>=0)return;var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' - expansion pending',color:'gray'})});
+      if(lines.length===0)lines.push({text:'All sectors operating normally',color:'green'});
+    }else{
+      if(typeof getFacilityStatusLines!=='function')return null;
+      lines=getFacilityStatusLines(st,comp,appr)||[];
+      if(!lines.length)return null;
+    }
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+      lines.map(function(line,i){
+        return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'• '+line.text)
+      })
+    );
+  })();
+  return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginTop:'auto',marginBottom:'auto',display:'flex',flexDirection:'column',maxHeight:'calc(100vh - 60px)',overflow:'hidden'}},
+    h('div',{className:'oracle-card__glow'}),
+    h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}},
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:1}},tt('news.header',null,'[ORACLE // DAILY REPORT]')),
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
+    h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+        h('div',{style:{display:'flex',flexDirection:'column',gap:6}},
+          statBar('c',st.c||50,tt('stats.c',null,'Containment')),
+          statBar('r',st.r||60,tt('stats.r',null,'Resources')),
+          statBar('t',st.t||50,tt('stats.t',null,'Trust')),
+          statBar('o',st.o||40,tt('stats.o',null,'Evaluation'))),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
+      (function(){
+        var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
+        if(sitLines.length===0)return null;
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+          sitLines.map(function(line,i){
+            var isWarn=line.indexOf('경고')>=0||line.indexOf('warning')>=0||line.indexOf('CRITICAL')>=0;
+            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+          }))
+      })(),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      p.headlines.slice(0,shown).map(function(l,i){
+        var hl=parseHL(l);
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
+      }),
+      shown>=p.headlines.length&&facilitySection),
+    shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
+      h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ PROCEED TO NEXT CYCLE ]'))));
 }
 function GameOver(p){
   useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}else if(e.key==='2'||e.code==='Numpad2'){if(p.canNgPlus){e.preventDefault();p.onNewGamePlus()}}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
@@ -383,11 +712,11 @@ function RewardScreen(p){
       scrollHint.bottom&&h('div',{style:{position:'absolute',bottom:0,left:0,right:0,zIndex:3,textAlign:'center',pointerEvents:'none',animation:'scrollArrowBlink 1.2s ease-in-out infinite'}},
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'var(--ui)',textShadow:'0 0 8px var(--ui)',letterSpacing:4}},'▼  ▼  ▼')),
       h('div',{ref:_scrollRef,style:{height:'100%',overflowY:'auto',padding:'0 2px'}},
-      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
+      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;var rLoc=(typeof tc==='function')?tc('rewards',r.id,null):null;var rTitle=(rLoc&&rLoc.title)||r.title;var rDesc=(rLoc&&rLoc.desc)||r.desc;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
         h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
-        h('div',{className:'oracle-card__title'},r.title),
-        h('div',{className:'oracle-card__desc'},r.desc),
+        h('div',{className:'oracle-card__title'},rTitle),
+        h('div',{className:'oracle-card__desc'},rDesc),
         h('div',{className:'oracle-card__effects'},
           fl.pos.map(function(e){var arrow=Math.abs(e.v)>=10?'▲▲':'▲';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--pos'},arrow+' '+SN[e.k]+' +'+e.v)}),
           fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})

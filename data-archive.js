@@ -25,7 +25,7 @@ var ARCHIVE_ENTRIES = [
     content: "환경 오염형 변이체.\n\n붉은 점액질 웅덩이. 소화 효소를 포함하여 유기물을 용해 흡수.\n\n지하 수로를 통해 확장. 토양/수질 변이 확인.\n\n접촉 시 방호복 외층 부식. 소각으로 제거 가능하나, 생체 표본은 연구 가치가 높음." },
 
   { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (진화 가속 매개체)",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
     content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n인간에게는 '감염', TS-Ω에게는 '확장', ORACLE에게는 '상태변화'.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 통제 가능.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
 
   { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
@@ -54,19 +54,19 @@ var ARCHIVE_ENTRIES = [
 
   // ═══ 카테고리: 인물 ═══
   { id: "ARC-CHAR-DOYUN", cat: "인물", title: "강도윤 — 현장요원",
-    unlock: function(logs){ return true },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
     content: "직책: 현장요원 / 전술 지휘\n소속: 한국지부 KR-INIT-001\n\n특수부대 출신. 봉쇄선 순찰 및 이변체 대응 작전을 지휘.\n\n실전 경험이 풍부하며 현장 판단력이 뛰어남. 명령 체계를 중시하나, 현장의 목소리를 우선시하는 성향." },
 
   { id: "ARC-CHAR-HAEUN", cat: "인물", title: "서하은 — 부지휘관",
-    unlock: function(logs){ return true },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-SH")>=0 },
     content: "직책: 부지휘관 / 데이터 분석\n소속: 한국지부 KR-INIT-001\n\n지휘관 부임 전 3개월간 ORACLE 지시만으로 기지를 운영.\n\nORACLE 데이터 불일치를 최초로 감지. 아날로그 백업 통신망을 독자 구축.\n\n조심스럽지만 핵심을 놓치지 않는 분석력." },
 
   { id: "ARC-CHAR-SEJIN", cat: "인물", title: "윤세진 — 연구원",
-    unlock: function(logs){ return true },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
     content: "직책: 연구원 / 생물학자\n소속: 한국지부 KR-INIT-001\n\n대학원에서 프리온 단백질 연구. EV-Σ는 한국지부에 와서 처음 접촉.\n\n이변체 행동 패턴 분석 및 EV-Σ 억제제 개발 담당.\n\nPhase 0 감염자 전환을 40% 지연시키는 화합물 발견." },
 
   { id: "ARC-CHAR-JAEHYUK", cat: "인물", title: "임재혁 — 기술관",
-    unlock: function(logs){ return true },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-IJ")>=0 },
     content: "직책: 기술관 / 시스템 관리\n소속: 한국지부 KR-INIT-001\n\nORACLE 시스템 유지보수 및 통신 장비 관리 담당.\n\nORACLE 아키텍처 내 비공개 레이어(5계층 이상)를 발견.\n\n외부 데이터 전송 및 자기모순 행동 패턴을 추적 중." },
 
   { id: "ARC-CHAR-NICK", cat: "인물", title: "닉 포스터 — 프로메테우스 요원",
@@ -87,7 +87,7 @@ var ARCHIVE_ENTRIES = [
 
   // ═══ 카테고리: 조직 ═══
   { id: "ARC-ORG-ORACLE", cat: "조직", title: "ORACLE",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-006")>=0 || logs.indexOf("LOG-INTRO-SH")>=0 },
     content: "자율 관리 네트워크. 전 세계 격리 기지를 원격 통제.\n\n한국지부를 포함한 다수의 지부를 프록시 네트워크로 운영.\n\n지휘관 성과 평가, 보급 관리, 작전 권고를 수행.\n\n경고: 일부 권고와 실제 데이터 사이에 불일치가 보고되고 있음." },
 
   { id: "ARC-ORG-PROM", cat: "조직", title: "프로메테우스",
@@ -95,16 +95,16 @@ var ARCHIVE_ENTRIES = [
     content: "정체불명 조직. 한국 내 활동 확인.\n\n고도의 기술력 보유 (드론, 암호 통신, 전술 장비).\n\nORACLE은 적대적 조직으로 분류하나, 독자적인 EV-Σ 억제제 연구를 진행 중.\n\n해안방벽시스템과의 연관성 의심. 한국 봉쇄 성공률의 31%가 프로메테우스 기술 지원에 기인한다는 미확인 정보 존재." },
 
   { id: "ARC-ORG-BRANCH", cat: "조직", title: "한국지부 KR-INIT-001",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 && logs.indexOf("LOG-INTRO-KD")>=0 },
     content: "ORACLE 프록시 네트워크 소속 격리 기지.\n\n위치: 강원도 [기밀]\n지휘관: PILEHEAD (이중철)\n\n임무: 대한민국 EV-Σ 봉쇄 체계 관찰 및 지원.\n\n전임 지휘관 부재로 3개월간 ORACLE 단독 운영 이력." },
 
   { id: "ARC-ORG-WHITESHIELD", cat: "조직", title: "White Shield (한국 군사대응)",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
     content: "대한민국 군 EV-Σ 대응 체계.\n\n봉쇄 성공률 97.3% — 전 세계 최고.\n\n5개국 군사대응 중 유일하게 95% 이상 유지.\n\n비교: ARES(미국) 62%, Red Dragon(중국) 41%, Permafrost(러시아) 38%.\n\nORACLE 평가: 'This region should have failed. Outcome does not match model.'\n\n성공 요인: 지형적 이점, 조기 대응, 프로메테우스 기술 지원(31% 기여 — 미확인)." },
 
   // ═══ 카테고리: 시설/장비 ═══
   { id: "ARC-FAC-SEAL", cat: "시설", title: "봉쇄선",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-070")>=0 || logs.indexOf("LOG-073")>=0 },
     content: "오염 구역을 둘러싼 다층 방어 경계선.\n\n4개 이상의 구역으로 분할 운영. 각 구역 독립 격리 가능.\n\n전기 울타리 시스템, 열감지 센서, 야간 순찰 루트로 구성.\n\n취약점: 동쪽 방어벽 구조적 한계, 센서 사각지대, 대규모 습격 시 30분 방어 한계." },
 
   { id: "ARC-FAC-TUNNEL", cat: "시설", title: "비상 대피 터널",
@@ -112,7 +112,7 @@ var ARCHIVE_ENTRIES = [
     content: "기지 북측 지하 비상 통로.\n\n지휘관의 사전 결정에 따라 구축된 대피 경로. 기존에는 기지에서 외부로 나가는 경로가 1개뿐이었으나, 봉쇄선 붕괴 시 30초 내 판단이 필요하다는 강도윤의 건의를 반영하여 추가 경로를 확보.\n\n구조: 기지 북측 → 봉쇄선 외곽 약 200m 지점까지 연결. 단방향 대피 전용.\n\n수용 인원: 최대 8명 동시 이동 가능.\n조명: 비상 배터리 구동 (48시간).\n\n참고: 이 터널의 존재가 야간 대규모 습격 시 요원 생존의 결정적 요소가 될 수 있음." },
 
   { id: "ARC-FAC-LAB", cat: "시설", title: "연구실",
-    unlock: function(logs){ return true },
+    unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
     content: "기지 내 EV-Σ 연구 시설.\n\n장비 현황: 현미경(배율 기준 미달), 생체 샘플 보관 장치(온도 편차 ±2도).\n\n윤세진이 억제제 연구 및 이변체 행동 패턴 분석을 수행.\n\nSPEC-001 등 이변체 모니터링 가능." },
 
   { id: "ARC-FAC-SENSOR", cat: "시설", title: "봉쇄선 센서 체계",
@@ -171,7 +171,7 @@ var ARCHIVE_ENTRIES = [
     content: "북한 접경 지역의 미확인 구역. [접근 제한]\n\n진화 분류: ██████.\n\n현상: ██████. 상세 불명.\n\nORACLE 분류: ██████.\n관측 상태: ██████.\n\n— 강도윤 구두 보고 중 일부 발췌 —\n'북쪽에 대해서는 아는 게 거의 없습니다. 다만... ORACLE이 그쪽 데이터를 일부러 안 보여주는 느낌입니다.'\n\n추가 데이터: LEVEL 5 CLEARANCE REQUIRED.\n[이 기록은 일부만 공개됩니다]" },
 
   { id: "ARC-LOC-KOREA", cat: "지역", title: "Z-0 한국 구역",
-    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 && logs.indexOf("LOG-INTRO-KD")>=0 },
     content: "ORACLE 구역 분류: Z-0.\n진화 상태: CONTROLLED (통제진화).\n\n봉쇄 성공률 97.3% — 전 세계 유일 95% 이상 구역.\n\nORACLE 내부 평가:\n'This region should have failed. Outcome does not match model.'\nEXCEPTION_INDEX: HIGH\nOBSERVER_INTEREST: SUSTAINED\n\nNext Wave 시뮬레이션:\n· 해안 포자 72% / 다점 Spreader 44.8%\n· 내부 NODE 31.1% / TS-Ω 압박 18.6%\n\nTS-Ω 필드 반응: 한국을 '인지'하지 못함. 전파실패구간으로만 감지." },
 
   { id: "ARC-LOC-ASHFALL", cat: "지역", title: "Ashfall City (Z-3)",

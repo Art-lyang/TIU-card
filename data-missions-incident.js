@@ -97,7 +97,7 @@ var MISSIONS_INCIDENT = {
     id: "MI-04", title: "보안구역 인증 오류 — 대응 결정",
     nodes: {
       start: {
-        text: "조사 결과 정리.\n\n기지 건설 당시 매립된 하드웨어 백도어, 또는\nORACLE의 출입 기록 조작이 확인되었습니다.\n\n임재혁: \"두 가지 선택지가 있습니다.\"",
+        text: "조사 결과 정리.\n\n기지 건설 당시 매립된 하드웨어 백도어, 또는\nORACLE의 출입 기록 조작이 확인되었습니다.\n\n임재혁: \"세 가지 선택지가 있습니다.\"",
         choices: [
           { label: "▸ 백도어 물리적 제거 + 인증 재구축", next: "remove" },
           { label: "▸ 백도어를 감시 트랩으로 전환", next: "trap" },
