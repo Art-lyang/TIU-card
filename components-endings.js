@@ -1,6 +1,7 @@
 // components-endings.js — SESSION ARCHIVE / 엔딩 갤러리 화면
 // 해금한 엔딩은 이미지 썸네일 + 상세 뷰, 미해금은 [미발견] 힌트만 표시
 // 로드 순서: components-dialogue.js 이후
+var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 
 var ENDING_CATALOG = [
   { id: 'A',     name: '완벽한 도구',     hint: 'ORACLE의 최고 신임을 얻으라',      category: 'compliance' },
@@ -42,22 +43,25 @@ function EndingScreen(p) {
 
   var unlockedIds = {};
   unlocked.forEach(function(id){ unlockedIds[id] = true; });
+  var getEndingView=function(id,fallback){return (typeof tc==='function')?tc('endings',id,fallback||{}):(fallback||{});};
 
   // ───── 상세 뷰 (썸네일 클릭 시) ─────
   if (sel) {
     var def = (typeof ENDING_DEFS !== 'undefined') ? ENDING_DEFS[sel.id] : null;
     var img = (typeof IMG !== 'undefined') ? IMG['ending_' + sel.id] : null;
     var narr = def && def.narrative ? def.narrative : null;
+    var selView=getEndingView(sel.id,{name:sel.name,hint:sel.hint,narrative:narr});
+    var viewNarr=selView.narrative||narr;
 
     return h('div', { className: 'screen' },
       h('div', { style: { width: '100%', maxWidth: 500, padding: '20px 0', flex: 1, overflowY: 'auto' } },
         h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11, color: 'var(--ui-dim)', letterSpacing: 2, textAlign: 'center', marginBottom: 10 } },
-          'ENDING ' + sel.id + ' — ' + sel.name),
-        img && h('img', { src: img, alt: sel.name,
+          'ENDING ' + sel.id + ' — ' + selView.name),
+        img && h('img', { src: img, alt: selView.name,
           style: { width: '100%', maxWidth: 460, display: 'block', margin: '0 auto 14px', borderRadius: 4, border: '1px solid rgba(var(--ui-rgb),.2)' } }),
-        narr && h('div', {
+        viewNarr && h('div', {
           style: { fontSize: 12, lineHeight: 2, padding: '0 16px', maxWidth: 460, margin: '0 auto', whiteSpace: 'pre-wrap' }
-        }, narr.map(function(l, i) {
+        }, viewNarr.map(function(l, i) {
           var isCmd = l.indexOf('>') === 0 || l.indexOf('[') === 0;
           var isEmpty = l === '';
           return h('div', { key: i, style: {
@@ -71,7 +75,7 @@ function EndingScreen(p) {
           h('button', {
             className: 'btn', style: { fontSize: 12, padding: '8px 20px', marginTop: 0 },
             onClick: function(){ setSel(null); }
-          }, '← 갤러리')
+          }, '← '+tt('ending.gallery','갤러리','갤러리'))
         )
       )
     );
@@ -84,6 +88,7 @@ function EndingScreen(p) {
     var meta = ENDING_CATEGORY_META[e.category] || { label: e.category, color: '#888' };
     var locked = !unlockedIds[e.id];
     var img = (!locked && typeof IMG !== 'undefined') ? IMG['ending_' + e.id] : null;
+    var eView=getEndingView(e.id,{name:e.name,hint:e.hint});
 
     rows.push(h('div', {
       key: e.id,
@@ -130,14 +135,14 @@ function EndingScreen(p) {
             fontSize: 13, fontWeight: 'bold',
             color: locked ? '#333' : 'var(--ui)', marginBottom: 4
           }
-        }, locked ? '[미발견]' : e.name),
+        }, locked ? '[미발견]' : eView.name),
         h('div', {
           style: {
             fontSize: 10, fontStyle: 'italic',
             color: locked ? '#222' : 'var(--ui-dim)',
             letterSpacing: 0.3
           }
-        }, locked ? e.hint : ('달성 완료 — ' + meta.label))
+        }, locked ? eView.hint : (tt('ending.achieved','달성 완료','달성 완료')+' — ' + meta.label))
       )
     ));
   });
@@ -163,7 +168,7 @@ function EndingScreen(p) {
         className: 'btn btn-amber',
         style: { display: 'block', margin: '24px auto 8px', fontSize: 12, padding: '8px 20px' },
         onClick: p.onClose
-      }, '닫기')
+      }, tt('common.close','닫기','닫기'))
     )
   );
 }

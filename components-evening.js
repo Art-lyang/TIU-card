@@ -1,16 +1,37 @@
 // TERMINAL SESSION — components-evening.js
-// EveningChat
+// EveningChat (i18n-ready)
+var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
-  var chars=[{name:'\uc11c\ud558\uc740',key:'haeun',role:'\ubd80\uc9c0\ud718\uad00'},{name:'\uac15\ub3c4\uc724',key:'doyun',role:'\ud604\uc7a5\uc694\uc6d0'},{name:'\uc724\uc138\uc9c4',key:'sejin',role:'\uc5f0\uad6c\uc6d0'},{name:'\uc784\uc7ac\ud601',key:'jaehyuk',role:'\uae30\uc220\uad00'},{name:'\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84',key:'weber',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ub2c9 \ud3ec\uc2a4\ud130',key:'foster',role:'\ud504\ub85c\uba54\ud14c\uc6b0\uc2a4'},{name:'\ubc15\uc18c\uc601',key:'soyoung',role:'\ubd84\uc11d\uad00'}];
-  var available=chars.filter(function(c){if(c.name==='\uc11c\ud558\uc740'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='\uac15\ub3c4\uc724'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84'&&p.logs.indexOf('LOG-080')<0)return false;if(c.name==='\ub2c9 \ud3ec\uc2a4\ud130'&&p.logs.indexOf('LOG-081')<0)return false;if(c.name==='\ubc15\uc18c\uc601'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
+  var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
+  var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&p.logs.indexOf('LOG-080')<0)return false;if(c.name==='닉 포스터'&&p.logs.indexOf('LOG-081')<0)return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
-  var INTRO_LOG_MAP={'\uc11c\ud558\uc740':'LOG-INTRO-SH','\uac15\ub3c4\uc724':'LOG-INTRO-KD','\uc724\uc138\uc9c4':'LOG-INTRO-YS','\uc784\uc7ac\ud601':'LOG-INTRO-IJ'};
+  var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
+  function getChatI18nKey(ec){
+    if(!ec) return '';
+    if(ec.responseKey) return ec.responseKey;
+    var ck = charKeyMap2[ec.char] || '';
+    return ck ? (ck + '_' + ec.act[0] + '_' + ec.dayMin + '-' + ec.dayMax) : '';
+  }
+  function localizeChatLines(ec, fallbackLines){
+    var key = getChatI18nKey(ec);
+    var loc = (typeof tc==='function')?tc('eveningChats',key,null):null;
+    return (loc && loc.lines) ? loc.lines : fallbackLines;
+  }
+  function localizeResp(ec, resp){
+    var key = getChatI18nKey(ec);
+    var loc = (typeof tc==='function')?tc('eveningResponses',key,null):null;
+    if(!loc || !resp) return resp;
+    var out = { a:null, b:null };
+    if(resp.a) out.a = Object.assign({}, resp.a, loc.a || {});
+    if(resp.b) out.b = Object.assign({}, resp.b, loc.b || {});
+    return out;
+  }
   var chat=null;
   if(selChar){
     var ck=charKeyMap2[selChar.name]||'';
@@ -18,11 +39,16 @@ function EveningChat(p){
     var tierDayCap={low:10,mid:24,high:99,bond:99};
     var dayCap=tierDayCap[tier]||99;
     var sortByDay=function(a,b){return a.dayMin-b.dayMin};
-    var introLog=INTRO_LOG_MAP[selChar.name];var introDone=introLog&&p.logs.indexOf(introLog)>=0;
-    var skipIntro=function(ec){return!(introDone&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
-    var evalCond=function(ec){if(!ec.condFn)return true;try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
-    var matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
-    // 이벤트성 이브닝(priority:'event') 우선 선정
+    var introLog=INTRO_LOG_MAP[selChar.name];
+    var introDone=introLog&&p.logs.indexOf(introLog)>=0;
+    var skipIntro=function(ec){return !(introDone&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
+    var evalCond=function(ec){
+      if(!ec.condFn)return true;
+      try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}
+    };
+    var matches=EVENING_CHATS.filter(function(ec){
+      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)
+    }).sort(sortByDay);
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
     if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
@@ -39,8 +65,8 @@ function EveningChat(p){
       }
     }
   }
-  var chatLines=chat?(typeof getEveningLines==='function'?getEveningLines(chat,p.trust,p.logs):chat.lines):[];
-  var resp=(chat&&typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null;
+  var chatLines=chat?localizeChatLines(chat,chat.lines||[]):[];
+  var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
   var s4=useState(0),ci=s4[0],setCi=s4[1];
   var _ch=useState(false),choiceDone=_ch[0],setChoiceDone=_ch[1];
   var _rl=useState(''),replyLine=_rl[0],setReplyLine=_rl[1];
@@ -90,8 +116,8 @@ function EveningChat(p){
   },[selChar,done,choiceDone,resp,available]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
-    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' \uc885\ub8cc'),
-    h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},'\uac04\ubd80\uc9c4 \ud55c \uba85\uacfc \ub300\ud654\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.'),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd','종료','종료')),
+    h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar','간부진 한 명과 대화할 수 있습니다.','간부진 한 명과 대화할 수 있습니다.')),
     h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
       available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){pickChar(c)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(var(--ui-rgb),.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s',position:'relative'}},
         h('span',{style:{position:'absolute',top:4,left:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(240,160,48,.7)',letterSpacing:1}},'['+(idx+1)+']'),
@@ -99,12 +125,12 @@ function EveningChat(p){
         h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginTop:2}},c.role))})),
     (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod}),
-    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ \uac74\ub108\ub6f0\uae30 ]'),
+    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+tt('evening.skip','건너뛰기','건너뛰기')+' ]'),
     showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(10,18,10,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
-      h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},'\ub300\ud654\ub97c \uac74\ub108\ub6f0\uc2dc\uaca0\uc2b5\ub2c8\uae4c?'),
+      h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm','대화를 건너뛰시겠습니까?','대화를 건너뛰시겠습니까?')),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
-        h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},'\ucde8\uc18c'),
-        h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},'\ud655\uc778'))));
+        h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel','취소','취소')),
+        h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},tt('common.confirm','확인','확인')))));
   var portrait=CHAR_IMG[selChar.name]||null;
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
@@ -124,5 +150,5 @@ function EveningChat(p){
         var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
         if(opt.log&&p.onLog)p.onLog(opt.log);
         setReplyLine(opt.reply||'');setChoiceDone(true)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ \ub2e4\uc74c ]'));
+    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('common.next','다음','다음')+' ]'));
 }
