@@ -35,7 +35,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .gauge-icon-t{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_sinroe.png')}
 .gauge-icon-o{background-image:url('tiu_status_icons_symbol_only/tiu_icon_symbol_pyeongga.png')}
 .gauge-danger .gauge-icon{filter:drop-shadow(0 0 4px rgba(255,68,68,0.6)) drop-shadow(0 0 8px rgba(255,68,68,0.3))}
-.gauge-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui-label);width:26px;flex-shrink:0}
+.gauge-label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui-label);min-width:26px;max-width:80px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .gauge-bar{flex:1;height:20px;background:url('gauge_track.png') left center/100% 100% no-repeat;position:relative;overflow:hidden}
 .gauge-bar-inner{position:absolute;left:2px;right:2px;top:1px;bottom:1px;overflow:hidden}
 .gauge-fill{height:100%;background:url('gauge_fill.png') left center/100% 100% no-repeat;transition:width 0.6s ease;position:relative}
@@ -117,7 +117,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .section-hdr span{font-size:9px}
   .gauge-row{height:22px;gap:4px}
   .gauge-icon{width:22px;height:22px}
-  .gauge-label{font-size:10px;width:24px}
+  .gauge-label{font-size:10px;min-width:24px;max-width:70px}
   .gauge-val{font-size:12px;width:24px}
   .gauge-bar{height:16px}
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
