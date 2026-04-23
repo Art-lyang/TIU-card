@@ -118,6 +118,7 @@ window.TS_I18N.mergeUI('ko', {
     wipeAll:'전체 데이터 삭제',
     cancel:'취소', confirm:'확인',
     deleteKey:'삭제',
+    overwriteHint:'기존 데이터를 덮어씁니다.',
     typeDelete:'"삭제"를 입력하세요',
     resetConfirm:'현재 진행 중인 세션을 초기화합니다.\nLOG와 엔딩 기록은 유지됩니다.',
     wipeConfirm:'모든 데이터를 삭제합니다.\nLOG, 엔딩, 세션 기록이 모두 사라집니다.\n이 작업은 되돌릴 수 없습니다.',

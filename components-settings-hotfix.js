@@ -1,6 +1,62 @@
 // components-settings-hotfix.js — defer locale apply until settings close
 (function(){
   if(typeof SettingsPanel!=='function') return;
+  var tr=function(path,fallback,params){return(typeof tt==='function')?tt(path,params||null,fallback):fallback};
+
+  if(typeof SettingsSaveTab==='function'){
+    SettingsSaveTab=function(p){
+      var _cf=useState(null),cfm=_cf[0],setCfm=_cf[1];
+      var _ci=useState(''),cfmInput=_ci[0],setCfmInput=_ci[1];
+      var sessions=Save.getSessions();
+      var endings=Save.getEndings();
+      var logs=Save.getLogs();
+      var logsTotal=typeof ORACLE_LOGS!=='undefined'?ORACLE_LOGS.length:0;
+      var mono={fontFamily:"'Share Tech Mono',monospace",fontSize:13,color:'var(--ui)'};
+      var cfmModal=function(){
+        if(!cfm)return null;
+        var needInput=!!cfm.inputKey;
+        var inputOk=!needInput||cfmInput===cfm.inputKey;
+        return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:310}},
+          h('div',{style:{background:'#0a120a',border:'1px solid rgba(255,68,68,0.4)',padding:'20px 24px',maxWidth:300,textAlign:'center'}},
+            h('div',{style:{fontSize:13,color:'#ff4444',marginBottom:16,whiteSpace:'pre-wrap',lineHeight:1.7}},cfm.msg),
+            needInput&&h('div',{style:{marginBottom:12}},
+              h('div',{style:{fontSize:11,color:'rgba(255,68,68,0.6)',marginBottom:6}},tr('settings.typeDelete','Type "DELETE" to continue')),
+              h('input',{type:'text',value:cfmInput,maxLength:String(cfm.inputKey||'').length||4,style:{width:'100%',background:'rgba(255,68,68,0.08)',border:'1px solid rgba(255,68,68,0.3)',color:'#ff4444',fontFamily:"'Share Tech Mono',monospace",fontSize:13,padding:'6px 10px',textAlign:'center',outline:'none'},onChange:function(e){setCfmInput(e.target.value)}})),
+            h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
+              h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0},onClick:function(){setCfm(null);setCfmInput('')}},tr('settings.cancel','Cancel')),
+              h('button',{className:'btn btn-amber',disabled:!inputOk,style:{fontSize:11,padding:'8px 16px',marginTop:0,opacity:inputOk?1:0.3,cursor:inputOk?'pointer':'not-allowed'},onClick:function(){if(!inputOk)return;cfm.action();setCfm(null);setCfmInput('')}},tr('settings.confirm','Confirm')))));
+      };
+      var _snaps=useState(function(){return Save.listSnapshots()}),snaps=_snaps[0],setSnaps=_snaps[1];
+      var fmtTime=function(ts){if(!ts)return '';var d=new Date(ts);return(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+      var slotRow=function(s){
+        var data=s.data;
+        var label=data?data.label:tr('settings.slotEmpty','Empty Slot');
+        var timeStr=data?fmtTime(data.timestamp):'';
+        var sesStr=(data&&data.sessions!=null)?' · '+tr('settings.sessions','Sessions')+' '+data.sessions:'';
+        return h('div',{key:s.slot,style:{display:'flex',alignItems:'center',gap:6,padding:'8px 10px',marginBottom:6,background:data?'rgba(var(--ui-rgb),.05)':'rgba(255,255,255,.02)',border:'1px solid '+(data?'rgba(var(--ui-rgb),.2)':'rgba(255,255,255,.08)'),borderRadius:2}},
+          h('div',{style:{flex:1,minWidth:0}},
+            h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'SLOT '+s.slot),
+            h('div',{style:{fontSize:12,color:data?'var(--ui)':'rgba(255,255,255,.3)',fontWeight:'bold',marginTop:2}},label),
+            data&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr+sesStr)),
+          h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'SLOT '+s.slot+' - '+tr('settings.slotSave','Save')+'\n'+(data?tr('settings.overwriteHint','Existing data will be overwritten.'):''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);setSnaps(Save.listSnapshots())}})}},tr('settings.slotSave','Save')),
+          data&&h('button',{style:{background:'rgba(240,160,48,.1)',border:'1px solid rgba(240,160,48,.3)',color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'SLOT '+s.slot+' - '+tr('settings.slotLoad','Load'),action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},tr('settings.slotLoad','Load')),
+          data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);setSnaps(Save.listSnapshots())}},tr('settings.slotDelete','Delete')));
+      };
+      return h('div',null,
+        _settingsRow(tr('settings.sessions','Sessions'),h('span',{style:mono},sessions)),
+        _settingsRow(tr('settings.unlockedLogs','Unlocked Logs'),h('span',{style:mono},(logs?logs.length:0)+'/'+logsTotal)),
+        _settingsRow(tr('settings.endingsFound','Endings Found'),h('span',{style:mono},(endings?endings.length:0)+'/10')),
+        h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},tr('settings.snapshotSlots','SNAPSHOT SLOTS')),
+          h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},tr('settings.snapshotHelp','Save at a desired day and reload later to compare different branching choices.')),
+          snaps.map(slotRow)),
+        h('div',{style:{marginTop:16,display:'flex',flexDirection:'column',gap:8}},
+          h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,width:'100%'},onClick:function(){setCfm({msg:tr('settings.resetConfirm','This resets the current active session.\\nLogs and endings will be preserved.'),action:function(){if(p.onReset)p.onReset();p.onClose()}})}},tr('settings.resetCurrent','Reset Current Session')),
+          h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,width:'100%',color:'#ff4444'},onClick:function(){setCfm({msg:tr('settings.wipeConfirm','This deletes all data.\\nLogs, endings, and session records will be lost.\\nThis cannot be undone.'),inputKey:tr('settings.deleteKey','DELETE'),action:function(){if(p.onFullReset)p.onFullReset();p.onClose()}})}},tr('settings.wipeAll','Delete All Data'))),
+        cfmModal());
+    };
+  }
+
   SettingsPanel = function(p){
     var _tab=useState('sound'),tab=_tab[0],setTab=_tab[1];
     var _muted=useState(typeof BGM!=='undefined'?BGM.muted:false),muted=_muted[0],setMuted=_muted[1];

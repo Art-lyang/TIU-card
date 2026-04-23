@@ -77,6 +77,7 @@ window.TS_I18N.mergeUI('en', {
     fxWarning:'⚠ If you are sensitive to flashes or screen shake, choose [Reduced] or [Off].', preview:'Preview: ORACLE TERMINAL SESSION sample text.',
     sessions:'Sessions', unlockedLogs:'Unlocked Logs', endingsFound:'Endings Found', snapshotSlots:'SNAPSHOT SLOTS', snapshotHelp:'Save at a desired day and reload later to compare different branching choices.',
     slotEmpty:'Empty Slot', slotSave:'Save', slotLoad:'Load', slotDelete:'Delete', resetCurrent:'Reset Current Session', wipeAll:'Delete All Data', cancel:'Cancel', confirm:'Confirm',
+    overwriteHint:'Existing data will be overwritten.', deleteKey:'DELETE',
     typeDelete:'Type "DELETE" to continue', resetConfirm:'This resets the current active session.\nLogs and endings will be preserved.', wipeConfirm:'This deletes all data.\nLogs, endings, and session records will be lost.\nThis cannot be undone.',
     version:'Version', engine:'Engine', logsOpen:'Open LOG', archiveOpen:'Open ARCHIVE', archive:'Archive'
   },

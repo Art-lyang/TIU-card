@@ -35,7 +35,8 @@
   }
 
   function normalizeLocale(l) {
-    return (l === 'en') ? 'en' : 'ko';
+    l = String(l || 'ko').toLowerCase();
+    return (l.indexOf('en') === 0) ? 'en' : 'ko';
   }
 
   function applyLocaleToDocument() {
