@@ -81,9 +81,10 @@ function FieldMission(p){
     return function(){clearInterval(t);};
   },[nodeId]);
 
-  function finalizeChoice(choice){
+  function finalizeChoice(choice,extraBonus){
     if(choice.next==='end'){
-      p.onComplete(mergeMissionBonus(choice,missionBonus));
+      var bonus=(extraBonus!==undefined)?extraBonus:missionBonus;
+      p.onComplete(mergeMissionBonus(choice,bonus));
       return;
     }
     setNodeId(choice.next);
@@ -109,7 +110,7 @@ function FieldMission(p){
     if(pendingChoice){
       var nextChoice=pendingChoice;
       setPendingChoice(null);
-      finalizeChoice(nextChoice);
+      finalizeChoice(nextChoice,reward);
     }
   }
 
