@@ -51,10 +51,24 @@ function ScenarioHub(p){
   };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[mode,idx,p.hasSave]);
   var mono={fontFamily:"'Share Tech Mono',monospace"};
   // 메인 스토리 진입 하위 메뉴
+  var entryImg=IMG.hub_main;
   if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'8px 0',gap:0,overflowY:'auto'}},
-    IMG.hub_main&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,position:'relative'}},
-      h('img',{src:IMG.hub_main,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.85)'}}),
-      h('div',{style:{position:'absolute',bottom:0,left:0,right:0,height:'40%',background:'linear-gradient(transparent,rgba(5,10,5,.95))',borderRadius:'0 0 4px 4px'}})),
+    entryImg&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,position:'relative',borderRadius:4,overflow:'hidden'}},
+      h('img',{src:entryImg,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.35)'}}),
+      h('div',{style:{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',padding:'20px 24px',gap:6}},
+        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.4)',letterSpacing:3})},'ORACLE PROTOCOL // EYES ONLY'),
+        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',letterSpacing:1,marginTop:4})},'KOREAN BRANCH OPERATION'),
+        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,marginTop:4,textAlign:'center'})},'MISSION: KOREAN BRANCH'),
+        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,textAlign:'center'})},'STABILIZATION'),
+        h('div',{style:{width:40,height:1,background:'rgba(var(--ui-rgb),.2)',margin:'8px 0'}}),
+        h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui)',letterSpacing:1})},'TERMINAL SESSION'),
+        h('div',{style:{marginTop:6,textAlign:'center',lineHeight:1.8}},
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.35)'})},'ORACLE KOREA BRANCH / GANGWON SECTOR'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ZONE: PRIMARY COMMAND'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'STATUS: ACTIVE WATCH'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(255,100,68,.4)'})},'THREAT INDEX: ELEVATED'),
+          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ACCESS: MAIN CAMPAIGN'))),
+      h('div',{style:{position:'absolute',bottom:0,left:0,right:0,height:'30%',background:'linear-gradient(transparent,rgba(5,10,5,.95))'}})),
     h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:4,flexShrink:0,paddingBottom:20}},
       p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},'[ 이어서 플레이 ]'),
       h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?'[ 새로 시작 ]':'[ 시작하기 ]'),
