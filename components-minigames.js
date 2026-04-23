@@ -311,6 +311,8 @@ function BreachMiniGame(p){
   var _moves=useState(0),moves=_moves[0],setMoves=_moves[1];
   var _trapHits=useState(0),trapHits=_trapHits[0],setTrapHits=_trapHits[1];
   var finished=useRef(false);
+  var busy=useRef(false);
+  busy.current=false;
   var edgeSeen={};
   var edges=[];
 
@@ -342,9 +344,10 @@ function BreachMiniGame(p){
   },[time,exp,moves,keys,p]);
 
   function moveTo(id){
-    if(finished.current)return;
+    if(finished.current||busy.current)return;
     var curNode=layout.nodes[current];
     if(curNode.adj.indexOf(id)<0)return;
+    busy.current=true;
     var target=layout.nodes[id];
     var isNewKey=target.type==='key'&&keys.indexOf(id)<0;
     var nextKeys=isNewKey?keys.concat([id]):keys;
