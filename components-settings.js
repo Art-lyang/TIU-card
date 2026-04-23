@@ -54,8 +54,11 @@ function SettingsDisplayTab(p) {
       fontSize = _fs[0], setFS = _fs[1];
   var _fx = useState(function () { return Save.get('ts_fxMode', 'full'); }),
       fxMode = _fx[0], setFxM = _fx[1];
+  var _lang = useState(function () { return (window.TS_I18N && window.TS_I18N.getLocale()) || 'ko'; }),
+      lang = _lang[0], setLang = _lang[1];
   var sizes = [{ id: 'small', l: '작게' }, { id: 'normal', l: '보통' }, { id: 'large', l: '크게' }];
   var fxModes = [{ id: 'full', l: '전체' }, { id: 'reduced', l: '축소' }, { id: 'off', l: '끔' }];
+  var langs = [{ id: 'ko', l: '한국어' }, { id: 'en', l: 'English' }];
   var change = function (sz) {
     setFS(sz); Save.set('ts_fontSize', sz);
     var root = document.getElementById('root');
@@ -65,6 +68,10 @@ function SettingsDisplayTab(p) {
   var changeFx = function (mode) {
     setFxM(mode); Save.set('ts_fxMode', mode);
     if (p && p.onFxModeChange) p.onFxModeChange(mode);
+  };
+  var changeLang = function (l) {
+    setLang(l);
+    if (window.TS_I18N) window.TS_I18N.setLocale(l);
   };
   var segBtn = function (key, label, on, onClick) {
     return h('button', { key: key, style: {
@@ -88,6 +95,11 @@ function SettingsDisplayTab(p) {
     h('div', { style: { marginTop: 8, padding: '6px 10px', fontSize: 10,
       color: 'rgba(var(--ui-rgb),0.55)', lineHeight: 1.6, fontFamily: "'Share Tech Mono',monospace" } },
       '\u26A0 화면 깜박임·흔들림에 민감하시면 [축소] 또는 [끔]을 선택하세요.'),
+    _settingsRow('언어 / Language',
+      h('div', { style: { display: 'flex', gap: 4 } },
+        langs.map(function (s) {
+          return segBtn(s.id, s.l, lang === s.id, function () { changeLang(s.id); });
+        }))),
     h('div', { style: { marginTop: 12, padding: 10, background: 'rgba(var(--ui-rgb),0.03)',
       border: '1px solid rgba(var(--ui-rgb),0.08)',
       fontSize: fontSize === 'small' ? 10 : fontSize === 'large' ? 15 : 12,
