@@ -12,21 +12,23 @@
   <link rel="stylesheet" href="style.css?v=7">
   <link rel="stylesheet" href="style-glitch.css?v=4">
   <link rel="stylesheet" href="style-escape.css?v=1">
+  <link rel="stylesheet" href="style-i18n-hotfix.css?v=1">
 </head>
 <body>
   <div id="root"></div>
   <div class="screen-overlay"></div>
   <div class="scanline"></div>
   <!-- BUILD_VER: 수동 ?v= 대신 이 값을 올리면 모든 스크립트 캐시가 갱신됩니다 -->
-  <script>var BUILD_VER=50;</script>
+  <script>var BUILD_VER=51;</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 
   <!-- i18n Runtime -->
   <script src="i18n-runtime.js?v=2"></script>
   <script src="lang-ui-ko.js?v=2"></script>
-  <script src="lang-ui-en.js?v=2"></script>
+  <script src="lang-ui-en.js?v=3"></script>
   <script src="lang-content-en-all.js?v=2"></script>
+  <script src="lang-content-en-dialogues.js?v=1"></script>
 
   <!-- Data: Core & Tags -->
   <script src="data-core.js?v=12"></script>
@@ -144,15 +146,16 @@
   <!-- Components -->
   <script src="components.js?v=13"></script>
   <script src="components-archive.js?v=10"></script>
-  <script src="components-dialogue.js?v=15"></script>
+  <script src="components-dialogue.js?v=16"></script>
   <script src="components-endings.js?v=1"></script>
   <script src="components-evening.js?v=15"></script>
   <script src="components-briefing.js?v=14"></script>
   <script src="components-evidence.js?v=11"></script>
   <script src="components-facility.js?v=11"></script>
   <script src="components-game.js?v=21"></script>
-  <script src="components-settings.js?v=12"></script>
+  <script src="components-settings.js?v=13"></script>
   <script src="components-settings-2.js?v=14"></script>
+  <script src="components-settings-hotfix.js?v=1"></script>
   <script src="components-glitch.js?v=2"></script>
   <script src="components-escape-roll.js?v=1"></script>
   <script src="components-escape.js?v=5"></script>
