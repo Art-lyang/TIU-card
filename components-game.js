@@ -93,7 +93,36 @@ function ScenarioHub(p){
       scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
         background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
     sc.active&&h('button',{className:'btn btn-amber',style:{flexShrink:0},onClick:function(){setMode('main')}},tt('hub.enter',null,'[ 진입 ]')),
-    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center',flexShrink:0})},tt('hub.exploreSwipe',null,'← 스와이프하여 시나리오 탐색 →')));
+    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center',flexShrink:0})},tt('hub.exploreSwipe',null,'← 스와이프하여 시나리오 탐색 →')),
+    p.onBack&&h('div',{onClick:p.onBack,style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.25)',cursor:'pointer',marginTop:8,textAlign:'center',flexShrink:0})},'← MAIN MENU'));
+}
+// ═══ 메인 메뉴 ═══
+function MainMenu(p){
+  var mono={fontFamily:"'Share Tech Mono',monospace"};
+  var _sub=useState(null),sub=_sub[0],setSub=_sub[1];
+  // 설정 서브뷰
+  if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
+    h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
+      onLogs:function(){setSub(null);p.onLogs()},onArchive:function(){setSub(null);p.onArchive()},
+      onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange}));
+  // 기록 서브뷰
+  if(sub==='records')return h('div',{className:'boot',style:{justifyContent:'center',gap:12}},
+    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center'})},'RECORDS'),
+    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:8}},
+      h('button',{className:'btn',style:{minWidth:220},onClick:p.onLogs},tt('gameOver.logs',null,'기록')+' (LOG)'),
+      h('button',{className:'btn',style:{minWidth:220},onClick:p.onArchive},tt('settings.archive',null,'아카이브')+' (ARCHIVE)'),
+      h('button',{className:'btn',style:{minWidth:220},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩')+' (ENDINGS)'),
+      h('div',{onClick:function(){setSub(null)},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:10})},'← MAIN MENU')));
+  // 메인 메뉴
+  return h('div',{className:'boot',style:{justifyContent:'center',gap:0}},
+    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:360,marginBottom:20,flexShrink:0}},
+      h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.8) contrast(1.1)',opacity:0.9}})),
+    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center',marginBottom:16})},'MAIN MENU'),
+    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center'}},
+      h('button',{className:'btn btn-amber',style:{minWidth:240,fontSize:13},onClick:p.onPlay},tt('hub.enter',null,'[ 세션 선택 ]')),
+      h('button',{className:'btn',style:{minWidth:240},onClick:function(){setSub('settings')}},tt('settings.title',null,'SETTINGS')),
+      p.sessions>0&&h('button',{className:'btn',style:{minWidth:240},onClick:function(){setSub('records')}},'RECORDS'),
+      h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.2)',marginTop:16,textAlign:'center'})},'TERMINAL SESSION v'+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))));
 }
 function Stats(p){
   var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
