@@ -1,6 +1,8 @@
 // TERMINAL SESSION — components-game.js
 // Boot, Stats, CardC, News, GameOver, Tutorial, RewardScreen
 var h=React.createElement,useState=React.useState,useEffect=React.useEffect,useRef=React.useRef,useCallback=React.useCallback;
+// i18n 헬퍼: tt(path, params, fallback) — t() 없으면 폴백 반환
+var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 
 function Boot(p){
   var BL=p.sessions>0?BOOT_LINES_REPEAT:BOOT_LINES;
@@ -11,7 +13,7 @@ function Boot(p){
   var tryBootAudio=function(){if(!audioUnlocked.current&&p.onBoot){audioUnlocked.current=true;p.onBoot()}};
   useEffect(function(){var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[]);
   return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
-    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},'[ 세션 '+(sn+1)+' 시작 ]'));
+    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},tt('boot.startSession',{session:sn+1},'[ 세션 '+(sn+1)+' 시작 ]')));
 }
 // ═══ 시나리오 허브 — DLC 확장용 ═══
 function ScenarioHub(p){
@@ -70,10 +72,10 @@ function ScenarioHub(p){
           h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ACCESS: MAIN CAMPAIGN'))),
       h('div',{style:{position:'absolute',bottom:0,left:0,right:0,height:'30%',background:'linear-gradient(transparent,rgba(5,10,5,.95))'}})),
     h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:4,flexShrink:0,paddingBottom:20}},
-      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},'[ 이어서 플레이 ]'),
-      h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?'[ 새로 시작 ]':'[ 시작하기 ]'),
-      p.hasSave&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},'[ 튜토리얼 다시 보기 ]'),
-      h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:6})},'← 시나리오 선택으로')));
+      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},tt('hub.continue',null,'[ 이어서 플레이 ]')),
+      h('button',{className:'btn',style:{minWidth:220,borderColor:p.hasSave?'rgba(var(--ui-rgb),.4)':'#f0a030',color:p.hasSave?'var(--ui)':'#f0a030'},onClick:p.hasSave?p.onNew:p.onTutorial},p.hasSave?tt('hub.newGame',null,'[ 새로 시작 ]'):tt('hub.start',null,'[ 시작하기 ]')),
+      p.hasSave&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},tt('hub.replayTutorial',null,'[ 튜토리얼 다시 보기 ]')),
+      h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:6})},tt('hub.backToSelect',null,'← 시나리오 선택으로'))));
   // 시나리오 카드 뷰
   var sc=scenarios[idx];
   var cardStyle={width:'100%',maxWidth:440,overflow:'hidden',
@@ -90,14 +92,14 @@ function ScenarioHub(p){
     h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'8px 0',flexShrink:0}},
       scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
         background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
-    sc.active&&h('button',{className:'btn btn-amber',style:{flexShrink:0},onClick:function(){setMode('main')}},'[ 진입 ]'),
-    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center',flexShrink:0})},'← 스와이프하여 시나리오 탐색 →'));
+    sc.active&&h('button',{className:'btn btn-amber',style:{flexShrink:0},onClick:function(){setMode('main')}},tt('hub.enter',null,'[ 진입 ]')),
+    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center',flexShrink:0})},tt('hub.exploreSwipe',null,'← 스와이프하여 시나리오 탐색 →')));
 }
 function Stats(p){
-  var sm=[{k:'c',l:'봉쇄'},{k:'r',l:'자원'},{k:'t',l:'신뢰'},{k:'o',l:'평가'}];
+  var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
   var pv=p.preview||{};
   return h('div',{style:{width:'100%',maxWidth:440,flexShrink:0}},
-    h('div',{className:'section-hdr'},h('span',null,'ORACLE STATUS — DAY '+p.stats.day)),
+    h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
     sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
       h('span',{className:'gauge-label'},s.l),
@@ -114,8 +116,9 @@ function CardC(p){
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
   var resolveVal=function(v){return typeof v==='function'?v():v};
   var timerTotal=resolveVal(card.timer)||0;
-  var leftLabel=resolveVal(card.left&&card.left.label)||'';
-  var rightLabel=resolveVal(card.right&&card.right.label)||'';
+  var cardLoc=(typeof tc==='function')?tc('cards',card.id,null):null;
+  var leftLabel=(cardLoc&&cardLoc.leftLabel)||resolveVal(card.left&&card.left.label)||'';
+  var rightLabel=(cardLoc&&cardLoc.rightLabel)||resolveVal(card.right&&card.right.label)||'';
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
@@ -188,7 +191,7 @@ function CardC(p){
         h('span',{style:{flexShrink:0,fontVariantNumeric:'tabular-nums'}},Math.ceil(remaining)+'s')
       ),
       h('div',{className:'card-msg'},function(){
-        var rawMsg=(typeof card.msg==='function'?card.msg():(card.msg||''));var paras=rawMsg.split('\n\n');
+        var rawMsg=(cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')));var paras=String(rawMsg||'').split('\n\n');
         return paras.map(function(para,pi){
           var lines=para.split('\n');
           return h('div',{key:pi,style:{marginBottom:pi<paras.length-1?10:0}},
@@ -258,32 +261,37 @@ function News(p){
 }
 function GameOver(p){
   useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}else if(e.key==='2'||e.code==='Numpad2'){if(p.canNgPlus){e.preventDefault();p.onNewGamePlus()}}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
-  var msg=p.gi>50?"요원의 헌신적 복무에 감사드립니다.":p.gi>25?"세션이 종료됩니다. 결과가 기록되었습니다.":"비표준 운영 패턴 감지. 세션 데이터 분석 중...";
+  var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
   var narr=p.endNarr;
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
   var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
-    h('button',{className:'btn btn-amber',onClick:p.onRestart},'[ 세션 재개시 — ACT 1 ]'),
-    p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},'[ NEW GAME+ — 강화 시작 ]'),
-    h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},'기록'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},'아카이브'),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},'엔딩')));
+    h('button',{className:'btn btn-amber',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
+    p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},tt('gameOver.ngPlus',null,'[ NEW GAME+ — 강화 시작 ]')),
+    h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
   var goImg=null;if(p.reason&&p.reason.indexOf('봉쇄')>=0)goImg=IMG.ending_C_c;else if(p.reason&&p.reason.indexOf('자원')>=0)goImg=IMG.ending_C_r;else if(p.reason&&p.reason.indexOf('신뢰')>=0)goImg=IMG.ending_C_t;else if(p.reason&&(p.reason.indexOf('평가')>=0||p.reason.indexOf('접속')>=0))goImg=IMG.ending_C_o;
-  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───'),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},'── ORACLE 최종 보고 ──'),h('div',{className:'go-stat'},'운영 기간: '+p.stats.day+'일'),h('div',{className:'go-stat'},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},'GRANT: ACTIVE — RENEWAL AVAILABLE')),btns);
+  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───'),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},'GRANT: ACTIVE — RENEWAL AVAILABLE')),btns);
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
-  var steps=[
+  var koSteps=[
     {lines:["ORACLE 인사 프로토콜을 개시합니다.","","환영합니다, PILEHEAD.","","당신은 ORACLE Proxy Network","한국 지부의 초대 지휘관으로 발령되었습니다.","","[검열됨] 전, 미지의 바이러스 EV-Σ가 출현했습니다.","감염체는 이변체로 변이하며,","전 세계 주요 도시가 봉쇄 중입니다."],choices:[{label:"계속",next:1}]},
     {lines:["[임무 브리핑]","","ORACLE은 프로메테우스를","적대 세력으로 분류하고 있습니다.","","당신의 임무:","▸ 봉쇄 구역 관리 및 이변체 대응","▸ 기지 운영 총괄","▸ ORACLE 지시 이행 및 외부 위협 감시","","간부진 4명이 당신을 보좌합니다."],choices:[{label:"계속",next:2}]},
     {lines:["4가지 핵심 지표를 관리합니다.","","{{icon-c}} 봉쇄 — 봉쇄선 유지도","{{icon-r}} 자원 — 식량, 의약품, 장비","{{icon-t}} 신뢰 — 기지 인원의 신뢰도","{{icon-o}} 평가 — ORACLE의 당신에 대한 평가","","어느 지표든 0이 되면 임무에 실패합니다.","","← 왼쪽 / 오른쪽 →","카드를 밀어 선택하십시오."],choices:[{label:"세션 시작",next:-1}]}
   ];
+  var i18nSteps=(typeof t==='function')?t('tutorial.steps'):null;
+  var steps=(i18nSteps&&Array.isArray(i18nSteps))?i18nSteps:koSteps;
   var uiC=getComputedStyle(document.documentElement).getPropertyValue('--ui').trim()||'#33ff33';
-  var HL=[['PILEHEAD','#f0a030'],['ORACLE',uiC],['EV-\u03A3','#33cccc'],['이변체','#33cccc'],['프로메테우스','#ff6644'],['[검열됨]','#ff4444'],['봉쇄선',uiC],['봉쇄',uiC],['자원',uiC],['신뢰도',uiC],['신뢰',uiC],['평가',uiC]];
+  var koHL=[['PILEHEAD','#f0a030'],['ORACLE',uiC],['EV-\u03A3','#33cccc'],['이변체','#33cccc'],['프로메테우스','#ff6644'],['[검열됨]','#ff4444'],['봉쇄선',uiC],['봉쇄',uiC],['자원',uiC],['신뢰도',uiC],['신뢰',uiC],['평가',uiC]];
+  var i18nHL=(typeof t==='function')?t('tutorial.highlights'):null;
+  var enHL=(i18nHL&&Array.isArray(i18nHL))?i18nHL.map(function(w){var cm={'PILEHEAD':'#f0a030','ORACLE':uiC,'EV-Σ':'#33cccc','PROMETHEUS':'#ff6644','[REDACTED]':'#ff4444','Containment':uiC,'Resources':uiC,'Trust':uiC,'Evaluation':uiC};return[w,cm[w]||uiC]}):null;
+  var HL=enHL||koHL;
   var hilite=function(txt){var ICON_MAP={'{{icon-c}}':'stat-icon-inline-c','{{icon-r}}':'stat-icon-inline-r','{{icon-t}}':'stat-icon-inline-t','{{icon-o}}':'stat-icon-inline-o'};var result=[];var s=txt;var ik;for(ik in ICON_MAP){while(s.indexOf(ik)>=0){var idx=s.indexOf(ik);if(idx>0)result.push(s.substring(0,idx));result.push(h('span',{key:'ic'+result.length,className:'stat-icon-inline '+ICON_MAP[ik]}));s=s.substring(idx+ik.length)}}if(result.length>0){if(s.length>0)result.push(s);txt=result}var inp=typeof txt==='string'?txt:null;if(!inp)return txt;var parts=[{t:inp,c:null}];HL.forEach(function(pair){var nw=[];parts.forEach(function(p){if(p.c){nw.push(p);return}var s=p.t,k=pair[0],idx=s.indexOf(k);while(idx>=0){if(idx>0)nw.push({t:s.substring(0,idx),c:null});nw.push({t:k,c:pair[1]});s=s.substring(idx+k.length);idx=s.indexOf(k)}if(s.length>0)nw.push({t:s,c:null})});parts=nw});return parts.map(function(p,i){return p.c?h('span',{key:i,style:{color:p.c,fontWeight:'bold',textShadow:'0 0 6px '+p.c+'44'}},p.t):p.t})};
   var st=steps[step];var s2=useState(0),shown=s2[0],setShown=s2[1];var s3=useState(false),bv=s3[0],setBv=s3[1];
   useEffect(function(){setShown(0);setBv(false)},[step]);
   useEffect(function(){if(shown<st.lines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},st.lines[shown]===''?150:80);return function(){clearTimeout(t)}}else{var t2=setTimeout(function(){setBv(true)},400);return function(){clearTimeout(t2)}}},[shown,step]);
   useEffect(function(){var onKey=function(e){if(!bv)return;if(e.key==='Enter'||e.key===' '){e.preventDefault();var c=st.choices[0];if(c){if(c.next===-1)p.onDone();else setStep(c.next)}}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[bv,step]);
-  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'24px 0',flex:1,display:'flex',flexDirection:'column'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',textAlign:'center',marginBottom:12,letterSpacing:2}},'ORACLE BRIEFING — '+(step+1)+'/'+steps.length),h('div',{style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto',minHeight:0}},st.lines.slice(0,shown).map(function(l,i){var txt=String(l||' ');var isHeader=txt.indexOf('[')===0;var isIcon=txt.indexOf('{{icon-')>=0;var isList=txt.indexOf('▸')===0;var isLeft=txt.indexOf('←')===0&&txt.indexOf('→')<0;var isRight=txt.indexOf('→')===0;var isBothArrow=txt.indexOf('←')>=0&&txt.indexOf('→')>=0;var isCtrl=isLeft||isRight||isBothArrow;var col=isHeader?'#f0a030':isIcon?'#f0a030':isList?uiC:isCtrl?uiC:'#ccddcc';var sz=isHeader?12:isIcon?13:14;var al=isLeft?'left':isRight?'right':'center';return h('div',{key:step+'-'+i,style:{fontSize:sz,lineHeight:1.7,color:col,textAlign:al,fontFamily:(isHeader||isCtrl)?"'Share Tech Mono',monospace":'inherit',letterSpacing:isHeader?1:0,padding:isCtrl?'0 40px':0,animation:'fadeIn 0.3s ease'}},hilite(txt))})),bv&&h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',paddingBottom:20,flexShrink:0}},st.choices.map(function(c,i){return h('button',{key:i,className:'btn btn-amber',onClick:function(){if(c.next===-1)p.onDone();else setStep(c.next)}},c.label)}),p.canSkip&&step===0&&h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,opacity:0.5},onClick:p.onSkip},'[ 튜토리얼 건너뛰기 ]'))));
+  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'24px 0',flex:1,display:'flex',flexDirection:'column'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',textAlign:'center',marginBottom:12,letterSpacing:2}},'ORACLE BRIEFING — '+(step+1)+'/'+steps.length),h('div',{style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',overflowY:'auto',minHeight:0}},st.lines.slice(0,shown).map(function(l,i){var txt=String(l||' ');var isHeader=txt.indexOf('[')===0;var isIcon=txt.indexOf('{{icon-')>=0;var isList=txt.indexOf('▸')===0;var isLeft=txt.indexOf('←')===0&&txt.indexOf('→')<0;var isRight=txt.indexOf('→')===0;var isBothArrow=txt.indexOf('←')>=0&&txt.indexOf('→')>=0;var isCtrl=isLeft||isRight||isBothArrow;var col=isHeader?'#f0a030':isIcon?'#f0a030':isList?uiC:isCtrl?uiC:'#ccddcc';var sz=isHeader?12:isIcon?13:14;var al=isLeft?'left':isRight?'right':'center';return h('div',{key:step+'-'+i,style:{fontSize:sz,lineHeight:1.7,color:col,textAlign:al,fontFamily:(isHeader||isCtrl)?"'Share Tech Mono',monospace":'inherit',letterSpacing:isHeader?1:0,padding:isCtrl?'0 40px':0,animation:'fadeIn 0.3s ease'}},hilite(txt))})),bv&&h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',paddingBottom:20,flexShrink:0}},st.choices.map(function(c,i){return h('button',{key:i,className:'btn btn-amber',onClick:function(){if(c.next===-1)p.onDone();else setStep(c.next)}},c.label)}),p.canSkip&&step===0&&h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,opacity:0.5},onClick:p.onSkip},tt('tutorial.skip',null,'[ 튜토리얼 건너뛰기 ]')))));
 }
 function RewardScreen(p){
   var SN={c:'봉쇄',r:'자원',t:'신뢰',o:'평가'};
