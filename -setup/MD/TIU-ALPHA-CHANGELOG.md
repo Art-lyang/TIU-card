@@ -1,6 +1,6 @@
 # TIU-CARD — Alpha 마일스톤 체인지로그
 
-> 최신 스냅샷: **2026-04-24** (BUILD_VER=59)
+> 최신 스냅샷: **2026-04-24** (BUILD_VER=60)
 > 이전 스냅샷: 2026-04-23 (BUILD_VER=54) / 2026-04-20 (2차, BUILD_VER=22) / 2026-04-20 (1차, BUILD_VER=21) / 2026-04-19
 > 브랜치: `main` (origin/main 동기화 완료)
 > 대상 빌드: **TIU-Alpha → v1.0 출시 준비**
@@ -8,9 +8,10 @@
 
 ---
 
-## 2026-04-24 스냅샷 (BUILD_VER 54 → 59) — 필드 미니게임 프로덕션 통합 + 결과 서사 다국어화 + 아카이브 언락 교정
+## 2026-04-24 스냅샷 (BUILD_VER 54 → 60) — 필드 미니게임 프로덕션 통합 + 결과 서사 다국어화 + 아카이브 언락 교정
 
-> 단일 푸시 커밋: `cbead05` *"Add minigame prototypes and improve English i18n support"*
+> 주 푸시 커밋: `cbead05` *"Add minigame prototypes and improve English i18n support"* (BUILD_VER 54 → 59)
+> 후속 복구 커밋: ScenarioHub 한국어 리터럴 복구 (BUILD_VER 59 → 60, `components-game.js?v=23→24`)
 > 보조 핫픽스 (2026-04-23 말): `7d67294` `1a89a4f` `04ae5b8` `eb6b94d` `b9a6a68` `f102261` `b17270b` `bcd00d7` `f985def` `25aed56`
 
 ### 🎮 필드 미션 미니게임 시스템 프로덕션 통합 (`cbead05`)
@@ -28,9 +29,9 @@
   - 결과 4랭크별(great/success/partial/fail) 전용 `textSuffix` 서사 + `endLabel` 종료 태그 — 엘리미네이트/캡처/어널라이즈 등 서브 선택지별로 세분화된 문구 저장
 - **신규 `components-fieldmission-minigame-patch.js` (167줄)**: 기존 `FieldMission` 컴포넌트 패치 버전. `localizeMissionNode()`에서 `tc()` 언어팩 + `FIELD_MISSION_NODE_OVERRIDES` 정적 오버라이드 + 미니게임 결과 `missionNarrative` 3단 병합. 선택 시 `getFieldMiniGameConfig()` 조회 후 활성 미니게임 큐잉 → 결과 수신 시 `mergeMissionBonus()`로 원래 선택 보상에 합산
 - **MI-04 본문 조정** (`data-missions-incident.js`): "두 가지 선택지가 있습니다" → "세 가지 선택지가 있습니다" — 실제 노드 수(remove/trap/oracle)와 본문 일치
-- **로드 위치** (index.html BUILD_VER=59):
+- **로드 위치** (index.html BUILD_VER=60):
   - `data-minigame-rewards.js?v=1` — `data-archive.js` 바로 뒤
-  - `components-minigames.js?v=1` — `components-game.js?v=23` 바로 뒤
+  - `components-minigames.js?v=1` — `components-game.js?v=24` 바로 뒤
   - `components-fieldmission-minigame-patch.js?v=1` — `components-escape.js?v=5` 뒤 (FieldMission 오버라이드)
 
 ### 📚 아카이브 공개 조건 타이트닝 (`data-archive.js`)
@@ -57,6 +58,7 @@
 
 - **MainMenu/ScenarioHub 하드코딩 영어 제거** (`components-game.js`):
   - ScenarioHub 메인 뷰에 `isKo` locale 분기 적용 — "MISSION: KOREAN BRANCH STABILIZATION" / "ORACLE KOREA BRANCH / GANGWON SECTOR" / "ACCESS: MAIN CAMPAIGN" 등 한국어 대응 확보
+  - ⚠️ **`cbead05` 시점 한국어 리터럴 손상**: 편집 환경 인코딩 문제로 ko 쪽 문자열이 전부 `?`로 저장됨 (기본 locale인 ko 사용자에게 `?? ?? ??` 노출). 2026-04-24 후속 복구 커밋에서 기획 원문으로 L57·L64~80 수동 복원 — 브랜드 네임(KOREAN BRANCH OPERATION / STABILIZATION / TERMINAL SESSION / ZONE / STATUS / THREAT INDEX / ACCESS) 7개 라벨은 **영문 고정**으로 전환(`isKo` 분기 제거), 미션명 라벨은 ko="오라클 한국지부 안정화", 섹터 라벨은 ko="강원도 오라클 한국지부", 메뉴 4종(hub.continue/newGame/start/replayTutorial/backToSelect)은 `[이어하기] [새게임] [게임시작] [튜토리얼 다시하기] ← 뒤로가기`로 복원. 영어 쪽 `←` 화살표도 동일 인코딩 사고로 `?`였던 것 복원
   - MainMenu 구조 개편: `records` 서브뷰 제거 → **세션 선택 / 이어하기 / 아카이브 / 로그 / SETTINGS** 를 메인 메뉴에 직접 나열. SettingsPanel에 `onMainMenu` 콜백 추가
   - 토큰 추가: `menu.startGame`, `menu.continue`, `boot.startGame` (기존 `boot.startSession` 교체)
 - **일일 보고/뉴스 토큰 보강** (`lang-ui-ko.js` +28): `archiveNew`, `header`, `dayReport`, `sectionStatus/Situation/Intel/Facility`, `assess.high1~veryLow4` 16개 평가 라인, `headlineWarn3` (GRANT EXPIRED 경고) 등
@@ -89,7 +91,7 @@
 | 수정 | `components-game.js` (+397) | MainMenu 평탄화, ScenarioHub i18n, Boot 토큰 |
 | 수정 | `components-evening.js` (+183) | `resolveEveningBucketEntry` day 기반 best-match |
 | 수정 | `lang-ui-ko.js` / `lang-ui-en.js` | `menu.*`, `assess.*`, 섹션 라벨 |
-| 수정 | `index.html` | BUILD_VER=**59**, 미니게임 3종 로드 |
+| 수정 | `index.html` | BUILD_VER=**60**, 미니게임 3종 로드, `components-game.js?v=24` |
 | 수정 | `style.css` | gauge 컬럼 정렬 단순화 |
 | 수정 | `components-settings-2.js` / `components-settings-hotfix.js` | locale 지연 적용 로직 |
 | 신규 | `style-i18n-hotfix.css` / `style-i18n-locale-hotfix.css` | 영어 전용 레이아웃 핫픽스 |

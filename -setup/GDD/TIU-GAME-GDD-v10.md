@@ -1,8 +1,8 @@
 # TERMINAL SESSION — Game Design Document v1.0
 
 > **버전**: v1.0 (출시 준비 마일스톤) — *2026-04-24 증보*
-> **최종 업데이트**: 2026-04-24 (필드 미니게임 프로덕션 통합 + 아카이브 언락 교정 + 결과 서사 다국어화)
-> **빌드**: BUILD_VER=59 (이전 스냅샷: 54 → 22)
+> **최종 업데이트**: 2026-04-24 (필드 미니게임 프로덕션 통합 + 아카이브 언락 교정 + 결과 서사 다국어화 + ScenarioHub 한국어 리터럴 복구)
+> **빌드**: BUILD_VER=60 (이전 스냅샷: 59 → 54 → 22)
 > **브랜치**: `main`
 > **이전 버전**: v0.9 (`TIU-GAME-GDD-v05.md`, 2026-04-17)
 > **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷
@@ -11,7 +11,7 @@
 
 ## 0. 변경 요약
 
-### 0.1a 2026-04-24 증보 (BUILD_VER 54 → 59)
+### 0.1a 2026-04-24 증보 (BUILD_VER 54 → 60)
 
 2026-04-23 증보 이후 단일 푸시 커밋 `cbead05` *"Add minigame prototypes and improve English i18n support"* 중심 변경. 보조 핫픽스 10건은 세 번째 컬럼에 묶음 표기.
 
@@ -22,7 +22,7 @@
 | **📚 아카이브 언락 타이트닝** | 인물 4종(ARC-CHAR-DOYUN/HAEUN/SEJIN/JAEHYUK) 무조건 공개 → `LOG-INTRO-KD/SH/YS/IJ` 전제. ARC-EVS `LOG-001 → LOG-013`, ARC-ORG-ORACLE `LOG-001 → LOG-006 \|\| LOG-INTRO-SH`, ARC-ORG-BRANCH `LOG-001 → LOG-001 && LOG-INTRO-KD`, ARC-ORG-WHITESHIELD `LOG-001 → LOG-016`, ARC-FAC-SEAL `LOG-001 → LOG-070 \|\| LOG-073`, ARC-FAC-LAB `true → LOG-INTRO-YS` | `cbead05` |
 | **💬 결과 토스트 다국어화** | `data-result-text.js` "자동 생성 폴백 함수" 방식 → `_rtLocale()`/`_rtPool()` 기반 한·영 이중 풀. 4스탯 × 긍/부 × 한/영 각 4문장 | `cbead05` |
 | **🌐 MainMenu 평탄화** | `records` 서브뷰 제거 → 세션 선택/이어하기/아카이브/로그/SETTINGS 를 루트에 직접 노출. SettingsPanel에 `onMainMenu` 복귀 콜백. 토큰 `menu.startGame`/`menu.continue`/`boot.startGame` 추가 | `cbead05` |
-| **🌐 ScenarioHub 한국어 복원** | 메인 뷰의 "MISSION: KOREAN BRANCH STABILIZATION" 등 하드코딩 영어 문자열을 `isKo` locale 분기로 교체 | `cbead05` |
+| **🌐 ScenarioHub 한국어 복원** | 메인 뷰 하드코딩 영어 → `isKo` 분기로 교체. ⚠️ `cbead05`에서 ko 리터럴이 `?`로 저장 손상된 채 커밋 → 후속 복구 커밋에서 기획 원문으로 L57·L64~80 수동 복원(`components-game.js?v=23→24`, BUILD_VER 59→60). 브랜드/상태 라벨 7개(KOREAN BRANCH OPERATION / STABILIZATION / TERMINAL SESSION / ZONE / STATUS / THREAT INDEX / ACCESS)는 영문 고정으로 전환, 미션명·섹터명·메뉴 4종은 한국어 복구 | `cbead05` + 후속 복구 |
 | **🌐 이브닝챗 영어 폴백** | `components-evening.js` `resolveEveningBucketEntry()` — responseKey 우선, 실패 시 영어 콘텐츠 풀에서 `{char}_{act}_` 접두어 + day 범위 best-match | `cbead05` |
 | **🌐 일일 보고 토큰 보강** | `lang-ui-ko.js` `assess.high1~veryLow4` 16개 평가 라인, `archiveNew`/`dayReport`/섹션 라벨, `headlineWarn3` (GRANT EXPIRED) | `cbead05` |
 | **🛠️ i18n 핫픽스 스택** | 설정 패널 닫힘/저장 시 `applyLocale()` 보장, 영어 레이아웃 핫픽스 CSS 2종, 게이지 컬럼 정렬 단순화(style.css 45→8줄), index.html 에셋 버전 bump | `7d67294` `eb6b94d` `f985def` `25aed56` `bcd00d7` `f102261` `b9a6a68` `b17270b` `04ae5b8` `1a89a4f` |
@@ -252,7 +252,7 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 ## 5. 파일 구조
 
 ### 5.1 코어
-- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=59** 캐시 버스트)
+- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=60** 캐시 버스트)
 - `style.css` + `style-glitch.css` + `style-escape.css` — 기본 스타일
 - `style-i18n-hotfix.css` + `style-i18n-locale-hotfix.css` — 영어 레이아웃 핫픽스 (게이지/모바일 선택지 버튼, `lang=en` 속성 기반 오버라이드)
 - `field-mission/` — Act4 탈출 미니게임 인라인 (index.html + css/ + js/ 17개 + assets/ 45파일 / 7.1MB). postMessage로 카드게임과 상태 교환
@@ -422,7 +422,7 @@ Trust 65+ 달성률    99%
 ---
 
 *v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)** → v1.0 증보 (2026-04-23) → v1.0 증보 (2026-04-24)*
-*본 문서는 **BUILD_VER=59** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증 완료.*
+*본 문서는 **BUILD_VER=60** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증 완료.*
 *2026-04-23 증보분: i18n 인프라 구축, MainMenu/ScenarioHub 플로우 개편, 카드 체인 버그 수정 (C-060/CA-SEED-02/C-236), 이브닝챗 응답 매칭, 오디오/UI 정비.*
 *2026-04-24 증보분: 필드 미션 미니게임(signal/sequence/breach) 프로덕션 통합 (M-002/MI-01/MI-04), 아카이브 언락 타이트닝, 결과 토스트 서사 한·영 풀 재작성, MainMenu 평탄화, ScenarioHub 한국어 복원.*
 *변경 이력 상세: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷*
