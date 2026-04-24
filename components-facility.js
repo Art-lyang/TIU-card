@@ -37,8 +37,8 @@ function FacilityPanel(p) {
       }
     },
       h('div', { style: { display: 'flex', gap: 4 } },
-        tabBtn('map', '시설도'),
-        tabBtn('manage', '확장 관리')),
+        tabBtn('map', tt('facility.mapTab',null,'Facility Map')),
+        tabBtn('manage', tt('facility.manageTab',null,'Expansion Management'))),
       h('span', {
         style: {
           fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
@@ -46,7 +46,7 @@ function FacilityPanel(p) {
           border: '1px solid #1a3a1a', letterSpacing: 1
         },
         onClick: p.onClose
-      }, '[ 닫기 ]')),
+      }, tt('facility.close',null,'[ Close ]'))),
 
     // 컨텐츠
     tab === 'map' ? h('iframe', {
@@ -65,7 +65,7 @@ function FacilityPanel(p) {
 function FacilityManageTab(p) {
   var fac = p.facility;
   var FE = typeof FACILITY_EXPANSIONS !== 'undefined' ? FACILITY_EXPANSIONS : [];
-  var getExp = function(id) { return FE.filter(function(f) { return f.id === id; })[0]; };
+  var getExp = function(id) { var fe=FE.filter(function(f) { return f.id === id; })[0]; return typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe; };
 
   var pending = fac.pending.map(getExp).filter(Boolean);
   var approved = fac.approved.filter(function(id) {
@@ -81,41 +81,41 @@ function FacilityManageTab(p) {
 
   return h('div', { style: { flex: 1, overflowY: 'auto', padding: '12px 16px' } },
     pending.length > 0 && h('div', { style: sec },
-      h('div', { style: lbl }, '[대기 중 — 승인 가능]'),
+      h('div', { style: lbl }, tt('facility.pending',null,'[PENDING APPROVAL]')),
       pending.map(function(fe) {
         var isUp = !!fe.uprising;
         var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.2)' } : {};
         return h('div', { key: fe.id, style: Object.assign({}, itm, upStyle) },
           h('div', { style: nm }, fe.name),
-          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, '▸ 독립 인프라'),
+          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, tt('facility.uprisingTag',null,'INDEPENDENT INFRA')),
           h('div', { style: ds }, fe.desc),
           h('div', { style: { fontSize: 10, color: '#4ae', marginTop: 4 } }, fe.hint),
           h('button', {
             className: 'btn', onClick: function() { p.onApprove(fe.id); },
             style: { marginTop: 8, padding: '6px 16px', fontSize: 10, background: 'rgba(74,170,238,.1)', border: '1px solid #4ae', color: '#4ae', cursor: 'pointer', letterSpacing: 1 }
-          }, '[ 승인하기 ]'));
+          }, tt('facility.approve',null,'[ APPROVE ]')));
       })),
     approved.length > 0 && h('div', { style: sec },
-      h('div', { style: lbl }, '[진행 중 — 리워드 선택 대기]'),
+      h('div', { style: lbl }, tt('facility.approved',null,'[APPROVED - AWAITING REWARD PICK]')),
       approved.map(function(fe) {
         var isUp = !!fe.uprising;
         var upStyle = isUp ? { borderColor: 'rgba(240,160,48,.2)' } : {};
         return h('div', { key: fe.id, style: Object.assign({}, itm, upStyle) },
           h('div', { style: nm }, fe.name),
-          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, '▸ 독립 인프라'),
+          isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, tt('facility.uprisingTag',null,'INDEPENDENT INFRA')),
           h('div', { style: ds }, fe.desc),
-          h('div', { style: { fontSize: 10, color: '#f0a030', marginTop: 4 } }, '다음 리워드에서 선택 가능'));
+          h('div', { style: { fontSize: 10, color: '#f0a030', marginTop: 4 } }, tt('facility.rewardPending',null,'Selectable during the next reward phase.')));
       })),
     completed.length > 0 && h('div', { style: sec },
-      h('div', { style: lbl }, '[완료]'),
+      h('div', { style: lbl }, tt('facility.completed',null,'[COMPLETED]')),
       completed.map(function(fe) {
         return h('div', { key: fe.id, style: Object.assign({}, itm, { borderColor: 'rgba(var(--ui-rgb),.25)' }) },
-          h('div', { style: Object.assign({}, nm, { color: '#6f6' }) }, fe.name + ' ✓'),
+          h('div', { style: Object.assign({}, nm, { color: '#6f6' }) }, fe.name + ' OK'),
           h('div', { style: ds }, fe.desc));
       })),
     pending.length === 0 && approved.length === 0 && completed.length === 0 &&
       h('div', { style: { textAlign: 'center', padding: '40px 0', fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: 'rgba(var(--ui-rgb),.4)', letterSpacing: 1 } },
-        '확장 가능한 시설이 없습니다.\n게임 진행 중 제안 카드를 통해 추가됩니다.')
+        tt('facility.empty',null,'No facility expansions are currently available.\nNew proposals will appear through operation cards.'))
   );
 }
 

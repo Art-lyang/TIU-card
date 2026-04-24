@@ -127,7 +127,7 @@ function App(){
     // 박소영 합류 후 첫 대화 보장
     if(lg.indexOf('LOG-082')>=0&&lg.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}
     var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
-  var nextCard=function(s,g,lg,cq,curAct,cdOverride,rcOverride,trOverride,facOverride){var a=curAct||act;var useCd=cdOverride||cooldowns;var useRecent=rcOverride||recentCards;var useRoute=typeof trOverride==='string'?trOverride:transRoute;var useFacility=facOverride||facility;var liveLg=getLiveLogs(lg);if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,liveLg,useCd,useRecent,a,useRoute,useFacility);if(!c){c={id:'SYS-FALLBACK',msg:'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...',left:{label:'대기',fx:{},g:0},right:{label:'재접속 시도',fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var base=rcOverride||p;var n=base.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}};
+  var nextCard=function(s,g,lg,cq,curAct,cdOverride,rcOverride,trOverride,facOverride){var a=curAct||act;var useCd=cdOverride||cooldowns;var useRecent=rcOverride||recentCards;var useRoute=typeof trOverride==='string'?trOverride:transRoute;var useFacility=facOverride||facility;var liveLg=getLiveLogs(lg);if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,liveLg,useCd,useRecent,a,useRoute,useFacility);if(!c){c={id:'SYS-FALLBACK',msg:tt('app.fallbackCardMsg',null,'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...'),left:{label:tt('app.fallbackCardLeft',null,'대기'),fx:{},g:0},right:{label:tt('app.fallbackCardRight',null,'재접속 시도'),fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var base=rcOverride||p;var n=base.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}};
   // Act 전환 체크 — 문서 기준 스케줄 (5/14/29)
   // 실제 호출은 app-logic.js의 checkActTransitionLogic 사용 (그쪽 함수도 업데이트됨)
   var checkActTransition=function(s,g,lg,af,curAct){
@@ -186,8 +186,8 @@ function App(){
       var feId=curCard.feId;
       setFacility(function(prev){
         var next={approved:prev.approved.slice(),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([feId])};
-        if(dir==='right'){next.approved.push(feId);setToastType('');setToast('시설 확장이 보상 풀에 추가되었습니다');setTimeout(function(){setToast('')},2200)}
-        else{next.pending.push(feId);setToastType('');setToast('확장 제안이 대기 목록에 추가되었습니다');setTimeout(function(){setToast('')},2200)}
+        if(dir==='right'){next.approved.push(feId);setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
+        else{next.pending.push(feId);setToastType('');setToast(tt('app.facilityPending',null,'확장 제안이 대기 목록에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
         Save.saveFacility(next);return next});
       var nct=ct+1;setCt(nct);
       persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue);
@@ -208,12 +208,12 @@ function App(){
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
     var nextLogs=getLiveLogs(logs);
     // ═══ OBSERVER 접속승인 카드 — 전 세션 1회 특수 처리 ═══
-    if(curCard.id==='CA-OBS-PROTO'){try{localStorage.setItem('ts_observer_proto','seen')}catch(e){}if(dir==='left'){tryUnlock('LOG-OBSERVER-APPROVED')}SFX.play('glitch');setTimeout(function(){setToastType('alert');setToast('[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]');setTimeout(function(){setToast('')},3200)},500)}
+    if(curCard.id==='CA-OBS-PROTO'){try{localStorage.setItem('ts_observer_proto','seen')}catch(e){}if(dir==='left'){tryUnlock('LOG-OBSERVER-APPROVED')}SFX.play('glitch');setTimeout(function(){setToastType('alert');setToast(tt('app.observerError',null,'[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]'));setTimeout(function(){setToast('')},3200)},500)}
     var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey])setPendingBonus(REFUSAL_BONUSES[rwdKey]);
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     var nextActFlags=updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
 
-    if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToastType('');setToast('시설 확장이 보상 풀에 등록되었습니다');setTimeout(function(){setToast('')},2200)}
+    if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityRegistered',null,'시설 확장이 보상 풀에 등록되었습니다'));setTimeout(function(){setToast('')},2200)}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
     var nct=ct+1;setCt(nct);
     persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue);
@@ -221,7 +221,7 @@ function App(){
     var et=ch.endTrigger||curCard.endTrigger;
     if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
     // CH-007-3: 낙오 판정 (trust 기반 roll → ACCOMP-* 로그 부여, 체인 흐름은 계속)
-    if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast('[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']');setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast('[간부진 전원 동행 확정]');setTimeout(function(){setToast('')},2800)},800)}}
+    if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast(tt('app.companionsLost',{names:_acc.loss.map(function(l){return l.name}).join(', ')},'[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']'));setTimeout(function(){setToast('')},3800)},800)}else{setTimeout(function(){setToastType('');setToast(tt('app.companionsAll',null,'[간부진 전원 동행 확정]'));setTimeout(function(){setToast('')},2800)},800)}}
     // CH-007-5: 탈출 미니게임 진입 (iframe 연동) — 결과는 postMessage로 수신
     if(curCard.id==='CH-007-5'){setPhase('escape_game');return}
     // CA-001B right: 2회차+ ORACLE 적응기간 생략 — Act 2 직행
@@ -255,7 +255,7 @@ function App(){
     if(riskFired){setTimeout(function(){setToastType('risk');setToast(riskFired);setTimeout(function(){setToast('')},2800)},600)}
     else if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);setTimeout(function(){setToast('')},2400)},400)}}
   };
-  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'[Follow-up card added] ':'[후속 카드 추가] ')+followCard.id);setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
+  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
     if(act===3){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
@@ -270,14 +270,14 @@ function App(){
       // uprising 시설 완료 시 GI-2 (ORACLE 독립 = 충성도 감소)
       var feDef=(typeof FACILITY_EXPANSIONS!=='undefined')?FACILITY_EXPANSIONS.filter(function(f){return f.id===r.feId})[0]:null;
       if(feDef&&feDef.uprising){setGi(function(g){return g-2})}
-      setToastType('');setTimeout(function(){setToast('['+(r.title||'시설')+'] 확장 공사 완료'+(feDef&&feDef.uprising?' | GI -2':''));setTimeout(function(){setToast('')},2400)},300)}
+      setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | GI -2'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
     var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,gi);return}
     setPhase('evening')};
   var hEvening=function(){var liveLogs=getLiveLogs(logs);var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
     // ═══ 35일 캡: day>35 도달 시 TIME_UP 강제 엔딩 ═══
     if(stats.day>35){var teid=resolveTimeUp(stats,gi,trust,liveLogs);SFX.play('gameover');doGO(getLocale()==='en'?'Session expired':'\uC138\uC158 \uB9CC\uB8CC',stats,gi,teid);return}
-    var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast('[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]');setTimeout(function(){setToast('')},3800)},700)}
+    var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast(tt('app.cStabilityAlert',{value:stats.c},'[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]'));setTimeout(function(){setToast('')},3800)},700)}
   nextCard(stats,gi,liveLogs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);var dlgLogs=getLiveLogs(logs);persistGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
     var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedDlg.indexOf(i)<0}).length;
@@ -315,11 +315,11 @@ function App(){
     Save.set('ts_trust',trust);Save.saveUsedDlg(usedDlg);Save.saveUsedEvening(usedEvening);
     Save.saveFacility(facility);
     Save.saveSnapshot(slot,{day:stats.day,act:act,label:'DAY '+stats.day+' · ACT '+act+' · '+(transRoute||'-')});
-    setToastType('');setToast('슬롯 '+slot+' 저장 완료 (DAY '+stats.day+')');setTimeout(function(){setToast('')},2400);
+    setToastType('');setToast(tt('app.snapshotSaved',{slot:slot,day:stats.day},'슬롯 '+slot+' 저장 완료 (DAY '+stats.day+')'));setTimeout(function(){setToast('')},2400);
   };
   var loadSnapshot=function(slot){
     var pack=Save.loadSnapshot(slot);
-    if(!pack){setToastType('');setToast('슬롯 '+slot+' 비어있음');setTimeout(function(){setToast('')},1800);return}
+    if(!pack){setToastType('');setToast(tt('app.snapshotEmpty',{slot:slot},'슬롯 '+slot+' 비어있음'));setTimeout(function(){setToast('')},1800);return}
     BGM.stop();BGM.started=false;
     // pack 내용으로 React state 직접 복원 (reload 없이)
     var pg=pack.game||{};
@@ -346,7 +346,7 @@ function App(){
     if(nc)setCurCard(nc);
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(pact);
     setPhase('game');
-    setToastType('');setToast('슬롯 '+slot+' 로드 완료 (DAY '+ps.day+')');
+    setToastType('');setToast(tt('app.snapshotLoaded',{slot:slot,day:ps.day},'슬롯 '+slot+' 로드 완료 (DAY '+ps.day+')'));
     setTimeout(function(){setToast('')},2200);
   };
   // ═══ 업적 체크 — 주요 상태 변경 시 자동 트리거 ═══
@@ -358,7 +358,7 @@ function App(){
       var newIds=achievements.concat(newly.map(function(a){return a.id}));
       setAchievements(newIds);Save.saveAchievements(newIds);
       newly.forEach(function(a,idx){
-        setTimeout(function(){setToastType('');setToast('[ 업적 ] '+a.name);setTimeout(function(){setToast('')},2600)},idx*1400);
+        setTimeout(function(){var av=(typeof getAchievementView==='function')?getAchievementView(a):a;setToastType('');setToast(tt('app.achievement',{name:av.name},'[ 업적 ] '+av.name));setTimeout(function(){setToast('')},2600)},idx*1400);
         if(typeof window.__SteamUnlock==='function')window.__SteamUnlock(a.steamId);
       });
     }
@@ -382,7 +382,7 @@ function App(){
   // 대기 중 확장 승인 함수
   var approvePending=function(feId){setFacility(function(prev){
     var next={approved:prev.approved.concat([feId]),pending:prev.pending.filter(function(id){return id!==feId}),completed:prev.completed.slice(),proposed:prev.proposed.slice()};
-    Save.saveFacility(next);return next});setToastType('');setToast('시설 확장이 보상 풀에 추가되었습니다');setTimeout(function(){setToast('')},2200)};
+    Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)};
   // directUpgrade 는 main 머지 후 제거됨 — uprising GI-2 로직은 hReward 내부 r.feId 처리부로 이관
 
   // ═══ CH-007 미니게임 결과 수신 핸들러 ═══
@@ -446,25 +446,25 @@ function App(){
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
     showMissionDebug&&h('div',{style:{position:'fixed',inset:0,zIndex:60,background:'rgba(0,0,0,.72)',display:'flex',alignItems:'center',justifyContent:'center',padding:16}},
       h('div',{style:{width:'100%',maxWidth:420,background:'rgba(6,12,8,.96)',border:'1px solid rgba(var(--ui-rgb),.28)',borderRadius:8,padding:18,boxShadow:'0 0 24px rgba(0,0,0,.35)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0c060',letterSpacing:2,textAlign:'center',marginBottom:8}},'FIELD TEST LAUNCHER'),
-        h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.68)',lineHeight:1.7,textAlign:'center',marginBottom:14}},'현장임무 테스트용 임시 진입 메뉴입니다. 원하는 미니게임 임무로 바로 들어갈 수 있습니다.'),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0c060',letterSpacing:2,textAlign:'center',marginBottom:8}},tt('missionDebug.title',null,'FIELD TEST LAUNCHER')),
+        h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.68)',lineHeight:1.7,textAlign:'center',marginBottom:14}},tt('missionDebug.desc',null,'Temporary field-mission test menu.')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:8}},
           [
-            {id:'M-002',label:'M-002 / 신호 정렬 / SPEC-011 활동 구역 조사'},
-            {id:'MI-01',label:'MI-01 / 격리 봉인 / 격리실 이상 반응'},
-            {id:'MI-04',label:'MI-04 / 권한 추적 / 보안구역 인증 오류'}
-            ,{id:'M-010',label:'M-010 / Route Evade / SPEC-015 Track'},
-            {id:'MI-05',label:'MI-05 / Scan Search / Missing Staff'},
-            {id:'MI-03',label:'MI-03 / Sample Recovery / Lab Mutation'},
-            {id:'M-003',label:'M-003 / Evidence Sort / Trace Review'},
-            {id:'MI-02',label:'MI-02 / Log Reconstruction / CCTV Gap'},
-            {id:'M-007',label:'M-007 / Latent Screen / Maximum Strike'}
+            {id:'M-002',label:tt('missionDebug.items.m002',null,'M-002 / Signal Alignment / SPEC-011 Activity Zone Survey')},
+            {id:'MI-01',label:tt('missionDebug.items.mi01',null,'MI-01 / Quarantine Seal / Isolation Room Anomaly')},
+            {id:'MI-04',label:tt('missionDebug.items.mi04',null,'MI-04 / Authority Trace / Security Zone Auth Error')},
+            {id:'M-010',label:tt('missionDebug.items.m010',null,'M-010 / Route Evade / SPEC-015 Track')},
+            {id:'MI-05',label:tt('missionDebug.items.mi05',null,'MI-05 / Scan Search / Missing Staff')},
+            {id:'MI-03',label:tt('missionDebug.items.mi03',null,'MI-03 / Sample Recovery / Lab Mutation')},
+            {id:'M-003',label:tt('missionDebug.items.m003',null,'M-003 / Evidence Sort / Trace Review')},
+            {id:'MI-02',label:tt('missionDebug.items.mi02',null,'MI-02 / Log Reconstruction / CCTV Gap')},
+            {id:'M-007',label:tt('missionDebug.items.m007',null,'M-007 / Latent Screen / Maximum Strike')}
           ].map(function(item){
             return h('button',{key:item.id,className:'btn',style:{width:'100%',textAlign:'left',padding:'12px 14px'},onClick:function(){setCurMission(item.id);setShowMissionDebug(false);setPhase('mission');}},item.label);
           })
         ),
         h('div',{style:{display:'flex',justifyContent:'center',marginTop:14}},
-          h('button',{className:'btn',onClick:function(){setShowMissionDebug(false)}},'닫기'))
+          h('button',{className:'btn',onClick:function(){setShowMissionDebug(false)}},tt('missionDebug.close',null,'Close')))
       )
     ),
     glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}));

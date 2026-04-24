@@ -78,6 +78,48 @@ var ACHIEVEMENTS = [
     unlock:function(s){return s.ngPlus===true} }
 ];
 
+var ACHIEVEMENT_I18N_EN = {
+  END_A:{name:'Perfect Instrument',desc:'Complete the session with ORACLE granting its highest confidence.'},
+  END_B:{name:'Awakening',desc:'Witness fragments of the truth.'},
+  END_C_cs:{name:'Containment Secured',desc:'Achieve perfect containment.'},
+  END_C_cst:{name:'Pyrrhic Containment',desc:'Pay the price of containment.'},
+  END_C_c:{name:'Containment Collapse',desc:'Let the containment line fall.'},
+  END_C_r:{name:'Resource Depletion',desc:'Let the branch lose functional supply capacity.'},
+  END_C_t:{name:'Trust Lost',desc:'Allow your people to turn away.'},
+  END_C_o:{name:'Access Revoked',desc:'Let ORACLE cut you off.'},
+  END_D:{name:'Quiet Freedom',desc:'Gain freedom inside revolt.'},
+  END_F:{name:'Data Corrupted',desc:'Record what cannot be recorded.'},
+  LOGS_ALL:{name:'Archivist',desc:'Unlock every ORACLE log.'},
+  ARCHIVE_ALL:{name:'Complete Record',desc:'Review every archive entry.'},
+  EVIDENCE_FIRST:{name:'First Evidence Link',desc:'Draw a conclusion from an evidence combination.'},
+  EVIDENCE_ALL:{name:'Truth Finder',desc:'Complete every evidence combination.'},
+  BOND_HAEUN:{name:"Deputy's Comrade",desc:'Reach 85 trust or higher with Seo Hae-eun.'},
+  BOND_DOYUN:{name:'Field Ally',desc:'Reach 85 trust or higher with Kang Do-yun.'},
+  BOND_SEJIN:{name:'Research Partner',desc:'Reach 85 trust or higher with Yoon Se-jin.'},
+  BOND_JAEHYUK:{name:'Technical Partner',desc:'Reach 85 trust or higher with Lim Jae-hyeok.'},
+  BOND_ALL:{name:'Complete Command',desc:'Reach 85 trust or higher with all four senior officers.'},
+  FACILITY_FIRST:{name:'First Expansion',desc:'Complete the first facility expansion.'},
+  FACILITY_ALL:{name:'Completed Branch',desc:'Complete every facility expansion.'},
+  RUN_SURVIVE_10:{name:'Survivor - Day 10',desc:'Survive until Day 10.'},
+  RUN_SURVIVE_25:{name:'Veteran - Day 25',desc:'Survive until Day 25.'},
+  RUN_ACT4:{name:'Final Phase',desc:'Reach Act 4.'},
+  GI_DEFIANT:{name:'Defiance',desc:'Reach independence index -30 or lower.'},
+  GI_LOYAL:{name:'Compliance',desc:'Reach independence index +40 or higher.'},
+  SESSIONS_5:{name:'Seasoned Commander',desc:'Command five or more sessions.'},
+  HIDDEN_PROMETHEUS:{name:'Another Option',desc:'Make contact with Prometheus.'},
+  HIDDEN_REWIND:{name:'Returner',desc:'Start New Game+.'}
+};
+
+function getAchievementView(achievement) {
+  if (!achievement) return { name:'Achievement', desc:'' };
+  var locale = (typeof window !== 'undefined' && window.TS_I18N && window.TS_I18N.getLocale) ? window.TS_I18N.getLocale() : 'ko';
+  if (locale === 'en' && ACHIEVEMENT_I18N_EN[achievement.id]) {
+    var en = ACHIEVEMENT_I18N_EN[achievement.id];
+    return { id:achievement.id, steamId:achievement.steamId, name:en.name, desc:en.desc, hidden:achievement.hidden };
+  }
+  return achievement;
+}
+
 // 전역 상태에서 업적 체크 및 신규 해금 반환
 function checkAchievements(state, prevUnlocked) {
   if (!Array.isArray(prevUnlocked)) prevUnlocked = [];

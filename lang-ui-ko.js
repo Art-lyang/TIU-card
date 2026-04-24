@@ -2,6 +2,10 @@
 window.TS_I18N.mergeUI('ko', {
   meta:{ title:'TERMINAL SESSION', titleBar:'ORACLE // TERMINAL SESSION' },
   boot:{ startSession:'[ 세션 {session} 시작 ]', startGame:'[ 게임 시작 ]' },
+  menu:{
+    startGame:'[ \uAC8C\uC784 \uC2DC\uC791 ]',
+    continue:'[ \uC774\uC5B4\uD558\uAE30 ]'
+  },
   hub:{
     title:'SCENARIO SELECT',
     progress:'{current} / {total}',
@@ -106,20 +110,88 @@ window.TS_I18N.mergeUI('ko', {
     trustTag:'[신뢰]',
     footer:'ORACLE REMOTE TERMINAL — FIELD OPS'
   },
+  mission:{ trustLabel:'신뢰' },
+  briefing:{
+    analysis:'\uCD5C\uADFC \uC6B4\uC601 \uB370\uC774\uD130\uB97C \uBD84\uC11D\uD588\uC2B5\uB2C8\uB2E4.',
+    enter:'[ \uC9C4\uC785 ]'
+  },
+  missionDebug:{
+    title:'FIELD TEST LAUNCHER',
+    desc:'\uD604\uC7A5\uC784\uBB34 \uD14C\uC2A4\uD2B8\uC6A9 \uC784\uC2DC \uC9C4\uC785 \uBA54\uB274\uC785\uB2C8\uB2E4. \uC6D0\uD558\uB294 \uBBF8\uB2C8\uAC8C\uC784 \uC784\uBB34\uB85C \uBC14\uB85C \uC774\uB3D9\uD569\uB2C8\uB2E4.',
+    close:'\uB2EB\uAE30',
+    items:{
+      m002:'M-002 / \uC2E0\uD638 \uC815\uB82C / SPEC-011 \uD65C\uB3D9 \uAD6C\uC5ED \uC870\uC0AC',
+      mi01:'MI-01 / \uACA9\uB9AC \uBD09\uC778 / \uACA9\uB9AC\uC2E4 \uC774\uC0C1 \uBC18\uC751',
+      mi04:'MI-04 / \uAD8C\uD55C \uCD94\uC801 / \uBCF4\uC548\uAD6C\uC5ED \uC778\uC99D \uC624\uB958',
+      m010:'M-010 / \uACBD\uB85C \uC120\uD0DD / SPEC-015 \uD754\uC801 \uCD94\uC801',
+      mi05:'MI-05 / \uC2A4\uCE94 \uD0D0\uC0C9 / \uC2E4\uC885 \uC694\uC6D0',
+      mi03:'MI-03 / \uC0D8\uD50C \uD68C\uC218 / \uC5F0\uAD6C\uC2E4 \uBCC0\uC774',
+      m003:'M-003 / \uC99D\uAC70 \uBD84\uB958 / \uD754\uC801 \uAC80\uD1A0',
+      mi02:'MI-02 / \uB85C\uADF8 \uBCF5\uC6D0 / CCTV \uACF5\uBC31',
+      m007:'M-007 / \uC7A0\uBCF5 \uBC18\uC751 \uC2A4\uD06C\uB9AC\uB2DD / \uCD5C\uB300 \uD0C0\uACA9'
+    }
+  },
+  facility:{
+    mapTab:'\uC2DC\uC124\uB3C4',
+    manageTab:'\uD655\uC7A5 \uAD00\uB9AC',
+    close:'[ \uB2EB\uAE30 ]',
+    pending:'[\uB300\uAE30 \uC911 - \uC2B9\uC778 \uAC00\uB2A5]',
+    approved:'[\uC9C4\uD589 \uC911 - \uB9AC\uC6CC\uB4DC \uC120\uD0DD \uB300\uAE30]',
+    completed:'[\uC644\uB8CC]',
+    uprisingTag:'\uB3C5\uB9BD \uC778\uD504\uB77C',
+    approve:'[ \uC2B9\uC778\uD558\uAE30 ]',
+    rewardPending:'\uB2E4\uC74C \uB9AC\uC6CC\uB4DC\uC5D0\uC11C \uC120\uD0DD \uAC00\uB2A5',
+    empty:'\uD655\uC7A5 \uAC00\uB2A5\uD55C \uC2DC\uC124\uC774 \uC5C6\uC2B5\uB2C8\uB2E4.\n\uAC8C\uC784 \uC9C4\uD589 \uC911 \uC81C\uC548 \uCE74\uB4DC\uB97C \uD1B5\uD574 \uCD94\uAC00\uB429\uB2C8\uB2E4.'
+  },
   gameOver:{
+    title:'─── SESSION #{session} TERMINATED ───',
     reportSection:'── ORACLE 최종 보고 ──',
     duration:'운영 기간: {days}일',
     stats:'봉쇄: {c} | 자원: {r} | 신뢰: {t} | 평가: {o}',
     restart:'[ 세션 재개시 — ACT 1 ]',
     ngPlus:'[ NEW GAME+ — 강화 시작 ]',
     logs:'기록', archive:'아카이브', endings:'엔딩',
+    grant:'GRANT: ACTIVE — RENEWAL AVAILABLE',
     msgHigh:'요원의 헌신적 복무에 감사드립니다.',
     msgMid:'세션이 종료됩니다. 결과가 기록되었습니다.',
-    msgLow:'비표준 운영 패턴 감지. 세션 데이터 분석 중...'
+    msgLow:'비표준 운영 패턴 감지. 세션 데이터 분석 중...',
+    reasons:{
+      containmentLow:'봉쇄선 붕괴. 시설 자체 봉쇄 프로토콜 발동 — 기지 폐기 절차가 개시되었습니다.',
+      containmentHigh:'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] 한국 지부 안정화 완료. 임시 권한이 만료되었습니다. 세션을 종료합니다.',
+      resourcesLow:'자원 고갈. 기지 기능이 마비되었습니다.',
+      trustLow:'인원 신뢰 붕괴. 기지 요원들이 이탈했습니다.',
+      evaluationLow:'ORACLE 접속 차단. 단말기 연결이 종료되었습니다.'
+    }
+  },
+  common:{
+    cancel:'취소',
+    confirm:'확인',
+    next:'다음'
+  },
+  evening:{
+    dayEnd:'종료',
+    selectChar:'간부진 한 명과 대화할 수 있습니다.',
+    skip:'건너뛰기',
+    skipConfirm:'대화를 건너뛰시겠습니까?'
+  },
+  logs:{
+    list:'← 목록',
+    close:'닫기',
+    unlocked:'{current}/{total} 기록 해금',
+    locked:'{count}건의 기록이 잠겨 있습니다'
+  },
+  endingGallery:{
+    title:'SESSION ARCHIVE - 엔딩 갤러리',
+    summary:'총 세션: {sessions}  |  엔딩 해금: {unlocked} / {total}',
+    back:'← 갤러리',
+    locked:'[미발견]',
+    achieved:'달성 완료',
+    close:'닫기'
   },
   settings:{
     title:'SETTINGS',
     close:'ESC',
+    mainMenu:'MENU',
     tabs:{ sound:'SOUND', save:'SAVE', display:'DISPLAY', info:'INFO' },
     sound:'사운드',
     bgm:'배경음악',
@@ -151,9 +223,14 @@ window.TS_I18N.mergeUI('ko', {
     archive:'아카이브'
   },
   app:{
+    fallbackCardMsg:'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...',
+    fallbackCardLeft:'대기',
+    fallbackCardRight:'재접속 시도',
     facilityAdded:'시설 확장이 보상 풀에 추가되었습니다',
     facilityPending:'확장 제안이 대기 목록에 추가되었습니다',
     facilityRegistered:'시설 확장이 보상 풀에 등록되었습니다',
+    observerError:'[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]',
+    followupCardAdded:'[후속 카드 추가] {id}',
     facilityComplete:'[{title}] 확장 공사 완료{suffix}',
     facilityDefault:'시설',
     uprisingSuffix:' | GI -2',

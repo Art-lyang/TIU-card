@@ -108,13 +108,15 @@
     return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
       h('div',{style:{width:'100%',maxWidth:400,maxHeight:'80vh',background:'#0a120a',border:'1px solid rgba(var(--ui-rgb),0.25)',padding:'16px 20px',display:'flex',flexDirection:'column',overflow:'hidden',boxShadow:'0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,paddingBottom:8,borderBottom:'1px solid rgba(var(--ui-rgb),0.15)'}},
-          h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:2}},'SETTINGS'),
-          h('button',{style:{background:'none',border:'1px solid rgba(var(--ui-rgb),0.2)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'3px 8px',cursor:'pointer'},onClick:closePanel},'ESC')),
+          h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:2}},tr('settings.title','SETTINGS')),
+          h('div',{style:{display:'flex',gap:6}},
+            p.onMainMenu&&h('button',{style:{background:'none',border:'1px solid rgba(var(--ui-rgb),0.2)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'3px 8px',cursor:'pointer'},onClick:function(){closePanel();if(p.onMainMenu)p.onMainMenu()}},tr('settings.mainMenu','MENU')),
+            h('button',{style:{background:'none',border:'1px solid rgba(var(--ui-rgb),0.2)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'3px 8px',cursor:'pointer'},onClick:closePanel},tr('settings.close','ESC')))),
         h('div',{style:{display:'flex',gap:4,marginBottom:12,flexWrap:'wrap'}},
-          _settingsTabBtn('sound','SOUND',tab,setTab),
-          _settingsTabBtn('save','SAVE',tab,setTab),
-          _settingsTabBtn('display','DISPLAY',tab,setTab),
-          _settingsTabBtn('info','INFO',tab,setTab)),
+          _settingsTabBtn('sound',tr('settings.tabs.sound','SOUND'),tab,setTab),
+          _settingsTabBtn('save',tr('settings.tabs.save','SAVE'),tab,setTab),
+          _settingsTabBtn('display',tr('settings.tabs.display','DISPLAY'),tab,setTab),
+          _settingsTabBtn('info',tr('settings.tabs.info','INFO'),tab,setTab)),
         h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},content))
     );
   };

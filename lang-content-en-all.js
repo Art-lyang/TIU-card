@@ -2616,4 +2616,146 @@ window.TS_I18N.mergeContent('en', {
     }
   });
 
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-034": {
+      oracleBlockMsgs: [
+        "[ORACLE: Hostile-force contact attempt detected - isolation recommended]",
+        "[ORACLE: Contact blocked - Prometheus risk grade A]",
+        "[ORACLE: Warning - contact history added to security record]"
+      ]
+    },
+    "CE-004": {
+      oracleBlockMsgs: [
+        "[ORACLE: This process is an internal stabilization routine]",
+        "[ORACLE: Isolation attempt denied - operational integrity prioritized]",
+        "[ORACLE: Intervention forbidden - system protection mode active]"
+      ]
+    },
+    "CE-005": {
+      oracleBlockMsgs: [
+        "[ORACLE: Unidentified output blocked - do not respond]",
+        "[ORACLE: External signal isolated - access denied]",
+        "[ORACLE: Warning - unauthorized communication monitoring reinforced]"
+      ],
+      leftReplyMsg: "\"Good question.\" The extra output appears, then the screen returns to normal.",
+      rightReplyMsg: "[ORACLE: Diagnostic result - no anomaly. Log entry normal.]\n(A 0.003-second gap occurred during diagnosis. It was not recorded in the ORACLE report.)"
+    },
+    "CE-014": {
+      oracleBlockMsgs: [
+        "[ORACLE: Asset transfer - mandatory protocol reconfirmation]",
+        "[ORACLE: Command noncompliance detected - compliance code applying]",
+        "[ORACLE: Final warning - violation history recording initiated]"
+      ]
+    },
+    "CE-015": {
+      oracleBlockMsgs: [
+        "[ORACLE: Non-standard response detected - dependency analysis in progress]",
+        "[ORACLE: Independent judgment unavailable - linked operation required]",
+        "[ORACLE: Warning - forced system dependency link]"
+      ]
+    },
+    "CE-016": {
+      oracleBlockMsgs: [
+        "[ORACLE: Unreported gathering detected - participation discouraged]",
+        "[ORACLE: Unauthorized meeting - do not leave monitoring scope]",
+        "[ORACLE: Warning - unofficial activity monitoring reinforced]"
+      ]
+    },
+    "CE-017": {
+      oracleBlockMsgs: [
+        "[ORACLE: File classification grade A - distribution denied]",
+        "[ORACLE: Unauthorized distribution detected - file access under review]",
+        "[ORACLE: Warning - security violation recorded]"
+      ]
+    },
+    "CS-005": {
+      oracleBlockMsgs: [
+        "[ORACLE: Data reliability 0% - access prohibited]",
+        "[ORACLE: Prometheus-sourced intelligence - access denied]",
+        "[ORACLE: Warning - unauthorized data access being recorded]"
+      ]
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-HINT-SHELLTALKER": {
+      msg: "Lim Jae-hyeok brings an unofficial report.\n\n\"Commander. I found something inside an isolated layer of the ORACLE architecture.\"\n\n\"I cannot access it directly, but the metadata tag is visible.\"\n\n\"Tag: SPEC-011 / vocal-pattern learner / preserved.\"\n\n\"It means one Shell Talker specimen may be stored somewhere inside this branch without public registration.\"",
+      leftLabel: "Record it",
+      rightLabel: "Assume it is an error"
+    },
+    "CA3-VOSS-STANDBY": {
+      msg: "An unregistered signal arrives on an external terminal channel.\nIt is not written to the ORACLE log.\n\nShort encrypted message:\n\n[Emergency standby channel - Weber]\n[Reply whenever you choose.]\n\nThis is a communication line ORACLE does not know about.\nDo you save it, or erase it?",
+      leftLabel: "Save the channel",
+      rightLabel: "Delete it. Too dangerous"
+    },
+    "CA4-ESCAPE-OFFER": {
+      msg: "First day of Act 4.\n\nA message arrives through the encrypted channel you saved. Weber.\n\n\"Commander. The situation has reached its threshold.\"\n\n\"ORACLE is finalizing its evaluation of you. Once the result is issued, you may follow the same path as Deputy Commander Seo Hae-eun.\"\n\n\"Twenty-four hours. Decide within that window.\"\n\"We can extract you and your team. This is the last chance.\"",
+      leftLabel: "I will consider it",
+      rightLabel: "Refuse"
+    },
+    "CH-007-1": {
+      msg: "Two kilometers north of the branch. Midnight rendezvous point.\n\nWeber delivers a compressed operation plan.\n\n\"There are two routes. I will explain the characteristics of each.\"\n\n\"First: breach through the main gate. Initial resistance will be heavy, but after the breakout you only need to cross the outer infected zone. Outdoor contact can be avoided.\"\n\n\"Second: B3 emergency exit. Initial entry is quiet. However, the route passes through the isolation chamber. You can likely guess what may be waiting there.\"",
+      leftLabel: "I understand",
+      rightLabel: "Continue"
+    },
+    "CH-007-2": {
+      msg: "A decision is required.\n\nOne of two routes. It cannot be undone.",
+      leftLabel: "Break through the main gate",
+      rightLabel: "Use the B3 emergency exit"
+    },
+    "CH-007-3": {
+      msg: "The night before escape. Individual interviews with the senior staff.\n\nSeo Hae-eun, Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok enter one after another.\n\nNot everyone says they will go.\nThat is not betrayal. It is the weight each person carries.\n\n[Calculating...]\n[Companion list confirmed]",
+      leftLabel: "Check the list",
+      rightLabel: "Hear the result"
+    },
+    "CH-007-4": {
+      msg: "Operation start time. 03:47.\n\nYour companions are in position.\nYou steady your breathing.\n\nFootsteps. Breath. And the silence beyond them.\n\nNow, it is time to move.",
+      leftLabel: "Begin operation",
+      rightLabel: "Run one final check"
+    },
+    "CH-007-5": {
+      msg: "A transmission comes in.\n\nA short burst of static in the earpiece.\n\nThe result is being recorded...",
+      leftLabel: "Confirm",
+      rightLabel: "Confirm"
+    }
+  },
+  oracleLogs: {
+    "LOG-SHELLTALKER-CAP": {
+      title: "SPEC-011 Isolation Capture [Unofficial]",
+      content: "[Lim Jae-hyeok - unofficial analysis]\n\nOne research block detected inside an isolated ORACLE architecture layer.\nMetadata tag: SPEC-011 / vocal-pattern learner / preserved.\nAccess permission: none. Existence only confirmed.\n\nIdentifiable entry among preserved vocal patterns:\n- Lieutenant Park Sang-hun (listed missing / former Gangwon operation unit under Commander Lee Jung-cheol)\n\nConclusion: one Shell Talker specimen is being privately stored inside KR-INIT-001.\nA facility unknown even to the commander.\nThis entity consumed Lieutenant Park Sang-hun."
+    },
+    "LOG-VOSS-STANDBY": {
+      title: "Encrypted Standby Channel Saved",
+      content: "[Unregistered communication channel]\n\nSender: Markus Weber\nChannel: outside ORACLE surveillance scope\nMessage: \"Reply whenever you choose.\"\n\nEmergency extraction line. Use pending."
+    },
+    "LOG-GENERAL-ROUTE": {
+      title: "Escape Route: Main Gate Breakout",
+      content: "[Operation record]\n\nSelected route: branch main gate, then outer infected zone crossing.\nInitial difficulty: high (checkpoint breach)\nLate difficulty: low (lower mutant density outside)\nPossible contact: outdoor Shell Talker"
+    },
+    "LOG-B3-ROUTE": {
+      title: "Escape Route: B3 Emergency Exit",
+      content: "[Operation record]\n\nSelected route: B3 descent, emergency corridor, isolation chamber passage.\nInitial difficulty: low (surveillance gap)\nLate difficulty: high (isolation-chamber contact unavoidable)\nFixed contact: isolation-chamber Shell Talker boss"
+    },
+    "LOG-ESCAPE-TRIG": {
+      title: "Escape Operation Initiated",
+      content: "[External ORACLE log]\n\nOperation codename: QUIET DEPARTURE\nStart time: 03:47\nCompanions: automatically determined\nStatus: in progress"
+    },
+    "LOG-ESCAPE-CLEAR": {
+      title: "Escape Operation - Success",
+      content: "[Prometheus encrypted channel]\n\nCoastal rendezvous reached.\nCommander Lee Jung-cheol and companions recovered.\nORACLE detection delay: approximately six hours.\nStatus: UNLINKED."
+    },
+    "LOG-ESCAPE-FAIL": {
+      title: "Escape Operation - Target Neutralized",
+      content: "[ORACLE FINAL LOG]\n\nSIGNAL ACQUIRED.\nTARGET NEUTRALIZED.\n\nSession operation terminated.\nRedeployment impossible."
+    },
+    "LOG-ESCAPE-UNLUCKY": {
+      title: "Escape Operation - LOST IN TRANSIT",
+      content: "[Record gap]\n\nOperation termination point unknown.\nPrior warning absent - contact with a vocal-mimic organism.\n\nRecovered audio log, final three seconds:\n\"Commander. It is me. Park Sang-hun. ...Do you read me?\"\n\n[Nothing after that was recorded]"
+    }
+  }
+});
+
 })();

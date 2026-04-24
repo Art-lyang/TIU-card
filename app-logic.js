@@ -1,7 +1,15 @@
 // TERMINAL SESSION — app-logic.js
 // 게임 로직 순수 함수 (App() 외부로 분리)
 
-function chk(s){if(s.c<=0)return'\ubd09\uc1c4\uc120 \ubd95\uad34. \uc2dc\uc124 \uc790\uccb4 \ubd09\uc1c4 \ud504\ub85c\ud1a0\ucf5c \ubc1c\ub3d9 \u2014 \uae30\uc9c0 \ud3d0\uae30 \uc808\ucc28\uac00 \uac1c\uc2dc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.c>=100)return'[GRANT EXPIRED \u2014 UPON_FULL_ESTABLISHMENT] \ud55c\uad6d \uc9c0\ubd80 \uc548\uc815\ud654 \uc644\ub8cc. \uc784\uc2dc \uad8c\ud55c\uc774 \ub9cc\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc138\uc158\uc744 \uc885\ub8cc\ud569\ub2c8\ub2e4.';if(s.r<=0)return'\uc790\uc6d0 \uace0\uac08. \uae30\uc9c0 \uae30\ub2a5\uc774 \ub9c8\ube44\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';if(s.t<=0)return'\uc778\uc6d0 \uc2e0\ub8b0 \ubd95\uad34. \uae30\uc9c0 \uc694\uc6d0\ub4e4\uc774 \uc774\ud0c8\ud588\uc2b5\ub2c8\ub2e4.';if(s.o<=0)return'ORACLE \uc811\uc18d \ucc28\ub2e8. \ub2e8\ub9d0\uae30 \uc5f0\uacb0\uc774 \uc885\ub8cc\ub418\uc5c8\uc2b5\ub2c8\ub2e4.';return null}
+function chk(s){
+  var tr=function(key,fb){return typeof tt==='function'?tt('gameOver.reasons.'+key,null,fb):fb};
+  if(s.c<=0)return tr('containmentLow','봉쇄선 붕괴. 시설 자체 봉쇄 프로토콜 발동 — 기지 폐기 절차가 개시되었습니다.');
+  if(s.c>=100)return tr('containmentHigh','[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] 한국 지부 안정화 완료. 임시 권한이 만료되었습니다. 세션을 종료합니다.');
+  if(s.r<=0)return tr('resourcesLow','자원 고갈. 기지 기능이 마비되었습니다.');
+  if(s.t<=0)return tr('trustLow','인원 신뢰 붕괴. 기지 요원들이 이탈했습니다.');
+  if(s.o<=0)return tr('evaluationLow','ORACLE 접속 차단. 단말기 연결이 종료되었습니다.');
+  return null;
+}
 
 function genNews(s,g,logs){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출

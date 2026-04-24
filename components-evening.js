@@ -116,8 +116,8 @@ function EveningChat(p){
   },[selChar,done,choiceDone,resp,available]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
-    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd','종료','종료')),
-    h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar','간부진 한 명과 대화할 수 있습니다.','간부진 한 명과 대화할 수 있습니다.')),
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'종료')),
+    h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'간부진 한 명과 대화할 수 있습니다.')),
     h('div',{style:{display:'flex',gap:16,justifyContent:'center',flexWrap:'wrap',maxWidth:440,margin:'0 auto'}},
       available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){pickChar(c)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(var(--ui-rgb),.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:90,transition:'all 0.2s',position:'relative'}},
         h('span',{style:{position:'absolute',top:4,left:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(240,160,48,.7)',letterSpacing:1}},'['+(idx+1)+']'),
@@ -125,12 +125,12 @@ function EveningChat(p){
         h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginTop:2}},c.role))})),
     (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod}),
-    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+tt('evening.skip','건너뛰기','건너뛰기')+' ]'),
+    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+tt('evening.skip',null,'건너뛰기')+' ]'),
     showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(10,18,10,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
-      h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm','대화를 건너뛰시겠습니까?','대화를 건너뛰시겠습니까?')),
+      h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'대화를 건너뛰시겠습니까?')),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
-        h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel','취소','취소')),
-        h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},tt('common.confirm','확인','확인')))));
+        h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel',null,'취소')),
+        h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},tt('common.confirm',null,'확인')))));
   var portrait=CHAR_IMG[selChar.name]||null;
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
@@ -150,7 +150,7 @@ function EveningChat(p){
         var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
         if(opt.log&&p.onLog)p.onLog(opt.log);
         setReplyLine(opt.reply||'');setChoiceDone(true)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('common.next','다음','다음')+' ]'));
+    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('common.next',null,'다음')+' ]'));
 }
 
 function EveningChat2(p){

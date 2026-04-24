@@ -25,9 +25,9 @@ var CARDS_FACILITY_PROPOSALS = [];
         var minAct = fe.minAct || 1;
         return s.day >= minDay && (s.day <= 29) && minAct <= ((s.day >= 29) ? 4 : (s.day >= 14 ? 3 : (s.day >= 5 ? 2 : 1))) && !isUnavailable(fe.id);
       },
-      msg: fe.cardMsg || (fe.name + ' 확장 제안이 도착했습니다.'),
-      left: fe.cardLeft || { label:'보류', fx:{}, g:0 },
-      right: fe.cardRight || { label:'승인', fx:{}, g:0 }
+      msg: function(){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return view.cardMsg || (view.name + ' expansion proposal received.');},
+      left: Object.assign({}, fe.cardLeft || { fx:{}, g:0 }, { label:function(){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return (view.cardLeft&&view.cardLeft.label)||'Defer proposal';} }),
+      right: Object.assign({}, fe.cardRight || { fx:{}, g:0 }, { label:function(){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return (view.cardRight&&view.cardRight.label)||'Approve expansion';} })
     });
   });
 })();

@@ -87,34 +87,38 @@ function getFacilityStatusLines(stats, completedFE, approvedFE) {
   var lines = [];
   var comp = completedFE || [];
   var appr = approvedFE || [];
+  var locale = (typeof window !== 'undefined' && window.TS_I18N && window.TS_I18N.getLocale) ? window.TS_I18N.getLocale() : 'ko';
+  var isEn = locale === 'en';
 
   // 스탯 기반 경고
-  if (stats.c <= 15) lines.push({ text: "보안실 — 침투 위험 [CRITICAL]", color: "red", blink: true });
-  else if (stats.c <= 25) lines.push({ text: "보안실 — 봉쇄 불안정 경고", color: "orange" });
+  if (stats.c <= 15) lines.push({ text: isEn ? "Security office - breach risk [CRITICAL]" : "보안실 - 침투 위험 [CRITICAL]", color: "red", blink: true });
+  else if (stats.c <= 25) lines.push({ text: isEn ? "Security office - containment instability warning" : "보안실 - 봉쇄 불안정 경고", color: "orange" });
 
-  if (stats.r <= 15) lines.push({ text: "보급 창고 — 비축량 고갈 [CRITICAL]", color: "red", blink: true });
-  else if (stats.r <= 30) lines.push({ text: "보급 창고 — 자원 부족 경고", color: "orange" });
+  if (stats.r <= 15) lines.push({ text: isEn ? "Supply depot - reserves depleted [CRITICAL]" : "보급 창고 - 비축량 고갈 [CRITICAL]", color: "red", blink: true });
+  else if (stats.r <= 30) lines.push({ text: isEn ? "Supply depot - resource shortage warning" : "보급 창고 - 자원 부족 경고", color: "orange" });
 
-  if (stats.t <= 15) lines.push({ text: "체력단련실 — 인원 이탈 위험", color: "red" });
-  else if (stats.t <= 25) lines.push({ text: "휴게실 — 사기 저하", color: "orange" });
+  if (stats.t <= 15) lines.push({ text: isEn ? "Training room - personnel departure risk" : "체력단련실 - 인원 이탈 위험", color: "red" });
+  else if (stats.t <= 25) lines.push({ text: isEn ? "Lounge - morale decline detected" : "휴게실 - 사기 저하", color: "orange" });
 
-  if (stats.o <= 30) lines.push({ text: "통신실 — ORACLE 통신 불안정", color: "orange" });
+  if (stats.o <= 30) lines.push({ text: isEn ? "Communications room - unstable ORACLE link" : "통신실 - ORACLE 통신 불안정", color: "orange" });
 
   // 확장 완료 표시
   comp.forEach(function(feId) {
     var fe = FACILITY_EXPANSIONS.filter(function(f) { return f.id === feId; })[0];
-    if (fe) lines.push({ text: fe.name + " — 가동 중 ✓", color: "green" });
+    var view = typeof getFacilityExpansionView === 'function' ? getFacilityExpansionView(fe) : fe;
+    if (view) lines.push({ text: view.name + (isEn ? " - online" : " - 가동 중"), color: "green" });
   });
 
   // 승인 대기 표시
   appr.forEach(function(feId) {
     if (comp.indexOf(feId) >= 0) return;
     var fe = FACILITY_EXPANSIONS.filter(function(f) { return f.id === feId; })[0];
-    if (fe) lines.push({ text: fe.name + " — 확장 대기 중", color: "gray" });
+    var view = typeof getFacilityExpansionView === 'function' ? getFacilityExpansionView(fe) : fe;
+    if (view) lines.push({ text: view.name + (isEn ? " - expansion pending" : " - 확장 대기 중"), color: "gray" });
   });
 
   // 정상 상태
-  if (lines.length === 0) lines.push({ text: "전 구역 정상 가동", color: "green" });
+  if (lines.length === 0) lines.push({ text: isEn ? "All sectors operating normally" : "전 구역 정상 가동", color: "green" });
 
   return lines;
 }

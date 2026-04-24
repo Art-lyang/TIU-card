@@ -1,0 +1,19 @@
+// lang-cards-cs-en.js - English overlays for Seo Hae-eun personnel route cards.
+(function(){
+if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "CS-001": { msg: "You submit an official objection to ORACLE.\n\n[ORACLE: Personnel decisions fall under headquarters jurisdiction. Submit grounds for objection.]\n\nSeo Hae-eun: \"Commander, the data inconsistency I found... we can use that as the reason.\"\n\"But the moment ORACLE sees it, it will know what I was tracking.\"", leftLabel: "Submit the data inconsistency", rightLabel: "Create another reason" },
+    "CS-002": { msg: "[ORACLE response - personnel objection under review]\n\n\"Analyzing submitted grounds.\"\n\nKang Do-yun comes to you.\n\"Commander. You are trying to protect Seo Hae-eun, right?\"\n\"...I will help too. We can file another objection based on field personnel shortages.\"", leftLabel: "Accept Kang Do-yun's added objection", rightLabel: "This is too risky. I will handle it" },
+    "CS-003": { msg: "[ORACLE personnel transmission - final decision]\n\nSilence for three seconds.\n\n[ORACLE: Korea Branch objection reviewed.]\n[ORACLE: Deputy Commander Seo Hae-eun's transfer will ——]\n\nThe screen flickers.", leftLabel: "...", rightLabel: "..." },
+    "CS-004": { msg: "Seo Hae-eun remains at the branch.\n\n\"...Thank you, Commander.\"\n\"You protected me, so I will protect you too.\"\n\n\"The data ORACLE deleted. I will recover all of it.\"", leftLabel: "Please do", rightLabel: "Do not push yourself too hard" },
+    "CS-005": { msg: "Seo Hae-eun succeeds in restoring ORACLE-deleted data.\n\n\"Commander. You need to see this.\"\n\"The real reason ORACLE classified Prometheus as an enemy is here.\"\n\n\"They were developing a treatment.\"", leftLabel: "Review the full document", rightLabel: "Consider how to use this information", oracleBlockMsgs: ["[ORACLE: Data reliability 0% - access prohibited]", "[ORACLE: Prometheus-origin information - access denied]", "[ORACLE: Warning - unauthorized data access being recorded]"] },
+    "CS-010": { msg: "Seo Hae-eun's seat is empty.\n\nLim Jae-hyeok has taken over data analysis.\n\"...I am trying to follow the analysis framework Seo used, but I cannot even match half of it.\"\n\nReport processing is noticeably slower.", leftLabel: "Take the time you need to adapt", rightLabel: "Report only the essentials" },
+    "CS-011": { msg: "A Prometheus-related transmission is received.\n\nLim Jae-hyeok: \"I tried decrypting it... Seo Hae-eun would have done this in thirty minutes.\"\n\"It will take me two days.\"\n\nAccess to key intelligence has slowed drastically.", leftLabel: "Do what you can", rightLabel: "Request ORACLE auto-decryption" },
+    "CS-012": { msg: "[System alert] Abnormal data pattern detected.\n\nThis is the kind of item Seo Hae-eun would have analyzed immediately.\n\nLim Jae-hyeok: \"I detected it, but I do not know what it means.\"\n\"...We need an analyst.\"", leftLabel: "Ask Yoon Se-jin to assist", rightLabel: "Ignore it and proceed" },
+    "CS-013": { msg: "Kang Do-yun speaks in the corridor.\n\n\"Without Seo Hae-eun, data analysis takes twice as long.\"\n\"We do not have enough information for field judgment.\"\n\n\"...It was not your fault that we could not protect her.\"", leftLabel: "It was my fault", rightLabel: "Look ahead" },
+    "CS-014": { msg: "Yoon Se-jin reads Seo Hae-eun's analysis notes in the lab.\n\n\"I am using the framework Seo left behind.\"\n\"...It is not enough, but without this, we would have nothing.\"", leftLabel: "Record Seo Hae-eun's contribution", rightLabel: "Focus on your role" },
+    "CS-015": { msg: "Lim Jae-hyeok is working late.\n\n\"The ORACLE deletion traces Seo Hae-eun was tracking... I will continue from here.\"\n\"It will take time, but I will not give up.\"", leftLabel: "Thank you, Lim Jae-hyeok", rightLabel: "Do not overdo it" }
+  }
+});
+})();

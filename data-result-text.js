@@ -188,6 +188,11 @@ var _RT_GI_NEG = _rtPool(
 
 function getResultText(cardId, dir) {
   var key = cardId + '_' + dir;
+  if (_rtLocale() === 'en' && typeof tc === 'function') {
+    var loc = tc('resultText', key, null);
+    if (loc && loc.text) return loc.text;
+    if (typeof loc === 'string') return loc;
+  }
   if (RESULT_TEXT[key]) return RESULT_TEXT[key];
 
   var card = null;

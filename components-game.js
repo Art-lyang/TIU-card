@@ -146,6 +146,13 @@ function CardC(p){
   var cardLoc=(typeof tc==='function')?tc('cards',card.id,null):null;
   var leftLabel=(cardLoc&&cardLoc.leftLabel)||resolveVal(card.left&&card.left.label)||'';
   var rightLabel=(cardLoc&&cardLoc.rightLabel)||resolveVal(card.right&&card.right.label)||'';
+  var defaultBlockMsgs=tt('card.blockMsgs',null,null);
+  if(!Array.isArray(defaultBlockMsgs))defaultBlockMsgs=[
+    '[ORACLE: Command refusal detected - confirmation required]',
+    '[ORACLE: Compliance protocol activating]',
+    '[ORACLE: Warning - noncompliance being recorded]'
+  ];
+  var blockMsgs=(cardLoc&&cardLoc.oracleBlockMsgs)||card.oracleBlockMsgs||defaultBlockMsgs;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
@@ -154,9 +161,11 @@ function CardC(p){
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];
-    if(branch&&branch.replyMsg&&p.onReply){p.onReply(branch.replyMsg)}
+    var replyKey=kdir==='left'?'leftReplyMsg':'rightReplyMsg';
+    var replyMsg=(cardLoc&&cardLoc[replyKey])||(branch&&branch.replyMsg);
+    if(replyMsg&&p.onReply){p.onReply(replyMsg)}
     setChosen(kdir);
-    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},branch&&branch.replyMsg?1500:300);
+    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},replyMsg?1500:300);
   };
   // 타이머 카운트다운
   useEffect(function(){
@@ -175,8 +184,7 @@ function CardC(p){
       e.preventDefault();
       var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
       if(shouldBlock){
-        var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];
-        var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];
+        var bmsg=blockMsgs[Math.min(blockCount,blockMsgs.length-1)];
         setBlockCount(blockCount+1);
         if(p.onOracleBlock)p.onOracleBlock(bmsg);
         setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
@@ -190,7 +198,7 @@ function CardC(p){
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
-  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsgs=card.oracleBlockMsgs||['[ORACLE: 명령 거부 감지 — 재확인 요청]','[ORACLE: 순응 프로토콜 활성화 중]','[ORACLE: 경고 — 불이행 기록 중]'];var bmsg=bmsgs[Math.min(blockCount,bmsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setDx(0);performSwipe(dir)}}else setDx(0)};
+  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsg=blockMsgs[Math.min(blockCount,blockMsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setDx(0);performSwipe(dir)}}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
@@ -333,7 +341,7 @@ function NewsReport(p){
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
     };
-    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    var feName=function(fe){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return view?(view.name||fe.name):'';};
     if(locale==='en'){
       if(st.c<=15)lines.push({text:'Security Sector — breach risk [CRITICAL]',color:'red',blink:true});
       else if(st.c<=25)lines.push({text:'Security Sector — containment instability warning',color:'orange'});
@@ -437,7 +445,7 @@ function NewsReport2(p){
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
     };
-    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    var feName=function(fe){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return view?(view.name||fe.name):'';};
     if(locale==='en'){
       if(st.c<=15)lines.push({text:'Security Sector - breach risk [CRITICAL]',color:'red',blink:true});
       else if(st.c<=25)lines.push({text:'Security Sector - containment instability warning',color:'orange'});
@@ -557,7 +565,7 @@ function NewsReport3(p){
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
     };
-    var feName=function(fe){return locale==='en'?(feNameMapEn[fe.id]||fe.name):fe.name;};
+    var feName=function(fe){var view=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;return view?(view.name||fe.name):'';};
     if(locale==='en'){
       if(st.c<=15)lines.push({text:'Security Sector - breach risk [CRITICAL]',color:'red',blink:true});
       else if(st.c<=25)lines.push({text:'Security Sector - containment instability warning',color:'orange'});
@@ -627,8 +635,12 @@ function GameOver(p){
     p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},tt('gameOver.ngPlus',null,'[ NEW GAME+ — 강화 시작 ]')),
     h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
-  var goImg=null;if(p.reason&&p.reason.indexOf('봉쇄')>=0)goImg=IMG.ending_C_c;else if(p.reason&&p.reason.indexOf('자원')>=0)goImg=IMG.ending_C_r;else if(p.reason&&p.reason.indexOf('신뢰')>=0)goImg=IMG.ending_C_t;else if(p.reason&&(p.reason.indexOf('평가')>=0||p.reason.indexOf('접속')>=0))goImg=IMG.ending_C_o;
-  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───'),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},'GRANT: ACTIVE — RENEWAL AVAILABLE')),btns);
+  var eid=p.endId||'',rsn=p.reason||'',goImg=null;
+  if(eid.indexOf('C_c')===0||/봉쇄|Containment/i.test(rsn))goImg=IMG.ending_C_c;
+  else if(eid==='C_r'||/자원|Resource/i.test(rsn))goImg=IMG.ending_C_r;
+  else if(eid==='C_t'||/신뢰|Trust/i.test(rsn))goImg=IMG.ending_C_t;
+  else if(eid==='C_o'||/평가|접속|Evaluation|ORACLE access/i.test(rsn))goImg=IMG.ending_C_o;
+  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},tt('gameOver.title',{session:p.sessions+1},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───')),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#33cccc',marginTop:12,letterSpacing:1}},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE'))),btns);
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
@@ -669,7 +681,7 @@ function RewardScreen(p){
       fac.approved.forEach(function(feId){
         if(fac.completed.indexOf(feId)>=0)return;
         var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
-        if(fe)feRewards.push({id:'R-'+fe.id,feId:fe.id,title:fe.rewardTitle,desc:fe.rewardDesc,benefit:fe.rewardBenefit,cost:fe.rewardCost,fx:fe.rewardFx})});
+        if(fe){var feView=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;feRewards.push({id:'R-'+fe.id,feId:fe.id,title:feView.rewardTitle,desc:feView.rewardDesc,benefit:feView.rewardBenefit,cost:feView.rewardCost,fx:fe.rewardFx})}});
       if(feRewards.length>0){pool=pool.slice(0,Math.max(1,count-feRewards.length)).concat(feRewards.slice(0,count))}
     }
     return pool;

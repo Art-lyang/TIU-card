@@ -96,13 +96,80 @@ window.TS_I18N.mergeUI('en', {
   },
   reward:{ c:'Containment', r:'Resources', t:'Trust', o:'Evaluation', pickCount:'Choose 1 of {count}', footer:'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001' },
   fieldMission:{ title:'FIELD MISSION', trustTag:'[TRUST]', footer:'ORACLE REMOTE TERMINAL — FIELD OPS' },
+  mission:{ trustLabel:'TRUST' },
+  briefing:{
+    analysis:'Analyzed recent operational data.',
+    enter:'[ ENTER ]'
+  },
+  missionDebug:{
+    title:'FIELD TEST LAUNCHER',
+    desc:'Temporary field-mission test menu. Choose a mission to launch its assigned minigame directly.',
+    close:'Close',
+    items:{
+      m002:'M-002 / Signal Alignment / SPEC-011 Activity Zone Survey',
+      mi01:'MI-01 / Quarantine Seal / Isolation Room Anomaly',
+      mi04:'MI-04 / Authority Trace / Security Zone Auth Error',
+      m010:'M-010 / Route Evade / SPEC-015 Track',
+      mi05:'MI-05 / Scan Search / Missing Staff',
+      mi03:'MI-03 / Sample Recovery / Lab Mutation',
+      m003:'M-003 / Evidence Sort / Trace Review',
+      mi02:'MI-02 / Log Reconstruction / CCTV Gap',
+      m007:'M-007 / Latent Screen / Maximum Strike'
+    }
+  },
+  facility:{
+    mapTab:'Facility Map',
+    manageTab:'Expansion Management',
+    close:'[ Close ]',
+    pending:'[PENDING APPROVAL]',
+    approved:'[APPROVED - AWAITING REWARD PICK]',
+    completed:'[COMPLETED]',
+    uprisingTag:'INDEPENDENT INFRA',
+    approve:'[ APPROVE ]',
+    rewardPending:'Selectable during the next reward phase.',
+    empty:'No facility expansions are currently available.\nNew proposals will appear through operation cards.'
+  },
   gameOver:{
+    title:'─── SESSION #{session} TERMINATED ───',
     reportSection:'── ORACLE FINAL REPORT ──', duration:'Operation Duration: {days} days', stats:'Containment: {c} | Resources: {r} | Trust: {t} | Evaluation: {o}',
     restart:'[ RESTART SESSION — ACT 1 ]', ngPlus:'[ NEW GAME+ — ENHANCED START ]', logs:'Logs', archive:'Archive', endings:'Endings',
-    msgHigh:'Thank you for your devoted service.', msgMid:'The session is now terminated. Results have been recorded.', msgLow:'Nonstandard operational patterns detected. Session data is under review...'
+    grant:'GRANT: ACTIVE — RENEWAL AVAILABLE',
+    msgHigh:'Thank you for your devoted service.', msgMid:'The session is now terminated. Results have been recorded.', msgLow:'Nonstandard operational patterns detected. Session data is under review...',
+    reasons:{
+      containmentLow:'Containment line collapse. Internal lockdown protocol activated — base disposal procedures have begun.',
+      containmentHigh:'[GRANT EXPIRED — UPON_FULL_ESTABLISHMENT] Korean branch stabilization complete. Temporary authority has expired. Terminating session.',
+      resourcesLow:'Resources depleted. Base functions have stalled.',
+      trustLow:'Personnel trust collapsed. Branch staff have deserted.',
+      evaluationLow:'ORACLE access revoked. Terminal connection has been terminated.'
+    }
+  },
+  common:{
+    cancel:'Cancel',
+    confirm:'Confirm',
+    next:'Next'
+  },
+  evening:{
+    dayEnd:'END',
+    selectChar:'You can speak with one senior officer.',
+    skip:'SKIP',
+    skipConfirm:"Skip tonight's conversation?"
+  },
+  logs:{
+    list:'← List',
+    close:'Close',
+    unlocked:'{current}/{total} records unlocked',
+    locked:'{count} records remain locked'
+  },
+  endingGallery:{
+    title:'SESSION ARCHIVE - ENDING GALLERY',
+    summary:'Sessions: {sessions}  |  Endings: {unlocked} / {total}',
+    back:'← Gallery',
+    locked:'[Locked]',
+    achieved:'Achieved',
+    close:'Close'
   },
   settings:{
-    title:'SETTINGS', close:'ESC', tabs:{ sound:'SOUND', save:'SAVE', display:'DISPLAY', info:'INFO' },
+    title:'SETTINGS', close:'ESC', mainMenu:'MENU', tabs:{ sound:'SOUND', save:'SAVE', display:'DISPLAY', info:'INFO' },
     sound:'Sound', bgm:'Background Music', sfx:'Sound Effects', fontSize:'Text Size', visualFx:'Screen Effects', language:'Language',
     langKo:'한국어', langEn:'English', sizeSmall:'Small', sizeNormal:'Normal', sizeLarge:'Large', fxFull:'Full', fxReduced:'Reduced', fxOff:'Off',
     fxWarning:'⚠ If you are sensitive to flashes or screen shake, choose [Reduced] or [Off].', preview:'Preview: ORACLE TERMINAL SESSION sample text.',
@@ -138,7 +205,11 @@ window.TS_I18N.mergeUI('en', {
     }
   },
   app:{
+    fallbackCardMsg:'[ORACLE: Data stream temporarily suspended]\n\nWaiting for communication recovery...',
+    fallbackCardLeft:'Wait',
+    fallbackCardRight:'Retry connection',
     facilityAdded:'Facility expansion added to the reward pool', facilityPending:'Facility proposal moved to the pending list', facilityRegistered:'Facility expansion registered to the reward pool', facilityComplete:'[{title}] construction complete{suffix}', facilityDefault:'Facility', uprisingSuffix:' | GI -2',
+    observerError:'[ORACLE: System error — ERR:0x8F2A UNHANDLED EXCEPTION]', followupCardAdded:'[Follow-up card added] {id}',
     cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]'
   }
 });

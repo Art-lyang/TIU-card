@@ -28,7 +28,7 @@ function Dialogue(p){
   var choices=(overlay&&overlay.choices)||d.choices;
   var charName=getDialogueName(d,overlay);
   var charRole=getDialogueRole(d,overlay);
-  var SN={c:{l:tt('stat.containment','봉쇄','봉쇄'),cls:'stat-icon-inline-c'},r:{l:tt('stat.resources','자원','자원'),cls:'stat-icon-inline-r'},t:{l:tt('stat.trust','신뢰','신뢰'),cls:'stat-icon-inline-t'},o:{l:tt('stat.evaluation','평가','평가'),cls:'stat-icon-inline-o'}};
+  var SN={c:{l:tt('stats.c',null,'봉쇄'),cls:'stat-icon-inline-c'},r:{l:tt('stats.r',null,'자원'),cls:'stat-icon-inline-r'},t:{l:tt('stats.t',null,'신뢰'),cls:'stat-icon-inline-t'},o:{l:tt('stats.o',null,'평가'),cls:'stat-icon-inline-o'}};
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
   var s3=useState(-1),picked=s3[0],setPicked=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(''),rTxt=s5[0],setRTxt=s5[1];var s6=useState(false),rDone=s6[0],setRDone=s6[1];
@@ -84,17 +84,17 @@ function LogViewer(p){
       h('div',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold',textAlign:'center',marginBottom:16}},text.title),
       h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},text.content),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},
-        h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},isEn?'← List':'← 목록'),
-        h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},isEn?'Close':'닫기')
+        h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},tt('logs.list',null,isEn?'← List':'← 목록')),
+        h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기'))
       )
     ));
   }
   return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
-    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금')),
+    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},tt('logs.unlocked',{current:ul.length,total:ORACLE_LOGS.length},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'))),
     ul.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between'}},h('span',{style:{fontSize:13,color:'var(--ui)'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)'}},l.id)))}),
-    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')),
-    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},isEn?'Close':'닫기')
+    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다'))),
+    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기'))
   ));
 }
 // EndingScreen 은 components-endings.js로 분리 (갤러리 UI + 이미지 썸네일)

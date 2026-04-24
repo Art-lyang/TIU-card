@@ -58,7 +58,7 @@ function EndingScreen(p) {
           var isEmpty = l === '';
           return h('div', { key: i, style: { color: isCmd ? '#f0a030' : 'var(--ui)', fontFamily: isCmd ? "'Share Tech Mono',monospace" : 'inherit', fontWeight: isCmd ? 'bold' : 'normal', minHeight: isEmpty ? 10 : 'auto' } }, isEmpty ? ' ' : l);
         })),
-        h('div', { style: { display: 'flex', gap: 10, justifyContent: 'center', marginTop: 24 } }, h('button', { className: 'btn', style: { fontSize: 12, padding: '8px 20px', marginTop: 0 }, onClick: function(){ setSel(null); } }, isKo ? '← 갤러리' : '← Gallery'))
+        h('div', { style: { display: 'flex', gap: 10, justifyContent: 'center', marginTop: 24 } }, h('button', { className: 'btn', style: { fontSize: 12, padding: '8px 20px', marginTop: 0 }, onClick: function(){ setSel(null); } }, tt('endingGallery.back', null, isKo ? '← 갤러리' : '← Gallery')))
       )
     );
   }
@@ -74,17 +74,17 @@ function EndingScreen(p) {
         !locked && h('div', { style: { position: 'absolute', top: 6, left: 8, fontFamily: "'Share Tech Mono',monospace", fontSize: 9, letterSpacing: 1, color: meta.color, background: 'rgba(0,0,0,.5)', padding: '2px 6px', borderRadius: 2 } }, '[' + e.id + ']')
       ),
       h('div', { style: { padding: '10px 12px' } },
-        h('div', { style: { fontSize: 13, fontWeight: 'bold', color: locked ? '#333' : 'var(--ui)', marginBottom: 4 } }, locked ? (isKo ? '[미발견]' : '[Locked]') : eView.name),
-        h('div', { style: { fontSize: 10, fontStyle: 'italic', color: locked ? '#222' : 'var(--ui-dim)', letterSpacing: 0.3 } }, locked ? eView.hint : ((isKo ? '달성 완료' : 'Achieved') + ' - ' + (isKo ? meta.label : meta.labelEn)))
+        h('div', { style: { fontSize: 13, fontWeight: 'bold', color: locked ? '#333' : 'var(--ui)', marginBottom: 4 } }, locked ? tt('endingGallery.locked', null, isKo ? '[미발견]' : '[Locked]') : eView.name),
+        h('div', { style: { fontSize: 10, fontStyle: 'italic', color: locked ? '#222' : 'var(--ui-dim)', letterSpacing: 0.3 } }, locked ? eView.hint : (tt('endingGallery.achieved', null, isKo ? '달성 완료' : 'Achieved') + ' - ' + (isKo ? meta.label : meta.labelEn)))
       )
     ));
   });
   return h('div', { className: 'screen' },
     h('div', { style: { width: '100%', maxWidth: 500, padding: '20px 12px', flex: 1, overflowY: 'auto' } },
-      h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11, color: 'var(--ui-dim)', letterSpacing: 2, textAlign: 'center', marginBottom: 6 } }, isKo ? 'SESSION ARCHIVE - 엔딩 갤러리' : 'SESSION ARCHIVE - ENDING GALLERY'),
-      h('div', { style: { fontSize: 12, color: '#888', textAlign: 'center', marginBottom: 18 } }, isKo ? ('총 세션: ' + (p.sessions || 0) + '  |  엔딩 해금: ' + unlockedCount + ' / ' + total) : ('Sessions: ' + (p.sessions || 0) + '  |  Endings: ' + unlockedCount + ' / ' + total)),
+      h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 11, color: 'var(--ui-dim)', letterSpacing: 2, textAlign: 'center', marginBottom: 6 } }, tt('endingGallery.title', null, isKo ? 'SESSION ARCHIVE - 엔딩 갤러리' : 'SESSION ARCHIVE - ENDING GALLERY')),
+      h('div', { style: { fontSize: 12, color: '#888', textAlign: 'center', marginBottom: 18 } }, tt('endingGallery.summary', { sessions: p.sessions || 0, unlocked: unlockedCount, total: total }, isKo ? ('총 세션: ' + (p.sessions || 0) + '  |  엔딩 해금: ' + unlockedCount + ' / ' + total) : ('Sessions: ' + (p.sessions || 0) + '  |  Endings: ' + unlockedCount + ' / ' + total))),
       h('div', { style: { display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 10 } }, rows),
-      h('button', { className: 'btn btn-amber', style: { display: 'block', margin: '24px auto 8px', fontSize: 12, padding: '8px 20px' }, onClick: p.onClose }, isKo ? '닫기' : 'Close')
+      h('button', { className: 'btn btn-amber', style: { display: 'block', margin: '24px auto 8px', fontSize: 12, padding: '8px 20px' }, onClick: p.onClose }, tt('endingGallery.close', null, isKo ? '닫기' : 'Close'))
     )
   );
 }

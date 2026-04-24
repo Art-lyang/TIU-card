@@ -23,14 +23,18 @@ function FieldMission(p){
   function localizeMissionNode(mission,node,nodeId){
     var missionKey=mission.id||p.missionId;
     var key=getMissionI18nKey(mission.id||p.missionId,nodeId);
+    var missionLoc=(typeof tc==='function')?tc('missions',missionKey,null):null;
     var loc=(typeof tc==='function')?tc('missions',key,null):null;
+    if(!loc&&missionLoc&&missionLoc.nodes)loc=missionLoc.nodes[nodeId]||null;
     var out=Object.assign({},node);
     var staticMission=(typeof FIELD_MISSION_NODE_OVERRIDES!=='undefined'&&FIELD_MISSION_NODE_OVERRIDES)?FIELD_MISSION_NODE_OVERRIDES[missionKey]:null;
     var staticOverride=resolveLocalePatch(staticMission?staticMission[nodeId]:null);
     if(loc&&loc.text)out.text=loc.text;
     if(loc&&loc.choices&&Array.isArray(node.choices)){
       out.choices=node.choices.map(function(choice,idx){
-        return Object.assign({},choice,loc.choices[idx]||{});
+        var patch=loc.choices[idx]||{};
+        if(typeof patch==='string')patch={label:patch};
+        return Object.assign({},choice,patch);
       });
     }
     if(staticOverride){
@@ -56,6 +60,11 @@ function FieldMission(p){
     }
     return out;
   }
+  function localizeMissionTitle(mission){
+    var missionKey=mission.id||p.missionId;
+    var missionLoc=(typeof tc==='function')?tc('missions',missionKey,null):null;
+    return missionLoc&&missionLoc.title?missionLoc.title:mission.title;
+  }
   function getMissionImage(mid){
     return mid==='M-001'?IMG.spec_012_bloodpit:
       mid==='M-002'?IMG.spec_011_shelltalker:
@@ -66,6 +75,7 @@ function FieldMission(p){
       mid==='M-010'?IMG.spec_015_brainseeker:null;
   }
   var node=localizeMissionNode(mission,mission.nodes[nodeId],nodeId);
+  var missionTitle=localizeMissionTitle(mission);
   var mImg=getMissionImage(p.missionId);
 
   useEffect(function(){
@@ -151,9 +161,9 @@ function FieldMission(p){
   return h('div',{className:'screen',style:{overflow:'hidden'}},
     IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.08}}),
     h('div',{style:{width:'100%',maxWidth:420,padding:'6px 0',flexShrink:0}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2,textAlign:'center'}},'FIELD MISSION'),
-      h('div',{style:{fontSize:13,color:'#ccddcc',textAlign:'center',marginTop:2}},mission.title),
-      mImg&&nodeId==='start'&&h('img',{src:mImg,className:'mission-img',alt:mission.title})
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2,textAlign:'center'}},tt('fieldMission.title',null,'FIELD MISSION')),
+      h('div',{style:{fontSize:13,color:'#ccddcc',textAlign:'center',marginTop:2}},missionTitle),
+      mImg&&nodeId==='start'&&h('img',{src:mImg,className:'mission-img',alt:missionTitle})
     ),
     h('div',{style:{flex:1,width:'100%',maxWidth:420,overflowY:'auto',minHeight:0,padding:'4px 0',WebkitOverflowScrolling:'touch'}},
       h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',whiteSpace:'pre-wrap',borderLeft:'2px solid var(--ui-dim)',paddingLeft:12}},textShown,!showChoices&&h('span',{style:{animation:'blink 1s infinite'}},'..'))
@@ -172,13 +182,13 @@ function FieldMission(p){
           }
         },
           h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.3)',marginRight:8,minWidth:14,display:'inline-block'}},(i+1)+''),
-          isTrust&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#f0a030',letterSpacing:1,marginRight:6}},'['+tt('mission.trustLabel',null,'신뢰')+']'),
+          isTrust&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#f0a030',letterSpacing:1,marginRight:6}},tt('fieldMission.trustTag',null,'[신뢰]')),
           h('span',{style:{marginRight:6,opacity:0.5}},'>'),
           c.label
         );
       })
     ),
-    h('div',{className:'footer',style:{flexShrink:0}},'ORACLE REMOTE TERMINAL // FIELD OPS'),
+    h('div',{className:'footer',style:{flexShrink:0}},tt('fieldMission.footer',null,'ORACLE REMOTE TERMINAL — FIELD OPS')),
     activeMiniGame&&h(FieldMiniGameOverlay,{game:activeMiniGame,onDone:handleMiniGameDone})
   );
 }

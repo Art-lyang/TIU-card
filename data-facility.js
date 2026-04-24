@@ -358,3 +358,37 @@ var FACILITY_EXPANSIONS = [
   }
   // FE-012~016 (uprising 5개 시설)은 data-facility-uprising.js 에서 주입 (200줄 룰)
 ];
+
+var FACILITY_I18N_EN = {
+  'FE-001':{name:'Cryogenic Freezer Expansion',desc:'Expand long-term low-temperature sample storage for EV-Sigma research.',hint:'Approval adds the reward card [Cryogenic Freezer Expansion].',rewardTitle:'[Expansion] Additional Cryogenic Freezer',rewardDesc:'Adds a cryogenic freezer to B2 and improves research capacity.',rewardBenefit:'Evaluation +5',rewardCost:'Resources -10'},
+  'FE-002':{name:'Outdoor Training Ground',desc:'Install a temporary outdoor training area near the containment perimeter.',hint:'Approval adds the reward card [Outdoor Training Ground].',rewardTitle:'[Expansion] Outdoor Training Ground',rewardDesc:'Installs an outdoor training facility near the containment line.',rewardBenefit:'Containment +5, Trust +5',rewardCost:'Resources -5'},
+  'FE-003':{name:'Next-Generation Sensor Array',desc:'Deploy advanced monitoring sensors along the containment perimeter.',hint:'Approval adds the reward card [Sensor Array Upgrade].',rewardTitle:'[Expansion] Next-Generation Sensor Array',rewardDesc:'Places high-sensitivity surveillance sensors along the containment line.',rewardBenefit:'Containment +10, Evaluation +5',rewardCost:'Resources -10'},
+  'FE-004':{name:'Medical Isolation Wing',desc:'Add isolation beds and advanced medical equipment to the infirmary.',hint:'Approval adds the reward card [Medical Isolation Wing].',rewardTitle:'[Expansion] Medical Isolation Wing',rewardDesc:'Expands the infirmary with isolation beds and emergency treatment equipment.',rewardBenefit:'Trust +10',rewardCost:'Resources -5'},
+  'FE-005':{name:'Mountain Supply Route',desc:'Open a secondary supply route through the mountain sector.',hint:'Approval adds the reward card [Mountain Supply Route].',rewardTitle:'[Expansion] Mountain Supply Route',rewardDesc:'Secures a secondary supply route through the mountain sector.',rewardBenefit:'Resources +15',rewardCost:'Containment -5'},
+  'FE-006':{name:'AI CCTV System Replacement',desc:'Replace aging security cameras with AI-assisted monitoring equipment.',hint:'Approval adds the reward card [AI CCTV Replacement].',rewardTitle:'[Expansion] AI CCTV System Replacement',rewardDesc:'Upgrades the base CCTV network with AI-assisted detection.',rewardBenefit:'Containment +10, Evaluation +5',rewardCost:'Resources -10'},
+  'FE-007':{name:'B3 Emergency Bunker',desc:'Construct an emergency shelter in B3 for crisis situations.',hint:'Approval adds the reward card [B3 Emergency Bunker].',rewardTitle:'[Expansion] B3 Emergency Bunker',rewardDesc:'Adds an emergency bunker with 72-hour survival supplies.',rewardBenefit:'Containment +5, Trust +5',rewardCost:'Resources -5'},
+  'FE-008':{name:'Northern Patrol Route',desc:'Extend patrol coverage through the northern approach.',hint:'Approval adds the reward card [Northern Patrol Route].',rewardTitle:'[Expansion] Northern Patrol Route',rewardDesc:'Adds new observation points along the northern patrol route.',rewardBenefit:'Containment +15',rewardCost:'Resources -5'},
+  'FE-009':{name:'B3 Isolation Double Shielding',desc:'Add a second electromagnetic shielding layer to the B3 isolation room.',hint:'Approval adds the reward card [Double Shielding].',rewardTitle:'[Expansion] B3 Isolation Double Shielding',rewardDesc:'Stabilizes the B3 isolation room with a second shielding layer.',rewardBenefit:'Containment +5',rewardCost:'Resources -5'},
+  'FE-010':{name:'Research Data Backup Room',desc:'Build a local backup room for research and operation data.',hint:'Approval adds the reward card [Research Data Backup].',rewardTitle:'[Expansion] Research Data Backup Room',rewardDesc:'Adds a local backup room for research data verification.',rewardBenefit:'Trust +5',rewardCost:'Resources -5'},
+  'FE-011':{name:'B3 Ventilation System',desc:'Install a dedicated ventilation system for the lower containment area.',hint:'Approval adds the reward card [B3 Ventilation System].',rewardTitle:'[Expansion] B3 Ventilation System',rewardDesc:'Improves airflow control in B3 containment areas.',rewardBenefit:'Containment +5',rewardCost:'Resources -5'},
+  'FE-012':{name:'Independent Server Room',desc:'Build a local server room that can preserve branch data outside ORACLE sync.',hint:'Improves branch independence and local data retention.',rewardTitle:'[Expansion] Independent Server Room',rewardDesc:'Adds a local server room for independent branch backups.',rewardBenefit:'Trust +5',rewardCost:'Resources -5'},
+  'FE-013':{name:'Independent Communications Room',desc:'Secure an auxiliary communications room outside standard ORACLE routing.',hint:'Improves off-channel communication options.',rewardTitle:'[Expansion] Independent Communications Room',rewardDesc:'Adds an auxiliary communications room for independent channels.',rewardBenefit:'Trust +5',rewardCost:'Resources -5'},
+  'FE-014':{name:'Emergency Generator Expansion',desc:'Add backup generators for extended emergency operation.',hint:'Improves emergency power resilience.',rewardTitle:'[Expansion] Emergency Generator Expansion',rewardDesc:'Adds backup generators for long-duration emergency operation.',rewardBenefit:'Resources +5',rewardCost:'Evaluation -5'},
+  'FE-015':{name:'Shielded Meeting Room',desc:'Create a shielded meeting space outside ORACLE monitoring range.',hint:'Secures sensitive internal discussions.',rewardTitle:'[Expansion] Shielded Meeting Room',rewardDesc:'Builds a B2 meeting room shielded from ORACLE monitoring.',rewardBenefit:'Trust +10',rewardCost:'Resources -5, Evaluation -5'},
+  'FE-016':{name:'Armory Expansion',desc:'Expand the armory with emergency defensive equipment.',hint:'Improves physical response capacity.',rewardTitle:'[Expansion] Armory Expansion',rewardDesc:'Adds an expanded B3 armory with emergency defensive equipment.',rewardBenefit:'Containment +10',rewardCost:'Resources -5, Evaluation -5'}
+};
+
+function getFacilityExpansionView(fe) {
+  if (!fe) return null;
+  var locale = (typeof window !== 'undefined' && window.TS_I18N && window.TS_I18N.getLocale) ? window.TS_I18N.getLocale() : 'ko';
+  if (locale === 'en' && FACILITY_I18N_EN[fe.id]) {
+    var en = FACILITY_I18N_EN[fe.id];
+    var out = Object.assign({}, fe);
+    ['name','desc','hint','rewardTitle','rewardDesc','rewardBenefit','rewardCost'].forEach(function(k){ if (en[k]) out[k] = en[k]; });
+    out.cardMsg = en.cardMsg || ('Facility expansion proposal received.\n\n' + en.name + '\n\n' + en.desc + '\n\n[ORACLE: This expansion can be registered to the reward pool and selected during a later reward phase.]');
+    out.cardLeft = Object.assign({}, fe.cardLeft || {}, { label: en.cardLeftLabel || 'Defer proposal' });
+    out.cardRight = Object.assign({}, fe.cardRight || {}, { label: en.cardRightLabel || 'Approve expansion' });
+    return out;
+  }
+  return fe;
+}
