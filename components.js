@@ -1,8 +1,8 @@
-// TERMINAL SESSION — components.js (Dialogue, LogViewer, EndingScreen, FieldMission)
+﻿// TERMINAL SESSION ??components.js (Dialogue, LogViewer, EndingScreen, FieldMission)
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 function Dialogue(p){
   var d=p.dialogue,portrait=CHAR_IMG[d.char]||null;
-  var SN={c:{l:'봉쇄',cls:'stat-icon-inline-c'},r:{l:'자원',cls:'stat-icon-inline-r'},t:{l:'신뢰',cls:'stat-icon-inline-t'},o:{l:'평가',cls:'stat-icon-inline-o'}};
+  var SN={c:{l:'遊됱뇙',cls:'stat-icon-inline-c'},r:{l:'?먯썝',cls:'stat-icon-inline-r'},t:{l:'?좊ː',cls:'stat-icon-inline-t'},o:{l:'?됯?',cls:'stat-icon-inline-o'}};
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
   var s3=useState(-1),picked=s3[0],setPicked=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(''),rTxt=s5[0],setRTxt=s5[1];var s6=useState(false),rDone=s6[0],setRDone=s6[1];
@@ -22,60 +22,94 @@ function Dialogue(p){
       h('div',{className:'oracle-card__glow'}),
       h('div',{style:{flex:1}},
         d.lines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.85)',marginBottom:6,animation:'fadeIn 0.3s ease'}},String(l))}),
-        chosen&&chosen.reply&&h('div',{style:{fontSize:14,lineHeight:1.7,color:'#f0a030',marginTop:8}},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▌')),
+        chosen&&chosen.reply&&h('div',{style:{fontSize:14,lineHeight:1.7,color:'#f0a030',marginTop:8}},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'??)),
         rDone&&chosen&&fxTags(chosen.fx)),
-      !sc&&!chosen&&h('div',{style:{textAlign:'right',marginTop:4}},h('span',{style:{color:'rgba(var(--ui-rgb),.4)',animation:'blink 1s infinite',fontSize:12}},'▶'))),
+      !sc&&!chosen&&h('div',{style:{textAlign:'right',marginTop:4}},h('span',{style:{color:'rgba(var(--ui-rgb),.4)',animation:'blink 1s infinite',fontSize:12}},'??))),
     sc&&!chosen&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0'}},
       d.choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(240,160,48,.8)':'rgba(var(--ui-rgb),.7)';var tc={'\ub0c9\uc815':'#6699cc','\uacf5\uac10':'#f0c060','\ubd84\uc11d':'#33cccc','\uac15\uacbd':'#ff6644'};var tagCol=c.tag&&tc[c.tag]||'#888';return h('button',{key:i,style:{background:isMe?'rgba(var(--ui-rgb),.04)':'rgba(10,18,10,.4)',border:'1px solid '+(isMe?bdrSel:bdrCol),color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px '+(i===0?'rgba(240,160,48,.15)':'rgba(var(--ui-rgb),.12)'):' none',transition:'all 0.3s ease',pointerEvents:picked>=0?'none':'auto',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2},onClick:function(){handlePick(c,i)}},
         c.tag&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:tagCol,letterSpacing:2,opacity:0.85}},'[ '+c.tag+' ]'),
         h('span',null,c.label))}))
   );
 }
-// v1.1 — LOG 카테고리 추론 (ID/제목 기반)
+// v1.1 ??LOG 移댄뀒怨좊━ 異붾줎 (ID/?쒕ぉ 湲곕컲)
 function logCategory(log){
   var id=log.id||'',title=log.title||'',ct=log.content||'';
-  if(id.indexOf('LOG-INTRO-')===0)return'인트로';
-  if(title.indexOf('SPEC-')>=0||id.indexOf('LOG-SPEC')===0)return'이변체';
-  if(id.indexOf('LOG-DG-')===0||id.indexOf('LOG-MD-')===0||id.indexOf('LOG-SUPPLY-')===0||title.indexOf('대가')>=0||title.indexOf('메리디안')>=0)return'세력·기업';
-  if(id.indexOf('LOG-AUDIT-')===0||id.indexOf('LOG-UPRISING-')===0||id.indexOf('LOG-OBSERVER-')===0)return'감사·봉쇄';
-  if(id.indexOf('LOG-RECON-')===0||title.indexOf('감시')>=0||title.indexOf('정찰')>=0)return'독자 조사';
-  if(title.indexOf('프로메테우스')>=0||title.indexOf('COASTAL')>=0||ct.indexOf('프로메테우스')>=0&&id!=='LOG-003')return'프로메테우스';
-  if(title.indexOf('서하은')>=0||title.indexOf('강도윤')>=0||title.indexOf('윤세진')>=0||title.indexOf('임재혁')>=0||title.indexOf('박소영')>=0)return'간부·인물';
-  if(title.indexOf('ORACLE')>=0||title.indexOf('GRANT')>=0||title.indexOf('단말기')>=0||title.indexOf('권한')>=0||id==='LOG-001'||id==='LOG-002'||id==='LOG-010'||id==='LOG-011'||id==='LOG-012'||id==='LOG-019'||id==='LOG-003')return'ORACLE 시스템';
-  if(title.indexOf('EV-Σ')>=0||title.indexOf('억제제')>=0||title.indexOf('바이러스')>=0)return'EV-Σ 연구';
-  return'기타';
+  if(id.indexOf('LOG-INTRO-')===0)return'?명듃濡?;
+  if(title.indexOf('SPEC-')>=0||id.indexOf('LOG-SPEC')===0)return'?대?泥?;
+  if(id.indexOf('LOG-DG-')===0||id.indexOf('LOG-MD-')===0||id.indexOf('LOG-SUPPLY-')===0||title.indexOf('?媛')>=0||title.indexOf('硫붾━?붿븞')>=0)return'?몃젰쨌湲곗뾽';
+  if(id.indexOf('LOG-AUDIT-')===0||id.indexOf('LOG-UPRISING-')===0||id.indexOf('LOG-OBSERVER-')===0)return'媛먯궗쨌遊됱뇙';
+  if(id.indexOf('LOG-RECON-')===0||title.indexOf('媛먯떆')>=0||title.indexOf('?뺤같')>=0)return'?낆옄 議곗궗';
+  if(title.indexOf('?꾨줈硫뷀뀒?곗뒪')>=0||title.indexOf('COASTAL')>=0||ct.indexOf('?꾨줈硫뷀뀒?곗뒪')>=0&&id!=='LOG-003')return'?꾨줈硫뷀뀒?곗뒪';
+  if(title.indexOf('?쒗븯?')>=0||title.indexOf('媛뺣룄??)>=0||title.indexOf('?ㅼ꽭吏?)>=0||title.indexOf('?꾩옱??)>=0||title.indexOf('諛뺤냼??)>=0)return'媛꾨?쨌?몃Ъ';
+  if(title.indexOf('ORACLE')>=0||title.indexOf('GRANT')>=0||title.indexOf('?⑤쭚湲?)>=0||title.indexOf('沅뚰븳')>=0||id==='LOG-001'||id==='LOG-002'||id==='LOG-010'||id==='LOG-011'||id==='LOG-012'||id==='LOG-019'||id==='LOG-003')return'ORACLE ?쒖뒪??;
+  if(title.indexOf('EV-誇')>=0||title.indexOf('?듭젣??)>=0||title.indexOf('諛붿씠?ъ뒪')>=0)return'EV-誇 ?곌뎄';
+  return'湲고?';
 }
-var LOG_CAT_ORDER=['전체','ORACLE 시스템','간부·인물','이변체','프로메테우스','세력·기업','독자 조사','EV-Σ 연구','감사·봉쇄','인트로','기타'];
+var LOG_CAT_ORDER=['?꾩껜','ORACLE ?쒖뒪??,'媛꾨?쨌?몃Ъ','?대?泥?,'?꾨줈硫뷀뀒?곗뒪','?몃젰쨌湲곗뾽','?낆옄 議곗궗','EV-誇 ?곌뎄','媛먯궗쨌遊됱뇙','?명듃濡?,'湲고?'];
 function LogViewer(p){
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var isEn=locale==='en';
   var s1=useState(null),sel=s1[0],setSel=s1[1];
-  var s2=useState('전체'),cat=s2[0],setCat=s2[1];
-  var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0});var lk=ORACLE_LOGS.length-ul.length;
-  // 카테고리별 해금 카운트
-  var catCounts={};ul.forEach(function(l){var c=logCategory(l);catCounts[c]=(catCounts[c]||0)+1});
-  var visCats=LOG_CAT_ORDER.filter(function(c){return c==='전체'||(catCounts[c]||0)>0});
-  var filtered=cat==='전체'?ul:ul.filter(function(l){return logCategory(l)===cat});
-  if(sel){var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:10}},'ORACLE DATABASE — RECORD VIEW'),h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:8,marginBottom:14,flexWrap:'wrap'}},h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:3,padding:'2px 8px'}},logCategory(log)),h('span',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold'}},log.title)),h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},log.content),h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},'← 목록'),h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},'닫기'))));}
-  return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
-    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
-    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:12}},ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'),
-    // 카테고리 필터 탭
-    h('div',{style:{display:'flex',gap:4,flexWrap:'wrap',marginBottom:14,justifyContent:'center'}},visCats.map(function(c){
-      var isSel=c===cat;var cnt=c==='전체'?ul.length:(catCounts[c]||0);
-      return h('button',{key:c,onClick:function(){setCat(c)},style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'4px 9px',background:isSel?'rgba(var(--ui-rgb),.12)':'transparent',border:'1px solid '+(isSel?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.18)'),borderRadius:3,color:isSel?'var(--ui)':'rgba(var(--ui-rgb),.55)',cursor:'pointer',letterSpacing:.5}},c+' '+cnt);
-    })),
-    filtered.length===0&&h('div',{style:{fontSize:12,color:'#555',textAlign:'center',padding:'20px 0',fontStyle:'italic'}},'해당 카테고리에 해금된 기록 없음'),
-    filtered.map(function(l){var lcat=logCategory(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},
-      h('div',{style:{display:'flex',alignItems:'center',gap:6,marginBottom:3}},
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'rgba(var(--ui-rgb),.6)',background:'rgba(var(--ui-rgb),.06)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,padding:'1px 5px',letterSpacing:.5}},lcat),
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginLeft:'auto'}},l.id)),
-      h('div',{style:{fontSize:13,color:'var(--ui)'}},l.title))}),
-    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},lk+'건의 기록이 잠겨 있습니다'),
-    (p.sessions||0)>=1&&lk>0&&h('div',{style:{marginTop:16,padding:'10px 12px',background:'rgba(var(--ui-rgb),.03)',border:'1px solid rgba(var(--ui-rgb),.1)',borderRadius:3,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.45)',lineHeight:1.8,letterSpacing:.5}},h('div',{style:{marginBottom:4,color:'rgba(var(--ui-rgb),.3)',fontSize:9}},'[이전 세션 분석]'),lk>=8?'다수의 미발견 기록 존재. 간부 신뢰도와 독자적 판단이 새로운 정보를 열 수 있습니다.':lk>=4?'일부 기록은 특정 조건 하에서만 접근 가능합니다. [편집됨] 조건을 충족하십시오.':'거의 모든 기록에 접근했습니다. 남은 기록은 극히 제한된 상황에서만 해금됩니다.'),
-    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},'닫기')));
+  var s2=useState('all'),cat=s2[0],setCat=s2[1];
+  var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0});
+  var lk=ORACLE_LOGS.length-ul.length;
+  var catName=function(raw){
+    if(!isEn)return raw;
+    var map={
+      '전체':'All','ORACLE 시스템':'ORACLE Systems','간부/인물':'Personnel','이변체':'Anomalies','프로메테우스':'Prometheus',
+      '병력/기업':'Forces & Corporations','현장 조사':'Field Investigation','EV-Σ 연구':'EV-Sigma Research','감사/등색':'Audit & Containment','인트로':'Intro','기타':'Misc'
+    };
+    return map[raw]||raw;
+  };
+  var getLogText=function(log){
+    var overlay=(isEn&&typeof tc==='function')?tc('oracleLogs',log.id,null):null;
+    return { title:(overlay&&overlay.title)||log.title, content:(overlay&&overlay.content)||log.content };
+  };
+  var normalizedCategory=function(log){ return catName(logCategory(log)); };
+  var catCounts={}; ul.forEach(function(l){var c=normalizedCategory(l);catCounts[c]=(catCounts[c]||0)+1});
+  var allLabel=isEn?'All':'전체';
+  var visCats=[allLabel].concat(Object.keys(catCounts).sort());
+  var filtered=cat===allLabel?ul:ul.filter(function(l){return normalizedCategory(l)===cat});
+  if(sel){
+    var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];
+    var text=getLogText(log);
+    return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:10}},'ORACLE DATABASE - RECORD VIEW'),
+      h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:8,marginBottom:14,flexWrap:'wrap'}},
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:3,padding:'2px 8px'}},normalizedCategory(log)),
+        h('span',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold'}},text.title)
+      ),
+      h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},text.content),
+      h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},
+        h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},isEn?'← List':'← 목록'),
+        h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},isEn?'Close':'닫기')
+      )
+    ));
+  }
+  return h('div',{className:'screen'},
+    IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),
+    h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
+      h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:12}},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금')),
+      h('div',{style:{display:'flex',gap:4,flexWrap:'wrap',marginBottom:14,justifyContent:'center'}},visCats.map(function(c){
+        var isSel=c===cat; var cnt=c===allLabel?ul.length:(catCounts[c]||0);
+        return h('button',{key:c,onClick:function(){setCat(c)},style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'4px 9px',background:isSel?'rgba(var(--ui-rgb),.12)':'transparent',border:'1px solid '+(isSel?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.18)'),borderRadius:3,color:isSel?'var(--ui)':'rgba(var(--ui-rgb),.55)',cursor:'pointer',letterSpacing:.5}},c+' '+cnt);
+      })),
+      filtered.length===0&&h('div',{style:{fontSize:12,color:'#555',textAlign:'center',padding:'20px 0',fontStyle:'italic'}},isEn?'No unlocked records in this category':'해당 카테고리에 해금된 기록 없음'),
+      filtered.map(function(l){var text=getLogText(l); var lcat=normalizedCategory(l); return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},
+        h('div',{style:{display:'flex',alignItems:'center',gap:6,marginBottom:3}},
+          h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'rgba(var(--ui-rgb),.6)',background:'rgba(var(--ui-rgb),.06)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,padding:'1px 5px',letterSpacing:.5}},lcat),
+          h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginLeft:'auto'}},l.id)),
+        h('div',{style:{fontSize:13,color:'var(--ui)'}},text.title))
+      }),
+      lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')),
+      h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},isEn?'Close':'닫기')
+    )
+  );
 }
 function EndingScreen(p){
-  var all=[{id:'A',name:'완벽한 도구',hint:'ORACLE의 최고 신임을 얻으라'},{id:'B',name:'각성',hint:'진실의 단편을 목격하라'},{id:'C_c',name:'봉쇄 붕괴',hint:'봉쇄선이 무너지다'},{id:'C_cs',name:'봉쇄 성공',hint:'완벽한 봉쇄를 달성하다'},{id:'C_cst',name:'자충수',hint:'소 잃고 외양간 고치다'},{id:'C_r',name:'자원 고갈',hint:'기지가 기능을 잃다'},{id:'C_t',name:'신뢰 상실',hint:'동료들이 떠나다'},{id:'C_o',name:'접속 차단',hint:'ORACLE이 당신을 버리다'},{id:'D',name:'조용한 자유',hint:'반란 속의 해방'},{id:'G',name:'관망자',hint:'어느 쪽도 선택하지 않다'},{id:'F',name:'[데이터 손상]',hint:'???'}];
-  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'SESSION ARCHIVE'),h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},'총 세션: '+p.sessions+' | 엔딩: '+p.endings.length+'/'+all.length),all.map(function(e){var f=p.endings.indexOf(e.id)>=0;return h('div',{key:e.id,style:{background:f?'var(--ui-bg)':'#080808',border:'1px solid '+(f?'var(--ui-border)':'#111'),borderRadius:4,padding:'12px 16px',marginBottom:8}},h('div',{style:{fontSize:14,color:f?'var(--ui)':'#333',fontWeight:'bold'}},f?e.name:'[미발견]'),h('div',{style:{fontSize:11,color:f?'var(--ui-dim)':'#222',marginTop:4,fontStyle:'italic'}},f?'달성 완료':e.hint))}),h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},'닫기')));
+  var all=[{id:'A',name:'?꾨꼍???꾧뎄',hint:'ORACLE??理쒓퀬 ?좎엫???살쑝??},{id:'B',name:'媛곸꽦',hint:'吏꾩떎???⑦렪??紐⑷꺽?섎씪'},{id:'C_c',name:'遊됱뇙 遺뺢눼',hint:'遊됱뇙?좎씠 臾대꼫吏??},{id:'C_cs',name:'遊됱뇙 ?깃났',hint:'?꾨꼍??遊됱뇙瑜??ъ꽦?섎떎'},{id:'C_cst',name:'?먯땐??,hint:'???껉퀬 ?몄뼇媛?怨좎튂??},{id:'C_r',name:'?먯썝 怨좉컝',hint:'湲곗?媛 湲곕뒫???껊떎'},{id:'C_t',name:'?좊ː ?곸떎',hint:'?숇즺?ㅼ씠 ?좊굹??},{id:'C_o',name:'?묒냽 李⑤떒',hint:'ORACLE???뱀떊??踰꾨━??},{id:'D',name:'議곗슜???먯쑀',hint:'諛섎? ?띿쓽 ?대갑'},{id:'G',name:'愿留앹옄',hint:'?대뒓 履쎈룄 ?좏깮?섏? ?딅떎'},{id:'F',name:'[?곗씠???먯긽]',hint:'???'}];
+  return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'SESSION ARCHIVE'),h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},'珥??몄뀡: '+p.sessions+' | ?붾뵫: '+p.endings.length+'/'+all.length),all.map(function(e){var f=p.endings.indexOf(e.id)>=0;return h('div',{key:e.id,style:{background:f?'var(--ui-bg)':'#080808',border:'1px solid '+(f?'var(--ui-border)':'#111'),borderRadius:4,padding:'12px 16px',marginBottom:8}},h('div',{style:{fontSize:14,color:f?'var(--ui)':'#333',fontWeight:'bold'}},f?e.name:'[誘몃컻寃?'),h('div',{style:{fontSize:11,color:f?'var(--ui-dim)':'#222',marginTop:4,fontStyle:'italic'}},f?'?ъ꽦 ?꾨즺':e.hint))}),h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},'?リ린')));
 }
 function FieldMission(p){
   var mission=MISSIONS[p.missionId];var tr=p.trust||{};var s1=useState('start'),nodeId=s1[0],setNodeId=s1[1];var s2=useState(''),textShown=s2[0],setTextShown=s2[1];var s3=useState(false),showChoices=s3[0],setShowChoices=s3[1];
@@ -118,11 +152,11 @@ function FieldMission(p){
       mImg&&nodeId==='start'&&h('img',{src:mImg,className:'mission-img',alt:mission.title})
     ),
     h('div',{style:{flex:1,width:'100%',maxWidth:420,overflowY:'auto',minHeight:0,padding:'4px 0',WebkitOverflowScrolling:'touch'}},
-      h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',whiteSpace:'pre-wrap',borderLeft:'2px solid var(--ui-dim)',paddingLeft:12}},textShown,!showChoices&&h('span',{style:{animation:'blink 1s infinite'}},'▌'))
+      h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',whiteSpace:'pre-wrap',borderLeft:'2px solid var(--ui-dim)',paddingLeft:12}},textShown,!showChoices&&h('span',{style:{animation:'blink 1s infinite'}},'??))
     ),
     showChoices&&h('div',{style:{width:'100%',maxWidth:420,flexShrink:0,display:'flex',flexDirection:'column',gap:6,padding:'6px 0'}},
-      visChoices.map(function(c,i){var isTrust=!!c.trustReq;return h('button',{key:i,onClick:function(){handleChoice(c)},style:{background:isTrust?'rgba(240,160,48,.06)':'var(--ui-bg)',border:'1px solid '+(isTrust?'rgba(240,160,48,.4)':'var(--ui-border)'),borderRadius:4,padding:'10px 14px',cursor:'pointer',textAlign:'left',color:c.next==='end'?'#f0a030':isTrust?'#f0c060':'var(--ui)',fontSize:12,lineHeight:1.5,fontFamily:'inherit'}},h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.3)',marginRight:8,minWidth:14,display:'inline-block'}},(i+1)+''),isTrust&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#f0a030',letterSpacing:1,marginRight:6}},'['+tt('mission.trustLabel','신뢰','신뢰')+']'),h('span',{style:{marginRight:6,opacity:0.5}},'▸'),c.label)})
+      visChoices.map(function(c,i){var isTrust=!!c.trustReq;return h('button',{key:i,onClick:function(){handleChoice(c)},style:{background:isTrust?'rgba(240,160,48,.06)':'var(--ui-bg)',border:'1px solid '+(isTrust?'rgba(240,160,48,.4)':'var(--ui-border)'),borderRadius:4,padding:'10px 14px',cursor:'pointer',textAlign:'left',color:c.next==='end'?'#f0a030':isTrust?'#f0c060':'var(--ui)',fontSize:12,lineHeight:1.5,fontFamily:'inherit'}},h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.3)',marginRight:8,minWidth:14,display:'inline-block'}},(i+1)+''),isTrust&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#f0a030',letterSpacing:1,marginRight:6}},'['+tt('mission.trustLabel','?좊ː','?좊ː')+']'),h('span',{style:{marginRight:6,opacity:0.5}},'??),c.label)})
     ),
-    h('div',{className:'footer',style:{flexShrink:0}},'ORACLE REMOTE TERMINAL — FIELD OPS')
+    h('div',{className:'footer',style:{flexShrink:0}},'ORACLE REMOTE TERMINAL ??FIELD OPS')
   );
 }

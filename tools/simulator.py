@@ -27,9 +27,12 @@ random.seed(42)
 
 CARD_FILES = [
     'data-cards-prologue.js',
+    'data-cards-prologue-2.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
+    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-act4-hazard.js',
+    'data-cards-act23-pressure.js', 'data-cards-resist-hint.js',
     'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-dg-meridian.js',
 ]
 
 def read(p):

@@ -87,9 +87,10 @@ function SettingsSaveTab(p) {
 
 function SettingsInfoTab() {
   var mono = { fontFamily: "'Share Tech Mono',monospace", fontSize: 11, color: 'var(--ui)' };
+  var isKo = !window.TS_I18N || !window.TS_I18N.getLocale || window.TS_I18N.getLocale() !== 'en';
   return h('div', null,
-    _settingsRow('버전', h('span', { style: mono }, 'v0.9.0')),
-    _settingsRow('엔진', h('span', { style: mono }, 'React 18 (CDN)')),
+    _settingsRow(isKo ? '버전' : 'Version', h('span', { style: mono }, 'v0.9.0')),
+    _settingsRow(isKo ? '엔진' : 'Engine', h('span', { style: mono }, 'React 18 (CDN)')),
     h('div', { style: { marginTop: 16, fontSize: 11, color: 'rgba(var(--ui-rgb),0.4)',
       fontFamily: "'Share Tech Mono',monospace", textAlign: 'center', lineHeight: 2 } },
       h('div', null, 'TERMINAL SESSION'),

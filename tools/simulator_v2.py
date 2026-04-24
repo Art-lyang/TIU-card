@@ -20,13 +20,106 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 # v1 파서 재사용
 from simulator import (
-    CARDS, card_log_rules, CARDS_PER_DAY, DECAY, ACT_BOUNDS,
+    CARDS, card_log_rules, CARDS_PER_DAY, DECAY, ACT_BOUNDS, read,
     get_act, chk_game_over, eval_req,
 )
 
 N_RUNS = int(sys.argv[1]) if len(sys.argv) > 1 else 500
 STRATEGY = sys.argv[2] if len(sys.argv) > 2 else 'neutral'
 random.seed(42)
+
+def extract_block(src, marker):
+    i = src.find(marker)
+    if i < 0:
+        return ''
+    start = src.find('[', i)
+    if start < 0:
+        return ''
+    depth = 0
+    in_str = False
+    quote = ''
+    esc = False
+    for j in range(start, len(src)):
+        ch = src[j]
+        if esc:
+            esc = False
+            continue
+        if ch == '\\':
+            esc = True
+            continue
+        if in_str:
+            if ch == quote:
+                in_str = False
+            continue
+        if ch in ('"', "'"):
+            in_str = True
+            quote = ch
+            continue
+        if ch == '[':
+            depth += 1
+        elif ch == ']':
+            depth -= 1
+            if depth == 0:
+                return src[start:j+1]
+    return ''
+
+def extract_objects(block):
+    objs = []
+    i = 0
+    while i < len(block):
+        if block[i] != '{':
+            i += 1
+            continue
+        start = i
+        depth = 0
+        in_str = False
+        quote = ''
+        esc = False
+        for j in range(i, len(block)):
+            ch = block[j]
+            if esc:
+                esc = False
+                continue
+            if ch == '\\':
+                esc = True
+                continue
+            if in_str:
+                if ch == quote:
+                    in_str = False
+                continue
+            if ch in ('"', "'"):
+                in_str = True
+                quote = ch
+                continue
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    objs.append(block[start:j+1])
+                    i = j + 1
+                    break
+        else:
+            break
+    return objs
+
+def parse_rewards():
+    src = read('data-core.js')
+    block = extract_block(src, 'var REWARDS =')
+    rewards = []
+    for obj in extract_objects(block):
+      id_m = re.search(r'\bid:\s*"([^"]+)"', obj)
+      if not id_m:
+          continue
+      fx = {'c': 0, 'r': 0, 't': 0, 'o': 0}
+      fx_m = re.search(r'\bfx:\s*\{([^}]*)\}', obj, re.S)
+      if fx_m:
+          for m in re.finditer(r'([crto]):\s*(-?\d+)', fx_m.group(1)):
+              fx[m.group(1)] = int(m.group(2))
+      rewards.append({'id': id_m.group(1), 'fx': fx})
+    return rewards
+
+REWARDS = parse_rewards()
 
 # ═══════════ chkSpecialEnding (수정된 G 조건 반영) ═══════════
 
@@ -73,6 +166,34 @@ def choose_side(card, s, gi, strategy):
     return random.choice(['left', 'right'])
 
 # ═══════════ 이브닝 챗 시뮬 ═══════════
+
+def choose_reward(options, s, strategy):
+    if not options:
+        return None
+    if strategy == 'random':
+        return random.choice(options)
+    lowest = min(('c', s['c']), ('r', s['r']), ('t', s['t']), ('o', s['o']), key=lambda x: x[1])[0]
+    def score(opt):
+        fx = opt['fx']
+        base = fx.get(lowest, 0) * 6
+        safety = sum(v for v in fx.values())
+        penalty = sum(-v for v in fx.values() if v < 0)
+        if strategy == 'neutral':
+            return (base + safety * 2) - penalty
+        if strategy == 'resist':
+            return (fx.get('t', 0) * 5 + fx.get('o', 0) * 4 + safety) - penalty * 1.5
+        return safety - penalty
+    best = sorted(options, key=score, reverse=True)
+    return best[0]
+
+def apply_reward(s, reward):
+    if not reward:
+        return s
+    ns = dict(s)
+    for k in ('c', 'r', 't', 'o'):
+        ns[k] += reward['fx'].get(k, 0) * 5
+        ns[k] = max(5, min(95, ns[k]))
+    return ns
 
 CHAR_KEYS = ['haeun', 'doyun', 'sejin', 'jaehyuk']
 
@@ -160,6 +281,11 @@ def simulate_one():
         # 이브닝 — trust & gi 변동
         gi_evening = simulate_evening(trust, gi, STRATEGY, s['day'])
         gi += gi_evening
+        reward_options = random.sample(REWARDS, min(4, len(REWARDS))) if REWARDS else []
+        chosen_reward = choose_reward(reward_options, s, STRATEGY)
+        s = apply_reward(s, chosen_reward)
+        go = chk_game_over(s)
+        if go: ending = go; break
 
         # 특수 엔딩 체크
         se = chk_special_ending(s, gi, act, trust, logs)

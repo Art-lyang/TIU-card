@@ -1,7 +1,14 @@
 // TERMINAL SESSION — lang-ui-en.js
 window.TS_I18N.mergeUI('en', {
   meta:{ title:'TERMINAL SESSION', titleBar:'ORACLE // TERMINAL SESSION' },
-  boot:{ startSession:'[ START SESSION {session} ]' },
+  boot:{
+    startSession:'[ START SESSION {session} ]',
+    startGame:'[ Start Game ]'
+  },
+  menu:{
+    startGame:'[ GAME START ]',
+    continue:'[ CONTINUE ]'
+  },
   hub:{
     title:'SCENARIO SELECT',
     progress:'{current} / {total}',

@@ -21,16 +21,26 @@ const ROOT = path.resolve(__dirname, '..');
 const DATA_FILES = [
   'data-core.js',
   'data-status-tags.js',
+  'data-dialogues-extra.js',
   'data-cards-prologue.js',
+  'data-cards-prologue-2.js',
   ...Array.from({length: 16}, (_, i) => `data-cards-${i+1}.js`),
   'data-cards-act4.js',
+  'data-cards-act4-ext.js',
+  'data-cards-act4-hazard.js',
+  'data-cards-act23-pressure.js',
+  'data-cards-resist-hint.js',
   'data-cards-crisis.js',
   'data-cards-neutral.js',
+  'data-cards-dg-meridian.js',
   'data-rewards.js',
   'data-chains.js',
   'data-chains-incident.js',
   'data-chains-incident2.js',
+  'data-chains-branch.js',
   'data-archive.js',
+  'data-minigame-rewards.js',
+  'data-minigame-expansion.js',
   'data-missions.js',
   'data-missions-2.js',
   'data-missions-3.js',
@@ -44,6 +54,9 @@ const DATA_FILES = [
   'data-evidence.js',
   'data-facility.js',
   'data-facility-2.js',
+  'data-facility-uprising-a.js',
+  'data-facility-uprising-b.js',
+  'data-cards-facility-propose.js',
   'data-hidden-story.js',
   'data-evening-trust-1.js',
   'data-evening-trust-1b.js',
@@ -51,7 +64,12 @@ const DATA_FILES = [
   'data-evening-trust-3.js',
   'data-evening-responses.js',
   'data-evening-extra.js',
+  'data-evening-extra-2a.js',
+  'data-evening-extra-2b.js',
+  'data-evening-extra-2c.js',
+  'data-evening-extra-2d.js',
   'data-evening-responses-2.js',
+  'data-evening-responses-3.js',
   'evening-lines.js',
   'data-result-text.js',
   'data-result-story-1.js',
@@ -82,13 +100,15 @@ for (const f of DATA_FILES) {
 }
 
 // === 카드 마스터 배열 수집 ===
-const CARD_ARRAY_NAMES = [
-  'CARDS_PROLOGUE','CARDS_BASE','CARDS_STORY','CARDS_ENDING','CARDS_INVESTIGATE',
-  'CARDS_RESOURCE','CARDS_ACT1_DAILY','CARDS_ACT2_DAILY','CARDS_TRANSITION','CARDS_HAEUN',
-  'CARDS_EXTRA','CARDS_CHAINS','CARDS_NEW_A','CARDS_NEW_B','CARDS_ACT3',
-  'CARDS_EXTERNAL','CARDS_MIDGAME','CARDS_ACT4','CARDS_CRISIS','CARDS_NEUTRAL',
-  'CARDS_ESCAPE_EXTRA','CARDS_INCIDENT',
-];
+const CARD_ARRAY_NAMES = Object.keys(sandbox).filter(name => {
+  const arr = sandbox[name];
+  return Array.isArray(arr) && arr.some(item =>
+    item &&
+    typeof item === 'object' &&
+    item.id &&
+    (Object.prototype.hasOwnProperty.call(item, 'left') || Object.prototype.hasOwnProperty.call(item, 'right'))
+  );
+});
 const cardsByArray = {};
 const ALL_CARDS = [];
 for (const name of CARD_ARRAY_NAMES) {
@@ -103,6 +123,9 @@ const issues = {
   duplicates: [],
   brokenChainTriggers: [],
   brokenMissionRefs: [],
+  brokenMiniGameRefs: [],
+  brokenMissionNodes: [],
+  brokenFollowupTypes: [],
   unproducedLogs: [],
   evidenceUnreachable: [],
   endingLogMissing: [],
@@ -148,6 +171,68 @@ for (const c of ALL_CARDS) {
     const m = c[side] && c[side].mission;
     if (m && !MISSION_IDS.has(m)) {
       issues.brokenMissionRefs.push({ card: c.id, side, missing: m, from: c.__from });
+    }
+  }
+}
+
+const FIELD_MINIGAME_CONFIGS = sandbox.window.FIELD_MINIGAME_CONFIGS || {};
+const FIELD_MINIGAME_REWARDS = sandbox.window.FIELD_MINIGAME_REWARDS || {};
+const FIELD_MINIGAME_NARRATIVES = sandbox.window.FIELD_MINIGAME_NARRATIVES || {};
+const FIELD_MISSION_NODE_OVERRIDES = sandbox.window.FIELD_MISSION_NODE_OVERRIDES || {};
+
+for (const [missionId, nodeMap] of Object.entries(FIELD_MINIGAME_CONFIGS)) {
+  const mission = MISSIONS[missionId];
+  if (!mission) {
+    issues.brokenMiniGameRefs.push({ missionId, nodeId: '(mission)', nextId: '-', reason: 'missing mission' });
+    continue;
+  }
+  for (const [nodeId, choiceMap] of Object.entries(nodeMap || {})) {
+    const node = mission.nodes && mission.nodes[nodeId];
+    if (!node) {
+      issues.brokenMiniGameRefs.push({ missionId, nodeId, nextId: '-', reason: 'missing node' });
+      continue;
+    }
+    const choiceNextSet = new Set((node.choices || []).map(choice => choice.next));
+    for (const [nextId, cfg] of Object.entries(choiceMap || {})) {
+      if (!choiceNextSet.has(nextId)) {
+        issues.brokenMiniGameRefs.push({ missionId, nodeId, nextId, reason: 'choice.next not found' });
+      }
+      if (!FIELD_MINIGAME_REWARDS[missionId]) {
+        issues.brokenMiniGameRefs.push({ missionId, nodeId, nextId, reason: 'missing reward table' });
+      }
+      if (!FIELD_MINIGAME_NARRATIVES[missionId]) {
+        issues.brokenMiniGameRefs.push({ missionId, nodeId, nextId, reason: 'missing narrative table' });
+      }
+      if (cfg && cfg.type && typeof sandbox.window.createFieldMiniGameFollowupCard === 'function') {
+        const probe = sandbox.window.createFieldMiniGameFollowupCard({ type: cfg.type, missionId, rank: 'success' });
+        if (!probe || !probe.left || !probe.right) {
+          issues.brokenFollowupTypes.push({ missionId, nodeId, nextId, type: cfg.type });
+        }
+      }
+    }
+  }
+}
+
+for (const [missionId, nodeMap] of Object.entries(FIELD_MISSION_NODE_OVERRIDES)) {
+  const mission = MISSIONS[missionId];
+  if (!mission) {
+    issues.brokenMissionNodes.push({ missionId, nodeId: '(mission)', reason: 'override mission missing' });
+    continue;
+  }
+  for (const nodeId of Object.keys(nodeMap || {})) {
+    if (!mission.nodes || !mission.nodes[nodeId]) {
+      issues.brokenMissionNodes.push({ missionId, nodeId, reason: 'override node missing' });
+    }
+  }
+}
+
+for (const [missionId, mission] of Object.entries(MISSIONS)) {
+  if (!mission.nodes) continue;
+  for (const [nodeId, node] of Object.entries(mission.nodes)) {
+    for (const choice of (node.choices || [])) {
+      if (choice.next !== 'end' && !mission.nodes[choice.next]) {
+        issues.brokenMissionNodes.push({ missionId, nodeId, reason: 'choice next missing: ' + choice.next });
+      }
     }
   }
 }
@@ -272,6 +357,7 @@ const stats = {
   cards: { total: ALL_CARDS.length, uniqueIds: CARD_IDS.size, byArray: Object.fromEntries(Object.entries(cardsByArray).map(([k,v]) => [k, v.length])) },
   chains: { main: Object.keys(CHAINS).length, incident: Object.keys(CHAINS_INCIDENT).length },
   missions: { total: MISSION_IDS.size },
+  minigames: { missions: Object.keys(FIELD_MINIGAME_CONFIGS).length },
   evidence: { total: EVIDENCE.length, combos: (sandbox.EVIDENCE_COMBOS || []).length },
   endings: Object.keys(sandbox.ENDING_DEFS || {}).length,
   archive: (sandbox.ARCHIVE_ENTRIES || []).length,
@@ -299,6 +385,7 @@ console.log('\n[콘텐츠 통계]');
 console.log('  카드 총 ' + stats.cards.total + '장 (고유 id ' + stats.cards.uniqueIds + ')');
 console.log('  체인: 메인 ' + stats.chains.main + ' + 사건 ' + stats.chains.incident);
 console.log('  미션: ' + stats.missions.total + ' 개');
+console.log('  미니게임 연동 임무: ' + stats.minigames.missions + ' 개');
 console.log('  증거: ' + stats.evidence.total + ' + 조합 ' + stats.evidence.combos);
 console.log('  엔딩: ' + stats.endings + '종');
 console.log('  아카이브: ' + stats.archive + '종');

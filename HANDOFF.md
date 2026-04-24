@@ -1,9 +1,46 @@
 # TIU-CARD 작업 인수인계 (Handoff)
 
-> **작성일**: 2026-04-20 (2차 업데이트)
-> **작업 worktree**: `C:\Users\Administrator\TIU_CARD\.claude\worktrees\magical-cray-74f8c4`
-> **브랜치**: `claude/magical-cray-74f8c4` (worktree) — 로컬 본체는 `main`
-> **마지막 BUILD_VER**: `22`
+> **작성일**: 2026-04-23 (i18n + MainMenu/ScenarioHub 세션 반영)
+> **작업 브랜치**: `main` (origin/main 동기화 완료)
+> **마지막 BUILD_VER**: `54`
+> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-23 스냅샷
+
+---
+
+## 0-1. 2026-04-23 세션 — i18n 도입 + 플로우 개편 ✅
+
+### 핵심 결과 (BUILD_VER 22 → 54)
+- **i18n 인프라 본격 도입**: `i18n-runtime.js` 런타임 코어 + UI 언어팩(`lang-ui-ko/en.js`) + 콘텐츠 영어 오버레이 (`lang-content-en-all.js` 207KB, `lang-content-en-dialogues.js`). 설정 > 디스플레이에 언어 토글
+- **렌더러 `t()`/`tt()`/`tc()` 통합 범위**:
+  - Phase 1 (`0429de2`): 런타임 + Settings 토글
+  - Phase 2 (`0d571cd`): CardC 본문/라벨, Boot/Stats/GameOver/Tutorial/ScenarioHub
+  - Phase 3 (`f46f19b`): 이브닝챗, 다이얼로그, 엔딩, 브리핑, 미션 노드
+- **플로우 개편**: Boot → **MainMenu** → **ScenarioHub** → 메인 스토리 서브메뉴 → Tutorial/Briefing/Game
+  - ScenarioHub 슬롯 3종: `main` (active) / `dlc_green` (GREEN THRESHOLD — 소바리, locked) / `dlc_north` (NORTHERN FRONT — 러시아 북극권, locked)
+  - MainMenu: 세션 선택 / SETTINGS / RECORDS(logs/archive/endings). 게임 시작 전 설정 접근 가능
+  - GameOver 화면에서 Act2 restart 옵션 제거 (`313feb5`)
+- **영어 레이아웃 핫픽스**: `style-i18n-hotfix.css` (게이지/모바일 선택지 버튼), `style-i18n-locale-hotfix.css` (영어 로케일 전용, `lang=en` 기반)
+- **설정 저장 타이밍**: 언어 토글은 즉시 저장, locale 실제 적용은 패널 닫힘/저장 시점 (`eb6b94d`, `f985def`, `7d67294`)
+
+### 카드/체인 버그 수정
+- **C-060 "두 번째 탈북자"**: `LOG-DEFECTOR-1` 신규(`data-core.js`) → CH-004-2가 `LOG-009` + `LOG-DEFECTOR-1` 양쪽 해금 → C-060 조건을 체인 전용 `LOG-DEFECTOR-1`로 교체 (`data-cards-2.js`). 첫 탈북자 미경험 상태에서 두 번째 카드 등장하던 버그 해결 (`d350ef4`)
+- **CA-SEED-02 전임지휘관 메모** (`a2167db`): `act:[1]` → `act:[2,3]`, day 6~14. Act 1 노출 시 B3 스포일러 — Act 2~3 복선으로 이동
+- **C-236 텍스트** (`b8de4b9`): 본문 기지명 `KR-INIT-001 기지 주의` 삭제 → 간접 누출 묘사, 좌/우 선택 라벨 축약
+- **이브닝챗 응답 매칭** (`3f013f7`): 2a/2b/2c 39개 엔트리 `responseKey` 전수 부여 + `data-evening-responses-3.js` 신규 (192줄)
+- **글리치 정리** (`6439d31`): CA-014~017 시각 왜곡 제거, 용어 "아베란트 → 변이체" 통일
+
+### 오디오 / UI 정비
+- **크로스페이드 겹침** (`7c6c720`): `_crossfade` 시 타겟 외 트랙 즉시 pause, SFX `vol`/`muted` 반영, `_fadeIn` 매 스텝 `BGM.vol` 참조 → 슬라이더 실시간 반영
+- **타이머 없는 카드 `0` 렌더** (`3c4ce93`): `timerTotal && ...` → `timerTotal > 0 && ...`
+- **info-bar 태그 높이 통일** (`037780c`): `min-height + inline-flex` + 인라인 padding 제거
+- **간부진 인트로 연쇄 재생 제거** (`42c0ced`): 카드 1장 → 인트로 1명 분산
+- **텍스트 컬러 테마 적응** (`a2167db`): 하드코딩 녹색 `rgba(220,255,220,..)` → `var(--ui-text)`
+
+### 미해결 / 이월
+- DLC 슬롯 2종 (`dlc_green`, `dlc_north`) 콘텐츠 본체 미제작 — 허브 UI/이미지만 존재
+- Act2 restart UI 제거 이후 `3c0b0e7`에서 추가한 Act1 core LOG 자동 부여 로직 잔재 정리 여부 판단 필요
+- 영어 오버레이 207KB 자동 생성분 QA (번역 품질 감수)
+- Act4 미니게임 노드 배경 6장 여전히 미제작 (BUILD_VER=22 이월 항목 유지)
 
 ---
 
@@ -138,7 +175,18 @@ data-evening-extra-2a/2b/2c/2d.js
 data-facility-uprising-a/-b.js
 
 # 캐시 무효화
-index.html: var BUILD_VER=22
+index.html: var BUILD_VER=54
+
+# i18n (2026-04-23 신규)
+i18n-runtime.js              — locale / t() / tt() / tc() / ts-locale-changed 이벤트
+lang-ui-ko.js, lang-ui-en.js — UI 언어팩
+lang-content-en-all.js       — 콘텐츠 영어 오버레이 (207KB, 18 phase 통합)
+lang-content-en-dialogues.js — 통신 대화 영어
+components-settings-hotfix.js — locale 지연 적용
+
+# 플로우 (2026-04-23 신규)
+components-game.js Boot / MainMenu / ScenarioHub / Stats / ...
+app.js phase 라우팅: boot → menu → hub → tutorial → briefing → game
 ```
 
 ### postMessage 스키마 (카드 ↔ 미니게임)

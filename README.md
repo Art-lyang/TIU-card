@@ -3,7 +3,7 @@
 > Reigns × Suzerain × SCP, in a Korean AI-surveillance setting.
 >
 > **장르**: 하이브리드 — 카드 스와이프 의사결정 + 텍스트 어드벤처
-> **빌드**: BUILD_VER=22 (v1.0 출시 준비 마일스톤)
+> **빌드**: BUILD_VER=54 (v1.0 출시 준비 마일스톤 + i18n 증보 2026-04-23)
 > **배포**: https://art-lyang.github.io/TIU-card/
 
 ---
@@ -38,6 +38,7 @@ ORACLE이 배정한 임무를 수행하는 Proxy Network 요원으로서, 카드
 - **배포**: GitHub Pages
 - **저장**: localStorage (다중 슬롯 3개 + NG+ 영속 데이터)
 - **모바일 대응**: viewport 메타 + 터치 스와이프 + Apple Web App
+- **i18n**: `i18n-runtime.js` + UI 언어팩(ko/en) + 콘텐츠 영어 오버레이 (2026-04-23 도입)
 
 ## 실행 방법
 
@@ -59,12 +60,18 @@ python -m http.server 8080
 
 ```
 TIU-card/
-├── index.html                    — 진입점 (BUILD_VER=22)
-├── style.css, style-glitch.css   — 스타일
+├── index.html                    — 진입점 (BUILD_VER=54)
+├── style.css, style-glitch.css,
+│   style-i18n-hotfix.css,
+│   style-i18n-locale-hotfix.css  — 스타일 (영어 레이아웃 핫픽스 포함)
+├── i18n-runtime.js               — i18n 런타임 (2026-04-23 신규)
+├── lang-ui-ko.js, lang-ui-en.js  — UI 언어팩
+├── lang-content-en-all.js,
+│   lang-content-en-dialogues.js  — 콘텐츠 영어 오버레이
 ├── app*.js                       — React 앱 로직
-├── components-*.js               — UI 컴포넌트 (13개)
+├── components-*.js               — UI 컴포넌트 (MainMenu, ScenarioHub 포함)
 ├── data-*.js                     — 게임 데이터 (60+ 파일, 200줄 룰)
-├── images*.js, img/              — 이미지 자산 (base64 + PNG 34장)
+├── images*.js, img/              — 이미지 자산 (base64 + PNG 34장, hub 카드 3장)
 ├── bgm*.js, *.mp3                — BGM (6 트랙)
 ├── HANDOFF.md                    — 다음 작업 세션 인수인계
 │

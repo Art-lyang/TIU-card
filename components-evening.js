@@ -158,12 +158,12 @@ function EveningChat2(p){
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
-  var chars=[{name:'?쒗븯?',key:'haeun',role:'遺吏?섍?'},{name:'媛뺣룄??',key:'doyun',role:'?꾩옣?붿썝'},{name:'?ㅼ꽭吏?',key:'sejin',role:'?곌뎄??'},{name:'?꾩옱??',key:'jaehyuk',role:'湲곗닠愿'},{name:'留덈Ⅴ荑좎뒪 踰좊쾭',key:'weber',role:'?꾨줈硫뷀뀒?곗뒪'},{name:'???ъ뒪??',key:'foster',role:'?꾨줈硫뷀뀒?곗뒪'},{name:'諛뺤냼??',key:'soyoung',role:'遺꾩꽍愿'}];
+  var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&p.logs.indexOf('LOG-080')<0)return false;if(c.key==='foster'&&p.logs.indexOf('LOG-081')<0)return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
-  var charKeyMap2={'?쒗븯?':'haeun','媛뺣룄??':'doyun','?ㅼ꽭吏?':'sejin','?꾩옱??':'jaehyuk','留덈Ⅴ荑좎뒪 踰좊쾭':'weber','???ъ뒪??':'foster','諛뺤냼??':'soyoung'};
-  var INTRO_LOG_MAP={'?쒗븯?':'LOG-INTRO-SH','媛뺣룄??':'LOG-INTRO-KD','?ㅼ꽭吏?':'LOG-INTRO-YS','?꾩옱??':'LOG-INTRO-IJ'};
+  var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
+  var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
   function getChatI18nKey(ec){
     if(!ec) return '';
     if(ec.responseKey) return ec.responseKey;
