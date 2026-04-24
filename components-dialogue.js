@@ -1,4 +1,4 @@
-﻿// TERMINAL SESSION ??components-dialogue.js
+// TERMINAL SESSION — components-dialogue.js
 // Dialogue, LogViewer, EndingScreen, FieldMission
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 var getDialogueOverlay=function(d){
@@ -9,7 +9,7 @@ var getDialogueOverlay=function(d){
 var getDialogueName=function(d,overlay){
   if(overlay&&overlay.name)return overlay.name;
   if(window.TS_I18N&&window.TS_I18N.getLocale()==='en'){
-    var nameMap={'?쒗븯?':'Seo Hae-eun','媛뺣룄??:'Kang Do-yun','?ㅼ꽭吏?:'Yoon Se-jin','?꾩옱??:'Lim Jae-hyeok','諛뺤냼??:'Park So-young','留덈Ⅴ荑좎뒪 踰좊쾭':'Markus Weber','???ъ뒪??:'Nick Foster'};
+    var nameMap={'서하은':'Seo Hae-eun','강도윤':'Kang Do-yun','윤세진':'Yoon Se-jin','임재혁':'Lim Jae-hyeok','박소영':'Park So-young','마르쿠스 베버':'Markus Weber','닉 포스터':'Nick Foster'};
     return nameMap[d.char]||d.char;
   }
   return d.char;
@@ -17,7 +17,7 @@ var getDialogueName=function(d,overlay){
 var getDialogueRole=function(d,overlay){
   if(overlay&&overlay.role)return overlay.role;
   if(window.TS_I18N&&window.TS_I18N.getLocale()==='en'){
-    var roleMap={'遺吏?섍?':'Deputy Commander','?꾩옣?붿썝':'Field Operative','?곌뎄??:'Researcher','湲곗닠愿':'Technical Officer','遺꾩꽍愿':'Analyst'};
+    var roleMap={'부지휘관':'Deputy Commander','현장요원':'Field Operative','연구원':'Researcher','기술관':'Technical Officer','분석관':'Analyst'};
     return roleMap[d.role]||d.role;
   }
   return d.role;
@@ -28,7 +28,7 @@ function Dialogue(p){
   var choices=(overlay&&overlay.choices)||d.choices;
   var charName=getDialogueName(d,overlay);
   var charRole=getDialogueRole(d,overlay);
-  var SN={c:{l:tt('stat.containment','遊됱뇙','遊됱뇙'),cls:'stat-icon-inline-c'},r:{l:tt('stat.resources','?먯썝','?먯썝'),cls:'stat-icon-inline-r'},t:{l:tt('stat.trust','?좊ː','?좊ː'),cls:'stat-icon-inline-t'},o:{l:tt('stat.evaluation','?됯?','?됯?'),cls:'stat-icon-inline-o'}};
+  var SN={c:{l:tt('stat.containment','봉쇄','봉쇄'),cls:'stat-icon-inline-c'},r:{l:tt('stat.resources','자원','자원'),cls:'stat-icon-inline-r'},t:{l:tt('stat.trust','신뢰','신뢰'),cls:'stat-icon-inline-t'},o:{l:tt('stat.evaluation','평가','평가'),cls:'stat-icon-inline-o'}};
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
   var s3=useState(-1),picked=s3[0],setPicked=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(''),rTxt=s5[0],setRTxt=s5[1];var s6=useState(false),rDone=s6[0],setRDone=s6[1];
@@ -59,11 +59,11 @@ function Dialogue(p){
       h('div',{className:'oracle-card__glow'}),
       h('div',{style:{flex:1}},
         lines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.85)',marginBottom:6,animation:'fadeIn 0.3s ease'}},String(l))}),
-        chosen&&chosen.reply&&h('div',{style:{fontSize:14,lineHeight:1.7,color:'#f0a030',marginTop:8}},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'??)),
+        chosen&&chosen.reply&&h('div',{style:{fontSize:14,lineHeight:1.7,color:'#f0a030',marginTop:8}},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▌')),
         rDone&&chosen&&fxTags(chosen.fx)),
-      !sc&&!chosen&&h('div',{style:{textAlign:'right',marginTop:4}},h('span',{style:{color:'rgba(var(--ui-rgb),.4)',animation:'blink 1s infinite',fontSize:12}},'??))),
+      !sc&&!chosen&&h('div',{style:{textAlign:'right',marginTop:4}},h('span',{style:{color:'rgba(var(--ui-rgb),.4)',animation:'blink 1s infinite',fontSize:12}},'▶'))),
     sc&&!chosen&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0'}},
-      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(240,160,48,.8)':'rgba(var(--ui-rgb),.7)';var tc={'?됱젙':'#6699cc','怨듦컧':'#f0c060','遺꾩꽍':'#33cccc','媛뺢꼍':'#ff6644','Cold':'#6699cc','Empathy':'#f0c060','Analysis':'#33cccc','Hardline':'#ff6644'};var tagCol=c.tag&&tc[c.tag]||'#888';return h('button',{key:i,style:{background:isMe?'rgba(var(--ui-rgb),.04)':'rgba(10,18,10,.4)',border:'1px solid '+(isMe?bdrSel:bdrCol),color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px '+(i===0?'rgba(240,160,48,.15)':'rgba(var(--ui-rgb),.12)'):' none',transition:'all 0.3s ease',pointerEvents:picked>=0?'none':'auto',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2},onClick:function(){handlePick(c,i)}},
+      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(240,160,48,.8)':'rgba(var(--ui-rgb),.7)';var tc={'냉정':'#6699cc','공감':'#f0c060','분석':'#33cccc','강경':'#ff6644','Cold':'#6699cc','Empathy':'#f0c060','Analysis':'#33cccc','Hardline':'#ff6644'};var tagCol=c.tag&&tc[c.tag]||'#888';return h('button',{key:i,style:{background:isMe?'rgba(var(--ui-rgb),.04)':'rgba(10,18,10,.4)',border:'1px solid '+(isMe?bdrSel:bdrCol),color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px '+(i===0?'rgba(240,160,48,.15)':'rgba(var(--ui-rgb),.12)'):' none',transition:'all 0.3s ease',pointerEvents:picked>=0?'none':'auto',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2},onClick:function(){handlePick(c,i)}},
         h('span',null,c.label))}))
   );
 }
@@ -74,40 +74,28 @@ function LogViewer(p){
   var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ul.length;
   var getLogText=function(log){
     var overlay=(isEn&&typeof tc==='function')?tc('oracleLogs',log.id,null):null;
-    return { title:(overlay&&overlay.title)||log.title, content:(overlay&&overlay.content)||log.content };
+    return {title:(overlay&&overlay.title)||log.title,content:(overlay&&overlay.content)||log.content};
   };
   if(sel){
     var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];
     var text=getLogText(log);
-    return h('div',{className:'screen'},
-      h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:16}},tt('log.viewHeader',null,'ORACLE DATABASE - RECORD VIEW')),
-        h('div',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold',textAlign:'center',marginBottom:16}},text.title),
-        h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},text.content),
-        h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},
-          h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},isEn?'← List':'← 목록'),
-          h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},tt('common.close',null,isEn?'Close':'닫기'))
-        )
+    return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:16}},'ORACLE DATABASE - RECORD VIEW'),
+      h('div',{style:{fontSize:14,color:'#f0a030',fontWeight:'bold',textAlign:'center',marginBottom:16}},text.title),
+      h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},text.content),
+      h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},
+        h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},isEn?'← List':'← 목록'),
+        h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},isEn?'Close':'닫기')
       )
-    );
+    ));
   }
-  return h('div',{className:'screen'},
-    IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),
-    h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},tt('log.database',null,'ORACLE DATABASE')),
-      h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금')),
-      ul.map(function(l){
-        var text=getLogText(l);
-        return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},
-          h('div',{style:{display:'flex',justifyContent:'space-between'}},
-            h('span',{style:{fontSize:13,color:'var(--ui)'}},text.title),
-            h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)'}},l.id))
-        );
-      }),
-      lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')),
-      h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},tt('common.close',null,isEn?'Close':'닫기'))
-    )
-  );
+  return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
+    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
+    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금')),
+    ul.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between'}},h('span',{style:{fontSize:13,color:'var(--ui)'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)'}},l.id)))}),
+    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')),
+    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},isEn?'Close':'닫기')
+  ));
 }
-// EndingScreen ? components-endings.js濡?遺꾨━ (媛ㅻ윭由?UI + ?대?吏 ?몃꽕??
-// FieldMission? components.js?먯꽌 ?뺤쓽 (trustReq, ?ㅻ낫?? M-009/M-010 ?대?吏 吏??
+// EndingScreen 은 components-endings.js로 분리 (갤러리 UI + 이미지 썸네일)
+// FieldMission은 components.js에서 정의 (trustReq, 키보드, M-009/M-010 이미지 지원)
