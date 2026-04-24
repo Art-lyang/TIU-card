@@ -19,8 +19,8 @@ var _RT_POS = {
   c: _rtPool(
     [
       '봉쇄 감시 체계가 보강되었습니다.',
-      '외곽 방어선이 안정되었습니다.',
-      '봉쇄 구역 통제력이 강화되었습니다.',
+      '외곽 방어선이 안정화되었습니다.',
+      '봉쇄 구역 통제가 강화되었습니다.',
       '경계 태세가 한 단계 격상되었습니다.'
     ],
     [
@@ -46,7 +46,7 @@ var _RT_POS = {
   ),
   t: _rtPool(
     [
-      '요원들이 지시를 더 쉽게 받아들였습니다.',
+      '요원들이 지시를 더 쉽게 받아들입니다.',
       '기지 내 분위기가 안정되었습니다.',
       '간부진이 신뢰를 보였습니다.',
       '요원들 사이의 결속이 강해졌습니다.'
@@ -61,7 +61,7 @@ var _RT_POS = {
   o: _rtPool(
     [
       'ORACLE이 판단을 긍정적으로 평가합니다.',
-      '지휘관 평가 지표가 상승했습니다.',
+      '지휘관 평가 지수가 상승했습니다.',
       "ORACLE: '효율적인 운영입니다.'",
       '시스템이 당신의 결정을 기록합니다.'
     ],
@@ -77,9 +77,9 @@ var _RT_POS = {
 var _RT_NEG = {
   c: _rtPool(
     [
-      '봉쇄선 일부 구간에 취약점이 생겼습니다.',
-      '외곽 감시 공백이 발생했습니다.',
-      '방어 유지 부담이 가중됩니다.',
+      '봉쇄선에 일시적 취약점이 생겼습니다.',
+      '외곽 감시에 공백이 발생했습니다.',
+      '방어 유지 부담이 증가했습니다.',
       '경계 체계에 미세한 균열이 생겼습니다.'
     ],
     [
@@ -107,20 +107,20 @@ var _RT_NEG = {
     [
       '요원들 사이에 미묘한 긴장이 감돕니다.',
       '기지 분위기가 다소 가라앉았습니다.',
-      '지휘관의 시선이 무거워집니다.',
+      '지휘관을 보는 시선이 무거워집니다.',
       '내부에 불안이 번집니다.'
     ],
     [
       'A subtle tension lingers among the personnel.',
       'The branch mood has dimmed slightly.',
-      'The commander\'s burden feels heavier.',
+      'The commander feels harder to trust.',
       'Unease is spreading inside the base.'
     ]
   ),
   o: _rtPool(
     [
       'ORACLE이 당신의 판단에 의문을 제기합니다.',
-      '지휘관 평가 지표에 변동이 생겼습니다.',
+      '지휘관 평가 지수에 변동이 생겼습니다.',
       "ORACLE: '비표준 판단 패턴 감지.'",
       '시스템이 경고를 기록합니다.'
     ],
@@ -162,7 +162,7 @@ var _RT_NEUTRAL = _rtPool(
 
 var _RT_GI_POS = _rtPool(
   [
-    'ORACLE의 조용한 호응이 따라옵니다.',
+    'ORACLE이 조용히 반응을 따릅니다.',
     '예정 경로대로 처리됩니다.',
     '시스템이 안정적으로 반응합니다.'
   ],
@@ -181,7 +181,7 @@ var _RT_GI_NEG = _rtPool(
   ],
   [
     'A small warning appears at the edge of the terminal.',
-    'ORACLE\'s immediate response is withheld.',
+    'ORACLE’s immediate response is withheld.',
     'A separate tag is attached to the record log.'
   ]
 );

@@ -37,8 +37,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .gauge-fill{height:100%;background:url('gauge_fill.png') left center/100% 100% no-repeat;transition:width 0.6s ease;position:relative}
 .gauge-fill::after{display:none}
 .gauge-val{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--ui);width:32px;min-width:32px;text-align:right;flex-shrink:0;text-shadow:0 0 6px rgba(var(--ui-rgb),0.4)}
-.stats-pane-ko .gauge-row{grid-template-columns:26px 72px minmax(0,1fr) 32px}
-.stats-pane-ko .gauge-label{width:72px;min-width:72px;max-width:72px;letter-spacing:0}
+.stats-pane-ko .gauge-row{grid-template-columns:26px 54px minmax(0,1fr) 32px}
+.stats-pane-ko .gauge-label{width:54px;min-width:54px;max-width:54px;letter-spacing:0}
 .gauge-danger .gauge-fill{filter:hue-rotate(280deg) saturate(2)}
 .gauge-danger .gauge-val{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,0.4);animation:dangerPulse 1.5s ease-in-out infinite}
 .gauge-high .gauge-val{color:var(--ui);text-shadow:0 0 8px var(--ui-glow)}
@@ -106,8 +106,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .gauge-val{font-size:12px;width:28px;min-width:28px}
   .gauge-bar{height:16px}
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
-  .stats-pane-ko .gauge-row{grid-template-columns:22px 62px minmax(0,1fr) 28px}
-  .stats-pane-ko .gauge-label{width:62px;min-width:62px;max-width:62px}
+  .stats-pane-ko .gauge-row{grid-template-columns:22px 42px minmax(0,1fr) 28px;column-gap:2px}
+  .stats-pane-ko .gauge-label{width:42px;min-width:42px;max-width:42px}
   .info-bar{margin:4px 0;gap:3px}
   .info-tag{font-size:9px;padding:3px 4px;min-height:24px}
   .info-tag-menu{font-size:11px;padding:2px 6px}

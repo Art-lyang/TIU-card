@@ -1,7 +1,7 @@
 // TERMINAL SESSION — lang-ui-ko.js
 window.TS_I18N.mergeUI('ko', {
   meta:{ title:'TERMINAL SESSION', titleBar:'ORACLE // TERMINAL SESSION' },
-  boot:{ startSession:'[ 세션 {session} 시작 ]' },
+  boot:{ startSession:'[ 세션 {session} 시작 ]', startGame:'[ 게임 시작 ]' },
   hub:{
     title:'SCENARIO SELECT',
     progress:'{current} / {total}',
