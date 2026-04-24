@@ -14,13 +14,19 @@ function FieldMission(p){
   function getMissionI18nKey(missionId,nodeId){
     return missionId+'_'+nodeId;
   }
+  function resolveLocalePatch(patch){
+    if(!patch)return null;
+    var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+    if(patch[locale])return Object.assign({},patch,patch[locale]);
+    return patch;
+  }
   function localizeMissionNode(mission,node,nodeId){
     var missionKey=mission.id||p.missionId;
     var key=getMissionI18nKey(mission.id||p.missionId,nodeId);
     var loc=(typeof tc==='function')?tc('missions',key,null):null;
     var out=Object.assign({},node);
     var staticMission=(typeof FIELD_MISSION_NODE_OVERRIDES!=='undefined'&&FIELD_MISSION_NODE_OVERRIDES)?FIELD_MISSION_NODE_OVERRIDES[missionKey]:null;
-    var staticOverride=staticMission?staticMission[nodeId]:null;
+    var staticOverride=resolveLocalePatch(staticMission?staticMission[nodeId]:null);
     if(loc&&loc.text)out.text=loc.text;
     if(loc&&loc.choices&&Array.isArray(node.choices)){
       out.choices=node.choices.map(function(choice,idx){
@@ -37,13 +43,14 @@ function FieldMission(p){
         });
       }
     }
-    if(missionNarrative&&missionNarrative.nodeId===nodeId){
-      if(missionNarrative.text)out.text=missionNarrative.text;
-      else if(missionNarrative.textSuffix)out.text=(out.text||'')+'\n\n'+missionNarrative.textSuffix;
-      if(missionNarrative.endLabel&&out.choices&&out.choices.length){
+    var localizedNarrative=resolveLocalePatch(missionNarrative);
+    if(localizedNarrative&&localizedNarrative.nodeId===nodeId){
+      if(localizedNarrative.text)out.text=localizedNarrative.text;
+      else if(localizedNarrative.textSuffix)out.text=(out.text||'')+'\n\n'+localizedNarrative.textSuffix;
+      if(localizedNarrative.endLabel&&out.choices&&out.choices.length){
         out.choices=out.choices.map(function(choice,idx){
           if(idx!==0||choice.next!=='end')return choice;
-          return Object.assign({},choice,{label:missionNarrative.endLabel});
+          return Object.assign({},choice,{label:localizedNarrative.endLabel});
         });
       }
     }
@@ -69,6 +76,8 @@ function FieldMission(p){
     setMissionNarrative(null);
   },[p.missionId]);
 
+  var choiceLabelSignature=(node.choices||[]).map(function(c){ return c.label||''; }).join('||');
+
   useEffect(function(){
     setTextShown('');
     setShowChoices(false);
@@ -79,7 +88,7 @@ function FieldMission(p){
       else{clearInterval(t);setTimeout(function(){setShowChoices(true);},400);}
     },25);
     return function(){clearInterval(t);};
-  },[nodeId]);
+  },[nodeId,node.text,choiceLabelSignature]);
 
   function finalizeChoice(choice,extraBonus){
     if(choice.next==='end'){
@@ -101,11 +110,18 @@ function FieldMission(p){
   }
 
   function handleMiniGameDone(rank){
-    var reward=getFieldMiniGameReward(mission.id||p.missionId,rank)||null;
+    var baseReward=getFieldMiniGameReward(mission.id||p.missionId,rank)||null;
     var nextNodeId=pendingChoice?pendingChoice.next:null;
     var narrative=nextNodeId?getFieldMiniGameNarrative(mission.id||p.missionId,nextNodeId,rank):null;
+    var reward=Object.assign({},baseReward||{},{ miniGame:{
+      missionId: mission.id||p.missionId,
+      nodeId: nextNodeId,
+      rank: rank,
+      type: activeMiniGame?activeMiniGame.type:null,
+      key: activeMiniGame?activeMiniGame.key:null
+    }});
     if(reward)setMissionBonus(reward);
-    setMissionNarrative(narrative||null);
+    setMissionNarrative(narrative?Object.assign({nodeId:nextNodeId},narrative):null);
     setActiveMiniGame(null);
     if(pendingChoice){
       var nextChoice=pendingChoice;

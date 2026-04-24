@@ -254,7 +254,7 @@ function App(){
     if(riskFired){setTimeout(function(){setToastType('risk');setToast(riskFired);setTimeout(function(){setToast('')},2800)},600)}
     else if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);setTimeout(function(){setToast('')},2400)},400)}}
   };
-  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,chainQueue);setCurMission(null);nextCard(ns,ng,missionLogs,chainQueue);setPhase('game')};
+  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'[Follow-up card added] ':'[후속 카드 추가] ')+followCard.id);setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
     if(act===3){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
@@ -452,6 +452,12 @@ function App(){
             {id:'M-002',label:'M-002 / 신호 정렬 / SPEC-011 활동 구역 조사'},
             {id:'MI-01',label:'MI-01 / 격리 봉인 / 격리실 이상 반응'},
             {id:'MI-04',label:'MI-04 / 권한 추적 / 보안구역 인증 오류'}
+            ,{id:'M-010',label:'M-010 / Route Evade / SPEC-015 Track'},
+            {id:'MI-05',label:'MI-05 / Scan Search / Missing Staff'},
+            {id:'MI-03',label:'MI-03 / Sample Recovery / Lab Mutation'},
+            {id:'M-003',label:'M-003 / Evidence Sort / Trace Review'},
+            {id:'MI-02',label:'MI-02 / Log Reconstruction / CCTV Gap'},
+            {id:'M-007',label:'M-007 / Latent Screen / Maximum Strike'}
           ].map(function(item){
             return h('button',{key:item.id,className:'btn',style:{width:'100%',textAlign:'left',padding:'12px 14px'},onClick:function(){setCurMission(item.id);setShowMissionDebug(false);setPhase('mission');}},item.label);
           })

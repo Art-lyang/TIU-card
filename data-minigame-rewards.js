@@ -348,3 +348,185 @@
     );
   }
 })();
+
+(function(){
+  if(typeof window==='undefined')return;
+
+  Object.assign(window.FIELD_MINIGAME_CONFIGS||(window.FIELD_MINIGAME_CONFIGS={}),{
+    "M-010": {
+      start: {
+        drain: { key: "route_evasion", type: "route" },
+        lure: { key: "route_evasion", type: "route" },
+        dive: { key: "route_evasion", type: "route" }
+      }
+    },
+    "MI-05": {
+      start: {
+        survey: { key: "scan_search", type: "scan" },
+        lockdown: { key: "scan_search", type: "scan" }
+      }
+    },
+    "MI-03": {
+      start: {
+        quarantine: { key: "sample_recovery", type: "sample" },
+        research: { key: "sample_recovery", type: "sample" }
+      }
+    }
+  });
+
+  Object.assign(window.FIELD_MINIGAME_REWARDS||(window.FIELD_MINIGAME_REWARDS={}),{
+    "M-010": {
+      great: { result: { c: 1, t: 1 } },
+      success: { result: { c: 1 } },
+      partial: { result: { t: 1 } },
+      fail: { result: { r: -1, o: -1 } }
+    },
+    "MI-05": {
+      great: { result: { o: 1, t: 1 } },
+      success: { result: { o: 1 } },
+      partial: { result: { t: 1 } },
+      fail: { result: { r: -1, t: -1 } }
+    },
+    "MI-03": {
+      great: { result: { t: 1, o: 1 } },
+      success: { result: { t: 1 } },
+      partial: { result: { r: -1 } },
+      fail: { result: { c: -1, r: -1 } }
+    }
+  });
+
+  Object.assign(window.FIELD_MINIGAME_NARRATIVES||(window.FIELD_MINIGAME_NARRATIVES={}),{
+    "M-010": {
+      drain: {
+        great: {
+          ko: { textSuffix: "[경로 선택: 대성공]\n배수 밸브까지 도달하는 동안 매복 지점을 완전히 비켜나간다.\n강도윤은 목표 지점에 도착하자마자 전투 준비를 끝낸다.", endLabel: "[ 기지 귀환 — 배수 경로 확보 ]" },
+          en: { textSuffix: "[Route Evade: Great Success]\nThe team reaches the drainage controls without exposing the approach route.\nDo-yun is already in position when the target surfaces.", endLabel: "[ Return to Base — Drain Route Secured ]" }
+        },
+        success: {
+          ko: { textSuffix: "[경로 선택: 성공]\n우회 경로를 유지한 채 목표 지점까지 접근한다.\n기습은 피했고, 작전은 예정대로 이어진다.", endLabel: "[ 기지 귀환 — 배수 작전 진행 ]" },
+          en: { textSuffix: "[Route Evade: Success]\nThe target point is reached through a workable bypass route.\nThe ambush is avoided and the operation proceeds on schedule.", endLabel: "[ Return to Base — Drain Operation Proceeded ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[경로 선택: 부분 성공]\n목표에는 닿았지만 위험 구역을 스치며 흔적을 남긴다.\n개체가 완전히 눈치채진 않았어도 접근은 들킨 쪽에 가깝다.", endLabel: "[ 기지 귀환 — 배수 접근 / 흔적 노출 ]" },
+          en: { textSuffix: "[Route Evade: Partial Success]\nThe route reaches the objective, but the team brushes a danger tile and leaves a trace.\nThe approach is not fully compromised, but it is no longer clean.", endLabel: "[ Return to Base — Drain Approach / Trace Exposed ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[경로 선택: 실패]\n우회 경로 판단이 늦어지며 개체에게 먼저 동선이 읽힌다.\n배수 작전은 이어졌지만 선제권은 이미 잃었다.", endLabel: "[ 기지 귀환 — 배수 작전 / 선제권 상실 ]" },
+          en: { textSuffix: "[Route Evade: Failure]\nThe bypass call comes too late and the target reads the team first.\nThe operation continues, but the initiative is already gone.", endLabel: "[ Return to Base — Drain Operation / Initiative Lost ]" }
+        }
+      },
+      lure: {
+        great: {
+          ko: { textSuffix: "[경로 선택: 대성공]\n우회 경로를 정확히 잡아 미끼 지점을 선점한다.\n이번엔 개체가 먼저 돌아드는 쪽이 아니라, 당신이 먼저 읽는 쪽이다.", endLabel: "[ 기지 귀환 — 유인 경로 선점 ]" },
+          en: { textSuffix: "[Route Evade: Great Success]\nThe team reaches the lure point first and seizes the route cleanly.\nThis time the creature is the one being read, not the other way around.", endLabel: "[ Return to Base — Lure Route Secured ]" }
+        },
+        success: {
+          ko: { textSuffix: "[경로 선택: 성공]\n우회 동선을 유지한 채 유인 위치를 잡는다.\n기습 가능성은 줄었고, 다음 판단은 당신 쪽으로 넘어온다.", endLabel: "[ 기지 귀환 — 유인 경로 확보 ]" },
+          en: { textSuffix: "[Route Evade: Success]\nThe lure position is secured through a safe route.\nThe chance of being ambushed drops and the next move belongs to the player.", endLabel: "[ Return to Base — Lure Route Ready ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[경로 선택: 부분 성공]\n목표 위치에는 닿았지만 재머 구역에서 이동을 너무 많이 소모한다.\n함정은 깔 수 있어도 대응 여유가 줄었다.", endLabel: "[ 기지 귀환 — 유인 경로 / 대응 지연 ]" },
+          en: { textSuffix: "[Route Evade: Partial Success]\nThe team reaches the lure point, but jammer zones consume too much movement.\nA trap is still possible, though reaction time is reduced.", endLabel: "[ Return to Base — Lure Route / Response Delayed ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[경로 선택: 실패]\n우회 경로가 꼬이며 개체에게 역으로 뒤를 내준다.\n유인 계획은 남아 있어도, 이미 상대가 먼저 움직이고 있다.", endLabel: "[ 기지 귀환 — 유인 경로 붕괴 ]" },
+          en: { textSuffix: "[Route Evade: Failure]\nThe bypass collapses and the creature gains the rear angle instead.\nThe lure plan still exists on paper, but the enemy is already moving first.", endLabel: "[ Return to Base — Lure Route Collapsed ]" }
+        }
+      },
+      dive: {
+        great: {
+          ko: { textSuffix: "[경로 선택: 대성공]\n수중 진입 경로를 완벽히 정리해 잠복 지점 바로 앞까지 들키지 않는다.\n위험한 선택이었지만, 이번만큼은 계산이 먼저였다.", endLabel: "[ 기지 귀환 — 수중 진입 경로 확보 ]" },
+          en: { textSuffix: "[Route Evade: Great Success]\nThe underwater entry route is cleaned perfectly and the team closes in without being noticed.\nIt was the riskier option, but this time the numbers held.", endLabel: "[ Return to Base — Dive Route Secured ]" }
+        },
+        success: {
+          ko: { textSuffix: "[경로 선택: 성공]\n수중 진입 경로를 유지하며 접근한다.\n위험은 컸지만 접근 자체는 성립했다.", endLabel: "[ 기지 귀환 — 수중 진입 ]" },
+          en: { textSuffix: "[Route Evade: Success]\nThe underwater entry route holds and the team gets close enough to engage.\nThe risk remains high, but the approach works.", endLabel: "[ Return to Base — Dive Entry Executed ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[경로 선택: 부분 성공]\n진입은 했지만 위험 구역을 비껴 지나지 못한다.\n수중 강습은 가능해도 개체가 완전히 무방비였다고 보긴 어렵다.", endLabel: "[ 기지 귀환 — 수중 진입 / 노출 흔적 ]" },
+          en: { textSuffix: "[Route Evade: Partial Success]\nThe team enters, but cannot avoid every danger cell.\nThe dive assault is still possible, though the target is no longer fully unaware.", endLabel: "[ Return to Base — Dive Entry / Trace Left ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[경로 선택: 실패]\n진입 경로가 무너지고 수중에서 먼저 움직임이 읽힌다.\n강행은 했지만, 그 시점부터는 정면 충돌에 가깝다.", endLabel: "[ 기지 귀환 — 수중 진입 / 매복 실패 ]" },
+          en: { textSuffix: "[Route Evade: Failure]\nThe entry route breaks and the movement is read in the water.\nThe assault still happens, but from that point on it is almost a frontal clash.", endLabel: "[ Return to Base — Dive Entry / Ambush Failed ]" }
+        }
+      }
+    },
+    "MI-05": {
+      survey: {
+        great: {
+          ko: { textSuffix: "[스캔 탐색: 대성공]\n열원 중심을 정확히 붙잡으며 미등록 통로의 흐름이 한 번에 이어진다.\n조사는 탐색이 아니라 복원에 가까워진다.", endLabel: "[ 처리 완료 — 미등록 구역 파악 / 경로 복원 ]" },
+          en: { textSuffix: "[Scan Search: Great Success]\nThe heat-source center is fixed exactly, and the hidden passage flow connects in a single sweep.\nThe search becomes closer to reconstruction than guesswork.", endLabel: "[ Resolution Complete — Hidden Zone Mapped / Route Restored ]" }
+        },
+        success: {
+          ko: { textSuffix: "[스캔 탐색: 성공]\n이상 반응 지점을 확보해 수색 범위를 크게 줄인다.\n숨은 통로는 더 이상 막연한 추측이 아니다.", endLabel: "[ 처리 완료 — 미등록 구역 파악 ]" },
+          en: { textSuffix: "[Scan Search: Success]\nThe abnormal point is secured and the search area narrows sharply.\nThe hidden passage is no longer just a theory.", endLabel: "[ Resolution Complete — Hidden Zone Located ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[스캔 탐색: 부분 성공]\n근처 반응은 잡았지만 중심점을 놓친다.\n도면 밖 공간은 확인됐지만, 연결선은 아직 흐릿하다.", endLabel: "[ 처리 완료 — 미등록 구역 파악 / 경로 불완전 ]" },
+          en: { textSuffix: "[Scan Search: Partial Success]\nA nearby reaction is caught, but the center is missed.\nThe off-grid space is real, yet the route is still incomplete.", endLabel: "[ Resolution Complete — Hidden Zone / Route Incomplete ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[스캔 탐색: 실패]\n가짜 반응에 시간을 빼앗기며 핵심 열원을 놓친다.\n통로는 존재하지만, 오늘 조사로는 더 선명해지지 않는다.", endLabel: "[ 처리 완료 — 미등록 구역 파악 / 스캔 실패 ]" },
+          en: { textSuffix: "[Scan Search: Failure]\nFalse reactions burn the search window and the core heat source is missed.\nThe passage exists, but this sweep does not make it any clearer.", endLabel: "[ Resolution Complete — Hidden Zone / Scan Failed ]" }
+        }
+      },
+      lockdown: {
+        great: {
+          ko: { textSuffix: "[스캔 탐색: 대성공]\n벽 뒤 열원 좌표를 거의 오차 없이 집어낸다.\n봉쇄 감시는 단순 대기가 아니라 정확한 감시선으로 바뀐다.", endLabel: "[ 처리 완료 — 봉쇄 감시 / 열원 좌표 확보 ]" },
+          en: { textSuffix: "[Scan Search: Great Success]\nThe hidden heat source is pinpointed almost without error.\nThe lockdown shifts from passive waiting to active surveillance.", endLabel: "[ Resolution Complete — Lockdown Surveillance / Heat Signature Secured ]" }
+        },
+        success: {
+          ko: { textSuffix: "[스캔 탐색: 성공]\n열원 반응을 포착해 감시 센서의 위치를 보정한다.\n기록은 더 이상 우연처럼 보이지 않는다.", endLabel: "[ 처리 완료 — 봉쇄 감시 ]" },
+          en: { textSuffix: "[Scan Search: Success]\nThe heat reaction is caught and the sensor line is corrected.\nThe record no longer looks like a fluke.", endLabel: "[ Resolution Complete — Lockdown Surveillance ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[스캔 탐색: 부분 성공]\n반응 근처까지는 갔지만 중심점을 붙들지 못한다.\n이상 징후는 남지만 확신은 부족하다.", endLabel: "[ 처리 완료 — 봉쇄 감시 / 반응 불안정 ]" },
+          en: { textSuffix: "[Scan Search: Partial Success]\nThe search reaches the reaction zone but never locks the center.\nThe anomaly remains, but certainty does not.", endLabel: "[ Resolution Complete — Lockdown Surveillance / Unstable Signal ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[스캔 탐색: 실패]\n유인 반응만 따라가다 핵심 지점을 놓친다.\n감시 기록은 남아도 무엇을 봤는지는 흐려진다.", endLabel: "[ 처리 완료 — 봉쇄 감시 / 스캔 불발 ]" },
+          en: { textSuffix: "[Scan Search: Failure]\nThe sweep chases decoys and misses the true center.\nA record remains, but what it actually saw is blurred.", endLabel: "[ Resolution Complete — Lockdown Surveillance / No Lock ]" }
+        }
+      }
+    },
+    "MI-03": {
+      quarantine: {
+        great: {
+          ko: { textSuffix: "[샘플 회수: 대성공]\n변이 샘플을 손상 없이 분리하며 검역 판단에 쓸 수 있는 기준치까지 확보한다.\n검역은 더 이상 막연한 격리가 아니다.", endLabel: "[ 처리 완료 — 검역 + 배관 차단 / 샘플 확보 ]" },
+          en: { textSuffix: "[Sample Recovery: Great Success]\nThe mutated sample is isolated intact and secured to a level useful for quarantine judgment.\nThe quarantine is no longer blind containment.", endLabel: "[ Resolution Complete — Quarantine + Pipe Cutoff / Sample Secured ]" }
+        },
+        success: {
+          ko: { textSuffix: "[샘플 회수: 성공]\n유효한 샘플을 확보해 검역 판단 근거가 보강된다.", endLabel: "[ 처리 완료 — 검역 + 배관 차단 ]" },
+          en: { textSuffix: "[Sample Recovery: Success]\nA usable specimen is secured and strengthens the quarantine decision.", endLabel: "[ Resolution Complete — Quarantine + Pipe Cutoff ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[샘플 회수: 부분 성공]\n일부 조직만 남겨 검체 가치는 떨어지지만, 오염 방향을 짐작할 정도는 된다.", endLabel: "[ 처리 완료 — 검역 + 배관 차단 / 검체 불완전 ]" },
+          en: { textSuffix: "[Sample Recovery: Partial Success]\nOnly part of the tissue remains. Its value drops, but it is enough to estimate the contamination route.", endLabel: "[ Resolution Complete — Quarantine + Pipe Cutoff / Incomplete Specimen ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[샘플 회수: 실패]\n회수 장비가 버티지 못하고 샘플이 무너진다.\n검역은 유지했지만, 무엇이 스며들었는지는 더 흐려진다.", endLabel: "[ 처리 완료 — 검역 + 배관 차단 / 샘플 붕괴 ]" },
+          en: { textSuffix: "[Sample Recovery: Failure]\nThe extractor cannot hold and the specimen collapses.\nQuarantine remains in place, but the source becomes even harder to read.", endLabel: "[ Resolution Complete — Quarantine + Pipe Cutoff / Sample Lost ]" }
+        }
+      },
+      research: {
+        great: {
+          ko: { textSuffix: "[샘플 회수: 대성공]\n활성 샘플을 손상 없이 넘기며 윤세진이 바로 분석 가능한 수준의 상태를 확보한다.\n이번 결정은 위험하지만 값어치가 분명하다.", endLabel: "[ 처리 완료 — 연구 활용 / 고순도 샘플 확보 ]" },
+          en: { textSuffix: "[Sample Recovery: Great Success]\nThe active specimen is transferred intact and Se-jin receives it in a condition ready for immediate analysis.\nThe decision is risky, but the value is undeniable.", endLabel: "[ Resolution Complete — Research Use / High-Purity Sample ]" }
+        },
+        success: {
+          ko: { textSuffix: "[샘플 회수: 성공]\n연구에 쓸 수 있는 활성 샘플을 확보한다.", endLabel: "[ 처리 완료 — 연구 활용 ]" },
+          en: { textSuffix: "[Sample Recovery: Success]\nAn active specimen viable for study is secured.", endLabel: "[ Resolution Complete — Research Use ]" }
+        },
+        partial: {
+          ko: { textSuffix: "[샘플 회수: 부분 성공]\n연구는 가능하지만 조직 일부가 손상돼 결과 신뢰도는 낮아진다.", endLabel: "[ 처리 완료 — 연구 활용 / 샘플 손상 ]" },
+          en: { textSuffix: "[Sample Recovery: Partial Success]\nThe sample is still usable for study, but partial tissue damage lowers confidence in the results.", endLabel: "[ Resolution Complete — Research Use / Sample Damaged ]" }
+        },
+        fail: {
+          ko: { textSuffix: "[샘플 회수: 실패]\n활성 샘플을 붙들지 못해 연구 가치가 크게 깎인다.\n위험만 감수하고 가장 중요한 부분을 잃은 셈이다.", endLabel: "[ 처리 완료 — 연구 활용 / 회수 실패 ]" },
+          en: { textSuffix: "[Sample Recovery: Failure]\nThe active specimen cannot be held and most of its research value is lost.\nThe risk is paid, but the core advantage is gone.", endLabel: "[ Resolution Complete — Research Use / Recovery Failed ]" }
+        }
+      }
+    }
+  });
+})();
