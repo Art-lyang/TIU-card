@@ -65,6 +65,10 @@ window.TS_I18N.mergeContent('en', {
     "C-FE012-A": { msg: "Lim Jae-hyeok: Local server room operation report.\n\n\"Independent backups are accumulating on the local server. We can share only what we want with ORACLE.\"", leftLabel: "Maintain ORACLE sharing", rightLabel: "Operate local-first" },
     "C-FE013-A": { msg: "Seo Hae-eun: Shortwave communication room report.\n\n\"We secured a channel for external contact. Prometheus-side frequencies can also be detected.\"", leftLabel: "Receive only", rightLabel: "Test two-way operation" },
     "C-FE016-A": { msg: "Kang Do-yun: Armory maintenance report.\n\n\"We have enough personnel equipment in reserve. The question is when we will have to use it.\"", leftLabel: "Use only for training", rightLabel: "Prepare emergency deployment" }
+  },
+  resultText: {
+    "CA-007_left": "Medical supplies are prioritized. The infirmary reserve stabilizes.",
+    "CA-007_right": "Supplies are distributed according to ORACLE's recommendation. Operational efficiency is maintained."
   }
 });
 })();

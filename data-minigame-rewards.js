@@ -351,6 +351,67 @@
 
 (function(){
   if(typeof window==='undefined')return;
+  var narratives=window.FIELD_MINIGAME_NARRATIVES||(window.FIELD_MINIGAME_NARRATIVES={});
+  narratives["MI-04"]=Object.assign({},narratives["MI-04"]||{},{
+    remove: {
+      great: {
+        ko: { textSuffix: "[권한 추적: 대성공]\n하드웨어 제거와 동시에 권한 사슬까지 깨끗하게 추적된다.\n누가 이 장치를 숨겼는지에 가까운 흔적이 남는다.", endLabel: "[ 처리 완료 — 하드웨어 제거 / 권한 사슬 확보 ]" },
+        en: { textSuffix: "[Authority Trace: Great Success]\nThe hardware is removed while the permission chain is traced cleanly.\nThe remaining trail comes close to identifying who hid the device.", endLabel: "[ Resolution Complete — Hardware Removed / Permission Chain Secured ]" }
+      },
+      success: {
+        ko: { textSuffix: "[권한 추적: 성공]\n하드웨어는 제거됐고, 추적 로그도 기본선은 확보된다.", endLabel: "[ 처리 완료 — 하드웨어 제거 ]" },
+        en: { textSuffix: "[Authority Trace: Success]\nThe hardware is removed, and the trace log secures a usable baseline.", endLabel: "[ Resolution Complete — Hardware Removed ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[권한 추적: 부분 성공]\n물리 제거는 끝났지만 추적 체인은 도중에 흐려진다.\n증거는 남았으나, 누군가 일부를 지운 흔적이 보인다.", endLabel: "[ 처리 완료 — 하드웨어 제거 / 추적 불완전 ]" },
+        en: { textSuffix: "[Authority Trace: Partial Success]\nThe physical removal is complete, but the trace chain blurs partway through.\nEvidence remains, though someone appears to have erased part of it.", endLabel: "[ Resolution Complete — Hardware Removed / Trace Incomplete ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[권한 추적: 실패]\n제거는 해냈지만 핵심 추적 고리를 놓친다.\n당장 위험은 사라졌어도, 누가 심었는지는 다시 어둠 속으로 들어간다.", endLabel: "[ 처리 완료 — 하드웨어 제거 / 추적 실패 ]" },
+        en: { textSuffix: "[Authority Trace: Failure]\nThe device is removed, but the core trace link is lost.\nThe immediate danger is gone, yet whoever planted it slips back into the dark.", endLabel: "[ Resolution Complete — Hardware Removed / Trace Failed ]" }
+      }
+    },
+    trap: {
+      great: {
+        ko: { textSuffix: "[권한 추적: 대성공]\n감시 트랩은 그대로 살아 있고, 접근 주체를 특정할 수 있을 만큼 선명한 권한 흔적이 남는다.", endLabel: "[ 처리 완료 — 감시 트랩 가동 / 추적선 확보 ]" },
+        en: { textSuffix: "[Authority Trace: Great Success]\nThe monitoring trap remains active, and the permission trail is clear enough to identify the next access source.", endLabel: "[ Resolution Complete — Monitoring Trap Active / Trace Line Secured ]" }
+      },
+      success: {
+        ko: { textSuffix: "[권한 추적: 성공]\n트랩은 정상적으로 작동 대기 상태에 들어간다.", endLabel: "[ 처리 완료 — 감시 트랩 가동 ]" },
+        en: { textSuffix: "[Authority Trace: Success]\nThe trap enters a normal armed state and waits for the next access attempt.", endLabel: "[ Resolution Complete — Monitoring Trap Active ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[권한 추적: 부분 성공]\n트랩은 걸었지만 추적 버퍼 일부가 비어 있다.\n다음 접근은 잡을 수 있어도, 이전 흔적은 희미하다.", endLabel: "[ 처리 완료 — 감시 트랩 가동 / 버퍼 손실 ]" },
+        en: { textSuffix: "[Authority Trace: Partial Success]\nThe trap is armed, but part of the trace buffer is empty.\nThe next access can be caught, though the previous trail remains faint.", endLabel: "[ Resolution Complete — Monitoring Trap Active / Buffer Loss ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[권한 추적: 실패]\n트랩은 남겼지만 권한 추적 경로가 무너진다.\n누군가 다시 들어오면 알 수는 있겠지만, 지금까지의 흔적은 건지지 못한다.", endLabel: "[ 처리 완료 — 감시 트랩 가동 / 추적 손실 ]" },
+        en: { textSuffix: "[Authority Trace: Failure]\nThe trap remains, but the permission trace route collapses.\nIf someone enters again, you will know; the trail up to now is lost.", endLabel: "[ Resolution Complete — Monitoring Trap Active / Trace Lost ]" }
+      }
+    },
+    oracle: {
+      great: {
+        ko: { textSuffix: "[권한 추적: 대성공]\nORACLE 패치 적용 전후의 권한 흐름이 선명하게 갈린다.\n패치가 무엇을 지웠는지까지 역으로 읽을 수 있을 정도다.", endLabel: "[ 처리 완료 — ORACLE 패치 / 흔적 분석 완료 ]" },
+        en: { textSuffix: "[Authority Trace: Great Success]\nThe permission flow before and after the ORACLE patch separates cleanly.\nThe trace is clear enough to infer what the patch tried to erase.", endLabel: "[ Resolution Complete — ORACLE Patch / Trace Analysis Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[권한 추적: 성공]\n패치는 적용됐고 보안구역은 다시 안정권으로 돌아온다.", endLabel: "[ 처리 완료 — ORACLE 패치 ]" },
+        en: { textSuffix: "[Authority Trace: Success]\nThe patch is applied and the security zone returns to a stable state.", endLabel: "[ Resolution Complete — ORACLE Patch Applied ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[권한 추적: 부분 성공]\n패치는 완료됐지만, 지워진 영역이 생각보다 넓다.\n정리는 됐으나 남은 정보는 적다.", endLabel: "[ 처리 완료 — ORACLE 패치 / 정보 일부 손실 ]" },
+        en: { textSuffix: "[Authority Trace: Partial Success]\nThe patch is complete, but the erased area is wider than expected.\nThe zone is cleaned up, with less information left behind.", endLabel: "[ Resolution Complete — ORACLE Patch / Partial Data Loss ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[권한 추적: 실패]\n패치는 적용됐지만 추적 흔적은 거의 남지 않는다.\n보안은 봉합됐어도, 이번에도 누가 손댔는지는 흐려진다.", endLabel: "[ 처리 완료 — ORACLE 패치 / 추적 불가 ]" },
+        en: { textSuffix: "[Authority Trace: Failure]\nThe patch is applied, but almost no trace remains.\nSecurity is sealed, yet the actor behind the access is blurred again.", endLabel: "[ Resolution Complete — ORACLE Patch / Trace Unavailable ]" }
+      }
+    }
+  });
+})();
+
+(function(){
+  if(typeof window==='undefined')return;
 
   Object.assign(window.FIELD_MINIGAME_CONFIGS||(window.FIELD_MINIGAME_CONFIGS={}),{
     "M-010": {

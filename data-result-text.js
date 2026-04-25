@@ -15,6 +15,89 @@ function _rtPool(ko, en) {
   return _rtLocale() === 'en' ? en : ko;
 }
 
+function _rtBadEnglishText(v) {
+  return /[\uac00-\ud7a3]/.test(String(v || '')) || /\ufffd|[?]{2,}/.test(String(v || ''));
+}
+
+var _RT_POS_EN = {
+  c: [
+    'Containment monitoring has been reinforced.',
+    'Perimeter defenses have stabilized.',
+    'Control over the containment zone has strengthened.',
+    'The alert posture has been raised one step.'
+  ],
+  r: [
+    'Additional supplies have been secured.',
+    'Branch reserves have increased.',
+    'Medicine and rations have been preserved.',
+    'Resource efficiency has improved.'
+  ],
+  t: [
+    'Personnel accepted the directive more readily.',
+    'The branch atmosphere has stabilized.',
+    'Senior staff showed renewed trust.',
+    'Team cohesion has grown stronger.'
+  ],
+  o: [
+    'ORACLE evaluates the decision positively.',
+    'The commander evaluation index has risen.',
+    "ORACLE: 'Operational efficiency confirmed.'",
+    'The system records your decision.'
+  ]
+};
+
+var _RT_NEG_EN = {
+  c: [
+    'A weak point has opened in the containment line.',
+    'A monitoring gap has appeared on the perimeter.',
+    'The burden of maintaining defenses has increased.',
+    'A small crack has formed in the alert network.'
+  ],
+  r: [
+    'Branch reserve stock has dropped.',
+    'Supply margin has decreased.',
+    'Resources are being consumed faster than expected.',
+    'Material flexibility has narrowed.'
+  ],
+  t: [
+    'A subtle tension lingers among the personnel.',
+    'The branch mood has dimmed slightly.',
+    'The commander feels harder to trust.',
+    'Unease is spreading inside the base.'
+  ],
+  o: [
+    'ORACLE questions your judgment.',
+    'The commander evaluation index has shifted.',
+    "ORACLE: 'Nonstandard decision pattern detected.'",
+    'The system records a warning.'
+  ]
+};
+
+var _RT_NEUTRAL_EN = [
+  'The directive has been logged.',
+  'The order has been processed.',
+  'Proceeding to the next matter.',
+  'The report has been received.',
+  'Processing is complete.',
+  'The record has been updated and filed.',
+  'ORACLE records the decision.',
+  'Routine approval has been processed.',
+  'The decision has been documented.',
+  'Paperwork is complete.'
+];
+
+var _RT_GI_POS_EN = [
+  'ORACLE responds with quiet approval.',
+  'The matter proceeds along the expected route.',
+  'The system responds without incident.'
+];
+
+var _RT_GI_NEG_EN = [
+  'A small warning appears at the edge of the terminal.',
+  "ORACLE's immediate response is withheld.",
+  'A separate tag is attached to the record log.'
+];
+
 var _RT_POS = {
   c: _rtPool(
     [
@@ -193,7 +276,9 @@ function getResultText(cardId, dir) {
     if (loc && loc.text) return loc.text;
     if (typeof loc === 'string') return loc;
   }
-  if (RESULT_TEXT[key]) return RESULT_TEXT[key];
+  if (RESULT_TEXT[key]) {
+    if (_rtLocale() !== 'en' || !_rtBadEnglishText(RESULT_TEXT[key])) return RESULT_TEXT[key];
+  }
 
   var card = null;
   for (var i = 0; i < CARDS.length; i++) {
@@ -226,11 +311,18 @@ function getResultText(cardId, dir) {
   }
 
   if (best) {
-    var pool = fx[best] > 0 ? _RT_POS[best] : _RT_NEG[best];
+    var pool = _rtLocale() === 'en'
+      ? (fx[best] > 0 ? _RT_POS_EN[best] : _RT_NEG_EN[best])
+      : (fx[best] > 0 ? _RT_POS[best] : _RT_NEG[best]);
     return pool[seed % pool.length];
   }
 
   var g = ch.g || 0;
+  if (_rtLocale() === 'en') {
+    if (g > 0) return _RT_GI_POS_EN[seed % _RT_GI_POS_EN.length];
+    if (g < 0) return _RT_GI_NEG_EN[seed % _RT_GI_NEG_EN.length];
+    return _RT_NEUTRAL_EN[seed % _RT_NEUTRAL_EN.length];
+  }
   if (g > 0) return _RT_GI_POS[seed % _RT_GI_POS.length];
   if (g < 0) return _RT_GI_NEG[seed % _RT_GI_NEG.length];
   return _RT_NEUTRAL[seed % _RT_NEUTRAL.length];
