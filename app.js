@@ -430,6 +430,7 @@ function App(){
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
     h(Stats,{stats:stats,preview:preview}),
+    h(DayObjective,{stats:stats,act:act,logs:logs}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},tt('scenario.act',{act:act},'ACT '+act)),
       h('span',{className:'info-tag'},tt('scenario.mission',{current:ct+1,total:cpd},'MIS '+(ct+1)+'/'+cpd)),

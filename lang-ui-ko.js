@@ -50,6 +50,15 @@ window.TS_I18N.mergeUI('ko', {
     evidence:'증거 {count}',
     menu:'☰'
   },
+  objective:{
+    label:'DAY 목표',
+    day1:'한국지부 초기 안정화 절차를 완료하십시오.',
+    act1:'봉쇄·자원·신뢰를 유지하며 기지 운영을 안정화하십시오.',
+    act2:'외부 위협을 감시하고 ORACLE 권고와 현장 판단의 균형을 맞추십시오.',
+    act3:'비표준 징후를 추적하고 핵심 단서를 확보하십시오.',
+    act4:'최종 결정을 준비하며 간부진과 기지 생존성을 보존하십시오.',
+    critical:'위험 지표가 감지되었습니다. 우선 붕괴 직전 자원을 안정화하십시오.'
+  },
   tutorial:{
     header:'ORACLE BRIEFING — {current}/{total}',
     skip:'[ 튜토리얼 건너뛰기 ]',

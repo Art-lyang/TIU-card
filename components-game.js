@@ -138,6 +138,16 @@ function Stats(p){
       h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
   );
 }
+function DayObjective(p){
+  var st=p.stats||{},act=p.act||1,day=st.day||1;
+  var critical=['c','r','t','o'].filter(function(k){return (st[k]||0)<=25});
+  var key=critical.length?'critical':(day<=1?'day1':('act'+act));
+  var text=tt('objective.'+key,{act:act,day:day},null)||tt('objective.act1',null,'한국지부 초기 안정화 절차를 유지하십시오.');
+  return h('div',{className:'objective-bar'},
+    h('span',{className:'objective-label'},tt('objective.label',null,'DAY OBJECTIVE')),
+    h('span',{className:'objective-text'},text)
+  );
+}
 function CardC(p){
   var card=p.card,gi=p.gi||0;
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
@@ -539,6 +549,8 @@ function NewsReport3(p){
     return{tag:'INTEL-01',text:body,gl:false};
   };
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
+  var reportMono="'Share Tech Mono','Noto Sans KR',monospace";
+  var reportBody={fontFamily:reportMono,fontSize:11,lineHeight:1.65,color:'rgba(var(--ui-rgb),.84)',letterSpacing:.15};
   var AP={
     h:[tt('news.assess.high1',null,'Operational efficiency stable. Maintain current directive.'),tt('news.assess.high2',null,'High compliance with ORACLE advisories. Korea Branch performance remains above average.'),tt('news.assess.high3',null,'Commander trust index elevated. Expanded authority under review.'),tt('news.assess.high4',null,'Branch stability reconfirmed. Additional clearance being considered.')],
     m:[tt('news.assess.mid1',null,'Operations stable. Minor nonstandard signals detected.'),tt('news.assess.mid2',null,'Overall conditions nominal. Decision variance among personnel has slightly increased.'),tt('news.assess.mid3',null,'Branch remains within normal bounds. Select indicators under observation.'),tt('news.assess.mid4',null,'Average ORACLE compliance rate. Continued monitoring advised.')],
@@ -558,7 +570,7 @@ function NewsReport3(p){
   };
   var facilitySection=(function(){
     var fac=p.facility||{},comp=fac.completed||[],appr=fac.approved||[],lines=[];
-    var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
+    var cm={red:'#ff6644',orange:'#f0a030',green:'rgba(var(--ui-rgb),.82)',gray:'rgba(var(--ui-rgb),.48)'};
     var feNameMapEn={
       'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
       'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
@@ -585,7 +597,7 @@ function NewsReport3(p){
     return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
       lines.map(function(line,i){
-        return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'• '+line.text)
+        return h('div',{key:'fac-'+i,style:Object.assign({},reportBody,{color:cm[line.color]||'rgba(var(--ui-rgb),.78)',padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'})},'> '+line.text)
       })
     );
   })();
@@ -611,7 +623,7 @@ function NewsReport3(p){
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('경고')>=0||line.indexOf('warning')>=0||line.indexOf('CRITICAL')>=0;
-            return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
+            return h('div',{key:'sit-'+i,style:Object.assign({},reportBody,{color:isWarn?'#ff8844':'rgba(var(--ui-rgb),.82)',padding:'2px 0',animation:'fadeIn 0.4s ease'})},line)
           }))
       })(),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
@@ -619,7 +631,7 @@ function NewsReport3(p){
         var hl=parseHL(l);
         return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
-          h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
+          h('div',{style:Object.assign({},reportBody,{color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.86)'})},hl.text))
       }),
       shown>=p.headlines.length&&facilitySection),
     shown>=p.headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},

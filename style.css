@@ -45,6 +45,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .gauge-critical-hi .gauge-val{color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.5);animation:criticalPulse 1.2s ease-in-out infinite}
 .gauge-critical-hi .gauge-fill{filter:hue-rotate(-60deg) saturate(1.6) brightness(1.1)}
 .gauge-critical-hi .gauge-icon{filter:drop-shadow(0 0 4px rgba(240,160,48,0.7)) drop-shadow(0 0 10px rgba(240,160,48,0.35))}
+.objective-bar{width:100%;max-width:440px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px;margin:3px 0 5px;padding:5px 9px;border:1px solid rgba(var(--ui-rgb),.18);background:linear-gradient(90deg,rgba(var(--ui-rgb),.055),rgba(5,10,12,.18));box-shadow:inset 0 0 14px rgba(var(--ui-rgb),.035);font-family:'Share Tech Mono','Noto Sans KR',monospace;box-sizing:border-box}
+.objective-label{font-size:9px;color:#f0a030;letter-spacing:1.4px;white-space:nowrap;text-transform:uppercase}
+.objective-text{min-width:0;font-size:10px;line-height:1.35;color:rgba(var(--ui-rgb),.78);letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
 @keyframes criticalPulse{0%,100%{opacity:1}50%{opacity:0.55}}
 .delta-float{position:absolute;right:30px;top:50%;font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:bold;pointer-events:none;animation:deltaFloatUp 1.5s ease-out forwards;z-index:3;text-shadow:0 0 6px currentColor}
 .delta-float.delta-up{color:#7fd47f}
@@ -108,6 +111,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .gauge-bar-inner{left:2px;right:2px;top:1px;bottom:1px}
   .stats-pane-ko .gauge-row{grid-template-columns:22px 42px minmax(0,1fr) 28px;column-gap:2px}
   .stats-pane-ko .gauge-label{width:42px;min-width:42px;max-width:42px}
+  .objective-bar{margin:3px 0 4px;padding:4px 7px;gap:6px}
+  .objective-label{font-size:8px;letter-spacing:.9px}
+  .objective-text{font-size:9px}
   .info-bar{margin:4px 0;gap:3px}
   .info-tag{font-size:9px;padding:3px 4px;min-height:24px}
   .info-tag-menu{font-size:11px;padding:2px 6px}
