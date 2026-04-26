@@ -589,7 +589,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Leave it in the record only"
       },
       "C-181": {
-        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right shoulder. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.",
+        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.",
         leftLabel: "The responsibility is mine",
         rightLabel: "Write the report"
       },
