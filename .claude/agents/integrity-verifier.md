@@ -20,6 +20,15 @@ model: sonnet
 - i18n `cards: { "ID" }` ↔ 실제 카드 ID 양방향 일치
 - `req` / `msg` / `timer` 함수 안에서 호출하는 카드/LOG ID가 실존하는지
 
+### ⚠ 중요: 분산 정의 파일 전수 검색
+TIU_CARD는 같은 종류 데이터가 여러 파일에 분산되어 있습니다. 다음을 **반드시 Glob으로 전수 검색**해서 누락 false positive를 만들지 마세요:
+- 미션: `data-missions*.js` (data-missions.js, data-missions-2.js, data-missions-3.js, data-missions-4.js, data-missions-5.js, data-missions-incident.js, data-missions-variants.js 등)
+- 체인 카드: `data-chains*.js` (data-chains.js, data-chains-incident2.js 등)
+- 카드: `data-cards-*.js` 전부
+- LOG: `data-logs*.js` + `app-logic.js`의 인라인 정의
+
+**절대 하지 말 것**: `data-missions.js` 한 파일만 읽고 "M-XXX 미정의" 결론 내리는 것. **반드시** `Glob "data-missions*.js"` → 모든 파일 Read → 합쳐서 ID 셋 구성한 뒤 비교.
+
 ### 3. 스키마 정합성
 - 모든 카드가 필수 필드(`id`, `act`, `msg`, `left`, `right`) 보유
 - `act` 값이 `[1]`~`[4]` 범위
