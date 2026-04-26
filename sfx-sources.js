@@ -10,7 +10,7 @@ var BGM_ACT4 = 'audio/act4_bg_sound.mp3';
 
 // SFX 파일 경로 (app-init.js SFX._cache에서 Audio 객체로 로드)
 var SFX_PATHS = {
-  swipe:    'audio/card_swife_sound.wav',   // 카드 스와이프
+  swipe:    'audio/card_swipe_sound.wav',   // 카드 스와이프
   alarm:    'audio/alarm_tic.wav',          // LOG/아카이브 신규 해금
   btn_on:   'audio/button_on.wav',          // 열기/클릭/확정
   btn_off:  'audio/button_off.wav',         // 닫기/취소/실패
