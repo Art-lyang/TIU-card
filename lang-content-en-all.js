@@ -2965,6 +2965,106 @@ window.TS_I18N.mergeContent('en', {
       msg: "A transmission comes in.\n\nA short burst of static in the earpiece.\n\nThe result is being recorded...",
       leftLabel: "Confirm",
       rightLabel: "Confirm"
+    },
+    "DG-01": {
+      msg: "An unofficial message has come in on an external comms line.\n\nSender signature: Daega Industries, External Liaison Office.\n\n\"We propose an unofficial supply channel for the Gangwon containment operation. Medical supplies and spare parts, with no government processing required. There is no obligation to reply.\"\n\nLim Jae-hyeok: \"DG owns vaccines, defense, and telecoms in Korea. This is a channel that won't appear in any ORACLE report.\"",
+      leftLabel: "Keep the unofficial channel open",
+      rightLabel: "Reply through ORACLE channels"
+    },
+    "DG-02": {
+      msg: "DG's offer: free replacement of twelve aging containment-line sensors.\n\nThe single condition — that EV-Σ activity data collected during the swap be copied to DG's research division.\n\nSeo Hae-eun: \"The sensor wear is real. HQ resupply is at least two months out.\"\n\n... Still, leaking that data outside is a separate matter.",
+      leftLabel: "Accept — share data copies",
+      rightLabel: "Refuse — wait for HQ resupply"
+    },
+    "DG-03": {
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have been in Korea longer than ORACLE. The figure 'two thousand years' is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to draw a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      leftLabel: "Accept the line",
+      rightLabel: "Recognize only official channels"
+    },
+    "DG-04": {
+      msg: "DG has sent over a partially sealed internal file.\n\n\"A list of our undisclosed contracts with the Korean government from the 1960s onward. Filtered down to the parts you should be aware of.\"\n\nLim Jae-hyeok: \"...The introduction alone tells you everything. More than half of Korea's national security backbone runs on DG infrastructure.\"\n\nReading it changes what the containment operation actually means.",
+      leftLabel: "Read all of it",
+      rightLabel: "Read only the summary, then seal"
+    },
+    "MD-01": {
+      msg: "A message routed in via an unofficial Foreign Ministry line.\n\n\"Meridian BioAsset Division. Rejected at the Korean market entry review.\"\n\nContents: \"We have no access to ORACLE data. Because of that we have been operating independent observation posts near the containment line. We propose a data exchange.\"\n\nSeo Hae-eun: \"...Honestly, observation data outside ORACLE has real value for us too.\"",
+      leftLabel: "Open the exchange channel",
+      rightLabel: "Block the source"
+    },
+    "MD-02": {
+      msg: "The first intel package from Meridian arrives.\n\nTwelve nighttime heat sources picked up by their own satellites along the eastern coast outside the containment line. Three of those coordinates aren't in any ORACLE report.\n\n\"Maybe ORACLE filtered them out. Maybe ORACLE never saw them. Either way, worth knowing.\"\n\n... Accepting this means owing them.",
+      leftLabel: "Accept and analyze",
+      rightLabel: "Return it"
+    },
+    "MD-03": {
+      msg: "Meridian has put forward a formal request.\n\n\"Permit the deployment of four temporary observation personnel inside the Korea branch's containment zone. Unarmed. Bound by data-sharing obligation.\"\n\nKang Do-yun: \"Letting a foreign PMC into the containment zone. The Korean government has already rejected them.\"\n\nLim Jae-hyeok: \"But the satellite assets they have, we don't. That's a fact.\"",
+      leftLabel: "Refuse outright",
+      rightLabel: "Defer with conditions"
+    },
+    "MD-04": {
+      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. We'll make it worth your information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
+      leftLabel: "Side with DG — help block Meridian",
+      rightLabel: "Keep distance from both"
+    },
+    "SUP-DM-01": {
+      msg: "The infirmary reports its EV-Σ Phase 0 suppressant stock has dropped below two months.\n\nTwo offers, simultaneously.\n\nMeridian: \"You'll receive our BioAsset division's full clinical dataset alongside the supply. In exchange, send us back the prescription outcomes.\"\n\nDG: \"Domestic equivalent formulation. No data return required. Pricing terms will reflect on the next deal.\"",
+      leftLabel: "Meridian drugs + data exchange",
+      rightLabel: "DG domestic supply + future cost"
+    },
+    "SUP-DM-02": {
+      msg: "Lim Jae-hyeok reports. Two of the containment-line comm relays are at end of life.\n\n\"DG offers modules compatible with their backbone network. If we install them, our comms will route once through DG's hardware.\"\n\n\"Meridian offers to lease their own satellite terminals. That gives us a separate channel outside ORACLE. Neither option is free.\"",
+      leftLabel: "Adopt Meridian satellite terminals",
+      rightLabel: "Adopt DG backbone-compatible modules"
+    },
+    "SUP-DM-03": {
+      msg: "Field operator fatigue is accumulating. Kang Do-yun proposes external personnel reinforcement.\n\n\"DG offers six security personnel from a Korean-government-vetted subsidiary. Condition: partial sharing of operational command authority.\"\n\n\"Meridian offers four PMC operators of their own. Well-armed, experienced — but foreign nationals, and their legal status in Korea is grey.\"",
+      leftLabel: "Accept four Meridian PMC operators",
+      rightLabel: "Accept six DG subsidiary security personnel"
+    },
+    "CA23-DV-01": {
+      msg: "Conference room. Seo Hae-eun and Lim Jae-hyeok are seated across from each other.\n\nLim Jae-hyeok: \"If we don't take DG's firmware patch, comms efficiency drops thirty percent next month.\"\n\nSeo Hae-eun: \"If we take it, our comms have to route through DG's backbone every single time. You know what that means.\"\n\n... Both of them are right. Press one and the other breaks.",
+      leftLabel: "Bring both in and broker a compromise",
+      rightLabel: "Side with Lim Jae-hyeok — accept the patch"
+    },
+    "CA23-DV-02": {
+      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer patients suffer.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
+      leftLabel: "Sit them down personally and force an agreement",
+      rightLabel: "Take Yoon Se-jin's side — proceed with the data exchange"
+    },
+    "CA23-DV-03": {
+      msg: "Kang Do-yun comes in agitated.\n\n\"Two of the Meridian PMC photographed our night patrol routes yesterday. Lim Jae-hyeok says 'the data value is greater.'\"\n\nLim Jae-hyeok: \"Meridian was watching those patrol routes by satellite already. It's not new exposure.\"\n\nKang Do-yun: \"This is my people's safety. It doesn't convert into 'data value.'\"",
+      leftLabel: "Field safety first — restrict PMC conduct by agreement",
+      rightLabel: "Take Lim Jae-hyeok's side — keep things as they are"
+    },
+    "CA23-DV-04": {
+      msg: "Yoon Se-jin is standing at Seo Hae-eun's desk.\n\nYoon Se-jin: \"DG's bio division has requested patient samples for a variant EV-Σ therapeutic trial. If it passes, Korean patients benefit first.\"\n\nSeo Hae-eun: \"Once a sample leaves, we can never recover it. We have no idea what DG ends up doing with that data.\"\n\nBoth of them are claiming to act for Korea.",
+      leftLabel: "Conditional samples — formal written agreement on both sides",
+      rightLabel: "Take Seo Hae-eun's side — refuse the samples"
+    },
+    "CH-DG-04-L-2": {
+      msg: "DG's file came with an appendix beyond the main document.\n\nEncrypted minutes — copies from 1998, 2009, 2018. Records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nLim Jae-hyeok: \"...This is material that shouldn't exist on paper. Why are they sending it to us?\"\n\nSeo Hae-eun: \"They're showing their hand. It's a signal that we should show ours.\"",
+      leftLabel: "Decrypt and preserve all of it",
+      rightLabel: "Destroy the original, omit from the report"
+    },
+    "CH-MD-03-L-2": {
+      msg: "Meridian has sent a follow-up.\n\n\"You declined the entry request. As a courtesy, we want you to know — there are indications DG is rewriting your unit's evaluation report along government lines.\"\n\nAttached file — partial call recording. A DG executive telling someone, \"the Gangwon branch commander is uncooperative.\"\n\nLim Jae-hyeok: \"...Hard to verify. But the pattern is plausible.\"",
+      leftLabel: "Accept the recording for storage — for later use",
+      rightLabel: "Treat it as Meridian manipulation, discard"
+    },
+    "CH-SUP-DG-1-R-2": {
+      msg: "A single sheet of paper had ended up in the last DG supply shipment by mistake.\n\nA shipping ledger excerpt. The same period, the same quantities — sent out to seven recipients besides our base.\n\nThree of those recipients are unofficial site codes that have never been listed publicly.\n\nSeo Hae-eun: \"DG is supplying installations inside Korea that we've never been told exist.\"",
+      leftLabel: "Analyze the ledger in earnest",
+      rightLabel: "Treat it as a clerical error, dispose"
+    },
+    "CH-MD-04-R-2": {
+      msg: "Meridian's last card.\n\n\"DG runs a private comms network inside Korea, off the government's books. We've spent six months partially decrypting it. For you alone, we share.\"\n\nDecrypted excerpt — internal DG codename 'KEEPER.' Suspected role: control of external exposure of the Korea containment operation.\n\nIf you take this, there will be no further offers.",
+      leftLabel: "Accept the decrypted material",
+      rightLabel: "Refuse and close the channel"
+    },
+    "CH-DG-WARN-R-1": {
+      msg: "A polite notice from DG's External Liaison Office.\n\n\"Headquarters will be running a self-audit on Gangwon branch operating data. Please cooperate with limited access. You may decline — though that will reflect on the next supply pricing.\"\n\nSeo Hae-eun: \"...Self-audit? Of our base? Where's the authority for that?\"\n\nLim Jae-hyeok: \"There isn't one. Refuse and the next shipment stops.\"",
+      leftLabel: "Cooperate with the audit — provide partial materials",
+      rightLabel: "Refuse the audit"
     }
   },
   oracleLogs: {
@@ -2999,6 +3099,82 @@ window.TS_I18N.mergeContent('en', {
     "LOG-ESCAPE-UNLUCKY": {
       title: "Escape Operation - LOST IN TRANSIT",
       content: "[Record gap]\n\nOperation termination point unknown.\nPrior warning absent - contact with a vocal-mimic organism.\n\nRecovered audio log, final three seconds:\n\"Commander. It is me. Park Sang-hun. ...Do you read me?\"\n\n[Nothing after that was recorded]"
+    },
+    "LOG-DG-CONTACT": {
+      title: "Daega Industries — Unofficial Contact",
+      content: "[Branch internal record]\n\nSender: Daega Industries (DG), External Liaison Office\nRecipient: KR-INIT-001\nRoute: unofficial. Bypasses ORACLE reporting network.\n\nGist of proposal: unofficial supply channel for medicine and spare parts.\n\nNote: DG is a Korean conglomerate covering vaccines, defense, biotech, and telecoms.\nCorporate slogan: \"Two thousand years alongside the nation.\""
+    },
+    "LOG-DG-DEAL": {
+      title: "DG Deal Concluded",
+      content: "[Branch internal record — not reported to ORACLE]\n\nDeal item: free replacement of twelve aging containment-line sensors.\nConsideration: copy of EV-Σ activity data collected during the swap.\n\nAddendum: one record of unofficial DG executive meeting.\nKey statement: \"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement.\"\n\nClassification: external information trade — omitted from HQ report."
+    },
+    "LOG-DG-HISTORY": {
+      title: "DG Undisclosed Contracts File",
+      content: "[Restricted access — internal storage]\n\nDelivered by DG itself. A summarized list of undisclosed contracts with the Korean government from the 1960s onward.\n\nScope: communications backbone, quarantine infrastructure, stockpiled pharmaceuticals, parts of military supply.\n\nConclusion: more than half of Korea's national security backbone runs on DG infrastructure.\nThe containment operation itself is built on top of that infrastructure.\n\n— Lim Jae-hyeok review notes attached."
+    },
+    "LOG-DG-HISTORY-DEEP": {
+      title: "DG Unofficial Meeting Minutes Appendix",
+      content: "[Deep material — unofficially preserved]\n\n1998 / 2009 / 2018 — records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nCommon pattern:\n- DG executives' remarks anonymized in the official minutes\n- Multiple cases of related DG-favorable policy drafted shortly after\n\nInterpretation: DG does not follow policy. DG enters at the formation stage of policy.\n\n— Joint analysis by Seo Hae-eun and Lim Jae-hyeok"
+    },
+    "LOG-DG-LEDGER": {
+      title: "DG Shipping Ledger Excerpt",
+      content: "[Acquired by branch — accident or design]\n\nA single ledger sheet found inside a DG supply shipment.\n\nSeven recipients confirmed for the same period and same quantities.\nThree of them are unofficial site codes never publicly listed (DG-KEEPER series).\n\nInterpretation pending: DG is supplying multiple installations inside Korea simultaneously.\nA line outside both ORACLE and the official government network.\n\n— Seo Hae-eun"
+    },
+    "LOG-DG-RETALIATE": {
+      title: "DG Government-Line Pressure Indications",
+      content: "[Material provided by Meridian — under verification]\n\nSource: Meridian BioAsset Division\nFormat: partial call recording excerpt\n\nKey content: a DG executive feeding the assessment \"the Gangwon branch commander is uncooperative\" to a government figure.\n\nVerification confidence ~50%. The pattern is consistent.\nReadable as retaliation following refusal of an offered deal.\n\n— Assessment attached by Lim Jae-hyeok"
+    },
+    "LOG-DG-DECRYPT": {
+      title: "DG Private Network — Partial Decrypt",
+      content: "[Inherited from six months of Meridian-side decryption]\n\nTarget: a private DG comms network running inside Korea off the government's books.\nDecryption rate: approximately 23%.\n\nRecurring codename: KEEPER.\nPresumed role: a DG internal unit controlling external exposure of the Korea containment operation.\nIndications of news gatekeeping, document recovery, and influence over personnel evaluations.\n\nNote: receiving this material puts the Korea branch in debt to Meridian.\n\n— Lim Jae-hyeok / Classification: cannot be reported to HQ"
+    },
+    "LOG-MD-CONTACT": {
+      title: "Meridian BioAsset — First Contact",
+      content: "[Branch internal record]\n\nSender: Meridian BioAsset Division\nRoute: unofficial Foreign Ministry line → Korea branch\nReception: mid Act 3\n\nMeridian self-introduction:\n- Rejected at Korean market entry review\n- Operating independent observation posts outside the containment line\n- No access to ORACLE data\n\nProposal: observation data exchange channel.\n\nClassification: foreign PMC + BioAsset coalition. Direct rival to DG."
+    },
+    "LOG-MD-INTEL": {
+      title: "Meridian Intel Package #1",
+      content: "[Branch-side preservation]\n\nSender: Meridian BioAsset Division\nContents: twelve nighttime heat sources observed by Meridian's own satellites along the eastern coast outside the containment line.\n\nThree of those coordinates are not on any ORACLE report.\nTwo possible reasons:\n1) ORACLE filtered them out intentionally\n2) ORACLE never saw them\n\nEither way, material that cannot be reported to HQ.\n\n— Seo Hae-eun"
+    },
+    "LOG-MD-REJECT": {
+      title: "Meridian Entry Request — Refused",
+      content: "[Branch decision record]\n\nMatter: Meridian's request to deploy four temporary observation personnel inside the containment zone.\n\nDecision: refused outright.\nGrounds: organization already rejected at Korean review; no precedent for foreign PMC personnel inside the containment zone.\n\nSecondary effects:\n- Some Meridian goodwill remains (information channel preserved)\n- Opens space for DG's \"help block Meridian\" card\n\n— Approved by the commander after Kang Do-yun / Lim Jae-hyeok consultation"
+    },
+    "LOG-MD-BACKCHANNEL": {
+      title: "Meridian Hold Line Maintained",
+      content: "[Branch internal record]\n\nMeridian's entry request was met with a \"conditional hold\" response rather than an outright refusal.\n\nResult:\n- Avoids hard refusal → leaves room to use Meridian if DG pressure becomes unmanageable\n- Meridian voluntarily continues providing intel\n- Diplomatic burden on the Korea branch accumulates\n\nClassification: grey-zone operation."
+    },
+    "LOG-DG-VS-MD": {
+      title: "DG/Meridian Simultaneous Approach — DG Side Chosen",
+      content: "[Branch decision record]\n\nMatter: DG and Meridian made conflicting cooperation requests at the same time.\n\nDG: requested help blocking Meridian.\nMeridian: requested outside scrutiny to keep DG in check.\n\nDecision: side with DG.\nResult:\n- Meridian channel effectively shut\n- Deal level with DG escalated\n- The non-ORACLE external line collapses into a single DG-only network\n\nNote: no further Meridian retaliation intel arrived after this decision."
+    },
+    "LOG-SUPPLY-MD": {
+      title: "Supply Line — Meridian Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one Meridian supply / terminal / PMC line accepted.\n\nLong-term effects:\n- A non-ORACLE external data channel secured\n- Voluntarily entering a legal grey zone in Korea\n- Some patient data and comms returned to Meridian BioAsset\n\nClassification: increased dependence on a foreign actor."
+    },
+    "LOG-SUPPLY-DG": {
+      title: "Supply Line — DG Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one DG supply / module / subsidiary personnel option accepted.\n\nLong-term effects:\n- Increased dependence on DG's backbone and subsidiary infrastructure\n- Accumulated \"debt\" reflected in pricing on the next deal\n- Stability of remaining inside a domestic line\n\nClassification: increased dependence on a domestic conglomerate."
+    },
+    "LOG-DV-01-MED": {
+      title: "Internal Mediation #1 — Comms Patch",
+      content: "[Branch operations record]\n\nDispute: Seo Hae-eun (data security) vs. Lim Jae-hyeok (comms efficiency). Whether to accept DG's firmware patch.\n\nMediation result: compromise — accept the patch but only inside an isolated account, return only filtered telemetry to DG.\n\nField effect: both sides give partial ground. Concluded without trust damage.\n\nNote: first case where the commander put both staff at the same table."
+    },
+    "LOG-DV-02-MED": {
+      title: "Internal Mediation #2 — Meridian Pharmaceuticals",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (patient first) vs. Kang Do-yun (caution against external data leak). Whether to accept Meridian's clinical data.\n\nMediation result: complete anonymization of patient identity and metadata before any return, hard cap on returned dataset volume, written agreement on both sides.\n\nField effect: suppressant clinical work proceeds while leak risk is partly contained.\n\nNote: first procedural balance point between patient safety and external trade."
+    },
+    "LOG-DV-03-MED": {
+      title: "Internal Mediation #3 — PMC Conduct Restricted",
+      content: "[Branch operations record]\n\nDispute: Kang Do-yun (field safety) vs. Lim Jae-hyeok (data value). Meridian PMC photographing the branch's night patrol routes.\n\nMediation result: PMC operating envelope put in writing — any photographing or recording of patrol routes prohibited; immediate repatriation on violation.\n\nField effect: morale of Kang Do-yun's team recovers. Some loss of data value for Meridian, but the channel is preserved.\n\nNote: first written rule for the use of external personnel."
+    },
+    "LOG-DV-04-MED": {
+      title: "Internal Mediation #4 — DG Sample Agreement",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (Korean patient benefit) vs. Seo Hae-eun (no recovery once a sample leaves). DG bio division's request for patient samples for a variant EV-Σ therapeutic trial.\n\nMediation result: conditional samples — explicit prior patient consent, defined scope and duration of sample use, guarantee that Korean medical institutions receive the resulting clinical data first.\n\nField effect: opens potential patient benefit while blocking uncontrolled spread of the samples.\n\nNote: first instance where the Korea branch successfully imposed conditions on a deal with DG."
+    },
+    "LOG-AUDIT-COMPLY": {
+      title: "DG Self-Audit — Cooperated",
+      content: "[Branch decision record]\n\nMatter: DG External Liaison Office's request to self-audit Gangwon branch operating data.\n\nDecision: cooperate — partial materials provided.\nGrounds: explicit threat of retaliation through next-deal pricing.\n\nLong-term effects:\n- DG effectively gains a right to view parts of branch internal operations under audit framing\n- Next deal pricing remains stable\n- This audit is not reported up the ORACLE HQ line\n\nNote: first record of choosing cooperation between the right to refuse and the right to comply."
     }
   }
 });
