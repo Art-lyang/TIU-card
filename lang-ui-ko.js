@@ -1,10 +1,35 @@
 // TERMINAL SESSION — lang-ui-ko.js
 window.TS_I18N.mergeUI('ko', {
   meta:{ title:'TERMINAL SESSION', titleBar:'ORACLE // TERMINAL SESSION' },
-  boot:{ startSession:'[ 세션 {session} 시작 ]', startGame:'[ 게임 시작 ]' },
+  boot:{ startSession:'[ 세션 {session} 시작 ]', startGame:'TAP TO ENTER TERMINAL', status:'BOOT SEQUENCE', console:'SYSTEM BOOT LOG', progress:'BOOT PROGRESS {progress}%' },
   menu:{
     startGame:'[ \uAC8C\uC784 \uC2DC\uC791 ]',
-    continue:'[ \uC774\uC5B4\uD558\uAE30 ]'
+    continue:'[ \uC774\uC5B4\uD558\uAE30 ]',
+    headerTitle:'ORACLE // KOREA BRANCH TERMINAL',
+    sessionId:'SESSION ID: KR-B3-011',
+    statusLabel:'STATUS:',
+    statusUnstable:'UNSTABLE CONNECTION',
+    timeLabel:'TIME: {time}',
+    feedTopLeft:'ORACLE KOREA BRANCH // INTERNAL USE ONLY',
+    securityLabel:'SECURITY LEVEL:',
+    securityOrange:'ORANGE',
+    feedLive:'FEED: LIVE',
+    feedVersion:'TERMINAL SESSION v1.11',
+    systemRestored:'SYSTEM RESTORED',
+    operatorAuth:'OPERATOR AUTHENTICATION REQUIRED',
+    selectRoute:'SELECT SESSION ROUTE',
+    footerAuth:'AUTH: GUEST',
+    footerVersion:'VER: 1.11.7',
+    footerBuild:'BUILD: {build}',
+    footerInternal:'ORACLE KOREA BRANCH - INTERNAL',
+    routes:{
+      start:{title:'[ 게임 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'ENTER SESSION'},
+      continue:{title:'[ 이어하기 ]',sub:'SAVED FIELD OPERATION',action:'RESUME SESSION'},
+      new:{title:'[ 새 세션 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
+      archive:{title:'[ 아카이브 접속 ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
+      logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
+    }
   },
   hub:{
     title:'SCENARIO SELECT',

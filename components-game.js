@@ -12,8 +12,38 @@ function Boot(p){
   var audioUnlocked=useRef(false);
   var tryBootAudio=function(){if(!audioUnlocked.current&&p.onBoot){audioUnlocked.current=true;p.onBoot()}};
   useEffect(function(){var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[]);
-  return h('div',{className:'boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
-    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:420,marginBottom:12,flexShrink:0,position:'relative',overflow:'hidden',borderRadius:4,border:'1px solid var(--ui-dim)',boxShadow:'0 0 30px rgba(var(--ui-rgb),0.04)'}},h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.8) contrast(1.1)',opacity:done?1:0.6+Math.min(0.4,lines.length*0.04),transition:'opacity 0.5s ease'}})),h('div',{className:'boot-text',style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:1.7,maxWidth:420,width:'100%',overflowY:'auto',flex:1,minHeight:0}},lines.map(function(l,i){var s=String(l||'');var isObs=s.indexOf('OBSERVER')>=0;var isGrant=s.indexOf('GRANT')>=0;var isTerm=s.indexOf('TERMINAL SESSION')>=0||s.indexOf('SESSION')>=0;var isWel=s.indexOf('WELCOME')>=0;return h('div',{key:i,style:{color:isObs?'#f0a030':isGrant?'#33cccc':isTerm?'#f0a030':isWel?'var(--ui)':'var(--ui)',fontWeight:isTerm||isWel||isObs||isGrant?'bold':'normal',whiteSpace:'pre-wrap',animation:'slideUp 0.3s ease'}},s)}),!done&&h('span',{style:{animation:'blink 1s infinite'}},'█')),done&&h('button',{className:'btn',onClick:p.onDone},tt('boot.startGame',null,'[ 게임 시작 ]')));
+  var progress=Math.min(100,Math.round((lines.length/Math.max(1,BL.length))*100));
+  var lineNodes=lines.map(function(l,i){
+    var text=String(l||'');
+    var hot=text.indexOf('OBSERVER')>=0||text.indexOf('TERMINAL SESSION')>=0||text.indexOf('SESSION')>=0;
+    var grant=text.indexOf('GRANT')>=0||text.indexOf('WELCOME')>=0;
+    return h('div',{key:i,className:'terminal-boot-line'+(hot?' is-hot':grant?' is-grant':'')},text);
+  });
+  return h('div',{className:'terminal-boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
+    h('div',{className:'main-terminal-crt','aria-hidden':true}),
+    h('main',{className:'terminal-boot-frame','aria-label':'ORACLE terminal boot sequence'},
+      h('header',{className:'terminal-boot-header'},
+        h('div',{className:'terminal-boot-header-main'},
+          h('span',{className:'terminal-boot-header-title'},tt('menu.headerTitle',null,'ORACLE // KOREA BRANCH TERMINAL')),
+          h('span',{className:'terminal-boot-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i')))),
+        h('div',{className:'terminal-boot-header-status'},
+          h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('boot.status',null,'BOOT SEQUENCE'))),
+          h('span',null,tt('boot.progress',{progress:progress},'BOOT PROGRESS '+progress+'%')))),
+      h('section',{className:'terminal-boot-feed','aria-label':'terminal session surveillance feed'},
+        IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
+        h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
+        h('div',{className:'terminal-boot-feed-hud terminal-boot-feed-top'},
+          h('span',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY')),
+          h('span',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
+        h('div',{className:'terminal-boot-feed-hud terminal-boot-feed-bottom'},
+          h('span',null,'BOOT TRACE: ',String(sn).padStart(2,'0')),
+          h('span',null,tt('menu.feedVersion',null,'TERMINAL SESSION v1.11')))),
+      h('section',{className:'terminal-boot-console','aria-label':'system boot log'},
+        h('div',{className:'terminal-boot-console-head'},
+          h('span',null,tt('boot.console',null,'SYSTEM BOOT LOG')),
+          h('span',null,progress+'%')),
+        h('div',{className:'terminal-boot-lines'},lineNodes,!done&&h('span',{className:'terminal-boot-caret','aria-hidden':true},'█')),
+        done&&h('button',{type:'button',className:'terminal-boot-start',onClick:function(e){e.stopPropagation();tryBootAudio();p.onDone();}},tt('boot.startGame',null,'TAP TO ENTER TERMINAL')))));
 }
 // ═══ 시나리오 허브 — DLC 확장용 ═══
 function ScenarioHub(p){
@@ -101,6 +131,47 @@ function ScenarioHub(p){
 function MainMenu(p){
   var mono={fontFamily:"'Share Tech Mono',monospace"};
   var _sub=useState(null),sub=_sub[0],setSub=_sub[1];
+  var _sel=useState(null),selectedIndex=_sel[0],setSelectedIndex=_sel[1];
+  var _gl=useState(''),glitchKey=_gl[0],setGlitchKey=_gl[1];
+  var _now=useState('02:41:11 KST'),nowText=_now[0],setNowText=_now[1];
+  var fmtTime=function(date){
+    try{
+      var parts=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Seoul',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}).formatToParts(date);
+      var out={};parts.forEach(function(part){out[part.type]=part.value});
+      return out.hour+':'+out.minute+':'+out.second+' KST';
+    }catch(e){return '02:41:11 KST'}
+  };
+  useEffect(function(){
+    setNowText(fmtTime(new Date()));
+    var timer=setInterval(function(){setNowText(fmtTime(new Date()))},1000);
+    return function(){clearInterval(timer)};
+  },[]);
+  var menuItems=[];
+  if(p.hasSave){
+    menuItems.push({key:'continue',primary:true,icon:'resume',title:tt('menu.routes.continue.title',null,'[ 이어하기 ]'),sub:tt('menu.routes.continue.sub',null,'RESUME SAVED OPERATION'),action:tt('menu.routes.continue.action',null,'RESUME SESSION'),onClick:p.onContinue});
+    menuItems.push({key:'start',primary:false,icon:'command',title:tt('menu.routes.new.title',null,'[ 새 세션 시작 ]'),sub:tt('menu.routes.new.sub',null,'FIELD COMMAND SIMULATION'),action:tt('menu.routes.new.action',null,'NEW SESSION'),onClick:p.onPlay});
+  }else{
+    menuItems.push({key:'start',primary:true,icon:'command',title:tt('menu.routes.start.title',null,'[ 게임 시작 ]'),sub:tt('menu.routes.start.sub',null,'FIELD COMMAND SIMULATION'),action:tt('menu.routes.start.action',null,'ENTER SESSION'),onClick:p.onPlay});
+  }
+  menuItems.push(
+    {key:'archive',primary:false,icon:'archive',title:tt('menu.routes.archive.title',null,'[ 아카이브 접속 ]'),sub:tt('menu.routes.archive.sub',null,'ENTITY / INCIDENT / PERSONNEL DATA'),action:tt('menu.routes.archive.action',null,'ACCESS ARCHIVE'),onClick:p.onArchive},
+    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs},
+    {key:'settings',primary:false,icon:'settings',title:tt('menu.routes.settings.title',null,'[ 시스템 설정 ]'),sub:tt('menu.routes.settings.sub',null,'DISPLAY / AUDIO / LANGUAGE'),action:tt('menu.routes.settings.action',null,'SYSTEM CONFIG'),onClick:function(){setSub('settings')}}
+  );
+  var activate=function(item){
+    setGlitchKey(item.key);
+    setTimeout(function(){setGlitchKey('')},150);
+    if(item.onClick)item.onClick();
+  };
+  useEffect(function(){
+    var onKey=function(e){
+      if(e.key==='ArrowDown'){e.preventDefault();setSelectedIndex(function(v){return v===null?0:(v+1)%menuItems.length})}
+      if(e.key==='ArrowUp'){e.preventDefault();setSelectedIndex(function(v){return v===null?menuItems.length-1:(v-1+menuItems.length)%menuItems.length})}
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();activate(menuItems[selectedIndex===null?0:selectedIndex])}
+    };
+    window.addEventListener('keydown',onKey);
+    return function(){window.removeEventListener('keydown',onKey)};
+  },[selectedIndex,menuItems.length,p.hasSave]);
   // 설정 서브뷰
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
@@ -108,17 +179,43 @@ function MainMenu(p){
       onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange,
       onMainMenu:function(){setSub(null);if(p.onMainMenu)p.onMainMenu();}}));
   // 메인 메뉴
-  return h('div',{className:'boot',style:{justifyContent:'center',gap:0}},
-    IMG.title_screen&&h('div',{style:{width:'100%',maxWidth:360,marginBottom:20,flexShrink:0}},
-      h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.8) contrast(1.1)',opacity:0.9}})),
-    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center',marginBottom:16})},'MAIN MENU'),
-    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center'}},
-      h('button',{className:'btn btn-amber',style:{minWidth:240,fontSize:13},onClick:p.onPlay},tt('menu.startGame',null,'[ 게임 시작 ]')),
-      p.hasSave&&h('button',{className:'btn',style:{minWidth:240},onClick:p.onContinue},tt('menu.continue',null,'[ 이어하기 ]')),
-      h('button',{className:'btn',style:{minWidth:240},onClick:p.onArchive},tt('settings.archive',null,'아카이브')),
-      h('button',{className:'btn',style:{minWidth:240},onClick:p.onLogs},tt('gameOver.logs',null,'로그')),
-      h('button',{className:'btn',style:{minWidth:240},onClick:function(){setSub('settings')}},tt('settings.title',null,'SETTINGS')),
-      h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.2)',marginTop:16,textAlign:'center'})},'TERMINAL SESSION v'+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))));
+  return h('div',{className:'main-terminal-menu'},
+    h('div',{className:'main-terminal-crt', 'aria-hidden':true}),
+    h('main',{className:'main-terminal-frame','aria-label':'ORACLE Korea Branch terminal main menu'},
+      h('header',{className:'main-terminal-header'},
+        h('div',{className:'main-terminal-header-main'},
+          h('span',{className:'main-terminal-header-title'},tt('menu.headerTitle',null,'ORACLE // KOREA BRANCH TERMINAL')),
+          h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i')))),
+        h('div',{className:'main-terminal-header-status'},
+          h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
+          h('span',{className:'main-terminal-time'},tt('menu.timeLabel',{time:nowText},'TIME: '+nowText)))),
+      h('section',{className:'main-terminal-feed','aria-label':'terminal session surveillance feed'},
+        IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
+        h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
+        h('div',{className:'main-terminal-feed-hud main-terminal-feed-top'},
+          h('span',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY')),
+          h('span',null,tt('menu.securityLabel',null,'SECURITY LEVEL:'),' ',h('strong',null,tt('menu.securityOrange',null,'ORANGE')))),
+        h('div',{className:'main-terminal-feed-hud main-terminal-feed-bottom'},
+          h('span',{className:'main-terminal-live'},h('span',{className:'main-terminal-live-dot','aria-hidden':true}),tt('menu.feedLive',null,'FEED: LIVE')),
+          h('span',{className:'main-terminal-version'},tt('menu.feedVersion',null,'TERMINAL SESSION v1.11'),h('span',{className:'main-terminal-barcode','aria-hidden':true})))),
+      h('section',{className:'main-terminal-log','aria-label':'system log'},
+        h('div',{className:'main-terminal-log-copy'},
+          h('p',null,tt('menu.systemRestored',null,'SYSTEM RESTORED')),
+          h('p',null,tt('menu.operatorAuth',null,'OPERATOR AUTHENTICATION REQUIRED')),
+          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION ROUTE'))),
+        h('div',{className:'main-terminal-oracle','aria-label':'ORACLE Korea Branch'},
+          h('span',{className:'main-terminal-oracle-mark','aria-hidden':true}),
+          h('span',{className:'main-terminal-oracle-copy'},h('b',null,'ORACLE'),h('small',null,'KOREA BRANCH')))),
+      h('nav',{className:'main-terminal-menu-list','aria-label':'session route menu'},
+        menuItems.map(function(item,index){return h('div',{key:item.key,className:'main-terminal-row'+(item.primary?' is-primary':'')+(selectedIndex===index?' is-selected':''),onMouseEnter:function(){setSelectedIndex(index)}},
+          h('span',{className:'main-terminal-cursor','aria-hidden':true},'>'),
+          h('button',{type:'button',className:'main-terminal-button'+(glitchKey===item.key?' is-glitching':''),'data-route':item.key,onFocus:function(){setSelectedIndex(index)},onClick:function(){activate(item)}},
+            h('span',{className:'main-terminal-icon main-terminal-icon--'+item.icon,'aria-hidden':true}),
+            h('span',{className:'main-terminal-button-copy'},h('strong',null,item.title),h('small',null,item.sub)),
+            h('span',{className:'main-terminal-button-action'},'>> ',h('em',null,item.action))))})),
+      h('footer',{className:'main-terminal-footer'},
+        h('div',null,tt('menu.footerAuth',null,'AUTH: GUEST'),' | ',tt('menu.footerVersion',null,'VER: 1.11.7'),' | ',tt('menu.footerBuild',{build:(typeof BUILD_VER!=='undefined')?BUILD_VER:'?'},'BUILD: '+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))),
+        h('div',null,h('span',{className:'main-terminal-footer-bar','aria-hidden':true}),tt('menu.footerInternal',null,'ORACLE KOREA BRANCH - INTERNAL')))));
 }
 function Stats(p){
   var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
@@ -177,6 +274,20 @@ function CardC(p){
     setChosen(kdir);
     setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},replyMsg?1500:300);
   };
+  var requestChoice=function(kdir){
+    if(chosen||shaking)return;
+    var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
+    if(shouldBlock){
+      setDx(0);
+      var bmsg=blockMsgs[Math.min(blockCount,blockMsgs.length-1)];
+      setBlockCount(blockCount+1);
+      if(p.onOracleBlock)p.onOracleBlock(bmsg);
+      setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
+    }else{
+      setDx(0);
+      performSwipe(kdir);
+    }
+  };
   // 타이머 카운트다운
   useEffect(function(){
     if(!timerTotal||chosen||shaking)return;
@@ -192,15 +303,7 @@ function CardC(p){
       else if(e.key==='ArrowRight'||e.key==='2'||e.code==='Numpad2')kdir='right';
       if(!kdir)return;
       e.preventDefault();
-      var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
-      if(shouldBlock){
-        var bmsg=blockMsgs[Math.min(blockCount,blockMsgs.length-1)];
-        setBlockCount(blockCount+1);
-        if(p.onOracleBlock)p.onOracleBlock(bmsg);
-        setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);
-      }else{
-        performSwipe(kdir);
-      }
+      requestChoice(kdir);
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
@@ -208,7 +311,7 @@ function CardC(p){
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
-  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&dir===(card.oracleBlockDir||'left');if(shouldBlock){setDx(0);var bmsg=blockMsgs[Math.min(blockCount,blockMsgs.length-1)];setBlockCount(blockCount+1);if(p.onOracleBlock)p.onOracleBlock(bmsg);setTimeout(function(){setShaking(true);setTimeout(function(){setShaking(false)},600)},60);}else{setDx(0);performSwipe(dir)}}else setDx(0)};
+  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
