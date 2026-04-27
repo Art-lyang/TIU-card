@@ -67,8 +67,8 @@ var CARDS_INVESTIGATE = [
     left: { label: "발생원 소각", fx: { c: 2, r: -1, t: 0, o: 1 }, g: 1, mission: "M-006" },
     right: { label: "포자 채취 후 소각", fx: { c: 1, r: -2, t: 1, o: 0 }, g: 0, mission: "M-006" } },
 
-  // ═══ 변이체 미조우 ACT 2 진입 카드 (1회성) ═══
-  // 이변체를 한 번도 만나지 않고 ACT 2에 돌입한 경우 트리거
+  // ═══ 변이체 미조우 ACT 3 진입 카드 (1회성) ═══
+  // ACT 2까지 이변체를 한 번도 만나지 않고 ACT 3에 돌입한 경우 트리거
 
   { id: "C-177", act: [3], priority: "상", bg: "forest",
     req: function(s,g,logs){

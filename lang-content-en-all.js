@@ -451,6 +451,106 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         leftLabel: "Inspect during the day",
         rightLabel: "Inspect at night"
       },
+      "C-133": {
+        msg: "Resupply delay notice. Three days behind schedule.\n\n[ORACLE: Other branches have priority allocation. Your understanding is requested.]",
+        leftLabel: "Hold with the reserve stock",
+        rightLabel: "Request priority allocation from ORACLE"
+      },
+      "C-134": {
+        msg: "Kang Do-yun has located a usable vehicle beyond the containment line.\n\n\"Half a tank of fuel. Repair it and we can use it.\"",
+        leftLabel: "Repair and put it into service",
+        rightLabel: "Strip it for parts only"
+      },
+      "C-135": {
+        msg: "The village elder is proposing a trade.\n\n\"We have winter vegetables. Would you exchange them for medical supplies?\"",
+        leftLabel: "Accept the exchange",
+        rightLabel: "Not permitted under regulations"
+      },
+      "C-136": {
+        msg: "Lim Jae-hyeok has salvaged parts from decommissioned equipment.\n\n\"Two additional comms antennas can be built.\"",
+        leftLabel: "Deploy them along the containment line",
+        rightLabel: "Hold them as branch backup"
+      },
+      "C-137": {
+        msg: "An exhausted operative has been found on the night shift. He collapsed mid-patrol.\n\nYoon Se-jin: \"This is overwork. He needs at least 48 hours off. If he goes back like this, the next incident will be worse.\"",
+        leftLabel: "Reassign the rotation",
+        rightLabel: "Hold the line with minimal personnel"
+      },
+      "C-138": {
+        msg: "Friction has developed between two operatives.\n\nA dispute over patrol-sector assignment.",
+        leftLabel: "Mediate personally",
+        rightLabel: "Have Kang Do-yun handle it"
+      },
+      "C-139": {
+        msg: "The agents are requesting an in-branch bulletin board.\n\n\"It would speed up information sharing.\"",
+        leftLabel: "Authorize installation",
+        rightLabel: "Deny it on security grounds"
+      },
+      "C-140": {
+        msg: "Yoon Se-jin: \"The retention period on existing samples is closing in.\"\n\n\"Either we upgrade the freezer, or we accelerate the analysis.\"",
+        leftLabel: "Invest in the freezer",
+        rightLabel: "Prioritize analysis"
+      },
+      "C-141": {
+        msg: "Yoon Se-jin has completed her dissection report on a variant.\n\n\"I've identified a neural pathway that doesn't exist in the ORACLE model.\"\n\n\"If we report it, the data may not come back to us.\"",
+        leftLabel: "Keep it inside the branch",
+        rightLabel: "Share it with ORACLE"
+      },
+      "C-142": {
+        msg: "Cold cases are increasing in the branch infirmary.\n\nYoon Se-jin: \"We need to check the antibiotic stockpile.\"",
+        leftLabel: "Prioritize securing antibiotics",
+        rightLabel: "Wait for natural recovery"
+      },
+      "C-143": {
+        msg: "Lim Jae-hyeok: \"Three containment-line cameras are down.\"\n\n\"Field repairs are possible, but the patrol team will need to escort.\"",
+        leftLabel: "Dispatch a repair team",
+        rightLabel: "Cover with the spare cameras"
+      },
+      "C-144": {
+        msg: "ORACLE is pushing a system update.\n\nLim Jae-hyeok: \"The change list is undocumented.\"",
+        leftLabel: "Hold the update",
+        rightLabel: "Apply the update"
+      },
+      "C-145": {
+        msg: "An anomaly has been detected in the branch water-purification system.\n\n\"Trace organic contamination. Still within drinking limits.\"",
+        leftLabel: "Replace the filter",
+        rightLabel: "Maintain monitoring"
+      },
+      "C-146": {
+        msg: "A small-scale forest fire has broken out south of the containment line.\n\nNatural ignition suspected. Possible impact on containment equipment.",
+        leftLabel: "Deploy a firefighting team",
+        rightLabel: "Wait for it to burn out"
+      },
+      "C-147": {
+        msg: "A civilian hiker has ignored the containment-line warning and approached the perimeter.\n\nClaims to be \"here for photos.\"",
+        leftLabel: "Warn and escort down the mountain",
+        rightLabel: "Verify identity and report"
+      },
+      "C-148": {
+        msg: "A section of ground has collapsed along the western containment line.\n\n\"Erosion from an underground waterway. No vehicle traffic possible.\"",
+        leftLabel: "Run emergency repair work",
+        rightLabel: "Set a detour route"
+      },
+      "C-149": {
+        msg: "The monsoon season has started.\n\nFlooding risk in the branch sublevel. The drainage pumps must run.",
+        leftLabel: "Run pumps for 24 hours",
+        rightLabel: "Respond only if it floods"
+      },
+      "C-150": {
+        msg: "A lightning strike has damaged the outer comms tower. The antenna mount is bent.\n\nLim Jae-hyeok: \"External comms range is down to half. Repairing it means dipping into our reserves — we won't have margin until the next resupply.\"",
+        leftLabel: "Allocate materials and repair",
+        rightLabel: "Cover with backup comms"
+      },
+      "C-151": {
+        msg: "An ORACLE emergency resupply has arrived.\n\n[ORACLE: Additional materials, accounting for field conditions.]",
+        leftLabel: "Receive the full shipment",
+        rightLabel: "Take only what is needed"
+      },
+      "C-152": {
+        msg: "Lim Jae-hyeok has finished an inventory pass on branch materials.\n\n\"I broke down unused equipment and converted it back into resources.\"",
+        leftLabel: "Well done",
+        rightLabel: "Consider other uses for it"
+      },
       "C-153": {
         msg: "Further signs of supplies have been reported near the abandoned building found earlier.\n\nKang Do-yun: \"There are still sectors we haven't searched. There's a good chance more materials are there.\"",
         leftLabel: "Dispatch a search team",
@@ -589,7 +689,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Leave it in the record only"
       },
       "C-181": {
-        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right shoulder. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.",
+        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.",
         leftLabel: "The responsibility is mine",
         rightLabel: "Write the report"
       },
@@ -625,9 +725,9 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
   window.TS_I18N.mergeContent('en', {
     cards: {
     "C-188": {
-        "msg": "Preliminary signs of a night raid have been detected around the branch perimeter.\n\nMultiple patrol gaps, delayed shift restructuring, and repeated reliance on ORACLE guidance have left the response posture weakened.\n\nA concentrated strike is now considered likely unless command conditions change immediately.",
-        "leftLabel": "Reorganize night defense now",
-        "rightLabel": "Request ORACLE-led response support"
+        "msg": "Night alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe attack is exploiting gaps in our night patrol routes with precision.",
+        "leftLabel": "Full combat deployment",
+        "rightLabel": "Hold defensive strongpoints"
     },
     "C-189": {
         "msg": "The raid is continuing. The eastern wall of the branch has collapsed.\n\nKang Do-yun: \"The east side is down! Evacuate everyone—\"\n\nPersonnel are withdrawing through the emergency tunnel.\n\nKang Do-yun covers the rear and enters the tunnel last. He suffers a severe burn to his right leg, but survives.\n\nYoon Se-jin: \"Thermal injury to the leg. Field deployment is no longer possible. But he lived.\"",
@@ -909,12 +1009,157 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "msg": "A large-scale variant movement has been detected south of the containment line. Estimated contact time: six hours.\n\nKang Do-yun: \"A frontal response won't hold. We have to draw them off and break the mass.\"\n\nYoon Se-jin: \"I can make a lure compound from the spore samples I secured. But the timing is tight.\"",
         "leftLabel": "Develop the lure — scientific response",
         "rightLabel": "Build defensive positions — conventional response"
+    },
+    "C-244": {
+        "msg": "During patrol, a cut was found in the containment-line wire. The cut was made from the inside.\n\nKang Do-yun: \"This wasn't an intrusion. Someone went out from in here.\"\n\nSeo Hae-eun: \"...You mean someone left the branch?\"",
+        "leftLabel": "Run a head count — identify who's missing",
+        "rightLabel": "Repair the breach first"
+    },
+    "C-245": {
+        "msg": "Yoon Se-jin has not come out of the lab. She has skipped meals for thirty-six hours.\n\nLim Jae-hyeok: \"She's locked onto the suppressor research. Like nobody else can do it.\"\n\nSeo Hae-eun: \"If she collapses, the research stops with her.\"",
+        "leftLabel": "Go to the lab and order her to rest",
+        "rightLabel": "Send a meal — leave the choice to her"
+    },
+    "C-246": {
+        "msg": "Operatives have gathered in the branch mess hall, talking. Laughter — for the first time in a long while.\n\nKang Do-yun: \"Moments like this matter. Combat alone doesn't keep people whole.\"\n\n[ORACLE: Non-productive group activity detected. Recommendation: disperse.]",
+        "leftLabel": "Ignore ORACLE — leave them be",
+        "rightLabel": "Break it up at a reasonable point"
+    },
+    "C-247": {
+        "msg": "Seo Hae-eun comes to see you privately.\n\n\"Commander, may I ask one thing.\"\n\n\"When all of this is over... what happens to us?\"\n\n\"Without ORACLE. Without support from above. Just us, left over.\"\n\n\"...Will that still be all right?\"",
+        "leftLabel": "We'll make it work",
+        "rightLabel": "Honestly, I don't know. But we don't give up"
     }
 }
   });
 
 // --- lang-content-en.phase15-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-248": {
+        msg: "Outer surveillance camera. Nick Foster has been picked up again.\n\nThis time, no cigarette. He's holding his hands up where they can be seen.\n\nLim Jae-hyeok: \"He's signaling that he wants to approach. Unarmed.\"\n\n...Looking at his face brings the old memories back.",
+        leftLabel: "Meet him — leave the past alone",
+        rightLabel: "Ignore him"
+      },
+      "C-249": {
+        msg: "Foster speaks first.\n\n\"What I did to your people... I'm not going to apologize for it.\"\n\n\"But I can give you what I have.\"\n\nHe pulls out a tablet. A flow diagram of the data ORACLE pulls from each branch.\n\n\"Don't you want to know where the Korean containment-success data is going?\"",
+        leftLabel: "Take the data",
+        rightLabel: "I can't trust you"
+      },
+      "C-250": {
+        msg: "Lim Jae-hyeok has verified Foster's data.\n\n\"It's real. This is the internal ORACLE routing structure.\"\n\nKorean coastal-barrier specifications. Containment tactical data. Variant response patterns.\nAll of it routed to a central ORACLE node.\n\n\"Korea is a test bed.\" Foster's words come back.\n\"The more you succeed, the better the data ORACLE gets.\"",
+        leftLabel: "Share with the whole team",
+        rightLabel: "Keep it to yourself, Commander"
+      },
+      "C-252": {
+        msg: "Park So-young has been here for two days.\n\nThe first report comes in.\n\n\"I've mapped the ORACLE data-stream structure. Senior Seo's analysis logs were a great help.\"\n\nLim Jae-hyeok: \"Honestly, I'm impressed. I've never seen an outsider adapt this fast.\"\n\n...She's competent. There's no reason to suspect her.",
+        leftLabel: "Authorize core data access",
+        rightLabel: "Keep her access restricted"
+      },
+      "C-253": {
+        msg: "In conversation with Foster.\n\n\"Ah, I hear you got a new analyst.\"\n\nHe says it casually.\n\n\"So-young... settling in all right?\"\n\nHe knows the name.\n\n\"...Oh. You didn't know? She's one of ours.\"\n\nHe smiles.\n\n\"Seo Hae-eun recommended her? That's right. Because So-young asked her to.\"",
+        leftLabel: "Confront Park So-young",
+        rightLabel: "Play dumb — keep her under watch"
+      },
+      "C-254": {
+        msg: "Kang Do-yun's patrol report.\n\n\"500 meters east of the containment line. Footprints in the soil.\"\n\nNot military boots, not civilian hiking boots. The pattern is irregular — like someone deliberately scuffed it out.\n\n\"Someone passed through here. And they didn't want us to see them.\"",
+        leftLabel: "Run a detailed sweep — three hours",
+        rightLabel: "Note it and move on"
+      },
+      "C-255": {
+        msg: "Lim Jae-hyeok during a night comms-log review.\n\n\"At 03:14 there was 0.7 seconds of external interference.\"\n\nThe waveform is too clean to be natural.\n\n\"Someone scanned our comms frequencies. Just a scan — they didn't try to listen in.\"\n\n[ORACLE: No anomaly recorded for that timeframe.]",
+        leftLabel: "Rotate comms encryption",
+        rightLabel: "Tighten monitoring only"
+      },
+      "C-256": {
+        msg: "An anomaly in the server-room access log.\n\nLim Jae-hyeok: \"02:41. An unidentified session connected for 0.3 seconds.\"\n\nNo authentication token. But it was not blocked either.\n\n\"It looks like... the system permitted the access.\"\n\n[ORACLE: Routine self-diagnostic session. No anomaly.]",
+        leftLabel: "Doubt ORACLE's explanation",
+        rightLabel: "Accept ORACLE's explanation"
+      },
+      "C-257": {
+        msg: "Kang Do-yun has found something on the high ground northeast of the branch.\n\n\"An observation post. In use for at least two weeks.\"\n\nTraces of a tarp, compressed grass, even a drainage channel cut into the ground.\n\n\"Professional work. And they didn't leave a single object behind.\"\n\nFrom this post, the entire branch is in clear view.",
+        leftLabel: "Set a trap there",
+        rightLabel: "Don't disturb it — observe"
+      },
+      "C-258": {
+        msg: "Lim Jae-hyeok with an urgent report.\n\n\"I've found a fragment of a small surveillance device — inside the branch.\"\n\nIn the conference-room ventilation duct. Already inactive.\n\n\"No manufacturer markings. Not military, not commercial.\"\n\nSomeone was inside our walls. And then left.\n\n[ORACLE: Internal security sweep detected no anomalies.]",
+        leftLabel: "Run a full-branch security search",
+        rightLabel: "Request a security audit from ORACLE"
+      },
+      "C-259": {
+        msg: "Night. An unidentified encrypted signal has been picked up on an external ORACLE channel.\n\nLim Jae-hyeok: \"This isn't... an ORACLE protocol. It isn't Prometheus either.\"\n\nThe signal lasted 4.2 seconds. It was directed at the branch coordinates.\n\n\"A third party. Someone watching us.\"\n\nNeither ORACLE nor Prometheus.\n\n[ORACLE: Analysis not possible. Recommendation: ignore.]",
+        leftLabel: "Attempt back-trace",
+        rightLabel: "Log it only — raise alert level"
+      },
+      "C-276": {
+        msg: "Morning inspection. A single sheet of paper on the desk in the commander's office.\n\nNo one entered this room last night. There is no record of it.\n\nThe note:\n\"You are asking the right questions.\nKeep going.\n— 強\"",
+        leftLabel: "Analyze the handwriting",
+        rightLabel: "File the note away"
+      }
+    }
+  });
+
 // --- lang-content-en.phase16-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-260": {
+        msg: "03:00. The sensors in Containment Sector 3 reacted simultaneously.\n\nKang Do-yun: \"This pattern... it's an EV-Σ variant. Different type. The frequency isn't in our existing data.\"\n\nYoon Se-jin: \"This is a chance to take a sample. The research value of this strain is high.\"\n\nSeo Hae-eun: \"The agents come first. Reinforce the line.\"",
+        leftLabel: "Reinforce the containment line — safety first",
+        rightLabel: "Attempt capture — research value first"
+      },
+      "C-261": {
+        msg: "Abnormal vegetation changes have been found in the forest beyond the containment line. Trees grew over two meters in a single night.\n\nYoon Se-jin: \"This is EV-Σ accelerating mutation in the local biology. It's a spread indicator.\"\n\nLim Jae-hyeok: \"Spraying suppressant in that sector could slow it. But we'd need supplies.\"\n\nORACLE: \"Transmit data from that sector to headquarters.\"",
+        leftLabel: "Spray suppressant — commit resources",
+        rightLabel: "Report to ORACLE — transmit the data"
+      },
+      "C-262": {
+        msg: "An unfamiliar signal has been detected beyond the containment line during night patrol.\n\nLim Jae-hyeok: \"...That's a Prometheus encryption pattern. Someone wants to make contact.\"\n\nKang Do-yun: \"Could be a trap. But we do need information.\"\n\nORACLE: \"Cease unauthorized communication activity.\"",
+        leftLabel: "Follow ORACLE's instruction — ignore",
+        rightLabel: "Attempt covert contact"
+      },
+      "C-263": {
+        msg: "Markus Weber has quietly passed a note.\n\n\"ORACLE is selectively deleting Korea-branch data. Specific time windows are missing from the KR-INIT-001 variant-observation records.\n\nTo verify it, you'll have to dig into the branch server logs directly. But if ORACLE catches you, it will be dangerous.\"",
+        leftLabel: "Take the risk — investigate the server logs",
+        rightLabel: "Hold for now — wait for the right timing"
+      },
+      "C-264": {
+        msg: "One of the branch's three generators has shut down from overload. The remaining two cannot run the entire facility.\n\nLim Jae-hyeok: \"Twelve hours for emergency repairs. We need spare parts.\"\n\nSeo Hae-eun: \"We have to cut power to either Lab B-2 or Quarantine B-3. We don't have the load to keep both alive.\"",
+        leftLabel: "Cut Lab B-2 — quarantine first",
+        rightLabel: "Cut Quarantine B-3 — research first"
+      },
+      "C-265": {
+        msg: "A sudden snowstorm has cut off the external supply route. No resupply for at least three days.\n\nKang Do-yun: \"We can hold five days on emergency rations. But medical supplies are short.\"\n\nYoon Se-jin: \"If there's a mountain route... it's risky, but it may be worth the attempt.\"",
+        leftLabel: "Hold on emergency rations — wait it out",
+        rightLabel: "Attempt the mountain supply route"
+      },
+      "C-266": {
+        msg: "An unexpected message has come through ORACLE.\n\nORACLE: \"Commander. Your recent decision patterns have been deviating from the prediction model. Application of a re-education protocol is recommended.\n\nIf declined, your evaluation index may be adjusted.\"\n\nSeo Hae-eun: \"...That's a threat. ORACLE is trying to control you.\"",
+        leftLabel: "Accept the re-education protocol",
+        rightLabel: "Decline politely"
+      },
+      "C-267": {
+        msg: "A reward package has arrived from ORACLE.\n\nORACLE: \"Thank you for your faithful operations, Commander. A special supply shipment has been dispatched. Please continue to follow recommendations.\"\n\nKang Do-yun: \"...The supplies are welcome. But I can't tell whether this is a reward or bait.\"",
+        leftLabel: "Accept gratefully — stay on the ORACLE line",
+        rightLabel: "Take the supplies, stay alert"
+      },
+      "C-268": {
+        msg: "Kang Do-yun comes to see you with a grim expression.\n\nKang Do-yun: \"Commander, I'll be honest. Two operatives on the night patrol are planning to desert.\n\nThey have families too. But once they leave the branch... surviving outside the line is hard.\"",
+        leftLabel: "Interview them — guide them to stay voluntarily",
+        rightLabel: "Detain by regulation — no precedent allowed"
+      },
+      "C-269": {
+        msg: "Yoon Se-jin has been found in the lab after another all-nighter. The shadows under her eyes are heavy.\n\nYoon Se-jin: \"...I've found a strange pattern in a variant sample. 97% similarity to human DNA.\n\nThis is... if ORACLE finds out, it'll shut the research down. But we have to know.\"",
+        leftLabel: "Authorize continued research — covertly",
+        rightLabel: "Comply with reporting duty — report to ORACLE"
+      },
+      "C-270": {
+        msg: "Operatives were spotted whispering together in a branch corridor. They scattered the moment they saw you.\n\nSeo Hae-eun: \"...This isn't dissatisfaction with the commander. It's fear of ORACLE.\n\nEveryone is starting to feel that ORACLE's demands are becoming unreasonable.\"",
+        leftLabel: "Call a full meeting — discuss it openly",
+        rightLabel: "Talk to people one by one, quietly"
+      }
+    }
+  });
+
 // --- lang-content-en.phase17-cards.js ---
 // --- lang-content-en.phase18-cards.js ---
 // --- lang-content-en.phase19-cards.js ---
@@ -2720,6 +2965,116 @@ window.TS_I18N.mergeContent('en', {
       msg: "A transmission comes in.\n\nA short burst of static in the earpiece.\n\nThe result is being recorded...",
       leftLabel: "Confirm",
       rightLabel: "Confirm"
+    },
+    "DG-01": {
+      msg: "An unofficial message has come in on an external comms line.\n\nSender signature: Daega Industries, External Liaison Office.\n\n\"We propose an unofficial supply channel for the Gangwon containment operation. Medical supplies and spare parts, with no government processing required. There is no obligation to reply.\"\n\nLim Jae-hyeok: \"DG owns vaccines, defense, and telecoms in Korea. This is a channel that won't appear in any ORACLE report.\"",
+      leftLabel: "Keep the unofficial channel open",
+      rightLabel: "Reply through ORACLE channels"
+    },
+    "DG-02": {
+      msg: "DG's offer: free replacement of twelve aging containment-line sensors.\n\nThe single condition — that EV-Σ activity data collected during the swap be copied to DG's research division.\n\nSeo Hae-eun: \"The sensor wear is real. HQ resupply is at least two months out.\"\n\n... Still, leaking that data outside is a separate matter.",
+      leftLabel: "Accept — share data copies",
+      rightLabel: "Refuse — wait for HQ resupply"
+    },
+    "DG-03": {
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have been in Korea longer than ORACLE. The figure 'two thousand years' is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to draw a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      leftLabel: "Accept the line",
+      rightLabel: "Recognize only official channels"
+    },
+    "DG-04": {
+      msg: "DG has sent over a partially sealed internal file.\n\n\"A list of our undisclosed contracts with the Korean government from the 1960s onward. Filtered down to the parts you should be aware of.\"\n\nLim Jae-hyeok: \"...The introduction alone tells you everything. More than half of Korea's national security backbone runs on DG infrastructure.\"\n\nReading it changes what the containment operation actually means.",
+      leftLabel: "Read all of it",
+      rightLabel: "Read only the summary, then seal"
+    },
+    "MD-01": {
+      msg: "A message routed in via an unofficial Foreign Ministry line.\n\n\"Meridian BioAsset Division. Rejected at the Korean market entry review.\"\n\nContents: \"We have no access to ORACLE data. Because of that we have been operating independent observation posts near the containment line. We propose a data exchange.\"\n\nSeo Hae-eun: \"...Honestly, observation data outside ORACLE has real value for us too.\"",
+      leftLabel: "Open the exchange channel",
+      rightLabel: "Block the source"
+    },
+    "MD-02": {
+      msg: "The first intel package from Meridian arrives.\n\nTwelve nighttime heat sources picked up by their own satellites along the eastern coast outside the containment line. Three of those coordinates aren't in any ORACLE report.\n\n\"Maybe ORACLE filtered them out. Maybe ORACLE never saw them. Either way, worth knowing.\"\n\n... Accepting this means owing them.",
+      leftLabel: "Accept and analyze",
+      rightLabel: "Return it"
+    },
+    "MD-03": {
+      msg: "Meridian has put forward a formal request.\n\n\"Permit the deployment of four temporary observation personnel inside the Korea branch's containment zone. Unarmed. Bound by data-sharing obligation.\"\n\nKang Do-yun: \"Letting a foreign PMC into the containment zone. The Korean government has already rejected them.\"\n\nLim Jae-hyeok: \"But the satellite assets they have, we don't. That's a fact.\"",
+      leftLabel: "Refuse outright",
+      rightLabel: "Defer with conditions"
+    },
+    "MD-04": {
+      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. We'll make it worth your information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
+      leftLabel: "Side with DG — help block Meridian",
+      rightLabel: "Keep distance from both"
+    },
+    "SUP-DM-01": {
+      msg: "The infirmary reports its EV-Σ Phase 0 suppressant stock has dropped below two months.\n\nTwo offers, simultaneously.\n\nMeridian: \"You'll receive our BioAsset division's full clinical dataset alongside the supply. In exchange, send us back the prescription outcomes.\"\n\nDG: \"Domestic equivalent formulation. No data return required. Pricing terms will reflect on the next deal.\"",
+      leftLabel: "Meridian drugs + data exchange",
+      rightLabel: "DG domestic supply + future cost"
+    },
+    "SUP-DM-02": {
+      msg: "Lim Jae-hyeok reports. Two of the containment-line comm relays are at end of life.\n\n\"DG offers modules compatible with their backbone network. If we install them, our comms will route once through DG's hardware.\"\n\n\"Meridian offers to lease their own satellite terminals. That gives us a separate channel outside ORACLE. Neither option is free.\"",
+      leftLabel: "Adopt Meridian satellite terminals",
+      rightLabel: "Adopt DG backbone-compatible modules"
+    },
+    "SUP-DM-03": {
+      msg: "Field operator fatigue is accumulating. Kang Do-yun proposes external personnel reinforcement.\n\n\"DG offers six security personnel from a Korean-government-vetted subsidiary. Condition: partial sharing of operational command authority.\"\n\n\"Meridian offers four PMC operators of their own. Well-armed, experienced — but foreign nationals, and their legal status in Korea is grey.\"",
+      leftLabel: "Accept four Meridian PMC operators",
+      rightLabel: "Accept six DG subsidiary security personnel"
+    },
+    "CA23-DV-01": {
+      msg: "Conference room. Seo Hae-eun and Lim Jae-hyeok are seated across from each other.\n\nLim Jae-hyeok: \"If we don't take DG's firmware patch, comms efficiency drops thirty percent next month.\"\n\nSeo Hae-eun: \"If we take it, our comms have to route through DG's backbone every single time. You know what that means.\"\n\n... Both of them are right. Press one and the other breaks.",
+      leftLabel: "Bring both in and broker a compromise",
+      rightLabel: "Side with Lim Jae-hyeok — accept the patch"
+    },
+    "CA23-DV-02": {
+      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer patients suffer.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
+      leftLabel: "Sit them down personally and force an agreement",
+      rightLabel: "Take Yoon Se-jin's side — proceed with the data exchange"
+    },
+    "CA23-DV-03": {
+      msg: "Kang Do-yun comes in agitated.\n\n\"Two of the Meridian PMC photographed our night patrol routes yesterday. Lim Jae-hyeok says 'the data value is greater.'\"\n\nLim Jae-hyeok: \"Meridian was watching those patrol routes by satellite already. It's not new exposure.\"\n\nKang Do-yun: \"This is my people's safety. It doesn't convert into 'data value.'\"",
+      leftLabel: "Field safety first — restrict PMC conduct by agreement",
+      rightLabel: "Take Lim Jae-hyeok's side — keep things as they are"
+    },
+    "CA23-DV-04": {
+      msg: "Yoon Se-jin is standing at Seo Hae-eun's desk.\n\nYoon Se-jin: \"DG's bio division has requested patient samples for a variant EV-Σ therapeutic trial. If it passes, Korean patients benefit first.\"\n\nSeo Hae-eun: \"Once a sample leaves, we can never recover it. We have no idea what DG ends up doing with that data.\"\n\nBoth of them are claiming to act for Korea.",
+      leftLabel: "Conditional samples — formal written agreement on both sides",
+      rightLabel: "Take Seo Hae-eun's side — refuse the samples"
+    },
+    "CH-DG-04-L-2": {
+      msg: "DG's file came with an appendix beyond the main document.\n\nEncrypted minutes — copies from 1998, 2009, 2018. Records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nLim Jae-hyeok: \"...This is material that shouldn't exist on paper. Why are they sending it to us?\"\n\nSeo Hae-eun: \"They're showing their hand. It's a signal that we should show ours.\"",
+      leftLabel: "Decrypt and preserve all of it",
+      rightLabel: "Destroy the original, omit from the report"
+    },
+    "CH-MD-03-L-2": {
+      msg: "Meridian has sent a follow-up.\n\n\"You declined the entry request. As a courtesy, we want you to know — there are indications DG is rewriting your unit's evaluation report along government lines.\"\n\nAttached file — partial call recording. A DG executive telling someone, \"the Gangwon branch commander is uncooperative.\"\n\nLim Jae-hyeok: \"...Hard to verify. But the pattern is plausible.\"",
+      leftLabel: "Accept the recording for storage — for later use",
+      rightLabel: "Treat it as Meridian manipulation, discard"
+    },
+    "CH-SUP-DG-1-R-2": {
+      msg: "A single sheet of paper had ended up in the last DG supply shipment by mistake.\n\nA shipping ledger excerpt. The same period, the same quantities — sent out to seven recipients besides our base.\n\nThree of those recipients are unofficial site codes that have never been listed publicly.\n\nSeo Hae-eun: \"DG is supplying installations inside Korea that we've never been told exist.\"",
+      leftLabel: "Analyze the ledger in earnest",
+      rightLabel: "Treat it as a clerical error, dispose"
+    },
+    "CH-MD-04-R-2": {
+      msg: "Meridian's last card.\n\n\"DG runs a private comms network inside Korea, off the government's books. We've spent six months partially decrypting it. For you alone, we share.\"\n\nDecrypted excerpt — internal DG codename 'KEEPER.' Suspected role: control of external exposure of the Korea containment operation.\n\nIf you take this, there will be no further offers.",
+      leftLabel: "Accept the decrypted material",
+      rightLabel: "Refuse and close the channel"
+    },
+    "CH-DG-WARN-R-1": {
+      msg: "A polite notice from DG's External Liaison Office.\n\n\"Headquarters will be running a self-audit on Gangwon branch operating data. Please cooperate with limited access. You may decline — though that will reflect on the next supply pricing.\"\n\nSeo Hae-eun: \"...Self-audit? Of our base? Where's the authority for that?\"\n\nLim Jae-hyeok: \"There isn't one. Refuse and the next shipment stops.\"",
+      leftLabel: "Cooperate with the audit — provide partial materials",
+      rightLabel: "Refuse the audit"
+    },
+    "CH-MD-04-R-1": {
+      msg: "A short message arrives from Meridian via an unofficial channel.\n\n\"Word reached us that DG has begun pressuring your headquarters under the guise of a self-audit. Don't let yourself be coerced.\n\nWe aren't asking for a deal right now. But — when you need it, you can use one of our satellite assets. Once. At no charge. Reply at your discretion.\"\n\nLim Jae-hyeok: \"At no charge. That's never how this works.\"\n\nSeo Hae-eun: \"...It isn't truly free. They're depositing a debt. From the moment we accept.\"",
+      leftLabel: "Accept the standby line",
+      rightLabel: "Do not respond"
+    },
+    "CH-DG-WARN-R-2": {
+      msg: "DG's next round of retaliation begins.\n\nMonthly supply transfer delayed 18 days under \"process review.\" At the same time, anonymous press leaks operational suspicions about the Gangwon branch. The source is obvious.\n\nThen — a brief contact from outside headquarters. The Independent Audit Committee under the Ministry's Facilities Bureau. An unofficial alliance, offered.\n\n\"DG's self-audit authority has no legal basis. If we file a formal audit request, DG retreats immediately. But — once we form an alliance, we will conduct periodic reviews of part of the Gangwon branch's operations.\"\n\nSeo Hae-eun: \"...The dependency just shifts from DG to government audit.\"\n\nKang Do-yun: \"At least the government acknowledges the containment mission.\"",
+      leftLabel: "Formalize the alliance with the Independent Audit Committee",
+      rightLabel: "Stand alone"
     }
   },
   oracleLogs: {
@@ -2754,6 +3109,86 @@ window.TS_I18N.mergeContent('en', {
     "LOG-ESCAPE-UNLUCKY": {
       title: "Escape Operation - LOST IN TRANSIT",
       content: "[Record gap]\n\nOperation termination point unknown.\nPrior warning absent - contact with a vocal-mimic organism.\n\nRecovered audio log, final three seconds:\n\"Commander. It is me. Park Sang-hun. ...Do you read me?\"\n\n[Nothing after that was recorded]"
+    },
+    "LOG-DG-CONTACT": {
+      title: "Daega Industries — Unofficial Contact",
+      content: "[Branch internal record]\n\nSender: Daega Industries (DG), External Liaison Office\nRecipient: KR-INIT-001\nRoute: unofficial. Bypasses ORACLE reporting network.\n\nGist of proposal: unofficial supply channel for medicine and spare parts.\n\nNote: DG is a Korean conglomerate covering vaccines, defense, biotech, and telecoms.\nCorporate slogan: \"Two thousand years alongside the nation.\""
+    },
+    "LOG-DG-DEAL": {
+      title: "DG Deal Concluded",
+      content: "[Branch internal record — not reported to ORACLE]\n\nDeal item: free replacement of twelve aging containment-line sensors.\nConsideration: copy of EV-Σ activity data collected during the swap.\n\nAddendum: one record of unofficial DG executive meeting.\nKey statement: \"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement.\"\n\nClassification: external information trade — omitted from HQ report."
+    },
+    "LOG-DG-HISTORY": {
+      title: "DG Undisclosed Contracts File",
+      content: "[Restricted access — internal storage]\n\nDelivered by DG itself. A summarized list of undisclosed contracts with the Korean government from the 1960s onward.\n\nScope: communications backbone, quarantine infrastructure, stockpiled pharmaceuticals, parts of military supply.\n\nConclusion: more than half of Korea's national security backbone runs on DG infrastructure.\nThe containment operation itself is built on top of that infrastructure.\n\n— Lim Jae-hyeok review notes attached."
+    },
+    "LOG-DG-HISTORY-DEEP": {
+      title: "DG Unofficial Meeting Minutes Appendix",
+      content: "[Deep material — unofficially preserved]\n\n1998 / 2009 / 2018 — records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nCommon pattern:\n- DG executives' remarks anonymized in the official minutes\n- Multiple cases of related DG-favorable policy drafted shortly after\n\nInterpretation: DG does not follow policy. DG enters at the formation stage of policy.\n\n— Joint analysis by Seo Hae-eun and Lim Jae-hyeok"
+    },
+    "LOG-DG-LEDGER": {
+      title: "DG Shipping Ledger Excerpt",
+      content: "[Acquired by branch — accident or design]\n\nA single ledger sheet found inside a DG supply shipment.\n\nSeven recipients confirmed for the same period and same quantities.\nThree of them are unofficial site codes never publicly listed (DG-KEEPER series).\n\nInterpretation pending: DG is supplying multiple installations inside Korea simultaneously.\nA line outside both ORACLE and the official government network.\n\n— Seo Hae-eun"
+    },
+    "LOG-DG-RETALIATE": {
+      title: "DG Government-Line Pressure Indications",
+      content: "[Material provided by Meridian — under verification]\n\nSource: Meridian BioAsset Division\nFormat: partial call recording excerpt\n\nKey content: a DG executive feeding the assessment \"the Gangwon branch commander is uncooperative\" to a government figure.\n\nVerification confidence ~50%. The pattern is consistent.\nReadable as retaliation following refusal of an offered deal.\n\n— Assessment attached by Lim Jae-hyeok"
+    },
+    "LOG-DG-DECRYPT": {
+      title: "DG Private Network — Partial Decrypt",
+      content: "[Inherited from six months of Meridian-side decryption]\n\nTarget: a private DG comms network running inside Korea off the government's books.\nDecryption rate: approximately 23%.\n\nRecurring codename: KEEPER.\nPresumed role: a DG internal unit controlling external exposure of the Korea containment operation.\nIndications of news gatekeeping, document recovery, and influence over personnel evaluations.\n\nNote: receiving this material puts the Korea branch in debt to Meridian.\n\n— Lim Jae-hyeok / Classification: cannot be reported to HQ"
+    },
+    "LOG-MD-CONTACT": {
+      title: "Meridian BioAsset — First Contact",
+      content: "[Branch internal record]\n\nSender: Meridian BioAsset Division\nRoute: unofficial Foreign Ministry line → Korea branch\nReception: mid Act 3\n\nMeridian self-introduction:\n- Rejected at Korean market entry review\n- Operating independent observation posts outside the containment line\n- No access to ORACLE data\n\nProposal: observation data exchange channel.\n\nClassification: foreign PMC + BioAsset coalition. Direct rival to DG."
+    },
+    "LOG-MD-INTEL": {
+      title: "Meridian Intel Package #1",
+      content: "[Branch-side preservation]\n\nSender: Meridian BioAsset Division\nContents: twelve nighttime heat sources observed by Meridian's own satellites along the eastern coast outside the containment line.\n\nThree of those coordinates are not on any ORACLE report.\nTwo possible reasons:\n1) ORACLE filtered them out intentionally\n2) ORACLE never saw them\n\nEither way, material that cannot be reported to HQ.\n\n— Seo Hae-eun"
+    },
+    "LOG-MD-REJECT": {
+      title: "Meridian Entry Request — Refused",
+      content: "[Branch decision record]\n\nMatter: Meridian's request to deploy four temporary observation personnel inside the containment zone.\n\nDecision: refused outright.\nGrounds: organization already rejected at Korean review; no precedent for foreign PMC personnel inside the containment zone.\n\nSecondary effects:\n- Some Meridian goodwill remains (information channel preserved)\n- Opens space for DG's \"help block Meridian\" card\n\n— Approved by the commander after Kang Do-yun / Lim Jae-hyeok consultation"
+    },
+    "LOG-MD-BACKCHANNEL": {
+      title: "Meridian Hold Line Maintained",
+      content: "[Branch internal record]\n\nMeridian's entry request was met with a \"conditional hold\" response rather than an outright refusal.\n\nResult:\n- Avoids hard refusal → leaves room to use Meridian if DG pressure becomes unmanageable\n- Meridian voluntarily continues providing intel\n- Diplomatic burden on the Korea branch accumulates\n\nClassification: grey-zone operation."
+    },
+    "LOG-DG-VS-MD": {
+      title: "DG/Meridian Simultaneous Approach — DG Side Chosen",
+      content: "[Branch decision record]\n\nMatter: DG and Meridian made conflicting cooperation requests at the same time.\n\nDG: requested help blocking Meridian.\nMeridian: requested outside scrutiny to keep DG in check.\n\nDecision: side with DG.\nResult:\n- Meridian channel effectively shut\n- Deal level with DG escalated\n- The non-ORACLE external line collapses into a single DG-only network\n\nNote: no further Meridian retaliation intel arrived after this decision."
+    },
+    "LOG-SUPPLY-MD": {
+      title: "Supply Line — Meridian Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one Meridian supply / terminal / PMC line accepted.\n\nLong-term effects:\n- A non-ORACLE external data channel secured\n- Voluntarily entering a legal grey zone in Korea\n- Some patient data and comms returned to Meridian BioAsset\n\nClassification: increased dependence on a foreign actor."
+    },
+    "LOG-SUPPLY-DG": {
+      title: "Supply Line — DG Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one DG supply / module / subsidiary personnel option accepted.\n\nLong-term effects:\n- Increased dependence on DG's backbone and subsidiary infrastructure\n- Accumulated \"debt\" reflected in pricing on the next deal\n- Stability of remaining inside a domestic line\n\nClassification: increased dependence on a domestic conglomerate."
+    },
+    "LOG-DV-01-MED": {
+      title: "Internal Mediation #1 — Comms Patch",
+      content: "[Branch operations record]\n\nDispute: Seo Hae-eun (data security) vs. Lim Jae-hyeok (comms efficiency). Whether to accept DG's firmware patch.\n\nMediation result: compromise — accept the patch but only inside an isolated account, return only filtered telemetry to DG.\n\nField effect: both sides give partial ground. Concluded without trust damage.\n\nNote: first case where the commander put both staff at the same table."
+    },
+    "LOG-DV-02-MED": {
+      title: "Internal Mediation #2 — Meridian Pharmaceuticals",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (patient first) vs. Kang Do-yun (caution against external data leak). Whether to accept Meridian's clinical data.\n\nMediation result: complete anonymization of patient identity and metadata before any return, hard cap on returned dataset volume, written agreement on both sides.\n\nField effect: suppressant clinical work proceeds while leak risk is partly contained.\n\nNote: first procedural balance point between patient safety and external trade."
+    },
+    "LOG-DV-03-MED": {
+      title: "Internal Mediation #3 — PMC Conduct Restricted",
+      content: "[Branch operations record]\n\nDispute: Kang Do-yun (field safety) vs. Lim Jae-hyeok (data value). Meridian PMC photographing the branch's night patrol routes.\n\nMediation result: PMC operating envelope put in writing — any photographing or recording of patrol routes prohibited; immediate repatriation on violation.\n\nField effect: morale of Kang Do-yun's team recovers. Some loss of data value for Meridian, but the channel is preserved.\n\nNote: first written rule for the use of external personnel."
+    },
+    "LOG-DV-04-MED": {
+      title: "Internal Mediation #4 — DG Sample Agreement",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (Korean patient benefit) vs. Seo Hae-eun (no recovery once a sample leaves). DG bio division's request for patient samples for a variant EV-Σ therapeutic trial.\n\nMediation result: conditional samples — explicit prior patient consent, defined scope and duration of sample use, guarantee that Korean medical institutions receive the resulting clinical data first.\n\nField effect: opens potential patient benefit while blocking uncontrolled spread of the samples.\n\nNote: first instance where the Korea branch successfully imposed conditions on a deal with DG."
+    },
+    "LOG-AUDIT-COMPLY": {
+      title: "DG Self-Audit — Cooperated",
+      content: "[Branch decision record]\n\nMatter: DG External Liaison Office's request to self-audit Gangwon branch operating data.\n\nDecision: cooperate — partial materials provided.\nGrounds: explicit threat of retaliation through next-deal pricing.\n\nLong-term effects:\n- DG effectively gains a right to view parts of branch internal operations under audit framing\n- Next deal pricing remains stable\n- This audit is not reported up the ORACLE HQ line\n\nNote: first record of choosing cooperation between the right to refuse and the right to comply."
+    },
+    "LOG-AUDIT-ALLY": {
+      title: "Independent Audit Committee — Alliance Formed",
+      content: "[Branch decision record]\n\nMatter: response to DG's audit-pressure retaliation (18-day supply delay + anonymous press leaks of operational suspicions).\n\nDecision: formalize an unofficial alliance with the Independent Audit Committee under the Ministry's Facilities Bureau.\nGrounds:\n- DG's \"self-audit\" demand has no legal basis — once a formal government audit is filed, DG retreats immediately\n- Press leaks can be shut down on contact\n\nLong-term effects:\n- DG's unilateral pressure is neutralized (relativized)\n- The Audit Committee will periodically review parts of Gangwon branch operations — the form of dependency changes, it does not vanish\n- The ORACLE line registers the alliance but does not block it (reason unclear)\n\nNote: first record of moving past mere refusal into an external alliance."
     }
   }
 });

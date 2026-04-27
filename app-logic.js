@@ -40,7 +40,7 @@ function checkActTransition(s,g,lg,af,curAct){
 }
 
 // checkLogs: trust, tryUnlock를 파라미터로 받아 처리
-function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
+function checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock){
     if(s.day>=1)tryUnlock('LOG-001');if(s.day>=3)tryUnlock('LOG-002');if(s.day>=7)tryUnlock('LOG-011');
     if(cid==='C-006')tryUnlock('LOG-003');if(cid==='C-003')tryUnlock('LOG-004');if(cid==='C-010')tryUnlock('LOG-005');
     if(cid==='C-042'||cid==='C-043')tryUnlock('LOG-013');
@@ -133,7 +133,7 @@ function checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock){
 }
 
 // ═══ app.js 호환 alias (함수명 불일치 수정) ═══
-var checkLogsAll=function(s,g,cid,dc,di,dir,logs,trust,tryUnlock){checkLogs(s,g,cid,dc,di,dir,trust,tryUnlock)};
+var checkLogsAll=function(s,g,cid,dc,di,dir,logs,trust,tryUnlock){checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock)};
 var chkGameOver=chk;
 var genNewsHeadlines=genNews;
 var checkActTransitionLogic=checkActTransition;
