@@ -3065,6 +3065,16 @@ window.TS_I18N.mergeContent('en', {
       msg: "A polite notice from DG's External Liaison Office.\n\n\"Headquarters will be running a self-audit on Gangwon branch operating data. Please cooperate with limited access. You may decline — though that will reflect on the next supply pricing.\"\n\nSeo Hae-eun: \"...Self-audit? Of our base? Where's the authority for that?\"\n\nLim Jae-hyeok: \"There isn't one. Refuse and the next shipment stops.\"",
       leftLabel: "Cooperate with the audit — provide partial materials",
       rightLabel: "Refuse the audit"
+    },
+    "CH-MD-04-R-1": {
+      msg: "A short message arrives from Meridian via an unofficial channel.\n\n\"Word reached us that DG has begun pressuring your headquarters under the guise of a self-audit. Don't let yourself be coerced.\n\nWe aren't asking for a deal right now. But — when you need it, you can use one of our satellite assets. Once. At no charge. Reply at your discretion.\"\n\nLim Jae-hyeok: \"At no charge. That's never how this works.\"\n\nSeo Hae-eun: \"...It isn't truly free. They're depositing a debt. From the moment we accept.\"",
+      leftLabel: "Accept the standby line",
+      rightLabel: "Do not respond"
+    },
+    "CH-DG-WARN-R-2": {
+      msg: "DG's next round of retaliation begins.\n\nMonthly supply transfer delayed 18 days under \"process review.\" At the same time, anonymous press leaks operational suspicions about the Gangwon branch. The source is obvious.\n\nThen — a brief contact from outside headquarters. The Independent Audit Committee under the Ministry's Facilities Bureau. An unofficial alliance, offered.\n\n\"DG's self-audit authority has no legal basis. If we file a formal audit request, DG retreats immediately. But — once we form an alliance, we will conduct periodic reviews of part of the Gangwon branch's operations.\"\n\nSeo Hae-eun: \"...The dependency just shifts from DG to government audit.\"\n\nKang Do-yun: \"At least the government acknowledges the containment mission.\"",
+      leftLabel: "Formalize the alliance with the Independent Audit Committee",
+      rightLabel: "Stand alone"
     }
   },
   oracleLogs: {
@@ -3175,6 +3185,10 @@ window.TS_I18N.mergeContent('en', {
     "LOG-AUDIT-COMPLY": {
       title: "DG Self-Audit — Cooperated",
       content: "[Branch decision record]\n\nMatter: DG External Liaison Office's request to self-audit Gangwon branch operating data.\n\nDecision: cooperate — partial materials provided.\nGrounds: explicit threat of retaliation through next-deal pricing.\n\nLong-term effects:\n- DG effectively gains a right to view parts of branch internal operations under audit framing\n- Next deal pricing remains stable\n- This audit is not reported up the ORACLE HQ line\n\nNote: first record of choosing cooperation between the right to refuse and the right to comply."
+    },
+    "LOG-AUDIT-ALLY": {
+      title: "Independent Audit Committee — Alliance Formed",
+      content: "[Branch decision record]\n\nMatter: response to DG's audit-pressure retaliation (18-day supply delay + anonymous press leaks of operational suspicions).\n\nDecision: formalize an unofficial alliance with the Independent Audit Committee under the Ministry's Facilities Bureau.\nGrounds:\n- DG's \"self-audit\" demand has no legal basis — once a formal government audit is filed, DG retreats immediately\n- Press leaks can be shut down on contact\n\nLong-term effects:\n- DG's unilateral pressure is neutralized (relativized)\n- The Audit Committee will periodically review parts of Gangwon branch operations — the form of dependency changes, it does not vanish\n- The ORACLE line registers the alliance but does not block it (reason unclear)\n\nNote: first record of moving past mere refusal into an external alliance."
     }
   }
 });

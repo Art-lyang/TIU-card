@@ -168,6 +168,20 @@ var CARDS_DG_MERIDIAN = [
     left: { label: "감사에 협조한다 — 자료 일부 제공", fx: { c: 0, r: 1, t: -1, o: -2 }, g: -3 },
     right: { label: "감사를 거부한다", fx: { c: 0, r: -2, t: 1, o: 1 }, g: 2 } },
 
+  // CH-MD-04-R-1 — 메리디안의 비공식 무상 보류 제안 (MD-04 우 선택 후)
+  { id: "CH-MD-04-R-1", act: [3,4], priority: "상", bg: "comms",
+    cond: function(s,g,logs){ return logs.indexOf('LOG-MD-INTEL')>=0 && logs.indexOf('LOG-MD-BACKCHANNEL')<0 && logs.indexOf('LOG-DG-VS-MD')<0 && s.day>=24 && s.day<=27 },
+    msg: "메리디안 측에서 비공식 채널로 짧은 메시지가 왔습니다.\n\n\"DG가 본부에 자체 감사 명목으로 압박을 시작했다는 정보를 받았습니다. 강요받지 마십시오.\n\n저희는 지금 거래를 요구하지 않습니다. 다만 — 필요할 때 우리 위성 자산을 한 차례 무상으로 사용하실 수 있도록 비축해두겠습니다. 회신은 자유입니다.\"\n\n임재혁: \"무상이라니요. 그럴 리가 없을 텐데요.\"\n\n서하은: \"...정말 무상은 아닐 겁니다. 채권을 빌려두는 거예요. 받는 순간부터.\"",
+    left: { label: "보류 라인을 받아둔다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
+    right: { label: "응답하지 않는다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+
+  // CH-DG-WARN-R-2 — DG 보복 본격화, 외부 동맹 제안 (CH-DG-WARN-R-1 우 선택 후)
+  { id: "CH-DG-WARN-R-2", act: [4], priority: "상", bg: "base",
+    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-AUDIT-COMPLY')<0 && logs.indexOf('LOG-AUDIT-ALLY')<0 && s.day>=28 },
+    msg: "DG의 다음 보복이 시작됐습니다.\n\n월간 보급 송출이 \"공정 점검\" 명목으로 18일 지연. 동시에 익명 언론에 강원지부 운영 의혹 풍문 노출. 출처는 명확합니다.\n\n그때 — 본부 외부 채널로 짧은 연락. 정부 시설관리국 산하 감사독립위원회. 비공식 동맹 제안.\n\n\"DG의 자체 감사 권한은 법적 근거가 없습니다. 저희가 공식 감사 요청을 발의하면 DG는 즉시 물러납니다. 다만 — 동맹이 형성된 이후로는 저희도 강원지부 운영 일부를 정기 검토합니다.\"\n\n서하은: \"...DG에서 정부 감사로 종속이 옮겨가는 것뿐입니다.\"\n\n강도윤: \"적어도 정부는 봉쇄 임무를 인정하고 있는 쪽입니다.\"",
+    left: { label: "감사독립위와 동맹을 공식화", fx: { c: 1, r: 1, t: 0, o: -1 }, g: -2 },
+    right: { label: "단독으로 버틴다", fx: { c: -1, r: -2, t: 1, o: 1 }, g: 1 } },
+
 ];
 
 if(typeof CARDS !== 'undefined') CARDS = CARDS.concat(CARDS_DG_MERIDIAN);
