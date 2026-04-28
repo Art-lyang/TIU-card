@@ -30,6 +30,10 @@ function EvidenceTable(p) {
             for (var ck in combo.reward.trust) p.onTrust(ck, combo.reward.trust[ck]);
           }
           if (combo.reward.g && p.onGi) p.onGi(combo.reward.g);
+          if (combo.reward.log && p.onLog) {
+            if (Array.isArray(combo.reward.log)) combo.reward.log.forEach(function(id) { p.onLog(id); });
+            else p.onLog(combo.reward.log);
+          }
         }
       }
       if(typeof SFX!=='undefined')SFX.play('check');

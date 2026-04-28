@@ -112,7 +112,7 @@ function App(){
     setLogs(n);
     if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&typeof SFX!=='undefined')SFX.play('alarm');
   };
-  var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,prev[key]+delta));Save.set('ts_trust',next);
+  var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung",haeun:"haeun",doyun:"doyun",sejin:"sejin",jaehyuk:"jaehyuk",weber:"weber",foster:"foster",soyoung:"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,(prev[key]||0)+delta));Save.set('ts_trust',next);
     return next})};
   // checkLogs 래퍼: app-logic.js의 checkLogsAll 호출
   var checkLogs=function(s,g,cid,dc,di,dir){checkLogsAll(s,g,cid,dc,di,dir,logs,trust,tryUnlock)};
@@ -420,7 +420,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onNewGamePlus:startNewGamePlus,canNgPlus:endings.length>0,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
-  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,trust:trust,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
+  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,trust:trust,facility:facility,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,trust:trust,onComplete:hMission});
   if(phase==='escape_game')return h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult});
