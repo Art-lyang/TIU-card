@@ -178,6 +178,42 @@ function App(){
     var dur=fxMode==='reduced'?Math.floor(defaultDur*0.5):defaultDur;
     setTimeout(function(){setGlitchLevel(0)},dur);
   };
+  var buildEvidenceFallbackDialogue=function(){
+    var en=getLocale()==='en';
+    return {
+      id:'DLG-EV-FORCE-ACT3',
+      char:'\uc784\uc7ac\ud601',
+      role:en?'Technical Officer':'\uae30\uc220\uad00',
+      lines:en?[
+        'Commander, the investigation table was not activated during Act 2.',
+        'From this phase onward, scattered logs and incident records must be cross-checked directly.',
+        'I will open the evidence analysis module on the ORACLE terminal now.'
+      ]:[
+        '\uc9c0\ud718\uad00\ub2d8, Act 2 \ub0b4\uc5d0 \uc870\uc0ac\ud14c\uc774\ube14\uc774 \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.',
+        '\uc774 \ub2e8\uacc4\ubd80\ud130\ub294 \uc0b0\uc7ac\ud55c \ub85c\uadf8\uc640 \uc0ac\uac74 \uae30\ub85d\uc744 \uc9c1\uc811 \uad50\ucc28 \uac80\uc99d\ud574\uc57c \ud569\ub2c8\ub2e4.',
+        '\uc9c0\ud718\uad00 \uad8c\ud55c\uc73c\ub85c ORACLE \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uac15\uc81c \ud65c\uc131\ud654\ud558\uaca0\uc2b5\ub2c8\ub2e4.'
+      ],
+      choices:en?[
+        {label:'Activate the investigation table',tag:'Analysis',reply:'Authorization confirmed. The evidence table is now available from the terminal.',fx:{},g:0,trust:3,log:'LOG-EV-UNLOCK'},
+        {label:'Open it with minimum privileges',tag:'Cold',reply:'Understood. I will keep it to read-only analysis access.',fx:{},g:0,trust:1,log:'LOG-EV-UNLOCK'}
+      ]:[
+        {label:'\uc870\uc0ac\ud14c\uc774\ube14\uc744 \ud65c\uc131\ud654\ud574',tag:'\ubd84\uc11d',reply:'\uad8c\ud55c \ud655\uc778 \uc644\ub8cc. \uc774\uc81c \ub2e8\ub9d0\uae30\uc5d0\uc11c \uc99d\uac70 \ud14c\uc774\ube14\uc744 \uc0ac\uc6a9\ud560 \uc218 \uc788\uc2b5\ub2c8\ub2e4.',fx:{},g:0,trust:3,log:'LOG-EV-UNLOCK'},
+        {label:'\ucd5c\uc18c \uad8c\ud55c\uc73c\ub85c\ub9cc \uc5f4\uc5b4\ub450\ub77c',tag:'\uc2e0\uc911',reply:'\uc54c\uaca0\uc2b5\ub2c8\ub2e4. \uc5f4\ub78c \ubc0f \uad50\ucc28 \ubd84\uc11d \uad8c\ud55c\ub9cc \ubd80\uc5ec\ud558\uaca0\uc2b5\ub2c8\ub2e4.',fx:{},g:0,trust:1,log:'LOG-EV-UNLOCK'}
+      ]
+    };
+  };
+  var shouldForceEvidenceUnlock=function(lg){
+    return act>=3&&lg.indexOf('LOG-EV-UNLOCK')<0;
+  };
+  var triggerEvidenceUnlockDialogue=function(){
+    setCurDlg(buildEvidenceFallbackDialogue());
+    setPhase('dialogue');
+  };
+  useEffect(function(){
+    if(phase!=='game')return;
+    var lg=getLiveLogs(logs);
+    if(shouldForceEvidenceUnlock(lg))triggerEvidenceUnlockDialogue();
+  },[phase,act,logs]);
   var swipe=function(dir){
     SFX.play('swipe');setToast('');
     // 카드 글리치 트리거 — 스와이프 시작 시점에 발동
@@ -279,7 +315,7 @@ function App(){
     if(stats.day>35){var teid=resolveTimeUp(stats,gi,trust,liveLogs);SFX.play('gameover');doGO(getLocale()==='en'?'Session expired':'\uC138\uC158 \uB9CC\uB8CC',stats,gi,teid);return}
     var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast(tt('app.cStabilityAlert',{value:stats.c},'[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]'));setTimeout(function(){setToast('')},3800)},700)}
   nextCard(stats,gi,liveLogs,chainQueue);setPhase('game')};
-  var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);var dlgLogs=getLiveLogs(logs);persistGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
+  var hDlg=function(c){SFX.play('dialogue');var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);if(c.log){if(Array.isArray(c.log))c.log.forEach(function(l){tryUnlock(l)});else tryUnlock(c.log)}var dlgLogs=getLiveLogs(logs);persistGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
     var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedDlg.indexOf(i)<0}).length;
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
