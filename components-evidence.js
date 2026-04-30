@@ -9,7 +9,7 @@ function EvidenceTable(p) {
   var s2 = useState(null), result = s2[0], setResult = s2[1];
   var s3 = useState(!!p.forceOpen), show = s3[0], setShow = s3[1];
 
-  if (!p.unlocked || collected.length < 2) return null;
+  if (!p.unlocked) return null;
 
   var toggle = function(evId) {
     if (result) return;
@@ -53,6 +53,18 @@ function EvidenceTable(p) {
   var outerStyle = { margin: '12px auto 0', maxWidth: 440,
     border: '1px solid rgba(var(--ui-rgb),.12)', background: 'rgba(10,18,10,.8)',
     borderRadius: 3, padding: '10px 12px' };
+
+  if (collected.length < 2) return h('div', { style: outerStyle },
+    h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
+      h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
+        color: 'rgba(var(--ui-rgb),.55)', letterSpacing: 2 } },
+        'EVIDENCE TABLE STANDBY'),
+      h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
+        color: 'rgba(240,160,48,.65)', letterSpacing: 1 } },
+        collected.length + '/2')),
+    h('div', { style: { fontSize: 11, color: 'rgba(var(--ui-rgb),.45)',
+      lineHeight: 1.5, marginTop: 8 } },
+      'At least two evidence records are required before cross-analysis can begin.'));
 
   // 접힌 상태
   if (!show && !p.forceOpen) return h('div', { style: outerStyle },

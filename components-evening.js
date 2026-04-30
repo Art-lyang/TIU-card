@@ -9,7 +9,10 @@ function EveningChat(p){
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&p.logs.indexOf('LOG-080')<0)return false;if(c.name==='닉 포스터'&&p.logs.indexOf('LOG-081')<0)return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
   var usedEv=p.usedEvening||[];
-  var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
+  var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
+  var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
+  var ecKey=function(ec){var base=ecBaseKey(ec);return ec.responseKey||base+'_'+String((ec.lines&&ec.lines[0])||'').slice(0,28)};
+  var ecUsed=function(ec){var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
   var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
   function getChatI18nKey(ec){
@@ -47,13 +50,13 @@ function EveningChat(p){
       try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}
     };
     var matches=EVENING_CHATS.filter(function(ec){
-      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)
+      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)
     }).sort(sortByDay);
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
     if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
     else{
-      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
       else{
         matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)}).sort(sortByDay);
@@ -83,8 +86,8 @@ function EveningChat(p){
     var sortD=function(a,b){return a.dayMin-b.dayMin};
     var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
     var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
-    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
-    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
+    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
+    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
     // 이벤트성 이브닝 우선 마크
     var evM=m2.filter(function(ec){return ec.priority==='event'});
     var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
@@ -161,7 +164,10 @@ function EveningChat2(p){
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&p.logs.indexOf('LOG-080')<0)return false;if(c.key==='foster'&&p.logs.indexOf('LOG-081')<0)return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
   var usedEv=p.usedEvening||[];
-  var ecKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
+  var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
+  var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
+  var ecKey=function(ec){var base=ecBaseKey(ec);return ec.responseKey||base+'_'+String((ec.lines&&ec.lines[0])||'').slice(0,28)};
+  var ecUsed=function(ec){var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
   var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
   function getChatI18nKey(ec){
@@ -234,13 +240,13 @@ function EveningChat2(p){
       try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}
     };
     var matches=EVENING_CHATS.filter(function(ec){
-      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)
+      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)
     }).sort(sortByDay);
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
     if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
     else{
-      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&usedEv.indexOf(ecKey(ec))<0&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
       else{
         matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)}).sort(sortByDay);
@@ -270,8 +276,8 @@ function EveningChat2(p){
     var sortD=function(a,b){return a.dayMin-b.dayMin};
     var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
     var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn({logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
-    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
-    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&usedEv.indexOf(ecKey(ec))<0&&si2(ec)&&ec2(ec)}).sort(sortD);
+    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
+    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
     var evM=m2.filter(function(ec){return ec.priority==='event'});
     var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
     if(pick&&p.onMarkEvening)p.onMarkEvening(ecKey(pick))
