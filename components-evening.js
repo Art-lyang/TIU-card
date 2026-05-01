@@ -12,7 +12,7 @@ function EveningChat(p){
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
   var ecKey=function(ec){var base=ecBaseKey(ec);return ec.responseKey||base+'_'+String((ec.lines&&ec.lines[0])||'').slice(0,28)};
-  var ecUsed=function(ec){var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
+  var ecUsed=function(ec){if(ec&&ec.responseKey==='jaehyuk_2_5-99'&&p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')<0)return false;var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
   var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
   function getChatI18nKey(ec){
@@ -167,7 +167,7 @@ function EveningChat2(p){
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
   var ecKey=function(ec){var base=ecBaseKey(ec);return ec.responseKey||base+'_'+String((ec.lines&&ec.lines[0])||'').slice(0,28)};
-  var ecUsed=function(ec){var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
+  var ecUsed=function(ec){if(ec&&ec.responseKey==='jaehyuk_2_5-99'&&p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')<0)return false;var base=ecBaseKey(ec);return usedEv.indexOf(ecKey(ec))>=0||((_ecKeyCounts[base]||0)<=1&&usedEv.indexOf(base)>=0)};
   var charKeyMap2={'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
   var INTRO_LOG_MAP={'서하은':'LOG-INTRO-SH','강도윤':'LOG-INTRO-KD','윤세진':'LOG-INTRO-YS','임재혁':'LOG-INTRO-IJ'};
   function getChatI18nKey(ec){

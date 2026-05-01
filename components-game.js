@@ -237,12 +237,32 @@ function Stats(p){
 }
 function DayObjective(p){
   var st=p.stats||{},act=p.act||1,day=st.day||1;
+  var logs=p.logs||[];
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var isEn=locale==='en';
   var critical=['c','r','t','o'].filter(function(k){return (st[k]||0)<=25});
   var key=critical.length?'critical':(day<=1?'day1':('act'+act));
+  var sub='';
+  if(critical.length){
+    var names={c:isEn?'Containment':'봉쇄',r:isEn?'Resources':'자원',t:isEn?'Trust':'신뢰',o:isEn?'Evaluation':'평가'};
+    sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return names[k]}).join(', ');
+  }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
+    sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
+  }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0){
+    sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
+  }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof getCollectedEvidence==='function'){
+    var evCount=getCollectedEvidence(logs).length;
+    if(evCount<2)sub=isEn?'Collect at least two evidence records for cross-analysis.':'교차 분석을 위해 증거 기록을 2개 이상 확보하세요.';
+    else if(typeof getUnlockedCombos==='function')sub=(isEn?'Evidence insights: ':'증거 조합: ')+getUnlockedCombos(logs).length+'/'+(typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS.length:'?');
+  }
+  if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
+    sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
+  }
   var text=tt('objective.'+key,{act:act,day:day},null)||tt('objective.act1',null,'한국지부 초기 안정화 절차를 유지하십시오.');
   return h('div',{className:'objective-bar'},
     h('span',{className:'objective-label'},tt('objective.label',null,'DAY OBJECTIVE')),
-    h('span',{className:'objective-text'},text)
+    h('span',{className:'objective-text'},text),
+    sub?h('span',{className:'objective-sub'},sub):null
   );
 }
 function CardC(p){

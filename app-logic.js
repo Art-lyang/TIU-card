@@ -11,11 +11,49 @@ function chk(s){
   return null;
 }
 
+function genChoiceReactionNews(s,g,logs){
+  var lg=logs||[],pool=[];
+  var has=function(id){return lg.indexOf(id)>=0};
+  if(has('LOG-KR-CIV-REPORT'))pool.push("[국내] 생활안전센터 신고량 급증 — '회색 버튼' 관련 민원 정식 접수 전환");
+  if(has('LOG-KR-CIV-QUIET'))pool.push("[국내] 방벽 내부 커뮤니티, 공식 신고 대신 자체 확인망 공유 확산");
+  if(has('LOG-KR-GATE-STRICT'))pool.push("[국내] 환승 검문 허브 재스캔 강화 — 출근길 평균 지연 18분 증가");
+  if(has('LOG-KR-GATE-REVIEW'))pool.push("[국내] 검문소 현장 재량 확대 논란 — 중앙 분류망과 다른 판단 사례 확인");
+  if(has('LOG-KR-HOSPITAL-CENTRAL'))pool.push("[국내] Phase 관찰 병동 가족 단위 격리 확대 — 유족·보호자 항의 지속");
+  if(has('LOG-KR-HOSPITAL-FAMILY'))pool.push("[국내] 일부 병동, 중앙 분류보다 현장 의료진 판단 우선 적용");
+  if(has('LOG-KR-MARKET-DG')||has('LOG-SUPPLY-DG'))pool.push("[국내] DG 협력 물류망, 방벽 인접 시장 정리 착수 — 보급 안정 기대와 독점 우려 교차");
+  if(has('LOG-KR-MARKET-LOCAL'))pool.push("[국내] 방벽 인접 상인회, 검역 조건부 지역 유통망 유지 합의");
+  if(has('LOG-KR-SCHOOL-CLOSE'))pool.push("[국내] 방벽 내부 학교 임시 폐쇄 증가 — 학생들 사이 '노란불 세 번' 괴담 확산");
+  if(has('LOG-KR-SCHOOL-CONTINUE'))pool.push("[국내] 일부 학교 분산 수업 유지 — 감염 이력 낙인 최소화 조치");
+  if(has('LOG-KR-RECORD-PRESERVE'))pool.push("[분류 보류] 강원 동부 작전 관련 문서 제목만 복원 — 본문 접근 제한");
+  if(has('LOG-KR-RECORD-RESTORE'))pool.push("[분류 오류 — 자동 삭제 예정]\n[국내] '민간 피해 없음' 문서와 유족 편지 스캔본 동시 발견\n[삭제됨]");
+  if(has('LOG-KR-HUB-LOCK'))pool.push("[국내] 환승 검문 허브 임시 폐쇄 — 비공개 경고문 캡처본 회수 중");
+  if(has('LOG-KR-HUB-OPEN'))pool.push("[국내] 환승 허브 정상 운영 유지 — 삭제된 사건번호 수집 커뮤니티 활동 증가");
+  if(has('LOG-KR-REGISTRY-SEAL'))pool.push("[국내] 감염 이력 비공개 플래그 접근권 축소 — 복귀 지원 단체 환영");
+  if(has('LOG-KR-REGISTRY-SHARE'))pool.push("[국내] 위험 사업장 감염 이력 공유 유지 — 채용 차별 제보 동반 증가");
+  if(has('LOG-DG-DEAL'))pool.push("[국내] DG 봉쇄 장비 무상 교체 확대 — 시민단체, 데이터 제공 조건 공개 요구");
+  if(has('LOG-MD-CONTACT'))pool.push("[해외] 메리디안, 한국 봉쇄 데이터 불투명성 지적 — 정부는 '검토 중' 답변");
+  if(has('LOG-DG-VS-MD'))pool.push("[국내] 외국계 바이오자산 진입 심의 장기 보류 — DG 협력사 물량은 정상 통관");
+  if(has('LOG-SUPPLY-MD'))pool.push("[해외] 메리디안 계열 보급품 한국 지부 반입 정황 — 외교부, 민간 연구물자라 설명");
+  if(has('LOG-AUDIT-COMPLY'))pool.push("[국내] DG 자체 감사 협조 범위 확대 — 강원 지부 운영 자료 일부 열람");
+  if(has('LOG-AUDIT-ALLY'))pool.push("[국내] 감사독립위, 방벽 시설 운영 점검 착수 — DG 자체 감사 요구 제동");
+  if(has('LOG-EV-UNLOCK'))pool.push("[국내] 증거 분석 절차 강화 이후 비공개 사건번호 재분류 사례 증가");
+  if(pool.length===0){
+    if(s.t<35)pool.push("[국내] 방벽 내부 주민 신뢰 지수 하락 — 신고보다 침묵을 택하는 사례 증가");
+    if(s.o<35)pool.push("[국내] 중앙 분류망과 현장 판단 불일치 사례, 비공개 감사 대상으로 전환");
+    if(s.r<35)pool.push("[국내] 방벽 주변 검역 도장 식품 가격 상승 — 군납품 암시장 거래 단속");
+  }
+  if(pool.length===0)return [];
+  return [pick(pool)];
+}
+
+function pushUniqueNews(l,item){if(item&&l.indexOf(item)<0)l.push(item)}
+
 function genNews(s,g,logs){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
   var lg=logs||[];
   if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)l.push(pick(NP.dg));
   if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)l.push(pick(NP.md));
+  genChoiceReactionNews(s,g,lg).forEach(function(item){pushUniqueNews(l,item)});
   return l}
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}

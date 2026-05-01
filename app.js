@@ -73,7 +73,7 @@ function App(){
     var sg=Save.get('ts_game',null);
     // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
     if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
-    if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(typeof sg.transRoute==='string')setTransRoute(sg.transRoute);if(sg.cooldowns)setCooldowns(sg.cooldowns);if(sg.recentCards)setRecentCards(sg.recentCards);if(Array.isArray(sg.chainQueue))setChainQueue(sg.chainQueue);if(typeof sg.ct==='number')setCt(sg.ct)}
+    if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(typeof sg.transRoute==='string')setTransRoute(sg.transRoute);if(sg.cooldowns)setCooldowns(sg.cooldowns);if(sg.recentCards)setRecentCards(sg.recentCards);if(typeof sg.ct==='number')setCt(sg.ct)}
     else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     // ═══ 세이브 복원: stats/gi 로드 (기존 누락 수정) ═══
     var initStats={c:50,r:65,t:50,o:40,day:1};
@@ -84,14 +84,15 @@ function App(){
     var initRecent=(sg&&sg.recentCards)||[];
     var initRoute=(sg&&typeof sg.transRoute==='string')?sg.transRoute:'';
     loadActiveSpecs();
-    setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}));
+    var initQueue=(sg&&Array.isArray(sg.chainQueue))?sg.chainQueue:[];
+    if(initQueue.length>0){setCurCard(initQueue[0]);setChainQueue(initQueue.slice(1))}
+    else{setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}))}
   },[]);
   useEffect(function(){ if(typeof window!=='undefined')window.__ts_liveLogs=(logs||['LOG-001']).slice(); },[logs]);
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];
   var _showFacility=useState(false),showFacility=_showFacility[0],setShowFacility=_showFacility[1];
   var _showEvidence=useState(false),showEvidence=_showEvidence[0],setShowEvidence=_showEvidence[1];
-  var _showMissionDebug=useState(false),showMissionDebug=_showMissionDebug[0],setShowMissionDebug=_showMissionDebug[1];
   var _achievements=useState(function(){return Save.getAchievements()}),achievements=_achievements[0],setAchievements=_achievements[1];
   var _ngPlus=useState(function(){return Save.get('ts_ngPlus',false)}),ngPlus=_ngPlus[0],setNgPlus=_ngPlus[1];
   var _glitch=useState(0),glitchLevel=_glitch[0],setGlitchLevel=_glitch[1];
@@ -220,15 +221,18 @@ function App(){
     if(curCard&&curCard.glitch)triggerGlitch(curCard.glitch);
     if(curCard.isFacilityProposal){
       var feId=curCard.feId;
+      var fpChoice=dir==='left'?curCard.left:curCard.right;
+      var fpStats=applyFx(stats,(fpChoice&&fpChoice.fx)||{}),fpGi=gi+((fpChoice&&fpChoice.g)||0);
+      setStats(fpStats);setGi(fpGi);
       setFacility(function(prev){
         var next={approved:prev.approved.slice(),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([feId])};
         if(dir==='right'){next.approved.push(feId);setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
         else{next.pending.push(feId);setToastType('');setToast(tt('app.facilityPending',null,'확장 제안이 대기 목록에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
         Save.saveFacility(next);return next});
       var nct=ct+1;setCt(nct);
-      persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue);
-      if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(stats,gi,logs));setTimeout(function(){setPhase('news')},400)}
-      else{nextCard(stats,gi,logs,chainQueue)}
+      persistGame(fpStats,fpGi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue);
+      if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(fpStats,fpGi,logs));setTimeout(function(){setPhase('news')},400)}
+      else{nextCard(fpStats,fpGi,logs,chainQueue)}
       return;
     }
     var ch=dir==='left'?curCard.left:curCard.right;
@@ -282,7 +286,7 @@ function App(){
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
-    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq)}
+    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq)}
     if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
     else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facility)},300)}
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facility)},300)}
@@ -449,7 +453,7 @@ function App(){
   };
   // ═══ 렌더링 (phase 라우팅) ═══
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(MainMenu,{sessions:sessions,hasSave:!!Save.get('ts_game',null),onPlay:startNewCampaign,onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}});
+  if(phase==='menu')return h(MainMenu,{sessions:sessions,hasSave:!!Save.get('ts_game',null),onPlay:function(){if(Save.get('ts_game',null))setPhase('hub');else startNewCampaign()},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}});
   if(phase==='hub')return h(ScenarioHub,{hasSave:!!Save.get('ts_game',null),sessions:sessions,onBack:function(){setPhase('menu')},onContinue:function(){setPhase('game')},onNew:function(){initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();setCurCard(drawCard(ns,0,rl,{},[], 1));setFp(true);setPhase('tutorial')},onTutorial:function(){setPhase('tutorial')}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
@@ -474,36 +478,12 @@ function App(){
       (typeof ARCHIVE_ENTRIES!=='undefined')&&(function(){var uc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)}catch(err){return false}}).length;if(uc===0)return null;var nc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}catch(err){return false}}).length;return h('span',{className:'info-tag',style:{cursor:'pointer',color:nc>0?'#f0a030':'rgba(var(--ui-rgb),.7)',borderColor:nc>0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.2)',gap:4},onClick:function(){setRet('game');setPhase('archive')}},'ARC'+(nc>0?' '+nc+' ●':''))})(),
       (function(){var fc=(facility.completed||[]).length,fa=(facility.approved||[]).length,fp=(facility.pending||[]).length;var total=fc+fa+fp;if(total===0)return null;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'#4ae',borderColor:'rgba(74,170,238,.4)'},onClick:function(){setShowFacility(true)}},tt('scenario.facility',{done:fc,total:total},getLocale()==='en'?('FAC '+fc+'/'+total):('시설 '+fc+'/'+total)))})(),
       logs.indexOf('LOG-EV-UNLOCK')>=0&&(function(){var col=typeof getCollectedEvidence==='function'?getCollectedEvidence(logs).length:0;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowEvidence(true)}},tt('scenario.evidence',{count:col},getLocale()==='en'?('EVIDENCE '+col):('증거 '+col)))})(),
-      h('span',{className:'info-tag',style:{cursor:'pointer',color:'#f0c060',borderColor:'rgba(240,192,96,.35)'},onClick:function(){setShowMissionDebug(true)}},'FIELD TEST'),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);setTimeout(function(){setToast('')},2600)},onReply:function(msg){setToastType('');setToast(msg);setTimeout(function(){setToast('')},1500)}}),
     toast&&h('div',{style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':60,left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isRed?'rgba(255,68,68,0.15)':'rgba(10,18,10,.88)',border:'1px solid '+(isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line'}})()},toast.replace(/\. /g,'.\n')),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
-    showMissionDebug&&h('div',{style:{position:'fixed',inset:0,zIndex:60,background:'rgba(0,0,0,.72)',display:'flex',alignItems:'center',justifyContent:'center',padding:16}},
-      h('div',{style:{width:'100%',maxWidth:420,background:'rgba(6,12,8,.96)',border:'1px solid rgba(var(--ui-rgb),.28)',borderRadius:8,padding:18,boxShadow:'0 0 24px rgba(0,0,0,.35)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0c060',letterSpacing:2,textAlign:'center',marginBottom:8}},tt('missionDebug.title',null,'FIELD TEST LAUNCHER')),
-        h('div',{style:{fontSize:12,color:'rgba(var(--ui-rgb),.68)',lineHeight:1.7,textAlign:'center',marginBottom:14}},tt('missionDebug.desc',null,'Temporary field-mission test menu.')),
-        h('div',{style:{display:'flex',flexDirection:'column',gap:8}},
-          [
-            {id:'M-002',label:tt('missionDebug.items.m002',null,'M-002 / Signal Alignment / SPEC-011 Activity Zone Survey')},
-            {id:'MI-01',label:tt('missionDebug.items.mi01',null,'MI-01 / Quarantine Seal / Isolation Room Anomaly')},
-            {id:'MI-04',label:tt('missionDebug.items.mi04',null,'MI-04 / Authority Trace / Security Zone Auth Error')},
-            {id:'M-010',label:tt('missionDebug.items.m010',null,'M-010 / Route Evade / SPEC-015 Track')},
-            {id:'MI-05',label:tt('missionDebug.items.mi05',null,'MI-05 / Scan Search / Missing Staff')},
-            {id:'MI-03',label:tt('missionDebug.items.mi03',null,'MI-03 / Sample Recovery / Lab Mutation')},
-            {id:'M-003',label:tt('missionDebug.items.m003',null,'M-003 / Evidence Sort / Trace Review')},
-            {id:'MI-02',label:tt('missionDebug.items.mi02',null,'MI-02 / Log Reconstruction / CCTV Gap')},
-            {id:'M-007',label:tt('missionDebug.items.m007',null,'M-007 / Latent Screen / Maximum Strike')}
-          ].map(function(item){
-            return h('button',{key:item.id,className:'btn',style:{width:'100%',textAlign:'left',padding:'12px 14px'},onClick:function(){setCurMission(item.id);setShowMissionDebug(false);setPhase('mission');}},item.label);
-          })
-        ),
-        h('div',{style:{display:'flex',justifyContent:'center',marginTop:14}},
-          h('button',{className:'btn',onClick:function(){setShowMissionDebug(false)}},tt('missionDebug.close',null,'Close')))
-      )
-    ),
     glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));

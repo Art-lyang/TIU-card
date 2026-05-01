@@ -1,2 +1,69 @@
-// data-dialogues-extra.js — optional dialogue extension placeholder
-// 현재 빌드 안정화를 위한 no-op 파일
+// data-dialogues-extra.js
+// Core data extension kept separate from data-core.js to avoid touching legacy encoded blocks.
+
+(function() {
+  if (typeof ORACLE_LOGS !== "undefined") {
+    ORACLE_LOGS.push(
+      {
+        id: "LOG-LJC-PROM-01",
+        title: "이중철 개인 기록: 강원 동부 작전",
+        content: "[비공식 열람 기록]\n\n대상: GANGWON-OLD / COASTAL-MIRROR / VOICELOSS\n\n지휘관 이중철이 프로메테우스 관련 녹취 파일을 열람하는 과정에서 판단 지연을 보임.\n\n연계 사건: 강원도 동부 작전, 통신 두절, 박상훈 중위 실종 처리.\n\nORACLE 기존 분류: 비협조 민간 세력 개입 가능성.\n지휘관 개인 주석: \"그날 이후, 프로메테우스라는 이름을 객관적으로 듣기 어렵다.\""
+      },
+      {
+        id: "LOG-LJC-PROM-02",
+        title: "프로메테우스 접촉 회피 기록",
+        content: "[지휘관 행동 관찰]\n\n프로메테우스 측 비공식 대면 요청 수신.\n\n요청 문구: \"그날의 통신 기록을 가지고 있다.\"\n\n지휘관 이중철은 직접 대면 필요성을 인정하면서도 접촉을 지연하거나 대리 접촉을 검토함.\n\n분석: 전략적 판단과 개인적 회피 반응이 동시에 관찰됨."
+      },
+      {
+        id: "LOG-LJC-PROM-03",
+        title: "상충 증언: 구조 요청 차단",
+        content: "[복원 증언 파일]\n\n발신자: 프로메테우스 계열 미확인 채널\n\n핵심 증언: \"그날 구조 요청을 막은 건 우리가 아니다. 우리는 늦었다.\"\n\n해당 증언은 ORACLE의 기존 사건 분류와 충돌함.\n\n비고: 지휘관의 프로메테우스 혐오/기피 반응이 단순 적대가 아니라 미해결된 책임감과 연결되어 있을 가능성."
+      },
+      {
+        id: "LOG-LJC-PROM-04",
+        title: "프로메테우스 협력 전제 기록",
+        content: "[비공식 판단 기록]\n\n프로메테우스 직접 채널 재개 전, 지휘관 이중철은 강원 동부 작전과 박상훈 중위 실종 기록을 다시 확인함.\n\n임재혁 제안: 협력 여부와 별개로 지휘관의 불신, ORACLE의 기존 분류, 프로메테우스 측 상충 증언을 모두 같은 기록에 남길 것.\n\n목적: 향후 협력 결정이 단순 전향이나 감정적 복수가 아니라, 불완전한 증거를 인지한 상태의 작전 판단이었음을 보존.\n\n평가: 프로메테우스와의 협력 가능성은 열렸으나, 지휘관의 개인적 적대감은 해소되지 않음."
+      },
+      {
+        id: "LOG-LJC-PROM-DLG",
+        title: "서하은 면담 기록: 지휘관의 정지",
+        content: "[간부 면담 요약]\n\n서하은은 프로메테우스 관련 보고가 올라올 때마다 지휘관의 반응 속도가 늦어지는 것을 확인했다.\n\n그는 명령을 거부하지 않는다. 다만, 확인 버튼 앞에서 한 번 멈춘다.\n\n분석: 프로메테우스 관련 판단에는 과거 작전 기억이 반복적으로 개입한다."
+      }
+    );
+  }
+
+  if (typeof DIALOGUES !== "undefined") {
+    DIALOGUES.push({
+      char: "서하은",
+      role: "부지휘관",
+      actReq: 2,
+      logReq: "LOG-LJC-PROM-01",
+      lines: [
+        "지휘관님. 프로메테우스 파일을 열 때마다 손이 멈춥니다.",
+        "명령을 피하신다는 뜻은 아닙니다. 오히려 끝까지 확인하시죠.",
+        "하지만 그 이름이 나오면, 판단 전에 다른 기억이 먼저 올라오는 것 같습니다.",
+        "강원 동부 작전 기록 때문입니까?"
+      ],
+      choices: [
+        {
+          label: "그날 이후로 객관적이기 어렵다",
+          tag: "공감",
+          reply: "말씀해주셔서 감사합니다. 그 약점을 숨기지 않는 편이, 오히려 더 안전합니다.",
+          fx: {},
+          g: -2,
+          trust: 10,
+          log: "LOG-LJC-PROM-DLG"
+        },
+        {
+          label: "개인 감정은 작전에 끼우지 않는다",
+          tag: "냉정",
+          reply: "알겠습니다. 그래도 제가 옆에서 한 번 더 확인하겠습니다.",
+          fx: {},
+          g: 1,
+          trust: -5,
+          log: "LOG-LJC-PROM-DLG"
+        }
+      ]
+    });
+  }
+})();

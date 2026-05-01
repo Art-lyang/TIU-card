@@ -286,4 +286,38 @@ window.TS_I18N.mergeContent('en', {
     }
   }
 });
+window.TS_I18N.mergeContent('en', {
+  dialogues: {
+    "서하은|지휘관님. 프로메테우스 파일을 열 때마다 손이 멈춥니다.": {
+      name: "Seo Hae-eun",
+      role: "Deputy Commander",
+      lines: [
+        "Commander. Your hand stops every time you open a Prometheus file.",
+        "I do not mean you are avoiding orders. You always verify them in the end.",
+        "But when that name appears, another memory seems to surface before the decision.",
+        "Is it because of the eastern Gangwon operation record?"
+      ],
+      choices: [
+        {
+          label: "Since that day, it is hard to be objective.",
+          tag: "Empathy",
+          reply: "Thank you for saying it. Not hiding that weakness may actually make us safer.",
+          fx: {},
+          g: -2,
+          trust: 10,
+          log: "LOG-LJC-PROM-DLG"
+        },
+        {
+          label: "Personal feelings do not enter operations.",
+          tag: "Cold",
+          reply: "Understood. Even so, I will double-check beside you.",
+          fx: {},
+          g: 1,
+          trust: -5,
+          log: "LOG-LJC-PROM-DLG"
+        }
+      ]
+    }
+  }
+});
 })();

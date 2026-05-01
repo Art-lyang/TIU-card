@@ -48,6 +48,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .objective-bar{width:100%;max-width:440px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:8px;margin:3px 0 5px;padding:5px 9px;border:1px solid rgba(var(--ui-rgb),.18);background:linear-gradient(90deg,rgba(var(--ui-rgb),.055),rgba(5,10,12,.18));box-shadow:inset 0 0 14px rgba(var(--ui-rgb),.035);font-family:'Share Tech Mono','Noto Sans KR',monospace;box-sizing:border-box}
 .objective-label{font-size:9px;color:#f0a030;letter-spacing:1.4px;white-space:nowrap;text-transform:uppercase}
 .objective-text{min-width:0;font-size:10px;line-height:1.35;color:rgba(var(--ui-rgb),.78);letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.objective-sub{grid-column:2;min-width:0;margin-top:-3px;font-size:9px;line-height:1.3;color:#f0a030;letter-spacing:.2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
 @keyframes criticalPulse{0%,100%{opacity:1}50%{opacity:0.55}}
 .delta-float{position:absolute;right:30px;top:50%;font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:bold;pointer-events:none;animation:deltaFloatUp 1.5s ease-out forwards;z-index:3;text-shadow:0 0 6px currentColor}
 .delta-float.delta-up{color:#7fd47f}

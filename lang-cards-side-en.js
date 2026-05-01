@@ -28,4 +28,34 @@ window.TS_I18N.mergeContent('en', {
     "CA-OBS-PROTO": { msg: "[ERR:0x8F2A - UNREGISTERED PROTOCOL DETECTED]\n\nPROTOCOL: OBSERVER\nAccess approval requested\n\nSource: ████████\nProtocol: unregistered\nSecurity level: ████\nAuthentication status: BYPASSED\n\nAn external connection is being attempted without ORACLE approval.\n\nApprove?", leftLabel: "Approve access", rightLabel: "Reject" }
   }
 });
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "LJC-PROM-01": { msg: "A Prometheus audio file arrives.\n\nFile: GANGWON-OLD / COASTAL-MIRROR / VOICELOSS\n\nLee Jung-cheol stops with his hand over the confirm key.\n\nThe eastern Gangwon operation. Comms blackout. Lieutenant Park Sang-hun. The final voice that sounded like a rescue call.\n\nORACLE summarized the incident as \"possible intervention by an uncooperative civilian faction,\" but Lee Jung-cheol remembers another name.\n\nPrometheus.", leftLabel: "Delay opening the file", rightLabel: "Open it despite the discomfort", leftReplyMsg: "[Record held: commander's personal judgment detected]", rightReplyMsg: "[Record opened: old operation file comparison started]" },
+    "LJC-PROM-02": { msg: "Prometheus sends an unofficial request for an in-person meeting.\n\nThe message is short.\n\n\"We have the communication record from that day. The commander should hear it himself.\"\n\nSeo Hae-eun speaks carefully.\n\"Commander, you do not have to go in person.\"\n\nLee Jung-cheol answers without looking at the screen.\n\"It is not that I do not need to. It is that... I do not want to.\"", leftLabel: "Send a proxy", rightLabel: "Make direct contact", leftReplyMsg: "[Meeting avoided: proxy-contact protocol active]", rightReplyMsg: "[Direct contact: commander's heart rate elevated]" },
+    "LJC-PROM-03": { msg: "A short testimony file from Prometheus is restored.\n\n\"We were not the ones who blocked the rescue call that day. We were late. That is why we were looking for the survivor.\"\n\nThe room goes quiet.\n\nLee Jung-cheol says nothing for a while.\n\nThe reason he hates Prometheus becomes a little less clear. The hatred is not gone. It simply begins to waver over where it should be aimed.", leftLabel: "Seal the testimony", rightLabel: "Preserve it as conflicting testimony", leftReplyMsg: "[Testimony sealed: omitted from official report]", rightReplyMsg: "[Testimony preserved: clue added for old operation review]" },
+    "LJC-PROM-04": { msg: "The direct Prometheus channel opens again.\n\nWhen Markus Weber's name appears on the screen, Lee Jung-cheol does not answer immediately.\n\nLieutenant Park Sang-hun's final voice. ORACLE's report. Prometheus testimony that they arrived too late.\n\nEverything overlaps in the same place.\n\nLim Jae-hyeok speaks quietly.\n\"Commander. If we cooperate with them, we should record why this still feels wrong. Otherwise someone can rewrite our judgment later.\"\n\nPrometheus is waiting for a response.", leftLabel: "Record the distrust and review terms", rightLabel: "Hold the channel. Not yet", leftReplyMsg: "[Pre-cooperation record: separating personal hostility from operational need]", rightReplyMsg: "[Cooperation delayed: contact held by commander's judgment]" }
+  },
+  oracleLogs: {
+    "LOG-LJC-PROM-01": {
+      title: "Lee Jung-cheol Personal Record: Eastern Gangwon Operation",
+      content: "[Unofficial access record]\n\nTarget: GANGWON-OLD / COASTAL-MIRROR / VOICELOSS\n\nCommander Lee Jung-cheol shows decision latency while opening a Prometheus-related audio file.\n\nLinked incident: eastern Gangwon operation, communications blackout, Lieutenant Park Sang-hun listed as missing.\n\nExisting ORACLE classification: possible intervention by an uncooperative civilian faction.\nCommander note: \"Since that day, it has been difficult to hear the name Prometheus objectively.\""
+    },
+    "LOG-LJC-PROM-02": {
+      title: "Prometheus Contact Avoidance Record",
+      content: "[Commander behavior observation]\n\nUnofficial in-person meeting request received from Prometheus.\n\nRequest phrase: \"We have the communication record from that day.\"\n\nCommander Lee Jung-cheol acknowledges the need for direct contact, but delays the meeting or considers proxy contact.\n\nAssessment: strategic judgment and personal avoidance response are both present."
+    },
+    "LOG-LJC-PROM-03": {
+      title: "Conflicting Testimony: Rescue Call Interference",
+      content: "[Restored testimony file]\n\nSender: unidentified Prometheus-line channel\n\nCore testimony: \"We were not the ones who blocked the rescue call that day. We were late.\"\n\nThis testimony conflicts with ORACLE's existing incident classification.\n\nNote: the commander's aversion to Prometheus may be tied not only to hostility, but to unresolved responsibility."
+    },
+    "LOG-LJC-PROM-04": {
+      title: "Prometheus Cooperation Preconditions",
+      content: "[Unofficial judgment record]\n\nBefore reopening a direct Prometheus channel, Commander Lee Jung-cheol reviews the eastern Gangwon operation and Lieutenant Park Sang-hun's missing-person record again.\n\nLim Jae-hyeok proposes preserving the commander's distrust, ORACLE's old classification, and Prometheus's conflicting testimony in the same file.\n\nPurpose: to make clear that any later cooperation is an operational decision made with incomplete evidence, not a simple defection or emotional revenge.\n\nAssessment: cooperation with Prometheus is possible, but the commander's personal hostility remains unresolved."
+    },
+    "LOG-LJC-PROM-DLG": {
+      title: "Seo Hae-eun Interview Record: The Commander's Pause",
+      content: "[Senior officer interview summary]\n\nSeo Hae-eun confirmed that the commander's response slows whenever Prometheus-related reports appear.\n\nHe does not refuse the order. He simply pauses once before the confirmation key.\n\nAssessment: memories of a past operation repeatedly intrude on Prometheus-related judgment."
+    }
+  }
+});
 })();
