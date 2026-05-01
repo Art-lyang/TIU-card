@@ -94,7 +94,6 @@ function App(){
   var _showFacility=useState(false),showFacility=_showFacility[0],setShowFacility=_showFacility[1];
   var _showEvidence=useState(false),showEvidence=_showEvidence[0],setShowEvidence=_showEvidence[1];
   var _achievements=useState(function(){return Save.getAchievements()}),achievements=_achievements[0],setAchievements=_achievements[1];
-  var _ngPlus=useState(function(){return Save.get('ts_ngPlus',false)}),ngPlus=_ngPlus[0],setNgPlus=_ngPlus[1];
   var _glitch=useState(0),glitchLevel=_glitch[0],setGlitchLevel=_glitch[1];
   var _fxMode=useState(function(){return Save.get('ts_fxMode','full')}),fxMode=_fxMode[0],setFxMode=_fxMode[1];
   useEffect(function(){var sv=Save.get('ts_volume',null);if(sv!==null&&typeof BGM!=='undefined')BGM.vol=sv/100;var sm=Save.get('ts_muted',null);if(sm===true&&typeof BGM!=='undefined'){BGM.muted=true;setBgmMuted(true)};if(sm===true&&typeof SFX!=='undefined')SFX.muted=true;var sfv=Save.get('ts_sfxVol',null);if(sfv!==null&&typeof SFX!=='undefined')SFX.vol=sfv/100;var fs=Save.get('ts_fontSize','normal');if(fs!=='normal'){var r=document.getElementById('root');if(r)r.classList.add('fs-'+fs)}},[]);
@@ -402,7 +401,7 @@ function App(){
   // ═══ 업적 체크 — 주요 상태 변경 시 자동 트리거 ═══
   useEffect(function(){
     if(typeof checkAchievements!=='function')return;
-    var state={stats:stats,gi:gi,act:act,logs:logs,endings:endings,trust:trust,facility:facility,sessions:sessions,usedDlg:usedDlg,ngPlus:ngPlus};
+    var state={stats:stats,gi:gi,act:act,logs:logs,endings:endings,trust:trust,facility:facility,sessions:sessions,usedDlg:usedDlg};
     var newly=checkAchievements(state,achievements);
     if(newly.length>0){
       var newIds=achievements.concat(newly.map(function(a){return a.id}));
@@ -412,23 +411,7 @@ function App(){
         if(typeof window.__SteamUnlock==='function')window.__SteamUnlock(a.steamId);
       });
     }
-  },[stats,gi,act,logs,endings,trust.haeun,trust.doyun,trust.sejin,trust.jaehyuk,facility.completed.length,sessions,ngPlus]);
-  // ═══ NG+ (엔딩 후 뉴게임+) ═══
-  var startNewGamePlus=function(){
-    BGM.stop();BGM.started=false;initActiveSpecs();
-    var ns={c:55,r:70,t:55,o:45,day:1};
-    setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);
-    setTrust({haeun:55,doyun:55,sejin:55,jaehyuk:55,weber:25,foster:20,soyoung:45});
-    setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');
-    setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
-    setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
-    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');
-    setNgPlus(true);Save.set('ts_ngPlus',true);
-    var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});
-    setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();
-    setCurCard(drawCard(ns,0,rl,{},[],1,'',{approved:[],pending:[],completed:[],proposed:[]}));
-    setPhase('boot');
-  };
+  },[stats,gi,act,logs,endings,trust.haeun,trust.doyun,trust.sejin,trust.jaehyuk,facility.completed.length,sessions]);
   // 대기 중 확장 승인 함수
   var approvePending=function(feId){setFacility(function(prev){
     var next={approved:prev.approved.concat([feId]),pending:prev.pending.filter(function(id){return id!==feId}),completed:prev.completed.slice(),proposed:prev.proposed.slice()};
@@ -467,7 +450,7 @@ function App(){
   if(phase==='hub')return h(ScenarioHub,{hasSave:!!Save.get('ts_game',null),sessions:sessions,onBack:function(){setPhase('menu')},onContinue:function(){setPhase('game')},onNew:function(){initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();setCurCard(drawCard(ns,0,rl,{},[], 1));setFp(true);setPhase('tutorial')},onTutorial:function(){setPhase('tutorial')}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
-  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onNewGamePlus:startNewGamePlus,canNgPlus:endings.length>0,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
+  if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
   if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};

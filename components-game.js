@@ -816,13 +816,12 @@ function NewsReport3(p){
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ PROCEED TO NEXT CYCLE ]'))));
 }
 function GameOver(p){
-  useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}else if(e.key==='2'||e.code==='Numpad2'){if(p.canNgPlus){e.preventDefault();p.onNewGamePlus()}}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
+  useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
   var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
   var narr=p.endNarr;
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
   var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
     h('button',{className:'btn btn-amber',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
-    p.canNgPlus&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0,borderColor:'#c080ff',color:'#c080ff'},onClick:p.onNewGamePlus},tt('gameOver.ngPlus',null,'[ NEW GAME+ — 강화 시작 ]')),
     h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
   var eid=p.endId||'',rsn=p.reason||'',goImg=null;
