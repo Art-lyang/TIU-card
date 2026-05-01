@@ -1,7 +1,8 @@
 // TERMINAL SESSION — app-init.js
 // 글로벌 유틸리티, CARDS 배열, drawCard, Save, SFX
 var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(CARDS_CHAINS||[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4!=='undefined'?CARDS_ACT4:[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_CHARACTER_ARCS!=='undefined'?CARDS_CHARACTER_ARCS:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARD_BY_ID={};for(var _ci=0;_ci<CARDS.length;_ci++){if(CARDS[_ci]&&CARDS[_ci].id)CARD_BY_ID[CARDS[_ci].id]=CARDS[_ci]}
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickWeighted=function(a){if(!a||a.length===0)return null;var total=0;for(var i=0;i<a.length;i++){total+=cardWeight(a[i])}var roll=Math.random()*total;for(var j=0;j<a.length;j++){roll-=cardWeight(a[j]);if(roll<=0)return a[j]}return a[a.length-1]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};
@@ -24,7 +25,105 @@ var ACTIVE_SPECS=[];
 var initActiveSpecs=function(){ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,2).slice();try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);if(Array.isArray(parsed)&&parsed.length>=2){ACTIVE_SPECS=parsed}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
+var _cardFullText=function(c,stats,gi,logs){var txt=_introMsgText(c,stats,gi,logs);try{if(c&&c.left)txt+=' '+(c.left.label||'');if(c&&c.right)txt+=' '+(c.right.label||'')}catch(e){}return txt};
+var cardFlowType=function(c,stats,gi,logs){
+  if(!c)return 'ops';
+  if(c.flow){return typeof c.flow==='string'?c.flow:(c.flow.type||'ops')}
+  if(c.isFacilityProposal||c.feReq||String(c.id||'').indexOf('FE-')===0)return 'facility';
+  if(String(c.id||'').indexOf('KC-')===0)return 'civilian';
+  if(String(c.id||'').indexOf('DG-')===0||String(c.id||'').indexOf('MD-')===0)return 'faction';
+  var txt=_cardFullText(c,stats,gi,logs);
+  if(/최종|최후|전면\s*붕괴|카운트다운|셧다운|지휘관 교체|한국 전역 통합|엔딩/.test(txt))return 'climax';
+  if(/보급|휴식|점검|수리|생일|수면|의무실|분배|훈련|정기|식량|근무/.test(txt))return 'daily';
+  if(/SPEC|이변체|감염|포자|봉쇄선|개체|부상|공격|돌파|경보|대규모/.test(txt))return 'threat';
+  if(/ORACLE|프로메테우스|메리디안|White Shield|DG|감청|삭제|비인가|외부 노드|B-3|B3|접근 불가|충성도/.test(txt))return 'conspiracy';
+  if(c.priority==='상'||/긴급|대규모|붕괴|공격|감염|격리|위협|돌파|경보|부상|폐쇄|확산|파손|포자/.test(txt))return 'threat';
+  return 'ops';
+};
+var actFlowPhase=function(day,act){
+  if(act<=1)return day<=2?'early':(day>=4?'late':'mid');
+  if(act===2)return day<=7?'early':(day>=11?'late':'mid');
+  if(act===3)return day<=18?'early':(day>=23?'late':'mid');
+  return day<=30?'early':'late';
+};
+var recentFlowCounts=function(rec,stats,gi,logs){
+  var out={daily:0,civilian:0,ops:0,threat:0,conspiracy:0,climax:0,facility:0,faction:0};
+  var ids=(rec||[]).slice(-4);
+  for(var i=0;i<ids.length;i++){
+    var id=ids[i],found=CARD_BY_ID[id]||null;
+    var t=cardFlowType(found,stats,gi,logs);out[t]=(out[t]||0)+1;
+  }
+  return out;
+};
+var cardFlowOk=function(c,stats,gi,logs,currentAct,recent){
+  if(!c)return false;
+  if(c.forceFlow)return true;
+  var day=(stats&&stats.day)||1,act=currentAct||1,phase=actFlowPhase(day,act),type=cardFlowType(c,stats,gi,logs);
+  var txt=_cardFullText(c,stats,gi,logs);
+  var flow=typeof c.flow==='object'?c.flow:null;
+  if(flow){
+    if(flow.minDay&&day<flow.minDay)return false;
+    if(flow.maxDay&&day>flow.maxDay)return false;
+    if(flow.minAct&&act<flow.minAct)return false;
+    if(flow.maxAct&&act>flow.maxAct)return false;
+  }
+  var critical=stats&&(stats.c<=35||stats.r<=25||stats.t<=25||stats.o<=25);
+  var explicit=!!(c.req||c.cond||c.transReq||c.mission||c.oracleBlock);
+  var mustRun=!!(c.transReq||c.mission||c.oracleBlock);
+  if(type==='climax'){
+    if(act<3)return false;
+    if(act===3&&day<23)return false;
+  }
+  if(!critical&&!explicit){
+    if(act<=1&&phase==='early'&&type==='threat'&&c.priority==='상')return false;
+    if(act===2&&phase==='early'&&type==='threat'&&c.priority==='상')return false;
+    if(act===3&&phase==='early'&&type==='threat'&&/대규모|전 구역|붕괴|최후/.test(txt))return false;
+  }
+  var rc=recentFlowCounts(recent,stats,gi,logs);
+  if(!critical&&!mustRun&&(type==='threat'||type==='climax')&&(rc.threat+rc.climax)>=2)return false;
+  if((type==='daily'||type==='civilian')&&(rc.daily+rc.civilian)>=3)return false;
+  return true;
+};
 var cardWeight=function(c){var w=1;if(!c)return w;if(c.priority==='상')w+=5;else if(c.priority==='중')w+=2;else if(c.priority==='event')w+=6;if(c.once)w+=2;if(c.transReq)w+=4;if(c.glitch)w+=1;return w};
+var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent){
+  var w=cardWeight(c),type=cardFlowType(c,stats,gi,logs),day=(stats&&stats.day)||1,act=currentAct||1,phase=actFlowPhase(day,act);
+  var critical=stats&&(stats.c<=35||stats.r<=25||stats.t<=25||stats.o<=25);
+  if(act<=1){
+    if(type==='daily'||type==='ops')w*=1.25;
+    if(type==='conspiracy')w*=0.75;
+    if(type==='threat'&&!critical)w*=0.75;
+  }else if(act===2){
+    if(phase==='early'&&(type==='daily'||type==='ops'))w*=1.18;
+    if(type==='conspiracy')w*=0.82;
+    if(type==='threat'&&!critical)w*=0.9;
+  }else if(act===3){
+    if(phase==='early'){
+      if(type==='daily'||type==='ops'||type==='civilian')w*=1.18;
+      if(type==='conspiracy')w*=0.82;
+      if(type==='threat'&&!critical)w*=0.85;
+    }else if(phase==='late'){
+      if(type==='threat'||type==='climax')w*=1.18;
+      if(type==='daily')w*=0.88;
+    }
+  }else if(act>=4){
+    if(type==='threat'||type==='conspiracy'||type==='climax')w*=1.08;
+    if(type==='daily')w*=0.9;
+  }
+  var rc=recentFlowCounts(recent,stats,gi,logs);
+  if(type!=='facility'&&type!=='faction'){
+    if((rc[type]||0)>=2)w*=0.35;
+    else if((rc[type]||0)>=1)w*=0.65;
+  }
+  return Math.max(0.2,w);
+};
+var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent){
+  if(!a||a.length===0)return null;
+  var total=0;
+  for(var i=0;i<a.length;i++){total+=cardFlowWeight(a[i],stats,gi,logs,currentAct,recent)}
+  var roll=Math.random()*total;
+  for(var j=0;j<a.length;j++){roll-=cardFlowWeight(a[j],stats,gi,logs,currentAct,recent);if(roll<=0)return a[j]}
+  return a[a.length-1];
+};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
@@ -45,16 +144,20 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(c.feReq&&facComp.indexOf(c.feReq)<0)return false;
     try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
     try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
+    if(c.id&&cd[c.id]&&!c.repeatable)return false;
     if(c.tag&&cd[c.tag]&&(day-cd[c.tag])<3)return false;
     // 범용 데일리(태그 없고 act 전체 포함) = 한 판 1회만. 그 외 무태그 = 15일 쿨다운
-    if(!c.tag){var isGenericDaily=c.act&&c.act.length>=3;if(isGenericDaily){if(cd[c.id])return false}else if(cd[c.id]&&(day-cd[c.id])<15)return false}
+    if(!c.tag&&c.repeatable&&cd[c.id]&&(day-cd[c.id])<15)return false;
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs,stats,gi))return false;
     if(!specOk(c))return false;
+    if(!cardFlowOk(c,stats,gi,logs,ca,rec))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  return pickWeighted(valid.length>0?valid:CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}}));
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:emergency),stats,gi,logs,ca,rec);
 };
 
 var Save={

@@ -255,11 +255,40 @@ function DayObjective(p){
     if(evCount<2)sub=isEn?'Collect at least two evidence records for cross-analysis.':'교차 분석을 위해 증거 기록을 2개 이상 확보하세요.';
     else if(typeof getUnlockedCombos==='function')sub=(isEn?'Evidence insights: ':'증거 조합: ')+getUnlockedCombos(logs).length+'/'+(typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS.length:'?');
   }
+  if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
+    var axisIds=['LOG-CHAR-HAEUN-PARALLAX','LOG-CHAR-DOYUN-ANCHOR','LOG-CHAR-SEJIN-KINDLE','LOG-CHAR-JAEHYUK-VOIDWALK'];
+    var axisCount=axisIds.filter(function(id){return logs.indexOf(id)>=0}).length;
+    if(logs.indexOf('LOG-CHAR-B3-BRIDGE')>=0)sub=isEn?'B3 investigation line reinforced. Prepare for lower-sector decisions.':'B3 하부 조사선이 보강되었습니다. 하층 결정을 대비하세요.';
+    else if(logs.indexOf('LOG-CHAR-FOUR-AXIS')>=0)sub=isEn?'Cross-check the four officer reports with B3 predecessor records.':'4인 의심 축을 전임 지휘관/B3 기록과 대조하세요.';
+    else if(axisCount>=2)sub=(isEn?'Officer suspicion reports collected: ':'간부 의심 보고 수집: ')+axisCount+'/4';
+  }
   if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
     sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
   }
+  if(!sub&&typeof getFactionRelations==='function'){
+    var rels=getFactionRelations(logs,p.gi||0);
+    var hot=rels.filter(function(r){return r.id!=='oracle'&&r.value>=70})[0];
+    var weak=rels.filter(function(r){return r.id==='oracle'&&r.value<=35})[0];
+    if(hot)sub=isEn?(hot.name+' influence is becoming a strategic dependency.'):hot.name+' 관계가 전략적 의존 단계에 접근 중입니다.';
+    else if(weak)sub=isEn?'ORACLE suspicion is high. Expect harsher oversight.':'ORACLE 의심이 높습니다. 감시성 카드가 강화될 수 있습니다.';
+  }
   var text=tt('objective.'+key,{act:act,day:day},null)||tt('objective.act1',null,'한국지부 초기 안정화 절차를 유지하십시오.');
-  return h('div',{className:'objective-bar'},
+  var hasLog=function(id){return logs.indexOf(id)>=0};
+  var oracleRel=(typeof getFactionRelations==='function'?(getFactionRelations(logs,p.gi||0).filter(function(r){return r.id==='oracle'})[0]||{}).value:(65+(p.gi||0)));
+  var corruption=0;
+  if(act>=3&&(oracleRel<=55||hasLog('LOG-EV-UNLOCK')||hasLog('LOG-LJC-PROM-01')))corruption=1;
+  if(act>=3&&(oracleRel<=45||hasLog('LOG-080')||hasLog('LOG-081')||hasLog('LOG-LJC-PROM-03')||hasLog('LOG-UPRISING-PHASE1')))corruption=2;
+  if(oracleRel<=35||hasLog('LOG-UPRISING-PHASE2')||hasLog('LOG-UPRISING-PHASE3')||hasLog('LOG-ESCAPE-TRIG'))corruption=3;
+  if(corruption===1){
+    sub=sub|| (isEn?'Objective signal unstable. Cross-check logs and field reports.':'목표 신호가 불안정합니다. 로그와 현장 보고를 대조하세요.');
+  }else if(corruption===2){
+    text=isEn?'[ORACLE: OBJECTIVE STREAM PARTIALLY REDACTED]':'[ORACLE: 목표 스트림 일부 검열됨]';
+    sub=isEn?'Primary instruction is being filtered by ORACLE oversight.':'ORACLE 감시 절차가 주요 지시를 필터링하고 있습니다.';
+  }else if(corruption>=3){
+    text=isEn?'[OBJECTIVE CHANNEL SEALED]':'[목표 채널 봉인됨]';
+    sub=isEn?'Operator deviation exceeds reporting threshold. Independent judgment required.':'지휘관 이탈 지수가 보고 임계값을 초과했습니다. 독자 판단이 필요합니다.';
+  }
+  return h('div',{className:'objective-bar objective-corrupt-'+corruption},
     h('span',{className:'objective-label'},tt('objective.label',null,'DAY OBJECTIVE')),
     h('span',{className:'objective-text'},text),
     sub?h('span',{className:'objective-sub'},sub):null
@@ -341,7 +370,29 @@ function CardC(p){
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:tt('stats.c',null,'봉쇄'),r:tt('stats.r',null,'자원'),t:tt('stats.t',null,'신뢰'),o:tt('stats.o',null,'평가')};
   var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);var abs=Math.abs(v);if(v>0)tags.push(h('span',{key:k,style:{color:'var(--ui)'}},SN[k]+(abs>=2?'↑↑':'↑')));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)'}},SN[k]+(abs>=2?'↓↓':'↓')))});return tags.length?tags:null};
+  var choiceTrace=function(dir){
+    var id=card.id,tags=[];
+    var add=function(label,color){tags.push(h('span',{key:label,style:{color:color,border:'1px solid '+color,background:'rgba(0,0,0,.18)',borderRadius:3,padding:'1px 4px',whiteSpace:'nowrap'}},label))};
+    if(dir==='left'){
+      if(id==='DG-01')add('DG CONTACT','#d8b45a');
+      if(id==='DG-02'||id==='DG-03')add('DG DEAL','#d8b45a');
+      if(id==='DG-04')add('DG HISTORY','#d8b45a');
+      if(id==='MD-01')add('MERIDIAN CONTACT','#55c8d8');
+      if(id==='MD-02')add('MERIDIAN INTEL','#55c8d8');
+      if(id==='MD-04')add('DG SIDE','#d8b45a');
+      if(id==='SUP-DM-01'||id==='SUP-DM-02'||id==='SUP-DM-03')add('MERIDIAN +','#55c8d8');
+      if(id==='C-058')add('PROMETHEUS OPEN','#f0a030');
+      if(id.indexOf('LJC-PROM-')===0)add('PROMETHEUS RECORD','#f0a030');
+    }else{
+      if(id==='MD-03')add('MERIDIAN REJECT','#ff8d61');
+      if(id==='SUP-DM-01'||id==='SUP-DM-02'||id==='SUP-DM-03')add('DG +','#d8b45a');
+      if(id==='C-058')add('ORACLE +','#66aaff');
+      if(id.indexOf('LJC-PROM-')===0)add('PROMETHEUS RECORD','#f0a030');
+    }
+    return tags.length?tags:null;
+  };
   var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
+  var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
@@ -383,9 +434,13 @@ function CardC(p){
         h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',fontFamily:"'Share Tech Mono',monospace",fontSize:9,columnGap:10,rowGap:3,alignItems:'center'}},
           h('div',{style:{display:'flex',gap:6,alignItems:'center',justifyContent:'flex-start',textAlign:'left',opacity:0.7}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
           h('div',{style:{display:'flex',gap:6,alignItems:'center',justifyContent:'flex-end',textAlign:'right',opacity:0.7}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'→')))),
-      h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:9,pointerEvents:'none',columnGap:10,alignItems:'center'}},
-        h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block',textAlign:'left'}},'← '+leftLabel),
-        h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block',width:'100%',justifySelf:'end',textAlign:'right'}},rightLabel+' →'))
+      h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:9,pointerEvents:'none',columnGap:10,alignItems:'start'}},
+        h('div',{style:{minWidth:0,textAlign:'left'}},
+          h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block'}},'← '+leftLabel),
+          leftTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:4,marginTop:4,opacity:.72}},leftTrace)),
+        h('div',{style:{minWidth:0,textAlign:'right'}},
+          h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block',width:'100%',justifySelf:'end'}},rightLabel+' →'),
+          rightTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:4,marginTop:4,justifyContent:'flex-end',opacity:.72}},rightTrace)))
     ));
 }
 function News(p){

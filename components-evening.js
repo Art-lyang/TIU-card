@@ -1,13 +1,34 @@
 // TERMINAL SESSION — components-evening.js
 // EveningChat (i18n-ready)
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
+function FactionRelationPanel(p){
+  if(typeof getFactionRelations!=='function')return null;
+  var rows=getFactionRelations(p.logs||[],p.gi||0);
+  if(!rows||rows.length===0)return null;
+  return h('div',{className:'evening-relations'},
+    h('div',{className:'evening-relations-head'},
+      h('span',null,tt('evening.factions',null,'FACTION RELATIONS')),
+      h('span',null,'LIVE MATRIX')),
+    h('div',{className:'evening-relations-grid'},
+    rows.map(function(r){return h('div',{key:r.id,className:'evening-relation-card',style:{borderColor:r.tone}},
+      h('div',{className:'evening-relation-top'},
+        h('span',{className:'evening-relation-name',style:{color:r.tone}},r.name),
+        h('span',{className:'evening-relation-value'},String(r.value).padStart(2,'0'))),
+      h('div',{className:'evening-relation-bar',title:r.hint},
+        h('div',{style:{width:r.value+'%',height:'100%',background:r.tone,boxShadow:'0 0 8px '+r.tone}})),
+      h('div',{className:'evening-relation-status'},r.status)
+    )})
+    )
+  );
+}
 function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
+  var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
-  var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&p.logs.indexOf('LOG-080')<0)return false;if(c.name==='닉 포스터'&&p.logs.indexOf('LOG-081')<0)return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
+  var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -98,6 +119,10 @@ function EveningChat(p){
     if(opt.log&&p.onLog)p.onLog(opt.log);
     setReplyLine(opt.reply||'');setChoiceDone(true)
   };
+  var returnToEvening=function(){
+    if(selChar)setDoneToday(function(prev){var next=Object.assign({},prev);next[selChar.name]=true;return next});
+    setSelChar(null);setShowSkipConfirm(false);
+  };
   useEffect(function(){
     var onKey=function(e){
       if(!selChar){
@@ -160,9 +185,10 @@ function EveningChat2(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
+  var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
-  var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&p.logs.indexOf('LOG-080')<0)return false;if(c.key==='foster'&&p.logs.indexOf('LOG-081')<0)return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0))return false;return true});
+  var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -287,6 +313,10 @@ function EveningChat2(p){
     if(opt.log&&p.onLog)p.onLog(opt.log);
     setReplyLine(opt.reply||'');setChoiceDone(true)
   };
+  var returnToEvening=function(){
+    if(selChar)setDoneToday(function(prev){var next=Object.assign({},prev);next[selChar.name]=true;return next});
+    setSelChar(null);setShowSkipConfirm(false);
+  };
   useEffect(function(){
     var onKey=function(e){
       if(!selChar){
@@ -310,14 +340,16 @@ function EveningChat2(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),
     h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'You can speak with one senior officer.')),
-    h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(96px, 112px))',gap:'16px 18px',justifyContent:'center',maxWidth:260,margin:'0 auto'}},
-      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){pickChar(c)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(var(--ui-rgb),.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:'100%',minHeight:128,transition:'all 0.2s',position:'relative',boxSizing:'border-box'}},
-        h('span',{style:{position:'absolute',top:4,left:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(240,160,48,.7)',letterSpacing:1}},'['+(idx+1)+']'),
-        portrait?h('img',{src:portrait,style:{width:60,height:60,borderRadius:'50%',border:'2px solid rgba(var(--ui-rgb),.3)',display:'block',margin:'0 auto 6px',objectFit:'cover'}}):h('div',{style:{width:60,height:60,borderRadius:'50%',background:'var(--ui-border)',margin:'0 auto 6px'}}),
-        h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},localizeCharName(c)),
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginTop:2}},localizeCharRole(c)))})),
+    h(FactionRelationPanel,{logs:p.logs,gi:p.gi}),
+    h('div',{className:'evening-select-grid'},
+      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=completed||locked;return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
+        h('span',{className:'evening-contact-index'},'0'+(idx+1)),
+        portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
+        h('div',{className:'evening-contact-name'},localizeCharName(c)),
+        h('div',{className:'evening-contact-role'},completed?'오늘 대화 완료했습니다':(locked?'오늘은 대화 불가':localizeCharRole(c))))})),
     (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
-    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+tt('evening.skip',null,'SKIP')+' ]'),
+    Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'),
+    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?'다음 DAY 진행':tt('evening.skip',null,'SKIP'))+' ]'),
     showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(10,18,10,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
       h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'Skip tonight\'s conversation?')),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
@@ -339,5 +371,5 @@ function EveningChat2(p){
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.4)'}},'...')),
     done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
       [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(10,18,10,.4)',border:'1px solid '+bdrCol,color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('common.next',null,'NEXT')+' ]'));
+    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ 이브닝 화면으로 돌아가기 ]'));
 }

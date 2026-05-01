@@ -16,18 +16,18 @@ function genChoiceReactionNews(s,g,logs){
   var has=function(id){return lg.indexOf(id)>=0};
   if(has('LOG-KR-CIV-REPORT'))pool.push("[국내] 생활안전센터 신고량 급증 — '회색 버튼' 관련 민원 정식 접수 전환");
   if(has('LOG-KR-CIV-QUIET'))pool.push("[국내] 방벽 내부 커뮤니티, 공식 신고 대신 자체 확인망 공유 확산");
-  if(has('LOG-KR-GATE-STRICT'))pool.push("[국내] 환승 검문 허브 재스캔 강화 — 출근길 평균 지연 18분 증가");
-  if(has('LOG-KR-GATE-REVIEW'))pool.push("[국내] 검문소 현장 재량 확대 논란 — 중앙 분류망과 다른 판단 사례 확인");
-  if(has('LOG-KR-HOSPITAL-CENTRAL'))pool.push("[국내] Phase 관찰 병동 가족 단위 격리 확대 — 유족·보호자 항의 지속");
-  if(has('LOG-KR-HOSPITAL-FAMILY'))pool.push("[국내] 일부 병동, 중앙 분류보다 현장 의료진 판단 우선 적용");
+  if(has('LOG-KR-GATE-STRICT'))pool.push("[국내] 환승 검문 허브 11초 공백 로그, 보건당국 기술 검토 대상으로 이관");
+  if(has('LOG-KR-GATE-REVIEW'))pool.push("[국내] 현장 보건팀, 중앙 분류망 통과 사례의 공백 로그 확인 요청");
+  if(has('LOG-KR-HOSPITAL-CENTRAL'))pool.push("[국내] Phase 관찰 병동 가족 분리 권고 근거 자료 공개 요구 확대");
+  if(has('LOG-KR-HOSPITAL-FAMILY'))pool.push("[국내] 일부 병동, 가족 분리 위험 평가를 의료 판단 참고자료로 채택");
   if(has('LOG-KR-MARKET-DG')||has('LOG-SUPPLY-DG'))pool.push("[국내] DG 협력 물류망, 방벽 인접 시장 정리 착수 — 보급 안정 기대와 독점 우려 교차");
   if(has('LOG-KR-MARKET-LOCAL'))pool.push("[국내] 방벽 인접 상인회, 검역 조건부 지역 유통망 유지 합의");
-  if(has('LOG-KR-SCHOOL-CLOSE'))pool.push("[국내] 방벽 내부 학교 임시 폐쇄 증가 — 학생들 사이 '노란불 세 번' 괴담 확산");
-  if(has('LOG-KR-SCHOOL-CONTINUE'))pool.push("[국내] 일부 학교 분산 수업 유지 — 감염 이력 낙인 최소화 조치");
+  if(has('LOG-KR-SCHOOL-CLOSE'))pool.push("[국내] 교육청, 방벽 내부 학교 재검 사례 위험 평가 자료 검토 착수");
+  if(has('LOG-KR-SCHOOL-CONTINUE'))pool.push("[국내] 교육청 공개 문구에 감염 이력 낙인 방지 지침 반영 논의");
   if(has('LOG-KR-RECORD-PRESERVE'))pool.push("[분류 보류] 강원 동부 작전 관련 문서 제목만 복원 — 본문 접근 제한");
   if(has('LOG-KR-RECORD-RESTORE'))pool.push("[분류 오류 — 자동 삭제 예정]\n[국내] '민간 피해 없음' 문서와 유족 편지 스캔본 동시 발견\n[삭제됨]");
-  if(has('LOG-KR-HUB-LOCK'))pool.push("[국내] 환승 검문 허브 임시 폐쇄 — 비공개 경고문 캡처본 회수 중");
-  if(has('LOG-KR-HUB-OPEN'))pool.push("[국내] 환승 허브 정상 운영 유지 — 삭제된 사건번호 수집 커뮤니티 활동 증가");
+  if(has('LOG-KR-HUB-LOCK'))pool.push("[국내] 환승 허브 운영기관, 비공개 경고문 노출 후 임시 통제 권고안 검토");
+  if(has('LOG-KR-HUB-OPEN'))pool.push("[국내] 환승 허브 동선 유지 권고 후 삭제된 사건번호 수집 커뮤니티 활동 증가");
   if(has('LOG-KR-REGISTRY-SEAL'))pool.push("[국내] 감염 이력 비공개 플래그 접근권 축소 — 복귀 지원 단체 환영");
   if(has('LOG-KR-REGISTRY-SHARE'))pool.push("[국내] 위험 사업장 감염 이력 공유 유지 — 채용 차별 제보 동반 증가");
   if(has('LOG-DG-DEAL'))pool.push("[국내] DG 봉쇄 장비 무상 교체 확대 — 시민단체, 데이터 제공 조건 공개 요구");
@@ -47,6 +47,50 @@ function genChoiceReactionNews(s,g,logs){
 }
 
 function pushUniqueNews(l,item){if(item&&l.indexOf(item)<0)l.push(item)}
+
+function getFactionRelations(logs,gi){
+  var lg=logs||[];
+  var has=function(id){return lg.indexOf(id)>=0};
+  var clampRel=function(v){return Math.max(0,Math.min(100,v))};
+  var out=[];
+  var oracle=clampRel(65+(gi||0));
+  out.push({id:'oracle',name:'ORACLE',value:oracle,status:oracle>=75?'감시 우호':oracle>=55?'명령 체계 안정':oracle>=35?'의심 누적':'이탈 위험',tone:oracle>=75?'#66aaff':oracle>=35?'var(--ui)':'#ff6644',hint:oracle>=75?'통제 친화':'독자 판단 여지'});
+  if(has('LOG-080')||has('LOG-081')||has('LOG-VOSS-STANDBY')||has('LOG-LJC-PROM-01')||has('LOG-LJC-PROM-02')||has('LOG-LJC-PROM-03')||has('LOG-LJC-PROM-04')){
+    var prom=25;
+    if(has('LOG-080'))prom+=15;
+    if(has('LOG-081'))prom+=10;
+    if(has('LOG-081-DATA')||has('LOG-081-INTEL'))prom+=10;
+    if(has('LOG-VOSS-STANDBY'))prom+=12;
+    if(has('LOG-LJC-PROM-02'))prom+=8;
+    if(has('LOG-LJC-PROM-03'))prom+=10;
+    if(has('LOG-LJC-PROM-04'))prom+=15;
+    out.push({id:'prometheus',name:'PROMETHEUS',value:clampRel(prom),status:prom>=70?'협력 가능':prom>=50?'접촉 유지':prom>=35?'불신 속 대화':'적대 기억',tone:'#f0a030',hint:'진실/탈출 루트'});
+  }
+  if(has('LOG-DG-CONTACT')){
+    var dg=35;
+    if(has('LOG-DG-DEAL'))dg+=18;
+    if(has('LOG-DG-HISTORY'))dg+=10;
+    if(has('LOG-DG-HISTORY-DEEP'))dg+=8;
+    if(has('LOG-SUPPLY-DG'))dg+=12;
+    if(has('LOG-DG-VS-MD'))dg+=15;
+    if(has('LOG-DG-LEDGER'))dg+=6;
+    if(has('LOG-AUDIT-COMPLY'))dg+=8;
+    if(has('LOG-DG-RETALIATE'))dg-=12;
+    if(has('LOG-AUDIT-ALLY'))dg-=10;
+    out.push({id:'dg',name:'DG',value:clampRel(dg),status:dg>=75?'영향력 과밀':dg>=55?'거래 우위':dg>=40?'접촉/탐색':'경계',tone:'#d8b45a',hint:'보급/종속 위험'});
+  }
+  if(has('LOG-MD-CONTACT')){
+    var md=35;
+    if(has('LOG-MD-INTEL'))md+=18;
+    if(has('LOG-MD-BACKCHANNEL'))md+=16;
+    if(has('LOG-SUPPLY-MD'))md+=12;
+    if(has('LOG-DG-DECRYPT'))md+=15;
+    if(has('LOG-MD-REJECT'))md-=8;
+    if(has('LOG-DG-VS-MD'))md-=25;
+    out.push({id:'meridian',name:'MERIDIAN',value:clampRel(md),status:md>=70?'채무성 협력':md>=50?'정보 교환':md>=35?'보류 라인':'차단 위기',tone:'#55c8d8',hint:'정보/개입 부담'});
+  }
+  return out;
+}
 
 function genNews(s,g,logs){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출

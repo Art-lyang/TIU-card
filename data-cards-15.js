@@ -6,18 +6,18 @@ var CARDS_EXTERNAL = [
   // ═══ 닉 포스터 — 굴욕을 삼키고 정보를 얻다 ═══
 
   { id: "C-248", act: [3,4], priority: "상", bg: "forest",
-    cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-016')>=0 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-081')<0 },
+    cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-081')<0 },
     msg: "기지 외곽 감시 카메라. 닉 포스터가 다시 잡혔습니다.\n\n이번엔 담배도 없습니다. 손을 들어 보이고 있습니다.\n\n임재혁: \"접근 의사를 표시하는 겁니다. 비무장이에요.\"\n\n... 그 얼굴을 보면 옛 기억이 떠오릅니다.",
     left: { label: "만난다 — 과거는 묻는다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
     right: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-249", act: [3], priority: "상", bg: "forest",
+  { id: "C-249", act: [3,4], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return logs.indexOf('LOG-081')>=0 && logs.indexOf('LOG-081-DATA')<0 },
     msg: "포스터가 입을 엽니다.\n\n\"당신 부대원한테 했던 일... 사과할 생각은 없습니다.\"\n\n\"하지만 내가 가진 건 줄 수 있어요.\"\n\n태블릿을 꺼냅니다. ORACLE이 각 지부에서 추출하는 데이터의 흐름도.\n\n\"한국 봉쇄 성공 데이터가 어디로 가는지 알고 싶지 않습니까?\"",
     left: { label: "데이터를 받는다", fx: { c: 0, r: 0, t: 1, o: -3 }, g: -5 },
     right: { label: "믿을 수 없다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-250", act: [3], priority: "상", bg: "comms",
+  { id: "C-250", act: [3,4], priority: "상", bg: "comms",
     cond: function(s,g,logs){ return logs.indexOf('LOG-081-DATA')>=0 && logs.indexOf('LOG-081-INTEL')<0 },
     msg: "포스터의 데이터를 임재혁이 검증했습니다.\n\n\"진짜입니다. ORACLE 내부 라우팅 구조예요.\"\n\n한국 해안 방벽 기술 사양, 봉쇄 전술 데이터, 이변체 반응 패턴.\n모두 ORACLE 중앙 노드로 전송되고 있었습니다.\n\n\"한국은 실험장이에요.\" 포스터의 말이 떠오릅니다.\n\"당신들이 성공할수록 ORACLE에겐 더 좋은 데이터입니다.\"",
     left: { label: "팀 전체에 공유한다", fx: { c: 0, r: 0, t: 2, o: -3 }, g: -6 },

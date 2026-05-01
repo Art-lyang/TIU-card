@@ -112,6 +112,16 @@ function App(){
     Save.saveLogs(n);
     setLogs(n);
     if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&typeof SFX!=='undefined')SFX.play('alarm');
+    if(typeof CHAINS!=='undefined'){
+      Object.keys(CHAINS).forEach(function(k){
+        var ch=CHAINS[k];
+        if(ch&&ch.triggerLog===id&&Array.isArray(ch.cards)&&ch.cards.length>0){
+          var cq=ch.cards.slice();
+          setChainQueue(cq);
+          Save.saveGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,cq);
+        }
+      });
+    }
   };
   var modTrust=function(char,delta){setTrust(function(prev){var key={"\uc11c\ud558\uc740":"haeun","\uac15\ub3c4\uc724":"doyun","\uc724\uc138\uc9c4":"sejin","\uc784\uc7ac\ud601":"jaehyuk","\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84":"weber","\ub2c9 \ud3ec\uc2a4\ud130":"foster","\ubc15\uc18c\uc601":"soyoung",haeun:"haeun",doyun:"doyun",sejin:"sejin",jaehyuk:"jaehyuk",weber:"weber",foster:"foster",soyoung:"soyoung"}[char];if(!key)return prev;var next={};for(var k in prev)next[k]=prev[k];next[key]=Math.max(0,Math.min(100,(prev[key]||0)+delta));Save.set('ts_trust',next);
     return next})};
@@ -242,7 +252,7 @@ function App(){
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);
     if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);setTimeout(function(){setToast('')},2400)},600)}
     setStats(ns);setGi(ng);
-    var ncd=cooldowns;if(curCard.tag){ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.tag]=stats.day;setCooldowns(ncd)}else if(curCard.id){ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];ncd[curCard.id]=stats.day;setCooldowns(ncd)}
+    var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];if(curCard.id)ncd[curCard.id]=stats.day;if(curCard.tag)ncd[curCard.tag]=stats.day;setCooldowns(ncd)
     checkLogs(ns,ng,curCard.id,null,null,dir);
     if(ch.log){if(Array.isArray(ch.log))ch.log.forEach(function(l){tryUnlock(l)});else tryUnlock(ch.log)}
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
@@ -460,7 +470,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onNewGamePlus:startNewGamePlus,canNgPlus:endings.length>0,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
-  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,trust:trust,facility:facility,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
+  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,trust:trust,onComplete:hMission});
   if(phase==='escape_game')return h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult});
@@ -470,7 +480,7 @@ function App(){
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
     h(Stats,{stats:stats,preview:preview}),
-    h(DayObjective,{stats:stats,act:act,logs:logs}),
+    h(DayObjective,{stats:stats,act:act,logs:logs,gi:gi}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},tt('scenario.act',{act:act},'ACT '+act)),
       h('span',{className:'info-tag'},tt('scenario.mission',{current:ct+1,total:cpd},'MIS '+(ct+1)+'/'+cpd)),

@@ -90,6 +90,12 @@ var CARDS_NEW_B = [
   // ═══ Act 3: 최종 결단 ═══
 
   { id: "C-228", act: [3], priority: "상", bg: "forest", img: "char_doyun",
+    cond: function(s,g,logs){
+      logs=logs||[];
+      var threatLogs=["LOG-013","LOG-014","LOG-015","LOG-017","LOG-018","LOG-019","LOG-020"];
+      var pressure=threatLogs.filter(function(id){return logs.indexOf(id)>=0}).length;
+      return s.day>=23&&(s.c<=60||pressure>=2||g<=10);
+    },
     msg: "봉쇄선 전 구역에서 동시 경보가 발령됩니다.\n\n강도윤: \"전면 붕괴 조짐입니다. 이전과는 차원이 다른 규모입니다.\"\n\n서하은: \"현 자원으로 방어가 가능한 구역은 기지 핵심부뿐입니다.\"\n\n\"최후의 방어 계획이 필요합니다.\"",
     left: { label: "핵심부 집중 방어", fx: { c: -2, r: -2, t: 1, o: 0 }, g: 0 },
     right: { label: "전 구역 사수 시도", fx: { c: -3, r: -3, t: 0, o: 0 }, g: 0 } },

@@ -114,6 +114,54 @@ var CARDS_NEW_A = [
     left: { label: "즉시 격리", fx: { c: 0, r: -1, t: -1, o: 0 }, g: 0 },
     right: { label: "관찰하며 검사 진행", fx: { c: -1, r: 0, t: 0, o: 0 }, g: 0 } },
 
+  { id: "C-326", act: [1,2], priority: "하", bg: "comms", flow: "ops",
+    cond: function(s,g,logs){ return !logs.includes("LOG-LIGHT-01") },
+    msg: "외곽 감시 영상에서 이상한 노이즈가 반복됩니다.\n\n야간 카메라가 자동 노출을 조정하는 순간, 화면 가장자리의 생체 반응이 0.7초 동안 뒤로 물러난 것처럼 보입니다.\n\n임재혁: \"센서 오류일 수 있습니다. 그런데 같은 패턴이 세 번입니다. 빛이 켜지는 순간만요.\"",
+    left: { label: "원본 영상을 보존", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1, log: "LOG-LIGHT-01" },
+    right: { label: "ORACLE 자동 보정본만 검토", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+
+  { id: "C-327", act: [2,3], priority: "중", bg: "lab", img: "char_sejin", flow: "threat",
+    cond: function(s,g,logs){ return logs.includes("LOG-LIGHT-01") && !logs.includes("LOG-LIGHT-02") },
+    msg: "윤세진이 보존된 감시 영상을 프레임 단위로 분석했습니다.\n\n\"밝아서 도망친 게 아니에요. 특정 파장대에서 조직 경계가 흐트러지는 반응입니다.\"\n\n보고서 제목은 아직 임시입니다.\n\n[광반응성 관찰 기록 — 확정 아님]",
+    left: { label: "파장별 반응 테스트 승인", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1, log: "LOG-LIGHT-02" },
+    right: { label: "현장 기록으로만 보관", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-328", act: [2,3], priority: "중", bg: "forest", flow: "threat",
+    cond: function(s,g,logs){ return logs.includes("LOG-LIGHT-02") && !logs.includes("LOG-LIGHT-03") },
+    msg: "봉쇄선 외곽 조명탑 교체 계획이 올라왔습니다.\n\n임재혁: \"일반 백색등보다 좁은 파장으로 맞추면 감시 영상이 덜 번집니다. 부작용은 전력 소모입니다.\"\n\n강도윤: \"효과가 확실하진 않아도, 야간 접근이 늦춰진다면 해볼 만합니다.\"",
+    left: { label: "시험 조명 구역 설치", fx: { c: 1, r: -2, t: 0, o: -1 }, g: -1, log: "LOG-LIGHT-03" },
+    right: { label: "기존 조명 유지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+
+  { id: "C-329", act: [1], priority: "하", bg: "base", flow: "daily",
+    msg: "기지 식당 냉장고 온도가 불안정합니다.\n\n정비 메모: 큰 문제는 아니지만, 방치하면 식자재 손실이 납니다.\n\n부품 교체면 해결 가능하다는 보고가 올라왔습니다.",
+    left: { label: "부품 교체", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
+    right: { label: "당분간 수동 점검", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-330", act: [1], priority: "하", bg: "base", flow: "daily",
+    msg: "신규 요원들이 창고 위치를 헷갈려 장비 반납이 지연되고 있습니다.\n\n표지판과 동선 안내만 다시 붙여도 훨씬 나아질 것이라는 건의가 올라왔습니다.",
+    left: { label: "동선 표지 정비", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
+    right: { label: "현행 체계 유지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
+
+  { id: "C-331", act: [1], priority: "하", bg: "comms", flow: "ops",
+    msg: "통신실 예비 배터리 잔량 표시가 실제보다 높게 잡히고 있습니다.\n\n캘리브레이션 문제로 보이며, 지금 잡아두면 나중에 덜 당황할 수 있습니다.",
+    left: { label: "즉시 보정", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 },
+    right: { label: "다음 정비 때 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-332", act: [1], priority: "하", bg: "base", flow: "daily",
+    msg: "야간 휴게실 소등 시간이 제대로 지켜지지 않고 있습니다.\n\n수면 리듬이 무너지면 작은 실수가 늘어난다는 의무실 메모가 붙었습니다.",
+    left: { label: "소등 규칙 정리", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
+    right: { label: "자율에 맡긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-333", act: [1], priority: "하", bg: "supply", flow: "daily",
+    msg: "소모품 재고표와 실제 수량이 맞지 않습니다.\n\n분실보다 기록 방식이 제각각이라 생긴 문제에 가깝다는 보고입니다.",
+    left: { label: "재고표 통합", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 },
+    right: { label: "부서별 기록 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
+  { id: "C-334", act: [1], priority: "하", bg: "forest", flow: "ops",
+    msg: "봉쇄선 내부 순찰로에 낙엽과 잔가지가 쌓여 있습니다.\n\n급한 일은 아니지만, 야간 이동 때 발소리가 커진다는 현장 메모가 올라왔습니다.",
+    left: { label: "순찰로 정리", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "현장 요령으로 대응", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+
 ];
 
 // CARDS 배열에 합류

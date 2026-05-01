@@ -33,6 +33,16 @@ EVENING_CHATS.push(
 
 // ─── 닉 포스터 (+3 → 총 5) ────────────────
 EVENING_CHATS.push(
+  { char: '닉 포스터', act: [3,4], dayMin: 27, dayMax: 30,
+    responseKey: 'foster_early_27-30',
+    condFn: function(ctx){ var logs=ctx.logs||[]; return logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-081')<0; },
+    priority: 'event',
+    lines: [
+      "외부 채널에 짧은 음성 패킷이 들어옵니다.",
+      "발신자는 이름을 밝히지 않습니다. 하지만 억양과 말투는 기록과 일치합니다.",
+      "\"닉 포스터입니다. 직접 만나자는 말은 아닙니다.\"",
+      "\"당신이 베버의 말을 들었다면, 이제 내 쪽 이야기도 들어야 합니다.\""
+    ] },
   { char: '닉 포스터', act: [4], dayMin: 29, dayMax: 30,
     responseKey: 'foster_4c_29-30',
     lines: [
@@ -86,4 +96,3 @@ EVENING_CHATS.push(
       "그것만은 진짜입니다. 믿어주세요."
     ] }
 );
-

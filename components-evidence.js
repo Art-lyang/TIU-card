@@ -50,11 +50,11 @@ function EvidenceTable(p) {
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
 
   // 공통 외부 컨테이너 (고정 사이즈)
-  var outerStyle = { margin: '12px auto 0', maxWidth: 440,
-    border: '1px solid rgba(var(--ui-rgb),.12)', background: 'rgba(10,18,10,.8)',
+  var outerStyle = { border: '1px solid rgba(var(--ui-rgb),.12)', background: 'rgba(10,18,10,.8)',
     borderRadius: 3, padding: '10px 12px' };
+  var outerProps = { className: 'evidence-table', style: outerStyle };
 
-  if (collected.length < 2) return h('div', { style: outerStyle },
+  if (collected.length < 2) return h('div', outerProps,
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.55)', letterSpacing: 2 } },
@@ -67,7 +67,7 @@ function EvidenceTable(p) {
       'At least two evidence records are required before cross-analysis can begin.'));
 
   // 접힌 상태
-  if (!show && !p.forceOpen) return h('div', { style: outerStyle },
+  if (!show && !p.forceOpen) return h('div', outerProps,
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.5)', letterSpacing: 2 } },
@@ -89,7 +89,7 @@ function EvidenceTable(p) {
       '+ ' + (collected.length - 4) + ' more'));
 
   // 열린 상태: 같은 외부 사이즈, 내부 스크롤
-  return h('div', { style: outerStyle },
+  return h('div', outerProps,
     // 헤더
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
