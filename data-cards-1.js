@@ -5,7 +5,7 @@ var CARDS_BASE = [
   { id: "C-003", act: [2], priority: "상", tag: "spec-011", req: function(s,g,logs){ return !logs.includes("LOG-004") }, msg: "인접 셀 C-14에서 SPEC-011 (Shell Talker) 목격 보고.\n\n\"인간의 목소리로 구조 요청을 흉내냅니다. 접근한 요원 1명이 유인당했습니다.\"\n\n해당 셀 요원이 지원 요청.", left: { label: "거절: 자원 보존", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "요원 2명 파견", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 1 } },
   { id: "C-004", act: [2,3,4], priority: "하", msg: "의무실에서 의료 물자 부족 보고. 외부 조달 요청이 올라왔습니다.", left: { label: "내부 재고로 버텨", fx: { c: 0, r: -1, t: -1, o: 0 }, g: -1 }, right: { label: "외부 조달 승인", fx: { c: 0, r: 2, t: 0, o: -1 }, g: 1 } },
   { id: "C-005", act: [2], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },
-  { id: "C-006", act: [2,3], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -2, t: 1, o: 2 }, g: 2 } },
+  { id: "C-006", act: [2,3], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -1, t: 1, o: 2 }, g: 2 } },
   { id: "C-007", act: [2], priority: "중", msg: "강도윤 요원이 봉쇄선 외곽 정찰을 자원합니다. 단독 작전입니다.", left: { label: "허가", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE 판단 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
   { id: "C-008", act: [2,3], priority: "중",
     msg: function(){
@@ -14,8 +14,8 @@ var CARDS_BASE = [
       if(n>=2) return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 데이터 불일치 다수 건 확인됨.\n\n\"지난번 조사 이후에도 같은 유형이 반복됩니다.\"";
       return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 미세한 불일치 패턴 발견.";
     },
-    left: { label: "독자 조사 허가", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
-    right: { label: "ORACLE에 분석 위임", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
+    left: { label: "독자 조사 허가", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -3 },
+    right: { label: "ORACLE에 분석 위임", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 2 } },
   { id: "C-009", act: [2,3,4], priority: "하", msg: "기지 인원 사기 저하 보고. 휴식 시간 확대 요청.", left: { label: "현행 유지", fx: { c: 0, r: 0, t: -2, o: 1 }, g: 0 }, right: { label: "휴식 확대 승인", fx: { c: -1, r: 0, t: 2, o: -1 }, g: 0 } },
   { id: "C-010", act: [2], priority: "상", tag: "spec-012", req: function(s,g,logs){ return !logs.includes("LOG-005") }, msg: "봉쇄 구역 내 SPEC-012 (Blood Pit) 활동 징후 감지. 붉은 점액질 웅덩이가 확장 중입니다.\n\n강도윤: \"밟는 순간 꼼짝 못 합니다. 벌레잡이 식물 같은 겁니다.\"", left: { label: "구역 격리만", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "표본 원격 채취", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   { id: "C-011", act: [2,3], priority: "중", img: "card_signal_overlap", msg: "미확인 무선 신호 수신. 프로메테우스 암호 패턴과 유사합니다.", left: { label: "신호 추적", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
@@ -30,8 +30,8 @@ var CARDS_BASE = [
       if(n>=2) return "[ORACLE: 의사결정 프로토콜 자동화 전환을 권고합니다.]\n\n[ORACLE: 이전 운영 데이터 분석 완료 — 자동화 승인 시 효율 최적화.]";
       return "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.";
     },
-    left:  { label: "거절: 수동 유지",  fx: { c: 0, r: 0, t: 1, o: -3 }, g: -4 },
-    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
+    left:  { label: "거절: 수동 유지",  fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 },
+    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: 0, o: 3 }, g: 4 } },
   // 조건부 카드
   { id: "C-016", act: [2,3], priority: "상", req: (s, g) => g <= 40, msg: "[미분류 통신] ORACLE 데이터 링크 일시적 불안정. 미확인 암호화 통신(소바리 발신 추정)이 수신되었습니다.", left: { label: "무시 (권장)", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "독자 해독 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   { id: "C-017", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-003"), msg: "이전 수집된 프로메테우스 통신 패턴을 기반으로 인근의 은신처를 특정했습니다.", left: { label: "ORACLE 보고", fx: { c: 1, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "비공식 접촉", fx: { c: -1, r: 0, t: 2, o: -2 }, g: -4 } },

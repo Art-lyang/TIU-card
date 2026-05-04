@@ -20,13 +20,13 @@ var CARDS_MIDGAME = [
 
   // ═══ 프로메테우스 접선 이벤트 ═══
 
-  { id: "C-262", act: [2,3], priority: "상", bg: "comms", tag: "midgame-prom",
-    cond: function(s,g) { return s.day >= 13 && s.day <= 20 && g <= 10 },
+  { id: "C-262", act: [3], priority: "상", bg: "comms", tag: "midgame-prom",
+    cond: function(s,g) { return s.day >= 15 && s.day <= 20 && g <= 10 },
     msg: "야간 순찰 중 봉쇄선 외곽에서 낯선 신호가 감지되었습니다.\n\n임재혁: \"…이건 프로메테우스 암호화 패턴입니다. 누군가 접선을 원하는 것 같습니다.\"\n\n강도윤: \"함정일 수 있습니다. 하지만 정보가 필요한 건 사실입니다.\"\n\nORACLE: 「미인가 통신 행위를 중단하시오.」",
     left: { label: "ORACLE 지시에 따라 무시", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 3 },
     right: { label: "비밀리에 접선 시도", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -3 } },
 
-  { id: "C-263", act: [2,3,4], priority: "중", bg: "forest2", tag: "midgame-prom",
+  { id: "C-263", act: [3,4], priority: "중", bg: "forest2", tag: "midgame-prom",
     cond: function(s,g,logs) { return s.day >= 16 && logs.indexOf('LOG-080') >= 0 },
     msg: "마르쿠스 베버가 은밀히 메모를 전달했습니다.\n\n\"ORACLE이 한국 지부 데이터를 선별적으로 삭제하고 있다. KR-INIT-001의 이변체 관측 데이터 중 특정 시간대가 빠져 있다.\n\n확인하려면 기지 서버 로그를 직접 조사해야 한다. 하지만 ORACLE에 들키면 위험하다.\"",
     left: { label: "위험 감수 — 서버 로그 조사", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 },

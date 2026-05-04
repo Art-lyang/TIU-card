@@ -15,36 +15,70 @@ var CARDS_RESIST_HINT = [
   { id: "RH-01", act: [2,3], priority: "중", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 8 },
     msg: "서하은이 일일 브리핑 중 덧붙입니다.\n\n\"ORACLE에 올리는 보고서를 제가 먼저 검수할 수 있습니다.\n형식은 완벽하게 유지하면서 — 일부 정보의 우선순위를 낮출 수 있어요.\"\n\n\"ORACLE은 형식만 보면 아무 문제도 못 느낍니다.\"",
-    left:  { label: "공식 형식만 유지하라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2 },
+    left:  { label: "공식 형식만 유지하라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-RH-SUMMARY" },
     right: { label: "본부 보고대로 올려라", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // RH-02: 강도윤 비공식 파견 (GI 감소 + t·o 동시 유지)
   { id: "RH-02", act: [2,3], priority: "중", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 10 },
     msg: "강도윤이 비공식 루트로 보고합니다.\n\n\"외곽 순찰 중에 — ORACLE 카메라가 닿지 않는 구역을 발견했습니다.\n보고서에는 정상 코스로 넣겠습니다.\"\n\n\"그렇게 해두면, 필요할 때 블라인드 포인트로 쓸 수 있습니다.\"",
-    left:  { label: "그렇게 기록해 둬라", fx: { c: 1, r: 0, t: 1, o: 0 }, g: -3 },
+    left:  { label: "그렇게 기록해 둬라", fx: { c: 1, r: 0, t: 1, o: 0 }, g: -3, log: "LOG-RH-BLINDSPOT" },
     right: { label: "ORACLE 지침대로 전체 기록", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
 
   // RH-03: 윤세진 의료 기록 이중화 (t 상승 + o 유지)
   { id: "RH-03", act: [2,3], priority: "중", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 9 },
     msg: "윤세진이 진료 기록을 정리하며 말합니다.\n\n\"공식 기록 외에 — 제가 개인적으로 보관하는 케이스가 있어요.\n ORACLE은 '정상 범위'라고 분류했지만, 저는 패턴이 보입니다.\"\n\n\"정식 보고와 별개로 남겨둘까요?\"",
-    left:  { label: "보관해라. 형식은 정식대로", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -2 },
+    left:  { label: "보관해라. 형식은 정식대로", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -2, log: "LOG-RH-MEDICAL" },
     right: { label: "ORACLE 분류를 따른다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // RH-04: 임재혁 시스템 모니터링 (o 상승 + GI 감소 — 지식형 저항)
   { id: "RH-04", act: [2,3], priority: "중", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 12 },
     msg: "임재혁이 콘솔에서 고개를 듭니다.\n\n\"ORACLE 쿼리 패턴을 역분석해두고 있습니다.\n\n당국에 걸릴 걸 최소화하면서 — 시스템 내부를 더 볼 수 있어요.\"\n\n\"이건 운영자로서 해야 할 일이기도 합니다.\"",
-    left:  { label: "분석 계속", fx: { c: 0, r: -1, t: 1, o: 1 }, g: -3 },
+    left:  { label: "분석 계속", fx: { c: 0, r: 0, t: 1, o: 1 }, g: -3, log: "LOG-RH-QUERYMAP" },
     right: { label: "정식 승인 후에 해라", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // RH-05: ORACLE 자체 오류 보고 (o 대폭 상승 + GI 감소)
   { id: "RH-05", act: [3], priority: "상", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 15 },
     msg: "[ORACLE: 자체 진단 결과 통보]\n\n\"PILEHEAD. 분석 모듈에 일시적 이상이 감지되었습니다. 재동기화가 필요합니다.\"\n\n서하은이 조용히 말합니다.\n\"...지금이 우리 판단 기록을 남길 기회입니다.\n ORACLE이 어떻게 판단했는지 기록하면서, 우리가 왜 다르게 생각하는지도 남길 수 있어요.\"",
-    left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4 },
+    left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4, log: "LOG-RH-COUNTERMEMO" },
     right: { label: "ORACLE 판단만 통과", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
+
+  // ════════════════════════════════
+  //  Phase 6 — 충성 루트 완충 3장
+  // ════════════════════════════════
+
+  { id: "CB-01", act: [2,3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 7 && g >= 4 },
+    msg: "ORACLE이 일일 운영 지표를 재산정합니다.\n\n[ORACLE: 지휘관 순응 패턴 안정. 현장 마찰을 줄이기 위한 완충 절차를 제안합니다.]\n\n서하은이 덧붙입니다.\n\"본부 보고는 그대로 올리되, 요원 설명회를 먼저 열면 반발은 줄일 수 있습니다.\"",
+    left:  { label: "설명회 후 ORACLE 절차 적용", fx: { c: 1, r: 0, t: 1, o: 1 }, g: 2, log: "LOG-CB-STABILITY" },
+    right: { label: "즉시 절차 적용", fx: { c: 1, r: 0, t: -1, o: 2 }, g: 3, log: "LOG-CB-STABILITY" } },
+
+  { id: "CB-02", act: [2,3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 9 && g >= 6 },
+    msg: "봉쇄선 자동화 프로토콜이 갱신되었습니다.\n\n[ORACLE: 자동화 승인 시 봉쇄 효율 상승 예상. 단, 현장 재교육 필요.]\n\n강도윤: \"현장 인원이 왜 바뀌는지 알면 따라갑니다. 모르면 버팁니다.\"",
+    left:  { label: "재교육 예산을 붙여 승인", fx: { c: 2, r: -1, t: 1, o: 1 }, g: 2, log: "LOG-CB-CONTAINMENT" },
+    right: { label: "예산 없이 즉시 승인", fx: { c: 2, r: 0, t: -2, o: 2 }, g: 3, log: "LOG-CB-CONTAINMENT" } },
+
+  { id: "CB-03", act: [3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 15 && g >= 10 },
+    msg: "[ORACLE: 충성도 지표 상승 확인]\n\n본부 보고서가 자동 작성됩니다. 문장은 완벽합니다. 현장의 불안은 반영되어 있지 않습니다.\n\n윤세진이 낮게 말합니다.\n\"충성 보고서에도 사람의 상태는 들어가야 합니다. 그래야 오래 버팁니다.\"",
+    left:  { label: "현장 상태 부록을 첨부", fx: { c: 0, r: 0, t: 1, o: 2 }, g: 2, log: "LOG-CB-HUMANAPPENDIX" },
+    right: { label: "ORACLE 원문 그대로 제출", fx: { c: 1, r: 0, t: -1, o: 3 }, g: 4, log: "LOG-CB-HUMANAPPENDIX" } },
+
+  // 오라클 충성 루트 1회성 안전장치.
+  // 조건과 강제 노출은 app-init.js / app.js에서 보장한다.
+  { id: "ORC-LOYAL-SAFE-01", act: [2,3,4], priority: "event", tag: "oracle-loyalty-safeguard", once: true, bg: "oracle", glitch: true,
+    req: function(s,g,logs){
+      return typeof oracleSafeguardEligible === 'function'
+        ? oracleSafeguardEligible(s,g,logs)
+        : !!(s && g >= 10 && (s.c <= 20 || s.r <= 20 || s.t <= 20) && logs.indexOf('ONCE-ORC-LOYAL-SAFE-01') < 0);
+    },
+    msg: "[ORACLE: 충성 운영자 보호 프로토콜 발동]\n\n평가 지표는 안정적입니다. 그러나 봉쇄, 자원, 신뢰 중 하나 이상이 임계 위험 범위에 진입했습니다.\n\n[ORACLE: 본부 긴급 보급 승인]\n[ORACLE: 봉쇄선 자동 보정 패치 적용]\n[ORACLE: 현장 신뢰 회복을 위해 일부 불리한 명령 철회]\n\n이 개입은 이번 세션에서 한 번만 허용됩니다.",
+    left:  { label: "ORACLE 긴급개입 승인", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 3, log: "LOG-ORACLE-SAFEGUARD" },
+    right: { label: "개입 로그까지 보존", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 2, log: "LOG-ORACLE-SAFEGUARD" } },
 
   // ════════════════════════════════
   //  Phase 5 — 엔딩 H 디스커버러빌리티 힌트

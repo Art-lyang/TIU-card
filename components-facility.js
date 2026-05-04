@@ -13,8 +13,8 @@ function FacilityPanel(p) {
       style: {
         fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         letterSpacing: 1, padding: '6px 14px', cursor: 'pointer',
-        color: active ? '#33ff66' : '#1a6a2a',
-        borderBottom: active ? '2px solid #33ff66' : '2px solid transparent',
+        color: active ? 'var(--ui)' : 'rgba(var(--ui-rgb),.38)',
+        borderBottom: active ? '2px solid var(--ui)' : '2px solid transparent',
         transition: 'all 0.2s'
       },
       onClick: function() { setTab(key); }
@@ -24,7 +24,7 @@ function FacilityPanel(p) {
   return h('div', {
     style: {
       position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      background: '#0a0f0a', zIndex: 100,
+      background: 'rgba(3,7,8,.98)', zIndex: 100,
       display: 'flex', flexDirection: 'column'
     }
   },
@@ -32,8 +32,8 @@ function FacilityPanel(p) {
     h('div', {
       style: {
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '8px 12px', borderBottom: '1px solid #1a3a1a',
-        background: '#0c120c', flexShrink: 0
+        padding: '8px 12px', borderBottom: '1px solid rgba(var(--ui-rgb),.22)',
+        background: 'rgba(var(--ui-rgb),.045)', flexShrink: 0
       }
     },
       h('div', { style: { display: 'flex', gap: 4 } },
@@ -42,8 +42,8 @@ function FacilityPanel(p) {
       h('span', {
         style: {
           fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-          color: '#1a6a2a', cursor: 'pointer', padding: '4px 10px',
-          border: '1px solid #1a3a1a', letterSpacing: 1
+          color: 'rgba(var(--ui-rgb),.55)', cursor: 'pointer', padding: '4px 10px',
+          border: '1px solid rgba(var(--ui-rgb),.24)', letterSpacing: 1
         },
         onClick: p.onClose
       }, tt('facility.close',null,'[ Close ]'))),
@@ -53,7 +53,7 @@ function FacilityPanel(p) {
       src: 'building/oracle-base.html',
       style: {
         flex: 1, border: 'none', width: '100%',
-        background: '#0a0f0a'
+        background: 'rgba(3,7,8,.98)'
       }
     }) : h(FacilityManageTab, {
       facility: fac, onApprove: p.onApprove
@@ -89,10 +89,10 @@ function FacilityManageTab(p) {
           h('div', { style: nm }, fe.name),
           isUp && h('div', { style: { fontSize: 9, color: '#f0a030', letterSpacing: 0.5, marginBottom: 4, fontFamily: "'Share Tech Mono',monospace" } }, tt('facility.uprisingTag',null,'INDEPENDENT INFRA')),
           h('div', { style: ds }, fe.desc),
-          h('div', { style: { fontSize: 10, color: '#4ae', marginTop: 4 } }, fe.hint),
+          h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.72)', marginTop: 4 } }, fe.hint),
           h('button', {
             className: 'btn', onClick: function() { p.onApprove(fe.id); },
-            style: { marginTop: 8, padding: '6px 16px', fontSize: 10, background: 'rgba(74,170,238,.1)', border: '1px solid #4ae', color: '#4ae', cursor: 'pointer', letterSpacing: 1 }
+            style: { marginTop: 8, padding: '6px 16px', fontSize: 10, background: 'rgba(var(--ui-rgb),.08)', border: '1px solid rgba(var(--ui-rgb),.4)', color: 'var(--ui)', cursor: 'pointer', letterSpacing: 1 }
           }, tt('facility.approve',null,'[ APPROVE ]')));
       })),
     approved.length > 0 && h('div', { style: sec },
@@ -110,7 +110,7 @@ function FacilityManageTab(p) {
       h('div', { style: lbl }, tt('facility.completed',null,'[COMPLETED]')),
       completed.map(function(fe) {
         return h('div', { key: fe.id, style: Object.assign({}, itm, { borderColor: 'rgba(var(--ui-rgb),.25)' }) },
-          h('div', { style: Object.assign({}, nm, { color: '#6f6' }) }, fe.name + ' OK'),
+          h('div', { style: Object.assign({}, nm, { color: 'var(--ui)' }) }, fe.name + ' OK'),
           h('div', { style: ds }, fe.desc));
       })),
     pending.length === 0 && approved.length === 0 && completed.length === 0 &&

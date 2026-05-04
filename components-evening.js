@@ -1,14 +1,31 @@
 // TERMINAL SESSION — components-evening.js
 // EveningChat (i18n-ready)
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
+function localizeFactionRelation(r){
+  if(!r||!window.TS_I18N||window.TS_I18N.getLocale()!=='en')return r;
+  var v=r.value||0;
+  var statusMap={
+    oracle:v>=75?'Surveillance aligned':v>=55?'Command link stable':v>=35?'Suspicion rising':'Defection risk',
+    prometheus:v>=70?'Cooperation possible':v>=50?'Contact maintained':v>=35?'Mutual distrust':'Hostile memory',
+    dg:v>=75?'Influence saturated':v>=55?'Deal advantage':v>=40?'Contact / probe':'Cautious',
+    meridian:v>=70?'Debt-bound cooperation':v>=50?'Intel exchange':v>=35?'Reserved line':'Blocked channel'
+  };
+  var hintMap={
+    oracle:v>=75?'Control-friendly':'Independent judgment margin',
+    prometheus:'Truth / escape route',
+    dg:'Supply / dependency risk',
+    meridian:'Intel / intervention pressure'
+  };
+  return Object.assign({},r,{status:statusMap[r.id]||r.status,hint:hintMap[r.id]||r.hint});
+}
 function FactionRelationPanel(p){
   if(typeof getFactionRelations!=='function')return null;
-  var rows=getFactionRelations(p.logs||[],p.gi||0);
+  var rows=getFactionRelations(p.logs||[],p.gi||0).map(localizeFactionRelation);
   if(!rows||rows.length===0)return null;
   return h('div',{className:'evening-relations'},
     h('div',{className:'evening-relations-head'},
       h('span',null,tt('evening.factions',null,'FACTION RELATIONS')),
-      h('span',null,'LIVE MATRIX')),
+      h('span',null,tt('evening.liveMatrix',null,'LIVE MATRIX'))),
     h('div',{className:'evening-relations-grid'},
     rows.map(function(r){return h('div',{key:r.id,className:'evening-relation-card',style:{borderColor:r.tone}},
       h('div',{className:'evening-relation-top'},
@@ -20,6 +37,13 @@ function FactionRelationPanel(p){
     )})
     )
   );
+}
+function englishEveningResponseFallback(resp){
+  if(!resp||!window.TS_I18N||window.TS_I18N.getLocale()!=='en')return resp;
+  var out={a:null,b:null};
+  if(resp.a)out.a=Object.assign({},resp.a,{label:'Ask them to share the details.',reply:'Understood. I will brief you directly, Commander.'});
+  if(resp.b)out.b=Object.assign({},resp.b,{label:'Proceed carefully for now.',reply:'Understood. I will keep it contained until it is safe.'});
+  return out;
 }
 function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
@@ -50,7 +74,7 @@ function EveningChat(p){
   function localizeResp(ec, resp){
     var key = getChatI18nKey(ec);
     var loc = (typeof tc==='function')?tc('eveningResponses',key,null):null;
-    if(!loc || !resp) return resp;
+    if(!loc || !resp) return englishEveningResponseFallback(resp);
     var out = { a:null, b:null };
     if(resp.a) out.a = Object.assign({}, resp.a, loc.a || {});
     if(resp.b) out.b = Object.assign({}, resp.b, loc.b || {});
@@ -100,7 +124,14 @@ function EveningChat(p){
     if(ci<curLine.length){var spd=curLine[ci]==='.'||curLine[ci]==='…'?80:35;var t=setTimeout(function(){setCi(function(v){return v+1})},spd);return function(){clearTimeout(t)}}
     else{if(li<chatLines.length-1){var t2=setTimeout(function(){setLi(function(v){return v+1});setCi(0)},500);return function(){clearTimeout(t2)}}
     else{var t3=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t3)}}}},[li,ci,chat,selChar]);
+  var isEveningContactDisabled=function(c){
+    if(!c)return true;
+    var completed=!!doneToday[c.name];
+    var locked=Object.keys(doneToday).length>0&&!completed;
+    return completed||locked;
+  };
   var pickChar=function(c){
+    if(isEveningContactDisabled(c))return;
     setSelChar(c);if(p.onChat)p.onChat(c.name);
     var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
     var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
@@ -129,7 +160,7 @@ function EveningChat(p){
         var n=-1;
         if(/^[0-9]$/.test(e.key))n=parseInt(e.key,10);
         else if(e.code&&/^Numpad[0-9]$/.test(e.code))n=parseInt(e.code.slice(6),10);
-        if(n>=1&&n<=available.length){e.preventDefault();pickChar(available[n-1])}
+        if(n>=1&&n<=available.length&&!isEveningContactDisabled(available[n-1])){e.preventDefault();pickChar(available[n-1])}
       }else if(done&&!choiceDone&&resp){
         var idx=-1;
         if(e.key==='1'||e.code==='Numpad1'||e.key==='ArrowLeft')idx=0;
@@ -141,20 +172,20 @@ function EveningChat(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selChar,done,choiceDone,resp,available]);
+  },[selChar,done,choiceDone,resp,available,doneToday]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'종료')),
     h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'간부진 한 명과 대화할 수 있습니다.')),
     h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(96px, 112px))',gap:'16px 18px',justifyContent:'center',maxWidth:260,margin:'0 auto'}},
-      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){pickChar(c)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(var(--ui-rgb),.15)',borderRadius:8,background:'rgba(10,18,10,.6)',width:'100%',minHeight:128,transition:'all 0.2s',position:'relative',boxSizing:'border-box'}},
+      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;return h('div',{key:c.name,onClick:function(){pickChar(c)},style:{cursor:'pointer',textAlign:'center',padding:'14px 10px 10px',border:'1px solid rgba(var(--ui-rgb),.15)',borderRadius:8,background:'rgba(var(--ui-rgb),.045)',width:'100%',minHeight:128,transition:'all 0.2s',position:'relative',boxSizing:'border-box'}},
         h('span',{style:{position:'absolute',top:4,left:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(240,160,48,.7)',letterSpacing:1}},'['+(idx+1)+']'),
         portrait?h('img',{src:portrait,style:{width:60,height:60,borderRadius:'50%',border:'2px solid rgba(var(--ui-rgb),.3)',display:'block',margin:'0 auto 6px',objectFit:'cover'}}):h('div',{style:{width:60,height:60,borderRadius:'50%',background:'var(--ui-border)',margin:'0 auto 6px'}}),
-        h('div',{style:{fontSize:13,color:'#f0a030',fontWeight:'bold'}},c.name),
+        h('div',{style:{fontSize:13,color:'var(--ui)',fontWeight:'bold'}},c.name),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui-dim)',marginTop:2}},c.role))})),
     (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
     !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+tt('evening.skip',null,'건너뛰기')+' ]'),
-    showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(10,18,10,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
+    showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(3,7,8,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
       h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'대화를 건너뛰시겠습니까?')),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
         h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel',null,'취소')),
@@ -164,21 +195,21 @@ function EveningChat(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{textAlign:'center',margin:'8px 0',flexShrink:0}},
       portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80,borderRadius:'50%',objectFit:'cover'}}),
-      h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold',marginTop:4}},selChar.name),
+      h('div',{style:{fontSize:15,color:'var(--ui)',fontWeight:'bold',marginTop:4}},selChar.name),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',marginTop:2}},selChar.role)),
     h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'hidden',marginBottom:0,userSelect:'none',WebkitUserSelect:'none',touchAction:'none'}},
       h('div',{className:'oracle-card__glow'}),
       chatLines.length>0?h(React.Fragment,null,
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'█')),
-        replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'#f0a030',marginTop:8,borderLeft:'2px solid #f0a030',paddingLeft:10,fontStyle:'italic'}},replyLine)
+        replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',marginTop:8,borderLeft:'2px solid rgba(var(--ui-rgb),.55)',paddingLeft:10,fontStyle:'italic'}},replyLine)
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.4)'}},'...')),
     done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
-      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(10,18,10,.4)',border:'1px solid '+bdrCol,color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){
+      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(var(--ui-rgb),.045)',border:'1px solid '+bdrCol,color:'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){
         var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
         if(opt.log&&p.onLog)p.onLog(opt.log);
         setReplyLine(opt.reply||'');setChoiceDone(true)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('common.next',null,'다음')+' ]'));
+    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('evening.proceedNextDay',null,tt('common.next',null,'다음'))+' ]'));
 }
 
 function EveningChat2(p){
@@ -208,8 +239,9 @@ function EveningChat2(p){
     var direct=tc(bucketName,directKey,null);
     if(direct) return direct;
     var ck=charKeyMap2[ec.char]||'';
-    if(!ck || !window.TS_I18N || !window.TS_I18N.content || !window.TS_I18N.content.en) return null;
-    var bucket=window.TS_I18N.content.en[bucketName];
+    var contentStore=(window.TS_I18N&&window.TS_I18N._content)||{};
+    if(!ck || !contentStore.en) return null;
+    var bucket=contentStore.en[bucketName];
     if(!bucket) return null;
     var prefix=ck+'_'+ec.act[0];
     var day=p.day||0;
@@ -235,7 +267,7 @@ function EveningChat2(p){
   }
   function localizeResp(ec, resp){
     var loc = resolveEveningBucketEntry('eveningResponses', ec);
-    if(!loc || !resp) return resp;
+    if(!loc || !resp) return englishEveningResponseFallback(resp);
     var out = { a:null, b:null };
     if(resp.a) out.a = Object.assign({}, resp.a, loc.a || {});
     if(resp.b) out.b = Object.assign({}, resp.b, loc.b || {});
@@ -295,7 +327,14 @@ function EveningChat2(p){
     if(ci<curLine.length){var ch=curLine[ci];var spd=(ch==='.'||ch==='!'||ch==='?')?80:35;var t=setTimeout(function(){setCi(function(v){return v+1})},spd);return function(){clearTimeout(t)}}
     else{if(li<chatLines.length-1){var t2=setTimeout(function(){setLi(function(v){return v+1});setCi(0)},500);return function(){clearTimeout(t2)}}
     else{var t3=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t3)}}}},[li,ci,chat,selChar,chatLines]);
+  var isEveningContactDisabled=function(c){
+    if(!c)return true;
+    var completed=!!doneToday[c.name];
+    var locked=Object.keys(doneToday).length>0&&!completed;
+    return completed||locked;
+  };
   var pickChar=function(c){
+    if(isEveningContactDisabled(c))return;
     setSelChar(c);if(p.onChat)p.onChat(c.name);
     var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
     var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
@@ -323,7 +362,7 @@ function EveningChat2(p){
         var n=-1;
         if(/^[0-9]$/.test(e.key))n=parseInt(e.key,10);
         else if(e.code&&/^Numpad[0-9]$/.test(e.code))n=parseInt(e.code.slice(6),10);
-        if(n>=1&&n<=available.length){e.preventDefault();pickChar(available[n-1])}
+        if(n>=1&&n<=available.length&&!isEveningContactDisabled(available[n-1])){e.preventDefault();pickChar(available[n-1])}
       }else if(done&&!choiceDone&&resp){
         var idx=-1;
         if(e.key==='1'||e.code==='Numpad1'||e.key==='ArrowLeft')idx=0;
@@ -335,22 +374,22 @@ function EveningChat2(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selChar,done,choiceDone,resp,available]);
+  },[selChar,done,choiceDone,resp,available,doneToday]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),
     h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'You can speak with one senior officer.')),
     h(FactionRelationPanel,{logs:p.logs,gi:p.gi}),
     h('div',{className:'evening-select-grid'},
-      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=completed||locked;return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
+      available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=isEveningContactDisabled(c);return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
         h('span',{className:'evening-contact-index'},'0'+(idx+1)),
         portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
         h('div',{className:'evening-contact-name'},localizeCharName(c)),
-        h('div',{className:'evening-contact-role'},completed?'오늘 대화 완료했습니다':(locked?'오늘은 대화 불가':localizeCharRole(c))))})),
+        h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,tt('eveningExtra.completedRole',null,'오늘 대화 완료했습니다')):(locked?tt('evening.lockedRole',null,tt('eveningExtra.lockedRole',null,'오늘은 대화 불가')):localizeCharRole(c))))})),
     (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
-    Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'),
-    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?'다음 DAY 진행':tt('evening.skip',null,'SKIP'))+' ]'),
-    showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(10,18,10,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
+    Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},tt('evening.completeNote',null,tt('eveningExtra.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'))),
+    !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,tt('eveningExtra.proceedNextDay',null,'다음 DAY 진행')):tt('evening.skip',null,'SKIP'))+' ]'),
+    showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(3,7,8,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
       h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'Skip tonight\'s conversation?')),
       h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
         h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel',null,'Cancel')),
@@ -360,16 +399,16 @@ function EveningChat2(p){
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{textAlign:'center',margin:'8px 0',flexShrink:0}},
       portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80,borderRadius:'50%',objectFit:'cover'}}),
-      h('div',{style:{fontSize:15,color:'#f0a030',fontWeight:'bold',marginTop:4}},localizeCharName(selChar)),
+      h('div',{style:{fontSize:15,color:'var(--ui)',fontWeight:'bold',marginTop:4}},localizeCharName(selChar)),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',marginTop:2}},localizeCharRole(selChar))),
     h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'hidden',marginBottom:0,userSelect:'none',WebkitUserSelect:'none',touchAction:'none'}},
       h('div',{className:'oracle-card__glow'}),
       chatLines.length>0?h(React.Fragment,null,
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'_')),
-        replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'#f0a030',marginTop:8,borderLeft:'2px solid #f0a030',paddingLeft:10,fontStyle:'italic'}},replyLine)
+        replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',marginTop:8,borderLeft:'2px solid rgba(var(--ui-rgb),.55)',paddingLeft:10,fontStyle:'italic'}},replyLine)
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.4)'}},'...')),
     done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
-      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(10,18,10,.4)',border:'1px solid '+bdrCol,color:i===0?'#f0a030':'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ 이브닝 화면으로 돌아가기 ]'));
+      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(var(--ui-rgb),.045)',border:'1px solid '+bdrCol,color:'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
+    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]'));
 }

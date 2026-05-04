@@ -15,7 +15,7 @@ function SettingsSaveTab(p) {
     var inputOk = !needInput || cfmInput === cfm.inputKey;
     return h('div', { style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
       display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 310 } },
-      h('div', { style: { background: '#0a120a', border: '1px solid rgba(255,68,68,0.4)',
+      h('div', { style: { background: 'rgba(3,7,8,.96)', border: '1px solid rgba(255,68,68,0.4)',
         padding: '20px 24px', maxWidth: 300, textAlign: 'center' } },
         h('div', { style: { fontSize: 13, color: '#ff4444', marginBottom: 16,
           whiteSpace: 'pre-wrap', lineHeight: 1.7 } }, cfm.msg),
@@ -53,7 +53,7 @@ function SettingsSaveTab(p) {
         data&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr+sesStr)
       ),
       h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+'에 현재 상황을 저장합니다.\n'+(data?'기존 데이터를 덮어씁니다.':''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);setSnaps(Save.listSnapshots());}})}},'저장'),
-      data&&h('button',{style:{background:'rgba(240,160,48,.1)',border:'1px solid rgba(240,160,48,.3)',color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+' 데이터를 불러옵니다.\n현재 진행 상황은 덮어써집니다.',action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},'로드'),
+      data&&h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'슬롯 '+s.slot+' 데이터를 불러옵니다.\n현재 진행 상황은 덮어써집니다.',action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},'로드'),
       data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);setSnaps(Save.listSnapshots());}},'삭제')
     );
   };
@@ -173,7 +173,7 @@ function SettingsPanel(p) {
     style: { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' },
     onClick: function (e) { if (e.target === e.currentTarget) closePanel(); }
   },
-    h('div', { style: { width: '100%', maxWidth: 400, maxHeight: '80vh', background: '#0a120a', border: '1px solid rgba(var(--ui-rgb),0.25)', padding: '16px 20px', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)' } },
+    h('div', { style: { width: '100%', maxWidth: 400, maxHeight: '80vh', background: 'rgba(3,7,8,.96)', border: '1px solid rgba(var(--ui-rgb),0.25)', padding: '16px 20px', display: 'flex', flexDirection: 'column', overflow: 'hidden', boxShadow: '0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)' } },
       h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, paddingBottom: 8, borderBottom: '1px solid rgba(var(--ui-rgb),0.15)' } },
         h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: 'var(--ui)', letterSpacing: 2 } }, 'SETTINGS'),
         h('div', { style: { display: 'flex', gap: 6 } },

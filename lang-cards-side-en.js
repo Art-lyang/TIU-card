@@ -8,6 +8,10 @@ window.TS_I18N.mergeContent('en', {
     "RH-03": { msg: "Yoon Se-jin speaks while organizing medical records.\n\n\"There are cases I keep personally outside the official records.\nORACLE classified them as 'normal range,' but I see a pattern.\"\n\n\"Should I keep them separately from the formal report?\"", leftLabel: "Keep them. Maintain the official format", rightLabel: "Follow ORACLE classification" },
     "RH-04": { msg: "Lim Jae-hyeok looks up from the console.\n\n\"I am reverse-analyzing ORACLE query patterns.\n\nIt lets us see more inside the system while minimizing what the authorities can detect.\"\n\n\"As an operator, this is part of my job.\"", leftLabel: "Continue the analysis", rightLabel: "Do it after formal approval" },
     "RH-05": { msg: "[ORACLE: Self-diagnostic result notification]\n\n\"PILEHEAD. A temporary anomaly has been detected in the analysis module. Resynchronization is required.\"\n\nSeo Hae-eun speaks quietly.\n\"...This is our chance to leave a record of our own judgment.\nWe can record how ORACLE judged it, and why we thought differently.\"", leftLabel: "Record our judgment together", rightLabel: "Pass through only ORACLE judgment" },
+    "CB-01": { msg: "ORACLE recalculates the daily operations directive.\n\n[ORACLE: Branch compliance pattern stable. Proposing a buffer procedure to reduce field friction.]\n\nSeo Hae-eun adds,\n\"If we submit the headquarters report as required but brief the team first, we can reduce backlash.\"", leftLabel: "Explain first, then apply ORACLE procedure", rightLabel: "Apply the procedure immediately" },
+    "CB-02": { msg: "The containment automation protocol has been updated.\n\n[ORACLE: Automation approved. Containment efficiency expected to increase. Field retraining required.]\n\nKang Do-yun says, \"If the team knows what is changing, they can follow it. If they do not, they will break.\"", leftLabel: "Approve with retraining budget", rightLabel: "Approve immediately without budget" },
+    "CB-03": { msg: "[ORACLE: Loyalty index increase confirmed]\n\nThe headquarters report is generated automatically. The sentences are perfect. None of the field anxiety is reflected.\n\nYoon Se-jin says quietly,\n\"Can we include the human condition in a loyalty report? Otherwise it will break later.\"", leftLabel: "Attach a field-condition appendix", rightLabel: "Submit ORACLE text as-is" },
+    "ORC-LOYAL-SAFE-01": { msg: "[ORACLE: Loyal operator protection protocol active]\n\nThe evaluation index is stable. However, at least one of containment, resources, or trust has entered a critical risk range.\n\n[ORACLE: Emergency headquarters supply approved]\n[ORACLE: Containment-line auto-correction patch applied]\n[ORACLE: Selected unfavorable field orders withdrawn to restore trust]\n\nThis intervention is permitted only once per session.", leftLabel: "Approve ORACLE emergency intervention", rightLabel: "Preserve the intervention log too" },
     "HH-01": { msg: "Lim Jae-hyeok speaks almost to himself.\n\n\"Commander. This may be strange, but -\nthe branch power, communications, servers. ORACLE controls all of it.\"\n\"If ORACLE shut down for even one day, we could do nothing.\"\n\n\"Someday, it would be good to build independent infrastructure piece by piece.\"", leftLabel: "Review the idea", rightLabel: "That violates headquarters policy" },
     "HH-02": { msg: "Seo Hae-eun hands you Lim Jae-hyeok's proposal.\n\n\"This is the independent infrastructure candidate list he prepared:\nlocal server room, independent comms room, emergency generator, shielded meeting room, armory.\"\n\n\"With those five, the branch can stand on its own without ORACLE.\"\n\"Add an emergency evacuation bunker, and it is complete.\"", leftLabel: "Put it on the review list", rightLabel: "We are not at that stage yet" },
     "CR-001": { msg: "News of ration cuts spreads.\n\nSome branch personnel gather in front of the food storage room.\n\"Why are we the ones starving?\"\n\nYou need to respond before the situation worsens.", leftLabel: "Go explain in person", rightLabel: "Deploy the security team" },
@@ -55,6 +59,50 @@ window.TS_I18N.mergeContent('en', {
     "LOG-LJC-PROM-DLG": {
       title: "Seo Hae-eun Interview Record: The Commander's Pause",
       content: "[Senior officer interview summary]\n\nSeo Hae-eun confirmed that the commander's response slows whenever Prometheus-related reports appear.\n\nHe does not refuse the order. He simply pauses once before the confirmation key.\n\nAssessment: memories of a past operation repeatedly intrude on Prometheus-related judgment."
+    },
+    "LOG-RH-SUMMARY": {
+      title: "Report Priority Reordering",
+      content: "Seo Hae-eun preserved ORACLE report format while lowering the priority of sensitive field judgment. ORACLE evaluation did not immediately fall, but an unofficial judgment line was created."
+    },
+    "LOG-RH-BLINDSPOT": {
+      title: "Outer Blind Point",
+      content: "Kang Do-yun disguised an outer area outside ORACLE surveillance as a normal patrol route. It is not classified as open rebellion, but can serve as an independent movement line if needed."
+    },
+    "LOG-RH-MEDICAL": {
+      title: "Unofficial Medical Cases",
+      content: "Yoon Se-jin preserved medical cases ORACLE classified as normal range. They do not conflict with the official record and can be cross-checked against early infection signs."
+    },
+    "LOG-RH-QUERYMAP": {
+      title: "ORACLE Query Map",
+      content: "Lim Jae-hyeok reverse-analyzed ORACLE query patterns and marked low-surveillance request routes. The system is not being attacked directly, but its judgment flow can be read."
+    },
+    "LOG-RH-COUNTERMEMO": {
+      title: "Counter-Judgment Memo",
+      content: "A memo preserving field judgment alongside ORACLE's self-diagnostic anomaly. It records both what ORACLE concluded and why branch command thought differently."
+    },
+    "LOG-CB-STABILITY": {
+      title: "Compliance Buffer Procedure",
+      content: "A record of following ORACLE procedure while briefing personnel first to reduce field resistance. Even on a loyal route, this operating style can slow trust collapse."
+    },
+    "LOG-CB-CONTAINMENT": {
+      title: "Automation Retraining Budget",
+      content: "Containment automation was approved together with field retraining budget. The branch accepts ORACLE efficiency while preserving personnel understanding."
+    },
+    "LOG-CB-HUMANAPPENDIX": {
+      title: "Human Appendix to Loyalty Report",
+      content: "A field-condition appendix was attached to an ORACLE headquarters report. The commander's compliance remained intact, but fatigue and anxiety were not erased."
+    },
+    "LOG-ORACLE-SAFEGUARD": {
+      title: "ORACLE Loyal Operator Protection Protocol",
+      content: "With the loyalty index stable but containment, resources, or trust approaching a game-over threshold, ORACLE executed emergency headquarters supply, containment auto-correction, and withdrawal of selected unfavorable orders. This intervention is permitted once per session."
+    },
+    "LOG-RH-NETWORK": {
+      title: "Quiet Resistance Line",
+      content: "Report format, outer patrol routes, and internal query maps have connected into a quiet circuit. It is not public rebellion, but the Korean branch now has a minimal structure for independent judgment."
+    },
+    "LOG-CB-SUSTAINED": {
+      title: "Sustainable Loyalty",
+      content: "ORACLE procedure was combined with briefings, retraining, and field appendices. This creates a buffer so loyalty does not only mean consuming personnel."
     }
   }
 });

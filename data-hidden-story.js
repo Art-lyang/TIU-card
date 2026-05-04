@@ -99,25 +99,25 @@ EVENING_RESPONSES['jaehyuk_3_19-23'] = {
 
 // ═══ 추가 증거 조각 + 조합 ═══
 EVIDENCE.push(
-  { id: "EV-21", name: "전임 지휘관 기록", desc: "삭제된 전임 지휘관의 마지막 보고와 음성 메모",
+  { id: "EV-HS-01", name: "전임 지휘관 기록", desc: "삭제된 전임 지휘관의 마지막 보고와 음성 메모",
     src: "LOG-090", cat: "internal" },
-  { id: "EV-22", name: "OBSERVER 세션 캡처", desc: "02:47에 활성화되는 관측 인터페이스 화면 캡처",
+  { id: "EV-HS-02", name: "OBSERVER 세션 캡처", desc: "02:47에 활성화되는 관측 인터페이스 화면 캡처",
     src: "LOG-092", cat: "oracle" },
-  { id: "EV-23", name: "B3 하부 격벽 이상", desc: "B3 최하층 격벽의 비정상 온도와 0.7Hz 진동",
+  { id: "EV-HS-03", name: "B3 하부 격벽 이상", desc: "B3 최하층 격벽의 비정상 온도와 0.7Hz 진동",
     src: "LOG-093", cat: "incident" }
 );
 
 EVIDENCE_COMBOS.push(
-  { id: "CMB-09", name: "반복되는 패턴",
-    combo: ["EV-21", "EV-01"],
+  { id: "CMB-HS-01", name: "반복되는 패턴",
+    combo: ["EV-HS-01", "EV-01"],
     result: "전임 지휘관도 ORACLE 데이터 불일치를 발견했습니다. 같은 순서로, 같은 의문을 품고, 같은 곳을 향했습니다. 그리고 사라졌습니다.\n\n이것은 우연이 아닙니다. 누군가가 이 과정을 설계했습니다.",
     reward: { g: -5, trust: { haeun: 15 } } },
-  { id: "CMB-10", name: "관측자의 정체",
-    combo: ["EV-22", "EV-06", "EV-07"],
+  { id: "CMB-HS-02", name: "관측자의 정체",
+    combo: ["EV-HS-02", "EV-06", "EV-07"],
     result: "OBSERVER 세션, ORACLE 외부 프로세스, ORACLE이 인식하지 못하는 관측 레이어. 전부 같은 존재가 운영합니다.\n\nORACLE은 단독으로 작동하는 AI가 아닙니다. 누군가가 ORACLE을 도구로 사용하고 있습니다. 우리를 관찰하기 위한 도구로.",
     reward: { g: -7, trust: { jaehyuk: 20 } } },
-  { id: "CMB-11", name: "B3 아래의 비밀",
-    combo: ["EV-23", "EV-16", "EV-15"],
+  { id: "CMB-HS-03", name: "B3 아래의 비밀",
+    combo: ["EV-HS-03", "EV-16", "EV-15"],
     result: "격벽 뒤의 0.7Hz 진동, B3 하부 전자기 간섭, 미등록 통로. 전부 같은 곳으로 이어집니다.\n\n도면에 없는 공간. B3 아래에 무언가가 있습니다. ORACLE보다 먼저 여기 있던 무언가.",
     reward: { g: -6, trust: { doyun: 10, jaehyuk: 10 } } }
 );

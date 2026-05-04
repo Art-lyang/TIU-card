@@ -26,6 +26,7 @@ var initActiveSpecs=function(){ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,2).slice();try{l
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);if(Array.isArray(parsed)&&parsed.length>=2){ACTIVE_SPECS=parsed}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 var _cardFullText=function(c,stats,gi,logs){var txt=_introMsgText(c,stats,gi,logs);try{if(c&&c.left)txt+=' '+(c.left.label||'');if(c&&c.right)txt+=' '+(c.right.label||'')}catch(e){}return txt};
+var cardHasMission=function(c){return !!(c&&((c.left&&c.left.mission)||(c.right&&c.right.mission)||c.mission))};
 var cardFlowType=function(c,stats,gi,logs){
   if(!c)return 'ops';
   if(c.flow){return typeof c.flow==='string'?c.flow:(c.flow.type||'ops')}
@@ -124,6 +125,19 @@ var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent){
   for(var j=0;j<a.length;j++){roll-=cardFlowWeight(a[j],stats,gi,logs,currentAct,recent);if(roll<=0)return a[j]}
   return a[a.length-1];
 };
+var oracleSafeguardEligible=function(stats,gi,logs,tRoute){
+  var s=stats||{},lg=logs||[];
+  if(lg.indexOf('ONCE-ORC-LOYAL-SAFE-01')>=0)return false;
+  if(!s||s.o<=0)return false;
+  var loyalty=(gi||0)>=10 || tRoute==='A4_COMPLY';
+  if(!loyalty)return false;
+  return s.c<=20||s.r<=20||s.t<=20;
+};
+var getOracleSafeguardCard=function(stats,gi,logs,tRoute){
+  if(!oracleSafeguardEligible(stats,gi,logs,tRoute))return null;
+  for(var i=0;i<CARDS.length;i++)if(CARDS[i]&&CARDS[i].id==='ORC-LOYAL-SAFE-01')return CARDS[i];
+  return null;
+};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
@@ -136,6 +150,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     var alreadyShown=liveLogs.indexOf('ONCE-'+firstId)>=0 || logs.indexOf('ONCE-'+firstId)>=0;
     if(!alreadyShown){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
   }
+  var safeguard=getOracleSafeguardCard(stats,gi,logs,tr);
+  if(safeguard)return safeguard;
   var valid=CARDS.filter(function(c){
     if((c.id==='CA-001'||c.id==='CA-001B')&&day>1)return false;
     if(c.act&&c.act.indexOf(ca)<0)return false;
@@ -156,7 +172,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   });
   if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:emergency),stats,gi,logs,ca,rec);
 };
 
@@ -179,6 +195,9 @@ var Save={
   saveFacility:function(data){Save.set('ts_facility',data)},
   // ═══ 스냅샷 슬롯 (1~3) — 분기 선택 도움용 수동 저장 ═══
   saveSnapshot:function(slot,data){
+    var curCard=data&&data.currentCard||null;
+    var curCardId=curCard&&curCard.id||null;
+    var staticCard=curCardId&&typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[curCardId];
     var pack={
       version:1,
       timestamp:Date.now(),
@@ -188,9 +207,13 @@ var Save={
       trust:Save.get('ts_trust',null),
       usedDlg:Save.get('ts_usedDlg',[]),
       usedEvening:Save.get('ts_usedEvening',[]),
+      seenArchive:Save.get('ts_seenArchive',[]),
       facility:Save.get('ts_facility',null),
+      combos:Save.get('ts_combos',[]),
       onceShown:Save.get('ts_onceShown',[]),
       activeSpecs:Save.get('ts_activeSpecs',null),
+      currentCardId:curCardId,
+      currentCard:staticCard?null:curCard,
       label:data&&data.label||('DAY '+((data&&data.day)||'?')+' · ACT '+((data&&data.act)||'?'))
     };
     Save.set('ts_snap_'+slot,pack);
@@ -204,11 +227,13 @@ var Save={
     if(pack.game)Save.set('ts_game',pack.game);else Save.del('ts_game');
     if(pack.logs)Save.set('ts_logs',pack.logs);
     if(pack.trust)Save.set('ts_trust',pack.trust);else Save.del('ts_trust');
-    if(pack.usedDlg)Save.set('ts_usedDlg',pack.usedDlg);
-    if(pack.usedEvening)Save.set('ts_usedEvening',pack.usedEvening);
+    Save.set('ts_usedDlg',pack.usedDlg||[]);
+    Save.set('ts_usedEvening',pack.usedEvening||[]);
+    Save.set('ts_seenArchive',pack.seenArchive||[]);
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
-    if(pack.onceShown)Save.set('ts_onceShown',pack.onceShown);
-    if(pack.activeSpecs){Save.set('ts_activeSpecs',pack.activeSpecs);ACTIVE_SPECS=pack.activeSpecs}
+    if(pack.combos)Save.set('ts_combos',pack.combos);else Save.del('ts_combos');
+    Save.set('ts_onceShown',pack.onceShown||[]);
+    if(pack.activeSpecs){Save.set('ts_activeSpecs',pack.activeSpecs);ACTIVE_SPECS=pack.activeSpecs}else{Save.del('ts_activeSpecs');ACTIVE_SPECS=[]}
     return pack;
   },
   // ═══ 업적 ═══

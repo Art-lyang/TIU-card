@@ -31,7 +31,9 @@ other_files = gather([
     'data-core.js', 'data-rewards.js', 'data-chains*.js',
     'data-missions*.js', 'data-endings.js',
     'data-evening-*.js', 'data-dialogues-extra.js',
-    'data-facility*.js'
+    'data-facility*.js', 'data-logs-integrity.js',
+    'data-evidence.js', 'data-character-arcs.js',
+    'data-hidden-story.js', 'data-act4-escape.js'
 ])
 
 # ═══════════════════════════════════════
@@ -126,6 +128,38 @@ for f in card_files:
     once_count += len(re.findall(r'once\s*:\s*true', read(f)))
 
 # ═══════════════════════════════════════
+# 7) 조사테이블 증거/조합 ID 무결성
+# ═══════════════════════════════════════
+evidence_files = gather(['data-evidence.js', 'data-hidden-story.js', 'data-character-arcs.js'])
+evidence_defs = []
+evidence_sources = {}
+combo_defs = []
+combo_sources = {}
+combo_ev_refs = set()
+ev_pat = re.compile(r"""id\s*:\s*["'](EV-[A-Z0-9\-_]+|EV-\d+)["']""")
+combo_id_pat = re.compile(r"""id\s*:\s*["'](CMB-[A-Z0-9\-_]+|CMB-\d+)["']""")
+combo_block_pat = re.compile(r"""combo\s*:\s*\[([^\]]+)\]""", re.DOTALL)
+ev_ref_pat = re.compile(r"""["'](EV-[A-Z0-9\-_]+|EV-\d+)["']""")
+for f in evidence_files:
+    content = read(f)
+    base = os.path.basename(f)
+    for m in ev_pat.finditer(content):
+        eid = m.group(1)
+        evidence_defs.append(eid)
+        evidence_sources.setdefault(eid, []).append(base)
+    for m in combo_id_pat.finditer(content):
+        cid = m.group(1)
+        combo_defs.append(cid)
+        combo_sources.setdefault(cid, []).append(base)
+    for m in combo_block_pat.finditer(content):
+        for r in ev_ref_pat.finditer(m.group(1)):
+            combo_ev_refs.add(r.group(1))
+
+dup_evidence = {k: v for k, v in evidence_sources.items() if len(v) > 1}
+dup_combos = {k: v for k, v in combo_sources.items() if len(v) > 1}
+dangling_combo_evidence = sorted(combo_ev_refs - set(evidence_defs))
+
+# ═══════════════════════════════════════
 # 출력
 # ═══════════════════════════════════════
 print("=" * 60)
@@ -164,6 +198,26 @@ for a in [1,2,3,4]:
     print(f"    Act{a}: {act_dist[a]}장")
 
 print(f"\n[7] 1회성(once:true) 카드: {once_count}장")
+
+print(f"\n[8] 조사테이블 증거: {len(set(evidence_defs))}개  |  조합: {len(set(combo_defs))}개")
+if dup_evidence:
+    print(f"  !! 중복 증거 ID: {len(dup_evidence)}건")
+    for eid, srcs in list(dup_evidence.items())[:10]:
+        print(f"     - {eid} ← {srcs}")
+else:
+    print("    ✓ 증거 ID 중복 없음")
+if dup_combos:
+    print(f"  !! 중복 조합 ID: {len(dup_combos)}건")
+    for cid, srcs in list(dup_combos.items())[:10]:
+        print(f"     - {cid} ← {srcs}")
+else:
+    print("    ✓ 조합 ID 중복 없음")
+if dangling_combo_evidence:
+    print(f"  !! 조합이 참조하지만 정의되지 않은 증거: {len(dangling_combo_evidence)}건")
+    for eid in dangling_combo_evidence[:10]:
+        print(f"     - {eid}")
+else:
+    print("    ✓ 모든 조합 증거 참조가 정의에 연결됨")
 
 print("\n" + "=" * 60)
 print("검증 완료")

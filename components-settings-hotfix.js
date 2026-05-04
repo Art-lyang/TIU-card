@@ -17,7 +17,7 @@
         var needInput=!!cfm.inputKey;
         var inputOk=!needInput||cfmInput===cfm.inputKey;
         return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.8)',display:'flex',alignItems:'center',justifyContent:'center',zIndex:310}},
-          h('div',{style:{background:'#0a120a',border:'1px solid rgba(255,68,68,0.4)',padding:'20px 24px',maxWidth:300,textAlign:'center'}},
+          h('div',{style:{background:'rgba(3,7,8,.96)',border:'1px solid rgba(255,68,68,0.4)',padding:'20px 24px',maxWidth:300,textAlign:'center'}},
             h('div',{style:{fontSize:13,color:'#ff4444',marginBottom:16,whiteSpace:'pre-wrap',lineHeight:1.7}},cfm.msg),
             needInput&&h('div',{style:{marginBottom:12}},
               h('div',{style:{fontSize:11,color:'rgba(255,68,68,0.6)',marginBottom:6}},tr('settings.typeDelete','Type "DELETE" to continue')),
@@ -39,7 +39,7 @@
             h('div',{style:{fontSize:12,color:data?'var(--ui)':'rgba(255,255,255,.3)',fontWeight:'bold',marginTop:2}},label),
             data&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginTop:2,fontFamily:"'Share Tech Mono',monospace"}},timeStr+sesStr)),
           h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'SLOT '+s.slot+' - '+tr('settings.slotSave','Save')+'\n'+(data?tr('settings.overwriteHint','Existing data will be overwritten.'):''),action:function(){if(p.onSaveSnap)p.onSaveSnap(s.slot);setSnaps(Save.listSnapshots())}})}},tr('settings.slotSave','Save')),
-          data&&h('button',{style:{background:'rgba(240,160,48,.1)',border:'1px solid rgba(240,160,48,.3)',color:'#f0a030',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'SLOT '+s.slot+' - '+tr('settings.slotLoad','Load'),action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},tr('settings.slotLoad','Load')),
+          data&&h('button',{style:{background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){setCfm({msg:'SLOT '+s.slot+' - '+tr('settings.slotLoad','Load'),action:function(){if(p.onLoadSnap)p.onLoadSnap(s.slot);p.onClose()}})}},tr('settings.slotLoad','Load')),
           data&&h('button',{style:{background:'rgba(255,68,68,.08)',border:'1px solid rgba(255,68,68,.25)',color:'#ff6644',fontFamily:"'Share Tech Mono',monospace",fontSize:10,padding:'5px 8px',cursor:'pointer'},onClick:function(){Save.deleteSnapshot(s.slot);setSnaps(Save.listSnapshots())}},tr('settings.slotDelete','Delete')));
       };
       return h('div',null,
@@ -106,7 +106,7 @@
     if(tab==='info') content=h(SettingsInfoTab);
 
     return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
-      h('div',{style:{width:'100%',maxWidth:400,maxHeight:'80vh',background:'#0a120a',border:'1px solid rgba(var(--ui-rgb),0.25)',padding:'16px 20px',display:'flex',flexDirection:'column',overflow:'hidden',boxShadow:'0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)'}},
+      h('div',{style:{width:'100%',maxWidth:400,maxHeight:'80vh',background:'rgba(3,7,8,.96)',border:'1px solid rgba(var(--ui-rgb),0.25)',padding:'16px 20px',display:'flex',flexDirection:'column',overflow:'hidden',boxShadow:'0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,paddingBottom:8,borderBottom:'1px solid rgba(var(--ui-rgb),0.15)'}},
           h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:2}},tr('settings.title','SETTINGS')),
           h('div',{style:{display:'flex',gap:6}},

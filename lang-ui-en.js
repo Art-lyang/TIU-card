@@ -188,8 +188,15 @@ window.TS_I18N.mergeUI('en', {
   evening:{
     dayEnd:'END',
     selectChar:'You can speak with one senior officer.',
+    factions:'FACTION RELATIONS',
+    liveMatrix:'LIVE MATRIX',
     skip:'SKIP',
-    skipConfirm:"Skip tonight's conversation?"
+    skipConfirm:"Skip tonight's conversation?",
+    completedRole:'Conversation complete for today',
+    lockedRole:'Unavailable for the rest of today',
+    completeNote:"Today's conversation is complete. You can review the Evidence Table, then proceed to the next DAY.",
+    proceedNextDay:'Proceed to Next DAY',
+    returnToEvening:'Return to Evening Screen'
   },
   logs:{
     list:'← List',

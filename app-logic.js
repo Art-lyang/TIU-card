@@ -37,6 +37,20 @@ function genChoiceReactionNews(s,g,logs){
   if(has('LOG-AUDIT-COMPLY'))pool.push("[국내] DG 자체 감사 협조 범위 확대 — 강원 지부 운영 자료 일부 열람");
   if(has('LOG-AUDIT-ALLY'))pool.push("[국내] 감사독립위, 방벽 시설 운영 점검 착수 — DG 자체 감사 요구 제동");
   if(has('LOG-EV-UNLOCK'))pool.push("[국내] 증거 분석 절차 강화 이후 비공개 사건번호 재분류 사례 증가");
+  if(has('LOG-RH-SUMMARY'))pool.push("[분류 보류] 강원지부 일일 보고서, 본문과 첨부 우선순위가 반복적으로 어긋난다는 내부 점검 기록");
+  if(has('LOG-RH-BLINDSPOT'))pool.push("[국내] 방벽 외곽 순찰로 일부 구간, 중앙 감시망 음영지역으로 재분류 — 현장 재측량 예정");
+  if(has('LOG-RH-MEDICAL'))pool.push("[국내] Phase 0 의심 케이스 재검토 요청 증가 — 현장 의료진 비공식 기록이 근거로 제시됨");
+  if(has('LOG-RH-QUERYMAP'))pool.push("[분류 보류] ORACLE 질의 경로 일부에서 지연 패턴 확인 — 공식 장애 보고는 접수되지 않음");
+  if(has('LOG-RH-COUNTERMEMO'))pool.push("[내부] ORACLE 자동 판단과 현장 판단이 병기된 반대 메모, 감사 대상 문서로 임시 보관");
+  if(has('LOG-RH-NETWORK'))pool.push("[국내] 강원지부 현장 기록 체계 개편 정황 — 중앙망 외 보조 검증선 존재 가능성");
+  if(has('LOG-CB-STABILITY'))pool.push("[국내] ORACLE 절차 도입 지부, 사전 설명회 병행 시 인원 이탈률 감소");
+  if(has('LOG-CB-CONTAINMENT'))pool.push("[국내] 봉쇄 자동화 재교육 예산 배정 — 현장 노조는 '최소한의 안전장치'라 평가");
+  if(has('LOG-CB-HUMANAPPENDIX'))pool.push("[내부] ORACLE 성과 보고서에 현장 피로도 부록 첨부 — 삭제 없이 본부 라인 통과");
+  if(has('LOG-ORACLE-SAFEGUARD'))pool.push("[분류 보류] 강원지부 긴급 안정화 패키지 승인 — 본부 보급, 봉쇄 자동 보정, 현장 명령 철회가 동시에 기록됨");
+  if(has('LOG-CB-SUSTAINED'))pool.push("[국내] 중앙 자동화와 현장 설명 절차를 병행한 지부, 봉쇄 효율과 내부 신뢰 동시 개선");
+  if(g<=-15&&s.o<=40)pool.push("[내부] ORACLE 평가 하락 경보와 별개로 비공식 증거 보존 요청이 늘어남 — 저항 선택의 대가가 기록으로 남기 시작함");
+  if(g>=15&&(s.r<=40||s.t<=40))pool.push("[내부] ORACLE 순응 절차가 안정성을 높였지만, 보급·신뢰 완충 계획 없이는 현장 피로가 누적될 수 있음");
+  if(s.c<=30||s.r<=30||s.t<=30||s.o<=30)pool.push("[경고] 일일 결산에서 위험 자원 하락 원인이 표시됨 — 다음 DAY 보상과 이브닝 대화에서 보완 선택 권고");
   if(pool.length===0){
     if(s.t<35)pool.push("[국내] 방벽 내부 주민 신뢰 지수 하락 — 신고보다 침묵을 택하는 사례 증가");
     if(s.o<35)pool.push("[국내] 중앙 분류망과 현장 판단 불일치 사례, 비공개 감사 대상으로 전환");
@@ -47,6 +61,18 @@ function genChoiceReactionNews(s,g,logs){
 }
 
 function pushUniqueNews(l,item){if(item&&l.indexOf(item)<0)l.push(item)}
+function pushNewsPick(l,pool){
+  if(!Array.isArray(pool)||pool.length===0)return false;
+  var tries=Math.min(pool.length,6);
+  for(var i=0;i<tries;i++){var item=pick(pool);if(item&&l.indexOf(item)<0){l.push(item);return true}}
+  for(var j=0;j<pool.length;j++){if(pool[j]&&l.indexOf(pool[j])<0){l.push(pool[j]);return true}}
+  return false;
+}
+function uniqueNewsItems(items){
+  var out=[];
+  (items||[]).forEach(function(item){if(item&&out.indexOf(item)<0)out.push(item)});
+  return out;
+}
 
 function getFactionRelations(logs,gi){
   var lg=logs||[];
@@ -92,13 +118,13 @@ function getFactionRelations(logs,gi){
   return out;
 }
 
-function genNews(s,g,logs){var l=[];if(s.c>60)l.push(pick(NP.gc));else if(s.c<40)l.push(pick(NP.bc));if(s.r<30)l.push(pick(NP.br));l.push(pick(NP.w));if(Math.random()<0.5)l.push(pick(NP.w));if(s.day>3&&Math.random()<0.5)l.push(pick(NP.p));if(g<=-10&&s.day>5&&Math.random()<0.5)l.push(pick(NP.gl));
+function genNews(s,g,logs){var l=[];if(s.c>60)pushNewsPick(l,NP.gc);else if(s.c<40)pushNewsPick(l,NP.bc);if(s.r<30)pushNewsPick(l,NP.br);pushNewsPick(l,NP.w);if(Math.random()<0.5)pushNewsPick(l,NP.w);if(s.day>3&&Math.random()<0.5)pushNewsPick(l,NP.p);if(g<=-10&&s.day>5&&Math.random()<0.5)pushNewsPick(l,NP.gl);
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
   var lg=logs||[];
-  if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)l.push(pick(NP.dg));
-  if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)l.push(pick(NP.md));
+  if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)pushNewsPick(l,NP.dg);
+  if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)pushNewsPick(l,NP.md);
   genChoiceReactionNews(s,g,lg).forEach(function(item){pushUniqueNews(l,item)});
-  return l}
+  return uniqueNewsItems(l)}
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}
 

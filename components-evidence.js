@@ -1,9 +1,21 @@
 // components-evidence.js — 증거 테이블 UI 컴포넌트
 // 이브닝 챗 하단에 표시, 증거 조합으로 결론 도출
 
+function localizeEvidenceRecord(ev) {
+  if (!ev) return ev;
+  var loc = (typeof tc === 'function') ? tc('evidence', ev.id, null) : null;
+  return loc ? Object.assign({}, ev, loc) : ev;
+}
+
+function localizeEvidenceCombo(combo) {
+  if (!combo) return combo;
+  var loc = (typeof tc === 'function') ? tc('evidenceCombos', combo.id, null) : null;
+  return loc ? Object.assign({}, combo, loc) : combo;
+}
+
 function EvidenceTable(p) {
   var logs = p.logs || [];
-  var collected = getCollectedEvidence(logs);
+  var collected = getCollectedEvidence(logs).map(localizeEvidenceRecord);
   var unlocked = getUnlockedCombos();
   var s1 = useState([]), selected = s1[0], setSelected = s1[1];
   var s2 = useState(null), result = s2[0], setResult = s2[1];
@@ -21,7 +33,7 @@ function EvidenceTable(p) {
   };
 
   var submit = function() {
-    var combo = checkEvidenceCombo(selected);
+    var combo = localizeEvidenceCombo(checkEvidenceCombo(selected));
     if (combo) {
       if (unlocked.indexOf(combo.id) < 0) {
         saveUnlockedCombo(combo.id);
@@ -46,11 +58,11 @@ function EvidenceTable(p) {
 
   var reset = function() { setSelected([]); setResult(null); };
 
-  var catColor = { oracle: '#f0a030', field: 'var(--ui)', external: '#4ae', incident: '#ff6666', internal: '#c080ff' };
+  var catColor = { oracle: 'rgba(var(--ui-rgb),.9)', field: 'var(--ui)', external: 'rgba(var(--ui-rgb),.78)', incident: '#ff6666', internal: 'rgba(var(--ui-rgb),.58)' };
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
 
   // 공통 외부 컨테이너 (고정 사이즈)
-  var outerStyle = { border: '1px solid rgba(var(--ui-rgb),.12)', background: 'rgba(10,18,10,.8)',
+  var outerStyle = { border: '1px solid rgba(var(--ui-rgb),.16)', background: 'linear-gradient(180deg,rgba(var(--ui-rgb),.045),rgba(3,7,8,.86))',
     borderRadius: 3, padding: '10px 12px' };
   var outerProps = { className: 'evidence-table', style: outerStyle };
 
@@ -125,9 +137,9 @@ function EvidenceTable(p) {
 
       // 결과 표시
       result && result.success && h('div', { style: { marginTop: 4, padding: '10px 12px',
-        borderLeft: '3px solid #f0a030', background: 'rgba(240,160,48,.04)' } },
+        borderLeft: '3px solid rgba(var(--ui-rgb),.55)', background: 'rgba(var(--ui-rgb),.045)' } },
         h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
-          color: '#f0a030', letterSpacing: 1, marginBottom: 4 } },
+          color: 'var(--ui)', letterSpacing: 1, marginBottom: 4 } },
           '\u25B8 ' + result.combo.name),
         h('div', { style: { fontSize: 12, color: 'var(--ui-text)',
           lineHeight: 1.6 } }, result.combo.result),
@@ -153,7 +165,7 @@ function EvidenceTable(p) {
           color: 'rgba(var(--ui-rgb),.3)', letterSpacing: 1, marginBottom: 4 } },
           'INSIGHTS: ' + unlocked.length + '/' + EVIDENCE_COMBOS.length),
         unlocked.map(function(cid) {
-          var c = EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0];
+          var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
           if (!c) return null;
           return h('div', { key: cid, style: { fontSize: 9, color: 'rgba(240,160,48,.5)',
             marginBottom: 2 } }, '\u2713 ' + c.name);
@@ -176,12 +188,12 @@ function EvidenceTable(p) {
 
 // 게임 화면용 증거 패널 오버레이 (열람 전용, 조합 불가)
 function EvidencePanel(p) {
-  var collected = getCollectedEvidence(p.logs || []);
+  var collected = getCollectedEvidence(p.logs || []).map(localizeEvidenceRecord);
   var unlocked = getUnlockedCombos();
-  var catColor = { oracle: '#f0a030', field: 'var(--ui)', external: '#4ae', incident: '#ff6666', internal: '#c080ff' };
+  var catColor = { oracle: 'rgba(var(--ui-rgb),.9)', field: 'var(--ui)', external: 'rgba(var(--ui-rgb),.78)', incident: '#ff6666', internal: 'rgba(var(--ui-rgb),.58)' };
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
   return h('div', { style: { position: 'fixed', inset: 0, zIndex: 100,
-    background: 'rgba(5,10,5,.95)', overflowY: 'auto', padding: '20px 16px' } },
+    background: 'rgba(3,7,8,.95)', overflowY: 'auto', padding: '20px 16px' } },
     h('div', { style: { maxWidth: 440, margin: '0 auto' } },
       h('div', { style: { display: 'flex', justifyContent: 'space-between',
         alignItems: 'center', marginBottom: 16, paddingBottom: 8,
@@ -214,7 +226,7 @@ function EvidencePanel(p) {
           color: 'rgba(var(--ui-rgb),.4)', letterSpacing: 1, marginBottom: 6 } },
           'INSIGHTS: ' + unlocked.length + '/' + EVIDENCE_COMBOS.length),
         unlocked.map(function(cid) {
-          var c = EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0];
+          var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
           return c ? h('div', { key: cid, style: { fontSize: 10, color: 'rgba(240,160,48,.6)',
             marginBottom: 3 } }, '\u2713 ' + c.name) : null;
         })),

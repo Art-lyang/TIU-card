@@ -208,6 +208,13 @@ window.TS_I18N.mergeUI('ko', {
     skip:'건너뛰기',
     skipConfirm:'대화를 건너뛰시겠습니까?'
   },
+  eveningExtra:{
+    completedRole:'오늘 대화 완료했습니다',
+    lockedRole:'오늘은 대화 불가',
+    completeNote:'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.',
+    proceedNextDay:'다음 DAY 진행',
+    returnToEvening:'이브닝 화면으로 돌아가기'
+  },
   logs:{
     list:'← 목록',
     close:'닫기',

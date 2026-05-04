@@ -47,7 +47,7 @@ if (typeof EVENING_RESPONSES === 'undefined') var EVENING_RESPONSES = {};
     result:'서하은의 시차, 강도윤의 빈 자리, 윤세진의 매개변수 오차, 임재혁의 비공개 레이어가 서로 다른 출발점에서 같은 구조를 가리킵니다.\n\nORACLE은 한 번에 거짓말하지 않았습니다. 각자의 시야에서 진실을 조금씩 가렸습니다.',
     reward:{ g:-6, trust:{haeun:8,doyun:8,sejin:8,jaehyuk:8}, log:'LOG-CHAR-FOUR-AXIS' } });
   addCombo({ id:'CMB-13', name:'B3로 모이는 선',
-    combo:['EV-28','EV-21','EV-23'],
+    combo:['EV-28','EV-HS-01','EV-HS-03'],
     result:'4인의 의심 축은 전임 지휘관의 삭제 기록과 B3 하부 격벽 이상으로 이어집니다.\n\n전임 지휘관도 같은 순서로 의심했고, 같은 아래층으로 향했습니다. 이번에는 기록이 남아 있습니다.',
     reward:{ g:-7, trust:{haeun:8,jaehyuk:8,doyun:4}, log:'LOG-CHAR-B3-BRIDGE' } });
 

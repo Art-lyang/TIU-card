@@ -23,7 +23,16 @@ var EVIDENCE = [
   { id: "EV-17", name: "ORACLE 기록 조작", desc: "출입 기록을 ORACLE이 덮어쓴 증거", src: "LOG-INC-04-REWRITE", cat: "incident" },
   { id: "EV-18", name: "숨겨진 구역", desc: "CCTV 사각지대 추적 중 발견된 도면 외 공간", src: "LOG-INC-02-HIDDEN", cat: "incident" },
   { id: "EV-19", name: "내열 유기물", desc: "1,200°C 소각 후에도 잔존하는 미세 구조", src: "LOG-INC-03-RESIST", cat: "incident" },
-  { id: "EV-20", name: "SPEC-001 관찰 기록", desc: "Phase 1 개체 행동 패턴 분석", src: "LOG-RES-001", cat: "field" }
+  { id: "EV-20", name: "SPEC-001 관찰 기록", desc: "Phase 1 개체 행동 패턴 분석", src: "LOG-RES-001", cat: "field" },
+  { id: "EV-21", name: "보고서 우선순위 재배열", desc: "ORACLE 형식 안에 현장 판단을 숨긴 기록", src: "LOG-RH-SUMMARY", cat: "internal" },
+  { id: "EV-22", name: "외곽 블라인드 포인트", desc: "ORACLE 감시가 닿지 않는 순찰 사각지대", src: "LOG-RH-BLINDSPOT", cat: "field" },
+  { id: "EV-23", name: "비공식 의료 케이스", desc: "정상 범위 밖에 남겨둔 감염 초기 관찰 묶음", src: "LOG-RH-MEDICAL", cat: "field" },
+  { id: "EV-30", name: "ORACLE 쿼리 지도", desc: "감시 강도가 낮은 내부 질의 경로", src: "LOG-RH-QUERYMAP", cat: "oracle" },
+  { id: "EV-31", name: "반대 판단 메모", desc: "ORACLE 판단과 현장 판단을 병기한 기록", src: "LOG-RH-COUNTERMEMO", cat: "internal" },
+  { id: "EV-32", name: "순응 절차 완충안", desc: "충성 절차에 현장 설명회를 붙인 운영 기록", src: "LOG-CB-STABILITY", cat: "oracle" },
+  { id: "EV-33", name: "자동화 재교육 예산", desc: "ORACLE 자동화 승인과 현장 재교육을 결합한 기록", src: "LOG-CB-CONTAINMENT", cat: "oracle" },
+  { id: "EV-34", name: "충성 보고서 현장 부록", desc: "ORACLE 보고서에 삭제되지 않은 사람의 상태", src: "LOG-CB-HUMANAPPENDIX", cat: "internal" },
+  { id: "EV-35", name: "ORACLE 보호 개입 로그", desc: "충성 운영자를 잃지 않기 위한 1회성 자동 보정 기록", src: "LOG-ORACLE-SAFEGUARD", cat: "oracle" }
 ];
 
 // ═══ 조합 레시피 ═══
@@ -86,6 +95,20 @@ var EVIDENCE_COMBOS = [
     combo: ["EV-01", "EV-10"],
     result: "ORACLE의 데이터 불일치와 서하은이 복원한 삭제 로그. ORACLE은 데이터를 조작한 것이 아니라, 진실을 삭제한 것입니다.",
     reward: { g: -5, trust: { haeun: 15 } }
+  },
+  {
+    id: "CMB-09",
+    name: "조용한 저항선",
+    combo: ["EV-21", "EV-22", "EV-30"],
+    result: "보고서는 형식을 지키고, 순찰선은 빈틈을 남기고, 쿼리는 낮은 소음으로 흐릅니다. 공개 반란은 아니지만, 한국지부는 ORACLE 없이 판단할 수 있는 작은 회로를 만들고 있습니다.",
+    reward: { g: -4, trust: { haeun: 6, doyun: 6, jaehyuk: 6 }, log: "LOG-RH-NETWORK" }
+  },
+  {
+    id: "CMB-10",
+    name: "순응 가능한 충성",
+    combo: ["EV-32", "EV-33", "EV-34"],
+    result: "ORACLE 절차를 따르면서도 설명회, 재교육, 현장 부록을 붙이면 충성은 인원 소모와 같은 뜻이 아닙니다. 이 루트는 복종이 아니라 관리 가능한 협조로 기록됩니다.",
+    reward: { g: 3, trust: { haeun: 4, doyun: 4, sejin: 4, jaehyuk: 4 }, log: "LOG-CB-SUSTAINED" }
   }
 ];
 
@@ -98,7 +121,19 @@ function getCollectedEvidence(logs) {
 
 // 이미 해금한 조합 목록 (localStorage)
 function getUnlockedCombos() {
-  try { var d = localStorage.getItem('ts_combos'); return d ? JSON.parse(d) : []; }
+  try {
+    var d = localStorage.getItem('ts_combos');
+    var parsed = d ? JSON.parse(d) : [];
+    if (!Array.isArray(parsed)) return [];
+    var legacyMap = { 'CMB-11': 'CMB-HS-03' };
+    var out = [];
+    parsed.forEach(function(id) {
+      if (typeof id !== 'string' || !id.length) return;
+      var next = legacyMap[id] || id;
+      if (out.indexOf(next) < 0) out.push(next);
+    });
+    return out;
+  }
   catch(e) { return []; }
 }
 function saveUnlockedCombo(comboId) {
@@ -109,6 +144,7 @@ function saveUnlockedCombo(comboId) {
 
 // 유효한 조합 체크: 선택한 증거 id 배열 → 매칭 레시피 반환
 function checkEvidenceCombo(selectedIds) {
+  if (!Array.isArray(selectedIds)) return null;
   var sorted = selectedIds.slice().sort();
   for (var i = 0; i < EVIDENCE_COMBOS.length; i++) {
     var c = EVIDENCE_COMBOS[i];

@@ -52,7 +52,7 @@ function BriefingScreen(p){
   var prioColor=act===3?'#ff4444':'rgba(var(--ui-rgb),.6)';
   var prioLabel=act===2?'INITIAL':act===3?'ELEVATED':'CR\u2588TICAL';
   var routeColor=transRoute==='A4_COMPLY'?'var(--ui)':transRoute==='A4_GREY'?'#f0a030':transRoute==='A4_RESIST'?'#ff6644':transRoute==='A4_OBSERVER'?'#ff4444':transRoute==='D'?'#ff4444':transRoute==='A'?'var(--ui)':'#f0a030';
-  var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(240,160,48,.3)';
+  var borderColor=transRoute==='A4_RESIST'||transRoute==='A4_OBSERVER'||transRoute==='D'?'rgba(255,68,68,.4)':'rgba(var(--ui-rgb),.35)';
   var briefingKey=act===2?'act2_intro':(act===3?('act3_'+transRoute):('act4_'+transRoute));
   var briefingFallback={text:act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'')};
   var briefingView=(typeof tc==='function')?tc('briefings',briefingKey,briefingFallback):briefingFallback;
@@ -60,9 +60,9 @@ function BriefingScreen(p){
   return h('div',{className:'screen',style:{overflowY:'auto'}},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
     h(BriefingImage,{act:act}),
-    h('div',{style:{width:'100%',maxWidth:440,background:'url(panel_frame_medium.png) center/100% 100% no-repeat',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
+    h('div',{style:{width:'100%',maxWidth:440,background:'linear-gradient(180deg,rgba(var(--ui-rgb),.055),rgba(3,7,8,.82))',border:'1px solid rgba(var(--ui-rgb),.34)',borderRadius:4,boxShadow:'0 0 14px rgba(var(--ui-rgb),.12),inset 0 0 22px rgba(var(--ui-rgb),.035)',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
       h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:12}},
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2}},'ACT '+act+' BRIEFING'),
+        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:2}},'ACT '+act+' BRIEFING'),
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:prioColor,letterSpacing:1}},'PRIORITY: '+prioLabel)),
       h('div',{style:{fontSize:13,color:'var(--ui)',lineHeight:2,borderLeft:'2px solid rgba(var(--ui-rgb),.3)',paddingLeft:14,marginBottom:16}},
         tt('briefing.analysis',null,'Analyzed recent operational data.')),

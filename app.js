@@ -59,7 +59,9 @@ function App(){
   };
   useEffect(function(){
     var root=document.getElementById('root');
-    if(root){var cls=(phase==='go'?'act-1':'act-'+act);if(glitchLevel>0&&fxMode!=='off'){cls+=' glitch-l'+glitchLevel}if(fxMode==='reduced')cls+=' fx-reduced';if(fxMode==='off')cls+=' fx-off';root.className=cls}
+    var cls='act-'+(act||1);
+    if(root){var rootCls=cls;if(glitchLevel>0&&fxMode!=='off'){rootCls+=' glitch-l'+glitchLevel}if(fxMode==='reduced')rootCls+=' fx-reduced';if(fxMode==='off')rootCls+=' fx-off';root.className=rootCls}
+    if(document.body){document.body.classList.remove('act-1','act-2','act-3','act-4');document.body.classList.add(cls)}
   },[act,phase,glitchLevel,fxMode]);
   useEffect(function(){
     var sl=Save.getLogs();if(sl){setLogs(sl);if(typeof window!=='undefined')window.__ts_liveLogs=sl.slice();}
@@ -249,7 +251,10 @@ function App(){
     var riskFired=false;
     if(curCard.bg==='supply'&&fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;riskFired=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)]}
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);
+    if(ch.floor){['c','r','t','o'].forEach(function(k){if(ch.floor[k]!==undefined&&ns[k]<ch.floor[k]&&(!ch.floorCriticalOnly||ns[k]<=20))ns[k]=ch.floor[k]})}
     if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);setTimeout(function(){setToast('')},2400)},600)}
+    var tuned=(typeof applyChoiceBalanceTuning==='function')?applyChoiceBalanceTuning(stats,gi,ns,ng,curCard,ch,logs,act):null;
+    if(tuned&&tuned.stats){ns=tuned.stats;if(typeof tuned.gi==='number')ng=tuned.gi}
     setStats(ns);setGi(ng);
     var ncd={};for(var k in cooldowns)ncd[k]=cooldowns[k];if(curCard.id)ncd[curCard.id]=stats.day;if(curCard.tag)ncd[curCard.tag]=stats.day;setCooldowns(ncd)
     checkLogs(ns,ng,curCard.id,null,null,dir);
@@ -290,6 +295,8 @@ function App(){
       setCurCard(UPRISING_FAIL_CARD);
       return;
     }
+    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(ns,ng,nextLogs,transRoute):null;
+    if(sg){SFX.play('glitch');setCurCard(sg);return}
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
@@ -308,7 +315,12 @@ function App(){
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
     if(act===3){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
-    if(act===4){ns.c=Math.max(5,ns.c-2);ns.r=Math.max(5,ns.r-2);ns.t=Math.max(5,ns.t-1)}
+    if(act===4){
+      var loyalRelief=gi>=40||transRoute==='A4_COMPLY';
+      ns.c=Math.max(5,ns.c-2);
+      ns.r=Math.max(5,ns.r-(loyalRelief?1:2));
+      ns.t=Math.max(5,ns.t-(loyalRelief?0:1));
+    }
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);persistGame(next,gi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue);setCt(0);
     // 시설 확장 보상 선택 시 approved → completed 이동 + uprising 시설 GI-2
     if(r.feId){setFacility(function(prev){
@@ -321,9 +333,12 @@ function App(){
       if(feDef&&feDef.uprising){setGi(function(g){return g-2})}
       setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | GI -2'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
+    var rewardLogs=getLiveLogs(logs);
+    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(next,gi,rewardLogs,transRoute):null;
+    if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}
     var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,gi);return}
     setPhase('evening')};
-  var hEvening=function(){var liveLogs=getLiveLogs(logs);var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
+  var hEvening=function(){var liveLogs=getLiveLogs(logs);var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(stats,gi,liveLogs,transRoute):null;if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
     // ═══ 35일 캡: day>35 도달 시 TIME_UP 강제 엔딩 ═══
     if(stats.day>35){var teid=resolveTimeUp(stats,gi,trust,liveLogs);SFX.play('gameover');doGO(getLocale()==='en'?'Session expired':'\uC138\uC158 \uB9CC\uB8CC',stats,gi,teid);return}
     var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast(tt('app.cStabilityAlert',{value:stats.c},'[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]'));setTimeout(function(){setToast('')},3800)},700)}
@@ -334,8 +349,7 @@ function App(){
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
   var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto'].forEach(function(k){Save.del(k)});window.location.reload()};
-  var restart=function(){BGM.stop();BGM.started=false;initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();setCurCard(drawCard(ns,0,rl,{},[], 1));setPhase('boot')};
-  var startNewCampaign=function(){
+  var startNewCampaign=function(showTutorial){
     initActiveSpecs();
     var ns={c:50,r:65,t:50,o:40,day:1};
     setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);
@@ -347,9 +361,10 @@ function App(){
     var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});
     setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();
     setCurCard(drawCard(ns,0,rl,{},[],1));
-    setFp(true);
-    setPhase('tutorial');
+    setFp(!!showTutorial);
+    setPhase(showTutorial?'tutorial':'game');
   };
+  var restart=function(){BGM.stop();BGM.started=false;startNewCampaign(false)};
   var continueSavedCampaign=function(){
     setPhase('game');
   };
@@ -361,9 +376,9 @@ function App(){
   // ═══ 스냅샷 세이브 (3슬롯) ═══
   var saveSnapshot=function(slot){
     persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);Save.saveLogs(logs);
-    Save.set('ts_trust',trust);Save.saveUsedDlg(usedDlg);Save.saveUsedEvening(usedEvening);
+    Save.set('ts_trust',trust);Save.saveUsedDlg(usedDlg);Save.saveUsedEvening(usedEvening);Save.saveSeenArchive(seenArchive);
     Save.saveFacility(facility);
-    Save.saveSnapshot(slot,{day:stats.day,act:act,label:'DAY '+stats.day+' · ACT '+act+' · '+(transRoute||'-')});
+    Save.saveSnapshot(slot,{day:stats.day,act:act,label:'DAY '+stats.day+' · ACT '+act+' · '+(transRoute||'-'),currentCard:curCard});
     setToastType('');setToast(tt('app.snapshotSaved',{slot:slot,day:stats.day},'슬롯 '+slot+' 저장 완료 (DAY '+stats.day+')'));setTimeout(function(){setToast('')},2400);
   };
   var loadSnapshot=function(slot){
@@ -384,14 +399,18 @@ function App(){
     var ptrust=pack.trust||{haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40};
     var pud=pack.usedDlg||[];
     var pue=pack.usedEvening||[];
+    var psa=pack.seenArchive||[];
     var pfac=pack.facility||{approved:[],pending:[],completed:[],proposed:[]};
     setStats(ps);setGi(pgi);setAct(pact);setActFlags(paf);setTransRoute(ptr);
-    setCooldowns(pcd);setRecentCards(prc);setChainQueue(pcq);
-    setLogs(plogs);if(typeof window!=='undefined')window.__ts_liveLogs=plogs.slice();setTrust(ptrust);setUsedDlg(pud);setUsedEvening(pue);setFacility(pfac);
+    var savedCard=(pack.currentCardId&&typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[pack.currentCardId])||pack.currentCard||null;
+    var restoredQueue=pcq;
+    if(!savedCard&&pcq.length>0){savedCard=pcq[0];restoredQueue=pcq.slice(1)}
+    setCooldowns(pcd);setRecentCards(prc);setChainQueue(restoredQueue);
+    setLogs(plogs);if(typeof window!=='undefined')window.__ts_liveLogs=plogs.slice();setTrust(ptrust);setUsedDlg(pud);setUsedEvening(pue);setSeenArchive(psa);setFacility(pfac);
     setCt(typeof pg.ct==='number'?pg.ct:0);setCurDlg(null);setCurMission(null);setPendingBonus(null);
     setFp(false);setShowSettings(false);
-    // 첫 카드 다시 뽑기 (복원된 로그/스탯 기준)
-    var nc=drawCard(ps,pgi,plogs,pcd,prc,pact,ptr,pfac);
+    // 저장된 현재 카드가 있으면 그대로 복원하고, 없을 때만 새로 뽑는다.
+    var nc=savedCard||drawCard(ps,pgi,plogs,pcd,prc,pact,ptr,pfac);
     if(nc)setCurCard(nc);
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(pact);
     setPhase('game');
@@ -445,9 +464,11 @@ function App(){
     SFX.play('gameover');doGO(ENDING_DEFS[eid].name,stats,gi,eid);
   };
   // ═══ 렌더링 (phase 라우팅) ═══
+  var hasSave=!!Save.get('ts_game',null);
+  var hasSessionHistory=sessions>0||endings.length>0;
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(MainMenu,{sessions:sessions,hasSave:!!Save.get('ts_game',null),onPlay:function(){if(Save.get('ts_game',null))setPhase('hub');else startNewCampaign()},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}});
-  if(phase==='hub')return h(ScenarioHub,{hasSave:!!Save.get('ts_game',null),sessions:sessions,onBack:function(){setPhase('menu')},onContinue:function(){setPhase('game')},onNew:function(){initActiveSpecs();var ns={c:50,r:65,t:50,o:40,day:1};setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();setCurCard(drawCard(ns,0,rl,{},[], 1));setFp(true);setPhase('tutorial')},onTutorial:function(){setPhase('tutorial')}});
+  if(phase==='menu')return h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){if(hasSave||hasSessionHistory)setPhase('hub');else startNewCampaign(true)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}});
+  if(phase==='hub')return h(ScenarioHub,{hasSave:hasSave,hasSessionHistory:hasSessionHistory,sessions:sessions,onBack:function(){setPhase('menu')},onContinue:function(){setPhase('game')},onNew:function(){startNewCampaign(!hasSessionHistory)},onTutorial:function(){startNewCampaign(true)}});
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
@@ -469,11 +490,11 @@ function App(){
       h('span',{className:'info-tag'},tt('scenario.mission',{current:ct+1,total:cpd},'MIS '+(ct+1)+'/'+cpd)),
       (function(){var unlocked=logs.filter(function(id){return id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0}).length;return h('span',{className:'info-tag',style:{cursor:'pointer'},onClick:function(){setRet('game');setPhase('logs')}},'LOG '+unlocked+'/'+ORACLE_LOGS.length)})(),
       (typeof ARCHIVE_ENTRIES!=='undefined')&&(function(){var uc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)}catch(err){return false}}).length;if(uc===0)return null;var nc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}catch(err){return false}}).length;return h('span',{className:'info-tag',style:{cursor:'pointer',color:nc>0?'#f0a030':'rgba(var(--ui-rgb),.7)',borderColor:nc>0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.2)',gap:4},onClick:function(){setRet('game');setPhase('archive')}},'ARC'+(nc>0?' '+nc+' ●':''))})(),
-      (function(){var fc=(facility.completed||[]).length,fa=(facility.approved||[]).length,fp=(facility.pending||[]).length;var total=fc+fa+fp;if(total===0)return null;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'#4ae',borderColor:'rgba(74,170,238,.4)'},onClick:function(){setShowFacility(true)}},tt('scenario.facility',{done:fc,total:total},getLocale()==='en'?('FAC '+fc+'/'+total):('시설 '+fc+'/'+total)))})(),
+      (function(){var fc=(facility.completed||[]).length,fa=(facility.approved||[]).length,fp=(facility.pending||[]).length;var total=fc+fa+fp;if(total===0)return null;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowFacility(true)}},tt('scenario.facility',{done:fc,total:total},getLocale()==='en'?('FAC '+fc+'/'+total):('시설 '+fc+'/'+total)))})(),
       logs.indexOf('LOG-EV-UNLOCK')>=0&&(function(){var col=typeof getCollectedEvidence==='function'?getCollectedEvidence(logs).length:0;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowEvidence(true)}},tt('scenario.evidence',{count:col},getLocale()==='en'?('EVIDENCE '+col):('증거 '+col)))})(),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);setTimeout(function(){setToast('')},2600)},onReply:function(msg){setToastType('');setToast(msg);setTimeout(function(){setToast('')},1500)}}),
-    toast&&h('div',{style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':60,left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isRed?'rgba(255,68,68,0.15)':'rgba(10,18,10,.88)',border:'1px solid '+(isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line'}})()},toast.replace(/\. /g,'.\n')),
+    toast&&h('div',{style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':60,left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:50,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line'}})()},toast.replace(/\. /g,'.\n')),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),

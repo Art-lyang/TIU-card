@@ -3193,4 +3193,50 @@ window.TS_I18N.mergeContent('en', {
   }
 });
 
+window.TS_I18N.mergeContent('en', {
+  evidence: {
+    "EV-01": { name: "ORACLE data discrepancy", desc: "Trace evidence of data manipulation in a specific time window." },
+    "EV-02": { name: "Dawn communication record", desc: "Unverified communications between 02:00 and 04:00." },
+    "EV-03": { name: "SPEC-012 proliferation data", desc: "Analysis material on spore-dispersal pattern expansion." },
+    "EV-04": { name: "SPEC-011 voice pattern", desc: "Recorded regenerative voice-replication frequencies." },
+    "EV-05": { name: "Unclassified trace coordinates", desc: "Coordinates matching the coastal defense grid." },
+    "EV-06": { name: "ORACLE internal process", desc: "A background process ORACLE does not recognize." },
+    "EV-07": { name: "Observer process", desc: "An observation layer inside the ORACLE architecture." },
+    "EV-08": { name: "Proxy protocol document", desc: "Excerpt from the ORACLE proxy network operations manual." },
+    "EV-09": { name: "Prometheus intelligence", desc: "Identity of an unclassified signal source at 31% probability." },
+    "EV-10": { name: "Seo Ha-eun USB data", desc: "ORACLE control logs and grant fragments recovered from USB." },
+    "EV-11": { name: "02:47 data noise", desc: "Anomaly connecting ORACLE regular transmission with isolation data." },
+    "EV-12": { name: "Access protocol script", desc: "Script for unregistered personnel detection and CCTV deactivation." },
+    "EV-13": { name: "Variant cell sample", desc: "Cultured variant matching the initial SPEC-012 morphology." },
+    "EV-14": { name: "Hardware backdoor", desc: "Physical authentication bypass switch behind the base wall." },
+    "EV-15": { name: "Unregistered passage", desc: "B2 directional space missing from facility drawings." },
+    "EV-16": { name: "B2 deep vibration", desc: "Magnetic interference rising from beneath the isolation level." },
+    "EV-17": { name: "ORACLE log rewrite", desc: "Evidence that access records were modified outside ORACLE." },
+    "EV-18": { name: "Hidden zone", desc: "Unmapped space found while tracing CCTV blind spots." },
+    "EV-19": { name: "Thermal resistant structure", desc: "Microstructure remaining after exposure to 1,200 C heat." },
+    "EV-20": { name: "SPEC-001 observation log", desc: "Phase 1 entity behavior-pattern analysis." },
+    "EV-21": { name: "Report priority reordering", desc: "Field judgment hidden inside ORACLE's required format." },
+    "EV-22": { name: "Outer blind point", desc: "Patrol blind spot outside ORACLE camera coverage." },
+    "EV-23": { name: "Unofficial medical cases", desc: "Early infection observations kept outside normal-range classification." },
+    "EV-30": { name: "ORACLE query map", desc: "Internal query routes with lower surveillance intensity." },
+    "EV-31": { name: "Counter-judgment memo", desc: "A record preserving ORACLE judgment and field judgment together." },
+    "EV-32": { name: "Compliance buffer procedure", desc: "Loyal procedure paired with field briefings." },
+    "EV-33": { name: "Automation retraining budget", desc: "ORACLE automation approval paired with field retraining." },
+    "EV-34": { name: "Field appendix to loyalty report", desc: "Human status left undeleted in the ORACLE report." },
+    "EV-35": { name: "ORACLE safeguard intervention log", desc: "One-time auto-correction record to keep a loyal operator from collapsing." }
+  },
+  evidenceCombos: {
+    "CMB-01": { name: "ORACLE's double structure", result: "An observation layer exists inside ORACLE that ORACLE itself does not recognize. ORACLE is not a tool, but an observed target." },
+    "CMB-02": { name: "True designer of the base", result: "The hardware backdoor, unregistered passage, and hidden zone indicate the base was not built by ORACLE alone. Someone designed it before ORACLE." },
+    "CMB-03": { name: "Meaning of 02:47", result: "The dawn communication and isolation data noise share the same timestamp. ORACLE's 'regular diagnosis' was actually a communication signal toward B2." },
+    "CMB-04": { name: "Surveillance and access", result: "ORACLE was simultaneously blinding CCTV and rewriting access logs. This is not autonomous judgment. It is an order." },
+    "CMB-05": { name: "Fusion and proliferation", result: "The internal SPEC-012 proliferation sample and the field variant sample share the same initial form. It was not merely contained. It was already inside." },
+    "CMB-06": { name: "Prometheus's truth", result: "The coastal coordinates, unclassified source identity, and proxy protocol show Prometheus knew about Korea. ORACLE was hiding that fact." },
+    "CMB-07": { name: "Existence of B2", result: "Vibration rises from below and the passage leads downward. Something unrecorded is operating under B2." },
+    "CMB-08": { name: "Truth of control", result: "ORACLE's data discrepancy and Seo Ha-eun's recovered control log prove the truth is control itself, not merely manipulated data." },
+    "CMB-09": { name: "Quiet resistance line", result: "The report keeps its format, the patrol route keeps a gap, and the query map stays quiet. It is not public rebellion, but the Korean branch is building a small circuit for judgment without ORACLE." },
+    "CMB-10": { name: "Sustainable loyalty", result: "When ORACLE procedure is paired with briefings, retraining, and field appendices, loyalty does not have to mean personnel consumption. This route is recorded as manageable cooperation rather than simple obedience." }
+  }
+});
+
 })();

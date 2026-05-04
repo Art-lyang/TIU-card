@@ -9,14 +9,14 @@ var CARDS_DG_MERIDIAN = [
   // ═══════════════════════════════════════════════════════════
 
   // DG-01 — 첫 접촉
-  { id: "DG-01", act: [2,3], priority: "상", bg: "comms",
-    cond: function(s,g,logs){ return s.day>=10 && logs.indexOf('LOG-DG-CONTACT')<0 },
+  { id: "DG-01", act: [3], priority: "상", bg: "comms",
+    cond: function(s,g,logs){ return s.day>=15 && logs.indexOf('LOG-DG-CONTACT')<0 },
     msg: "기지 외부 통신선에 비공식 메시지가 들어왔습니다.\n\n발신자 서명: 대가 인더스트리 대외협력실.\n\n\"강원 봉쇄 작전에 비공식 보급 채널을 제안드립니다. 정부 절차 없이도 의약품·예비 부품을 받으실 수 있습니다. 답신 의무는 없습니다.\"\n\n임재혁: \"DG는 백신·방산·통신을 다 쥔 곳입니다. ORACLE 보고에 올라가지 않는 채널이에요.\"",
     left: { label: "비공식 채널을 받아둔다", fx: { c: 0, r: 1, t: 0, o: -2 }, g: -3 },
     right: { label: "ORACLE 보고로 회신한다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
 
   // DG-02 — 거래 1차
-  { id: "DG-02", act: [2,3], priority: "중", bg: "base",
+  { id: "DG-02", act: [3], priority: "중", bg: "base",
     cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DG-DEAL')<0 },
     msg: "DG 측 제안. 봉쇄선 노후 센서 12기를 무상 교체해주겠다는 안건.\n\n조건은 단 하나 — 교체 작업 중 수집되는 봉쇄선 인근 EV-Σ 활동 데이터의 사본을 DG 연구부에 제공.\n\n서하은: \"센서 노후는 사실입니다. 본부 보급은 빨라야 두 달 뒤예요.\"\n\n... 그러나 데이터를 외부에 흘리는 건 별개의 문제입니다.",
     left: { label: "수락 — 데이터 사본 제공", fx: { c: 2, r: 1, t: 0, o: -2 }, g: -4 },
@@ -100,8 +100,8 @@ var CARDS_DG_MERIDIAN = [
   // ═══════════════════════════════════════════════════════════
 
   // CA23-DV-01 — 서하은 vs 임재혁 (DG 데이터 사본 건)
-  { id: "CA23-DV-01", act: [2,3], priority: "중", bg: "base",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DV-01-MED')<0 && s.day>=12 },
+  { id: "CA23-DV-01", act: [3], priority: "중", bg: "base",
+    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DV-01-MED')<0 && s.day>=17 },
     msg: "회의실. 서하은과 임재혁이 마주 앉아 있습니다.\n\n임재혁: \"DG가 보내는 펌웨어 패치, 안 받으면 다음 달부터 통신 효율이 30% 떨어집니다.\"\n\n서하은: \"받으면 우리 통신이 DG 백본을 무조건 한 번 거치게 됩니다. 그게 어떤 의미인지 알면서.\"\n\n... 둘 다 옳습니다. 한쪽을 누르면 다른 쪽이 깨집니다.",
     left: { label: "둘 다 부르고 절충안을 만든다", fx: { c: 0, r: -1, t: 2, o: 0 }, g: -1 },
     right: { label: "임재혁 손을 들어준다 — 패치 수용", fx: { c: 1, r: 0, t: -1, o: 0 }, g: -1 } },
