@@ -25,6 +25,7 @@ const DATA_FILES = [
   'data-cards-prologue.js',
   'data-cards-prologue-2.js',
   ...Array.from({length: 16}, (_, i) => `data-cards-${i+1}.js`),
+  'data-cards-prometheus-lee.js',
   'data-cards-act4.js',
   'data-cards-act4-ext.js',
   'data-cards-act4-hazard.js',
@@ -32,6 +33,7 @@ const DATA_FILES = [
   'data-cards-resist-hint.js',
   'data-cards-crisis.js',
   'data-cards-neutral.js',
+  'data-cards-korea-civilian.js',
   'data-cards-dg-meridian.js',
   'data-rewards.js',
   'data-chains.js',
@@ -48,6 +50,7 @@ const DATA_FILES = [
   'data-missions-4.js',
   'data-missions-5.js',
   'data-missions-variants.js',
+  'data-logs-integrity.js',
   'data-endings.js',
   'data-act4-escape.js',
   'data-achievements.js',
@@ -70,6 +73,7 @@ const DATA_FILES = [
   'data-evening-extra-2d.js',
   'data-evening-responses-2.js',
   'data-evening-responses-3.js',
+  'data-character-arcs.js',
   'evening-lines.js',
   'data-result-text.js',
   'data-result-story-1.js',
@@ -100,7 +104,15 @@ for (const f of DATA_FILES) {
 }
 
 // === 카드 마스터 배열 수집 ===
+// Arrays that exist only as authoring/injection helpers. They are already pushed
+// into runtime arrays by their data file, so counting them here would double-count.
+const NON_RUNTIME_CARD_ARRAYS = new Set([
+  'CARDS_ESCAPE_EXTRA',
+  'CARDS_LJC_PROMETHEUS',
+]);
+
 const CARD_ARRAY_NAMES = Object.keys(sandbox).filter(name => {
+  if (NON_RUNTIME_CARD_ARRAYS.has(name)) return false;
   const arr = sandbox[name];
   return Array.isArray(arr) && arr.some(item =>
     item &&
@@ -255,6 +267,12 @@ function scanReqString(src, where) {
     consumedLogs.get(m).push(where);
   }
 }
+function scanTryUnlockProductions(src) {
+  if (!src) return;
+  const rx = /tryUnlock\s*\(\s*['"](LOG-[A-Z0-9_-]+|ONCE-[A-Z0-9_-]+)['"]\s*\)/g;
+  let m;
+  while ((m = rx.exec(src))) addProd(m[1]);
+}
 
 for (const c of ALL_CARDS) {
   for (const side of ['left','right']) {
@@ -295,6 +313,12 @@ for (const chains of [CHAINS, CHAINS_INCIDENT]) {
 // ORACLE_LOGS가 있으면 그 id도 "정의됨"으로 간주 (자연 해금 가능성)
 const ORACLE_LOGS = sandbox.ORACLE_LOGS || [];
 const definedLogIds = new Set(ORACLE_LOGS.map(x => x && x.id).filter(Boolean));
+
+for (const file of ['app-logic.js', 'app.js']) {
+  try {
+    scanTryUnlockProductions(fs.readFileSync(path.join(ROOT, file), 'utf8'));
+  } catch (e) {}
+}
 
 // 소비됐으나 어디서도 생산 안 된 LOG
 for (const [log, places] of consumedLogs) {
@@ -395,6 +419,9 @@ section('이슈 리포트');
 warn(issues.duplicates, '카드 ID 중복', x => x.id + '  (in: ' + x.arrays.join(', ') + ')');
 warn(issues.brokenChainTriggers, '체인 trigger 카드 누락', x => x.chain + ' → ' + x.trigger + ' (카드 ' + x.missingCard + ' 없음) [' + x.kind + ']');
 warn(issues.brokenMissionRefs, '카드→미션 참조 깨짐', x => x.card + '.' + x.side + ' → mission=' + x.missing);
+warn(issues.brokenMiniGameRefs, '미니게임 연동 참조 깨짐', x => x.missionId + '/' + x.nodeId + ' → ' + x.nextId + ' (' + x.reason + ')');
+warn(issues.brokenMissionNodes, '미션 노드 참조 깨짐', x => x.missionId + '/' + x.nodeId + ' (' + x.reason + ')');
+warn(issues.brokenFollowupTypes, '현장 후속 카드 생성 실패', x => x.missionId + '/' + x.nodeId + ' → ' + x.nextId + ' [' + x.type + ']');
 warn(issues.unproducedLogs, '참조되지만 생산되지 않는 LOG', x => x.log + '  (' + x.totalRefs + '곳 참조: ' + x.consumedBy.slice(0, 2).join(', ') + ')');
 warn(issues.evidenceUnreachable, '증거 src LOG 미도달', x => x.ev + ' ' + x.name + ' ← ' + x.srcLog);
 warn(issues.endingLogMissing, '엔딩 필수 LOG 미생산', x => '엔딩 ' + x.ending + ': ' + x.log);
