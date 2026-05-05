@@ -11,6 +11,12 @@
     mission_m006: 'assets/images/missions/mission_m006_spore_phantom_hero.jpg',
     mission_m007: 'assets/images/missions/mission_m007_decisive_strike_hero.jpg',
     mission_m008: 'assets/images/missions/mission_m008_observation_stop_hero.jpg',
+    spec_001_mannequin: 'assets/images/specs/spec_001_mannequin_hq.jpg',
+    spec_003_brood: 'assets/images/specs/spec_003_brood_hq.jpg',
+    spec_004_seedspreader: 'assets/images/specs/spec_004_seedspreader_hq.jpg',
+    spec_008_spore: 'assets/images/specs/spec_008_spore_hq.jpg',
+    spec_011_shelltalker: 'assets/images/specs/spec_011_shelltalker_hq.jpg',
+    spec_012_bloodpit: 'assets/images/specs/spec_012_bloodpit_hq.jpg',
     spec_015_brainseeker: 'assets/images/specs/spec_015_brainseeker_hq.jpg',
 
     card_core_jaehyuk_overnight_data: 'assets/images/cards/core/card_core_jaehyuk_overnight_data.jpg',
