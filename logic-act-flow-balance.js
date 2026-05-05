@@ -19,6 +19,9 @@
     if (has(lg, 'LOG-A2-FORESHADOW-02')) {
       pushUnique(out, "[내부] 조사테이블, 외부 경유·삭제 기록·현장 이상 패턴을 별도 분류로 보관 시작");
     }
+    if (has(lg, 'LOG-A2-TRIAGE-01')) {
+      pushUnique(out, "[내부] Act2 후반 단서, 결론 고정 없이 Act3 교차검증 목록으로 이관");
+    }
     if (has(lg, 'LOG-A4-DG-SUPPORT')) {
       pushUnique(out, "[국내] DG 연계 긴급 민간 보급망 가동 — 방벽 인접 물류 공백 일부 완화");
     }
@@ -30,6 +33,9 @@
     }
     if (has(lg, 'LOG-A4-EVIDENCE-RELIEF')) {
       pushUnique(out, "[내부] 조사테이블 교차 결론으로 Act4 배치 순서 재조정 — 자원 손실 완충 기록");
+    }
+    if (has(lg, 'LOG-A4-STAFF-REVIEW')) {
+      pushUnique(out, "[내부] Act4 결산 회의, 자원 압박표와 조사 단서를 함께 반영한 최종 배치안 작성");
     }
     return out;
   };
@@ -61,6 +67,9 @@
     }
     if (has(lg, 'LOG-A4-EVIDENCE-RELIEF')) {
       touch('oracle', -4, '판단 근거 병기', '조사 근거로 독자 판단 여지 확대');
+    }
+    if (has(lg, 'LOG-A4-STAFF-REVIEW')) {
+      touch('oracle', -2, '현장 재배치 검토', '수치 평가보다 현장 증거 우선');
     }
     return rows;
   };

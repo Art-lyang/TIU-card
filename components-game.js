@@ -250,20 +250,32 @@ function DayObjective(p){
   var logs=p.logs||[];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isEn=locale==='en';
+  var statNames={c:isEn?'Containment':'봉쇄',r:isEn?'Resources':'자원',t:isEn?'Trust':'신뢰',o:isEn?'Evaluation':'평가'};
   var critical=['c','r','t','o'].filter(function(k){return (st[k]||0)<=25});
+  var weakStats=['c','r','t','o'].filter(function(k){var v=st[k];return typeof v==='number'&&v<=40&&v>25;});
+  var weakSub=weakStats.length?((isEn?'Weak metric trending down: ':'주의 지표: ')+weakStats.map(function(k){return statNames[k]}).join(', ')):'';
   var key=critical.length?'critical':(day<=1?'day1':('act'+act));
   var sub='';
   if(critical.length){
-    var names={c:isEn?'Containment':'봉쇄',r:isEn?'Resources':'자원',t:isEn?'Trust':'신뢰',o:isEn?'Evaluation':'평가'};
-    sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return names[k]}).join(', ');
+    sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return statNames[k]}).join(', ');
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
     sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
+  }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
+    sub=isEn?'Evidence table active. Separate hints before naming a culprit.':'조사테이블 활성화: 결론보다 단서 분류를 먼저 진행하세요.';
+  }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')<0&&(logs.indexOf('LOG-A2-FORESHADOW-02')>=0||day>=11)){
+    sub=isEn?'Prepare an Act 3 cross-check list from external, internal, and field anomalies.':'외부 경유·내부 기록·현장 이상을 Act3 교차검증 목록으로 정리하세요.';
+  }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')>=0){
+    sub=isEn?'Act 2 triage complete. Keep the branch stable until Act 3 verification.':'Act2 단서 정리가 완료되었습니다. Act3 검증 전까지 지부 안정화를 유지하세요.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0){
     sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof getCollectedEvidence==='function'){
     var evCount=getCollectedEvidence(logs).length;
     if(evCount<2)sub=isEn?'Collect at least two evidence records for cross-analysis.':'교차 분석을 위해 증거 기록을 2개 이상 확보하세요.';
-    else if(typeof getUnlockedCombos==='function')sub=(isEn?'Evidence insights: ':'증거 조합: ')+getUnlockedCombos(logs).length+'/'+(typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS.length:'?');
+    else if(typeof getUnlockedCombos==='function'){
+      var comboCount=getUnlockedCombos(logs).length;
+      if(comboCount<=0)sub=isEn?'Try combining two or three evidence records to secure the first insight.':'조사테이블에서 2~3개 단서를 조합해 첫 결론을 확보하세요.';
+      else sub=(isEn?'Evidence insights: ':'증거 조합: ')+comboCount+'/'+(typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS.length:'?');
+    }
   }
   if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
     var axisIds=['LOG-CHAR-HAEUN-PARALLAX','LOG-CHAR-DOYUN-ANCHOR','LOG-CHAR-SEJIN-KINDLE','LOG-CHAR-JAEHYUK-VOIDWALK'];
@@ -275,6 +287,10 @@ function DayObjective(p){
   if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
     sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
   }
+  if(!sub&&act>=4&&logs.indexOf('LOG-A2-TRIAGE-01')>=0&&logs.indexOf('LOG-A4-STAFF-REVIEW')<0){
+    sub=isEn?'Use the Act 2 triage list to turn Act 4 pressure into staff assignments.':'Act2 교차검증 목록을 활용해 Act4 압박을 인물별 배치 문제로 전환하세요.';
+  }
+  if(!sub&&weakSub)sub=weakSub;
   if(!sub&&typeof getFactionRelations==='function'){
     var rels=getFactionRelations(logs,p.gi||0);
     var hot=rels.filter(function(r){return r.id!=='oracle'&&r.value>=70})[0];

@@ -13,6 +13,25 @@ function localizeEvidenceCombo(combo) {
   return loc ? Object.assign({}, combo, loc) : combo;
 }
 
+function evidenceFailText(selected) {
+  var locale = (window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale()) || 'ko';
+  var isEn = locale === 'en';
+  var count = (selected || []).length;
+  if (count >= 3) {
+    return isEn ?
+      'The evidence points in different directions. Rebuild the set around one shared source or incident.' :
+      '단서의 방향이 갈라졌습니다. 같은 출처나 사건을 중심으로 조합을 다시 묶어보세요.';
+  }
+  if (count === 2) {
+    return isEn ?
+      'A pattern is visible, but one more matching record is needed for a firm conclusion.' :
+      '패턴은 보이지만 결론으로 고정하기에는 한 축이 부족합니다. 맞물리는 기록을 하나 더 찾아보세요.';
+  }
+  return isEn ?
+    'Select at least two records before attempting cross-analysis.' :
+    '교차 분석에는 최소 두 개 이상의 단서가 필요합니다.';
+}
+
 function EvidenceTable(p) {
   var logs = p.logs || [];
   var collected = getCollectedEvidence(logs).map(localizeEvidenceRecord);
@@ -153,7 +172,7 @@ function EvidenceTable(p) {
       result && !result.success && h('div', { style: { marginTop: 4, padding: '8px 12px',
         borderLeft: '3px solid rgba(255,68,68,.4)', background: 'rgba(255,68,68,.03)' } },
         h('div', { style: { fontSize: 11, color: 'rgba(255,100,100,.7)',
-          lineHeight: 1.5 } }, '연관성을 도출할 수 없습니다. 다른 조합을 시도하십시오.'),
+          lineHeight: 1.5 } }, evidenceFailText(selected)),
         h('div', { onClick: reset, style: { marginTop: 6, fontSize: 10,
           color: 'rgba(var(--ui-rgb),.4)', cursor: 'pointer',
           fontFamily: "'Share Tech Mono',monospace" } }, '[ RESET ]')),
