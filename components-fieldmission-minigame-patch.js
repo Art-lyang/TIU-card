@@ -66,6 +66,17 @@ function FieldMission(p){
     return missionLoc&&missionLoc.title?missionLoc.title:mission.title;
   }
   function getMissionImage(mid){
+    var heroMap={
+      'M-001':IMG.mission_m001,
+      'M-002':IMG.mission_m002,
+      'M-003':IMG.mission_m003,
+      'M-004':IMG.mission_m004,
+      'M-005':IMG.mission_m005,
+      'M-006':IMG.mission_m006,
+      'M-007':IMG.mission_m007,
+      'M-008':IMG.mission_m008
+    };
+    if(heroMap[mid])return heroMap[mid];
     return mid==='M-001'?IMG.spec_012_bloodpit:
       mid==='M-002'?IMG.spec_011_shelltalker:
       mid==='M-004'?IMG.spec_001_mannequin:
