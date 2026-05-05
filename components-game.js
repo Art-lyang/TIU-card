@@ -317,9 +317,23 @@ function CardC(p){
   var blockMsgs=(cardLoc&&cardLoc.oracleBlockMsgs)||card.oracleBlockMsgs||defaultBlockMsgs;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
+  var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null);
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
   var s7=useState(timerTotal),remaining=s7[0],setRemaining=s7[1];
-  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal)},[card.id]);
+  var clearHoldPreview=function(){
+    if(holdPreviewTimer.current){clearTimeout(holdPreviewTimer.current);holdPreviewTimer.current=null}
+  };
+  var previewChoice=function(kdir){
+    if(!kdir||!card[kdir]||!p.onPreview)return;
+    p.onPreview(card[kdir].fx||null);
+  };
+  var choiceDirFromX=function(x){
+    var el=cardRef.current;
+    if(!el||!el.getBoundingClientRect)return null;
+    var r=el.getBoundingClientRect();
+    return x<(r.left+r.width/2)?'left':'right';
+  };
+  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];
@@ -331,6 +345,8 @@ function CardC(p){
   };
   var requestChoice=function(kdir){
     if(chosen||shaking)return;
+    clearHoldPreview();
+    if(p.onPreview)p.onPreview(null);
     var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
     if(shouldBlock){
       setDx(0);
@@ -365,8 +381,20 @@ function CardC(p){
   },[card,chosen,shaking,blockCount]);
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
-  var hS=function(x){setSx(x);setDragging(true)},hM=function(x){if(dragging){var nd=x-sx;setDx(nd);if(p.onPreview){var d=Math.abs(nd)>20?(nd<0?'left':'right'):null;p.onPreview(d?card[d].fx:null)}}};
-  var hE=function(){setDragging(false);if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else setDx(0)};
+  var hS=function(x){
+    sxRef.current=x;setSx(x);setDragging(true);dragActiveRef.current=true;holdPreviewDir.current=choiceDirFromX(x);clearHoldPreview();
+    holdPreviewTimer.current=setTimeout(function(){if(dragActiveRef.current&&Math.abs(dx)<8)previewChoice(holdPreviewDir.current)},180);
+  };
+  var hM=function(x){
+    if(dragging||dragActiveRef.current){
+      var nd=x-sxRef.current;setDx(nd);
+      if(p.onPreview){
+        var d=Math.abs(nd)>8?(nd<0?'left':'right'):holdPreviewDir.current;
+        previewChoice(d);
+      }
+    }
+  };
+  var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else setDx(0)};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
@@ -414,9 +442,9 @@ function CardC(p){
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
-    h('div',{className:'card-panel'+pcClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
+    h('div',{ref:cardRef,className:'card-panel'+pcClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
-      onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
+      onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
       card.isFacilityProposal&&h('div',{style:{background:'rgba(var(--ui-rgb),.08)',border:'1px solid rgba(var(--ui-rgb),.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui)',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
