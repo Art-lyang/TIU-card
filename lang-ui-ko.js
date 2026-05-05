@@ -205,8 +205,11 @@ window.TS_I18N.mergeUI('ko', {
   evening:{
     dayEnd:'종료',
     selectChar:'간부진 한 명과 대화할 수 있습니다.',
+    factions:'세력 관계도',
+    liveMatrix:'실시간 관계망',
     skip:'건너뛰기',
-    skipConfirm:'대화를 건너뛰시겠습니까?'
+    skipConfirm:'대화를 건너뛰시겠습니까?',
+    noAvailableChat:'오늘은 추가 대화 기록이 없습니다.'
   },
   eveningExtra:{
     completedRole:'오늘 대화 완료했습니다',

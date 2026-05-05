@@ -408,7 +408,8 @@ function CardC(p){
     }
     return tags.length?tags:null;
   };
-  var leftFx=fxHint(card.left.fx),rightFx=fxHint(card.right.fx);
+  var showFxHints=card.showFxHint===true;
+  var leftFx=showFxHints?fxHint(card.left.fx):null,rightFx=showFxHints?fxHint(card.right.fx):null;
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),

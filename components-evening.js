@@ -115,6 +115,8 @@ function EveningChat(p){
   }
   var chatLines=chat?localizeChatLines(chat,chat.lines||[]):[];
   var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
+  var noChat=selChar&&(!chat||chatLines.length===0);
+  var noChatText=tt('evening.noAvailableChat',null,'오늘은 추가 대화 기록이 없습니다.');
   var s4=useState(0),ci=s4[0],setCi=s4[1];
   var _ch=useState(false),choiceDone=_ch[0],setChoiceDone=_ch[1];
   var _rl=useState(''),replyLine=_rl[0],setReplyLine=_rl[1];
@@ -203,13 +205,13 @@ function EveningChat(p){
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'█')),
         replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',marginTop:8,borderLeft:'2px solid rgba(var(--ui-rgb),.55)',paddingLeft:10,fontStyle:'italic'}},replyLine)
-      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.4)'}},'...')),
+      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText)),
     done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
       [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(var(--ui-rgb),.045)',border:'1px solid '+bdrCol,color:'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){
         var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
         if(opt.log&&p.onLog)p.onLog(opt.log);
         setReplyLine(opt.reply||'');setChoiceDone(true)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('evening.proceedNextDay',null,tt('common.next',null,'다음'))+' ]'));
+    (noChat||done)&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:p.onDone},'[ '+tt('evening.proceedNextDay',null,tt('common.next',null,'다음'))+' ]'));
 }
 
 function EveningChat2(p){
@@ -318,6 +320,8 @@ function EveningChat2(p){
   }
   var chatLines=chat?localizeChatLines(chat,chat.lines||[]):[];
   var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
+  var noChat=selChar&&(!chat||chatLines.length===0);
+  var noChatText=tt('evening.noAvailableChat',null,'오늘은 추가 대화 기록이 없습니다.');
   var s4=useState(0),ci=s4[0],setCi=s4[1];
   var _ch=useState(false),choiceDone=_ch[0],setChoiceDone=_ch[1];
   var _rl=useState(''),replyLine=_rl[0],setReplyLine=_rl[1];
@@ -407,8 +411,8 @@ function EveningChat2(p){
         chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},l)}),
         li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'_')),
         replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',marginTop:8,borderLeft:'2px solid rgba(var(--ui-rgb),.55)',paddingLeft:10,fontStyle:'italic'}},replyLine)
-      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.4)'}},'...')),
+      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText)),
     done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
       [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(var(--ui-rgb),.045)',border:'1px solid '+bdrCol,color:'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
-    done&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]'));
+    (noChat||done)&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]'));
 }

@@ -176,11 +176,41 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:emergency),stats,gi,logs,ca,rec);
 };
 
+function getMaxActForDay(day){
+  day=parseInt(day||1,10)||1;
+  if(day>=29)return 4;
+  if(day>=14)return 3;
+  if(day>=5)return 2;
+  return 1;
+}
+function normalizeGameSave(game){
+  if(!game||!game.stats)return game;
+  var day=parseInt(game.stats.day||1,10)||1;
+  var act=parseInt(game.act||1,10)||1;
+  var maxAct=getMaxActForDay(day);
+  if(act<=maxAct)return game;
+  var fixed={};
+  for(var k in game)fixed[k]=game[k];
+  fixed.stats={c:game.stats.c,r:game.stats.r,t:game.stats.t,o:game.stats.o,day:day};
+  fixed.act=maxAct;
+  fixed.ct=0;
+  fixed.chainQueue=[];
+  if(maxAct===1)fixed.transRoute='';
+  fixed.__normalized=true;
+  return fixed;
+}
+function cleanGameSaveMeta(game){
+  if(!game)return game;
+  var clean={};
+  for(var k in game){if(k!=='__normalized')clean[k]=game[k]}
+  return clean;
+}
+
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
+  get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed)}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[]})},
+  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[]});Save.set('ts_game',cleanGameSaveMeta(payload))},
   clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown')},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
@@ -224,7 +254,13 @@ var Save={
   listSnapshots:function(){return[1,2,3].map(function(n){return{slot:n,data:Save.get('ts_snap_'+n,null)}})},
   loadSnapshot:function(slot){
     var pack=Save.get('ts_snap_'+slot,null);if(!pack)return null;
-    if(pack.game)Save.set('ts_game',pack.game);else Save.del('ts_game');
+    if(pack.game){
+      var fixedGame=normalizeGameSave(pack.game);
+      var normalized=!!(fixedGame&&fixedGame.__normalized);
+      pack.game=cleanGameSaveMeta(fixedGame);
+      if(normalized){pack.currentCardId=null;pack.currentCard=null}
+      Save.set('ts_game',pack.game)
+    }else Save.del('ts_game');
     if(pack.logs)Save.set('ts_logs',pack.logs);
     if(pack.trust)Save.set('ts_trust',pack.trust);else Save.del('ts_trust');
     Save.set('ts_usedDlg',pack.usedDlg||[]);

@@ -192,6 +192,7 @@ window.TS_I18N.mergeUI('en', {
     liveMatrix:'LIVE MATRIX',
     skip:'SKIP',
     skipConfirm:"Skip tonight's conversation?",
+    noAvailableChat:'No additional conversation record is available tonight.',
     completedRole:'Conversation complete for today',
     lockedRole:'Unavailable for the rest of today',
     completeNote:"Today's conversation is complete. You can review the Evidence Table, then proceed to the next DAY.",
