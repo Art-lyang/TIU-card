@@ -235,7 +235,7 @@ function Stats(p){
       h('span',{className:'gauge-label'},s.l),
       h('div',{className:'gauge-bar'},
         h('div',{className:'gauge-bar-inner'},
-          delta>0?h('div',{style:{position:'absolute',left:0,top:0,width:newV+'%',height:'100%',background:'rgba(var(--ui-rgb),0.15)',zIndex:1,transition:'width 0.15s'}}):null,
+          delta>0?h('div',{style:{position:'absolute',left:v+'%',top:0,width:Math.max(0,newV-v)+'%',height:'100%',background:'rgba(var(--ui-rgb),0.22)',zIndex:1,transition:'all 0.15s'}}):null,
           h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
           delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
       h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
@@ -403,18 +403,7 @@ function CardC(p){
   var specBg=card.img?IMG[card.img]:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:tt('stats.c',null,'봉쇄'),r:tt('stats.r',null,'자원'),t:tt('stats.t',null,'신뢰'),o:tt('stats.o',null,'평가')};
-  var fxHint=function(fx){
-    if(!fx)return null;
-    var tags=[];
-    ['c','r','t','o'].forEach(function(k){
-      var v=(fx[k]||0);
-      if(!v)return;
-      var delta=v*5;
-      var pos=delta>0;
-      tags.push(h('span',{key:k,style:{color:pos?'var(--ui)':'rgba(255,141,97,.95)',display:'inline-flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}},SN[k]+' '+(pos?'+':'')+delta));
-    });
-    return tags.length?tags:null;
-  };
+  var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);var abs=Math.abs(v);if(v>0)tags.push(h('span',{key:k,style:{color:'var(--ui)',display:'inline-flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}},SN[k]+(abs>=2?'↑↑':'↑')));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)',display:'inline-flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}},SN[k]+(abs>=2?'↓↓':'↓')))});return tags.length?tags:null};
   var choiceTrace=function(dir){
     var id=card.id,tags=[];
     var add=function(label,color){tags.push(h('span',{key:label,style:{color:color,border:'1px solid '+color,background:'rgba(0,0,0,.18)',borderRadius:3,padding:'1px 4px',whiteSpace:'nowrap'}},label))};
@@ -436,7 +425,7 @@ function CardC(p){
     }
     return tags.length?tags:null;
   };
-  var showFxHints=card.showFxHint===true;
+  var showFxHints=card.showFxHint!==false;
   var leftFx=showFxHints?fxHint(card.left.fx):null,rightFx=showFxHints?fxHint(card.right.fx):null;
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
