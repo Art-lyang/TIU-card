@@ -110,7 +110,7 @@ var CARDS_INVESTIGATE = [
     right: { label: "하수구 전면 봉쇄", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0, log: "LOG-029" } },
 
   // 관찰 — 행동 패턴 분석
-  { id: "C-274", act: [2,3], priority: "상", tag: "spec-015",
+  { id: "C-274", act: [2,3], priority: "상", tag: "spec-015", once: true,
     req: function(s,g,logs){ return logs.includes("LOG-029") && !logs.includes("LOG-041") },
     msg: "윤세진이 Brain Seeker 분석을 보고합니다.\n\n\"SPEC-015로 분류했습니다. TS-Ω 계열 거북 변이체의 이탈 개체예요.\"\n\"등껍질이 없습니다 — 군체 통신 기관이 없다는 뜻이에요.\"\n\"군체에 속하지 못한 거북. 단독 사냥꾼입니다.\"\n\n\"가장 위험한 건 — 뇌를 섭취할수록 지능이 올라갑니다.\"\n\"이 개체의 매복 패턴이 우리 순찰 시간과 일치하기 시작했습니다.\"\n\n강도윤: \"학습하고 있다는 겁니까?\"\n윤세진: \"...네.\"",
     left: { label: "매복 지점 열화상 매핑", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
@@ -118,7 +118,7 @@ var CARDS_INVESTIGATE = [
 
   // 제거/확보 결정 — 미션 트리거
   { id: "C-275", act: [3], priority: "상", tag: "spec-015",
-    req: function(s,g,logs){ return logs.includes("LOG-029") && !logs.includes("LOG-041") },
+    req: function(s,g,logs){ return logs.includes("LOG-029") && logs.includes("ONCE-C-274") && !logs.includes("LOG-041") },
     msg: "ORACLE 긴급 통보.\n\n[SPEC-015 위협 등급 변경: HIGH → CRITICAL]\n[NAMED SPECIMEN 등록: BS-GANGWON-01]\n[추정 누적 포식: 12+. 학습 단계 진입 확인]\n\n강도윤: \"이 개체는 시간이 지날수록 강해집니다. 지금 잡아야 합니다.\"\n\n윤세진: \"뇌 섭취 메커니즘은 연구 가치가 높아요.\"\n\"두개골이 없으니 척추 직접 타격으로 무력화할 수 있습니다.\"\n\"하지만 물속에서 싸우면 우리가 불리합니다.\"\n\n결정해야 합니다.",
     left: { label: "제거 작전 — 하수구 소탕", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-010" },
     right: { label: "생포 작전 — 미끼 유인 포획", fx: { c: 0, r: -2, t: 1, o: -1 }, g: -1, mission: "M-010" } }

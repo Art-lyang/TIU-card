@@ -583,7 +583,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Distribute immediately"
       },
       "C-158": {
-        msg: "Old tent traces have been found near the northern checkpoint beyond the containment line. The anchor pins are rusted through.\n\nKang Do-yun: \"Looks like the previous unit left it behind. It doesn't seem dangerous... the tarp and rope are still usable.",
+        msg: "Old tent traces have been found near the northern checkpoint beyond the containment line. The anchor pins are rusted through.\n\nKang Do-yun: \"Looks like the previous unit left it behind. It doesn't seem dangerous... the tarp and rope are still usable.\"",
         leftLabel: "Refurbish and reuse",
         rightLabel: "Discard it"
       },
@@ -598,12 +598,12 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Adopt the new format"
       },
       "C-161": {
-        msg: "During a routine inspection of the medical bay, expired medication is found.\n\nYoon Se-jin: \"Three antibiotics and two painkillers are past date. Looks like the previous officer never logged them. We can still use them, but their effectiveness is reduced.",
+        msg: "During a routine inspection of the medical bay, expired medication is found.\n\nYoon Se-jin: \"Three antibiotics and two painkillers are past date. Looks like the previous officer never logged them. We can still use them, but their effectiveness is reduced.\"",
         leftLabel: "Request urgent resupply",
         rightLabel: "Work with current stock"
       },
       "C-162": {
-        msg: "Abandoned supplies from a previous unit are scattered along a mountain path near the containment zone.\n\nKang Do-yun: \"Ammo crates, batteries, cold-weather gear... there's a fair amount here we can still use. Recovering it would save resources.",
+        msg: "Abandoned supplies from a previous unit are scattered along a mountain path near the containment zone.\n\nKang Do-yun: \"Ammo crates, batteries, cold-weather gear... there's a fair amount here we can still use. Recovering it would save resources.\"",
         leftLabel: "Dispatch a recovery team",
         rightLabel: "Ignore contamination risk"
       },
@@ -613,7 +613,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Keep current patrol route"
       },
       "C-164": {
-        msg: "The latest containment-line inspection results have arrived.\n\nLim Jae-hyeok: \"Parts that need replacing were left off the next supply list. Looks like ORACLE's automated procurement system skipped them.",
+        msg: "The latest containment-line inspection results have arrived.\n\nLim Jae-hyeok: \"Parts that need replacing were left off the next supply list. Looks like ORACLE's automated procurement system skipped them.\"",
         leftLabel: "Submit emergency request to ORACLE",
         rightLabel: "Hold with field repairs"
       },
@@ -638,7 +638,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Submit a formal evaluation"
       },
       "C-169": {
-        msg: "Wild animals along the containment boundary have been crying out abnormally. The sound continued all night without stopping.\n\nYoon Se-jin: \"This isn't seasonal behavior. It's a stress response. Something is agitating them.",
+        msg: "Wild animals along the containment boundary have been crying out abnormally. The sound continued all night without stopping.\n\nYoon Se-jin: \"This isn't seasonal behavior. It's a stress response. Something is agitating them.\"",
         leftLabel: "Expand ecosystem monitoring",
         rightLabel: "Treat it as insignificant"
       },
@@ -648,22 +648,22 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Force focus on work"
       },
       "C-171": {
-        msg: "An external signal is interfering with the standard communications band. Transmission quality is unstable.\n\nLim Jae-hyeok: \"I can't tell if it's deliberate, but someone is using the same frequency we are. If we leave it like this, our position could be exposed.",
+        msg: "An external signal is interfering with the standard communications band. Transmission quality is unstable.\n\nLim Jae-hyeok: \"I can't tell if it's deliberate, but someone is using the same frequency we are. If we leave it like this, our position could be exposed.\"",
         leftLabel: "Trace the signal source",
         rightLabel: "Change frequencies"
       },
       "C-172": {
-        msg: "A leak has started in the branch water-supply pipes. Moisture is seeping into the corridor walls.\n\nLim Jae-hyeok: \"The pipes are old. If we repair it now, we'll have to cut water for half a day. If we don't, the pressure will keep dropping.",
+        msg: "A leak has started in the branch water-supply pipes. Moisture is seeping into the corridor walls.\n\nLim Jae-hyeok: \"The pipes are old. If we repair it now, we'll have to cut water for half a day. If we don't, the pressure will keep dropping.\"",
         leftLabel: "Run emergency repairs",
         rightLabel: "Manage the pressure drop"
       },
       "C-173": {
-        msg: "Discarded camping equipment has been found near the containment line. The tent cords were cut with a knife.\n\nKang Do-yun: \"They left in a hurry. Two or three days ago. I don't know who it was, but they were definitely running from something.",
+        msg: "Discarded camping equipment has been found near the containment line. The tent cords were cut with a knife.\n\nKang Do-yun: \"They left in a hurry. Two or three days ago. I don't know who it was, but they were definitely running from something.\"",
         leftLabel: "Analyze the items",
         rightLabel: "Burn them"
       },
       "C-174": {
-        msg: "Power consumption in the medical-bay freezer has surged.\n\nYoon Se-jin: \"We have too many samples now. The freezer is already running at full load, and the temperature is still rising. At this rate even the existing specimens will be damaged.",
+        msg: "Power consumption in the medical-bay freezer has surged.\n\nYoon Se-jin: \"We have too many samples now. The freezer is already running at full load, and the temperature is still rising. At this rate even the existing specimens will be damaged.\"",
         hint: "▸ Installing an additional freezer will unlock the facility expansion [Cryogenic Freezer].",
         leftLabel: "Install additional freezer",
         rightLabel: "Dispose of some samples"

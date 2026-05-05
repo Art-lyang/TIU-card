@@ -31,6 +31,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"대체 요법으로", fx:{c:0,r:0,t:-1,o:0}, g:0 } },
 
   { id:"CA4-FL-06", act:[4], tag:"endgame-daily", priority:"하",
+    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 },
     msg:"교대 순환표 조정 요청.\n\n강도윤: \"일부 요원은 열흘 이상 연속 근무 중입니다. 한계입니다.\"\n\n효율과 건강 사이.",
     left:{ label:"강제 휴무 지정", fx:{c:-1,r:0,t:2,o:-1}, g:-1 },
     right:{ label:"현행 유지 — 임무 우선", fx:{c:1,r:0,t:-2,o:1}, g:1 } },
@@ -42,6 +43,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"보고서는 ORACLE 형식으로", fx:{c:0,r:0,t:-1,o:1}, g:1, trust:-8 } },
 
   { id:"CA4-CH-02", act:[4], tag:"endgame-char", priority:"중",
+    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 },
     msg:"강도윤이 현장 복귀를 공식 요청합니다.\n\n\"지휘관. 이 방 안에서 지도만 보는 건 제 일이 아닙니다. 마지막이 될지도 모릅니다 — 제 방식으로 끝내고 싶습니다.\"",
     left:{ label:"복귀 승인", fx:{c:1,r:-1,t:1,o:-1}, g:-2, trust:10 },
     right:{ label:"지휘소 유지 명령", fx:{c:0,r:0,t:-1,o:1}, g:2, trust:-10 } },

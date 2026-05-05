@@ -100,7 +100,7 @@ var CARDS_ACT4 = [
     right:{ label:"되돌릴 수는 없나", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
 
   { id:"CA4-R005", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
-    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 },
+    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 && logs.indexOf('LOG-075')<0 },
     endTrigger:"D",
     msg:"새벽 4시.\n\n기지 외곽. 어둠 속.\n\n서하은. 강도윤. 윤세진. 임재혁.\n네 사람이 당신 옆에 서 있습니다.\n\nORACLE은 6시간 후에야 당신들의 부재를 감지할 것입니다.\n하지만 그때는 이미 —",
     left:{ label:"걷기 시작한다", fx:{c:-1,r:0,t:3,o:-4}, g:-6 },
