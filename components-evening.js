@@ -159,10 +159,15 @@ function EveningChat(p){
   useEffect(function(){
     var onKey=function(e){
       if(!selChar){
+        if(showSkipConfirm){
+          if(e.key==='Enter'||e.key===' '||e.key==='2'||e.code==='Numpad2'){e.preventDefault();p.onDone();return}
+          if(e.key==='Escape'||e.key==='Backspace'||e.key==='1'||e.code==='Numpad1'){e.preventDefault();setShowSkipConfirm(false);return}
+        }
         var n=-1;
         if(/^[0-9]$/.test(e.key))n=parseInt(e.key,10);
         else if(e.code&&/^Numpad[0-9]$/.test(e.code))n=parseInt(e.code.slice(6),10);
         if(n>=1&&n<=available.length&&!isEveningContactDisabled(available[n-1])){e.preventDefault();pickChar(available[n-1])}
+        else if(Object.keys(doneToday).length>0&&(e.key==='Enter'||e.key===' ')){e.preventDefault();setShowSkipConfirm(true)}
       }else if(done&&!choiceDone&&resp){
         var idx=-1;
         if(e.key==='1'||e.code==='Numpad1'||e.key==='ArrowLeft')idx=0;
@@ -170,11 +175,14 @@ function EveningChat(p){
         if(idx<0)return;
         var opt=idx===0?resp.a:resp.b;
         if(opt){e.preventDefault();pickResp(opt)}
+      }else if((noChat||done)&&(!resp||choiceDone)){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();returnToEvening()}
+        else if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();returnToEvening()}
       }
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selChar,done,choiceDone,resp,available,doneToday]);
+  },[selChar,done,choiceDone,resp,available,doneToday,showSkipConfirm,noChat]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'종료')),
@@ -363,10 +371,15 @@ function EveningChat2(p){
   useEffect(function(){
     var onKey=function(e){
       if(!selChar){
+        if(showSkipConfirm){
+          if(e.key==='Enter'||e.key===' '||e.key==='2'||e.code==='Numpad2'){e.preventDefault();p.onDone();return}
+          if(e.key==='Escape'||e.key==='Backspace'||e.key==='1'||e.code==='Numpad1'){e.preventDefault();setShowSkipConfirm(false);return}
+        }
         var n=-1;
         if(/^[0-9]$/.test(e.key))n=parseInt(e.key,10);
         else if(e.code&&/^Numpad[0-9]$/.test(e.code))n=parseInt(e.code.slice(6),10);
         if(n>=1&&n<=available.length&&!isEveningContactDisabled(available[n-1])){e.preventDefault();pickChar(available[n-1])}
+        else if(Object.keys(doneToday).length>0&&(e.key==='Enter'||e.key===' ')){e.preventDefault();setShowSkipConfirm(true)}
       }else if(done&&!choiceDone&&resp){
         var idx=-1;
         if(e.key==='1'||e.code==='Numpad1'||e.key==='ArrowLeft')idx=0;
@@ -374,11 +387,14 @@ function EveningChat2(p){
         if(idx<0)return;
         var opt=idx===0?resp.a:resp.b;
         if(opt){e.preventDefault();pickResp(opt)}
+      }else if((noChat||done)&&(!resp||choiceDone)){
+        if(e.key==='Enter'||e.key===' '){e.preventDefault();returnToEvening()}
+        else if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();returnToEvening()}
       }
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selChar,done,choiceDone,resp,available,doneToday]);
+  },[selChar,done,choiceDone,resp,available,doneToday,showSkipConfirm,noChat]);
   if(!selChar)return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),

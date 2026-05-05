@@ -171,6 +171,10 @@ function MainMenu(p){
   };
   useEffect(function(){
     var onKey=function(e){
+      var n=-1;
+      if(/^[1-9]$/.test(e.key))n=parseInt(e.key,10)-1;
+      else if(e.code&&/^Numpad[1-9]$/.test(e.code))n=parseInt(e.code.slice(6),10)-1;
+      if(n>=0&&n<menuItems.length){e.preventDefault();activate(menuItems[n]);return}
       if(e.key==='ArrowDown'){e.preventDefault();setSelectedIndex(function(v){return v===null?0:(v+1)%menuItems.length})}
       if(e.key==='ArrowUp'){e.preventDefault();setSelectedIndex(function(v){return v===null?menuItems.length-1:(v-1+menuItems.length)%menuItems.length})}
       if(e.key==='Enter'||e.key===' '){e.preventDefault();activate(menuItems[selectedIndex===null?0:selectedIndex])}
