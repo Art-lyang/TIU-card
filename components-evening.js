@@ -333,12 +333,14 @@ function EveningChat2(p){
   var s4=useState(0),ci=s4[0],setCi=s4[1];
   var _ch=useState(false),choiceDone=_ch[0],setChoiceDone=_ch[1];
   var _rl=useState(''),replyLine=_rl[0],setReplyLine=_rl[1];
+  var textRef=useRef(null);
   useEffect(function(){if(selChar){setLi(0);setCi(0);setDone(false);setChoiceDone(false);setReplyLine('')}},[selChar]);
   useEffect(function(){if(!chat||!selChar||chatLines.length===0)return;
     var curLine=chatLines[li];if(!curLine)return;
     if(ci<curLine.length){var ch=curLine[ci];var spd=(ch==='.'||ch==='!'||ch==='?')?80:35;var t=setTimeout(function(){setCi(function(v){return v+1})},spd);return function(){clearTimeout(t)}}
     else{if(li<chatLines.length-1){var t2=setTimeout(function(){setLi(function(v){return v+1});setCi(0)},500);return function(){clearTimeout(t2)}}
     else{var t3=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t3)}}}},[li,ci,chat,selChar,chatLines]);
+  useEffect(function(){var el=textRef.current;if(el)el.scrollTop=el.scrollHeight},[li,ci,replyLine,done,choiceDone,selChar]);
   var isEveningContactDisabled=function(c){
     if(!c)return true;
     var completed=!!doneToday[c.name];
@@ -417,18 +419,16 @@ function EveningChat2(p){
   var portrait=CHAR_IMG[selChar.name]||null;
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
-    h('div',{style:{textAlign:'center',margin:'8px 0',flexShrink:0}},
-      portrait&&h('img',{src:portrait,className:'portrait',style:{width:80,height:80,borderRadius:'50%',objectFit:'cover'}}),
-      h('div',{style:{fontSize:15,color:'var(--ui)',fontWeight:'bold',marginTop:4}},localizeCharName(selChar)),
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',marginTop:2}},localizeCharRole(selChar))),
-    h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,flex:1,minHeight:80,padding:'18px 20px',cursor:'default',display:'flex',flexDirection:'column',overflowY:'hidden',marginBottom:0,userSelect:'none',WebkitUserSelect:'none',touchAction:'none'}},
+    h(CharacterCommPanel,{nameKey:selChar.name,charKey:selChar.key,displayName:localizeCharName(selChar),role:localizeCharRole(selChar),portrait:portrait}),
+    h('div',{className:'oracle-card dialogue-card'},
       h('div',{className:'oracle-card__glow'}),
+      h('div',{className:'dialogue-scroll',ref:textRef},
       chatLines.length>0?h(React.Fragment,null,
-        chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},l)}),
-        li<chatLines.length&&h('div',{key:'typing-'+li,style:{fontSize:14,lineHeight:1.7,color:'rgba(var(--ui-rgb),.9)',marginBottom:8}},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'_')),
-        replyLine&&h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',marginTop:8,borderLeft:'2px solid rgba(var(--ui-rgb),.55)',paddingLeft:10,fontStyle:'italic'}},replyLine)
-      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText)),
-    done&&!choiceDone&&resp&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,display:'flex',flexDirection:'column',gap:8,padding:'8px 0',margin:'0 auto'}},
-      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,style:{background:'rgba(var(--ui-rgb),.045)',border:'1px solid '+bdrCol,color:'var(--ui)',fontFamily:'inherit',fontSize:14,padding:'10px 20px',cursor:'pointer',textAlign:'center',minHeight:44,display:'flex',flexDirection:'column',alignItems:'center',gap:2,transition:'all 0.3s ease'},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
-    (noChat||done)&&(!resp||choiceDone)&&h('button',{className:'btn btn-amber',style:{display:'block',margin:'12px auto',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]'));
+        chatLines.slice(0,li).map(function(l,i){return h('div',{key:i,className:'dialogue-line'},l)}),
+        li<chatLines.length&&h('div',{key:'typing-'+li,className:'dialogue-line'},chatLines[li].substring(0,ci),!done&&h('span',{style:{color:'var(--ui)',animation:'blink 1s infinite',marginLeft:1}},'_')),
+        replyLine&&h('div',{className:'dialogue-reply dialogue-reply--evening'},replyLine)
+      ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText))),
+    done&&!choiceDone&&resp&&h('div',{className:'dialogue-choices'},
+      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,className:'dialogue-choice-btn',style:{border:'1px solid '+bdrCol},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
+    (noChat||done)&&(!resp||choiceDone)&&h('div',{className:'dialogue-choices'},h('button',{className:'btn btn-amber',style:{display:'block',margin:'4px auto 0',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]')));
 }

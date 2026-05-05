@@ -129,6 +129,28 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .act-2 .portrait{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.6) brightness(0.8)}
 .act-3 .portrait{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.6) brightness(0.8)}
 .act-4 .portrait{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.8) brightness(0.7)}
+.comm-panel{width:100%;max-width:440px;display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;align-items:center;flex-shrink:0;margin:8px 0 10px;padding:10px 12px;border:1px solid rgba(var(--ui-rgb),.24);background:linear-gradient(90deg,rgba(var(--ui-rgb),.07),rgba(3,7,8,.86));box-shadow:inset 0 0 18px rgba(var(--ui-rgb),.03)}
+.comm-panel__portrait{height:128px;overflow:hidden;border:1px solid rgba(var(--ui-rgb),.42);background:#020706;box-shadow:0 0 12px rgba(var(--ui-rgb),.08),inset 0 0 14px rgba(var(--ui-rgb),.04)}
+.comm-panel__portrait img{width:100%;height:100%;object-fit:cover;object-position:50% 18%;display:block;filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(.5) brightness(.78) contrast(1.06)}
+.act-1 .comm-panel__portrait img{filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(.5) brightness(.78) contrast(1.06)}
+.act-2 .comm-panel__portrait img{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(.48) brightness(.76) contrast(1.06)}
+.act-3 .comm-panel__portrait img{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(.56) brightness(.72) contrast(1.08)}
+.act-4 .comm-panel__portrait img{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(.7) brightness(.68) contrast(1.08)}
+.comm-panel__empty{width:100%;height:100%;background:rgba(var(--ui-rgb),.08)}
+.comm-panel__meta{min-width:0}
+.comm-panel__name{font-size:22px;font-weight:700;color:var(--ui);line-height:1.2;margin-bottom:7px}
+.comm-panel__role{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(var(--ui-rgb),.55);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comm-panel__identity{margin-top:12px;padding-top:8px;border-top:1px solid rgba(var(--ui-rgb),.14);font-family:'Share Tech Mono',monospace;color:rgba(var(--ui-rgb),.48)}
+.comm-panel__code{font-size:9px;letter-spacing:1.2px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comm-panel__bars{font-size:11px;letter-spacing:2px;line-height:1;color:rgba(var(--ui-rgb),.42);white-space:nowrap;overflow:hidden}
+.dialogue-card{width:100%;max-width:440px;flex:1;min-height:0;padding:18px 20px;cursor:default;display:flex;flex-direction:column;overflow:hidden;margin-bottom:0;user-select:none;-webkit-user-select:none;touch-action:none}
+.dialogue-scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:12px 2px 12px}
+.dialogue-scroll::-webkit-scrollbar{display:none}
+.dialogue-line{font-size:14px;line-height:1.7;color:rgba(var(--ui-rgb),.88);margin-bottom:6px;animation:fadeIn .3s ease}
+.dialogue-reply{font-size:14px;line-height:1.7;color:var(--ui);margin-top:8px;border-left:2px solid rgba(var(--ui-rgb),.55);padding-left:10px}
+.dialogue-reply--evening{font-size:13px;font-style:italic}
+.dialogue-choices{width:100%;max-width:440px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:8px 0 0;margin:0 auto}
+.dialogue-choice-btn{background:rgba(var(--ui-rgb),.045);border:1px solid rgba(var(--ui-rgb),.45);color:var(--ui);font-family:inherit;font-size:14px;padding:10px 20px;cursor:pointer;text-align:center;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .3s ease}
 .mission-img{width:100%;max-width:480px;height:220px;object-fit:cover;object-position:center;margin-top:6px;border-radius:4px;border:1px solid rgba(var(--ui-rgb),.28);filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.35) brightness(0.65);background:#060a06}
 .act-1 .mission-img{filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.35) brightness(0.65)}
 .act-2 .mission-img{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.4) brightness(0.62)}
@@ -178,6 +200,15 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
   .oracle-card__effect{font-size:11px}
   .oracle-card__execute{padding:8px 16px;font-size:12px;margin-top:8px}
   .portrait{width:80px;height:80px}
+  .comm-panel{max-width:352px;grid-template-columns:104px minmax(0,1fr);gap:10px;padding:9px 10px;margin:6px 0 8px}
+  .comm-panel__portrait{height:108px}
+  .comm-panel__name{font-size:18px}
+  .comm-panel__role{font-size:9px}
+  .comm-panel__identity{margin-top:8px;padding-top:6px}
+  .comm-panel__code{font-size:8px}
+  .comm-panel__bars{font-size:9px;letter-spacing:1.4px}
+  .dialogue-card{max-width:352px;padding:14px 16px}
+  .dialogue-choices{max-width:352px}
   .mission-img{height:180px}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
