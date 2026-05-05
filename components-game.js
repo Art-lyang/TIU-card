@@ -260,6 +260,8 @@ function Stats(p){
   var pv=p.preview||{};
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isKo=locale==='ko';
+  var showGiShadow=(p.sessions||0)>=4;
+  var giFill=Math.max(0,Math.min(100,((p.gi||0)/60)*100));
   return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
     sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
@@ -270,7 +272,10 @@ function Stats(p){
           delta>0?h('div',{style:{position:'absolute',left:v+'%',top:0,width:Math.max(0,newV-v)+'%',height:'100%',background:'rgba(var(--ui-rgb),0.22)',zIndex:1,transition:'all 0.15s'}}):null,
           h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
           delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))})
+      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))}),
+    showGiShadow&&h('div',{className:'gi-shadow-row','aria-hidden':'true'},
+      h('div',{className:'gi-shadow-track'},
+        h('div',{className:'gi-shadow-fill',style:{width:giFill+'%'}})))
   );
 }
 function DayObjective(p){

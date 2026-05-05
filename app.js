@@ -483,7 +483,7 @@ function App(){
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
   return h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
-    h(Stats,{stats:stats,preview:preview}),
+    h(Stats,{stats:stats,preview:preview,gi:gi,sessions:sessions}),
     h(DayObjective,{stats:stats,act:act,logs:logs,gi:gi}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},tt('scenario.act',{act:act},'ACT '+act)),
