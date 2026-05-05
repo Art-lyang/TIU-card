@@ -35,7 +35,8 @@ window.TS_I18N.mergeContent('en', {
     "CE-037": { msg: "Branch power consumption is 15% higher than ORACLE's official computation load would explain. Lim Jae-hyeok found the number.", leftLabel: "Conduct a power audit", rightLabel: "Treat it as equipment aging" },
     "CE-038": { msg: "Strong winds damage three exterior branch sensors. Repairs are expected to take 48 hours.", leftLabel: "Compensate with reinforced manual watch", rightLabel: "Rely on ORACLE remote sensors" },
     "CE-041": { msg: "ORACLE delivers your final evaluation. \"PILEHEAD. Your command pattern analysis is complete. Do you wish to receive the final recommendation?\"", leftLabel: "Receive it", rightLabel: "I do not need it" },
-    "CE-042": { msg: "Dawn. Seo Hae-eun, Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok stand outside your room. \"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" }
+    "CE-042": { msg: "Dawn. Seo Hae-eun, Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok stand outside your room. \"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
+    "CE-042B": { msg: "Dawn. Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok stand outside your room.\n\nThe analysis logs Seo Hae-eun left behind remain preserved on a backup terminal.\n\n\"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" }
   },
   resultText: {
     "CE-001_left": "You analyze the captured string. It is a trace of something that does not belong to ORACLE.",
@@ -73,7 +74,9 @@ window.TS_I18N.mergeContent('en', {
     "CE-025_left": "A rescue team is dispatched immediately. Only part of the supplies are recovered.",
     "CE-025_right": "You confirm the damage scale first. Time passes.",
     "CE-026_left": "Kang Do-yun attempts contact. The person speaks quietly.",
-    "CE-026_right": "Security is reinforced. The figure disappears."
+    "CE-026_right": "Security is reinforced. The figure disappears.",
+    "CE-042B_left": "You decide to go together. Seo Hae-eun's remaining records are packed as the branch lights begin to go out one by one.",
+    "CE-042B_right": "\"Not yet.\" The remaining senior staff quietly withdraw. The door closes."
   }
 });
 })();

@@ -1,6 +1,11 @@
 // data-logs-integrity.js - log definitions for playable branch and mission results.
 (function(){
-  if (typeof ORACLE_LOGS === 'undefined') return;
+  if (typeof ORACLE_LOGS === 'undefined') {
+    if (typeof console !== 'undefined' && console.error) {
+      console.error('[data-logs-integrity] ORACLE_LOGS is undefined; integrity logs were not registered.');
+    }
+    return;
+  }
   function add(log){
     for (var i = 0; i < ORACLE_LOGS.length; i++) {
       if (ORACLE_LOGS[i] && ORACLE_LOGS[i].id === log.id) return;
@@ -10,6 +15,7 @@
 
   [
     { id: "LOG-VOSS-STANDBY", title: "Voss standby channel", content: "A Prometheus-side standby channel was preserved outside the normal ORACLE reporting route. Markus Weber is waiting for an encrypted response window." },
+    { id: "LOG-INTRO-SY", title: "박소영 첫 면담 기록", content: "박소영 분석관이 한국지부 합류 후 첫 공식 면담을 완료했다. 서하은이 남긴 분석 로그를 인수했으며, 이후 데이터 분석 보조 인력으로 활동한다." },
     { id: "LOG-055", title: "서하은 USB 데이터", content: "서하은이 공식망 밖에 보관하던 USB 백업 자료. ORACLE 삭제 로그, GRANT 권한 단편, 한국지부 지시 패턴의 시차 분석이 포함되어 있다." },
     { id: "LOG-080", title: "마르쿠스 베버 접촉 기록", content: "프로메테우스 한국 작전팀 지휘관 마르쿠스 베버와의 비공식 접촉 기록. COASTAL MIRROR 자료는 한국 봉쇄 성공률의 미분류 31%가 프로메테우스 비공식 기술 지원과 연결되어 있음을 보여준다." },
     { id: "LOG-026", title: "SPEC-004 제거 작전 완료", content: "Seed Spreader 제거 작전이 종료되었다. 산포체 본체는 무력화되었고, 토양 오염 구역은 선택한 대응 방식에 따라 소각, 격리, 또는 관측 대상으로 재분류되었다." },

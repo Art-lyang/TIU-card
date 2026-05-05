@@ -15,7 +15,7 @@ var SFX_PATHS = {
   btn_on:   'audio/button_on.wav',          // 열기/클릭/확정
   btn_off:  'audio/button_off.wav',         // 닫기/취소/실패
   check:    'audio/check_sound.wav',        // 증거 매칭 성공
-  radio:    'audio/radio static noise.wav', // 뉴스/브리핑 통신 노이즈
+  radio:    'audio/radio_static_noise.wav', // 뉴스/브리핑 통신 노이즈
   reload:   'audio/reload_3sec.wav',        // 현장 미션 시작
   rifle:    'audio/rifle.wav'               // 전투/게임오버
 };

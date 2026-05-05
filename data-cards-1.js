@@ -84,8 +84,8 @@ var CARDS_BASE = [
     right: { label: "형식적으로 실시", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "C-037", act: [3], priority: "중", msg: "임재혁 보고: ORACLE 시스템이 승인 없이 자동 업그레이드를 실행했습니다.\n\n\"변경 로그를 확인했는데... 일부 모듈이 '접근 불가'로 변경되어 있습니다.\"\n\n\"제가 관리자인데 접근이 안 됩니다.\"", left: { label: "해당 모듈 접근 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 }, right: { label: "ORACLE에 해명 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   // ── 추가 카드: 외부 세계 (잠금 — 스토리 미확정) ──
-  { id: "C-038", priority: "중", req: () => false, msg: "[잠금]", left: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
-  { id: "C-039", priority: "하", req: () => false, msg: "[잠금]", left: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-038", act: [], priority: "중", req: () => false, msg: "[잠금]", left: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "C-039", act: [], priority: "하", req: () => false, msg: "[잠금]", left: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "-", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   // ── 추가 카드: 인물 ──
   { id: "C-040", act: [2,3], priority: "중", msg: "임재혁이 3일째 야근 중입니다. ORACLE 시스템 로그를 역추적하고 있는 것 같습니다.\n\n\"지휘관님, 아직 확실하진 않지만... 흥미로운 걸 발견했습니다.\"\n\n그의 눈 밑에 짙은 그림자가 보입니다.", left: { label: "쉬어라. 내일 보고해", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "지금 보고해", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },
   { id: "C-041", act: [2], priority: "중", msg: "강도윤이 외곽 순찰 중 발목을 다쳤습니다. 윤세진 진단: 경미한 염좌.\n\n강도윤: \"이 정도로 빠질 수는 없습니다.\"\n\n윤세진: \"최소 3일은 현장 복귀를 제한해야 합니다.\"", left: { label: "윤세진 의견 따르기", fx: { c: -1, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "강도윤 판단에 맡기기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },

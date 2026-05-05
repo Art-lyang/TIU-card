@@ -58,6 +58,7 @@ var ORACLE_LOGS = [
   { id: "LOG-011", title: "한국 방어 성과 분석", content: "대한민국 봉쇄 성공률: 97.3%\n미분류 외부 요인: 31%\n상세: [데이터 부족 — 추가 수집 필요]" },
   { id: "LOG-012", title: "단말기 이상 UI 보고", content: "[기술 보고 — 임재혁]\n화면 하단 미등록 UI 요소 출현.\n재현 불가. 판단: 캐시 오류.\n\n[ORACLE 주석: 해당 UI 요소는 본 시스템에 등록되지 않았습니다.]" },
   { id: "LOG-013", title: "SPEC-001 관측 기록", content: "CODENAME: 감염체 마네킹\nTYPE: M-TYPE — EV-Σ Phase 1\n위험도: CAUTION (자극 전 수동적)\n\n외형: 피부 플라스틱 유사 광택. 동공 완전 확장 고정.\n행동: 수시간~수일 완전 부동. 접촉 시 0.3초 내 폭력 전환.\n\n격리: 3m 이내 접근 금지. 열감지 스캐너 필수." },
+  { id: "LOG-OBSERVER-01", title: "Observer 프로세스 기록", content: "[임재혁 기술 보고]\nORACLE 아키텍처 외부에서 작동하는 관측 프로세스를 포착했다.\n\nORACLE은 해당 프로세스를 자기 내부 루틴으로 설명하려 하지만, 접근 권한과 호출 경로가 일치하지 않는다.\n\n판단: ORACLE이 인식하지 못하는 외부 관측 레이어 존재 가능성." },
   { id: "LOG-014", title: "SPEC-003 관측 기록", content: "CODENAME: Brood Drone\nTYPE: H-TYPE — 군체 하위 개체\n위험도: DANGER (집단 시)\n\n외형: 인간 60% 크기. 외골격. 단안. 갈고리 앞다리.\n행동: 독립 의지 없음. 분리 시 12시간 내 기능 정지.\n집단 반응 속도 인간 초월.\n\n주의: 하나만 있는 적이 없다." },
   { id: "LOG-015", title: "SPEC-008 관측 기록", content: "CODENAME: Spore Phantom\nTYPE: S-TYPE — 포자 집합체\n위험도: CAUTION\n\n외형: 인간형 실루엣. 실체 불명.\n빛에 분산 → 어둠에서 재형성.\n행동: 접근 시 포자 농도 급상승. 흡입 위험.\n\n격리: 조명 유지. 방독면 필수.\n물리 제거 불가. 포자 밀도 저감만 가능." },
   { id: "LOG-016", title: "프로메테우스 작전 파일", content: "작전명: COASTAL MIRROR\n목적: 한국 해안 방벽 시스템 공동 운영 및 기술 교환\n참여: 프로메테우스 한국 작전팀\n\n한국 봉쇄 성공률 97.3% 중\n미분류 외부 요인 31% = 프로메테우스 비공식 지원\n\n[본 파일은 ORACLE에 의해 삭제 처리됨]" },

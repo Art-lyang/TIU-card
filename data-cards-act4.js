@@ -129,9 +129,9 @@ var CARDS_ACT4 = [
 
   { id:"CA4-O004", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O003')>=0 }, glitch:2,
-    msg:"임재혁의 마지막 보고.\n\n\"지휘관님. 우리가 보고 있는 건 ORACLE이 아닙니다.\"\n\"EV-Σ도 아닙니다. 프로메테우스도 아닙니다.\"\n\"이건 — 우리가 여기 있기 전부터 있었습니다.\"\n\n[자동 해금: LOG-013]",
-    left:{ label:"어디에?", fx:{c:0,r:-2,t:1,o:-4}, g:-6, log:"LOG-013" },
-    right:{ label:"...알고 있었다", fx:{c:0,r:-1,t:1,o:-3}, g:-5, log:"LOG-013" } },
+    msg:"임재혁의 마지막 보고.\n\n\"지휘관님. 우리가 보고 있는 건 ORACLE이 아닙니다.\"\n\"EV-Σ도 아닙니다. 프로메테우스도 아닙니다.\"\n\"이건 — 우리가 여기 있기 전부터 있었습니다.\"\n\n[자동 해금: LOG-OBSERVER-01]",
+    left:{ label:"어디에?", fx:{c:0,r:-2,t:1,o:-4}, g:-6, log:"LOG-OBSERVER-01" },
+    right:{ label:"...알고 있었다", fx:{c:0,r:-1,t:1,o:-3}, g:-5, log:"LOG-OBSERVER-01" } },
 
   { id:"CA4-O005", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O004')>=0 }, glitch:3,

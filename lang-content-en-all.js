@@ -3194,6 +3194,66 @@ window.TS_I18N.mergeContent('en', {
 });
 
 window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-326": {
+      msg: "A strange noise pattern repeats in the outer surveillance footage.\n\nAt the moment the night camera adjusts exposure, a biological response at the edge of the frame seems to pull back for 0.7 seconds.\n\nLim Jae-hyeok: \"It may be a sensor error. But the same pattern appeared three times. Only when the light came on.\"",
+      leftLabel: "Preserve the original footage",
+      rightLabel: "Review only ORACLE's corrected version"
+    },
+    "C-327": {
+      msg: "Yoon Se-jin analyzes the preserved surveillance footage frame by frame.\n\n\"It didn't retreat because it was bright. The tissue boundary blurs under a specific wavelength range.\"\n\nThe report title is still provisional.\n\n[Photoreactivity observation record - unconfirmed]",
+      leftLabel: "Approve wavelength response testing",
+      rightLabel: "Keep it as a field record only"
+    },
+    "C-328": {
+      msg: "A replacement plan for the outer containment floodlights is submitted.\n\nLim Jae-hyeok: \"If we tune them to a narrower wavelength than normal white light, the surveillance feed blurs less. The drawback is power use.\"\n\nKang Do-yun: \"Even if it isn't confirmed, slowing night approaches is worth trying.\"",
+      leftLabel: "Install a test lighting zone",
+      rightLabel: "Keep the existing lights"
+    },
+    "C-329": {
+      msg: "The cafeteria refrigerator temperature is unstable.\n\nMaintenance memo: it is not critical yet, but if ignored it will cause food loss.\n\nA report says a parts replacement should solve it.",
+      leftLabel: "Replace the parts",
+      rightLabel: "Use manual checks for now"
+    },
+    "C-330": {
+      msg: "New personnel keep mixing up warehouse locations, delaying equipment returns.\n\nA proposal says simply replacing signs and route markers would improve the flow.",
+      leftLabel: "Update route signage",
+      rightLabel: "Keep the current system"
+    },
+    "C-331": {
+      msg: "The communications room backup-battery indicator is reading higher than the actual charge.\n\nIt appears to be a calibration issue. Fixing it now could prevent confusion later.",
+      leftLabel: "Calibrate immediately",
+      rightLabel: "Handle it during the next maintenance cycle"
+    },
+    "C-332": {
+      msg: "The night lounge lights-out time is not being followed consistently.\n\nA clinic memo notes that disrupted sleep rhythms increase small mistakes.",
+      leftLabel: "Clarify the lights-out rule",
+      rightLabel: "Leave it to individual judgment"
+    },
+    "C-333": {
+      msg: "The consumables inventory sheet does not match the actual count.\n\nThe report suggests this is closer to inconsistent recordkeeping than theft or loss.",
+      leftLabel: "Unify the inventory sheet",
+      rightLabel: "Keep records by department"
+    },
+    "C-334": {
+      msg: "Leaves and twigs have accumulated on the inner patrol path.\n\nIt is not urgent, but a field memo notes that footsteps become louder during night movement.",
+      leftLabel: "Clear the patrol path",
+      rightLabel: "Handle it with field discipline"
+    }
+  },
+  oracleLogs: {
+    "LOG-OBSERVER-01": {
+      title: "Observer Process Record",
+      content: "[Technical Report - Lim Jae-hyeok]\nA monitoring process operating outside the ORACLE architecture was detected.\n\nORACLE attempts to describe the process as an internal routine, but the access authority and call path do not match.\n\nAssessment: possible external observation layer that ORACLE itself does not recognize."
+    },
+    "LOG-INTRO-SY": {
+      title: "Park So-young First Interview Record",
+      content: "Analyst Park So-young completed her first formal interview after joining the Korea branch. She has inherited Seo Hae-eun's analysis logs and will support data analysis from this point onward."
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
   evidence: {
     "EV-01": { name: "ORACLE data discrepancy", desc: "Trace evidence of data manipulation in a specific time window." },
     "EV-02": { name: "Dawn communication record", desc: "Unverified communications between 02:00 and 04:00." },
@@ -3201,7 +3261,7 @@ window.TS_I18N.mergeContent('en', {
     "EV-04": { name: "SPEC-011 voice pattern", desc: "Recorded regenerative voice-replication frequencies." },
     "EV-05": { name: "Unclassified trace coordinates", desc: "Coordinates matching the coastal defense grid." },
     "EV-06": { name: "ORACLE internal process", desc: "A background process ORACLE does not recognize." },
-    "EV-07": { name: "Observer process", desc: "An observation layer inside the ORACLE architecture." },
+    "EV-07": { name: "Observer process", desc: "An observation system operating outside the ORACLE architecture." },
     "EV-08": { name: "Proxy protocol document", desc: "Excerpt from the ORACLE proxy network operations manual." },
     "EV-09": { name: "Prometheus intelligence", desc: "Identity of an unclassified signal source at 31% probability." },
     "EV-10": { name: "Seo Ha-eun USB data", desc: "ORACLE control logs and grant fragments recovered from USB." },

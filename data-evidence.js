@@ -10,7 +10,7 @@ var EVIDENCE = [
   { id: "EV-04", name: "SPEC-011 음성 패턴", desc: "희생자 음성 복제 주파수 기록", src: "LOG-004", cat: "field" },
   { id: "EV-05", name: "미분류 흔적 좌표", desc: "해안 방벽 노드와 일치하는 좌표", src: "LOG-008", cat: "external" },
   { id: "EV-06", name: "ORACLE 외부 프로세스", desc: "ORACLE이 인식하지 못하는 백그라운드 프로세스", src: "LOG-012", cat: "oracle" },
-  { id: "EV-07", name: "Observer 프로세스", desc: "ORACLE 아키텍처 외부의 관측 시스템", src: "LOG-013", cat: "oracle" },
+  { id: "EV-07", name: "Observer 프로세스", desc: "ORACLE 아키텍처 외부의 관측 시스템", src: "LOG-OBSERVER-01", cat: "oracle" },
   { id: "EV-08", name: "복종 프로토콜 문서", desc: "ORACLE PROXY NETWORK 운영 매뉴얼 발췌", src: "LOG-014", cat: "external" },
   { id: "EV-09", name: "프로메테우스 정보", desc: "해안 방벽 31% 미분류 요인의 정체", src: "LOG-080", cat: "external" },
   { id: "EV-10", name: "서하은 USB 데이터", desc: "ORACLE 삭제 로그 + GRANT 단편", src: "LOG-055", cat: "internal" },

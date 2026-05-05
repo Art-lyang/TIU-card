@@ -22,7 +22,12 @@
     { id:"LOG-ESCAPE-UNLUCKY", title:"탈출 작전 — LOST IN TRANSIT",
       content:"[기록 공백]\n\n작전 중단 지점 불명.\n사전 경고 누락 — 음성 모방형 개체와의 조우.\n\n회수된 음성 로그 마지막 3초:\n\"지휘관님. 접니다. 박상훈입니다. ...들립니까.\"\n\n[그 뒤는 기록되지 않음]" }
   ];
-  if(typeof ORACLE_LOGS!=='undefined') newLogs.forEach(function(l){ ORACLE_LOGS.push(l); });
+  if(typeof ORACLE_LOGS!=='undefined') newLogs.forEach(function(l){
+    for(var i=0;i<ORACLE_LOGS.length;i++){
+      if(ORACLE_LOGS[i]&&ORACLE_LOGS[i].id===l.id)return;
+    }
+    ORACLE_LOGS.push(l);
+  });
 })();
 
 // ═══════════════════ 2. ENDING_DEFS 확장 ═══════════════════

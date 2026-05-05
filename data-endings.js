@@ -215,7 +215,7 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
 
   var logCount = logs.length;
   var hasLog12 = logs.indexOf('LOG-012') >= 0;
-  var hasLog13 = logs.indexOf('LOG-013') >= 0;
+  var hasObserver = logs.indexOf('LOG-OBSERVER-01') >= 0;
   var hasObsApproved = logs.indexOf('LOG-OBSERVER-APPROVED') >= 0;
 
   // ═══ 엔딩 A 정상형 (신규) — 이상적 운용자 완주 ═══
@@ -226,12 +226,12 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   // ═══ 엔딩 F: Observer 레이어 발견 ═══
-  // 정상형: LOG-012+13 + OBSERVER-APPROVED + day≥28 + GI≤0
-  // 변형: LOG-012+13 + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
-  if (hasLog12 && hasLog13 && hasObsApproved && stats.day >= 28 && gi <= 0) {
+  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥28 + GI≤0
+  // 변형: LOG-012+Observer + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 28 && gi <= 0) {
     return 'F';
   }
-  if (hasLog12 && hasLog13 && !hasObsApproved && stats.day >= 33 && gi <= -20 && highTrust >= 2) {
+  if (hasLog12 && hasObserver && !hasObsApproved && stats.day >= 33 && gi <= -20 && highTrust >= 2) {
     return 'F';
   }
 
