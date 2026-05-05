@@ -94,9 +94,19 @@ var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent){
     if(type==='conspiracy')w*=0.75;
     if(type==='threat'&&!critical)w*=0.75;
   }else if(act===2){
-    if(phase==='early'&&(type==='daily'||type==='ops'))w*=1.18;
-    if(type==='conspiracy')w*=0.82;
-    if(type==='threat'&&!critical)w*=0.9;
+    if(phase==='early'){
+      if(type==='daily'||type==='ops'||type==='civilian')w*=1.22;
+      if(type==='conspiracy')w*=0.72;
+      if(type==='faction')w*=0.85;
+      if(type==='threat'&&!critical)w*=0.82;
+    }else if(phase==='mid'){
+      if(type==='daily'||type==='civilian')w*=1.08;
+      if(type==='conspiracy')w*=0.9;
+      if(type==='threat'&&!critical)w*=0.95;
+    }else{
+      if(type==='conspiracy'||type==='faction')w*=1.05;
+      if(type==='daily')w*=0.95;
+    }
   }else if(act===3){
     if(phase==='early'){
       if(type==='daily'||type==='ops'||type==='civilian')w*=1.18;
@@ -172,8 +182,9 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   });
   if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:emergency),stats,gi,logs,ca,rec);
+  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec);
 };
 
 function getMaxActForDay(day){
@@ -211,7 +222,7 @@ var Save={
   get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed)}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[]});Save.set('ts_game',cleanGameSaveMeta(payload))},
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown')},
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards')},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -241,6 +252,8 @@ var Save={
       facility:Save.get('ts_facility',null),
       combos:Save.get('ts_combos',[]),
       onceShown:Save.get('ts_onceShown',[]),
+      recentNews:Save.get('ts_recentNews',[]),
+      recentRewards:Save.get('ts_recentRewards',[]),
       activeSpecs:Save.get('ts_activeSpecs',null),
       currentCardId:curCardId,
       currentCard:staticCard?null:curCard,
@@ -269,6 +282,8 @@ var Save={
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
     if(pack.combos)Save.set('ts_combos',pack.combos);else Save.del('ts_combos');
     Save.set('ts_onceShown',pack.onceShown||[]);
+    Save.set('ts_recentNews',pack.recentNews||[]);
+    Save.set('ts_recentRewards',pack.recentRewards||[]);
     if(pack.activeSpecs){Save.set('ts_activeSpecs',pack.activeSpecs);ACTIVE_SPECS=pack.activeSpecs}else{Save.del('ts_activeSpecs');ACTIVE_SPECS=[]}
     return pack;
   },

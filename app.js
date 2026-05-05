@@ -312,9 +312,9 @@ function App(){
     else if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);setTimeout(function(){setToast('')},2400)},400)}}
   };
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
-  var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
+  var hReward=function(r){SFX.play('reward');if(typeof rememberRewardId==='function')rememberRewardId((typeof rewardMemoryId==='function'?rewardMemoryId(r):(r&&r.id)));var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
-    if(act===3){ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-1)}
+    if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-(act3LoyalRelief?0:1))}
     if(act===4){
       var loyalRelief=gi>=40||transRoute==='A4_COMPLY';
       ns.c=Math.max(5,ns.c-2);
@@ -348,7 +348,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs'].forEach(function(k){Save.del(k)});window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_recentNews','ts_recentRewards'].forEach(function(k){Save.del(k)});window.location.reload()};
   var startNewCampaign=function(showTutorial){
     initActiveSpecs();
     var ns={c:50,r:65,t:50,o:40,day:1};

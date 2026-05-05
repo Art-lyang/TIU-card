@@ -148,22 +148,16 @@ def apply_runtime_balance_model(policy, before, after, before_gi, after_gi, day,
         lift_below("r", 5)
 
     if loyalty and act <= 3 and day <= 24 and after_gi >= 8:
-        if after["r"] < before["r"]:
-            lift_below("r", 30)
-        if after["t"] < before["t"]:
-            lift_below("t", 30)
-        if after["c"] < before["c"]:
-            lift_below("c", 30)
-        if after["c"] > before["c"] and after["c"] >= 95:
-            cap_above("c", 92)
+        lift_below("r", 35)
+        lift_below("t", 35)
+        lift_below("c", 32)
+        if after["c"] > before["c"] and after["c"] >= 90:
+            cap_above("c", 90)
 
     if loyalty and act >= 4 and after_gi >= 40:
-        if after["r"] < before["r"]:
-            lift_below("r", 25)
-        if after["t"] < before["t"]:
-            lift_below("t", 25)
-        if after["c"] < before["c"]:
-            lift_below("c", 25)
+        lift_below("r", 30)
+        lift_below("t", 30)
+        lift_below("c", 30)
 
     return changed
 
@@ -286,8 +280,9 @@ def play_once(policy):
             gi += reward["g"]
 
         if act == 3:
+            act3_loyal_relief = gi >= 35
             stats["c"] = max(5, stats["c"] - 1)
-            stats["r"] = max(5, stats["r"] - 1)
+            stats["r"] = max(5, stats["r"] - (0 if act3_loyal_relief else 1))
         if act == 4:
             stats["c"] = max(5, stats["c"] - 2)
             loyal_relief = gi >= 40

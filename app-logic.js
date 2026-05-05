@@ -11,6 +11,26 @@ function chk(s){
   return null;
 }
 
+var NEWS_RECENT_KEY='ts_recentNews';
+var NEWS_RECENT_LIMIT=12;
+function getRecentNewsItems(){
+  try{var d=localStorage.getItem(NEWS_RECENT_KEY);var parsed=d?JSON.parse(d):[];return Array.isArray(parsed)?parsed:[]}catch(e){return[]}
+}
+function rememberNewsItems(items){
+  try{
+    var recent=getRecentNewsItems(),next=recent.slice();
+    (items||[]).forEach(function(item){if(item&&next.indexOf(item)<0)next.push(item)});
+    localStorage.setItem(NEWS_RECENT_KEY,JSON.stringify(next.slice(-NEWS_RECENT_LIMIT)));
+  }catch(e){}
+}
+function pickNewsFromPool(pool,current,recent){
+  if(!Array.isArray(pool)||pool.length===0)return null;
+  current=current||[];recent=recent||[];
+  var candidates=pool.filter(function(item){return item&&current.indexOf(item)<0&&recent.indexOf(item)<0});
+  if(candidates.length>0)return pick(candidates);
+  return null;
+}
+
 function genChoiceReactionNews(s,g,logs){
   var lg=logs||[],pool=[];
   var has=function(id){return lg.indexOf(id)>=0};
@@ -57,15 +77,16 @@ function genChoiceReactionNews(s,g,logs){
     if(s.r<35)pool.push("[국내] 방벽 주변 검역 도장 식품 가격 상승 — 군납품 암시장 거래 단속");
   }
   if(pool.length===0)return [];
-  return [pick(pool)];
+  var item=pickNewsFromPool(pool,[],arguments.length>3?arguments[3]:[]);
+  return item?[item]:[];
 }
 
 function pushUniqueNews(l,item){if(item&&l.indexOf(item)<0)l.push(item)}
-function pushNewsPick(l,pool){
+function pushNewsPick(l,pool,recent){
   if(!Array.isArray(pool)||pool.length===0)return false;
-  var tries=Math.min(pool.length,6);
-  for(var i=0;i<tries;i++){var item=pick(pool);if(item&&l.indexOf(item)<0){l.push(item);return true}}
-  for(var j=0;j<pool.length;j++){if(pool[j]&&l.indexOf(pool[j])<0){l.push(pool[j]);return true}}
+  recent=recent||[];
+  var fresh=pool.filter(function(item){return item&&l.indexOf(item)<0&&recent.indexOf(item)<0});
+  if(fresh.length>0){l.push(pick(fresh));return true}
   return false;
 }
 function uniqueNewsItems(items){
@@ -118,13 +139,13 @@ function getFactionRelations(logs,gi){
   return out;
 }
 
-function genNews(s,g,logs){var l=[];if(s.c>60)pushNewsPick(l,NP.gc);else if(s.c<40)pushNewsPick(l,NP.bc);if(s.r<30)pushNewsPick(l,NP.br);pushNewsPick(l,NP.w);if(Math.random()<0.5)pushNewsPick(l,NP.w);if(s.day>3&&Math.random()<0.5)pushNewsPick(l,NP.p);if(g<=-10&&s.day>5&&Math.random()<0.5)pushNewsPick(l,NP.gl);
+function genNews(s,g,logs){var l=[],recent=getRecentNewsItems();if(s.c>60)pushNewsPick(l,NP.gc,recent);else if(s.c<40)pushNewsPick(l,NP.bc,recent);if(s.r<30)pushNewsPick(l,NP.br,recent);pushNewsPick(l,NP.w,recent);if(Math.random()<0.5)pushNewsPick(l,NP.w,recent);if(s.day>3&&Math.random()<0.5)pushNewsPick(l,NP.p,recent);if(g<=-10&&s.day>5&&Math.random()<0.5)pushNewsPick(l,NP.gl,recent);
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
   var lg=logs||[];
-  if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)pushNewsPick(l,NP.dg);
-  if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)pushNewsPick(l,NP.md);
-  genChoiceReactionNews(s,g,lg).forEach(function(item){pushUniqueNews(l,item)});
-  return uniqueNewsItems(l)}
+  if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)pushNewsPick(l,NP.dg,recent);
+  if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)pushNewsPick(l,NP.md,recent);
+  genChoiceReactionNews(s,g,lg,recent).forEach(function(item){pushUniqueNews(l,item)});
+  var out=uniqueNewsItems(l);rememberNewsItems(out);return out}
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}
 

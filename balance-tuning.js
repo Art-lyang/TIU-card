@@ -114,19 +114,19 @@
       // Loyal ORACLE choices can still cost human trust/resources, but routine
       // compliance should not force the one-time safeguard every run.
       if (currentAct <= 3 && day <= 24 && (nextGi || 0) >= 8) {
-        if (lowersStat(before, after, 'r')) changed = liftBelow(after, 'r', 30) || changed;
-        if (lowersStat(before, after, 't')) changed = liftBelow(after, 't', 30) || changed;
-        if (lowersStat(before, after, 'c')) changed = liftBelow(after, 'c', 30) || changed;
+        changed = liftBelow(after, 'r', 35) || changed;
+        changed = liftBelow(after, 't', 35) || changed;
+        changed = liftBelow(after, 'c', 32) || changed;
         kind = changed ? 'loyalty-buffer' : kind;
       }
       if (currentAct >= 4 && (nextGi || 0) >= 40) {
-        if (lowersStat(before, after, 'r')) changed = liftBelow(after, 'r', 25) || changed;
-        if (lowersStat(before, after, 't')) changed = liftBelow(after, 't', 25) || changed;
-        if (lowersStat(before, after, 'c')) changed = liftBelow(after, 'c', 25) || changed;
+        changed = liftBelow(after, 'r', 30) || changed;
+        changed = liftBelow(after, 't', 30) || changed;
+        changed = liftBelow(after, 'c', 30) || changed;
         kind = changed ? 'act4-loyalty-buffer' : kind;
       }
-    if (currentAct <= 3 && day <= 24 && raisesStat(before, after, 'c') && after.c >= 95) {
-      changed = capAbove(after, 'c', 92) || changed;
+    if (currentAct <= 3 && day <= 24 && raisesStat(before, after, 'c') && after.c >= 90) {
+      changed = capAbove(after, 'c', 90) || changed;
       kind = changed ? 'loyalty-overcontainment-buffer' : kind;
     }
   }

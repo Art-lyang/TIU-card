@@ -9,6 +9,34 @@ function uniqueHeadlines(headlines){
   return out;
 }
 
+var REWARD_RECENT_KEY='ts_recentRewards';
+var REWARD_RECENT_LIMIT=6;
+function rewardMemoryId(r){return r&&(r.id||r.feId||r.title||r.desc)||''}
+function getRecentRewardIds(){
+  try{var d=localStorage.getItem(REWARD_RECENT_KEY);var parsed=d?JSON.parse(d):[];return Array.isArray(parsed)?parsed:[]}catch(e){return[]}
+}
+function rememberRewardId(id){
+  if(!id)return;
+  try{
+    var recent=getRecentRewardIds().filter(function(v){return v!==id});
+    recent.push(id);
+    localStorage.setItem(REWARD_RECENT_KEY,JSON.stringify(recent.slice(-REWARD_RECENT_LIMIT)));
+  }catch(e){}
+}
+function pickRewardsNoRecent(pool,count,recent){
+  pool=Array.isArray(pool)?pool:[];
+  recent=recent||[];
+  var picked=[];
+  var fresh=pool.filter(function(r){return recent.indexOf(rewardMemoryId(r))<0});
+  picked=pickN(fresh,count);
+  if(picked.length<count){
+    var used=picked.map(rewardMemoryId);
+    var fallback=pool.filter(function(r){return used.indexOf(rewardMemoryId(r))<0});
+    picked=picked.concat(pickN(fallback,count-picked.length));
+  }
+  return picked.slice(0,count);
+}
+
 function Boot(p){
   var BL=p.sessions>0?BOOT_LINES_REPEAT:BOOT_LINES;
   var sn=p.sessions||0;
@@ -922,7 +950,7 @@ function RewardScreen(p){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
     if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
-    var pool=pickN(basePool,count);
+    var pool=pickRewardsNoRecent(basePool,count,getRecentRewardIds());
     // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
       var fac=p.facility;var feRewards=[];
