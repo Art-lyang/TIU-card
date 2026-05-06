@@ -126,8 +126,10 @@ var CARDS_ESCAPE_EXTRA = [
     right:{ label:"거절한다", fx:{c:0,r:0,t:-1,o:1}, g:2 } }
 ];
 
-// Act4 카드풀에 주입
-if(typeof CARDS_ACT4!=='undefined'){
+// Act4 카드풀에 주입. 로드 순서가 깨지면 조용히 누락되지 않게 콘솔에 남긴다.
+if(typeof CARDS_ACT4==='undefined'){
+  if(typeof console!=='undefined'&&console.error)console.error('[TIU] data-act4-escape.js loaded before CARDS_ACT4');
+}else{
   CARDS_ESCAPE_EXTRA.forEach(function(c){ CARDS_ACT4.push(c); });
 }
 
@@ -150,7 +152,7 @@ if(typeof CHAINS!=='undefined'){
 
       // CH-007-3 — 낙오 판정 (단독)
       { id:"CH-007-3", priority:"상",
-        msg:"탈출 전야. 간부진 개별 면담.\n\n서하은, 강도윤, 윤세진, 임재혁.\n네 명이 차례로 들어왔다가 나갑니다.\n\n모두가 가겠다고 말하는 것은 아니었다.\n그것은 배신이 아니라 — 각자의 무게였다.\n\n[판정 중 ...]\n[동행자 확정됨]",
+        msg:"탈출 전야. 남은 간부진, 백업 단말기, 회수하지 못한 기록을 차례로 확인합니다.\n\n모두가 이 작전에 함께할 수 있는 것은 아닙니다.\n그것은 배신이 아니라 — 각자의 무게입니다.\n\n[판정 중 ...]\n[동행자 확정됨]",
         left:{ label:"명단을 확인한다", fx:{c:0,r:0,t:0,o:-1}, g:-1 },
         right:{ label:"결과를 듣는다", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
 

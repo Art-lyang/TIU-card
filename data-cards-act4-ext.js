@@ -38,6 +38,7 @@ var CARDS_ACT4_EXT = [
 
   // ─── 인물 관계 (endgame-char) × 4 ───
   { id:"CA4-CH-01", act:[4], tag:"endgame-char", priority:"중",
+    cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 },
     msg:"서하은이 늦은 밤 지휘관실을 찾아옵니다.\n\n\"...며칠만 시간을 주시면 안 될까요. 분석 결과를 정리하고 싶습니다. 제 방식으로.\"\n\n지친 얼굴. 하지만 눈빛은 선명합니다.",
     left:{ label:"원하는 만큼 시간을 써라", fx:{c:0,r:0,t:1,o:-1}, g:-2, trust:8 },
     right:{ label:"보고서는 ORACLE 형식으로", fx:{c:0,r:0,t:-1,o:1}, g:1, trust:-8 } },
@@ -60,7 +61,7 @@ var CARDS_ACT4_EXT = [
 
   // ─── 봉쇄 위기 (endgame-crisis) × 4 ───
   { id:"CA4-CR-01", act:[4], tag:"endgame-crisis", priority:"상",
-    req:function(s,g,logs){ return s.day >= 32 },
+    req:function(s,g,logs){ return s.day >= 32 && logs.indexOf('LOG-075')<0 },
     msg:"봉쇄선 남측 — 대규모 이변체 집단 이동 감지.\n\n강도윤: \"지금 방어선이 뚫리면 끝입니다. 병력 절반을 남측에 배치해야 합니다.\"\n\n북측과 동측이 얇아집니다.",
     left:{ label:"남측 증원", fx:{c:2,r:-1,t:0,o:0}, g:0 },
     right:{ label:"분산 유지 — ORACLE 원격 지원 요청", fx:{c:0,r:-1,t:-1,o:2}, g:3 } },
@@ -72,7 +73,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"ORACLE 자동 진단 위임", fx:{c:0,r:0,t:-1,o:2}, g:3 } },
 
   { id:"CA4-CR-03", act:[4], tag:"endgame-crisis", priority:"상",
-    req:function(s,g,logs){ return s.day >= 34 },
+    req:function(s,g,logs){ return s.day >= 34 && logs.indexOf('LOG-075')<0 },
     msg:"외곽 정찰조 2명 — 통신 두절.\n\n마지막 위치: 봉쇄선 북쪽 1.8km.\n\n강도윤: \"구조를 갑니다. 허가만 주십시오.\"",
     left:{ label:"구조 작전 승인", fx:{c:-1,r:-2,t:2,o:-1}, g:-2 },
     right:{ label:"위험 과다 — 철수 대기", fx:{c:1,r:0,t:-3,o:0}, g:0 } },
@@ -118,7 +119,7 @@ var CARDS_ACT4_EXT = [
     req:function(s,g,logs){ return s.day >= 33 },
     msg:"[ORACLE: 권한 재조정 통보]\n\n\"한국 지부 초대 지휘관직 — 평가 완료.\"\n\"후임자 후보가 지정되었습니다. 현 지휘관의 인수인계 지침이 필요합니다.\"\n\n아직 당신은 지휘관입니다. 얼마 남지 않았지만.",
     left:{ label:"완전한 인수인계서 작성", fx:{c:1,r:0,t:0,o:2}, g:3 },
-    right:{ label:"일부 정보만 기록 — 서하은/강도윤에게 사본", fx:{c:0,r:0,t:2,o:-2}, g:-3, trust:5 } }
+    right:{ label:"일부 정보만 기록 — 내부 백업 사본", fx:{c:0,r:0,t:2,o:-2}, g:-3, trust:5 } }
 
 ];
 

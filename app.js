@@ -140,22 +140,7 @@ function App(){
     if(lg.indexOf('LOG-082')>=0&&lg.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}
     var prob=0.35;if(av.length>0&&Math.random()<prob){var d=pick(av);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false};
   var nextCard=function(s,g,lg,cq,curAct,cdOverride,rcOverride,trOverride,facOverride){var a=curAct||act;var useCd=cdOverride||cooldowns;var useRecent=rcOverride||recentCards;var useRoute=typeof trOverride==='string'?trOverride:transRoute;var useFacility=facOverride||facility;var liveLg=getLiveLogs(lg);if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,liveLg,useCd,useRecent,a,useRoute,useFacility);if(!c){c={id:'SYS-FALLBACK',msg:tt('app.fallbackCardMsg',null,'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...'),left:{label:tt('app.fallbackCardLeft',null,'대기'),fx:{},g:0},right:{label:tt('app.fallbackCardRight',null,'재접속 시도'),fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var base=rcOverride||p;var n=base.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}};
-  // Act 전환 체크 — 문서 기준 스케줄 (5/14/29)
-  // 실제 호출은 app-logic.js의 checkActTransitionLogic 사용 (그쪽 함수도 업데이트됨)
-  var checkActTransition=function(s,g,lg,af,curAct){
-    if(curAct===1&&s.day>=5){
-      return{act:2,route:'A'};
-    }
-    if(curAct===2&&s.day>=14){
-      var route=af.prom_met&&af.mission_done?'A':af.prom_met?'B':af.mission_done?'C':'D';
-      return{act:3,route:route};
-    }
-    if(curAct===3&&s.day>=29){
-      var route=af.chain_done&&af.prom_mission?'A':af.chain_done?'B':af.prom_mission?'C':'D';
-      return{act:4,route:route};
-    }
-    return null;
-  };
+  // Act 전환 판정은 app-logic.js의 checkActTransitionLogic 단일 경로만 사용한다.
   // TIME_UP 디스패치: day>35 도달 시 상태(GI/신뢰) 기반 엔딩 강제 부여
   var resolveTimeUp=function(s,g,tr,lg){
     var highT=0;if(tr){if(tr.haeun>=65)highT++;if(tr.doyun>=65)highT++;if(tr.sejin>=65)highT++;if(tr.jaehyuk>=65)highT++;}

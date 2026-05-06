@@ -19,7 +19,7 @@ var CARDS_DG_MERIDIAN = [
   { id: "DG-02", act: [3], priority: "중", bg: "base",
     cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DG-DEAL')<0 },
     msg: "DG 측 제안. 봉쇄선 노후 센서 12기를 무상 교체해주겠다는 안건.\n\n조건은 단 하나 — 교체 작업 중 수집되는 봉쇄선 인근 EV-Σ 활동 데이터의 사본을 DG 연구부에 제공.\n\n서하은: \"센서 노후는 사실입니다. 본부 보급은 빨라야 두 달 뒤예요.\"\n\n... 그러나 데이터를 외부에 흘리는 건 별개의 문제입니다.",
-    left: { label: "수락 — 데이터 사본 제공", fx: { c: 2, r: 1, t: 0, o: -2 }, g: -4 },
+    left: { label: "수락 — 데이터 사본 제공", fx: { c: 2, r: 1, t: -2, o: -3 }, g: -4 },
     right: { label: "거절 — 본부 보급 대기", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 2 } },
 
   // DG-03 — 거래 2차 (좌선택 시 LOG-DG-DEAL 트리거됨, 둘 다 가능하게 분기)

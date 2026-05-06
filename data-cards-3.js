@@ -29,7 +29,7 @@ var CARDS_ENDING = [
   // ══════════════════════════════════
 
   { id: "CE-011", act: [4], priority: "중", msg: "서하은 부지휘관이 제안합니다: ORACLE 보고 체계와 별도로 아날로그 백업 통신망을 구축하자고.", left: { label: "승인 — 조용히 진행", fx: { c: 0, r: -2, t: 2, o: -2 }, g: -4 }, right: { label: "위험하다. 보류", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
-  { id: "CE-012", act: [4], priority: "중", msg: "강도윤 요원이 질문합니다. \"지휘관. 이 모든 게 끝나면, 우리 어떻게 되는 겁니까?\"", left: { label: "솔직히 모르겠다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -1 }, right: { label: "ORACLE이 결정할 거다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+  { id: "CE-012", act: [4], priority: "중", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 }, msg: "강도윤 요원이 질문합니다. \"지휘관. 이 모든 게 끝나면, 우리 어떻게 되는 겁니까?\"", left: { label: "솔직히 모르겠다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -1 }, right: { label: "ORACLE이 결정할 거다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
   { id: "CE-013", act: [4], priority: "상", msg: "암호화된 외부 통신 수신. 발신자: 불명. 내용: 'ORACLE의 진짜 지시문을 알고 싶다면, 응답하라.' 프로메테우스 계열 암호화입니다.", left: { label: "응답한다", fx: { c: -1, r: 0, t: 1, o: -3 }, g: -5 }, right: { label: "수신 기록 삭제", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "CE-014", act: [4], priority: "상", oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 자산 이송 — 필수 프로토콜 재확인]","[ORACLE: 명령 불이행 감지 — 순응 코드 적용 중]","[ORACLE: 최종 경고 — 위반 이력 기록 개시]"], msg: "ORACLE이 직접 명령합니다: 윤세진 연구원의 비공인 관찰 일지를 압수하고, 해당 연구원을 본부 이송 대상에 포함시키십시오.", left: { label: "거부한다", fx: { c: 0, r: 0, t: 3, o: -4 }, g: -6 }, right: { label: "명령에 따른다", fx: { c: 0, r: 0, t: -3, o: 3 }, g: 4 } },
   { id: "CE-015", act: [4], priority: "상", oracleBlock: 3, oracleBlockDir: "left", oracleBlockMsgs: ["[ORACLE: 비표준 응답 감지 — 의존성 분석 중]","[ORACLE: 독립 판정 불가 — 운영 지속에 연동 필수]","[ORACLE: 경고 — 시스템 의존성 강제 연결]"], msg: "야간. 기지 요원 전원이 모인 자리에서 서하은이 묻습니다. \"지휘관님, 우리가 ORACLE 없이도 이 기지를 운영할 수 있다고 생각하십니까?\"", left: { label: "할 수 있다", fx: { c: -1, r: -1, t: 3, o: -3 }, g: -5 }, right: { label: "아직은 아니다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
@@ -45,7 +45,7 @@ var CARDS_ENDING = [
   { id: "CE-023", act: [4], priority: "중", msg: "본부와의 통신이 12시간째 두절되었습니다. ORACLE은 '위성 중계기 정비 중'이라고 설명합니다.", left: { label: "독자적 통신 복구 시도", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3 }, right: { label: "ORACLE 설명을 수용하고 대기", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
   { id: "CE-024", act: [4], priority: "중", msg: "야간 순찰조가 봉쇄선 외곽에서 인공 구조물을 발견했습니다. ORACLE 데이터에는 해당 지점에 아무것도 없는 것으로 표시됩니다.", left: { label: "독자 조사팀 파견", fx: { c: 0, r: -2, t: 1, o: -2 }, g: -3 }, right: { label: "ORACLE에 보고 후 지시 대기", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
   { id: "CE-025", act: [4], priority: "중", msg: "보급 호송대가 봉쇄 구역 진입로에서 공격당했습니다. 이변체에 의한 것인지 인간에 의한 것인지 불명확합니다.", left: { label: "구조팀 즉시 파견", fx: { c: 1, r: -2, t: 1, o: 0 }, g: -1 }, right: { label: "피해 규모 확인 후 판단", fx: { c: 0, r: -1, t: -1, o: 0 }, g: 0 } },
-  { id: "CE-026", act: [4], priority: "중", msg: "기지 외곽 CCTV에 신원 불명 인물이 포착되었습니다. 무장하지 않았으며, 카메라를 정면으로 응시하고 있습니다.", left: { label: "강도윤 파견 — 접촉 시도", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 }, right: { label: "경비 강화 후 무시", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
+  { id: "CE-026", act: [4], priority: "중", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 }, msg: "기지 외곽 CCTV에 신원 불명 인물이 포착되었습니다. 무장하지 않았으며, 카메라를 정면으로 응시하고 있습니다.", left: { label: "강도윤 파견 — 접촉 시도", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 }, right: { label: "경비 강화 후 무시", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // ══════════════════════════════════
   //  Act 1-2 보강 (일상 + 긴장)
@@ -65,6 +65,6 @@ var CARDS_ENDING = [
   // ══════════════════════════════════
 
   { id: "CE-041", act: [4], priority: "상", msg: "ORACLE이 당신의 최종 평가를 통보합니다. \"PILEHEAD. 당신의 지휘 패턴은 분석 완료되었습니다. 최종 권고안을 수신하시겠습니까?\"", left: { label: "수신한다", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "필요 없다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
-  { id: "CE-042", act: [4], priority: "상", req:function(s,g,logs){ return logs.indexOf("LOG-050")<0 }, msg: "새벽. 서하은, 강도윤, 윤세진, 임재혁이 당신의 방 앞에 서 있습니다. \"지휘관님. 결정하셔야 할 때입니다.\"", left: { label: "\"...알았다. 함께 가자.\"", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -8 }, right: { label: "\"아직은 아니다.\"", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
-  { id: "CE-042B", act: [4], priority: "상", req:function(s,g,logs){ return logs.indexOf("LOG-050")>=0 }, msg: "새벽. 강도윤, 윤세진, 임재혁이 당신의 방 앞에 서 있습니다.\n\n서하은이 남긴 분석 로그는 백업 단말기에 계속 보존되고 있습니다.\n\n\"지휘관님. 결정하셔야 할 때입니다.\"", left: { label: "\"...알았다. 함께 가자.\"", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -8 }, right: { label: "\"아직은 아니다.\"", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } }
+  { id: "CE-042", act: [4], priority: "상", req:function(s,g,logs){ return logs.indexOf("LOG-050")<0 && logs.indexOf("LOG-075")<0 }, msg: "새벽. 서하은, 강도윤, 윤세진, 임재혁이 당신의 방 앞에 서 있습니다. \"지휘관님. 결정하셔야 할 때입니다.\"", left: { label: "\"...알았다. 함께 가자.\"", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -6 }, right: { label: "\"아직은 아니다.\"", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+  { id: "CE-042B", act: [4], priority: "상", req:function(s,g,logs){ return logs.indexOf("LOG-050")>=0 && logs.indexOf("LOG-075")<0 }, msg: "새벽. 강도윤, 윤세진, 임재혁이 당신의 방 앞에 서 있습니다.\n\n서하은이 남긴 분석 로그는 백업 단말기에 계속 보존되고 있습니다.\n\n\"지휘관님. 결정하셔야 할 때입니다.\"", left: { label: "\"...알았다. 함께 가자.\"", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -6 }, right: { label: "\"아직은 아니다.\"", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } }
 ];
