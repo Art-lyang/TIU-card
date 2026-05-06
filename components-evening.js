@@ -245,6 +245,8 @@ function EveningChat2(p){
   }
   function resolveEveningBucketEntry(bucketName, ec){
     if(typeof tc!=='function' || !ec) return null;
+    var locale=(window.TS_I18N&&window.TS_I18N.getLocale)?window.TS_I18N.getLocale():'ko';
+    if(locale!=='en') return null;
     var directKey=getChatI18nKey(ec);
     var direct=tc(bucketName,directKey,null);
     if(direct) return direct;
@@ -330,6 +332,7 @@ function EveningChat2(p){
   var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
   var noChat=selChar&&(!chat||chatLines.length===0);
   var noChatText=tt('evening.noAvailableChat',null,'오늘은 추가 대화 기록이 없습니다.');
+  var evidenceUnlocked=!!(p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0);
   var s4=useState(0),ci=s4[0],setCi=s4[1];
   var _ch=useState(false),choiceDone=_ch[0],setChoiceDone=_ch[1];
   var _rl=useState(''),replyLine=_rl[0],setReplyLine=_rl[1];
@@ -408,8 +411,8 @@ function EveningChat2(p){
         portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
         h('div',{className:'evening-contact-name'},localizeCharName(c)),
         h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,tt('eveningExtra.completedRole',null,'오늘 대화 완료했습니다')):(locked?tt('evening.lockedRole',null,tt('eveningExtra.lockedRole',null,'오늘은 대화 불가')):localizeCharRole(c))))})),
-    (p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
-    Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},tt('evening.completeNote',null,tt('eveningExtra.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'))),
+    (evidenceUnlocked&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
+    Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},evidenceUnlocked?tt('evening.completeNote',null,tt('eveningExtra.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.')):tt('evening.completeNoteNoEvidence',null,tt('eveningExtra.completeNoteNoEvidence',null,'오늘 대화를 완료했습니다. 다음 DAY로 진행할 수 있습니다.'))),
     !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,tt('eveningExtra.proceedNextDay',null,'다음 DAY 진행')):tt('evening.skip',null,'SKIP'))+' ]'),
     showSkipConfirm&&h('div',{style:{margin:'16px auto 0',maxWidth:320,border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(3,7,8,.95)',borderRadius:4,padding:'16px 20px',textAlign:'center'}},
       h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'Skip tonight\'s conversation?')),

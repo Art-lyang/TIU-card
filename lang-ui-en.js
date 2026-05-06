@@ -196,6 +196,7 @@ window.TS_I18N.mergeUI('en', {
     completedRole:'Conversation complete for today',
     lockedRole:'Unavailable for the rest of today',
     completeNote:"Today's conversation is complete. You can review the Evidence Table, then proceed to the next DAY.",
+    completeNoteNoEvidence:"Today's conversation is complete. You can proceed to the next DAY.",
     proceedNextDay:'Proceed to Next DAY',
     returnToEvening:'Return to Evening Screen'
   },
