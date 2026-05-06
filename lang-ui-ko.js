@@ -17,7 +17,7 @@ window.TS_I18N.mergeUI('ko', {
     feedVersion:'TERMINAL SESSION v1.11',
     systemRestored:'SYSTEM RESTORED',
     operatorAuth:'OPERATOR AUTHENTICATION REQUIRED',
-    selectRoute:'SELECT SESSION ROUTE',
+    selectRoute:'SELECT SESSION COMMAND',
     footerAuth:'AUTH: GUEST',
     footerVersion:'VER: 1.11.7',
     footerBuild:'BUILD: {build}',
@@ -29,22 +29,6 @@ window.TS_I18N.mergeUI('ko', {
       archive:{title:'[ 아카이브 접속 ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
       settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
-    }
-  },
-  hub:{
-    title:'SCENARIO SELECT',
-    progress:'{current} / {total}',
-    backToSelect:'← 시나리오 선택으로',
-    exploreSwipe:'← 스와이프하여 시나리오 탐색 →',
-    enter:'[ 진입 ]',
-    continue:'[ 이어서 플레이 ]',
-    newGame:'[ 새로 시작 ]',
-    start:'[ 시작하기 ]',
-    replayTutorial:'[ 튜토리얼 다시 보기 ]',
-    scenarioDesc:{
-      main:'한국 지부 봉쇄 구역 관리 시나리오',
-      dlc_green:'아프리카 소바리 폐허 — EV-Σ 잔류 구역 탐사',
-      dlc_north:'러시아 북극권 — 신호 차단 구역 침투'
     }
   },
   stats:{

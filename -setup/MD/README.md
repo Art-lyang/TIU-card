@@ -1,7 +1,7 @@
 # TIU_CARD Design Document Index
 
 > Last updated: 2026-05-06
-> Current build reference: `BUILD_VER=159`
+> Current build reference: `BUILD_VER=160`
 
 This folder contains design notes, worldbuilding references, changelogs, and older planning material for TERMINAL SESSION / TIU_CARD.
 
@@ -19,7 +19,7 @@ This folder contains design notes, worldbuilding references, changelogs, and old
 
 | Area | Value |
 |---|---|
-| Build | `BUILD_VER=159` |
+| Build | `BUILD_VER=160` |
 | Cards | 521 unique |
 | Chains | 18 main + 10 incident/follow-up groups |
 | Missions | 15 |

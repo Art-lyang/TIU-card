@@ -1,6 +1,6 @@
 # TERMINAL SESSION — Gameplay Review
 > 최종 업데이트: 2026-05-06
-> 기준 빌드: `BUILD_VER=159`
+> 기준 빌드: `BUILD_VER=160`
 > 상세 GDD: `-setup/GDD/TIU-GAME-GDD-v10.md`
 
 ## 2026-05-06 현재 보정

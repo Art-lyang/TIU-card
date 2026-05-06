@@ -78,89 +78,6 @@ function Boot(p){
         h('div',{className:'terminal-boot-lines'},lineNodes,!done&&h('span',{className:'terminal-boot-caret','aria-hidden':true},'█')),
         done&&h('button',{type:'button',className:'terminal-boot-start',onClick:function(e){e.stopPropagation();tryBootAudio();p.onDone();}},tt('boot.startGame',null,'TAP TO ENTER TERMINAL')))));
 }
-// ═══ 시나리오 허브 — DLC 확장용 ═══
-function ScenarioHub(p){
-  var _m=useState('select'),mode=_m[0],setMode=_m[1]; // 'select' | 'main'
-  var _dx=useState(0),dx=_dx[0],setDx=_dx[1];
-  var _drag=useState(false),dragging=_drag[0],setDrag=_drag[1];
-  var _sx=useState(0),sx=_sx[0],setSx=_sx[1];
-  var _anim=useState(null),anim=_anim[0],setAnim=_anim[1];
-  var scenarios=[
-    {id:'main',title:'TERMINAL SESSION',sub:'MISSION: KOREAN BRANCH STABILIZATION',desc:'한국 지부 봉쇄 구역 관리 시나리오',active:true,img:IMG.hub_main},
-    {id:'dlc_green',title:'GREEN THRESHOLD',sub:'MISSION: SOVARI BLIND ZONE',desc:'아프리카 소바리 폐허 — EV-Σ 잔류 구역 탐사',active:false,img:IMG.hub_dlc_green},
-    {id:'dlc_north',title:'NORTHERN FRONT',sub:'MISSION: SITE-7/13',desc:'러시아 북극권 — 신호 차단 구역 침투',active:false,img:IMG.hub_dlc_north}
-  ];
-  var _idx=useState(0),idx=_idx[0],setIdx=_idx[1];
-  // 스와이프 핸들링
-  var onStart=function(x){setSx(x);setDrag(true)};
-  var onMove=function(x){if(dragging)setDx(x-sx)};
-  var onEnd=function(){
-    setDrag(false);
-    if(dx<-60&&idx<scenarios.length-1){setAnim('left');setIdx(idx+1)}
-    else if(dx>60&&idx>0){setAnim('right');setIdx(idx-1)}
-    setDx(0);
-    setTimeout(function(){setAnim(null)},300);
-  };
-  // 키보드
-  useEffect(function(){var onKey=function(e){
-    if(mode==='main'){
-      if(e.key==='Escape'||e.key==='Backspace'){e.preventDefault();setMode('select');return}
-      if(e.key==='1'){e.preventDefault();if(p.hasSave)p.onContinue();else if(p.hasSessionHistory)p.onNew();else p.onTutorial();return}
-      if(e.key==='2'){e.preventDefault();if(p.hasSave||p.hasSessionHistory)p.onNew();return}
-      if(e.key==='3'){e.preventDefault();if(p.hasSave||p.hasSessionHistory)p.onTutorial();return}
-      return;
-    }
-    if(e.key==='ArrowRight'&&idx<scenarios.length-1){e.preventDefault();setAnim('left');setIdx(function(v){return v+1});setTimeout(function(){setAnim(null)},300)}
-    if(e.key==='ArrowLeft'&&idx>0){e.preventDefault();setAnim('right');setIdx(function(v){return v-1});setTimeout(function(){setAnim(null)},300)}
-    if(e.key==='Enter'||e.key===' '){e.preventDefault();if(scenarios[idx].active)setMode('main')}
-  };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[mode,idx,p.hasSave,p.hasSessionHistory]);
-  var mono={fontFamily:"'Share Tech Mono',monospace"};
-  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
-  var isKo=locale==='ko';
-  var hasHistory=!!p.hasSessionHistory;
-  // 메인 스토리 진입 하위 메뉴
-  var entryImg=IMG.hub_main;
-  if(mode==='main') return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'8px 0',gap:0,overflowY:'auto'}},
-    entryImg&&h('div',{style:{width:'100%',maxWidth:440,flexShrink:0,position:'relative',borderRadius:4,overflow:'hidden'}},
-      h('img',{src:entryImg,alt:'TERMINAL SESSION',style:{width:'100%',display:'block',filter:'brightness(0.35)'}}),
-      h('div',{style:{position:'absolute',inset:0,display:'flex',flexDirection:'column',justifyContent:'center',alignItems:'center',padding:'20px 24px',gap:6}},
-        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.4)',letterSpacing:3})},'ORACLE PROTOCOL // EYES ONLY'),
-        h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',letterSpacing:1,marginTop:4})},'KOREAN BRANCH OPERATION'),
-        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,marginTop:4,textAlign:'center'})},isKo?'오라클 한국지부 안정화':'MISSION: KOREAN BRANCH'),
-        h('div',{style:Object.assign({},mono,{fontSize:15,color:'#f0a030',letterSpacing:2,textAlign:'center'})},'STABILIZATION'),
-        h('div',{style:{width:40,height:1,background:'rgba(var(--ui-rgb),.2)',margin:'8px 0'}}),
-        h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui)',letterSpacing:1})},'TERMINAL SESSION'),
-        h('div',{style:{marginTop:6,textAlign:'center',lineHeight:1.8}},
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.35)'})},isKo?'강원도 오라클 한국지부':'ORACLE KOREA BRANCH / GANGWON SECTOR'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ZONE: PRIMARY COMMAND'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'STATUS: ACTIVE WATCH'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(255,100,68,.4)'})},'THREAT INDEX: ELEVATED'),
-          h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)'})},'ACCESS: MAIN CAMPAIGN'))),
-    h('div',{style:{position:'absolute',bottom:0,left:0,right:0,height:'30%',background:'linear-gradient(transparent,rgba(3,7,8,.95))'}})),
-    h('div',{style:{display:'flex',flexDirection:'column',gap:10,alignItems:'center',marginTop:4,flexShrink:0,paddingBottom:20}},
-      p.hasSave&&h('button',{className:'btn btn-amber',style:{minWidth:220},onClick:p.onContinue},tt('hub.continue',null,isKo?'[ 이어하기 ]':'[ Continue ]')),
-      h('button',{className:'btn',style:{minWidth:220,borderColor:(p.hasSave||hasHistory)?'rgba(var(--ui-rgb),.4)':'#f0a030',color:(p.hasSave||hasHistory)?'var(--ui)':'#f0a030'},onClick:(p.hasSave||hasHistory)?p.onNew:p.onTutorial},(p.hasSave||hasHistory)?tt('hub.newGame',null,isKo?'[ 새게임 ]':'[ New Game ]'):tt('hub.start',null,isKo?'[ 게임시작 ]':'[ Start ]')),
-      (p.hasSave||hasHistory)&&h('button',{className:'btn',style:{minWidth:220,fontSize:11,opacity:0.5},onClick:p.onTutorial},tt('hub.replayTutorial',null,isKo?'[ 튜토리얼 다시하기 ]':'[ Replay Tutorial ]')),
-      h('div',{onClick:function(){setMode('select')},style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.3)',cursor:'pointer',marginTop:6})},tt('hub.backToSelect',null,isKo?'← 뒤로가기':'← Back to Scenario Select'))));
-  var sc=scenarios[idx];
-  var cardStyle={width:'100%',maxWidth:440,overflow:'hidden',
-    transform:'translateX('+(dragging?dx:0)+'px)',
-    transition:dragging?'none':'transform 0.3s ease',cursor:'grab',userSelect:'none'};
-  return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'8px 0',gap:0,overflowY:'auto'}},
-    h('div',{style:Object.assign({},mono,{fontSize:10,color:'var(--ui-dim)',letterSpacing:3,textAlign:'center',marginBottom:2,flexShrink:0})},'SCENARIO SELECT'),
-    h('div',{style:Object.assign({},mono,{fontSize:9,color:'rgba(var(--ui-rgb),.3)',textAlign:'center',marginBottom:4,flexShrink:0})},
-      (idx+1)+' / '+scenarios.length),
-    h('div',{style:cardStyle,
-      onMouseDown:function(e){onStart(e.clientX)},onMouseMove:function(e){onMove(e.clientX)},onMouseUp:onEnd,onMouseLeave:function(){if(dragging)onEnd()},
-      onTouchStart:function(e){onStart(e.touches[0].clientX)},onTouchMove:function(e){onMove(e.touches[0].clientX)},onTouchEnd:onEnd},
-      sc.img&&h('img',{src:sc.img,alt:sc.title,style:{width:'100%',display:'block',borderRadius:4,filter:'brightness(0.9)',transition:'filter 0.3s'}})),
-    h('div',{style:{display:'flex',gap:6,justifyContent:'center',margin:'8px 0',flexShrink:0}},
-      scenarios.map(function(s,i){return h('div',{key:s.id,style:{width:i===idx?16:6,height:6,borderRadius:3,
-        background:i===idx?'var(--ui)':'rgba(var(--ui-rgb),.2)',transition:'all 0.3s'}})})),
-    sc.active&&h('button',{className:'btn btn-amber',style:{flexShrink:0},onClick:function(){setMode('main')}},tt('hub.enter',null,'[ 진입 ]')),
-    !sc.active&&h('div',{style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.2)',textAlign:'center',flexShrink:0})},tt('hub.exploreSwipe',null,'← 스와이프하여 시나리오 탐색 →')),
-    p.onBack&&h('div',{onClick:p.onBack,style:Object.assign({},mono,{fontSize:10,color:'rgba(var(--ui-rgb),.25)',cursor:'pointer',marginTop:8,textAlign:'center',flexShrink:0})},'← MAIN MENU'));
-}
 // ═══ 메인 메뉴 ═══
 function MainMenu(p){
   var mono={fontFamily:"'Share Tech Mono',monospace"};
@@ -240,7 +157,7 @@ function MainMenu(p){
         h('div',{className:'main-terminal-log-copy'},
           h('p',null,tt('menu.systemRestored',null,'SYSTEM RESTORED')),
           h('p',null,tt('menu.operatorAuth',null,'OPERATOR AUTHENTICATION REQUIRED')),
-          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION ROUTE'))),
+          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION COMMAND'))),
         h('div',{className:'main-terminal-oracle','aria-label':'ORACLE Korea Branch'},
           h('span',{className:'main-terminal-oracle-mark','aria-hidden':true}),
           h('span',{className:'main-terminal-oracle-copy'},h('b',null,'ORACLE'),h('small',null,'KOREA BRANCH')))),

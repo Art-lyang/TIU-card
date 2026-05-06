@@ -3,7 +3,7 @@
 > Reigns-style card command, Suzerain-style pressure, and Korean SF surveillance fiction.
 >
 > **Genre**: hybrid card-swipe command sim + text adventure + field mission minigames
-> **Current build**: `BUILD_VER=159`
+> **Current build**: `BUILD_VER=160`
 > **Last verified**: 2026-05-06
 > **Deployment**: https://art-lyang.github.io/TIU-card/
 
@@ -53,7 +53,7 @@ validator issues 0
 - **Field missions**: triggered by linked cards and resolved through text adventure nodes, with selected missions branching into minigames.
 - **Minigames**: signal, sequence, breach, sample, scan, evidence, reconstruction, route, statement, and screening configuration families.
 - **Save/load**: three slots preserve stats, day/act, logs, used evening entries, active field specs, chain queue state, facilities, and evidence combinations.
-- **Scenario hub**: first-time players enter the original tutorial directly; returning players can access route/session selection.
+- **Main-menu start flow**: first-time players enter the original tutorial directly; returning players start the main campaign without a DLC route-selection step.
 - **Meta progression**: hidden ORACLE/Observer/GI systems support replay-layer discoveries without exposing all mechanics in the first session.
 
 ---
@@ -89,7 +89,7 @@ The project is intentionally static. No package install is required for normal p
 
 ```text
 TIU_CARD/
-├── index.html                         # entry point, BUILD_VER=159
+├── index.html                         # entry point, BUILD_VER=160
 ├── app*.js                            # app state, save, logic, SFX/BGM hooks
 ├── components-*.js                    # card UI, evening, dialogue, briefing, archive, settings, minigames
 ├── data-*.js                          # cards, missions, evidence, endings, logs, rewards, facilities

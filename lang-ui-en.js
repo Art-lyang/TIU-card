@@ -23,7 +23,7 @@ window.TS_I18N.mergeUI('en', {
     feedVersion:'TERMINAL SESSION v1.11',
     systemRestored:'SYSTEM RESTORED',
     operatorAuth:'OPERATOR AUTHENTICATION REQUIRED',
-    selectRoute:'SELECT SESSION ROUTE',
+    selectRoute:'SELECT SESSION COMMAND',
     footerAuth:'AUTH: GUEST',
     footerVersion:'VER: 1.11.7',
     footerBuild:'BUILD: {build}',
@@ -35,22 +35,6 @@ window.TS_I18N.mergeUI('en', {
       archive:{title:'[ ARCHIVE ACCESS ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ LOGS ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
       settings:{title:'[ SYSTEM SETTINGS ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
-    }
-  },
-  hub:{
-    title:'SCENARIO SELECT',
-    progress:'{current} / {total}',
-    backToSelect:'← Back to scenario select',
-    exploreSwipe:'← Swipe to browse scenarios →',
-    enter:'[ ENTER ]',
-    continue:'[ CONTINUE ]',
-    newGame:'[ NEW SESSION ]',
-    start:'[ START ]',
-    replayTutorial:'[ REPLAY TUTORIAL ]',
-    scenarioDesc:{
-      main:'Korean branch quarantine management scenario',
-      dlc_green:'Sovari ruins, Africa — EV-Σ residual zone expedition',
-      dlc_north:'Russian Arctic sector — signal blackout infiltration'
     }
   },
   stats:{

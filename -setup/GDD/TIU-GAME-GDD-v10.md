@@ -1,8 +1,8 @@
 # TERMINAL SESSION — Game Design Document v1.1
 
 > **버전**: v1.1 (late beta / release-candidate working GDD)
-> **최종 업데이트**: 2026-05-06 (BUILD_VER=159 / 이브닝챗·조사테이블·세이브·LOG 무결성 QA 반영)
-> **빌드**: BUILD_VER=159 (이전 스냅샷: 60 → 54 → 22)
+> **최종 업데이트**: 2026-05-06 (BUILD_VER=160 / 이브닝챗·조사테이블·세이브·LOG 무결성 QA 반영 + DLC 허브 제외)
+> **빌드**: BUILD_VER=160 (이전 스냅샷: 159 → 60 → 54 → 22)
 > **브랜치**: `main`
 > **이전 버전**: v0.9 (`TIU-GAME-GDD-v05.md`, 2026-04-17)
 > **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-05-06 스냅샷
@@ -11,7 +11,7 @@
 
 ## 0. 변경 요약
 
-### 0.0 2026-05-06 현재 기준 (BUILD_VER 60 → 159)
+### 0.0 2026-05-06 현재 기준 (BUILD_VER 60 → 160)
 
 5월 QA와 사용자 플레이 피드백을 거치며 핵심 위험 구간을 집중 정리했다. 현재 문서 기준은 `node tools/validator.js` 정적 검증 통과 상태이며, 수동 브라우저 QA는 이브닝챗·조사테이블·세이브·현장임무 연동을 우선 확인했다.
 
@@ -26,6 +26,7 @@
 | **밸런스/분배** | Act별 카드 분류와 중복 방지 로직 보강. Act 2 정보 과밀 일부를 Act 3/4로 분산하고, Act 4 자원압박 완충 카드/뉴스/보상 흐름을 추가 |
 | **시각/UI** | 요청하지 않은 버튼·게이지 디자인 변경을 되돌리고 원래 `gauge_fill.png` 계열/스와이프 홀딩 프리뷰/하단 화살표 표시 기준을 보존 |
 | **GI 노출** | 5회차 이상 플레이어에게 4대 자원 아래 설명 없는 어두운 적색 GI 보조 게이지를 노출하는 방향으로 정리 |
+| **DLC 허브** | DLC 선택 허브와 허브 탭 이미지는 본편 출시 범위에서 제외. `새 세션 시작`은 본편 새 세션으로 직접 진입하며, DLC는 추후 별도 작업으로 분리 |
 | **출시 준비** | 코드/데이터 품질은 late beta 수준. 남은 핵심은 영어 인간 감수, 스토어 자산, 트레일러/GIF, 최종 플레이 로그 수집 |
 
 ### 0.1a 2026-04-24 증보 (BUILD_VER 54 → 60)
@@ -103,23 +104,19 @@
 
 ## 2. 게임 구조
 
-### 2.0 진입 플로우 (2026-04-23 개편 → 2026-04-24 평탄화)
+### 2.0 진입 플로우 (2026-05-06 DLC 허브 제외)
 
 ```
 Boot (타이틀 + 로그 스크롤)
  ↓
 MainMenu (게임 시작 / 이어하기 / 아카이브 / 로그 / SETTINGS)
- ↓  ※ "게임 시작" 선택 시
-ScenarioHub (스와이프로 시나리오 선택: main / dlc_green / dlc_north)
- ↓ (active 시나리오 "진입" 선택)
-메인 스토리 서브메뉴 (이어서 플레이 / 새로 시작 / 튜토리얼 다시 보기)
  ↓
-Tutorial → Briefing → Game
+첫 플레이: Tutorial → Game
+재플레이/새 세션: Game
 ```
 
 - **MainMenu** (2026-04-24 `cbead05` 평탄화): `records` 서브뷰 제거 → 아카이브/로그/이어하기를 루트에 직접 버튼으로 노출. 게임 시작 전에도 언어/디스플레이/사운드 설정 접근. SettingsPanel에는 메인 메뉴 복귀 콜백 `onMainMenu` 노출
-- **ScenarioHub** (2026-04-24 i18n 복원): 스와이프(60px 임계) + 화살표 키 + 숫자키 1/2/3 지원. `Escape`/`Backspace`로 상위 이동. 메인 뷰 하드코딩 영어 문구는 `isKo` locale 분기로 한/영 전환
-- DLC 슬롯(`dlc_green`, `dlc_north`)은 locked. 현재는 허브 UI/이미지만 존재 (콘텐츠 본체 미제작)
+- **ScenarioHub/DLC 슬롯**: 본편 출시 관리 범위 축소를 위해 2026-05-06 현재 런타임에서 제외. DLC 선택 UI와 허브 이미지는 별도 DLC 작업 때 재설계한다
 
 ### 2.1 사이클 (1일 = 1 사이클)
 
@@ -154,7 +151,7 @@ Tutorial → Briefing → Game
 
 ---
 
-## 3. 콘텐츠 카탈로그 (BUILD_VER=159 기준)
+## 3. 콘텐츠 카탈로그 (BUILD_VER=160 기준)
 
 ### 3.1 정량 현황
 
@@ -275,7 +272,7 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 ## 5. 파일 구조
 
 ### 5.1 코어
-- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=159** 캐시 버스트)
+- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=160** 캐시 버스트)
 - `style.css` + `style-glitch.css` + `style-escape.css` — 기본 스타일
 - `style-i18n-hotfix.css` + `style-i18n-locale-hotfix.css` — 영어 레이아웃 핫픽스 (게이지/모바일 선택지 버튼, `lang=en` 속성 기반 오버라이드)
 - `field-mission/` — Act4 탈출 미니게임 인라인 (index.html + css/ + js/ 17개 + assets/ 45파일 / 7.1MB). postMessage로 카드게임과 상태 교환
@@ -335,7 +332,7 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 - `data-minigame-rewards.js` (2026-04-24 신규) — 필드 미션 미니게임 설정/보상/서사
 
 ### 5.5 자산
-- 이미지: `images.js`, `images_bg.js`, `images_cards.js`, `images_hub.js` 레지스트리 + `assets/images/` 실파일 혼합 운용
+- 이미지: `images.js`, `images_bg.js`, `images_cards.js`, `images_p1.js` 레지스트리 + `assets/images/` 실파일 혼합 운용
 - BGM: `bgm.js`, `bgm-fade.js`, `bgm-act.js`, `bgm_main.js`, `bgm_tension.js`, `bgm_boot.js` + MP3 3개
 - SFX: `sfx-sources.js`
 
@@ -451,7 +448,7 @@ Trust 65+ 달성률    99%
 ---
 
 *v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)** → v1.0 증보 (2026-04-23) → v1.0 증보 (2026-04-24) → **v1.1 current snapshot (2026-05-06)**.*
-*본 문서는 **BUILD_VER=159** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증을 계속 갱신 중.*
+*본 문서는 **BUILD_VER=160** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증을 계속 갱신 중.*
 *2026-04-23 증보분: i18n 인프라 구축, MainMenu/ScenarioHub 플로우 개편, 카드 체인 버그 수정 (C-060/CA-SEED-02/C-236), 이브닝챗 응답 매칭, 오디오/UI 정비.*
 *2026-04-24 증보분: 필드 미션 미니게임(signal/sequence/breach) 프로덕션 통합 (M-002/MI-01/MI-04), 아카이브 언락 타이트닝, 결과 토스트 서사 한·영 풀 재작성, MainMenu 평탄화, ScenarioHub 한국어 복원.*
 *2026-05-06 증보분: LOG/카드 무결성, 이브닝챗 한국어 버킷, 조사테이블 해금 안내, 3슬롯 세이브/로드, 현장임무 후속/미니게임 참조, UI 원형 복구 기준 반영.*
