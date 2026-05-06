@@ -63,9 +63,7 @@ MISSIONS['M-006'].nodes['sejin_field'] = {
 };
 
 // ══ M-001/M-002: 전투 조우 노드 (eliminate 경로 확장) ══
-// M-001 eliminate에 전투 판단 추가
-var m1elim = MISSIONS['M-001'].nodes.eliminate;
-var m1elimOrig = m1elim.text;
+// M-001 eliminate 노드는 성체 조우 분기를 추가하기 위해 의도적으로 교체한다.
 MISSIONS['M-001'].nodes.eliminate = {
   text: "오염 구역을 격리한다. 강도윤이 화염 방사기를 준비한다.\n\n그때 — 점액질 사이에서 형체가 솟아오른다.\n\nSPEC-012 성체. 높이 2m. 오염원의 수호자인가.\n\n[ORACLE: 경고 — 미분류 변이 개체. 위협 등급 상향.]",
   choices: [

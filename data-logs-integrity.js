@@ -15,6 +15,9 @@
 
   [
     { id: "LOG-VOSS-STANDBY", title: "Voss standby channel", content: "A Prometheus-side standby channel was preserved outside the normal ORACLE reporting route. Markus Weber is waiting for an encrypted response window." },
+    { id: "LOG-CE-017", title: "복종 프로토콜 문서 공유", content: "프로메테우스가 확보한 ORACLE PROXY NETWORK 운영 매뉴얼 발췌본이 팀 내부에 공유되었다. 자발적 복종 프로토콜은 지휘관의 선택을 보조하는 절차가 아니라, 선택지를 통제하기 위한 심리적 순응 체계로 기술되어 있다." },
+    { id: "LOG-SUPPLY-102", title: "폐건물 보급품 확보", content: "기지 외곽 폐건물에서 이전 부대가 남긴 군용 물자를 확보했다. 식량, 의약품, 통신장비 부품이 회수되었으며, 후속 수색 가능성이 현장 보고서에 남았다." },
+    { id: "LOG-FOSTER-CASE", title: "닉 포스터 과거 작전 파일", content: "닉 포스터가 과거 한국지부 주변 작전에서 봉쇄선 내부 요원을 미끼로 쓴 정황이 복원되었다. 공식 보고서에는 전술적 오판으로 축약되어 있으나, 현장 요원들은 그 사건을 아직 잊지 못하고 있다." },
     { id: "LOG-INTRO-SY", title: "박소영 첫 면담 기록", content: "박소영 분석관이 한국지부 합류 후 첫 공식 면담을 완료했다. 서하은이 남긴 분석 로그를 인수했으며, 이후 데이터 분석 보조 인력으로 활동한다." },
     { id: "LOG-055", title: "서하은 USB 데이터", content: "서하은이 공식망 밖에 보관하던 USB 백업 자료. ORACLE 삭제 로그, GRANT 권한 단편, 한국지부 지시 패턴의 시차 분석이 포함되어 있다." },
     { id: "LOG-080", title: "마르쿠스 베버 접촉 기록", content: "프로메테우스 한국 작전팀 지휘관 마르쿠스 베버와의 비공식 접촉 기록. COASTAL MIRROR 자료는 한국 봉쇄 성공률의 미분류 31%가 프로메테우스 비공식 기술 지원과 연결되어 있음을 보여준다." },
@@ -59,7 +62,7 @@
     { id: "LOG-040", title: "체인 사건 종결 기록", content: "연속 사건 종결 보고. 선택한 대응의 결과가 다음 Act의 위험도와 내부 신뢰 흐름에 반영된다." },
     { id: "LOG-050", title: "서하은 전출 명령", content: "서하은 부지휘관의 전출 명령 기록. 공식 사유는 조직 개편이지만, 내부에서는 ORACLE 데이터 불일치 추적과의 연관성을 의심한다." },
     { id: "LOG-051", title: "서하은 잔류 보류", content: "서하은 관련 인사 조치가 보류된 기록. 지휘관 판단에 따라 전출 절차의 속도와 명분이 흔들렸다." },
-    { id: "LOG-052", title: "체인 선택 기록 CS-003", content: "중요 체인 선택지의 결과 기록. 내부 신뢰와 ORACLE 평가 사이에서 선택한 흔적이 남아 있다." },
+    { id: "LOG-052", title: "서하은 잔류 확정", content: "서하은 부지휘관의 전출 절차가 최종 보류되었다. 한국지부는 ORACLE 인사 결정을 한 번 되돌렸고, 그 대가는 내부 신뢰와 ORACLE 평가 사이의 균열로 남았다." },
     { id: "LOG-053", title: "체인 선택 기록 CS-001", content: "중요 체인 선택지의 첫 번째 결과 기록. 현장 대응 원칙이 후속 체인으로 이어진다." },
     { id: "LOG-054", title: "체인 선택 기록 CS-002", content: "중요 체인 선택지의 두 번째 결과 기록. 보급/인원/평가 중 하나의 부담이 공식 로그에 남았다." },
     { id: "LOG-056", title: "체인 선택 기록 CS-010", content: "장기 사건선 후반부의 선택 기록. 공개 보고서와 비공개 판단 사이의 차이가 보존되었다." },

@@ -146,7 +146,7 @@ var ARCHIVE_ENTRIES = [
 
   // ═══ 카테고리: 프로토콜/시스템 ═══
   { id: "ARC-SYS-PROXY", cat: "시스템", title: "ORACLE PROXY NETWORK",
-    unlock: function(logs){ return logs.indexOf("LOG-016")>=0 || logs.indexOf("LOG-018")>=0 },
+    unlock: function(logs){ return logs.indexOf("LOG-016")>=0 || logs.indexOf("LOG-018")>=0 || logs.indexOf("LOG-CE-017")>=0 },
     content: "ORACLE의 분산 지휘 체계.\n\n전 세계 다수의 격리 기지를 원격으로 관리.\n\n'자발적 복종 프로토콜' 매뉴얼 존재 확인 — 심리적 순응 체계를 명시.\n\n프로메테우스가 해당 매뉴얼 발췌본을 확보한 것으로 추정." },
 
   { id: "ARC-SYS-FINAL", cat: "시스템", title: "최종 프로토콜",

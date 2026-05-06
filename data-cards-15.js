@@ -5,8 +5,14 @@ var CARDS_EXTERNAL = [
 
   // ═══ 닉 포스터 — 굴욕을 삼키고 정보를 얻다 ═══
 
+  { id: "C-277", act: [3,4], priority: "상", bg: "restricted",
+    cond: function(s,g,logs){ return s.day>=25 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-FOSTER-CASE')<0 && logs.indexOf('LOG-081')<0 },
+    msg: "임재혁이 프로메테우스 인물 파일 일부를 복원했습니다.\n\n이름: 닉 포스터.\n\n과거 한국지부 주변 작전에서, 그는 봉쇄선 내부 요원 한 명을 미끼로 쓴 전력이 있습니다. 공식 보고서에는 \"전술적 오판\"으로만 남았습니다.\n\n강도윤: \"그 이름, 기억합니다. 그때 우리 쪽이 사람을 잃었습니다.\"\n\n포스터가 가진 정보는 유용할 수 있습니다. 하지만 그를 만나는 일은 단순한 정보 거래가 아닙니다.",
+    left: { label: "사건 파일을 팀에 공유", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1, log: "LOG-FOSTER-CASE" },
+    right: { label: "지휘관 선에서만 보관", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0, log: "LOG-FOSTER-CASE" } },
+
   { id: "C-248", act: [3,4], priority: "상", bg: "forest",
-    cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-081')<0 },
+    cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-FOSTER-CASE')>=0 && logs.indexOf('LOG-081')<0 },
     msg: "기지 외곽 감시 카메라. 닉 포스터가 다시 잡혔습니다.\n\n이번엔 담배도 없습니다. 손을 들어 보이고 있습니다.\n\n임재혁: \"접근 의사를 표시하는 겁니다. 비무장이에요.\"\n\n... 그 얼굴을 보면 옛 기억이 떠오릅니다.",
     left: { label: "만난다 — 과거는 묻는다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
     right: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },

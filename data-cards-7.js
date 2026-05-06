@@ -93,5 +93,5 @@ var CARDS_ACT2_DAILY = [
   { id: "C-152", act: [3], priority: "하", bg: "base", req: function(s){ return s.r <= 40 },
     msg: "임재혁이 기지 물자 재고 정리를 완료했습니다.\n\n\"미사용 장비를 해체해서 자원으로 전환했습니다.\"",
     left: { label: "잘했다", fx: { c: 0, r: 2, t: 1, o: 0 }, g: 0 },
-    right: { label: "다른 용도 검토", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } }
+    right: { label: "다른 용도 검토", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } }
 ];

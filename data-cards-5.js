@@ -11,10 +11,10 @@ var CARDS_RESOURCE = [
     right: { label: "봉쇄 장비 우선 배분", fx: { c: 1, r: 1, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-102", act: [2,3], priority: "하", bg: "supply",
-    req: function(s,g,logs){ return !logs.includes("LOG-025") },
+    req: function(s,g,logs){ return !logs.includes("LOG-SUPPLY-102") },
     msg: "기지 외곽 순찰 중 폐건물에서 군용 물자를 발견했습니다.\n\n강도윤: \"이전 부대가 남긴 것 같습니다. 상태가 양호합니다.\"\n\n식량 3상자, 의약품 1상자, 통신장비 부품.",
-    left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: -1, o: -1 }, g: -1 },
-    right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 1 } },
+    left: { label: "전량 기지로 반입", fx: { c: 0, r: 2, t: -1, o: -1 }, g: -1, log: "LOG-SUPPLY-102" },
+    right: { label: "ORACLE에 보고 후 반입", fx: { c: 0, r: 1, t: 0, o: 1 }, g: 1, log: "LOG-SUPPLY-102" } },
 
   { id: "C-103", act: [3,4], priority: "하", bg: "supply",
     msg: "임재혁이 기지 에너지 효율화 작업을 완료했습니다.\n\n\"발전기 출력을 12% 개선했습니다. 잉여 전력을 물 정화에 돌릴 수 있습니다.\"\n\n[ORACLE: 효율적인 자원 관리입니다.]",
@@ -71,7 +71,7 @@ var CARDS_RESOURCE = [
 
   // ═══ 후속 카드 (1회성 이벤트 이후) ═══
   { id: "C-153", act: [2,3], priority: "하", bg: "supply",
-    req: function(s,g,logs){ return logs.includes("LOG-025") },
+    req: function(s,g,logs){ return logs.includes("LOG-SUPPLY-102") },
     msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"아직 수색하지 않은 구역이 남아 있습니다. 물자가 더 있을 가능성이 높습니다.\"",
     left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },

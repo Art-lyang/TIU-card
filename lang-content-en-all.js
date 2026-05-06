@@ -725,7 +725,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
   window.TS_I18N.mergeContent('en', {
     cards: {
     "C-188": {
-        "msg": "Night alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe attack is exploiting gaps in our night patrol routes with precision.",
+        "msg": "The delayed night-patrol revision, Kang Do-yun's injury reports, and ORACLE dependency warnings all return at once in the middle of the night.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe attack is exploiting gaps in our night patrol routes with precision.",
         "leftLabel": "Full combat deployment",
         "rightLabel": "Hold defensive strongpoints"
     },
@@ -1045,6 +1045,11 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         msg: "Foster speaks first.\n\n\"What I did to your people... I'm not going to apologize for it.\"\n\n\"But I can give you what I have.\"\n\nHe pulls out a tablet. A flow diagram of the data ORACLE pulls from each branch.\n\n\"Don't you want to know where the Korean containment-success data is going?\"",
         leftLabel: "Take the data",
         rightLabel: "I can't trust you"
+      },
+      "C-277": {
+        msg: "Lim Jae-hyeok restores part of a Prometheus personnel file.\n\nName: Nick Foster.\n\nDuring a past operation near the Korea Branch, he used one operative inside the containment line as bait. The official report reduced it to a \"tactical misjudgment.\"\n\nKang Do-yun: \"I remember that name. We lost someone because of him.\"\n\nThe information Foster carries may be useful. Meeting him will not be a simple exchange.",
+        leftLabel: "Share the case file with the team",
+        rightLabel: "Keep it at command level"
       },
       "C-250": {
         msg: "Lim Jae-hyeok has verified Foster's data.\n\n\"It's real. This is the internal ORACLE routing structure.\"\n\nKorean coastal-barrier specifications. Containment tactical data. Variant response patterns.\nAll of it routed to a central ORACLE node.\n\n\"Korea is a test bed.\" Foster's words come back.\n\"The more you succeed, the better the data ORACLE gets.\"",
@@ -1652,7 +1657,7 @@ window.TS_I18N.mergeContent('en', {
       "title": "ORACLE Link Optimization",
       "desc": "Lim Jae-hyeok improves terminal communication efficiency.",
       "benefit": "Evaluation +15",
-      "cost": "Trust -5"
+      "cost": "Resources -5, Trust -5"
     },
     "R-08": {
       "title": "Base Air-Raid Drill",
@@ -2347,6 +2352,18 @@ window.TS_I18N.mergeContent('en', {
       "title": "SPEC-003 Observation Record",
       "content": "CODENAME: Brood Drone\nTYPE: H-TYPE — Hive subordinate unit\nThreat Level: DANGER (in groups)\n\nAppearance: Approximately 60% of human size. Exoskeletal. Single eye. Hooked forelimbs.\nBehavior: No independent will. Functional shutdown within 12 hours if separated.\nCollective response speed exceeds human norms.\n\nWarning: There is never only one."
     },
+    "LOG-CE-017": {
+      "title": "Compliance Protocol Document Shared",
+      "content": "An excerpt from the ORACLE PROXY NETWORK operations manual obtained by Prometheus was shared with the team. The voluntary compliance protocol is not described as a decision-support procedure, but as a psychological compliance structure designed to shape the commander's available choices."
+    },
+    "LOG-SUPPLY-102": {
+      "title": "Abandoned Building Supplies Secured",
+      "content": "Military supplies left by the previous unit were recovered from an abandoned building near the branch perimeter. Food, medicine, and communications parts were brought in, and the field report notes that additional search areas may remain."
+    },
+    "LOG-FOSTER-CASE": {
+      "title": "Nick Foster Past Operation File",
+      "content": "Recovered fragments indicate that Nick Foster used an operative inside the containment line as bait during a past operation near the Korea Branch. The official report condensed the incident into the phrase tactical misjudgment, but field personnel have not forgotten it."
+    },
     "LOG-015": {
       "title": "SPEC-008 Observation Record",
       "content": "CODENAME: Spore Phantom\nTYPE: S-TYPE — Spore Aggregate\nThreat Level: CAUTION\n\nAppearance: Humanoid silhouette. Physical structure unclear.\nDisperses under light, re-forms in darkness.\nBehavior: Spore density spikes when approached. Inhalation hazard.\n\nContainment: Maintain illumination. Respiratory protection required.\nPhysical elimination impossible. Only spore-density reduction is feasible."
@@ -2398,6 +2415,10 @@ window.TS_I18N.mergeContent('en', {
     "LOG-025": {
       "title": "SPEC-004 Observation Record",
       "content": "CODENAME: Seed Spreader\nTYPE: D-TYPE — Stationary Dispersal Body\nThreat Level: CRITICAL\n\nAppearance: Height 2–4 m. Plant-like structure with pulsating biological tissue inside.\nIrregular spore cloud discharged from upper sections.\n\nBehavior: No movement capability. Wind-borne spore dispersal radius reaches several kilometers.\nInduces behavioral alteration in exposed organisms (cordyceps-like mechanism).\nBelieved to be a primary cause of Silent Belt formation.\n\nContainment: No approach within a 500 m radius. Removal requires incineration + soil contamination treatment.\nWarning: Incineration risks explosive secondary spore release.\nSpore inhalation = immediate infection.\n\n[LOG-004A] First discovery: Silent Belt perimeter. All animal life missing within a 3 km radius.\n[LOG-004B] Incineration attempt triggered explosive spore release. Four immediate infections.\n→ Full protective suits mandatory."
+    },
+    "LOG-052": {
+      "title": "Seo Hae-eun Retention Confirmed",
+      "content": "Deputy Commander Seo Hae-eun's transfer process has been formally suspended. The Korea Branch has reversed an ORACLE personnel decision once, leaving a visible fracture between internal trust and ORACLE evaluation."
     },
     "LOG-029": {
       "title": "SPEC-015 Observation Record",
@@ -2762,7 +2783,12 @@ window.TS_I18N.mergeContent('en', {
       "C-034": {
         msg: "An unidentified message arrives on the branch communications channel.\n\n\"We are not your enemy. If you're willing to talk, northern sector, 500 meters, tomorrow night.\"\n\nSender unknown. 70% encryption-pattern match with Prometheus.",
         leftLabel: "Ignore it",
-        rightLabel: "Answer the contact request"
+        rightLabel: "Answer the contact request",
+        oracleBlockMsgs: [
+          "[ORACLE: Hostile-force contact attempt detected - isolation recommended]",
+          "[ORACLE: Contact blocked - Prometheus risk grade A]",
+          "[ORACLE: Warning - contact history added to security record]"
+        ]
       },
       "C-035": {
         msg: function(){
@@ -2787,16 +2813,6 @@ window.TS_I18N.mergeContent('en', {
         msg: "Lim Jae-hyeok reports that ORACLE executed an automatic upgrade without authorization.\n\n\"I checked the change log... some modules are now marked 'access denied.'\"\n\n\"I'm the administrator and even I can't get in.\"",
         leftLabel: "Attempt access to those modules",
         rightLabel: "Ask ORACLE for explanation"
-      },
-      "C-038": {
-        msg: "[LOCKED]",
-        leftLabel: "-",
-        rightLabel: "-"
-      },
-      "C-039": {
-        msg: "[LOCKED]",
-        leftLabel: "-",
-        rightLabel: "-"
       },
       "C-040": {
         msg: "Lim Jae-hyeok has been working late for three straight nights. He appears to be backtracking ORACLE system logs.\n\n\"Commander, I'm not certain yet, but... I found something interesting.\"\n\nHeavy shadows sit under his eyes.",
@@ -2863,13 +2879,6 @@ window.TS_I18N.mergeContent('en', {
 
 window.TS_I18N.mergeContent('en', {
   cards: {
-    "C-034": {
-      oracleBlockMsgs: [
-        "[ORACLE: Hostile-force contact attempt detected - isolation recommended]",
-        "[ORACLE: Contact blocked - Prometheus risk grade A]",
-        "[ORACLE: Warning - contact history added to security record]"
-      ]
-    },
     "CE-004": {
       oracleBlockMsgs: [
         "[ORACLE: This process is an internal stabilization routine]",

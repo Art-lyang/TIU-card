@@ -177,7 +177,7 @@ function checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock){
     if(cid==='C-046'||cid==='C-047')tryUnlock('LOG-015');
     if(cid==='C-091')tryUnlock('LOG-020');if(cid==='C-092')tryUnlock('LOG-021');
     if(cid==='C-093')tryUnlock('LOG-022');if(cid==='C-094')tryUnlock('LOG-023');if(cid==='C-095')tryUnlock('LOG-024');
-    if(cid==='C-102')tryUnlock('LOG-025');if(cid==='C-106')tryUnlock('LOG-026');
+    if(cid==='C-106')tryUnlock('LOG-026');
     if(cid==='C-114')tryUnlock('LOG-027');if(cid==='C-124')tryUnlock('LOG-028');
     if(cid==='CT-001')tryUnlock('LOG-030');if(cid==='CT-002')tryUnlock('LOG-031');
     if(cid==='CT-003')tryUnlock('LOG-032');if(cid==='CT-004')tryUnlock('LOG-033');

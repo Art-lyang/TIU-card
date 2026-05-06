@@ -69,16 +69,16 @@ var CARDS_CHAINS = [
   // ═══ 체인 3: 야간 변이체 습격 + 강도윤 생존/사망 ═══
   // 조건: LOG-070(미휴식) + LOG-071(미개편) + LOG-072(ORACLE 의존) 중 2개 이상
   // C-188: 야간 습격 전조
-  { id: "C-188", act: [3], priority: "\uc0c1", bg: "forest",
+  { id: "C-188", act: [3], priority: "상", bg: "forest",
     cond: function(s,g,logs){
       var cnt = 0;
       if(logs.includes("LOG-070")) cnt++;
       if(logs.includes("LOG-071")) cnt++;
       if(logs.includes("LOG-072")) cnt++;
       return cnt >= 2 && !logs.includes("LOG-074") && !logs.includes("LOG-075") && s.day >= 21 },
-    msg: "\uc57c\uac04 \uacbd\ubcf4 \ubc1c\ub839.\n\n\ubd09\uc1c4\uc120 \uc804 \uad6c\uc5ed\uc5d0\uc11c \ub3d9\uc2dc\ub2e4\ubc1c \uc0dd\uccb4 \ubc18\uc751 \uac10\uc9c0. \uc774\uc804 \uacbd\ud5d8\uacfc\ub294 \uaddc\ubaa8\uac00 \ub2e4\ub985\ub2c8\ub2e4.\n\n\uac15\ub3c4\uc724: \"\uc804 \ubc29\uc704\uc785\ub2c8\ub2e4! \uc22b\uc790\uac00 \ub108\ubb34 \ub9ce\uc2b5\ub2c8\ub2e4 \u2014 \uc0ac\uac01\uc9c0\ub300\ub85c \ubab0\ub824\ub4e4\uace0 \uc788\uc2b5\ub2c8\ub2e4!\"\n\n\uc57c\uac04 \uc21c\ucc30 \ub8e8\ud2b8\uc758 \ud5c8\uc810\uc744 \uc815\ud655\ud788 \ud30c\uace0\ub4e0 \uc2b5\uaca9\uc785\ub2c8\ub2e4.",
-    left: { label: "\uc804\uc6d0 \uc804\ud22c \ubc30\uce58", fx: { c: -2, r: -2, t: 0, o: 0 }, g: 0 },
-    right: { label: "\ubc29\uc5b4 \uac70\uc810 \uc9d1\uc911", fx: { c: -1, r: -1, t: -1, o: 0 }, g: 0 } },
+    msg: "지난 며칠간 미뤄 둔 야간 순찰 개편, 강도윤의 부상 보고, ORACLE 의존 경고가 한밤중에 한꺼번에 되돌아왔습니다.\n\n야간 경보 발령.\n\n봉쇄선 전 구역에서 동시다발 생체 반응 감지. 이전 경험과는 규모가 다릅니다.\n\n강도윤: \"전 방위입니다! 숫자가 너무 많습니다 — 사각지대로 몰려들고 있습니다!\"\n\n야간 순찰 루트의 허점을 정확히 파고든 습격입니다.",
+    left: { label: "전원 전투 배치", fx: { c: -2, r: -2, t: 0, o: 0 }, g: 0 },
+    right: { label: "방어 거점 집중", fx: { c: -1, r: -1, t: -1, o: 0 }, g: 0 } },
 
   // C-189: 비상터널 있음 (LOG-073) → 강도윤 생존
   { id: "C-189", act: [3], priority: "\uc0c1", bg: "forest",
