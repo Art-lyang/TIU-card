@@ -1,15 +1,32 @@
-# TERMINAL SESSION — Game Design Document v1.0
+# TERMINAL SESSION — Game Design Document v1.1
 
-> **버전**: v1.0 (출시 준비 마일스톤) — *2026-04-24 증보*
-> **최종 업데이트**: 2026-04-24 (필드 미니게임 프로덕션 통합 + 아카이브 언락 교정 + 결과 서사 다국어화 + ScenarioHub 한국어 리터럴 복구)
-> **빌드**: BUILD_VER=60 (이전 스냅샷: 59 → 54 → 22)
+> **버전**: v1.1 (late beta / release-candidate working GDD)
+> **최종 업데이트**: 2026-05-06 (BUILD_VER=159 / 이브닝챗·조사테이블·세이브·LOG 무결성 QA 반영)
+> **빌드**: BUILD_VER=159 (이전 스냅샷: 60 → 54 → 22)
 > **브랜치**: `main`
 > **이전 버전**: v0.9 (`TIU-GAME-GDD-v05.md`, 2026-04-17)
-> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷
+> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-05-06 스냅샷
 
 ---
 
 ## 0. 변경 요약
+
+### 0.0 2026-05-06 현재 기준 (BUILD_VER 60 → 159)
+
+5월 QA와 사용자 플레이 피드백을 거치며 핵심 위험 구간을 집중 정리했다. 현재 문서 기준은 `node tools/validator.js` 정적 검증 통과 상태이며, 수동 브라우저 QA는 이브닝챗·조사테이블·세이브·현장임무 연동을 우선 확인했다.
+
+| 분류 | 현재 기준 |
+|---|---|
+| **무결성** | 카드 521장 / 고유 ID 521 / validator 이슈 0건 |
+| **LOG 정리** | LOG 생산 283 / 코어 정의 215 / req 소비 72. 참조되지만 생산되지 않는 LOG 0건 |
+| **이브닝챗** | 103개 엔트리. 하루 1명 대화, 대화 완료 후 허브 복귀, 완료 상태 비활성화. 한국어 모드에서 영어 버킷이 섞이던 문제 수정 |
+| **조사테이블** | Act 2 임재혁 이브닝챗으로 `LOG-EV-UNLOCK` 해금. 미해금 상태에서는 테이블 안내/진입 문구가 출력되지 않도록 교정 |
+| **세이브** | 3개 슬롯 독립 저장/로드. logs, usedEvening, activeSpecs, chainQueue, facilities, evidence combos 보존 확인. 불가능한 DAY/ACT 저장값은 정상화 |
+| **현장임무** | 미션 15개, 미니게임 연동 임무 9개, 현장 후속 카드 생성 실패 0건 |
+| **밸런스/분배** | Act별 카드 분류와 중복 방지 로직 보강. Act 2 정보 과밀 일부를 Act 3/4로 분산하고, Act 4 자원압박 완충 카드/뉴스/보상 흐름을 추가 |
+| **시각/UI** | 요청하지 않은 버튼·게이지 디자인 변경을 되돌리고 원래 `gauge_fill.png` 계열/스와이프 홀딩 프리뷰/하단 화살표 표시 기준을 보존 |
+| **GI 노출** | 5회차 이상 플레이어에게 4대 자원 아래 설명 없는 어두운 적색 GI 보조 게이지를 노출하는 방향으로 정리 |
+| **출시 준비** | 코드/데이터 품질은 late beta 수준. 남은 핵심은 영어 인간 감수, 스토어 자산, 트레일러/GIF, 최종 플레이 로그 수집 |
 
 ### 0.1a 2026-04-24 증보 (BUILD_VER 54 → 60)
 
@@ -133,30 +150,30 @@ Tutorial → Briefing → Game
 | **신뢰 (t)** | 50 | C_t (상실) | — |
 | **평가 (o)** | 40 | C_o (접속 차단) | — |
 
-- **GI (Ground Index)**: 숨겨진 변수. 음수→저항 루트, 양수→복종 루트. UI 비노출 (3회차+ 일부 노출)
+- **GI (Ground Index)**: 숨겨진 변수. 음수→저항 루트, 양수→복종 루트. 1~4회차에는 비노출, 5회차 이상에서 4대 자원 아래 설명 없는 어두운 적색 보조 게이지로 일부 노출
 
 ---
 
-## 3. 콘텐츠 카탈로그 (BUILD_VER=21 기준)
+## 3. 콘텐츠 카탈로그 (BUILD_VER=159 기준)
 
 ### 3.1 정량 현황
 
 | 항목 | 수치 |
 |---|---|
-| **총 카드** | **486장** (prologue 34 + 일반 350+ + 위기/특수 + Act4 확장 20 + 저항 힌트 5 + H 힌트 2) |
-| **체인** | 6 기본 (CH-001~006) + 사건 체인 (CH-007 등) + **CH-008 폐쇄회로 6장** |
-| **엔딩** | **15종** (아래 카탈로그 참조) |
-| **현장 미션** | 15개 (M-001~010 + MI-01~05) |
+| **총 카드** | **521장** (고유 ID 521, validator 기준 중복 0건) |
+| **체인** | 메인 체인 18개 + 사건/후속 체인 10계열 |
+| **엔딩** | 엔딩 정의 12종 / 실질 결과 분기 15종 (즉사·escape 계열 포함) |
+| **현장 미션** | 15개 (M-001~010 + MI-01~05), 미니게임 연동 9개 |
 | **시설 확장** | 16개 (기본 11 + uprising 5: FE-012~016) |
-| **증거** | 20조각 + 8조합 |
-| **이브닝 챗** | 약 120~150 씬 |
+| **증거** | 38조각 + 15조합 |
+| **이브닝 챗** | 103엔트리, 하루 1명 대화 |
 | **다이얼로그** | 약 50개 |
-| **ORACLE 로그** | 60~70개 |
-| **아카이브** | 43종 |
+| **ORACLE 로그** | 생산 283 / 코어 정의 215 / req 소비 72 |
+| **아카이브** | 46종 |
 | **업적** | 29개 (Steam steamId 매핑 완료) |
 | **이변체** | 5종 직접 + 6종 아카이브 전용 |
 | **BGM** | 6 트랙 (main / tension / boot / act / fade) |
-| **이미지** | 34 PNG UI 자산 + base64 카드/배경/캐릭터 |
+| **이미지** | `assets/images/` 실파일 + `images*.js` 레지스트리 혼합 운용 |
 
 ### 3.2 엔딩 카탈로그 (15종)
 
@@ -214,10 +231,16 @@ Tutorial → Briefing → Game
 
 ### 4.3 이브닝 챗
 
-신뢰도 4구간 × 4인 × Act별 대사 완전 변형 (52세트)
-- 38개 응답 선택지 (a/b 분기)
+현재 이브닝챗은 `EveningChat2` 흐름을 기준으로 운용한다.
+
+- 103개 엔트리, 하루 1명만 대화 가능
+- 대화 후 즉시 다음 DAY로 넘기지 않고 이브닝 허브로 복귀
+- 오늘 대화 완료 캐릭터는 완료 상태로 비활성화
+- 관계/세력 정보는 상단 영역에 배치하고, 캐릭터 이미지·이름·직책/코드 시각 정보를 사용
+- 조사테이블은 `LOG-EV-UNLOCK` 이후에만 진입/안내 표시
+- 한국어 모드에서 영어 `content` 버킷이 섞이지 않도록 locale 해석 순서 고정
 - INTRO_LOG_MAP으로 Act 1 자기소개 1회 표시 후 반복 방지
-- **임재혁 조사테이블 해금 이벤트** (LOG-EV-UNLOCK)
+- **임재혁 조사테이블 해금 이벤트**: Act 2 저녁 대화에서 `LOG-EV-UNLOCK` 해금
 
 ### 4.4 시설 시스템
 
@@ -252,7 +275,7 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 ## 5. 파일 구조
 
 ### 5.1 코어
-- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=60** 캐시 버스트)
+- `index.html` — HTML 셸 + 스크립트 로드 (**BUILD_VER=159** 캐시 버스트)
 - `style.css` + `style-glitch.css` + `style-escape.css` — 기본 스타일
 - `style-i18n-hotfix.css` + `style-i18n-locale-hotfix.css` — 영어 레이아웃 핫픽스 (게이지/모바일 선택지 버튼, `lang=en` 속성 기반 오버라이드)
 - `field-mission/` — Act4 탈출 미니게임 인라인 (index.html + css/ + js/ 17개 + assets/ 45파일 / 7.1MB). postMessage로 카드게임과 상태 교환
@@ -281,7 +304,7 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 - `app-logic.js` — Act 전환, 엔딩 체크, 게임 로직
 - `app-bgm.js` — BGM 연동
 
-### 5.3 컴포넌트 (16개)
+### 5.3 컴포넌트
 `components.js`, `components-game.js`, `components-dialogue.js`, `components-evening.js`, `components-briefing.js`, `components-archive.js`, `components-evidence.js`, `components-facility.js`, `components-settings.js`, `components-settings-2.js`, `components-settings-hotfix.js`, `components-endings.js`, `components-glitch.js`, `components-escape.js`, `components-escape-roll.js`, `components-minigames.js`, `components-fieldmission-minigame-patch.js`
 
 ### 5.4 데이터 (분리됨, 200줄 룰)
@@ -312,18 +335,20 @@ OBSERVER 글리치 연출 (`style-glitch.css` + `components-glitch.js`)
 - `data-minigame-rewards.js` (2026-04-24 신규) — 필드 미션 미니게임 설정/보상/서사
 
 ### 5.5 자산
-- 이미지: `images.js`, `images_bg.js`, `images_cards.js` (base64) + `img/` 34장 PNG
+- 이미지: `images.js`, `images_bg.js`, `images_cards.js`, `images_hub.js` 레지스트리 + `assets/images/` 실파일 혼합 운용
 - BGM: `bgm.js`, `bgm-fade.js`, `bgm-act.js`, `bgm_main.js`, `bgm_tension.js`, `bgm_boot.js` + MP3 3개
 - SFX: `sfx-sources.js`
 
 ### 5.6 QA 도구 (`tools/`)
 | 스크립트 | 용도 |
 |---|---|
-| `validator.py` | 카드 ID 중복 / 체인 참조 / LOG 생산-소비 / 엔딩 필수 LOG 검증 |
+| `validator.js` | 카드 ID 중복 / 체인 참조 / LOG 생산-소비 / 엔딩 필수 LOG 검증 |
 | `simulator.py` | 몬테카를로 v1 (랜덤 스와이프) |
 | `simulator_v2.py` | 몬테카를로 v2 (이브닝 챗 trust 시뮬 + random/neutral/resist 전략) |
 | `diagnose_act4.py` | Act별 카드 pool 분류 + 부족 구간 진단 |
 | `check_buttons.py` | 카드 좌/우 버튼 작동성 검사 |
+
+2026-05-06 기준 `node tools/validator.js` 결과: 파일 로드 75/실패 0, 카드 521/고유 521, 체인 누락 0, 카드→미션 참조 0, 미니게임 참조 0, LOG 미도달 0, 구조 이상 0.
 
 ---
 
@@ -353,16 +378,20 @@ setTimeout/event handler closure에서 logs 의존 분기 시 **반드시 `Save.
 ## 7. 출시 준비 상태
 
 ### 7.1 완료
-- [x] 콘텐츠 90% (15엔딩 활성, 486 카드, 시설 16개)
+- [x] 콘텐츠 90%+ (521 카드, 시설 16개, 엔딩 정의 12종 / 실질 결과 분기 15종)
 - [x] 업적 29개 + Steam steamId 매핑
 - [x] 다중 저장 슬롯 + NG+
 - [x] 글리치 연출 시스템
 - [x] BGM 6트랙 + 모바일 볼륨 슬라이더
 - [x] QA 도구 5종
+- [x] 이브닝챗 2.0: 하루 1명 대화, 허브 복귀, 완료 상태, 조사테이블 연동
+- [x] 3슬롯 세이브/로드 상태 보존 QA
+- [x] LOG/카드/미션/증거 정적 validator 0건 통과
 
 ### 7.2 출시 전 필수 (P0)
 - [x] **i18n 인프라 구축** (2026-04-23, `i18n-runtime.js` + UI 언어팩 + 콘텐츠 영어 오버레이)
-- [ ] 영어 번역 품질 감수 (콘텐츠 오버레이 207KB 자동 생성분 QA)
+- [ ] 영어 번역 품질 감수 (콘텐츠 오버레이 + 이브닝/조사테이블 장문 QA)
+- [ ] 한국어 최종 실플레이 QA (Act 1~4, 세이브/로드 분기, 엔딩 루트)
 - [ ] Steam 캡슐 그래픽 4종 (Header/Capsule/Library/Page Bg)
 - [ ] 스크린샷 5장 + GIF 2개
 - [ ] 트레일러 60초
@@ -421,8 +450,9 @@ Trust 65+ 달성률    99%
 
 ---
 
-*v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)** → v1.0 증보 (2026-04-23) → v1.0 증보 (2026-04-24)*
-*본 문서는 **BUILD_VER=60** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증 완료.*
+*v0.7 → v0.9 → **v1.0 (출시 준비 마일스톤)** → v1.0 증보 (2026-04-23) → v1.0 증보 (2026-04-24) → **v1.1 current snapshot (2026-05-06)**.*
+*본 문서는 **BUILD_VER=159** 시점의 게임 상태를 반영하며, TIU 마스터 로어와의 정합성 검증을 계속 갱신 중.*
 *2026-04-23 증보분: i18n 인프라 구축, MainMenu/ScenarioHub 플로우 개편, 카드 체인 버그 수정 (C-060/CA-SEED-02/C-236), 이브닝챗 응답 매칭, 오디오/UI 정비.*
 *2026-04-24 증보분: 필드 미션 미니게임(signal/sequence/breach) 프로덕션 통합 (M-002/MI-01/MI-04), 아카이브 언락 타이트닝, 결과 토스트 서사 한·영 풀 재작성, MainMenu 평탄화, ScenarioHub 한국어 복원.*
-*변경 이력 상세: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-04-24 스냅샷*
+*2026-05-06 증보분: LOG/카드 무결성, 이브닝챗 한국어 버킷, 조사테이블 해금 안내, 3슬롯 세이브/로드, 현장임무 후속/미니게임 참조, UI 원형 복구 기준 반영.*
+*변경 이력 상세: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-05-06 스냅샷*
