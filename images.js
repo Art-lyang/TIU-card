@@ -2,8 +2,8 @@
 const IMG = {
   bg_seoul_a: "assets/images/backgrounds/bg_seoul_a.jpg",
   bg_seoul_b: "assets/images/backgrounds/bg_seoul_b.jpg",
-  char_doyun: "assets/images/characters/char_doyun.jpg",
-  char_doyun_panel: "assets/images/characters/char_doyun_v2.jpg",
+  char_doyun: "assets/images/characters/char_doyun_hq_v3.jpg",
+  char_doyun_panel: "assets/images/characters/char_doyun_hq_v3.jpg",
   char_foster: "assets/images/characters/char_foster.jpg",
   char_foster_panel: "assets/images/characters/char_foster_v2.jpg",
   char_haeun_tense: "assets/images/characters/char_haeun_tense.jpg",

@@ -55,12 +55,14 @@
     facility_fe008_north_patrol: 'assets/images/facility/facility_fe008_north_patrol.jpg',
 
     ending_escape_p1_hq: 'assets/images/endings/ending_escape_p1_hq.jpg',
-    char_doyun_hq: 'assets/images/characters/char_doyun_hq_v2.jpg',
+    char_doyun_hq: 'assets/images/characters/char_doyun_hq_v3.jpg',
+    char_agent_kang_hq: 'assets/images/characters/char_agent_kang_hq_v1.jpg',
     char_foster_hq: 'assets/images/characters/char_foster_hq_v1.jpg',
     char_weber_hq: 'assets/images/characters/char_weber_hq_v1.jpg'
   });
 
   IMG.ending_E = IMG.ending_escape_p1_hq;
+  IMG.char_doyun = IMG.char_doyun_hq;
   IMG.char_doyun_panel = IMG.char_doyun_hq;
   IMG.char_foster_panel = IMG.char_foster_hq;
   IMG.char_weber_panel = IMG.char_weber_hq;
