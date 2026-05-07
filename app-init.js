@@ -27,6 +27,7 @@ var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 var _cardFullText=function(c,stats,gi,logs){var txt=_introMsgText(c,stats,gi,logs);try{if(c&&c.left)txt+=' '+(c.left.label||'');if(c&&c.right)txt+=' '+(c.right.label||'')}catch(e){}return txt};
 var cardHasMission=function(c){return !!(c&&((c.left&&c.left.mission)||(c.right&&c.right.mission)||c.mission))};
+var cardFeProposeIds=function(c){var ids=[];if(c&&c.left&&c.left.fePropose)ids.push(c.left.fePropose);if(c&&c.right&&c.right.fePropose)ids.push(c.right.fePropose);return ids};
 var cardFlowType=function(c,stats,gi,logs){
   if(!c)return 'ops';
   if(c.flow){return typeof c.flow==='string'?c.flow:(c.flow.type||'ops')}
@@ -151,6 +152,9 @@ var getOracleSafeguardCard=function(stats,gi,logs,tRoute){
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
+  var facAll=[].concat((facility&&facility.approved)||[],(facility&&facility.pending)||[],facComp,(facility&&facility.proposed)||[]);
+  var feProposeAvailable=function(c){var ids=cardFeProposeIds(c);for(var i=0;i<ids.length;i++)if(facAll.indexOf(ids[i])>=0)return false;return true};
+  var facilityProposalAvailable=function(c){return !(c&&c.isFacilityProposal&&c.feId&&facAll.indexOf(c.feId)>=0)};
   // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
   // (localStorage를 직접 조회 — React closure stale logs 회피)
   if(day===1){
@@ -168,6 +172,8 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(c.once&&logs.indexOf('ONCE-'+c.id)>=0)return false;
     if(c.transReq&&c.transReq!==tr)return false;
     if(c.feReq&&facComp.indexOf(c.feReq)<0)return false;
+    if(!feProposeAvailable(c))return false;
+    if(!facilityProposalAvailable(c))return false;
     try{if(c.req&&!c.req(stats,gi,logs))return false}catch(e){return false}
     try{if(c.cond&&!c.cond(stats,gi,logs))return false}catch(e){return false}
     if(c.id&&cd[c.id]&&!c.repeatable)return false;
@@ -180,10 +186,10 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(!cardFlowOk(c,stats,gi,logs,ca,rec))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec);
 };
 

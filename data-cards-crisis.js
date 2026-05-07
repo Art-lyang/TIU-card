@@ -32,8 +32,8 @@ var CARDS_CRISIS = [
   { id: "CR-005", act: [2,3,4], priority: "중",
     req: function(s){ return s.r < 30; },
     msg: "기지 정수 시설 필터 교체 시기가 지났으나 교체품이 없습니다.\n\n\"물에서 냄새가 납니다.\"\n\n사기가 눈에 띄게 떨어지고 있습니다.",
-    left: { label: "임시 정수법 지시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
-    right: { label: "봉쇄 물자에서 전용", fx: { c: -1, r: 1, t: 1, o: -1 }, g: -1 } },
+    left: { label: "음용 제한과 임시 배급을 지시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
+    right: { label: "비상 필터를 현장 물자로 재배정한다", fx: { c: -1, r: 1, t: 1, o: -1 }, g: -1 } },
 
   { id: "CR-006", act: [3,4], priority: "상",
     req: function(s){ return s.r < 25 && s.c < 40; },

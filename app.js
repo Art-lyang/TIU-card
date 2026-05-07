@@ -39,6 +39,27 @@ function App(){
   // 신뢰도 변화는 플레이어에게 표시하지 않음 (GI처럼 숨김)
   var _ps=useState(null),prevStats=_ps[0],setPrevStats=_ps[1];
   var cpd=act===1?4:act===2?5:act===3?6:7;
+  var normalizeFacilityState=function(fac){
+    fac=fac||{};
+    return {
+      approved:Array.isArray(fac.approved)?fac.approved.slice():[],
+      pending:Array.isArray(fac.pending)?fac.pending.slice():[],
+      completed:Array.isArray(fac.completed)?fac.completed.slice():[],
+      proposed:Array.isArray(fac.proposed)?fac.proposed.slice():[]
+    };
+  };
+  var facilityHasExpansion=function(fac,feId){
+    var f=normalizeFacilityState(fac);
+    return f.approved.indexOf(feId)>=0||f.pending.indexOf(feId)>=0||f.completed.indexOf(feId)>=0||f.proposed.indexOf(feId)>=0;
+  };
+  var registerFacilityExpansion=function(fac,feId,status){
+    var next=normalizeFacilityState(fac);
+    if(!feId||facilityHasExpansion(next,feId))return next;
+    next.proposed.push(feId);
+    if(status==='pending')next.pending.push(feId);
+    else next.approved.push(feId);
+    return next;
+  };
   var deriveActFlags=function(prev,cardId,missionId,chainDone){
     var next={prom_met:!!prev.prom_met,mission_done:!!prev.mission_done,chain_done:!!prev.chain_done,prom_mission:!!prev.prom_mission};
     if(cardId==='C-006'||cardId==='C-011')next.prom_met=true;
@@ -220,15 +241,14 @@ function App(){
       var fpChoice=dir==='left'?curCard.left:curCard.right;
       var fpStats=applyFx(stats,(fpChoice&&fpChoice.fx)||{}),fpGi=gi+((fpChoice&&fpChoice.g)||0);
       setStats(fpStats);setGi(fpGi);
-      setFacility(function(prev){
-        var next={approved:prev.approved.slice(),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([feId])};
-        if(dir==='right'){next.approved.push(feId);setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
-        else{next.pending.push(feId);setToastType('');setToast(tt('app.facilityPending',null,'확장 제안이 대기 목록에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
-        Save.saveFacility(next);return next});
+      var fpFacility=registerFacilityExpansion(facility,feId,dir==='right'?'approved':'pending');
+      setFacility(fpFacility);Save.saveFacility(fpFacility);
+      if(dir==='right'){setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
+      else{setToastType('');setToast(tt('app.facilityPending',null,'확장 제안이 대기 목록에 추가되었습니다'));setTimeout(function(){setToast('')},2200)}
       var nct=ct+1;setCt(nct);
-      persistGame(fpStats,fpGi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue);
+      persistGame(fpStats,fpGi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue,fpFacility);
       if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(fpStats,fpGi,logs));setTimeout(function(){setPhase('news')},400)}
-      else{nextCard(fpStats,fpGi,logs,chainQueue)}
+      else{nextCard(fpStats,fpGi,logs,chainQueue,act,cooldowns,recentCards,transRoute,fpFacility)}
       return;
     }
     var ch=dir==='left'?curCard.left:curCard.right;
@@ -252,10 +272,11 @@ function App(){
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     var nextActFlags=updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
 
-    if(ch.fePropose){var fpId=ch.fePropose;setFacility(function(prev){if(prev.proposed.indexOf(fpId)>=0||prev.approved.indexOf(fpId)>=0)return prev;var next={approved:prev.approved.concat([fpId]),pending:prev.pending.slice(),completed:prev.completed.slice(),proposed:prev.proposed.concat([fpId])};Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityRegistered',null,'시설 확장이 보상 풀에 등록되었습니다'));setTimeout(function(){setToast('')},2200)}
+    var facilityForNext=facility;
+    if(ch.fePropose){var fpId=ch.fePropose;if(!facilityHasExpansion(facility,fpId)){facilityForNext=registerFacilityExpansion(facility,fpId,'approved');setFacility(facilityForNext);Save.saveFacility(facilityForNext);setToastType('');setToast(tt('app.facilityRegistered',null,'시설 확장이 보상 풀에 등록되었습니다'));setTimeout(function(){setToast('')},2200)}}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
     var nct=ct+1;setCt(nct);
-    persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue);
+    persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue,facilityForNext);
     // endTrigger: 루트 클라이맥스 카드 → 해당 엔딩 강제 발동 (게임오버 체크 우선)
     var et=ch.endTrigger||curCard.endTrigger;
     if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
@@ -287,17 +308,17 @@ function App(){
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
-    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq)}
+    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext)}
     if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
-    else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facility)},300)}
-    else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facility)},300)}
-    else{nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facility)}
+    else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
+    else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
+    else{nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     // 결과 서사 텍스트 or 자원 리스크 토스트
     if(riskFired){setTimeout(function(){setToastType('risk');setToast(riskFired);setTimeout(function(){setToast('')},2800)},600)}
     else if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);setTimeout(function(){setToast('')},2400)},400)}}
   };
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(5,Math.min(95,ns.c));ns.r=Math.max(5,Math.min(95,ns.r));ns.t=Math.max(5,Math.min(95,ns.t));ns.o=Math.max(5,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
-  var hReward=function(r){SFX.play('reward');if(typeof rememberRewardId==='function')rememberRewardId((typeof rewardMemoryId==='function'?rewardMemoryId(r):(r&&r.id)));var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
+  var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(5,ns.c);ns.r=Math.max(5,ns.r);ns.t=Math.max(5,ns.t);ns.o=Math.max(5,ns.o);
     // Act별 일일 감쇠
     if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(5,ns.c-1);ns.r=Math.max(5,ns.r-(act3LoyalRelief?0:1))}
     if(act===4){

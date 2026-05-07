@@ -17,8 +17,8 @@ var CARDS_PROLOGUE = [
   { id: "CA-001B", act: [1], priority: "중", bg: "base", once: true,
     req: function(s){ return s.day <= 1 && (typeof Save!=='undefined' ? Save.getSessions() : 0) >= 1; },
     msg: "기지 도착 첫날.\n\n[ORACLE: 지휘관 이중철 취임을 기록합니다. KR-INIT-001 운영 정상화 절차를 개시합니다.]\n\n[ORACLE: 지휘관 적성 데이터 분석 완료 — 기지 적응 기간 생략이 가능합니다. 즉시 운영 투입을 권장합니다.]\n\n간부진이 사무실 앞에 정렬해 있습니다.",
-    left: { label: "기지 적응 기간부터 시작 (Act 1 정상 진행)", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 },
-    right: { label: "즉시 운영 투입 (Act 2 직행)", fx: { c: 0, r: -1, t: -1, o: 2 }, g: 2 } },
+    left: { label: "기지 적응 기간부터 시작", fx: { c: 1, r: 0, t: 0, o: 0 }, g: 0 },
+    right: { label: "즉시 확장 운영에 투입", fx: { c: 0, r: -1, t: -1, o: 2 }, g: 2 } },
 
   { id: "CA-002", act: [1], priority: "하", bg: "base", once: true,
     req: function(s){ return s.day <= 2; },

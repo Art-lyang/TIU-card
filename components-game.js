@@ -23,18 +23,18 @@ function rememberRewardId(id){
     localStorage.setItem(REWARD_RECENT_KEY,JSON.stringify(recent.slice(-REWARD_RECENT_LIMIT)));
   }catch(e){}
 }
-function pickRewardsNoRecent(pool,count,recent){
+function pickRewardsUnique(pool,count){
   pool=Array.isArray(pool)?pool:[];
-  recent=recent||[];
   var picked=[];
-  var fresh=pool.filter(function(r){return recent.indexOf(rewardMemoryId(r))<0});
-  picked=pickN(fresh,count);
-  if(picked.length<count){
-    var used=picked.map(rewardMemoryId);
-    var fallback=pool.filter(function(r){return used.indexOf(rewardMemoryId(r))<0});
-    picked=picked.concat(pickN(fallback,count-picked.length));
+  var seen={};
+  var shuffled=pickN(pool,pool.length);
+  for(var i=0;i<shuffled.length&&picked.length<count;i++){
+    var id=rewardMemoryId(shuffled[i]);
+    if(id&&seen[id])continue;
+    if(id)seen[id]=true;
+    picked.push(shuffled[i]);
   }
-  return picked.slice(0,count);
+  return picked;
 }
 
 function Boot(p){
@@ -279,6 +279,8 @@ function CardC(p){
   var leftLabel=(cardLoc&&cardLoc.leftLabel)||resolveVal(card.left&&card.left.label)||'';
   var rightLabel=(cardLoc&&cardLoc.rightLabel)||resolveVal(card.right&&card.right.label)||'';
   var cardHint=(cardLoc&&cardLoc.hint)||card.hint;
+  var inlineCardHint=card.isFacilityProposal?null:cardHint;
+  var facilityCardHint=card.isFacilityProposal?cardHint:null;
   var defaultBlockMsgs=tt('card.blockMsgs',null,null);
   if(!Array.isArray(defaultBlockMsgs))defaultBlockMsgs=[
     '[ORACLE: Command refusal detected - confirmation required]',
@@ -406,7 +408,6 @@ function CardC(p){
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
-      card.isFacilityProposal&&h('div',{style:{background:'rgba(var(--ui-rgb),.08)',border:'1px solid rgba(var(--ui-rgb),.3)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'var(--ui)',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase'}},'FACILITY PROPOSAL'),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},card.glitch?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
       timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
@@ -435,8 +436,11 @@ function CardC(p){
             }));
         });
       }()),
-      cardHint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(var(--ui-rgb),.06)',borderLeft:'2px solid rgba(var(--ui-rgb),.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:0.5}},cardHint),
-      (leftFx||rightFx)&&h('div',{style:{marginTop:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(var(--ui-rgb),.08)'}},
+      inlineCardHint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(var(--ui-rgb),.06)',borderLeft:'2px solid rgba(var(--ui-rgb),.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:0.5}},inlineCardHint),
+      card.isFacilityProposal&&h('div',{style:{marginTop:'auto',padding:'7px 10px',background:'rgba(var(--ui-rgb),.055)',border:'1px solid rgba(var(--ui-rgb),.28)',fontFamily:"'Share Tech Mono',monospace",color:'var(--ui)',letterSpacing:1.2,textTransform:'uppercase'}},
+        h('div',{style:{fontSize:9,letterSpacing:2,textAlign:'center'}},'FACILITY PROPOSAL'),
+        facilityCardHint&&h('div',{style:{fontSize:10,lineHeight:1.5,letterSpacing:.3,color:'rgba(var(--ui-rgb),.72)',textAlign:'center',marginTop:4,textTransform:'none'}},facilityCardHint)),
+      (leftFx||rightFx)&&h('div',{style:{marginTop:card.isFacilityProposal?8:'auto',padding:'10px 0 6px',borderTop:'1px solid rgba(var(--ui-rgb),.08)'}},
         h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,columnGap:10,rowGap:3,alignItems:'center'}},
           h('div',{style:{display:'flex',gap:6,rowGap:3,flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start',textAlign:'left',opacity:0.86}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
           h('div',{style:{display:'flex',gap:6,rowGap:3,flexWrap:'wrap',alignItems:'center',justifyContent:'flex-end',textAlign:'right',opacity:0.86}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'→')))),
@@ -873,7 +877,7 @@ function RewardScreen(p){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
     if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
-    var pool=pickRewardsNoRecent(basePool,count,getRecentRewardIds());
+    var pool=pickRewardsUnique(basePool,count);
     // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
       var fac=p.facility;var feRewards=[];
@@ -881,7 +885,7 @@ function RewardScreen(p){
         if(fac.completed.indexOf(feId)>=0)return;
         var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
         if(fe){var feView=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;feRewards.push({id:'R-'+fe.id,feId:fe.id,title:feView.rewardTitle,desc:feView.rewardDesc,benefit:feView.rewardBenefit,cost:feView.rewardCost,fx:fe.rewardFx})}});
-      if(feRewards.length>0){pool=pool.slice(0,Math.max(1,count-feRewards.length)).concat(feRewards.slice(0,count))}
+      if(feRewards.length>0){var keepBase=Math.max(0,count-Math.min(feRewards.length,count));pool=pool.slice(0,keepBase).concat(feRewards.slice(0,count))}
     }
     return pool;
   }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];

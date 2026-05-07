@@ -11,7 +11,7 @@ var CARDS_ACT23_PRESSURE = [
     flow: { type: "ops", minAct: 2, maxAct: 2, minDay: 7 },
     cond: function(s,g,logs){ return logs.indexOf("LOG-A2-FORESHADOW-01") < 0; },
     bg: "comms",
-    msg: "임재혁이 새벽 통신 로그를 정리하다가 짧은 공백을 발견했습니다.\n\n\"누군가 들어온 건 아닙니다. 그런데 ORACLE 기록에도 없는 외부 경유 흔적이 있어요. 지금은 조직 이름을 붙이기보다 패턴만 남기는 게 맞겠습니다.\"\n\nAct 2에서는 아직 답보다 의심이 먼저입니다.",
+    msg: "임재혁이 새벽 통신 로그를 정리하다가 짧은 공백을 발견했습니다.\n\n\"누군가 들어온 건 아닙니다. 그런데 ORACLE 기록에도 없는 외부 경유 흔적이 있어요. 지금은 조직 이름을 붙이기보다 패턴만 남기는 게 맞겠습니다.\"\n\n지금은 아직 답보다 의심이 먼저입니다.",
     left: { label: "패턴만 기록하고 추적은 보류", fx: { c:0,r:0,t:1,o:0 }, g:0, log:"LOG-A2-FORESHADOW-01" },
     right: { label: "임재혁에게 비공식 재분석을 맡긴다", fx: { c:0,r:-1,t:1,o:-1 }, g:-1, log:"LOG-A2-FORESHADOW-01" }
   },
@@ -41,8 +41,8 @@ var CARDS_ACT23_PRESSURE = [
         logs.indexOf("LOG-A2-TRIAGE-01") < 0;
     },
     bg: "restricted",
-    msg: "Act 2 후반. 조사테이블에 쌓인 단서가 서로 다른 방향을 가리킵니다.\n\n서하은: \"지금 결론을 붙이면 ORACLE 요약에 삼켜집니다. 외부 경유, 내부 기록, 현장 이상을 나눠서 Act 3 교차검증 목록으로 넘기겠습니다.\"\n\n답을 미루는 것도 운영 판단입니다.",
-    left: { label: "Act 3 교차검증 목록으로 넘긴다", fx: { c:0,r:0,t:1,o:-1 }, g:-1, log:"LOG-A2-TRIAGE-01" },
+    msg: "운영 후반. 조사테이블에 쌓인 단서가 서로 다른 방향을 가리킵니다.\n\n서하은: \"지금 결론을 붙이면 ORACLE 요약에 삼켜집니다. 외부 경유, 내부 기록, 현장 이상을 나눠서 후속 교차검증 목록으로 넘기겠습니다.\"\n\n답을 미루는 것도 운영 판단입니다.",
+    left: { label: "후속 교차검증 목록으로 넘긴다", fx: { c:0,r:0,t:1,o:-1 }, g:-1, log:"LOG-A2-TRIAGE-01" },
     right: { label: "ORACLE 요약본만 남긴다", fx: { c:0,r:0,t:-1,o:1 }, g:1, log:"LOG-A2-TRIAGE-01" }
   },
   {
@@ -122,7 +122,7 @@ var CARDS_ACT23_PRESSURE = [
         );
     },
     bg: "base",
-    msg: "Act 4 결산 회의. 자원 압박표와 조사테이블 단서가 같은 화면에 올라옵니다.\n\n강도윤: \"숫자만 보면 줄이는 게 맞습니다. 하지만 누가 어디를 버티는지까지 보면 배치가 달라집니다.\"\n\n윤세진은 의무실 명단을, 임재혁은 ORACLE 누락 구간을 나란히 놓습니다.\n\n이번에는 손실을 견디는 카드가 아니라, 남은 사람을 어디에 세울지 정하는 카드입니다.",
+    msg: "최종 결산 회의. 자원 압박표와 조사테이블 단서가 같은 화면에 올라옵니다.\n\n강도윤: \"숫자만 보면 줄이는 게 맞습니다. 하지만 누가 어디를 버티는지까지 보면 배치가 달라집니다.\"\n\n윤세진은 의무실 명단을, 임재혁은 ORACLE 누락 구간을 나란히 놓습니다.\n\n이번에는 손실을 견디는 카드가 아니라, 남은 사람을 어디에 세울지 정하는 카드입니다.",
     left: { label: "사람별 최종 역할을 재배치한다", fx: { c:1,r:1,t:2,o:-1 }, g:-2, log:"LOG-A4-STAFF-REVIEW" },
     right: { label: "ORACLE 평가표 기준으로 재배치한다", fx: { c:1,r:1,t:-1,o:1 }, g:1, log:"LOG-A4-STAFF-REVIEW" }
   }
@@ -130,14 +130,14 @@ var CARDS_ACT23_PRESSURE = [
 
 if (typeof ORACLE_LOGS !== "undefined") {
   [
-    { id:"LOG-A2-FORESHADOW-01", title:"Act2 외부 경유 흔적", content:"임재혁이 ORACLE 기록에도 없는 외부 경유 흔적을 분리 기록했다. 아직 특정 세력으로 단정하지 않고 패턴만 남겼다." },
-    { id:"LOG-A2-FORESHADOW-02", title:"조사테이블 분류 기준", content:"조사테이블이 외부 경유, 내부 기록, 현장 이상을 분리해 보관하기 시작했다. 결론은 Act3 이후의 교차 검증에 맡겨졌다." },
-    { id:"LOG-A2-TRIAGE-01", title:"Act2 교차검증 목록", content:"Act2 후반의 단서를 결론으로 고정하지 않고 외부 경유, 내부 기록, 현장 이상으로 나눠 Act3 교차검증 목록에 넘겼다." },
-    { id:"LOG-A4-DG-SUPPORT", title:"DG 긴급 물류 지원", content:"Act4 위기 중 DG가 비공식 물류 지원을 제공했다. 즉각적인 자원 압박은 줄었지만 향후 영향력 비용이 남았다." },
+    { id:"LOG-A2-FORESHADOW-01", title:"외부 경유 흔적", content:"임재혁이 ORACLE 기록에도 없는 외부 경유 흔적을 분리 기록했다. 아직 특정 세력으로 단정하지 않고 패턴만 남겼다." },
+    { id:"LOG-A2-FORESHADOW-02", title:"조사테이블 분류 기준", content:"조사테이블이 외부 경유, 내부 기록, 현장 이상을 분리해 보관하기 시작했다. 결론은 후속 교차 검증에 맡겨졌다." },
+    { id:"LOG-A2-TRIAGE-01", title:"교차검증 목록", content:"운영 후반의 단서를 결론으로 고정하지 않고 외부 경유, 내부 기록, 현장 이상으로 나눠 후속 교차검증 목록에 넘겼다." },
+    { id:"LOG-A4-DG-SUPPORT", title:"DG 긴급 물류 지원", content:"최종 위기 중 DG가 비공식 물류 지원을 제공했다. 즉각적인 자원 압박은 줄었지만 향후 영향력 비용이 남았다." },
     { id:"LOG-A4-MD-SUPPORT", title:"메리디안 관측값 지원", content:"메리디안이 봉쇄선 관측값을 제공했다. 정확한 정보가 위기를 완화했지만 외부 감시의 깊이도 확인됐다." },
     { id:"LOG-A4-PROM-SUPPORT", title:"프로메테우스 현장 좌표", content:"프로메테우스가 ORACLE이 지우는 현장 좌표를 제공했다. 협력인지 조작 방지인지 판단은 유보됐다." },
-    { id:"LOG-A4-EVIDENCE-RELIEF", title:"조사테이블 위기 재배치", content:"조사테이블의 교차 결론으로 Act4 배치 순서를 조정했다. 단서가 자원 압박을 줄이는 실질적 근거가 됐다." },
-    { id:"LOG-A4-STAFF-REVIEW", title:"Act4 인물별 최종 배치", content:"Act4 자원 압박표와 조사테이블 단서를 함께 검토해 인물별 최종 역할을 재배치했다. 압박을 단순 손실이 아니라 선택 가능한 운영 문제로 다뤘다." }
+    { id:"LOG-A4-EVIDENCE-RELIEF", title:"조사테이블 위기 재배치", content:"조사테이블의 교차 결론으로 최종 배치 순서를 조정했다. 단서가 자원 압박을 줄이는 실질적 근거가 됐다." },
+    { id:"LOG-A4-STAFF-REVIEW", title:"인물별 최종 배치", content:"최종 자원 압박표와 조사테이블 단서를 함께 검토해 인물별 최종 역할을 재배치했다. 압박을 단순 손실이 아니라 선택 가능한 운영 문제로 다뤘다." }
   ].forEach(function(log){
     if(!ORACLE_LOGS.some(function(x){return x.id===log.id})) ORACLE_LOGS.push(log);
   });

@@ -2437,8 +2437,8 @@ window.TS_I18N.mergeContent('en', {
       },
       "CA-001B": {
         msg: "First day at the branch.\n\n[ORACLE: Recording the appointment of Commander Lee Jung-cheol. Initiating KR-INIT-001 operational normalization procedure.]\n\n[ORACLE: Commander aptitude analysis complete — the branch acclimation period can be skipped. Immediate operational deployment is recommended.]\n\nThe senior staff are lined up outside your office.",
-        leftLabel: "Begin with acclimation period (normal Act 1)",
-        rightLabel: "Enter operations immediately (skip to Act 2)"
+        leftLabel: "Begin with the acclimation period",
+        rightLabel: "Enter expanded operations immediately"
       },
       "CA-002": {
         msg: "The deputy commander outlines branch operations during the three-month command gap.\n\n\"We kept the branch functioning on ORACLE directives alone. Core functions held, but anything requiring judgment was left pending.\"\n\n[ORACLE: 12 pending items. Automatic priority sorting complete. Awaiting commander approval.]",
@@ -2946,7 +2946,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Delete it. Too dangerous"
     },
     "CA4-ESCAPE-OFFER": {
-      msg: "First day of Act 4.\n\nA message arrives through the encrypted channel you saved. Weber.\n\n\"Commander. The situation has reached its threshold.\"\n\n\"ORACLE is finalizing its evaluation of you. Once the result is issued, you may follow the same path as Deputy Commander Seo Hae-eun.\"\n\n\"Twenty-four hours. Decide within that window.\"\n\"We can extract you and your team. This is the last chance.\"",
+      msg: "First day of the final phase.\n\nA message arrives through the encrypted channel you saved. Weber.\n\n\"Commander. The situation has reached its threshold.\"\n\n\"ORACLE is finalizing its evaluation of you. Once the result is issued, you may follow the same path as Deputy Commander Seo Hae-eun.\"\n\n\"Twenty-four hours. Decide within that window.\"\n\"We can extract you and your team. This is the last chance.\"",
       leftLabel: "I will consider it",
       rightLabel: "Refuse"
     },
@@ -3149,7 +3149,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-MD-CONTACT": {
       title: "Meridian BioAsset — First Contact",
-      content: "[Branch internal record]\n\nSender: Meridian BioAsset Division\nRoute: unofficial Foreign Ministry line → Korea branch\nReception: mid Act 3\n\nMeridian self-introduction:\n- Rejected at Korean market entry review\n- Operating independent observation posts outside the containment line\n- No access to ORACLE data\n\nProposal: observation data exchange channel.\n\nClassification: foreign PMC + BioAsset coalition. Direct rival to DG."
+      content: "[Branch internal record]\n\nSender: Meridian BioAsset Division\nRoute: unofficial Foreign Ministry line → Korea branch\nReception: mid verification phase\n\nMeridian self-introduction:\n- Rejected at Korean market entry review\n- Operating independent observation posts outside the containment line\n- No access to ORACLE data\n\nProposal: observation data exchange channel.\n\nClassification: foreign PMC + BioAsset coalition. Direct rival to DG."
     },
     "LOG-MD-INTEL": {
       title: "Meridian Intel Package #1",
