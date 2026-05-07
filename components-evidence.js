@@ -13,8 +13,16 @@ function localizeEvidenceCombo(combo) {
   return loc ? Object.assign({}, combo, loc) : combo;
 }
 
+function evidenceLocale() {
+  return (window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale()) || 'ko';
+}
+
+function evidenceText(ko, en) {
+  return evidenceLocale() === 'en' ? en : ko;
+}
+
 function evidenceFailText(selected) {
-  var locale = (window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale()) || 'ko';
+  var locale = evidenceLocale();
   var isEn = locale === 'en';
   var count = (selected || []).length;
   if (count >= 3) {
@@ -89,25 +97,26 @@ function EvidenceTable(p) {
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.55)', letterSpacing: 2 } },
-        'EVIDENCE TABLE STANDBY'),
+        evidenceText('조사테이블 대기', 'EVIDENCE TABLE STANDBY')),
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(240,160,48,.65)', letterSpacing: 1 } },
         collected.length + '/2')),
     h('div', { style: { fontSize: 11, color: 'rgba(var(--ui-rgb),.45)',
       lineHeight: 1.5, marginTop: 8 } },
-      'At least two evidence records are required before cross-analysis can begin.'));
+      evidenceText('교차 분석을 시작하려면 증거 기록이 최소 2개 필요합니다.',
+        'At least two evidence records are required before cross-analysis can begin.')));
 
   // 접힌 상태
   if (!show && !p.forceOpen) return h('div', outerProps,
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.5)', letterSpacing: 2 } },
-        'EVIDENCE TABLE (' + collected.length + ')'),
+        evidenceText('조사테이블 (' + collected.length + ')', 'EVIDENCE TABLE (' + collected.length + ')')),
       h('div', { onClick: function() { setShow(true) }, style: { cursor: 'pointer',
         padding: '4px 12px', border: '1px solid rgba(var(--ui-rgb),.25)',
         borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
         fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        color: 'var(--ui)', letterSpacing: 1 } }, '\u25BC OPEN')),
+        color: 'var(--ui)', letterSpacing: 1 } }, '\u25BC ' + evidenceText('열기', 'OPEN'))),
     h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 8, opacity: 0.4 } },
       collected.slice(0, 4).map(function(ev) {
         return h('div', { key: ev.id, onClick: function() { setShow(true) },
@@ -117,19 +126,19 @@ function EvidenceTable(p) {
       })),
     collected.length > 4 && h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)',
       textAlign: 'center', marginTop: 4, fontFamily: "'Share Tech Mono',monospace" } },
-      '+ ' + (collected.length - 4) + ' more'));
+      evidenceText('+ ' + (collected.length - 4) + '건 더 있음', '+ ' + (collected.length - 4) + ' more')));
 
   // 열린 상태: 같은 외부 사이즈, 내부 스크롤
   return h('div', outerProps,
     // 헤더
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        color: 'var(--ui)', letterSpacing: 2 } }, 'EVIDENCE TABLE'),
+        color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블', 'EVIDENCE TABLE')),
       h('div', { onClick: function() { setShow(false) }, style: { cursor: 'pointer',
         padding: '4px 12px', border: '1px solid rgba(var(--ui-rgb),.25)',
         borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
         fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        color: 'rgba(var(--ui-rgb),.6)', letterSpacing: 1 } }, '\u25B2 CLOSE')),
+        color: 'rgba(var(--ui-rgb),.6)', letterSpacing: 1 } }, '\u25B2 ' + evidenceText('닫기', 'CLOSE'))),
 
     // 스크롤 영역 (증거 카드 + 결과)
     h('div', { style: { maxHeight: 340, overflowY: 'auto', paddingRight: 2 } },
@@ -182,7 +191,7 @@ function EvidenceTable(p) {
         borderTop: '1px solid rgba(var(--ui-rgb),.06)' } },
         h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
           color: 'rgba(var(--ui-rgb),.3)', letterSpacing: 1, marginBottom: 4 } },
-          'INSIGHTS: ' + unlocked.length + '/' + EVIDENCE_COMBOS.length),
+          evidenceText('통찰: ', 'INSIGHTS: ') + unlocked.length + '/' + EVIDENCE_COMBOS.length),
         unlocked.map(function(cid) {
           var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
           if (!c) return null;
@@ -196,12 +205,12 @@ function EvidenceTable(p) {
       borderTop: '1px solid rgba(var(--ui-rgb),.08)' } },
       h('span', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.4)',
         fontFamily: "'Share Tech Mono',monospace" } },
-        'SELECTED: ' + selected.length + '/3'),
+        evidenceText('선택: ', 'SELECTED: ') + selected.length + '/3'),
       selected.length >= 2 && h('div', { onClick: submit,
         style: { padding: '6px 14px', cursor: 'pointer',
           border: '1px solid rgba(var(--ui-rgb),.3)', background: 'rgba(var(--ui-rgb),.05)',
           fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-          color: 'var(--ui)', letterSpacing: 1 } }, 'ANALYZE'))
+          color: 'var(--ui)', letterSpacing: 1 } }, evidenceText('분석', 'ANALYZE')))
   );
 }
 
@@ -218,16 +227,16 @@ function EvidencePanel(p) {
         alignItems: 'center', marginBottom: 16, paddingBottom: 8,
         borderBottom: '1px solid rgba(var(--ui-rgb),.15)' } },
         h('span', { style: { fontFamily: "'Share Tech Mono',monospace",
-          fontSize: 13, color: 'var(--ui)', letterSpacing: 2 } }, 'EVIDENCE TABLE'),
+          fontSize: 13, color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블', 'EVIDENCE TABLE')),
         h('span', { onClick: p.onClose, style: { cursor: 'pointer',
           fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
           color: 'rgba(var(--ui-rgb),.5)', padding: '4px 8px',
-          border: '1px solid rgba(var(--ui-rgb),.2)' } }, '[ CLOSE ]')),
+          border: '1px solid rgba(var(--ui-rgb),.2)' } }, '[ ' + evidenceText('닫기', 'CLOSE') + ' ]')),
       h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.4)',
         fontFamily: "'Share Tech Mono',monospace", marginBottom: 10 } },
-        'COLLECTED: ' + collected.length + ' / ' + EVIDENCE.length),
+        evidenceText('수집: ', 'COLLECTED: ') + collected.length + ' / ' + EVIDENCE.length),
       collected.length === 0 && h('div', { style: { fontSize: 12, color: 'rgba(var(--ui-rgb),.3)',
-        textAlign: 'center', padding: '20px 0' } }, '수집된 증거가 없습니다.'),
+        textAlign: 'center', padding: '20px 0' } }, evidenceText('수집된 증거가 없습니다.', 'No evidence records collected.')),
       h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
         collected.map(function(ev) {
           var cc = catColor[ev.cat] || 'var(--ui)';
@@ -243,7 +252,7 @@ function EvidencePanel(p) {
         borderTop: '1px solid rgba(var(--ui-rgb),.08)' } },
         h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
           color: 'rgba(var(--ui-rgb),.4)', letterSpacing: 1, marginBottom: 6 } },
-          'INSIGHTS: ' + unlocked.length + '/' + EVIDENCE_COMBOS.length),
+          evidenceText('통찰: ', 'INSIGHTS: ') + unlocked.length + '/' + EVIDENCE_COMBOS.length),
         unlocked.map(function(cid) {
           var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
           return c ? h('div', { key: cid, style: { fontSize: 10, color: 'rgba(240,160,48,.6)',
@@ -251,5 +260,5 @@ function EvidencePanel(p) {
         })),
       h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)', textAlign: 'center',
         marginTop: 16, fontFamily: "'Share Tech Mono',monospace" } },
-        '증거 조합은 이브닝 챗에서 가능합니다.')));
+        evidenceText('증거 조합은 이브닝 챗에서 가능합니다.', 'Evidence combinations are available during Evening Chat.'))));
 }

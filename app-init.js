@@ -1,7 +1,7 @@
 // TERMINAL SESSION — app-init.js
 // 글로벌 유틸리티, CARDS 배열, drawCard, Save, SFX
 var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(typeof CARDS_CHAINS!=='undefined'?CARDS_CHAINS:[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4!=='undefined'?CARDS_ACT4:[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_CHARACTER_ARCS!=='undefined'?CARDS_CHARACTER_ARCS:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(typeof CARDS_CHAINS!=='undefined'?CARDS_CHAINS:[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4!=='undefined'?CARDS_ACT4:[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_CHARACTER_ARCS!=='undefined'?CARDS_CHARACTER_ARCS:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_SESSION_PACKS!=='undefined'?CARDS_SESSION_PACKS:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
 var CARD_BY_ID={};for(var _ci=0;_ci<CARDS.length;_ci++){if(CARDS[_ci]&&CARDS[_ci].id)CARD_BY_ID[CARDS[_ci].id]=CARDS[_ci]}
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickWeighted=function(a){if(!a||a.length===0)return null;var total=0;for(var i=0;i<a.length;i++){total+=cardWeight(a[i])}var roll=Math.random()*total;for(var j=0;j<a.length;j++){roll-=cardWeight(a[j]);if(roll<=0)return a[j]}return a[a.length-1]};
@@ -22,8 +22,10 @@ var introOk=function(c,logs,stats,gi){var txt=_introMsgText(c,stats,gi,logs);for
 // ═══ 세션별 변이체 체인 제한 (2종 고정) ═══
 var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
 var ACTIVE_SPECS=[];
-var initActiveSpecs=function(){ACTIVE_SPECS=pickN(ALL_SPEC_TAGS,2).slice();try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
-var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);if(Array.isArray(parsed)&&parsed.length>=2){ACTIVE_SPECS=parsed}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
+var ACTIVE_SPEC_COUNT=2;
+var normalizeActiveSpecs=function(list){var seen={},out=[];if(!Array.isArray(list))return out;for(var i=0;i<list.length;i++){var id=String(list[i]||'');if(ALL_SPEC_TAGS.indexOf(id)>=0&&!seen[id]){out.push(id);seen[id]=true}if(out.length>=ACTIVE_SPEC_COUNT)break}return out};
+var initActiveSpecs=function(){ACTIVE_SPECS=normalizeActiveSpecs(pickN(ALL_SPEC_TAGS,ACTIVE_SPEC_COUNT));try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
+var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);var normalized=normalizeActiveSpecs(parsed);if(normalized.length===ACTIVE_SPEC_COUNT){ACTIVE_SPECS=normalized;localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 var _cardFullText=function(c,stats,gi,logs){var txt=_introMsgText(c,stats,gi,logs);try{if(c&&c.left)txt+=' '+(c.left.label||'');if(c&&c.right)txt+=' '+(c.right.label||'')}catch(e){}return txt};
 var cardHasMission=function(c){return !!(c&&((c.left&&c.left.mission)||(c.right&&c.right.mission)||c.mission))};
@@ -155,6 +157,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var facAll=[].concat((facility&&facility.approved)||[],(facility&&facility.pending)||[],facComp,(facility&&facility.proposed)||[]);
   var feProposeAvailable=function(c){var ids=cardFeProposeIds(c);for(var i=0;i<ids.length;i++)if(facAll.indexOf(ids[i])>=0)return false;return true};
   var facilityProposalAvailable=function(c){return !(c&&c.isFacilityProposal&&c.feId&&facAll.indexOf(c.feId)>=0)};
+  var deckAvailable=function(c){return (typeof sessionDeckOk!=='function')?true:sessionDeckOk(c,stats,gi,logs,ca,facility)};
   // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
   // (localStorage를 직접 조회 — React closure stale logs 회피)
   if(day===1){
@@ -183,13 +186,14 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     if(rec.indexOf(c.id)>=0)return false;
     if(!introOk(c,logs,stats,gi))return false;
     if(!specOk(c))return false;
+    if(!deckAvailable(c))return false;
     if(!cardFlowOk(c,stats,gi,logs,ca,rec))return false;
     return true;
   });
-  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  if(valid.length===0)valid=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
+  var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec);
 };
 
@@ -223,12 +227,31 @@ function cleanGameSaveMeta(game){
   return clean;
 }
 
+function sanitizeSnapshotLogsForGame(logs,game,normalized){
+  if(!Array.isArray(logs))return logs;
+  var act=parseInt(game&&game.act||1,10)||1;
+  var hasEarlyEvidenceUnlock=act<2&&logs.indexOf('LOG-EV-UNLOCK')>=0;
+  var seen={},out=[];
+  logs.forEach(function(id){
+    if(!id)return;
+    if((normalized||hasEarlyEvidenceUnlock)&&id.indexOf('ONCE-')===0)return;
+    if(act<2&&id==='LOG-EV-UNLOCK')return;
+    if(!seen[id]){seen[id]=true;out.push(id)}
+  });
+  if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
+  return out;
+}
+
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
   get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed)}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[]});Save.set('ts_game',cleanGameSaveMeta(payload))},
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos')},
+  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){
+    var sessionDeck=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
+    var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],sessionDeck:sessionDeck});
+    Save.set('ts_game',cleanGameSaveMeta(payload))
+  },
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_sessionDeck');if(typeof clearSessionDeck==='function')clearSessionDeck()},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -260,7 +283,8 @@ var Save={
       onceShown:Save.get('ts_onceShown',[]),
       recentNews:Save.get('ts_recentNews',[]),
       recentRewards:Save.get('ts_recentRewards',[]),
-      activeSpecs:Save.get('ts_activeSpecs',null),
+      activeSpecs:(typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(Save.get('ts_activeSpecs',ACTIVE_SPECS||[])):Save.get('ts_activeSpecs',null)),
+      sessionDeck:Save.get('ts_sessionDeck',null)||((typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null),
       currentCardId:curCardId,
       currentCard:staticCard?null:curCard,
       label:data&&data.label||('DAY '+((data&&data.day)||'?')+' · ACT '+((data&&data.act)||'?'))
@@ -278,9 +302,16 @@ var Save={
       var normalized=!!(fixedGame&&fixedGame.__normalized);
       pack.game=cleanGameSaveMeta(fixedGame);
       if(normalized){pack.currentCardId=null;pack.currentCard=null}
+      var packAct=pack.game&&pack.game.act||1;
+      if(pack.currentCardId&&typeof CARD_BY_ID!=='undefined'){
+        var savedCard=CARD_BY_ID[pack.currentCardId];
+        if(savedCard&&savedCard.act&&savedCard.act.indexOf(packAct)<0){pack.currentCardId=null;pack.currentCard=null}
+      }else if(pack.currentCard&&pack.currentCard.act&&pack.currentCard.act.indexOf(packAct)<0){
+        pack.currentCard=null;
+      }
       Save.set('ts_game',pack.game)
     }else Save.del('ts_game');
-    if(pack.logs)Save.set('ts_logs',pack.logs);
+    if(pack.logs){pack.logs=sanitizeSnapshotLogsForGame(pack.logs,pack.game,normalized);Save.set('ts_logs',pack.logs)}
     if(pack.trust)Save.set('ts_trust',pack.trust);else Save.del('ts_trust');
     Save.set('ts_usedDlg',pack.usedDlg||[]);
     Save.set('ts_usedEvening',pack.usedEvening||[]);
@@ -290,7 +321,10 @@ var Save={
     Save.set('ts_onceShown',pack.onceShown||[]);
     Save.set('ts_recentNews',pack.recentNews||[]);
     Save.set('ts_recentRewards',pack.recentRewards||[]);
-    if(pack.activeSpecs){Save.set('ts_activeSpecs',pack.activeSpecs);ACTIVE_SPECS=pack.activeSpecs}else{Save.del('ts_activeSpecs');ACTIVE_SPECS=[]}
+    if(pack.activeSpecs){ACTIVE_SPECS=typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(pack.activeSpecs):pack.activeSpecs;if(ACTIVE_SPECS.length>=2)Save.set('ts_activeSpecs',ACTIVE_SPECS);else{Save.del('ts_activeSpecs');initActiveSpecs&&initActiveSpecs()}}else{Save.del('ts_activeSpecs');ACTIVE_SPECS=[]}
+    var restoredDeck=pack.sessionDeck||(pack.game&&pack.game.sessionDeck)||null;
+    if(restoredDeck){Save.set('ts_sessionDeck',restoredDeck);if(typeof setActiveSessionDeck==='function')setActiveSessionDeck(restoredDeck)}
+    else{Save.del('ts_sessionDeck');if(typeof clearSessionDeck==='function')clearSessionDeck()}
     return pack;
   },
   // ═══ 업적 ═══

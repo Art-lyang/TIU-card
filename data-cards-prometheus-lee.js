@@ -105,6 +105,84 @@ var CARDS_LJC_PROMETHEUS = [
       log: "LOG-LJC-PROM-04",
       replyMsg: "[협력 보류: 지휘관 개인 판단에 따라 접촉 지연]"
     }
+  },
+  {
+    id: "LJC-PROM-05",
+    act: [2, 3],
+    priority: "중",
+    bg: "restricted",
+    tag: "prometheus-lee",
+    once: true,
+    cond: function(s, g, logs) {
+      return s.day >= 13 && logs.indexOf("LOG-LJC-PROM-01") >= 0 && logs.indexOf("LOG-LJC-PROM-05") < 0;
+    },
+    msg: "구형 무전 주파수 대조 결과가 도착했습니다.\n\n강원 동부 작전 당시 마지막 구조 요청과 최근 프로메테우스 암호 채널의 잡음 패턴이 일부 겹칩니다.\n\n일치율은 낮습니다. 하지만 우연이라고 넘기기엔 너무 같은 자리에 있습니다.\n\n이중철은 보고서를 한 장 넘기고 멈춥니다.\n\n\"그 이름이 또 여기서 나오는군.\"",
+    left: {
+      label: "주파수 대조를 비공식 보관한다",
+      fx: { c: 0, r: 0, t: 1, o: -1 },
+      g: -1,
+      log: "LOG-LJC-PROM-05",
+      replyMsg: "[비공식 보관: 과거 구조 요청과 현 채널 잡음 대조]"
+    },
+    right: {
+      label: "ORACLE 표준 분류에 포함한다",
+      fx: { c: 0, r: 0, t: -1, o: 1 },
+      g: 1,
+      log: "LOG-LJC-PROM-05",
+      replyMsg: "[표준 분류: 프로메테우스 관련성 낮음으로 정리]"
+    }
+  },
+  {
+    id: "LJC-PROM-06",
+    act: [3],
+    priority: "중",
+    bg: "comms",
+    tag: "prometheus-lee",
+    once: true,
+    cond: function(s, g, logs) {
+      return s.day >= 20 && logs.indexOf("LOG-LJC-PROM-02") >= 0 && logs.indexOf("LOG-LJC-PROM-06") < 0;
+    },
+    msg: "프로메테우스 대리 접촉자가 짧은 명단을 보냈습니다.\n\n제목은 없습니다. 날짜와 좌표, 그리고 구조 실패자 수만 적혀 있습니다.\n\n그중 하나가 강원 동부 작전의 누락 시간대와 맞물립니다.\n\n임재혁: \"이 명단이 사실이면, 저쪽도 그날을 덮은 게 아니라 쫓고 있었던 겁니다.\"\n\n이중철은 바로 대답하지 않습니다.",
+    left: {
+      label: "명단을 증거 후보로 보존한다",
+      fx: { c: 0, r: 0, t: 2, o: -1 },
+      g: -2,
+      log: "LOG-LJC-PROM-06",
+      replyMsg: "[증거 후보 보존: 프로메테우스 측 구조 실패자 명단]"
+    },
+    right: {
+      label: "출처 불명 자료로 격리한다",
+      fx: { c: 0, r: 0, t: -1, o: 1 },
+      g: 1,
+      log: "LOG-LJC-PROM-06",
+      replyMsg: "[출처 불명 격리: 작전 판단 반영 보류]"
+    }
+  },
+  {
+    id: "LJC-PROM-07",
+    act: [3, 4],
+    priority: "중",
+    bg: "base",
+    tag: "prometheus-lee",
+    once: true,
+    cond: function(s, g, logs) {
+      return s.day >= 25 && logs.indexOf("LOG-LJC-PROM-06") >= 0 && logs.indexOf("LOG-LJC-PROM-07") < 0;
+    },
+    msg: "야간 보고가 끝난 뒤, 서하은이 남아 있습니다.\n\n\"지휘관님은 프로메테우스를 믿지 않습니다. 그건 모두가 압니다.\"\n\n그녀는 잠시 말을 고릅니다.\n\n\"하지만 그 불신이 ORACLE이 원하는 방향으로만 쓰이면, 결국 누가 이득을 보는지도 봐야 합니다.\"\n\n이중철은 책상 위 오래된 작전 파일을 닫습니다.",
+    left: {
+      label: "불신의 이유까지 기록한다",
+      fx: { c: 0, r: 0, t: 1, o: -1 },
+      g: -1,
+      log: "LOG-LJC-PROM-07",
+      replyMsg: "[판단 사유 기록: 불신을 작전 근거와 분리]"
+    },
+    right: {
+      label: "감정 기록은 남기지 않는다",
+      fx: { c: 0, r: 0, t: -1, o: 1 },
+      g: 1,
+      log: "LOG-LJC-PROM-07",
+      replyMsg: "[감정 기록 제외: 공식 판단만 유지]"
+    }
   }
 ];
 

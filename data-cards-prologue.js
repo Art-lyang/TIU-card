@@ -46,7 +46,7 @@ var CARDS_PROLOGUE = [
 
   { id: "CA-006", act: [1], priority: "하", bg: "supply", once: true,
     req: function(s){ return s.day <= 2; },
-    msg: "[ORACLE: 오늘의 작전 권고 — 봉쇄선 동측 경량 감시 강화, 보급 예비량 재고 확인.]\n\n모든 항목이 우선순위별로 정렬되어 있습니다.\n\n[ORACLE: 위협도 LOW. 예측 신뢰도 97.1%. 권고 이행 시 기지 안정성 +2 예상.]",
+    msg: "[ORACLE: 오늘의 작전 권고 — 봉쇄선 동측 경량 감시 강화, 보급 예비량 재고 확인.]\n\n모든 항목이 우선순위별로 정렬되어 있습니다.\n\n[ORACLE: 위협도 LOW. 권고 이행 시 기지 운영 안정화 가능성이 높습니다.]",
     left: { label: "권고대로 진행", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 2 },
     right: { label: "직접 판단하겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 } },
 
@@ -57,7 +57,7 @@ var CARDS_PROLOGUE = [
     right: { label: "ORACLE 권고 배분 방식", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-008", act: [1], priority: "하", bg: "base", once: true,
-    msg: "임재혁이 기지 전력 시스템 업그레이드를 제안합니다.\n\n\"비상 발전기 회로가 노후화됐습니다. ORACLE이 교체 우선순위 목록도 뽑아줬는데요. 꽤 정확합니다.\"\n\n[ORACLE: 교체 비용 추정 — 자원 -10. 완료 시 기지 안정성 향상 예상.]",
+    msg: "임재혁이 기지 전력 시스템 업그레이드를 제안합니다.\n\n\"비상 발전기 회로가 노후화됐습니다. ORACLE이 교체 우선순위 목록도 뽑아줬는데요. 꽤 정확합니다.\"\n\n[ORACLE: 교체 비용 및 일정 산정 완료. 완료 시 기지 운영 안정성 향상 예상.]",
     left: { label: "업그레이드 승인", fx: { c: 1, r: -2, t: 0, o: 1 }, g: 1 },
     right: { label: "현재 수준 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 

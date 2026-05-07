@@ -6,7 +6,47 @@ window.TS_I18N.mergeUI('en', {
     startGame:'TAP TO ENTER TERMINAL',
     status:'BOOT SEQUENCE',
     console:'SYSTEM BOOT LOG',
-    progress:'BOOT PROGRESS {progress}%'
+    progress:'BOOT PROGRESS {progress}%',
+    headerTitle:'ORACLE // KOREA BRANCH TERMINAL',
+    sessionId:'SESSION ID: KR-B3-011',
+    statusLabel:'STATUS:',
+    statusUnstable:'UNSTABLE CONNECTION',
+    feedTopLeft:'ORACLE KOREA BRANCH // INTERNAL USE ONLY',
+    feedVersion:'TERMINAL SESSION v1.11',
+    trace:'BOOT TRACE:',
+    language:'Language',
+    aria:'ORACLE terminal boot sequence',
+    linesInitial:[
+      'ORACLE REMOTE TERMINAL v4.7.2',
+      'ESTABLISHING SECURE CONNECTION...',
+      'ENCRYPTION: AES-256-GCM ✓',
+      'AUTHENTICATION: BIOMETRIC + TOKEN ✓',
+      'BRANCH: KR-INIT-001 [GANGWON]',
+      'OPERATOR: PILEHEAD [LEE JUNG-CHEOL]',
+      'CLEARANCE: LEVEL 4 — BRANCH COMMANDER',
+      'GRANT: ACTIVE — TEMPORARY ACCESS',
+      '─────────────────────────────',
+      'TERMINAL SESSION — INITIATING...',
+      '  ',
+      'WELCOME, COMMANDER.',
+      'YOUR DECISIONS SHAPE THE OUTCOME.'
+    ],
+    linesRepeat:[
+      'ORACLE REMOTE TERMINAL v4.7.2',
+      'ESTABLISHING SECURE CONNECTION...',
+      'ENCRYPTION: AES-256-GCM ✓',
+      'AUTHENTICATION: BIOMETRIC + TOKEN ✓',
+      'BRANCH: KR-INIT-001 [GANGWON]',
+      'OPERATOR: PILEHEAD [LEE JUNG-CHEOL]',
+      'CLEARANCE: LEVEL 4 — BRANCH COMMANDER',
+      'GRANT: ACTIVE — RENEWAL DETECTED',
+      '─────────────────────────────',
+      '[OBSERVER: SESSION RESUMED]',
+      'PREVIOUS SESSION DATA: ARCHIVED',
+      '  ',
+      'WELCOME BACK, COMMANDER.',
+      'THE OBSERVATION CONTINUES.'
+    ]
   },
   menu:{
     startGame:'[ GAME START ]',
@@ -34,6 +74,7 @@ window.TS_I18N.mergeUI('en', {
       new:{title:'[ NEW SESSION ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
       archive:{title:'[ ARCHIVE ACCESS ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ LOGS ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      endings:{title:'[ ENDINGS ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
       settings:{title:'[ SYSTEM SETTINGS ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
   },
@@ -238,7 +279,7 @@ window.TS_I18N.mergeUI('en', {
     fallbackCardMsg:'[ORACLE: Data stream temporarily suspended]\n\nWaiting for communication recovery...',
     fallbackCardLeft:'Wait',
     fallbackCardRight:'Retry connection',
-    facilityAdded:'Facility expansion added to the reward pool', facilityPending:'Facility proposal moved to the pending list', facilityRegistered:'Facility expansion registered to the reward pool', facilityComplete:'[{title}] construction complete{suffix}', facilityDefault:'Facility', uprisingSuffix:' | GI -2',
+    facilityAdded:'Facility expansion added to the reward pool', facilityPending:'Facility proposal moved to the pending list', facilityRegistered:'Facility expansion registered to the reward pool', facilityComplete:'[{title}] construction complete{suffix}', facilityDefault:'Facility', uprisingSuffix:' | internal record updated',
     observerError:'[ORACLE: System error — ERR:0x8F2A UNHANDLED EXCEPTION]', followupCardAdded:'[Follow-up card added] {id}',
     cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]'
   }

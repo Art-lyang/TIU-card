@@ -76,7 +76,7 @@ var CARDS_RESIST_HINT = [
         ? oracleSafeguardEligible(s,g,logs)
         : !!(s && g >= 10 && (s.c <= 20 || s.r <= 20 || s.t <= 20) && logs.indexOf('ONCE-ORC-LOYAL-SAFE-01') < 0);
     },
-    msg: "[ORACLE: 충성 운영자 보호 프로토콜 발동]\n\n평가 지표는 안정적입니다. 그러나 봉쇄, 자원, 신뢰 중 하나 이상이 임계 위험 범위에 진입했습니다.\n\n[ORACLE: 본부 긴급 보급 승인]\n[ORACLE: 봉쇄선 자동 보정 패치 적용]\n[ORACLE: 현장 신뢰 회복을 위해 일부 불리한 명령 철회]\n\n이 개입은 이번 세션에서 한 번만 허용됩니다.",
+    msg: "[ORACLE: 충성 운영자 보호 프로토콜 발동]\n\n평가 지표는 안정적입니다. 그러나 봉쇄, 자원, 신뢰 중 하나 이상이 임계 위험 범위에 진입했습니다.\n\n[ORACLE: 본부 긴급 보급 승인]\n[ORACLE: 봉쇄선 자동 보정 패치 적용]\n[ORACLE: 현장 신뢰 회복을 위해 일부 불리한 명령 철회]\n\n이 개입은 현 작전 중 한 번만 허용됩니다.",
     left:  { label: "ORACLE 긴급개입 승인", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 3, log: "LOG-ORACLE-SAFEGUARD" },
     right: { label: "개입 로그까지 보존", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 2, log: "LOG-ORACLE-SAFEGUARD" } },
 

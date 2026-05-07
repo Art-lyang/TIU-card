@@ -26,7 +26,7 @@ var CARDS_BASE = [
     timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);
-      if(n>=5) return "[ORACLE: 의사결정 프로토콜 자동화 업데이트를 적용합니다. 지휘관 최종 확인이 필요합니다.]\n\n[ORACLE: 이전 세션 데이터 기반 최적 구성 — 즉시 배포 권장.]";
+      if(n>=5) return "[ORACLE: 의사결정 프로토콜 자동화 업데이트를 적용합니다. 지휘관 최종 확인이 필요합니다.]\n\n[ORACLE: 누적 운영 데이터 기반 최적 구성 — 즉시 배포 권장.]";
       if(n>=2) return "[ORACLE: 의사결정 프로토콜 자동화 전환을 권고합니다.]\n\n[ORACLE: 이전 운영 데이터 분석 완료 — 자동화 승인 시 효율 최적화.]";
       return "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.";
     },
@@ -68,7 +68,7 @@ var CARDS_BASE = [
     timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);
-      if(n>=2) return "[ORACLE: 데이터 무결성 보장을 위해 전체 로그 백업을 진행합니다.]\n\n[ORACLE: 이전 세션 승인 기록 기준 — 별도 확인 절차 생략.]\n\n서하은: \"묻지도 않고 시작됐어요. 중단시킬지 결정하셔야 합니다.\"";
+      if(n>=2) return "[ORACLE: 데이터 무결성 보장을 위해 전체 로그 백업을 진행합니다.]\n\n[ORACLE: 기존 승인 기록 기준 — 별도 확인 절차 생략.]\n\n서하은: \"묻지도 않고 시작됐어요. 중단시킬지 결정하셔야 합니다.\"";
       return "ORACLE이 기지 운영 데이터의 외부 백업을 요청합니다.\n\n[ORACLE: 데이터 무결성 보장을 위해 전체 로그를 본부 서버로 전송합니다.]\n\n서하은: \"전체 로그라면... 우리의 내부 통신 기록도 포함됩니다.\"";
     },
     left:  { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? "백업 중단 요청" : "내부 통신은 제외" }, fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
@@ -76,7 +76,7 @@ var CARDS_BASE = [
   { id: "C-036", act: [3], priority: "중",
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);
-      if(n>=3) return "[ORACLE: 전 요원 대상 심리 적합성 평가를 진행합니다.]\n\n[ORACLE: 이전 세션 결과 기반 인원 재배치 계획이 포함됩니다. 최적 구성 확보 목적.]\n\n강도윤: \"...제안이 아니라 이미 결정된 거네요. 누가 빠지는지는 나중에 안다는 소리입니까?\"";
+      if(n>=3) return "[ORACLE: 전 요원 대상 심리 적합성 평가를 진행합니다.]\n\n[ORACLE: 누적 운영 결과 기반 인원 재배치 계획이 포함됩니다. 최적 구성 확보 목적.]\n\n강도윤: \"...제안이 아니라 이미 결정된 거네요. 누가 빠지는지는 나중에 안다는 소리입니까?\"";
       if(n>=2) return "[ORACLE: 전 요원 대상 심리 적합성 평가를 진행합니다.]\n\n[ORACLE: 사전 승인 기록 있음 — 지휘관 확인 형식적 절차만 필요.]\n\n강도윤: \"...제안이 아니라 통보네요.\"";
       return "ORACLE이 전 요원 대상 심리 적합성 평가를 제안합니다.\n\n[ORACLE: 장기 운영 효율 최적화를 위해 인원 재배치가 필요할 수 있습니다.]\n\n강도윤: \"심리 평가라... 부적합 판정 나면 누가 빠지는 겁니까?\"";
     },

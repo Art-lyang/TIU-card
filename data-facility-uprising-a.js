@@ -29,6 +29,10 @@ var UPRISING_REQUIRED = ["FE-007", "FE-012", "FE-013", "FE-014", "FE-015", "FE-0
 var UPRISING_MIN_TOTAL = 10;
 
 function checkUprisingReady(facility, trust) {
+  if (typeof getActiveSessionDeck === "function") {
+    var activeDeck = getActiveSessionDeck();
+    if (activeDeck && activeDeck.packs && activeDeck.packs.length > 0 && typeof hasSessionDeckPack === "function" && !hasSessionDeckPack("UPRISING_INFRA")) return false;
+  }
   if (!facility || !facility.completed) return false;
   var comp = facility.completed;
   if (comp.length < UPRISING_MIN_TOTAL) return false;

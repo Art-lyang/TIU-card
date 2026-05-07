@@ -33,6 +33,7 @@ CARD_FILES = [
     'data-cards-act23-pressure.js', 'data-cards-resist-hint.js',
     'data-cards-crisis.js', 'data-cards-neutral.js',
     'data-cards-dg-meridian.js',
+    'data-cards-session-packs.js',
 ]
 
 def read(p):

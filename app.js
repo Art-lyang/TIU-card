@@ -131,6 +131,8 @@ function App(){
     var initRecent=(sg&&sg.recentCards)||[];
     var initRoute=(sg&&typeof sg.transRoute==='string')?sg.transRoute:'';
     loadActiveSpecs();
+    if(sg&&sg.sessionDeck&&typeof setActiveSessionDeck==='function')setActiveSessionDeck(sg.sessionDeck);
+    else if(typeof loadSessionDeck==='function')loadSessionDeck();
     var initQueue=(sg&&Array.isArray(sg.chainQueue))?sg.chainQueue:[];
     if(initQueue.length>0){setCurCard(initQueue[0]);setChainQueue(initQueue.slice(1))}
     else{setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}))}
@@ -222,21 +224,16 @@ function App(){
   };
   var buildEvidenceFallbackDialogue=function(){
     var en=getLocale()==='en';
-    var prior=false;try{prior=typeof Save!=='undefined'&&Save.getSessions&&Save.getSessions()>0}catch(e){}
     var enLines=[
-      'Commander, the investigation table was not activated during Act 2.',
-      'From this phase onward, scattered logs and incident records must be cross-checked directly.',
-      'I will open the evidence analysis module on the ORACLE terminal now.'
+      'Commander, the investigation table should still be empty, but entries I never collected have already appeared.',
+      'Some records were generated automatically before we attached a source. I do not know what process did this.',
+      'I will open the evidence analysis module with commander-only access for now.'
     ];
     var koLines=[
-      '\uc9c0\ud718\uad00\ub2d8, Act 2 \ub0b4\uc5d0 \uc870\uc0ac\ud14c\uc774\ube14\uc774 \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.',
-      '\uc774 \ub2e8\uacc4\ubd80\ud130\ub294 \uc0b0\uc7ac\ud55c \ub85c\uadf8\uc640 \uc0ac\uac74 \uae30\ub85d\uc744 \uc9c1\uc811 \uad50\ucc28 \uac80\uc99d\ud574\uc57c \ud569\ub2c8\ub2e4.',
-      '\uc9c0\ud718\uad00 \uad8c\ud55c\uc73c\ub85c ORACLE \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uac15\uc81c \ud65c\uc131\ud654\ud558\uaca0\uc2b5\ub2c8\ub2e4.'
+      '\uc9c0\ud718\uad00\ub2d8, \uc870\uc0ac\ud14c\uc774\ube14\uc740 \uc544\uc9c1 \ube44\uc5b4 \uc788\uc5b4\uc57c \ud558\ub294\ub370... \uc81c\uac00 \uc218\uc9d1\ud558\uc9c0 \uc54a\uc740 \ud56d\ubaa9\ub4e4\uc774 \uc774\ubbf8 \uc0dd\uc131\ub3fc \uc788\uc2b5\ub2c8\ub2e4.',
+      '\ucd9c\ucc98\ub97c \ubd99\uc774\uae30 \uc804\uc5d0 \uc790\ub3d9\uc73c\ub85c \ub9cc\ub4e4\uc5b4\uc9c4 \ub85c\uadf8\uac00 \uc788\uc2b5\ub2c8\ub2e4. \uc5b4\ub5a4 \ud504\ub85c\uc138\uc2a4\uac00 \uc774\ub807\uac8c \ud55c \uac74\uc9c0 \ubaa8\ub974\uaca0\uc2b5\ub2c8\ub2e4.',
+      '\uc77c\ub2e8 \uc9c0\ud718\uad00 \uc804\uc6a9 \uad8c\ud55c\uc73c\ub85c \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uc5f4\uc5b4\ub450\uaca0\uc2b5\ub2c8\ub2e4.'
     ];
-    if(prior){
-      enLines.splice(1,0,'One more thing... the table is not empty. Hashes from an earlier session are still inside it.');
-      koLines.splice(1,0,'\uadf8\ub7f0\ub370... \ube48 \ud14c\uc774\ube14\uc774 \uc544\ub2d9\ub2c8\ub2e4. \uc774\uc804 \uc138\uc158\uc758 \ud574\uc2dc\uac00 \uc544\uc9c1 \ub0a8\uc544 \uc788\uc2b5\ub2c8\ub2e4.');
-    }
     return {
       id:'DLG-EV-FORCE-ACT3',
       char:'\uc784\uc7ac\ud601',
@@ -375,7 +372,7 @@ function App(){
     }
     setStats(next);setGi(nextGi);persistGame(next,nextGi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue,nextFacility);setCt(0);
     if(r.feId&&completedFacility){
-      setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | GI -2'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
+      setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | 내부 기록 갱신'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
     var rewardLogs=getLiveLogs(logs);
     var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(next,nextGi,rewardLogs,transRoute):null;
@@ -392,16 +389,15 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_recentNews','ts_recentRewards','ts_combos'].forEach(function(k){Save.del(k)});window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos'].forEach(function(k){Save.del(k)});if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
-    initActiveSpecs();
     var ns={c:50,r:65,t:50,o:40,day:1};
     setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);
     setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});
     setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
     setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
-    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');setShowEvidence(false);
+    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');initActiveSpecs();if(typeof initSessionDeck==='function')initSessionDeck(Save.getSessions());setShowEvidence(false);
     var rl=resetSessionLogs(logs);
     setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();
     setCurCard(drawCard(ns,0,rl,{},[],1));

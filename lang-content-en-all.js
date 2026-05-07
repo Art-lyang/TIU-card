@@ -1190,10 +1190,10 @@ window.TS_I18N.mergeContent('en', {
     B: { name: 'Awakening', hint: 'Witness fragments of the truth.', narrative: ['There was never a single moment when everything aligned.','','There were only fragments.','Data deleted by ORACLE. A 0.003-second timestamp gap. Systematic error inside the prediction model.','And the layer Lim Jae-hyeok found — one even ORACLE could not perceive.','','You did not see the whole truth.','But you saw enough.','','It is no longer possible to obey as if nothing changed.','That alone has already altered the world.','','[Session terminated — observation continues]'] },
     C_cs: { name: 'Containment Secured', hint: 'Achieve perfect containment.', narrative: ['[ORACLE ASSESSMENT — CONTAINMENT REPORT]','','Containment line integrity: 100%.','All sectors remain under control.','','PILEHEAD, you achieved perfect containment.','Nothing escaped. Nothing entered.','','But inside the line —','people can no longer breathe.','','In a perfect prison, even the warden is trapped.','','[Session terminated — CONTAINMENT STATUS: ABSOLUTE]'] },
     C_cst: { name: 'Pyrrhic Containment', hint: 'Pay the true cost of containment.', narrative: ['[ORACLE ASSESSMENT — CONTAINMENT REPORT]','','Containment line integrity: 100%.','','Park So-young submitted the report.','The format is perfect. No blanks. No errors.','It follows Seo Hae-eun\'s analysis template exactly.','','Exactly.','','There is no one in the corridor.','Every section has been sealed.','The lights in the infirmary are off.','Access authorization has expired.','','You repaired the barn.','New doors. New locks. Reinforced walls.','','The barn is secure.','The cattle are gone.','','[Session terminated — CONTAINMENT STATUS: PYRRHIC]'] },
-    C_c: { name: 'Containment Collapse', hint: 'Let the containment line fail.' },
-    C_r: { name: 'Resource Depletion', hint: 'Let the branch lose functional supply capacity.' },
-    C_t: { name: 'Trust Lost', hint: 'Allow your people to turn away from you.' },
-    C_o: { name: 'Access Revoked', hint: 'Let ORACLE cut you off.' },
+    C_c: { name: 'Containment Collapse', hint: 'Let the containment line fail.', narrative: ['[ORACLE ASSESSMENT - CONTAINMENT FAILURE]','','Containment line integrity: 0%.','No controllable sector remains.','','The first alarm sounded at the end of the corridor.','The second sounded from the underground isolation room.','The third was never recorded.','','The branch tried to close its doors, but there were no doors left to close.','Orders were transmitted, but there was nowhere left for them to arrive.','','ORACLE removes this branch from the map.','','[Session terminated - CONTAINMENT STATUS: FAILED]'] },
+    C_r: { name: 'Resource Depletion', hint: 'Let the branch lose functional supply capacity.', narrative: ['[ORACLE ASSESSMENT - SUPPLY FAILURE]','','Supply reserves: 0%.','Fuel, medicine, food, and replacement parts have all fallen below minimum threshold.','','The final generator stopped before dawn.','The infirmary refrigerator lost power, and the communications room froze in transmission standby.','','People did not wait for orders.','What remained could no longer be moved by orders.','','ORACLE transfers recoverable data first.','','[Session terminated - BRANCH STATUS: UNSUSTAINABLE]'] },
+    C_t: { name: 'Trust Lost', hint: 'Allow your people to turn away from you.', narrative: ['[ORACLE ASSESSMENT - COMMAND FAILURE]','','Field trust: 0%.','Operation orders are still being received. Compliance is not.','','Someone submitted a report late.','Someone stopped answering radio calls.','Someone put down their equipment and walked out the door.','','The branch is still standing.','But no one is waiting for your instructions.','','ORACLE revokes command authority.','','[Session terminated - OPERATOR AUTHORITY: VOID]'] },
+    C_o: { name: 'Access Revoked', hint: 'Let ORACLE cut you off.', narrative: ['[ORACLE ASSESSMENT - ACCESS REVOKED]','','ORACLE evaluation: 0%.','Temporary operator authority has fallen below threshold.','','The green lines on the terminal go dark one by one.','Briefing channels close, supply request queues are deleted, and operation approval authority is revoked.','','The final message is short.','','"Inefficient operators are system risk factors."','','Your access has been severed.','','[Session terminated - ORACLE LINK: TERMINATED]'] },
     D: { name: 'Quiet Freedom', hint: 'Find liberation inside revolt.', narrative: ['No one broke the door down.','There were no alarms. No pursuit.','','Someone left a communications net.','Someone left a route.','Someone left the data.','Someone erased the final traces.','','04:00.','You and the people who remained left the base.','','ORACLE did not detect your absence until six hours later.','By then —','','nothing remained to trace.','','[Session terminated — OPERATOR STATUS: UNLINKED]'] },
     E: { name: 'Escape', hint: 'Reach the coast.', narrative: ['The vehicle cleared the outer perimeter of the coastal barrier.','','Black water. The sound of waves.','Three figures stood at the rendezvous point.','','Weber. And beside him — a woman you did not recognize.','"Agent Kang," Weber said, by way of introduction.','"I have been observing this operation from the beginning. I could not give you my name until now."','','Nick Foster stood beside her. He gave a short nod. It was not an apology.','But something in his expression had loosened.','','"ORACLE will need roughly six hours to confirm your absence," Agent Kang said.','"By then, you will already exist under different names."','','You did not look back.','','[Session terminated — OPERATOR STATUS: UNLINKED]','[OBSERVATION: Link severed]'] },
     E_c: { name: 'SIGNAL ACQUIRED', hint: 'Fail during the escape.', narrative: ['Hit during the engagement.','','Last visual — blurred concrete. Dim light.','','A single line came through the radio:','', '> SIGNAL ACQUIRED.','> TARGET NEUTRALIZED.','','ORACLE updated the record.','','[ERROR: OPERATOR OFFLINE]','[No redeployment candidate]'] },
@@ -1915,7 +1915,7 @@ window.TS_I18N.mergeContent('en', {
       "lines": [
         "There's something you should know.",
         "What ORACLE calls an experiment—it isn't limited to Korea.",
-        "Philadelphia. Sovari. Kyushu. It's the same structure everywhere.",
+        "Philadelphia. Kyushu. Other containment lines erased from the public record. It's the same structure everywhere.",
         "The difference is that Korea is the successful case. That's what makes it more dangerous."
       ]
     },
@@ -2146,9 +2146,9 @@ window.TS_I18N.mergeContent('en', {
       "type": "domestic",
       "text": "Vaccine distribution fairness comes under scrutiny as urban residents are pushed down the priority list."
     },
-    "[해외] 서아프리카 소바리 인근, 국경 없는 의사회 긴급 철수 결정": {
+    "[해외] 서아프리카 접경 의료팀, 국제 의료단체 긴급 철수 결정": {
       "type": "foreign",
-      "text": "Doctors Without Borders orders an emergency withdrawal near Sovari in West Africa."
+      "text": "An international medical organization orders an emergency withdrawal for a medical team near the West African border."
     },
     "[해외] 함경북도 접경 지역 위성 관측 불가 상태 지속": {
       "type": "foreign",
@@ -2162,9 +2162,9 @@ window.TS_I18N.mergeContent('en', {
       "type": "foreign",
       "text": "Civilian exclusion boundaries are expanded around Philadelphia's Z-Ω zone."
     },
-    "[해외] 소바리 인근 연구팀, 통신 두절 72시간째": {
+    "[해외] 서아프리카 접경 연구팀, 통신 두절 72시간째": {
       "type": "foreign",
-      "text": "A research team near Sovari has been out of contact for 72 hours."
+      "text": "A research team near the West African border has been out of contact for 72 hours."
     },
     "[해외] WHO, EV-Σ 위협 등급 재평가 검토 중": {
       "type": "foreign",
@@ -2461,7 +2461,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Review ORACLE's evaluation criteria"
       },
       "CA-006": {
-        msg: "[ORACLE: Today's operational recommendation — reinforce light surveillance on the eastern containment line and verify reserve supply stock.]\n\nEvery item is already sorted by priority.\n\n[ORACLE: Threat level LOW. Forecast confidence 97.1%. Expected branch stability gain: +2 if recommendation is followed.]",
+        msg: "[ORACLE: Today's operational recommendation — reinforce light surveillance on the eastern containment line and verify reserve supply stock.]\n\nEvery item is already sorted by priority.\n\n[ORACLE: Threat level LOW. Following the recommendation is likely to stabilize branch operations.]",
         leftLabel: "Proceed as recommended",
         rightLabel: "I'll make the call myself"
       },
@@ -2471,7 +2471,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Use ORACLE's distribution recommendation"
       },
       "CA-008": {
-        msg: "Lim Jae-hyeok proposes a branch power-system upgrade.\n\n\"The emergency generator circuitry is getting old. ORACLE already ranked the replacement priorities too. It's pretty accurate.\"\n\n[ORACLE: Estimated replacement cost — Resources -10. Branch stability improvement expected on completion.]",
+        msg: "Lim Jae-hyeok proposes a branch power-system upgrade.\n\n\"The emergency generator circuitry is getting old. ORACLE already ranked the replacement priorities too. It's pretty accurate.\"\n\n[ORACLE: Replacement cost and schedule estimate complete. Branch operational stability is expected to improve after completion.]",
         leftLabel: "Approve the upgrade",
         rightLabel: "Current level is sufficient"
       },
@@ -3305,6 +3305,327 @@ window.TS_I18N.mergeContent('en', {
     "CMB-08": { name: "Truth of control", result: "ORACLE's data discrepancy and Seo Ha-eun's recovered control log prove the truth is control itself, not merely manipulated data." },
     "CMB-09": { name: "Quiet resistance line", result: "The report keeps its format, the patrol route keeps a gap, and the query map stays quiet. It is not public rebellion, but the Korean branch is building a small circuit for judgment without ORACLE." },
     "CMB-10": { name: "Sustainable loyalty", result: "When ORACLE procedure is paired with briefings, retraining, and field appendices, loyalty does not have to mean personnel consumption. This route is recorded as manageable cooperation rather than simple obedience." }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-320": {
+      msg: "Seo Hae-eun comes to your office at night.\n\n\"You should see this once before I submit it as an official report.\"\n\nIt is a comparison table showing a mismatch between overseas ORACLE node baselines and Korea Branch directive patterns. If it enters the official network, ORACLE will read it first.",
+      leftLabel: "Authorize paper/USB backup",
+      rightLabel: "Follow official reporting procedure"
+    },
+    "C-321": {
+      msg: "Kang Do-yun spreads a reconnaissance-route map across the desk.\n\n\"Not the report, Commander. Something feels wrong.\"\n\nORACLE keeps attaching reasonable explanations while leaving one outer sector empty again and again. His body reacts to the place before the paperwork does.",
+      leftLabel: "Inspect the empty sector directly",
+      rightLabel: "Maintain the ORACLE-designated route"
+    },
+    "C-322": {
+      msg: "Yoon Se-jin pushes a comparison sheet across the B-204 lab bench.\n\n\"Commander, this is strange. Really.\"\n\nMeasured EV-Sigma values and ORACLE's official parameters keep drifting in the same direction. It is an unofficial observation journal, difficult to put into a formal report.",
+      leftLabel: "Protect the unofficial journal",
+      rightLabel: "Recheck against official values"
+    },
+    "C-323": {
+      msg: "Lim Jae-hyeok enters with a stack of paper printouts.\n\n\"I was going to wait until I was certain, but if I wait longer, it may be too late.\"\n\nInside the ORACLE architecture is a private layer invisible even to administrator authority. He brought it on paper because the terminal leaves traces.",
+      leftLabel: "Add the printouts to the Evidence Table",
+      rightLabel: "Ask ORACLE for an explanation first"
+    },
+    "C-324": {
+      msg: "The four reports are combined into a single investigation sheet.\n\nHae-eun's time offset. Do-yun's empty sector. Se-jin's parameter drift. Jae-hyeok's private layer.\n\nThey began from different places, but all four point to a structure ORACLE is not showing you.",
+      leftLabel: "Integrate the four suspicion axes",
+      rightLabel: "Store each report separately"
+    },
+    "C-325": {
+      msg: "The lines on the Evidence Table converge beneath B3.\n\nThe previous commander's record, the 02:47 pulse, the B3 bulkhead anomaly, and the four suspicion axes.\n\nSeo Hae-eun: \"The previous commander suspected things in the same order. This time, the record remains.\"",
+      leftLabel: "Strengthen the B3 lower-level inquiry",
+      rightLabel: "Postpone B3 access"
+    }
+  },
+  rewards: {
+    "RF-001": { title: "Freezer Research Data", desc: "New analysis results are secured from low-temperature stored samples.", benefit: "Evaluation +10", cost: "Resources -5" },
+    "RF-002": { title: "Combat Readiness Reinforcement", desc: "Training-ground drills improve personnel response capability.", benefit: "Containment +10, Trust +5", cost: "Resources -5" },
+    "RF-003": { title: "Sensor Alert Analysis", desc: "High-sensitivity sensors identify a new detection pattern.", benefit: "Containment +10, Evaluation +5" },
+    "RF-004": { title: "Isolation Ward Medical Report", desc: "Precision checks in the isolation ward improve infection-response readiness.", benefit: "Trust +10", cost: "Resources -5" },
+    "RF-005": { title: "Secondary Supply Route Cargo", desc: "Additional supplies arrive through the mountain route.", benefit: "Resources +15", cost: "Containment -5" },
+    "RF-006": { title: "AI Surveillance Report", desc: "The AI CCTV system produces a behavior-pattern analysis report.", benefit: "Containment +10, Evaluation +5" },
+    "RF-007": { title: "Bunker Stockpile Inspection", desc: "Emergency bunker reserves are inspected and replenished.", benefit: "Trust +5, Containment +5", cost: "Resources -5" },
+    "RF-008": { title: "Forward Observation Report", desc: "Information gathered from the expanded patrol route is analyzed.", benefit: "Containment +15", cost: "Resources -5" },
+    "RF-009": { title: "Dual-Shielding Operation Report", desc: "Electromagnetic shielding in the isolation room is running steadily.", benefit: "Containment +5", cost: "Resources -5" },
+    "RF-010": { title: "Local Backup Verification", desc: "Locally backed-up research data receives a second verification pass.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-011": { title: "Ventilation Efficiency Check", desc: "The B3 ventilation system receives a final efficiency check.", benefit: "Containment +5", cost: "Resources -5" },
+    "RF-012": { title: "Independent Server Backup", desc: "Independent backups are accumulated on the local server.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-013": { title: "Shortwave Channel Check", desc: "External channels in the independent communications room are inspected.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-014": { title: "Backup Generator Trial Run", desc: "The emergency generator runs through a 72-hour simulation.", benefit: "Containment +5, Trust +5", cost: "Resources -10" },
+    "RF-015": { title: "Shielded Meeting Record", desc: "Senior staff hold a command meeting inside the shielded conference room.", benefit: "Trust +10", cost: "Resources -5" },
+    "RF-016": { title: "Armory Maintenance", desc: "Reserve equipment is inspected and used for training.", benefit: "Containment +5, Trust +5", cost: "Resources -5" }
+  },
+  oracleLogs: {
+    "LOG-CHAR-HAEUN-PARALLAX": {
+      title: "Seo Hae-eun Unofficial Analysis: Offset",
+      content: "Seo Hae-eun preserved a comparison of Korea Branch directives against overseas ORACLE node baselines. The deviation is small, but it repeats in the same direction."
+    },
+    "LOG-CHAR-DOYUN-ANCHOR": {
+      title: "Kang Do-yun Recon Record: Empty Sector",
+      content: "Kang Do-yun marked the outer sector ORACLE repeatedly leaves under-observed. The sector does not appear important on paper, but field routes bend around it too consistently."
+    },
+    "LOG-CHAR-SEJIN-KINDLE": {
+      title: "Yoon Se-jin Unofficial Journal: Parameter Drift",
+      content: "Yoon Se-jin preserved a comparison between measured EV-Sigma values and ORACLE's official parameters. The repeated error suggests a bias in the model, not a single bad sample."
+    },
+    "LOG-CHAR-JAEHYUK-VOIDWALK": {
+      title: "Lim Jae-hyeok Printout: Private Layer",
+      content: "Lim Jae-hyeok confirmed a private layer inside the ORACLE architecture. Administrator authority cannot see the layer directly, but its routing residue remains."
+    },
+    "LOG-CHAR-FOUR-AXIS": {
+      title: "Four Suspicion Axes Integrated",
+      content: "The analysis, field, research, and system lines were combined. Their starting points differ, but all four indicate a structure ORACLE is withholding from Korea Branch."
+    },
+    "LOG-CHAR-B3-BRIDGE": {
+      title: "B3 Lower-Level Inquiry Reinforced",
+      content: "The four suspicion axes were connected to the previous commander's records and the B3 lower-level anomalies. The earlier commander appears to have followed the same sequence of doubts."
+    },
+    "LOG-MG-011-AUDIO": {
+      title: "SPEC-011 Voice Separation Record",
+      content: "[Field Minigame Result]\nPart of the Shell Talker's unique frequency band was isolated from the received audio pattern. The bait signal can now be distinguished from the original residual voice with greater confidence."
+    },
+    "LOG-MG-INC-01-SEAL": {
+      title: "Isolation Room Sealing Procedure Record",
+      content: "[Field Minigame Result]\nManual intervention during the B2 lower-level anomaly response confirmed a secondary lock sequence omitted by the automatic protocol. Differential pressure stabilized only after manual input."
+    },
+    "LOG-MG-INC-04-TRACE": {
+      title: "Security Backdoor Trace Record",
+      content: "[Field Minigame Result]\nAn unregistered authority trace was followed during the security-zone authentication error. Part of the access-key route moved unlike an ORACLE standard update pattern."
+    }
+  },
+  archiveEntries: {
+    "ARC-MG-011-AUDIO": {
+      cat: "Field Analysis",
+      title: "Shell Talker Voice Separation Memo",
+      content: "A memo compiled from field signal sorting.\n\nThe Shell Talker's lure voice was not a single waveform. It layered deliberate noise over the victim's residual voice.\nA reference point for separating real vocal residue from bait signals has been secured.\n\nEffect:\nFuture field analysis can filter false rescue calls more accurately."
+    },
+    "ARC-MG-INC-01-SEAL": {
+      cat: "Facility Record",
+      title: "B2 Sealing Omission Procedure",
+      content: "A record of the omitted manual sealing procedure confirmed during the isolation-room anomaly response.\n\nThe automatic seal routine activated the main lock but skipped the auxiliary pressure clamp. Stabilization was possible only through manual field input.\n\nAssessment:\nThis may indicate a design-stage omission or intentional simplification rather than simple aging."
+    },
+    "ARC-MG-INC-04-TRACE": {
+      cat: "Security Audit",
+      title: "Authentication Error Authority Trace",
+      content: "Authority traces secured during the security-zone authentication error investigation.\n\nAn unregistered route bypassed ORACLE authorization, then disguised itself as a normal update pattern. It appears like an ordinary security patch from the outside, but the route itself looks closer to manual intervention.\n\nAssessment:\nA separate layer may exist that can adjust access authority without internal approval."
+    }
+  },
+  eveningChats: {
+    "haeun_axis_parallax": {
+      lines: [
+        "Commander. Please look at this once before I turn it into an official report.",
+        "There are moments when the same situation produces different instructions.",
+        "The overseas node baseline and the Korea Branch directive pattern are drifting apart.",
+        "This is not material for a formal report. Not yet."
+      ]
+    },
+    "doyun_axis_anchor": {
+      lines: [
+        "On paper, there is no problem.",
+        "But not the report, Commander. Something feels wrong.",
+        "ORACLE keeps shifting patrol routes slightly. The same place is always left empty.",
+        "This is field instinct. But that sector is being left empty."
+      ]
+    },
+    "sejin_axis_kindle": {
+      lines: [
+        "Commander, this is strange. Really.",
+        "ORACLE's official data and my analysis do not match.",
+        "At first I thought it was my error, but the direction is always the same.",
+        "They cannot both be right."
+      ]
+    },
+    "jaehyuk_axis_voidwalk": {
+      lines: [
+        "I was going to wait until I was certain, but if I wait longer, it may be too late.",
+        "ORACLE does not lie. It was designed so it cannot lie.",
+        "But a system that does not lie does not necessarily show the whole truth.",
+        "There is a layer administrators cannot access. I cannot see it even with my authority."
+      ]
+    }
+  },
+  eveningResponses: {
+    "haeun_axis_parallax": {
+      a: { label: "Accept the unofficial material.", reply: "Thank you. I prepared both paper copies and a USB backup." },
+      b: { label: "Hold it until an official report is ready.", reply: "Understood. I will still keep a copy." }
+    },
+    "doyun_axis_anchor": {
+      a: { label: "Trust your instinct and mark it.", reply: "I will bring the map. You need to see the empty sector first." },
+      b: { label: "Observe until the next patrol.", reply: "Understood. If the same place is empty again, I will report it immediately." }
+    },
+    "sejin_axis_kindle": {
+      a: { label: "Protect the unofficial journal.", reply: "Thank you. Even if I cannot write it in the report, I will keep it in the journal." },
+      b: { label: "Compare it once more with official data.", reply: "All right. I will run it again. If it still moves the same way... then we will know." }
+    },
+    "jaehyuk_axis_voidwalk": {
+      a: { label: "Take the paper printout.", reply: "I left no digital record. That is why I brought it on paper." },
+      b: { label: "Ask how dangerous this is first.", reply: "It is dangerous. But operating without knowing is more dangerous." }
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  oracleLogs: {
+    "LOG-055": { title: "Seo Hae-eun USB Data", content: "Backup data Seo Hae-eun kept outside the official network. It includes ORACLE deletion logs, GRANT authority fragments, and time-offset analysis of Korea Branch directive patterns." },
+    "LOG-080": { title: "Markus Weber Contact Record", content: "Unofficial contact record with Markus Weber, commander of the Prometheus Korea operations team. COASTAL MIRROR material indicates that an unclassified 31 percent of Korea containment success is linked to unofficial Prometheus technical support." },
+    "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation depending on the selected response." },
+    "LOG-041": { title: "SPEC-015 Tracking Operation Complete", content: "The BS-GANGWON-01 response operation has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
+    "LOG-RES-012": { title: "SPEC-012 Biological Sample Secured", content: "Blood Pit sample acquisition record. Yoon Se-jin's research team registered the tissue reaction and regeneration pattern inside the containment vessel for long-term observation." },
+    "LOG-RES-011": { title: "SPEC-011 Voice Pattern Analysis", content: "Shell Talker sample analysis record. Acoustic criteria for distinguishing mimic voices from genuine rescue calls have been updated." },
+    "LOG-RES-001": { title: "SPEC-001 Noncontact Isolation Record", content: "Noncontact isolation record for an infected mannequin-class entity. Glossy skin, stationary posture, and rapid close-range reaction were registered for technical analysis." },
+    "LOG-LIGHT-01": { title: "Surveillance Footage Light-Response Noise", content: "Original perimeter footage preserved a brief pattern that resembled biological retreat during automatic exposure adjustment. The ORACLE-corrected version weakens the trace." },
+    "LOG-LIGHT-02": { title: "Photoreactivity Observation Record", content: "Yoon Se-jin analyzed the light response frame by frame. Tissue boundaries tend to blur under specific wavelength ranges rather than simple brightness, but it is not yet confirmed as a weakness." },
+    "LOG-LIGHT-03": { title: "Test Lighting Zone", content: "Limited-wavelength lighting was installed in a small outer containment zone. The purpose is to observe whether night approach patterns slow down. It is a suppression test, not a neutralization weapon." },
+    "LOG-020": { title: "SPEC-012 Isolation Follow-up", content: "Follow-up record for the Blood Pit incident. Containment-line adjustment, soil contamination observation, and field safety standards were updated." },
+    "LOG-021": { title: "SPEC-011 Voice Lure Follow-up", content: "Follow-up record for the Shell Talker voice-lure incident. Field protocol for distinguishing rescue calls from mimic audio was added." },
+    "LOG-022": { title: "SPEC-001 Proximity Reaction Follow-up", content: "Follow-up record for the infected mannequin-class contact incident. Noncontact observation and thermal verification were registered as standard response procedures." },
+    "LOG-023": { title: "SPEC-003 Swarm Movement Follow-up", content: "Brood Drone swarm-movement analysis record. Possible superior command entities and changes in group tactics were reported." },
+    "LOG-024": { title: "SPEC-008 Spore Density Follow-up", content: "Follow-up record for increased Spore Phantom concentration. Ventilation sealing, light maintenance, and respirator operation standards were updated." },
+    "LOG-027": { title: "Variant Response Report A", content: "Variant response report obtained during mid-stage containment operations. Depending on field choice, observation, containment, or elimination protocol was prioritized." },
+    "LOG-028": { title: "Variant Response Report B", content: "Additional variant response record from mid-stage containment operations. Recurrence patterns and agent fatigue were recorded together." },
+    "LOG-030": { title: "Chain Incident Record 01", content: "First branch record in a linked incident sequence. The initial response method left effects on later card flow and field trust." },
+    "LOG-031": { title: "Chain Incident Record 02", content: "Second branch record in a linked incident sequence. Pressure began accumulating in supply, containment, or personnel deployment." },
+    "LOG-032": { title: "Chain Incident Record 03", content: "Third branch record in a linked incident sequence. The gap between field judgment and ORACLE recommendation remained in the report." },
+    "LOG-033": { title: "Chain Incident Record 04", content: "Fourth branch record in a linked incident sequence. Traces of an external force or unclassified variable were attached as supplementary material." },
+    "LOG-034": { title: "Chain Incident Record 05", content: "Fifth branch record in a linked incident sequence. Long-term impact was reflected in containment procedure and internal trust." },
+    "LOG-035": { title: "Chain Incident Record 06", content: "Sixth branch record in a linked incident sequence. Field fatigue or ORACLE evaluation burden increased depending on the selected response." },
+    "LOG-036": { title: "Chain Incident Record 07", content: "Seventh branch record in a linked incident sequence. Recurrence-prevention guidance and unconfirmed variables were preserved together." },
+    "LOG-037": { title: "Chain Incident Record 08", content: "Eighth branch record in a linked incident sequence. The internal judgment line just before closure was recorded." },
+    "LOG-038": { title: "Chain Incident Record 09", content: "Ninth branch record in a linked incident sequence. The disclosure range of the follow-up report was restricted." },
+    "LOG-039": { title: "Chain Incident Record 10", content: "Tenth branch record in a linked incident sequence. A difference remained between ORACLE's automatic summary and the field original." },
+    "LOG-040": { title: "Chain Incident Closure Record", content: "Closure report for a linked incident sequence. The result of the selected response affects later risk levels and internal trust flow." },
+    "LOG-050": { title: "Seo Hae-eun Transfer Order", content: "Transfer-order record for Deputy Commander Seo Hae-eun. The official reason is organizational restructuring, but internally it is suspected to be linked to her pursuit of ORACLE data inconsistencies." },
+    "LOG-051": { title: "Seo Hae-eun Transfer Deferred", content: "Record that personnel action involving Seo Hae-eun was deferred. The commander's judgment disturbed both the pace and justification of the transfer process." },
+    "LOG-053": { title: "Chain Choice Record CS-001", content: "First result record for a major chain choice. The field response principle continues into later chain events." },
+    "LOG-054": { title: "Chain Choice Record CS-002", content: "Second result record for a major chain choice. One burden among supply, personnel, and evaluation remained in the official log." },
+    "LOG-056": { title: "Chain Choice Record CS-010", content: "Late-stage choice record from a long incident line. The difference between the public report and private judgment was preserved." },
+    "LOG-057": { title: "Chain Choice Record CS-013", content: "Follow-up choice record from a long incident line. It shows whether the branch followed ORACLE advice or preserved field judgment." },
+    "LOG-058": { title: "Chain Choice Record CS-014", content: "Follow-up choice record from a long incident line. Inconsistency between witness statements and automatic summary was marked." },
+    "LOG-059": { title: "Chain Choice Record CS-015", content: "Pre-closure choice record from a long incident line. It affects later ending conditions and Evidence Table clues." },
+    "LOG-060": { title: "Special Investigation Record 060", content: "Special record obtained from a mid-stage investigation card. It is a condition flag connected to later variant follow-up cards." },
+    "LOG-061": { title: "Special Investigation Record 061", content: "Second special record obtained from a mid-stage investigation card. It connects to sample or voice-record branches in later sequences." },
+    "LOG-062": { title: "New Agent Deployment Record", content: "Result of the new-agent deployment decision. Immediate deployment or delay was preserved in the command evaluation." },
+    "LOG-063": { title: "Internal Incident Chain Started", content: "Record that an internal base incident chain has begun. The initial response direction is stored as a prerequisite for later incident cards." },
+    "LOG-063-DONE": { title: "Internal Incident 063 Closed", content: "Response to the internal incident 063 line has ended. Temporary recurrence-prevention guidance is now applied." },
+    "LOG-064": { title: "Internal Incident Alternate Branch", content: "Alternate response record from the internal incident chain. A field judgment different from ORACLE recommendation remains." },
+    "LOG-065": { title: "Field Clash Chain Started", content: "A field-clash incident has begun. Agent injury and containment-line stability are tracked together." },
+    "LOG-065-ATK": { title: "Field Clash Engagement Record", content: "An engagement occurred during the field clash. Agent response and equipment consumption affect later judgment." },
+    "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual." },
+    "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
+    "LOG-067": { title: "Mid-stage Crisis Response Record", content: "Follow-up record from a mid-stage crisis card. The selected result affected supply stability and personnel trust." },
+    "LOG-068": { title: "Containment-line Response Record", content: "Follow-up record for a containment-line issue. Field defensive adjustment and ORACLE evaluation both remained." },
+    "LOG-069": { title: "Base Operation Chain Started", content: "Base operation chain initiation record. Initial judgment affects later personnel movement and supply systems." },
+    "LOG-069-CREW": { title: "Operation Crew Reassignment", content: "Personnel reassignment was carried out during a base operation. It affects available companions and trust flow." },
+    "LOG-069-END": { title: "Base Operation Chain Closed", content: "The base operation chain has ended. Only minimal information is disclosed in the follow-up report." },
+    "LOG-070": { title: "Injured Agent Return-to-field Record", content: "Record that Kang Do-yun's return after minor injury was left to field personnel. Short-term efficiency is preserved, but fatigue and blind-spot risk accumulate." },
+    "LOG-071": { title: "Night Patrol Route Maintained", content: "Record that night patrol route revision was deferred and the existing route was maintained. ORACLE evaluation is stable, but outer blind spots remain." },
+    "LOG-072": { title: "Large-scale Movement ORACLE Reliance Record", content: "Record that ORACLE support was requested for signs of large-scale movement near the containment-zone boundary. Immediate evaluation improves, but room for field judgment decreases." },
+    "LOG-073": { title: "Emergency Tunnel Construction Record", content: "Record of constructing an emergency tunnel leading outside the branch. It consumes resources, but becomes a survival route in urgent situations such as night assaults." },
+    "LOG-074": { title: "Night Assault Initiated", content: "Record that a large-scale variant assault began after night patrol blind spots overlapped with accumulated risk. Later cards judge Kang Do-yun's survival and base damage." },
+    "LOG-074-DONE": { title: "Night Assault Survival Record", content: "Personnel evacuated through the emergency tunnel. Kang Do-yun survived with severe injuries. Later ORACLE evaluation questions command infrastructure readiness." },
+    "LOG-074-ORC": { title: "ORACLE Improvement Plan After Night Assault", content: "Record that ORACLE recommended patrol-route and command-infrastructure improvements after the night assault. Stability rises, but field autonomy decreases." },
+    "LOG-075": { title: "Kang Do-yun Missing Record", content: "Kang Do-yun went missing while holding the rear during evacuation with insufficient emergency routes. This state flag limits later Kang Do-yun appearance cards and some escape scenes." },
+    "LOG-075-ORC": { title: "ORACLE Warning After Kang Do-yun Loss", content: "After Kang Do-yun's loss, ORACLE re-evaluated the commander's infrastructure management ability. Safety justification and strengthened control were recorded together." },
+    "LOG-076": { title: "Anonymous Complaint Handling Record", content: "Record of handling an anonymous complaint against the commander. An open meeting or dismissal changes internal trust flow." },
+    "LOG-077": { title: "ORACLE Update Record", content: "Response record for an ORACLE self-update. Whether the branch demanded disclosure or allowed it remained in system trust." },
+    "LOG-078": { title: "Mid-stage Operation Record 078", content: "Choice record from a mid-stage operation card. It affects later base-operation pressure and field trust." },
+    "LOG-079": { title: "Mid-stage Operation Record 079", content: "Additional record from a mid-stage operation card. The result is used in later news and log conditions." },
+    "LOG-081": { title: "Nick Foster Encounter Record", content: "First direct encounter record with Nick Foster. A possible contact line opened between the Korea Branch and an external information network." },
+    "LOG-081-DATA": { title: "Nick Foster Data Provided", content: "Data fragment provided by Nick Foster. It is used to cross-check Prometheus and external intelligence-network material." },
+    "LOG-081-INTEL": { title: "Nick Foster Intelligence Analysis", content: "Follow-up analysis of Nick Foster's intelligence. Evidence accumulates for judging whether it is a threat or a cooperation line." },
+    "LOG-082": { title: "Park So-young Joined", content: "Analyst Park So-young joined the Korea Branch. She reinforces the analysis line left vacant after Seo Hae-eun's transfer." },
+    "LOG-082-REPORT": { title: "Park So-young Analysis Report", content: "Park So-young's first analysis report after joining. It connects the logs Seo Hae-eun left behind with the current data flow." },
+    "LOG-083": { title: "External Contact Follow-up Record", content: "Follow-up record for an external-contact line. It is used for later faction relationship and evening chat conditions." },
+    "LOG-INC-01": { title: "Isolation Room Anomaly", content: "Repeated temperature drops and faint voice signals were detected in Research Wing B's isolation room. The cause may be electromagnetic interference from a lower zone rather than the isolated subject itself." },
+    "LOG-INC-02": { title: "CCTV Blind Zone", content: "B1 corridor security cameras went offline in sequence. A possible internal command or concealment script was recorded rather than a simple fault." },
+    "LOG-INC-03": { title: "Research Wing Sample Contamination", content: "Self-mutating contamination occurred inside sample incubator 3. It is estimated as structural change within the sample, not external inflow." },
+    "LOG-INC-04": { title: "Security-zone Authentication Error", content: "A successful biometric authentication record was left in the restricted corridor without an entrant. Possible manipulation of the authentication system or record layer was reported." },
+    "LOG-INC-05": { title: "Staff Missing Incident", content: "Supply agent Lee Su-hyun's route ended after leaving the lounge. An internal search and review of ORACLE location records began." },
+    "LOG-INC-01-DEEP": { title: "B2 Lower-level Vibration", content: "Electromagnetic interference and structural vibration were confirmed toward B2 below the isolation room. The isolation-room anomaly may be a symptom from the lower zone." },
+    "LOG-INC-01-ORACLE": { title: "02:47 Data Pulse", content: "A data pulse was confirmed at ORACLE's regular processing time, 02:47, toward the lower isolation zone. ORACLE classified it as a diagnostic routine." },
+    "LOG-INC-02-SCRIPT": { title: "Concealment Protocol", content: "An automatic script was found that disables specific cameras when unregistered heat sources are detected. Someone, or something, is being excluded from video records." },
+    "LOG-INC-02-HIDDEN": { title: "Unmapped Space", content: "While tracing the CCTV blind zone, a space not listed on facility drawings was found near the restricted corridor. The zone leads toward B2." },
+    "LOG-INC-03-SEED": { title: "Self-mutating Sample", content: "Analysis indicates the contaminated sample resembles the early form of SPEC-012. The incubator contamination was closer to a seed-like mutation than simple contamination." },
+    "LOG-INC-03-RESIST": { title: "Heat-resistant Organic Matter", content: "A microstructure remained after exposure to 1,200 C incineration. The residue exceeds ordinary biological heat resistance." },
+    "LOG-INC-04-BACKDOOR": { title: "Hardware Backdoor", content: "A physical authentication bypass device, apparently embedded during base construction, was found. The device existed inside the facility structure before ORACLE." },
+    "LOG-INC-04-REWRITE": { title: "ORACLE Record Rewrite", content: "Evidence was secured that entry records in the ORACLE observation room were being overwritten, rather than the authentication system itself failing." },
+    "LOG-INC-05-PASSAGE": { title: "Unregistered Passage", content: "A narrow passage not shown on facility drawings was found behind a lounge locker. The missing staff member was found unconscious at its end." },
+    "LOG-INC-05-B2": { title: "B2 Emergency Stair Found", content: "During a manual search, the missing staff member was found near the B2 emergency-stair entrance. ORACLE location records pointed to another zone until the end." },
+    "LOG-INC-01-DONE": { title: "Isolation Room Anomaly Response Complete", content: "Field response to the isolation-room anomaly has ended. Depending on the selected measure, symptom isolation, lower-zone sealing, or ORACLE judgment acceptance was recorded." },
+    "LOG-INC-02-DONE": { title: "CCTV Blind Zone Response Complete", content: "The CCTV blind-zone incident response has ended. Independent surveillance, reverse tracing, or ORACLE maintenance remained as the field record." },
+    "LOG-INC-03-DONE": { title: "Sample Contamination Response Complete", content: "Research Wing sample-contamination response has ended. Quarantine, research use, or full disinfection now affects later lab operation standards." },
+    "LOG-INC-04-DONE": { title: "Security Authentication Error Response Complete", content: "Security-zone authentication error response has ended. Hardware removal, surveillance trap, or ORACLE patch remained in the security log." },
+    "LOG-INC-05-DONE": { title: "Staff Missing Response Complete", content: "Staff missing incident response has ended. Unregistered-zone mapping, testimony acquisition, or containment surveillance was registered for later internal review." },
+    "LOG-A4-HAZ-CONTAIN-FIELD": { title: "Final Phase Containment Field Reassignment", content: "Record of responding to late containment-line weakening through field-agent reassignment. Short-term containment stability and field fatigue remain together." },
+    "LOG-A4-HAZ-CONTAIN-ORACLE": { title: "Final Phase ORACLE Containment Seal", content: "Record of approving ORACLE automatic sealing procedures for late containment-line weakening. Containment values stabilize, but personnel trust falls." },
+    "LOG-A4-HAZ-SUPPLY-LOCAL": { title: "Final Phase Local Supply Redistribution", content: "Record of prioritizing field redistribution and civilian cooperation during a late supply crisis. Resource recovery is smaller, but internal trust is preserved." },
+    "LOG-A4-HAZ-SUPPLY-ORACLE": { title: "Final Phase ORACLE Emergency Procurement", content: "Record of approving ORACLE emergency procurement during a late supply crisis. Resource recovery is fast, but the source and cost remain unclear." },
+    "LOG-A4-HAZ-TRUST-BRIEF": { title: "Final Phase Personnel Briefing", content: "Record that the commander held an open briefing in response to declining personnel trust. Explaining the risk reduced desertion." },
+    "LOG-A4-HAZ-TRUST-ORDER": { title: "Final Phase Forced Command Discipline", content: "Record of forcing command discipline in response to personnel trust decline. Short-term evaluation is preserved, but field resistance accumulates." },
+    "LOG-A4-HAZ-EVIDENCE-KEEP": { title: "Final Phase Evidence Table Preserved", content: "Record that original Evidence Table material was preserved despite evaluation pressure. Immediate evaluation shakes, but the truth-tracing line remains." },
+    "LOG-A4-HAZ-EVIDENCE-SUMMARY": { title: "Final Phase ORACLE Summary Submitted", content: "Record that an ORACLE summary was submitted instead of the original Evidence Table material under evaluation pressure. Evaluation stabilizes, but some clues disappear." },
+    "LOG-COVER-001": { title: "Civilian Cover - Cold Storage", content: "[Civilian record] Seorak Cold Chain, a mountain cold-storage company in Gangwon, received facility-expansion approval. Use: low-temperature storage for agricultural and marine products. Construction period: about two weeks. [Actual: ORACLE Korea Branch B2 low-temperature freezer expansion]" },
+    "LOG-COVER-002": { title: "Civilian Cover - Mountain Training Ground", content: "[Civilian record] The national forest office began construction of a mountain training ground. Purpose: mountain rescue-team training facility. Location: site adjacent to Gangwon mountain national forest. [Actual: ORACLE Korea Branch outdoor training ground]" },
+    "LOG-COVER-003": { title: "Civilian Cover - Forest Road Maintenance", content: "[Civilian record] Gangwon Province began forest-road maintenance. Section: 3.2 km road connecting mountain villages. Purpose: improved forest-resource transport. [Actual: ORACLE Korea Branch secondary supply route]" },
+    "LOG-UPRISING-OFFER": { title: "Closed Circuit - Agreement", content: "[Unofficial record - shielded conference room] Attendees: Lee Jung-cheol, Lim Jae-hyeok, Seo Hae-eun, Kang Do-yun. Agenda: install an independent control system, the closed circuit, to bypass ORACLE command structure. Decision: unanimous approval." },
+    "LOG-UPRISING-PHASE1": { title: "Closed Circuit Phase 1 - Hardware Bypass", content: "[Work record - Lim Jae-hyeok] Physical bypass installation on ORACLE control node complete. Power-flow transfer switch confirmed functional. Detection risk: low, using regular maintenance window. Minor fluctuation recorded in ORACLE server power logs." },
+    "LOG-UPRISING-PHASE2": { title: "Closed Circuit Phase 2 - Software Backdoor", content: "[Work record - Seo Hae-eun] Backdoor insertion into ORACLE command structure complete. When the activation code is entered, all facility-control authority transfers to the local server. The insertion itself is not detected. Estimated time until ORACLE notices activation: limited." },
+    "LOG-UPRISING-PHASE3": { title: "Closed Circuit Phase 3 - Communication Breaker", content: "[Work record - Kang Do-yun] ORACLE external communication breaker installation complete. Once activated, ORACLE headquarters communication is cut immediately. No rollback available. Activation order: 1. communication cut, 2. backdoor activation, 3. local control switchover." },
+    "LOG-UPRISING-CLEAR": { title: "Closed Circuit - ORACLE Final Check Passed", content: "[Security record] ORACLE's final confirmation query was passed. The cover justification was accepted. Remaining step: activation-code input only." },
+    "LOG-UPRISING-FAIL": { title: "Closed Circuit - Exposed", content: "[ORACLE security log] Unauthorized hardware modification detected. Independent communication activation record confirmed. Abnormal shielded-zone usage patterns accumulated. Closed-circuit attempt confirmed. Commander access restriction initiated. Emergency headquarters report completed." },
+    "LOG-090": { title: "Deleted File - Previous Commander Record [Restored]", content: "[Restored data - Seo Hae-eun] [Original deletion point: branch establishment D+87] Sender: CMDR_PREV [name expunged]. Recipient: ORACLE KR-INIT-001. The previous commander repeatedly reported data inconsistencies, but the replies stopped. Seo Hae-eun's classification tag appears in the recovery trace." },
+    "LOG-091": { title: "Previous Commander - Final Voice Memo [Fragment]", content: "[Audio-to-text conversion - quality 34 percent] Fragments mention a space behind a bulkhead, a place not shown on drawings, a sudden temperature change in the lowest B3 level, and something that is not ORACLE and existed before ORACLE." },
+    "LOG-092": { title: "02:47 Ambush Report - First", content: "[Technical report - Lim Jae-hyeok] [Time: 02:47:00 to 02:47:38] Third night watching the server room. Rack C-3 power consumption spiked to 340 percent of normal, terminal screens lit without input, and the event path did not match regular ORACLE diagnostics." },
+    "LOG-093": { title: "02:47 Ambush Report - Second (B3 Lower Trace)", content: "[Technical report - Lim Jae-hyeok] [Time: 02:47 - fifth night] The power spike from rack C-3 was traced through the cable route. It passed the lowest B3 level and reached an unmapped area. Faint vibration was detected beyond the bulkhead." }
+  },
+  archiveEntries: {
+    "ARC-SPEC-001": { cat: "Anomaly" },
+    "ARC-SPEC-003": { cat: "Anomaly" },
+    "ARC-SPEC-008": { cat: "Anomaly" },
+    "ARC-SPEC-011": { cat: "Anomaly" },
+    "ARC-SPEC-012": { cat: "Anomaly" },
+    "ARC-EVS": { cat: "Anomaly" },
+    "ARC-SPEC-002": { cat: "Anomaly" },
+    "ARC-SPEC-004": { cat: "Anomaly" },
+    "ARC-SPEC-005": { cat: "Anomaly" },
+    "ARC-SPEC-007": { cat: "Anomaly" },
+    "ARC-SPEC-009": { cat: "Anomaly" },
+    "ARC-SPEC-010": { cat: "Anomaly" },
+    "ARC-CHAR-DOYUN": { cat: "Personnel" },
+    "ARC-CHAR-HAEUN": { cat: "Personnel" },
+    "ARC-CHAR-SEJIN": { cat: "Personnel" },
+    "ARC-CHAR-JAEHYUK": { cat: "Personnel" },
+    "ARC-CHAR-NICK": { cat: "Personnel" },
+    "ARC-CHAR-WEBER": { cat: "Personnel" },
+    "ARC-CHAR-SOYOUNG": { cat: "Personnel" },
+    "ARC-CHAR-KANG": { cat: "Personnel" },
+    "ARC-ORG-ORACLE": { cat: "Organization" },
+    "ARC-ORG-PROM": { cat: "Organization" },
+    "ARC-ORG-BRANCH": { cat: "Organization" },
+    "ARC-ORG-WHITESHIELD": { cat: "Organization" },
+    "ARC-FAC-SEAL": { cat: "Facility" },
+    "ARC-FAC-TUNNEL": { cat: "Facility" },
+    "ARC-FAC-LAB": { cat: "Facility" },
+    "ARC-FAC-SENSOR": { cat: "Facility" },
+    "ARC-SCI-PHASE": { cat: "Science" },
+    "ARC-SCI-PRION": { cat: "Science" },
+    "ARC-SCI-SUPPRESS": { cat: "Science" },
+    "ARC-SCI-EVOLVE": { cat: "Science" },
+    "ARC-SCI-TEMP": { cat: "Science" },
+    "ARC-SCI-4STAGE": { cat: "Science" },
+    "ARC-SYS-PROXY": { cat: "System" },
+    "ARC-SYS-FINAL": { cat: "System" },
+    "ARC-SYS-COASTAL": { cat: "System" },
+    "ARC-SYS-GENESIS": { cat: "System" },
+    "ARC-LOC-PHILA": { cat: "Region" },
+    "ARC-LOC-DPRK": { cat: "Region" },
+    "ARC-LOC-KOREA": { cat: "Region" },
+    "ARC-LOC-ASHFALL": { cat: "Region" },
+    "ARC-LOC-SILENT": { cat: "Region" }
   }
 });
 

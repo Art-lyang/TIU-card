@@ -38,45 +38,57 @@ function pickRewardsUnique(pool,count){
 }
 
 function Boot(p){
-  var BL=p.sessions>0?BOOT_LINES_REPEAT:BOOT_LINES;
+  var getBootLocale=function(){return (window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko'};
+  var _loc=useState(getBootLocale()),locale=_loc[0],setLocale=_loc[1];
+  var linesInitial=tt('boot.linesInitial',null,null);
+  var linesRepeat=tt('boot.linesRepeat',null,null);
+  if(!Array.isArray(linesInitial))linesInitial=BOOT_LINES;
+  if(!Array.isArray(linesRepeat))linesRepeat=BOOT_LINES_REPEAT;
+  var BL=p.sessions>0?linesRepeat:linesInitial;
   var sn=p.sessions||0;
   var s=useState([]),lines=s[0],setLines=s[1];var s2=useState(false),done=s2[0],setDone=s2[1];var idx=useRef(0);
   var bootStarted=useRef(false);
   var audioUnlocked=useRef(false);
   var tryBootAudio=function(){if(!audioUnlocked.current&&p.onBoot){audioUnlocked.current=true;p.onBoot()}};
-  useEffect(function(){var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[]);
+  var startTerminal=function(){if(!done)return;tryBootAudio();if(p.onDone)p.onDone()};
+  var switchLocale=function(next){if(next===locale)return;tryBootAudio();if(window.TS_I18N&&window.TS_I18N.setLocale)window.TS_I18N.setLocale(next);setLocale(next)};
+  useEffect(function(){idx.current=0;bootStarted.current=false;setLines([]);setDone(false);var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[locale,p.sessions]);
+  useEffect(function(){var handler=function(e){if(!done)return;if(e.key==='Enter'||e.key===' '||e.code==='Space'){e.preventDefault();startTerminal()}};window.addEventListener('keydown',handler);return function(){window.removeEventListener('keydown',handler)}},[done]);
   var progress=Math.min(100,Math.round((lines.length/Math.max(1,BL.length))*100));
   var lineNodes=lines.map(function(l,i){
     var text=String(l||'');
-    var hot=text.indexOf('OBSERVER')>=0||text.indexOf('TERMINAL SESSION')>=0||text.indexOf('SESSION')>=0;
-    var grant=text.indexOf('GRANT')>=0||text.indexOf('WELCOME')>=0;
+    var hot=text.indexOf('OBSERVER')>=0||text.indexOf('TERMINAL SESSION')>=0||text.indexOf('터미널 세션')>=0||text.indexOf('SESSION')>=0||text.indexOf('세션')>=0;
+    var grant=text.indexOf('GRANT')>=0||text.indexOf('권한')>=0||text.indexOf('WELCOME')>=0||text.indexOf('환영')>=0;
     return h('div',{key:i,className:'terminal-boot-line'+(hot?' is-hot':grant?' is-grant':'')},text);
   });
   return h('div',{className:'terminal-boot',onClick:tryBootAudio,onTouchStart:tryBootAudio},
     h('div',{className:'main-terminal-crt','aria-hidden':true}),
-    h('main',{className:'terminal-boot-frame','aria-label':'ORACLE terminal boot sequence'},
+    h('main',{className:'terminal-boot-frame','aria-label':tt('boot.aria',null,'ORACLE terminal boot sequence')},
       h('header',{className:'terminal-boot-header'},
         h('div',{className:'terminal-boot-header-main'},
-          h('span',{className:'terminal-boot-header-title'},tt('menu.headerTitle',null,'ORACLE // KOREA BRANCH TERMINAL')),
-          h('span',{className:'terminal-boot-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i')))),
+          h('span',{className:'terminal-boot-header-title'},tt('boot.headerTitle',null,tt('menu.headerTitle',null,'ORACLE // KOREA BRANCH TERMINAL'))),
+          h('div',{className:'terminal-boot-header-tools'},
+            h('span',{className:'terminal-boot-session'},tt('boot.sessionId',null,tt('menu.sessionId',null,'SESSION ID: KR-B3-011')),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i'))),
+            h('div',{className:'terminal-boot-locale','aria-label':tt('boot.language',null,'Language')},
+              ['ko','en'].map(function(l){return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase())})))),
         h('div',{className:'terminal-boot-header-status'},
-          h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('boot.status',null,'BOOT SEQUENCE'))),
+          h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('boot.statusLabel',null,tt('menu.statusLabel',null,'STATUS:'))),h('strong',null,tt('boot.status',null,'BOOT SEQUENCE'))),
           h('span',null,tt('boot.progress',{progress:progress},'BOOT PROGRESS '+progress+'%')))),
       h('section',{className:'terminal-boot-feed','aria-label':'terminal session surveillance feed'},
         IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
         h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
         h('div',{className:'terminal-boot-feed-hud terminal-boot-feed-top'},
-          h('span',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY')),
-          h('span',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
+          h('span',null,tt('boot.feedTopLeft',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY'))),
+          h('span',null,tt('boot.statusUnstable',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION')))),
         h('div',{className:'terminal-boot-feed-hud terminal-boot-feed-bottom'},
-          h('span',null,'BOOT TRACE: ',String(sn).padStart(2,'0')),
-          h('span',null,tt('menu.feedVersion',null,'TERMINAL SESSION v1.11')))),
+          h('span',null,tt('boot.trace',null,'BOOT TRACE:'),' ',String(sn).padStart(2,'0')),
+          h('span',null,tt('boot.feedVersion',null,tt('menu.feedVersion',null,'TERMINAL SESSION v1.11'))))),
       h('section',{className:'terminal-boot-console','aria-label':'system boot log'},
         h('div',{className:'terminal-boot-console-head'},
           h('span',null,tt('boot.console',null,'SYSTEM BOOT LOG')),
           h('span',null,progress+'%')),
         h('div',{className:'terminal-boot-lines'},lineNodes,!done&&h('span',{className:'terminal-boot-caret','aria-hidden':true},'█')),
-        done&&h('button',{type:'button',className:'terminal-boot-start',onClick:function(e){e.stopPropagation();tryBootAudio();p.onDone();}},tt('boot.startGame',null,'TAP TO ENTER TERMINAL')))));
+        done&&h('button',{type:'button',className:'terminal-boot-start',onClick:function(e){e.stopPropagation();startTerminal();}},tt('boot.startGame',null,'TAP TO ENTER TERMINAL')))));
 }
 // ═══ 메인 메뉴 ═══
 function MainMenu(p){
@@ -106,7 +118,12 @@ function MainMenu(p){
   }
   menuItems.push(
     {key:'archive',primary:false,icon:'archive',title:tt('menu.routes.archive.title',null,'[ 아카이브 접속 ]'),sub:tt('menu.routes.archive.sub',null,'ENTITY / INCIDENT / PERSONNEL DATA'),action:tt('menu.routes.archive.action',null,'ACCESS ARCHIVE'),onClick:p.onArchive},
-    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs},
+    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs}
+  );
+  if(p.hasSessionHistory&&p.onEndings){
+    menuItems.push({key:'endings',primary:false,icon:'archive',title:tt('menu.routes.endings.title',null,'[ 엔딩 ]'),sub:tt('menu.routes.endings.sub',null,'SESSION OUTCOME RECORDS'),action:tt('menu.routes.endings.action',null,'VIEW ENDINGS'),onClick:p.onEndings});
+  }
+  menuItems.push(
     {key:'settings',primary:false,icon:'settings',title:tt('menu.routes.settings.title',null,'[ 시스템 설정 ]'),sub:tt('menu.routes.settings.sub',null,'DISPLAY / AUDIO / LANGUAGE'),action:tt('menu.routes.settings.action',null,'SYSTEM CONFIG'),onClick:function(){setSub('settings')}}
   );
   var activate=function(item){
@@ -195,7 +212,7 @@ function Stats(p){
         h('div',{className:'gi-shadow-fill',style:{width:giFill+'%'}})))
   );
 }
-function DayObjective(p){
+function DayObjectiveLegacy(p){
   var st=p.stats||{},act=p.act||1,day=st.day||1;
   var logs=p.logs||[];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
@@ -211,7 +228,7 @@ function DayObjective(p){
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
     sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
-    sub=isEn?'Evidence table active. Separate hints before naming a culprit.':'조사테이블 활성화: 결론보다 단서 분류를 먼저 진행하세요.';
+    sub=isEn?'Investigation table active. Preserve collected records for later review.':'조사테이블 활성화: 수집 기록을 보존하세요.';
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')<0&&(logs.indexOf('LOG-A2-FORESHADOW-02')>=0||day>=11)){
     sub=isEn?'Prepare an Act 3 cross-check list from external, internal, and field anomalies.':'외부 경유·내부 기록·현장 이상을 Act3 교차검증 목록으로 정리하세요.';
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')>=0){
@@ -220,11 +237,11 @@ function DayObjective(p){
     sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof getCollectedEvidence==='function'){
     var evCount=getCollectedEvidence(logs).length;
-    if(evCount<2)sub=isEn?'Collect at least two evidence records for cross-analysis.':'교차 분석을 위해 증거 기록을 2개 이상 확보하세요.';
+    if(evCount<2)sub=isEn?'Investigation table active. Preserve incident records as they arrive.':'조사테이블 활성화: 사건 기록을 보존하세요.';
     else if(typeof getUnlockedCombos==='function'){
       var comboCount=getUnlockedCombos(logs).length;
-      if(comboCount<=0)sub=isEn?'Try combining two or three evidence records to secure the first insight.':'조사테이블에서 2~3개 단서를 조합해 첫 결론을 확보하세요.';
-      else sub=(isEn?'Evidence insights: ':'증거 조합: ')+comboCount+'/'+(typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS.length:'?');
+      if(comboCount<=0)sub=isEn?'Investigation table active. Review records when needed.':'조사테이블 활성화: 필요 시 기록을 확인하세요.';
+      else sub=(isEn?'Investigation notes recorded: ':'조사테이블 통찰 기록: ')+comboCount+'건';
     }
   }
   if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
@@ -270,6 +287,77 @@ function DayObjective(p){
     sub?h('span',{className:'objective-sub'},sub):null
   );
 }
+function DayObjective(p){
+  var st=p.stats||{},act=p.act||1,day=st.day||1;
+  var logs=p.logs||[];
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var isEn=locale==='en';
+  var statNames={c:isEn?'Containment':'봉쇄',r:isEn?'Resources':'자원',t:isEn?'Trust':'신뢰',o:isEn?'Evaluation':'평가'};
+  var critical=['c','r','t','o'].filter(function(k){return (st[k]||0)<=25});
+  var weakStats=['c','r','t','o'].filter(function(k){var v=st[k];return typeof v==='number'&&v<=40&&v>25});
+  var weakSub=weakStats.length?((isEn?'Weak metric trending down: ':'주의 지표: ')+weakStats.map(function(k){return statNames[k]}).join(', ')):'';
+  var key=critical.length?'critical':(day<=1?'day1':('act'+act));
+  var sub='';
+  if(critical.length){
+    sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return statNames[k]}).join(', ');
+  }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
+    sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
+  }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
+    sub=isEn?'Investigation table active. Preserve collected records.':'조사테이블 활성화: 수집 기록을 보존하세요.';
+  }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')<0&&(logs.indexOf('LOG-A2-FORESHADOW-02')>=0||day>=11)){
+    sub=isEn?'Investigation table categories updated. Maintain branch stability.':'조사테이블 분류가 갱신되었습니다. 지부 안정성을 유지하세요.';
+  }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')>=0){
+    sub=isEn?'Investigation record triage complete. Keep the branch stable.':'조사 기록 정리가 완료되었습니다. 지부 안정성을 유지하세요.';
+  }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0){
+    sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
+  }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
+    var comboCount=(typeof getUnlockedCombos==='function')?getUnlockedCombos(logs).length:0;
+    sub=comboCount>0?(isEn?'Investigation notes recorded: '+comboCount:'조사테이블 통찰 기록: '+comboCount+'건'):(isEn?'Investigation table active. Review records when needed.':'조사테이블 활성화: 필요 시 기록을 확인하세요.');
+  }
+  if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
+    var axisIds=['LOG-CHAR-HAEUN-PARALLAX','LOG-CHAR-DOYUN-ANCHOR','LOG-CHAR-SEJIN-KINDLE','LOG-CHAR-JAEHYUK-VOIDWALK'];
+    var axisCount=axisIds.filter(function(id){return logs.indexOf(id)>=0}).length;
+    if(logs.indexOf('LOG-CHAR-B3-BRIDGE')>=0)sub=isEn?'B3 investigation line reinforced. Prepare for lower-sector decisions.':'B3 조사선이 보강되었습니다. 하층 결정을 대비하세요.';
+    else if(logs.indexOf('LOG-CHAR-FOUR-AXIS')>=0)sub=isEn?'Four officer reports are archived with the B3 predecessor record.':'4인 보고와 B3 전임 기록이 보관되었습니다.';
+    else if(axisCount>=2)sub=(isEn?'Officer suspicion reports collected: ':'간부 의심 보고 수집: ')+axisCount+'/4';
+  }
+  if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
+    sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
+  }
+  if(!sub&&act>=4&&logs.indexOf('LOG-A2-TRIAGE-01')>=0&&logs.indexOf('LOG-A4-STAFF-REVIEW')<0){
+    sub=isEn?'Use prior investigation records to adjust final staff assignments.':'이전 조사 기록을 참고해 인물별 배치를 조정하세요.';
+  }
+  if(!sub&&weakSub)sub=weakSub;
+  if(!sub&&typeof getFactionRelations==='function'){
+    var rels=getFactionRelations(logs,p.gi||0);
+    var hot=rels.filter(function(r){return r.id!=='oracle'&&r.value>=70})[0];
+    var weak=rels.filter(function(r){return r.id==='oracle'&&r.value<=35})[0];
+    if(hot)sub=isEn?(hot.name+' influence is becoming a strategic dependency.'):hot.name+' 관계가 전략적 의존 단계에 접근 중입니다.';
+    else if(weak)sub=isEn?'ORACLE suspicion is high. Expect harsher oversight.':'ORACLE 의심이 높습니다. 감시형 카드가 강화될 수 있습니다.';
+  }
+  var text=tt('objective.'+key,{act:act,day:day},null)||tt('objective.act1',null,'한국지부 초기 안정화 절차를 유지하십시오.');
+  var hasLog=function(id){return logs.indexOf(id)>=0};
+  var oracleRel=(typeof getFactionRelations==='function'?(getFactionRelations(logs,p.gi||0).filter(function(r){return r.id==='oracle'})[0]||{}).value:(65+(p.gi||0)));
+  var corruption=0;
+  if(act>=3&&(oracleRel<=55||hasLog('LOG-EV-UNLOCK')||hasLog('LOG-LJC-PROM-01')))corruption=1;
+  if(act>=3&&(oracleRel<=45||hasLog('LOG-080')||hasLog('LOG-081')||hasLog('LOG-LJC-PROM-03')||hasLog('LOG-UPRISING-PHASE1')))corruption=2;
+  if(oracleRel<=35||hasLog('LOG-UPRISING-PHASE2')||hasLog('LOG-UPRISING-PHASE3')||hasLog('LOG-ESCAPE-TRIG'))corruption=3;
+  if(corruption===1){
+    sub=sub|| (isEn?'Objective signal unstable. Review logs and field reports.':'목표 신호가 불안정합니다. 로그와 현장 보고를 확인하세요.');
+  }else if(corruption===2){
+    text=isEn?'[ORACLE: OBJECTIVE STREAM PARTIALLY REDACTED]':'[ORACLE: 목표 스트림 일부 검열됨]';
+    sub=isEn?'Primary instruction is being filtered by ORACLE oversight.':'ORACLE 감시 절차가 주요 지시를 필터링하고 있습니다.';
+  }else if(corruption>=3){
+    text=isEn?'[OBJECTIVE CHANNEL SEALED]':'[목표 채널 봉인됨]';
+    sub=isEn?'Operator deviation exceeds reporting threshold. Independent judgment required.':'지휘관 이탈 지수가 보고 임계값을 초과했습니다. 독자 판단이 필요합니다.';
+  }
+  return h('div',{className:'objective-bar objective-corrupt-'+corruption},
+    h('span',{className:'objective-label'},tt('objective.label',null,'DAY OBJECTIVE')),
+    h('span',{className:'objective-text'},text),
+    sub?h('span',{className:'objective-sub'},sub):null
+  );
+}
+
 function CardC(p){
   var card=p.card,gi=p.gi||0;
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영

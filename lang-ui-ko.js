@@ -1,7 +1,53 @@
 // TERMINAL SESSION — lang-ui-ko.js
 window.TS_I18N.mergeUI('ko', {
   meta:{ title:'TERMINAL SESSION', titleBar:'ORACLE // TERMINAL SESSION' },
-  boot:{ startSession:'[ 세션 {session} 시작 ]', startGame:'TAP TO ENTER TERMINAL', status:'BOOT SEQUENCE', console:'SYSTEM BOOT LOG', progress:'BOOT PROGRESS {progress}%' },
+  boot:{
+    startSession:'[ 세션 {session} 시작 ]',
+    startGame:'터미널 접속',
+    status:'부트 시퀀스',
+    console:'시스템 부트 로그',
+    progress:'부트 진행률 {progress}%',
+    headerTitle:'ORACLE // 한국지부 터미널',
+    sessionId:'세션 ID: KR-B3-011',
+    statusLabel:'상태:',
+    statusUnstable:'연결 불안정',
+    feedTopLeft:'ORACLE 한국지부 // 내부 전용',
+    feedVersion:'TERMINAL SESSION v1.11',
+    trace:'부트 기록:',
+    language:'언어',
+    aria:'ORACLE 터미널 부트 시퀀스',
+    linesInitial:[
+      'ORACLE 원격 터미널 v4.7.2',
+      '보안 연결 수립 중...',
+      '암호화: AES-256-GCM ✓',
+      '인증: 생체 정보 + 토큰 ✓',
+      '지부: KR-INIT-001 [강원]',
+      '운용자: PILEHEAD [이중철]',
+      '접근 권한: 레벨 4 — 지부 지휘관',
+      '권한: 활성 — 임시 접속',
+      '─────────────────────────────',
+      '터미널 세션 — 초기화 중...',
+      '  ',
+      '환영합니다, 지휘관님.',
+      '당신의 선택이 결과를 바꿉니다.'
+    ],
+    linesRepeat:[
+      'ORACLE 원격 터미널 v4.7.2',
+      '보안 연결 수립 중...',
+      '암호화: AES-256-GCM ✓',
+      '인증: 생체 정보 + 토큰 ✓',
+      '지부: KR-INIT-001 [강원]',
+      '운용자: PILEHEAD [이중철]',
+      '접근 권한: 레벨 4 — 지부 지휘관',
+      '권한: 활성 — 갱신 감지',
+      '─────────────────────────────',
+      '[OBSERVER: 세션 재개]',
+      '이전 세션 데이터: 아카이브 완료',
+      '  ',
+      '다시 오신 것을 환영합니다, 지휘관님.',
+      '관측은 계속됩니다.'
+    ]
+  },
   menu:{
     startGame:'[ \uAC8C\uC784 \uC2DC\uC791 ]',
     continue:'[ \uC774\uC5B4\uD558\uAE30 ]',
@@ -28,6 +74,7 @@ window.TS_I18N.mergeUI('ko', {
       new:{title:'[ 새 세션 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
       archive:{title:'[ 아카이브 접속 ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      endings:{title:'[ 엔딩 ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
       settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
   },
@@ -263,7 +310,7 @@ window.TS_I18N.mergeUI('ko', {
     followupCardAdded:'[후속 카드 추가] {id}',
     facilityComplete:'[{title}] 확장 공사 완료{suffix}',
     facilityDefault:'시설',
-    uprisingSuffix:' | GI -2',
+    uprisingSuffix:' | 내부 기록 갱신',
     cStabilityAlert:'[ORACLE: KR-INIT-001 봉쇄 완전성 {value}% — 한국지부 안정화 임박]',
     snapshotSaved:'슬롯 {slot} 저장 완료 (DAY {day})',
     snapshotEmpty:'슬롯 {slot} 비어있음',

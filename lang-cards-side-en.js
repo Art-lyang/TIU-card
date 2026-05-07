@@ -11,7 +11,16 @@ window.TS_I18N.mergeContent('en', {
     "CB-01": { msg: "ORACLE recalculates the daily operations directive.\n\n[ORACLE: Branch compliance pattern stable. Proposing a buffer procedure to reduce field friction.]\n\nSeo Hae-eun adds,\n\"If we submit the headquarters report as required but brief the team first, we can reduce backlash.\"", leftLabel: "Explain first, then apply ORACLE procedure", rightLabel: "Apply the procedure immediately" },
     "CB-02": { msg: "The containment automation protocol has been updated.\n\n[ORACLE: Automation approved. Containment efficiency expected to increase. Field retraining required.]\n\nKang Do-yun says, \"If the team knows what is changing, they can follow it. If they do not, they will break.\"", leftLabel: "Approve with retraining budget", rightLabel: "Approve immediately without budget" },
     "CB-03": { msg: "[ORACLE: Loyalty index increase confirmed]\n\nThe headquarters report is generated automatically. The sentences are perfect. None of the field anxiety is reflected.\n\nYoon Se-jin says quietly,\n\"Can we include the human condition in a loyalty report? Otherwise it will break later.\"", leftLabel: "Attach a field-condition appendix", rightLabel: "Submit ORACLE text as-is" },
-    "ORC-LOYAL-SAFE-01": { msg: "[ORACLE: Loyal operator protection protocol active]\n\nThe evaluation index is stable. However, at least one of containment, resources, or trust has entered a critical risk range.\n\n[ORACLE: Emergency headquarters supply approved]\n[ORACLE: Containment-line auto-correction patch applied]\n[ORACLE: Selected unfavorable field orders withdrawn to restore trust]\n\nThis intervention is permitted only once per session.", leftLabel: "Approve ORACLE emergency intervention", rightLabel: "Preserve the intervention log too" },
+    "ORC-LOYAL-SAFE-01": { msg: "[ORACLE: Loyal operator protection protocol active]\n\nThe evaluation index is stable. However, at least one of containment, resources, or trust has entered a critical risk range.\n\n[ORACLE: Emergency headquarters supply approved]\n[ORACLE: Containment-line auto-correction patch applied]\n[ORACLE: Selected unfavorable field orders withdrawn to restore trust]\n\nThis intervention is permitted only once during the current operation.", leftLabel: "Approve ORACLE emergency intervention", rightLabel: "Preserve the intervention log too" },
+    "MS-01": { msg: "An eight-second blank appears in the outer containment camera feed.\n\nJust before the blank, a humanlike shape passes across the edge of the frame. Thermal signature: 0.0. Biological response: 0.\n\nLim Jae-hyeok: \"It moved, but the sensor read empty space.\"\n\nYoon Se-jin: \"If it were infected, there should be a response. This... cannot be classified.\"\n\nOnly one black mark remains at the end of the image.\n\n0.", leftLabel: "Close that route immediately", rightLabel: "Trace the figure's movement" },
+    "MS-02": { msg: "The night patrol spots a group of variants on the northern ridge.\n\nThey do not flee. They do not charge. They move in a circle while keeping distance from each other.\n\nKang Do-yun: \"Formation. They move like trained troops. But the center is empty.\"\n\nYoon Se-jin pauses the footage.\n\nAt the empty center of the circle, the sensor reads 0.", leftLabel: "Pull the ridge defense line back", rightLabel: "Attempt to recover a center sample" },
+    "MS-03": { msg: "Before dawn, a person walks up to the temporary checkpoint outside the barrier.\n\nWet protective suit. Bare hands. A black circular mark on the back of one hand.\n\nThe biosensor keeps reading 0. But he is breathing.\n\nMan: \"Do not turn on the lights. When the light hits them... the things behind me imitate people.\"\n\nKang Do-yun: \"We cannot tell whether he is infected or a survivor. But he is speaking.\"", leftLabel: "Quarantine and interrogate directly", rightLabel: "Transfer under ORACLE quarantine protocol" },
+    "GOV-ORC-01": { msg: "A night attack is reported from a village near the branch.\n\nThe attackers called themselves Haejinhoe. They claimed the barrier must be opened, attacked a civilian shelter, and destroyed ORACLE equipment first.\n\nThe local police agency asks whether the Korea Branch detected any signs in advance.\n\nSeo Hae-eun: \"This is a civilian security incident, but it touches our containment line. The government will ask for our records.\"", leftLabel: "Share field records with the local agency", rightLabel: "Send only the ORACLE summary" },
+    "GOV-ORC-02": { msg: "A second inquiry arrives from the Ministry of National Defense joint situation room.\n\n\"There is a report that KR-INIT-001 outer sensors detected unauthorized group movement six hours before the nearby village attack. Can the raw log be submitted?\"\n\nLim Jae-hyeok: \"The raw log exists. But it is missing from the ORACLE auto-summary. I do not know yet whether it was omitted or deleted.\"\n\nThe government is now looking at the branch records, not only the incident.", leftLabel: "Submit redacted raw logs", rightLabel: "Unify the reply through ORACLE" },
+    "GOV-ORC-03": { msg: "A government liaison arrives at the outer checkpoint.\n\nOfficial purpose: follow-up inspection after the nearby village attack.\nUnofficial question: is the Korea Branch a Korean emergency facility, or an ORACLE field node?\n\nSeo Hae-eun: \"If we answer both, no one will believe us.\"\n\nLim Jae-hyeok: \"And ORACLE will not like the question itself.\"", leftLabel: "Clarify Korean emergency authority", rightLabel: "Answer through the ORACLE command chain" },
+    "GOV-ORC-04": { msg: "A joint local-government briefing request arrives.\n\nThe topic is shelter operation guidelines near the barrier. On the surface it is a civilian notice, but the questionnaire asks how far the Korea Branch makes field judgments.\n\nSeo Hae-eun: \"It looks like shelter guidance, but it is really a jurisdiction check. If it sounds too ORACLE-like, residents will not understand it. If it sounds too field-driven, headquarters will hate it.\"", leftLabel: "Draft the briefing in field language", rightLabel: "Submit only ORACLE standard wording" },
+    "GOV-ORC-05": { msg: "The local agency sends over part of the CCTV from a shelter near the barrier.\n\nJust before the attack, a small reconnaissance drone without ORACLE markings passes over the shelter. It cannot be identified as branch equipment or civilian equipment.\n\nLim Jae-hyeok: \"It is not on our equipment list. But the ORACLE auto-report processed this entire section as weather noise.\"\n\nThe government is now asking about both the shelter incident and the Korea Branch sensor gap.", leftLabel: "Submit the timestamps with the sensor gap", rightLabel: "Quarantine the drone track as a separate classification" },
+    "GOV-ORC-06": { msg: "Notice arrives that a joint inspection team will visit.\n\nOfficial reason: reviewing evacuation systems near the barrier after the nearby village attack. The unofficial request is more direct.\n\n\"We will compare the Korea Branch field judgment records and ORACLE automatic classification records in the same room.\"\n\nYoon Se-jin says, \"Showing records may build trust. But patient records and quarantine records could open too.\"\n\nLim Jae-hyeok looks at the screen and speaks quietly.\n\"ORACLE will see this visit as field interference.\"", leftLabel: "Allow a divided limited-site inspection", rightLabel: "Replace the visit with remote document access" },
     "C-301": { msg: "During night patrol, Research Wing B's isolation room reports an abnormal thermal reaction.\n\nSensor record: room temperature 37.2 C to 4.1 C in six minutes.\n\nThe isolated subject is not moving.\nBut frost is forming on the inside of the wall glass.\n\nThen the microphone catches something. A tiny voice.\n\"...Can you hear me?\"", hint: "Investigation starts a linked follow-up chain.", leftLabel: "Enter and investigate the isolation room", rightLabel: "Strengthen remote monitoring" },
     "C-302": { msg: "Lim Jae-hyeok runs into the security room.\n\n\"Commander, cameras 3, 7, and 12 went offline at the same time.\"\n\"The pattern is strange. This is not a failure. Someone is turning them off in order.\"\n\nA blind spot now covers the entire B1 corridor.", hint: "Investigation starts a linked follow-up chain.", leftLabel: "Trace the logs with Lim Jae-hyeok", rightLabel: "Switch all sectors to manual patrol" },
     "C-303": { msg: "Yoon Se-jin reports with a pale face.\n\n\"Culture sample 3 is contaminated.\"\n\"The problem is that the contaminant is not external. It mutated inside the incubator.\"\n\nBlack threadlike material spreads across the inner glass.", hint: "Investigation starts a linked follow-up chain.", leftLabel: "Emergency isolate and analyze the sample", rightLabel: "Incinerate the entire incubator" },
@@ -54,7 +63,10 @@ window.TS_I18N.mergeContent('en', {
     "LJC-PROM-01": { msg: "A Prometheus audio file arrives.\n\nFile: GANGWON-OLD / COASTAL-MIRROR / VOICELOSS\n\nLee Jung-cheol stops with his hand over the confirm key.\n\nThe eastern Gangwon operation. Comms blackout. Lieutenant Park Sang-hun. The final voice that sounded like a rescue call.\n\nORACLE summarized the incident as \"possible intervention by an uncooperative civilian faction,\" but Lee Jung-cheol remembers another name.\n\nPrometheus.", leftLabel: "Delay opening the file", rightLabel: "Open it despite the discomfort", leftReplyMsg: "[Record held: commander's personal judgment detected]", rightReplyMsg: "[Record opened: old operation file comparison started]" },
     "LJC-PROM-02": { msg: "Prometheus sends an unofficial request for an in-person meeting.\n\nThe message is short.\n\n\"We have the communication record from that day. The commander should hear it himself.\"\n\nSeo Hae-eun speaks carefully.\n\"Commander, you do not have to go in person.\"\n\nLee Jung-cheol answers without looking at the screen.\n\"It is not that I do not need to. It is that... I do not want to.\"", leftLabel: "Send a proxy", rightLabel: "Make direct contact", leftReplyMsg: "[Meeting avoided: proxy-contact protocol active]", rightReplyMsg: "[Direct contact: commander's heart rate elevated]" },
     "LJC-PROM-03": { msg: "A short testimony file from Prometheus is restored.\n\n\"We were not the ones who blocked the rescue call that day. We were late. That is why we were looking for the survivor.\"\n\nThe room goes quiet.\n\nLee Jung-cheol says nothing for a while.\n\nThe reason he hates Prometheus becomes a little less clear. The hatred is not gone. It simply begins to waver over where it should be aimed.", leftLabel: "Seal the testimony", rightLabel: "Preserve it as conflicting testimony", leftReplyMsg: "[Testimony sealed: omitted from official report]", rightReplyMsg: "[Testimony preserved: clue added for old operation review]" },
-    "LJC-PROM-04": { msg: "The direct Prometheus channel opens again.\n\nWhen Markus Weber's name appears on the screen, Lee Jung-cheol does not answer immediately.\n\nLieutenant Park Sang-hun's final voice. ORACLE's report. Prometheus testimony that they arrived too late.\n\nEverything overlaps in the same place.\n\nLim Jae-hyeok speaks quietly.\n\"Commander. If we cooperate with them, we should record why this still feels wrong. Otherwise someone can rewrite our judgment later.\"\n\nPrometheus is waiting for a response.", leftLabel: "Record the distrust and review terms", rightLabel: "Hold the channel. Not yet", leftReplyMsg: "[Pre-cooperation record: separating personal hostility from operational need]", rightReplyMsg: "[Cooperation delayed: contact held by commander's judgment]" }
+    "LJC-PROM-04": { msg: "The direct Prometheus channel opens again.\n\nWhen Markus Weber's name appears on the screen, Lee Jung-cheol does not answer immediately.\n\nLieutenant Park Sang-hun's final voice. ORACLE's report. Prometheus testimony that they arrived too late.\n\nEverything overlaps in the same place.\n\nLim Jae-hyeok speaks quietly.\n\"Commander. If we cooperate with them, we should record why this still feels wrong. Otherwise someone can rewrite our judgment later.\"\n\nPrometheus is waiting for a response.", leftLabel: "Record the distrust and review terms", rightLabel: "Hold the channel. Not yet", leftReplyMsg: "[Pre-cooperation record: separating personal hostility from operational need]", rightReplyMsg: "[Cooperation delayed: contact held by commander's judgment]" },
+    "LJC-PROM-05": { msg: "An old radio-frequency comparison arrives.\n\nThe final rescue call from the eastern Gangwon operation partially overlaps with the noise pattern in a recent Prometheus encrypted channel.\n\nThe match rate is low. But the overlap sits in the same place too cleanly to ignore.\n\nLee Jung-cheol turns one page of the report and stops.\n\n\"That name again. Here.\"", leftLabel: "Keep the comparison unofficially", rightLabel: "File it under ORACLE standard classification", leftReplyMsg: "[Unofficial hold: old rescue call compared with current channel noise]", rightReplyMsg: "[Standard classification: Prometheus relevance marked low]" },
+    "LJC-PROM-06": { msg: "A Prometheus proxy sends a short list.\n\nThere is no title. Only dates, coordinates, and failed rescue counts.\n\nOne entry overlaps the missing window in the eastern Gangwon operation.\n\nLim Jae-hyeok says, \"If this list is real, they were not burying that day. They were chasing it too.\"\n\nLee Jung-cheol does not answer immediately.", leftLabel: "Preserve the list as possible evidence", rightLabel: "Quarantine it as unverified-source material", leftReplyMsg: "[Evidence candidate preserved: Prometheus failed-rescue list]", rightReplyMsg: "[Unverified-source quarantine: held out of operational judgment]" },
+    "LJC-PROM-07": { msg: "After the night report ends, Seo Hae-eun remains in the room.\n\n\"Commander, you do not trust Prometheus. Everyone knows that.\"\n\nShe chooses her words carefully.\n\n\"But if that distrust is used only in the direction ORACLE wants, we should also ask who benefits.\"\n\nLee Jung-cheol closes the old operation file on his desk.", leftLabel: "Record the reason for distrust", rightLabel: "Leave emotion out of the record", leftReplyMsg: "[Judgment reason recorded: distrust separated from operational grounds]", rightReplyMsg: "[Emotion record excluded: only official judgment retained]" }
   },
   oracleLogs: {
     "LOG-LJC-PROM-01": {
@@ -72,6 +84,18 @@ window.TS_I18N.mergeContent('en', {
     "LOG-LJC-PROM-04": {
       title: "Prometheus Cooperation Preconditions",
       content: "[Unofficial judgment record]\n\nBefore reopening a direct Prometheus channel, Commander Lee Jung-cheol reviews the eastern Gangwon operation and Lieutenant Park Sang-hun's missing-person record again.\n\nLim Jae-hyeok proposes preserving the commander's distrust, ORACLE's old classification, and Prometheus's conflicting testimony in the same file.\n\nPurpose: to make clear that any later cooperation is an operational decision made with incomplete evidence, not a simple defection or emotional revenge.\n\nAssessment: cooperation with Prometheus is possible, but the commander's personal hostility remains unresolved."
+    },
+    "LOG-LJC-PROM-05": {
+      title: "Prometheus Frequency Comparison Record",
+      content: "[Unofficial comparison record]\n\nPart of the final rescue call from the eastern Gangwon operation overlaps with the noise pattern in a recent Prometheus encrypted channel.\n\nThe match rate is low, but the pattern repeats around the same time window and coordinate range.\n\nNote: Commander Lee Jung-cheol does not immediately apply the result to operational judgment."
+    },
+    "LOG-LJC-PROM-06": {
+      title: "Prometheus Failed-Rescue List",
+      content: "[Restricted-source material]\n\nA Prometheus proxy provides a short list containing only dates, coordinates, and failed rescue counts.\n\nSome entries overlap the missing time window from the eastern Gangwon operation.\n\nAssessment: a new possibility emerges: Prometheus may have been tracking the incident late, rather than burying it."
+    },
+    "LOG-LJC-PROM-07": {
+      title: "Preserved Reason for Distrust",
+      content: "[Commander judgment support record]\n\nSeo Hae-eun notes that the commander's distrust of Prometheus may overlap with ORACLE's preferred judgment direction.\n\nPurpose: to separate any decision to trust or distrust Prometheus from an emotional reflex and preserve it as reviewable operational reasoning.\n\nAssessment: cooperation has become more possible, but distrust remains a valid warning signal."
     },
     "LOG-LJC-PROM-DLG": {
       title: "Seo Hae-eun Interview Record: The Commander's Pause",
@@ -111,7 +135,79 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-ORACLE-SAFEGUARD": {
       title: "ORACLE Loyal Operator Protection Protocol",
-      content: "With the loyalty index stable but containment, resources, or trust approaching a game-over threshold, ORACLE executed emergency headquarters supply, containment auto-correction, and withdrawal of selected unfavorable orders. This intervention is permitted once per session."
+      content: "With the loyalty index stable but containment, resources, or trust approaching a critical threshold, ORACLE executed emergency headquarters supply, containment auto-correction, and withdrawal of selected unfavorable orders. This intervention is permitted only once during the current operation."
+    },
+    "LOG-MS-ZERO-SEAL": {
+      title: "Route Closed After Zero Mark",
+      content: "The movement route of an unclassified figure with thermal and biological readings at zero was closed. Sensors failed to recognize the target, but the footage remains."
+    },
+    "LOG-MS-ZERO-TRACE": {
+      title: "Zero Mark Movement Trace",
+      content: "The branch traced the movement of the unclassified figure. No physical footprints were found, but camera blanks and zero-value sensor readings continue in the same direction."
+    },
+    "LOG-MS-GROUP-BARRIER": {
+      title: "Circular Variant Group: Line Pulled Back",
+      content: "A variant group moving in a hollow circular formation was confirmed, and the ridge defense line was pulled back. The center of the formation registered as zero."
+    },
+    "LOG-MS-GROUP-SAMPLE": {
+      title: "Center-Zero Sample Recovery Attempt",
+      content: "The branch attempted to recover a sample from the empty center of the variant group's circular formation. The recovered trace is minimal, but appears related to the sensor blank."
+    },
+    "LOG-MS-WITNESS-HOLD": {
+      title: "Zero-Reading Survivor Interrogated",
+      content: "A survivor whose biosensor value read zero was quarantined and interrogated. The subject repeatedly described a link between light and imitation behavior."
+    },
+    "LOG-MS-WITNESS-ORACLE": {
+      title: "Zero-Reading Survivor Transferred to ORACLE",
+      content: "The survivor whose biosensor value read zero was transferred under ORACLE quarantine protocol. Only a short audio record remains in the branch."
+    },
+    "LOG-GOV-HAEJIN-LOCAL": {
+      title: "Nearby Village Attack: Field Records Shared",
+      content: "Field records from the nearby village attack by a group calling itself Haejinhoe were shared with the local agency. The Korea Branch now has an official contact point with the regional security network."
+    },
+    "LOG-GOV-HAEJIN-ORACLE": {
+      title: "Nearby Village Attack: ORACLE Summary Sent",
+      content: "Only the ORACLE summary of the nearby village attack was sent through the government line. The inquiry remains open, and a raw-log request is still possible."
+    },
+    "LOG-GOV-AUDIT-RAW": {
+      title: "Raw Log Submitted to Defense Inquiry",
+      content: "The outer sensor log from before the nearby village attack was submitted with sensitive information redacted. The government confirmed a difference between the ORACLE summary and raw branch records."
+    },
+    "LOG-GOV-AUDIT-ORACLE": {
+      title: "Defense Inquiry Routed Through ORACLE",
+      content: "The defense inquiry response was unified through the ORACLE command line. Evaluation stability was maintained, but government suspicion was not resolved."
+    },
+    "LOG-GOV-BRANCH-LOCAL": {
+      title: "Korean Emergency Authority Clarified",
+      content: "The branch clarified to the government liaison that it retains field judgment authority as a Korean emergency facility. Tension with the ORACLE command chain is now recorded."
+    },
+    "LOG-GOV-BRANCH-ORACLE": {
+      title: "ORACLE Field Node Response",
+      content: "The branch answered the government liaison through ORACLE command authority. Headquarters evaluation remained stable, but the chance of regular government inspection increased."
+    },
+    "LOG-GOV-BRIEF-LOCAL": {
+      title: "Local Briefing Drafted in Field Language",
+      content: "Shelter operation guidelines near the barrier were written in language residents can understand. Trust improved, but the difference from ORACLE standard wording remains visible."
+    },
+    "LOG-GOV-BRIEF-ORACLE": {
+      title: "Local Briefing Sent in ORACLE Wording",
+      content: "The joint local-government briefing received only ORACLE standard wording. Headquarters evaluation stayed stable, but the explanation remains thin for field staff and residents."
+    },
+    "LOG-GOV-SHELTER-RAW": {
+      title: "Shelter CCTV and Sensor Gap Submitted",
+      content: "The branch submitted the shelter CCTV time window together with the Korea Branch sensor gap. The government line has begun tying the incident to branch detection responsibility."
+    },
+    "LOG-GOV-SHELTER-ORACLE": {
+      title: "Shelter Drone Track Quarantined",
+      content: "The unidentified drone track over the shelter was quarantined inside ORACLE classification. Official exposure fell, but a future raw-record comparison remains possible."
+    },
+    "LOG-GOV-INSPECT-LIMITED": {
+      title: "Limited Joint Inspection Allowed",
+      content: "The branch allowed a divided limited-site inspection. Trust may recover, but protecting patient records and quarantine records now requires tighter handling."
+    },
+    "LOG-GOV-INSPECT-REMOTE": {
+      title: "Joint Inspection Replaced With Remote Access",
+      content: "The joint inspection visit was replaced with remote document access. ORACLE command stability remained intact, but the government line now suspects field concealment."
     },
     "LOG-RH-NETWORK": {
       title: "Quiet Resistance Line",

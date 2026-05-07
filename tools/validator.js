@@ -35,6 +35,7 @@ const DATA_FILES = [
   'data-cards-neutral.js',
   'data-cards-korea-civilian.js',
   'data-cards-dg-meridian.js',
+  'data-cards-session-packs.js',
   'data-rewards.js',
   'data-chains.js',
   'data-chains-incident.js',
