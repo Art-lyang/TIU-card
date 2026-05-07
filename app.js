@@ -50,14 +50,18 @@ function App(){
     if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
     return out;
   };
+  var uniqueFacilityIds=function(ids){
+    var seen={},out=[];
+    (Array.isArray(ids)?ids:[]).forEach(function(id){if(id&&!seen[id]){seen[id]=true;out.push(id)}});
+    return out;
+  };
   var normalizeFacilityState=function(fac){
     fac=fac||{};
-    return {
-      approved:Array.isArray(fac.approved)?fac.approved.slice():[],
-      pending:Array.isArray(fac.pending)?fac.pending.slice():[],
-      completed:Array.isArray(fac.completed)?fac.completed.slice():[],
-      proposed:Array.isArray(fac.proposed)?fac.proposed.slice():[]
-    };
+    var completed=uniqueFacilityIds(fac.completed);
+    var approved=uniqueFacilityIds(fac.approved).filter(function(id){return completed.indexOf(id)<0});
+    var pending=uniqueFacilityIds(fac.pending).filter(function(id){return completed.indexOf(id)<0&&approved.indexOf(id)<0});
+    var proposed=uniqueFacilityIds([].concat(fac.proposed||[],approved,pending,completed));
+    return {approved:approved,pending:pending,completed:completed,proposed:proposed};
   };
   var facilityHasExpansion=function(fac,feId){
     var f=normalizeFacilityState(fac);
@@ -70,6 +74,15 @@ function App(){
     if(status==='pending')next.pending.push(feId);
     else next.approved.push(feId);
     return next;
+  };
+  var completeFacilityExpansion=function(fac,feId){
+    var next=normalizeFacilityState(fac);
+    if(!feId||next.completed.indexOf(feId)>=0)return next;
+    next.approved=next.approved.filter(function(id){return id!==feId});
+    next.pending=next.pending.filter(function(id){return id!==feId});
+    next.completed.push(feId);
+    if(next.proposed.indexOf(feId)<0)next.proposed.push(feId);
+    return normalizeFacilityState(next);
   };
   var deriveActFlags=function(prev,cardId,missionId,chainDone){
     var next={prom_met:!!prev.prom_met,mission_done:!!prev.mission_done,chain_done:!!prev.chain_done,prom_mission:!!prev.prom_mission};
@@ -103,7 +116,7 @@ function App(){
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
     var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
-    var sf=Save.getFacility();if(sf)setFacility(sf);
+    var sf=Save.getFacility();if(sf){sf=normalizeFacilityState(sf);Save.saveFacility(sf);setFacility(sf)}
     var sg=Save.get('ts_game',null);
     // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
     if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
@@ -345,22 +358,29 @@ function App(){
       ns.r=Math.max(5,ns.r-(loyalRelief?1:2));
       ns.t=Math.max(5,ns.t-(loyalRelief?0:1));
     }
-    var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};setStats(next);persistGame(next,gi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue);setCt(0);
+    var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};
+    var nextGi=gi;
+    var nextFacility=normalizeFacilityState(facility);
+    var completedFacility=false;
+    var feDef=null;
     // 시설 확장 보상 선택 시 approved → completed 이동 + uprising 시설 GI-2
-    if(r.feId){setFacility(function(prev){
-      if(prev.completed.indexOf(r.feId)>=0)return prev;
-      var nxt={approved:prev.approved.filter(function(id){return id!==r.feId}),pending:prev.pending.slice(),completed:prev.completed.concat([r.feId]),proposed:prev.proposed.slice()};
-      Save.saveFacility(nxt);return nxt
-    });
+    if(r.feId){
+      completedFacility=nextFacility.completed.indexOf(r.feId)<0;
+      nextFacility=completeFacilityExpansion(nextFacility,r.feId);
+      setFacility(nextFacility);
+      Save.saveFacility(nextFacility);
       // uprising 시설 완료 시 GI-2 (ORACLE 독립 = 충성도 감소)
-      var feDef=(typeof FACILITY_EXPANSIONS!=='undefined')?FACILITY_EXPANSIONS.filter(function(f){return f.id===r.feId})[0]:null;
-      if(feDef&&feDef.uprising){setGi(function(g){return g-2})}
+      feDef=(typeof FACILITY_EXPANSIONS!=='undefined')?FACILITY_EXPANSIONS.filter(function(f){return f.id===r.feId})[0]:null;
+      if(completedFacility&&feDef&&feDef.uprising){nextGi=gi-2}
+    }
+    setStats(next);setGi(nextGi);persistGame(next,nextGi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue,nextFacility);setCt(0);
+    if(r.feId&&completedFacility){
       setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | GI -2'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
     var rewardLogs=getLiveLogs(logs);
-    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(next,gi,rewardLogs,transRoute):null;
+    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(next,nextGi,rewardLogs,transRoute):null;
     if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}
-    var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,gi);return}
+    var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,nextGi);return}
     setPhase('evening')};
   var hEvening=function(){var liveLogs=getLiveLogs(logs);var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(stats,gi,liveLogs,transRoute):null;if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
     // ═══ 35일 캡: day>35 도달 시 TIME_UP 강제 엔딩 ═══
@@ -424,7 +444,7 @@ function App(){
     var pud=pack.usedDlg||[];
     var pue=pack.usedEvening||[];
     var psa=pack.seenArchive||[];
-    var pfac=pack.facility||{approved:[],pending:[],completed:[],proposed:[]};
+    var pfac=normalizeFacilityState(pack.facility||{approved:[],pending:[],completed:[],proposed:[]});
     setStats(ps);setGi(pgi);setAct(pact);setActFlags(paf);setTransRoute(ptr);
     var savedCard=(pack.currentCardId&&typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[pack.currentCardId])||pack.currentCard||null;
     var restoredQueue=pcq;
@@ -457,7 +477,9 @@ function App(){
   },[stats,gi,act,logs,endings,trust.haeun,trust.doyun,trust.sejin,trust.jaehyuk,facility.completed.length,sessions]);
   // 대기 중 확장 승인 함수
   var approvePending=function(feId){setFacility(function(prev){
-    var next={approved:prev.approved.concat([feId]),pending:prev.pending.filter(function(id){return id!==feId}),completed:prev.completed.slice(),proposed:prev.proposed.slice()};
+    var base=normalizeFacilityState(prev);
+    if(!feId||base.approved.indexOf(feId)>=0||base.completed.indexOf(feId)>=0){Save.saveFacility(base);return base}
+    var next=normalizeFacilityState({approved:base.approved.concat([feId]),pending:base.pending.filter(function(id){return id!==feId}),completed:base.completed,proposed:base.proposed.concat([feId])});
     Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));setTimeout(function(){setToast('')},2200)};
   // directUpgrade 는 main 머지 후 제거됨 — uprising GI-2 로직은 hReward 내부 r.feId 처리부로 이관
 

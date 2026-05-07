@@ -372,7 +372,7 @@ function CardC(p){
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-004':IMG.spec_004_seedspreader,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit,'spec-015':IMG.spec_015_brainseeker};
-  var bgImgMap={base:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather};
+  var bgImgMap={base:IMG.bg_base,default:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,research:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather};
   var specBg=card.img?IMG[card.img]:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:tt('stats.c',null,'봉쇄'),r:tt('stats.r',null,'자원'),t:tt('stats.t',null,'신뢰'),o:tt('stats.o',null,'평가')};
