@@ -39,6 +39,17 @@ function App(){
   // 신뢰도 변화는 플레이어에게 표시하지 않음 (GI처럼 숨김)
   var _ps=useState(null),prevStats=_ps[0],setPrevStats=_ps[1];
   var cpd=act===1?4:act===2?5:act===3?6:7;
+  var SESSION_SCOPED_LOGS={'LOG-EV-UNLOCK':true};
+  var resetSessionLogs=function(src){
+    var base=Array.isArray(src)?src:['LOG-001'];
+    var seen={},out=[];
+    base.forEach(function(id){
+      if(!id||SESSION_SCOPED_LOGS[id]||id.indexOf('LOG-INTRO-')===0||id.indexOf('ONCE-')===0)return;
+      if(!seen[id]){seen[id]=true;out.push(id)}
+    });
+    if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
+    return out;
+  };
   var normalizeFacilityState=function(fac){
     fac=fac||{};
     return {
@@ -97,7 +108,7 @@ function App(){
     // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
     if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(typeof sg.transRoute==='string')setTransRoute(sg.transRoute);if(sg.cooldowns)setCooldowns(sg.cooldowns);if(sg.recentCards)setRecentCards(sg.recentCards);if(typeof sg.ct==='number')setCt(sg.ct)}
-    else{sl=(sl||['LOG-001']).filter(function(id){return id.indexOf('LOG-INTRO-')!==0});Save.saveLogs(sl);setLogs(sl);setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
+    else{sl=resetSessionLogs(sl||['LOG-001']);Save.saveLogs(sl);setLogs(sl);Save.del('ts_combos');setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     // ═══ 세이브 복원: stats/gi 로드 (기존 누락 수정) ═══
     var initStats={c:50,r:65,t:50,o:40,day:1};
     var initGi=0;
@@ -198,19 +209,26 @@ function App(){
   };
   var buildEvidenceFallbackDialogue=function(){
     var en=getLocale()==='en';
+    var prior=false;try{prior=typeof Save!=='undefined'&&Save.getSessions&&Save.getSessions()>0}catch(e){}
+    var enLines=[
+      'Commander, the investigation table was not activated during Act 2.',
+      'From this phase onward, scattered logs and incident records must be cross-checked directly.',
+      'I will open the evidence analysis module on the ORACLE terminal now.'
+    ];
+    var koLines=[
+      '\uc9c0\ud718\uad00\ub2d8, Act 2 \ub0b4\uc5d0 \uc870\uc0ac\ud14c\uc774\ube14\uc774 \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.',
+      '\uc774 \ub2e8\uacc4\ubd80\ud130\ub294 \uc0b0\uc7ac\ud55c \ub85c\uadf8\uc640 \uc0ac\uac74 \uae30\ub85d\uc744 \uc9c1\uc811 \uad50\ucc28 \uac80\uc99d\ud574\uc57c \ud569\ub2c8\ub2e4.',
+      '\uc9c0\ud718\uad00 \uad8c\ud55c\uc73c\ub85c ORACLE \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uac15\uc81c \ud65c\uc131\ud654\ud558\uaca0\uc2b5\ub2c8\ub2e4.'
+    ];
+    if(prior){
+      enLines.splice(1,0,'One more thing... the table is not empty. Hashes from an earlier session are still inside it.');
+      koLines.splice(1,0,'\uadf8\ub7f0\ub370... \ube48 \ud14c\uc774\ube14\uc774 \uc544\ub2d9\ub2c8\ub2e4. \uc774\uc804 \uc138\uc158\uc758 \ud574\uc2dc\uac00 \uc544\uc9c1 \ub0a8\uc544 \uc788\uc2b5\ub2c8\ub2e4.');
+    }
     return {
       id:'DLG-EV-FORCE-ACT3',
       char:'\uc784\uc7ac\ud601',
       role:en?'Technical Officer':'\uae30\uc220\uad00',
-      lines:en?[
-        'Commander, the investigation table was not activated during Act 2.',
-        'From this phase onward, scattered logs and incident records must be cross-checked directly.',
-        'I will open the evidence analysis module on the ORACLE terminal now.'
-      ]:[
-        '\uc9c0\ud718\uad00\ub2d8, Act 2 \ub0b4\uc5d0 \uc870\uc0ac\ud14c\uc774\ube14\uc774 \ud65c\uc131\ud654\ub418\uc9c0 \uc54a\uc558\uc2b5\ub2c8\ub2e4.',
-        '\uc774 \ub2e8\uacc4\ubd80\ud130\ub294 \uc0b0\uc7ac\ud55c \ub85c\uadf8\uc640 \uc0ac\uac74 \uae30\ub85d\uc744 \uc9c1\uc811 \uad50\ucc28 \uac80\uc99d\ud574\uc57c \ud569\ub2c8\ub2e4.',
-        '\uc9c0\ud718\uad00 \uad8c\ud55c\uc73c\ub85c ORACLE \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uac15\uc81c \ud65c\uc131\ud654\ud558\uaca0\uc2b5\ub2c8\ub2e4.'
-      ],
+      lines:en?enLines:koLines,
       choices:en?[
         {label:'Activate the investigation table',tag:'Analysis',reply:'Authorization confirmed. The evidence table is now available from the terminal.',fx:{},g:0,trust:3,log:'LOG-EV-UNLOCK'},
         {label:'Open it with minimum privileges',tag:'Cold',reply:'Understood. I will keep it to read-only analysis access.',fx:{},g:0,trust:1,log:'LOG-EV-UNLOCK'}
@@ -354,7 +372,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_recentNews','ts_recentRewards'].forEach(function(k){Save.del(k)});window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_recentNews','ts_recentRewards','ts_combos'].forEach(function(k){Save.del(k)});window.location.reload()};
   var startNewCampaign=function(showTutorial){
     initActiveSpecs();
     var ns={c:50,r:65,t:50,o:40,day:1};
@@ -363,8 +381,8 @@ function App(){
     setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
     setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
-    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');
-    var rl=logs.filter(function(id){return id.indexOf('LOG-INTRO-')!==0&&id.indexOf('ONCE-')!==0});
+    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');setShowEvidence(false);
+    var rl=resetSessionLogs(logs);
     setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();
     setCurCard(drawCard(ns,0,rl,{},[],1));
     setFp(!!showTutorial);

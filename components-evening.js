@@ -104,7 +104,7 @@ function EveningChat(p){
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
       else{
-        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)}).sort(sortByDay);
+        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
         if(matches.length>0)chat=matches[matches.length-1];
         else{
           matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
@@ -319,7 +319,7 @@ function EveningChat2(p){
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
       else{
-        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)}).sort(sortByDay);
+        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
         if(matches.length>0)chat=matches[matches.length-1];
         else{
           matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);

@@ -20,6 +20,7 @@ window.TS_I18N.mergeContent('en', {
     "sejin_2_12-14": { lines: ["I am observing early-stage infected anomalies.", "They still retain human habits. Trying to open doors, tapping on walls.", "Is that memory, or reflex... I still do not have an answer."] },
     "jaehyuk_1_2-5": { lines: ["I am optimizing the power distribution system.", "With the current structure, power efficiency is only 68%.", "If we rewire it, we can raise it to 85%, but I need approval."] },
     "jaehyuk_1_3-5": { lines: ["I was organizing the system update logs.", "I think we need to reset the regular patch schedule.", "If you approve it, Commander, I will submit a maintenance plan."] },
+    "jaehyuk_2_5-99": { lines: ["Commander. I made something while working late.", "...It is an evidence analysis framework.", "It can cross-match collected logs, observation records, and incident reports from the terminal.", "But this is strange. The table should be empty, yet some log hashes from the previous session are still here.", "I will upload it as a commander-only module. You can use it during Evening Sessions.", "...I thought we might need it."] },
     "jaehyuk_2_8-12": { lines: ["I was adjusting the communication antenna direction.", "But ORACLE has locked a specific frequency band.", "It is a technically unnecessary restriction... I do not know why it is there."] },
     "jaehyuk_2_12-14": { lines: ["Commander, I saw something strange while inspecting the server room.", "There is a periodic spike in the power-consumption graph. Every day at 03:00.", "There is no activity record in the system logs for that time.", "Something is running at dawn, but it is leaving no record."] }
   },
@@ -41,6 +42,7 @@ window.TS_I18N.mergeContent('en', {
     "sejin_2_12-14": { a: { label: "I think it is memory.", reply: "...If so, they are truly sad beings." }, b: { label: "Treat them only as research subjects.", reply: "...Yes. I will exclude emotion." } },
     "jaehyuk_1_2-5": { a: { label: "Proceed.", reply: "Thank you. I will finish the work by tomorrow." }, b: { label: "Maintain current status.", reply: "...Understood. I will proceed if approval comes later." } },
     "jaehyuk_1_3-5": { a: { label: "Submit the maintenance plan.", reply: "Yes. I will organize it and report by tomorrow." }, b: { label: "Is the current status enough?", reply: "It is fine for now, but regular inspection is necessary." } },
+    "jaehyuk_2_5-99": { a: { label: "Good. Bring it online now.", reply: "Yes. Commander authorization is already confirmed. You can use it now." }, b: { label: "You built this alone?", reply: "...I did not tell anyone else. I will leave the judgment to you, Commander." } },
     "jaehyuk_2_8-12": { a: { label: "Find out why it is locked.", reply: "Yes. I will check carefully." }, b: { label: "There must be a security reason.", reply: "...There might be." } },
     "jaehyuk_2_12-14": { a: { label: "03:00... keep a record.", reply: "I already have a week's pattern captured. Would you like to see it?" }, b: { label: "Could it be a system backup process?", reply: "If it were a backup, there would be logs. The lack of logs is the problem." } }
   }
