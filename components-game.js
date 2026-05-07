@@ -378,11 +378,21 @@ function CardC(p){
   var blockMsgs=(cardLoc&&cardLoc.oracleBlockMsgs)||card.oracleBlockMsgs||defaultBlockMsgs;
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
-  var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null);
+  var s8=useState(null),choiceCue=s8[0],setChoiceCue=s8[1];
+  var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null),choiceCueTimer=useRef(null);
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
   var s7=useState(timerTotal),remaining=s7[0],setRemaining=s7[1];
   var clearHoldPreview=function(){
     if(holdPreviewTimer.current){clearTimeout(holdPreviewTimer.current);holdPreviewTimer.current=null}
+  };
+  var clearChoiceCue=function(){
+    if(choiceCueTimer.current){clearTimeout(choiceCueTimer.current);choiceCueTimer.current=null}
+  };
+  var flashChoiceCue=function(kdir,ms){
+    if(!kdir)return;
+    clearChoiceCue();
+    setChoiceCue(kdir);
+    choiceCueTimer.current=setTimeout(function(){setChoiceCue(null);choiceCueTimer.current=null},ms||180);
   };
   var previewChoice=function(kdir){
     if(!kdir||!card[kdir]||!p.onPreview)return;
@@ -394,7 +404,8 @@ function CardC(p){
     var r=el.getBoundingClientRect();
     return x<(r.left+r.width/2)?'left':'right';
   };
-  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
+  useEffect(function(){return function(){clearHoldPreview();clearChoiceCue()}},[]);
+  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];
@@ -402,7 +413,8 @@ function CardC(p){
     var replyMsg=(cardLoc&&cardLoc[replyKey])||(branch&&branch.replyMsg);
     if(replyMsg&&p.onReply){p.onReply(replyMsg)}
     setChosen(kdir);
-    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null)},replyMsg?1500:300);
+    setChoiceCue(kdir);
+    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null);setChoiceCue(null)},replyMsg?1500:300);
   };
   var requestChoice=function(kdir){
     if(chosen||shaking)return;
@@ -435,6 +447,7 @@ function CardC(p){
       else if(e.key==='ArrowRight'||e.key==='2'||e.code==='Numpad2')kdir='right';
       if(!kdir)return;
       e.preventDefault();
+      flashChoiceCue(kdir,220);
       requestChoice(kdir);
     };
     window.addEventListener('keydown',onKey);
@@ -451,11 +464,12 @@ function CardC(p){
       var nd=x-sxRef.current;setDx(nd);
       if(p.onPreview){
         var d=Math.abs(nd)>8?(nd<0?'left':'right'):holdPreviewDir.current;
+        if(d)setChoiceCue(d);
         previewChoice(d);
       }
     }
   };
-  var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else setDx(0)};
+  var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else{setDx(0);setChoiceCue(null)}};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
@@ -489,12 +503,13 @@ function CardC(p){
   var showFxHints=card.showFxHint!==false;
   var leftFx=showFxHints?fxHint(card.left.fx):null,rightFx=showFxHints?fxHint(card.right.fx):null;
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
+  var cueClass=(choiceCue==='left'?' is-cue-left':choiceCue==='right'?' is-cue-right':'')+(chosen==='left'?' is-commit-left':chosen==='right'?' is-commit-right':'');
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
-    h('div',{ref:cardRef,className:'card-panel'+pcClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
+    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease, opacity 0.18s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
-      onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
+      onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},card.glitch?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
