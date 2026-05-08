@@ -97,8 +97,17 @@ var CARDS_RESIST_HINT = [
     req: function(s,g,logs){ return s.day >= 16 && logs.indexOf('ONCE-HH-01') >= 0 },
     msg: "서하은이 임재혁의 제안서를 건넵니다.\n\n\"임재혁 기술관이 정리한 — 독립 인프라 후보 목록입니다.\n자체 서버룸, 독립 통신실, 비상 발전기, 차폐 회의실, 무기고.\"\n\n\"5개가 있으면, ORACLE 없이도 이 기지가 자립할 수 있어요.\"\n\"비상 대피 벙커까지 합치면 — 완성입니다.\"",
     left:  { label: "검토 명단에 올려둬라", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2, trust: 5 },
-    right: { label: "아직 단계가 아니다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } }
+    right: { label: "아직 단계가 아니다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
 
+  { id: "RH-SAFE-01", act: [2,3,4], priority: "event", tag: "resist-safeguard", once: true, bg: "supply",
+    req: function(s,g,logs){
+      return typeof resistanceSafeguardEligible === 'function'
+        ? resistanceSafeguardEligible(s,g,logs)
+        : !!(s && g <= -35 && s.day >= 8 && (s.c <= 25 || s.r <= 25 || s.t <= 20 || s.o <= 20) && logs.indexOf('ONCE-RH-SAFE-01') < 0);
+    },
+    msg: "[현장 비상망: 수동 동기화]\n\nORACLE 권고를 계속 우회하면서 공식 보급 순서와 현장 판단 사이의 간격이 벌어졌습니다.\n\n서하은이 비공식 협조 명단을 올립니다.\n\"본부 명령을 뒤집자는 뜻이 아닙니다. 살아남을 수 있는 최소 순서를 다시 짜자는 뜻입니다.\"\n\n임재혁이 짧게 덧붙입니다.\n\"기록은 남기겠습니다. 나중에 누가 보더라도, 우리가 왜 이 선택을 했는지 알 수 있게요.\"\n\n이 비상망은 이번 작전 중 한 번만 가동할 수 있습니다.",
+    left:  { label: "비공식 보급망을 가동한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 45, t: 35, o: 25 }, g: -3, log: "LOG-RH-SAFEGUARD" },
+    right: { label: "증거 묶음으로 본부를 설득한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 40, t: 35, o: 35 }, g: -1, log: "LOG-RH-SAFEGUARD" } }
 ];
 
 // CARDS 배열에 주입

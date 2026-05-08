@@ -329,7 +329,7 @@ function App(){
       setCurCard(UPRISING_FAIL_CARD);
       return;
     }
-    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(ns,ng,nextLogs,transRoute):null;
+    var sg=(typeof getRouteSafeguardCard==='function')?getRouteSafeguardCard(ns,ng,nextLogs,transRoute):null;
     if(sg){SFX.play('glitch');setCurCard(sg);return}
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
@@ -375,11 +375,11 @@ function App(){
       setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | 내부 기록 갱신'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));setTimeout(function(){setToast('')},2400)},300)}
     // 보상 적용 후 즉시 게임오버 체크 (봉쇄 100 / 자원 0 등)
     var rewardLogs=getLiveLogs(logs);
-    var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(next,nextGi,rewardLogs,transRoute):null;
+    var sg=(typeof getRouteSafeguardCard==='function')?getRouteSafeguardCard(next,nextGi,rewardLogs,transRoute):null;
     if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}
     var goR=chkGameOver(next);if(goR){SFX.play('gameover');doGO(goR,next,nextGi);return}
     setPhase('evening')};
-  var hEvening=function(){var liveLogs=getLiveLogs(logs);var sg=(typeof getOracleSafeguardCard==='function')?getOracleSafeguardCard(stats,gi,liveLogs,transRoute):null;if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
+  var hEvening=function(){var liveLogs=getLiveLogs(logs);var sg=(typeof getRouteSafeguardCard==='function')?getRouteSafeguardCard(stats,gi,liveLogs,transRoute):null;if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}var go=chkGameOver(stats);if(go){SFX.play('gameover');doGO(go,stats,gi);return}
     // ═══ 35일 캡: day>35 도달 시 TIME_UP 강제 엔딩 ═══
     if(stats.day>35){var teid=resolveTimeUp(stats,gi,trust,liveLogs);SFX.play('gameover');doGO(getLocale()==='en'?'Session expired':'\uC138\uC158 \uB9CC\uB8CC',stats,gi,teid);return}
     var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast(tt('app.cStabilityAlert',{value:stats.c},'[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]'));setTimeout(function(){setToast('')},3800)},700)}

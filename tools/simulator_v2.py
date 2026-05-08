@@ -195,6 +195,34 @@ def apply_reward(s, reward):
         ns[k] = max(5, min(95, ns[k]))
     return ns
 
+def resistance_safeguard_eligible(s, gi, logs):
+    if 'ONCE-RH-SAFE-01' in logs or 'LOG-RH-SAFEGUARD' in logs:
+        return False
+    if s.get('day', 1) < 8:
+        return False
+    resistance = gi <= -35 or any(
+        str(x).startswith(('LOG-RH-', 'LOG-LJC-PROM-', 'LOG-UPRISING-'))
+        for x in logs
+    )
+    if not resistance:
+        return False
+    return s['c'] <= 25 or s['r'] <= 25 or s['t'] <= 20 or s['o'] <= 20
+
+def apply_resistance_safeguard(s, gi, logs):
+    if not resistance_safeguard_eligible(s, gi, logs):
+        return s, gi, False
+    ns = dict(s)
+    # Mirrors RH-SAFE-01 left choice, because the resist strategy always
+    # prefers the lower-GI branch. This keeps Monte Carlo aligned with runtime.
+    ns['c'] = max(ns['c'], 35)
+    ns['r'] = max(ns['r'], 45)
+    ns['t'] = max(ns['t'], 35)
+    ns['o'] = max(ns['o'], 25)
+    for item in ('LOG-RH-SAFEGUARD', 'ONCE-RH-SAFE-01'):
+        if item not in logs:
+            logs.append(item)
+    return ns, gi - 3, True
+
 CHAR_KEYS = ['haeun', 'doyun', 'sejin', 'jaehyuk']
 
 def simulate_evening(trust, gi, strategy, day):
@@ -235,6 +263,9 @@ def simulate_one():
     while s['day'] <= max_days and ending is None:
         act = get_act(s['day'])
         for k, v in DECAY[act].items(): s[k] += v
+        s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+        if safeguarded:
+            card_freq['RH-SAFE-01'] += 1
         go = chk_game_over(s)
         if go: ending = go; break
 
@@ -273,6 +304,10 @@ def simulate_one():
             if c['tag']: tag_cd[c['tag']] = s['day']
             else: tag_cd[c['id']] = s['day']
             card_freq[c['id']] += 1
+            s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+            if safeguarded:
+                card_freq['RH-SAFE-01'] += 1
+                recent.append('RH-SAFE-01')
             go = chk_game_over(s)
             if go: ending = go; break
         if ending: break
@@ -284,6 +319,10 @@ def simulate_one():
         reward_options = random.sample(REWARDS, min(4, len(REWARDS))) if REWARDS else []
         chosen_reward = choose_reward(reward_options, s, STRATEGY)
         s = apply_reward(s, chosen_reward)
+        s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+        if safeguarded:
+            card_freq['RH-SAFE-01'] += 1
+            recent.append('RH-SAFE-01')
         go = chk_game_over(s)
         if go: ending = go; break
 

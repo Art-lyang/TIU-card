@@ -67,6 +67,7 @@ function genChoiceReactionNews(s,g,logs){
   if(has('LOG-CB-CONTAINMENT'))pool.push("[국내] 봉쇄 자동화 재교육 예산 배정 — 현장 노조는 '최소한의 안전장치'라 평가");
   if(has('LOG-CB-HUMANAPPENDIX'))pool.push("[내부] ORACLE 성과 보고서에 현장 피로도 부록 첨부 — 삭제 없이 본부 라인 통과");
   if(has('LOG-ORACLE-SAFEGUARD'))pool.push("[분류 보류] 강원지부 긴급 안정화 패키지 승인 — 본부 보급, 봉쇄 자동 보정, 현장 명령 철회가 동시에 기록됨");
+  if(has('LOG-RH-SAFEGUARD'))pool.push("[내부] 강원지부 수동 비상망 가동 — 비공식 협조 명단과 현장 기록 묶음으로 최소 생존선 재정렬");
   if(has('LOG-CB-SUSTAINED'))pool.push("[국내] 중앙 자동화와 현장 설명 절차를 병행한 지부, 봉쇄 효율과 내부 신뢰 동시 개선");
   if(g<=-15&&s.o<=40)pool.push("[내부] ORACLE 평가 하락 경보와 별개로 비공식 증거 보존 요청이 늘어남 — 저항 선택의 대가가 기록으로 남기 시작함");
   if(g>=15&&(s.r<=40||s.t<=40))pool.push("[내부] ORACLE 순응 절차가 안정성을 높였지만, 보급·신뢰 완충 계획 없이는 현장 피로가 누적될 수 있음");

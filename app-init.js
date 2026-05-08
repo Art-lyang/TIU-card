@@ -151,6 +151,30 @@ var getOracleSafeguardCard=function(stats,gi,logs,tRoute){
   for(var i=0;i<CARDS.length;i++)if(CARDS[i]&&CARDS[i].id==='ORC-LOYAL-SAFE-01')return CARDS[i];
   return null;
 };
+var resistanceSafeguardEligible=function(stats,gi,logs,tRoute){
+  var s=stats||{},lg=logs||[];
+  if(lg.indexOf('ONCE-RH-SAFE-01')>=0||lg.indexOf('LOG-RH-SAFEGUARD')>=0)return false;
+  if(!s||s.day<8)return false;
+  var resistance=(gi||0)<=-35||tRoute==='A4_RESIST'||tRoute==='A4_OBSERVER';
+  if(!resistance){
+    for(var i=0;i<lg.length;i++){
+      var id=String(lg[i]||'');
+      if(id.indexOf('LOG-RH-')===0||id.indexOf('LOG-LJC-PROM-')===0||id.indexOf('LOG-UPRISING-')===0){resistance=true;break}
+    }
+  }
+  if(!resistance)return false;
+  return s.c<=25||s.r<=25||s.t<=20||s.o<=20;
+};
+var getResistanceSafeguardCard=function(stats,gi,logs,tRoute){
+  if(!resistanceSafeguardEligible(stats,gi,logs,tRoute))return null;
+  for(var i=0;i<CARDS.length;i++)if(CARDS[i]&&CARDS[i].id==='RH-SAFE-01')return CARDS[i];
+  return null;
+};
+var getRouteSafeguardCard=function(stats,gi,logs,tRoute){
+  var rs=getResistanceSafeguardCard(stats,gi,logs,tRoute);
+  if(rs)return rs;
+  return getOracleSafeguardCard(stats,gi,logs,tRoute);
+};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
   var facComp=(facility&&facility.completed)||[];
@@ -167,7 +191,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
     var alreadyShown=liveLogs.indexOf('ONCE-'+firstId)>=0 || logs.indexOf('ONCE-'+firstId)>=0;
     if(!alreadyShown){var firstCard=CARDS.filter(function(c){return c.id===firstId})[0];if(firstCard)return firstCard;}
   }
-  var safeguard=getOracleSafeguardCard(stats,gi,logs,tr);
+  var safeguard=getRouteSafeguardCard(stats,gi,logs,tr);
   if(safeguard)return safeguard;
   var valid=CARDS.filter(function(c){
     if((c.id==='CA-001'||c.id==='CA-001B')&&day>1)return false;
