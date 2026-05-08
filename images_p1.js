@@ -67,6 +67,41 @@
   IMG.char_foster_panel = IMG.char_foster_hq;
   IMG.char_weber_panel = IMG.char_weber_hq;
 
+  var CHARACTER_IMAGE_UPGRADES = {
+    '\uC11C\uD558\uC740': { base: 'char_haeun_panel', panel: 'char_haeun_panel' },
+    '\uC11C\uD558\uC740_\uAE34\uC7A5': { base: 'char_haeun_tense_panel', panel: 'char_haeun_tense_panel' },
+    '\uAC15\uB3C4\uC724': { base: 'char_doyun_panel', panel: 'char_doyun_panel' },
+    '\uC724\uC138\uC9C4': { base: 'char_sejin_panel', panel: 'char_sejin_panel' },
+    '\uC784\uC7AC\uD601': { base: 'char_jaehyuk_panel', panel: 'char_jaehyuk_panel' },
+    '\uC784\uC7AC\uD601_\uC2E4\uB9DD': { base: 'char_jaehyuk_sad_panel', panel: 'char_jaehyuk_sad_panel' },
+    '\uB9C8\uB974\uCFE0\uC2A4 \uBCA0\uBC84': { base: 'char_weber_panel', panel: 'char_weber_panel' },
+    '\uB2C9 \uD3EC\uC2A4\uD130': { base: 'char_foster_panel', panel: 'char_foster_panel' },
+    '\uBC15\uC18C\uC601': { base: 'char_soyoung_panel', panel: 'char_soyoung_panel' },
+    '\uBC15\uC18C\uC601_\uADF8\uB9BC\uC790': { base: 'char_soyoung_shadow_panel', panel: 'char_soyoung_shadow_panel' },
+    '\uC774\uC911\uCCA0': { base: 'char_jungchul_panel', panel: 'char_jungchul_panel' }
+  };
+
+  Object.keys(CHARACTER_IMAGE_UPGRADES).forEach(function(name){
+    var cfg = CHARACTER_IMAGE_UPGRADES[name];
+    var base = cfg && IMG[cfg.base];
+    var panel = cfg && IMG[cfg.panel];
+    if (base && typeof CHAR_IMG !== 'undefined') CHAR_IMG[name] = base;
+    if (panel && typeof CHAR_PANEL_IMG !== 'undefined') CHAR_PANEL_IMG[name] = panel;
+  });
+
+  Object.assign(IMG, {
+    char_haeun: IMG.char_haeun_panel,
+    char_haeun_tense: IMG.char_haeun_tense_panel,
+    char_jaehyuk: IMG.char_jaehyuk_panel,
+    char_jaehyuk_sad: IMG.char_jaehyuk_sad_panel,
+    char_jungchul: IMG.char_jungchul_panel,
+    char_sejin: IMG.char_sejin_panel,
+    char_soyoung: IMG.char_soyoung_panel,
+    char_soyoung_shadow: IMG.char_soyoung_shadow_panel,
+    char_weber: IMG.char_weber_panel,
+    char_foster: IMG.char_foster_panel
+  });
+
   var CARD_IMAGE_PATCHES = {
     'C-001': 'card_core_officers_command_room',
     'C-004': 'card_core_lab_corridor',
@@ -115,6 +150,7 @@
 
   if (typeof window !== 'undefined') {
     window.IMG = IMG;
+    window.TIU_CHARACTER_IMAGE_UPGRADES = CHARACTER_IMAGE_UPGRADES;
     window.TIU_P1_CARD_IMAGE_PATCHES = CARD_IMAGE_PATCHES;
     Object.keys(window).forEach(function(key){
       if (/^CARDS_/.test(key)) patchList(window[key]);
