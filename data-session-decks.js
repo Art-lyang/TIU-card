@@ -1,12 +1,12 @@
 // Session deck packs keep optional story clusters varied between replays.
 // Core progression, evidence unlock, normal facility expansion, rewards, and missions stay outside this filter.
 var SESSION_DECK_PACK_DEFS = [
-  { id: "DG_MERIDIAN", label: "DG / Meridian external faction", weight: 2 },
-  { id: "B3_PREDECESSOR", label: "B3 / predecessor commander line", weight: 2 },
-  { id: "PROMETHEUS_TENSION", label: "Prometheus contact tension", weight: 2 },
-  { id: "UPRISING_INFRA", label: "closed-circuit facility route", weight: 1 },
-  { id: "MUTANT_SURGE", label: "variant over-encounter pressure", weight: 2 },
-  { id: "GOV_ORACLE_SUSPICION", label: "government / ORACLE branch suspicion", weight: 2 }
+  { id: "DG_MERIDIAN", label: "DG / Meridian external faction", weight: 2, minAct: 3 },
+  { id: "B3_PREDECESSOR", label: "B3 / predecessor commander line", weight: 2, minAct: 2 },
+  { id: "PROMETHEUS_TENSION", label: "Prometheus contact tension", weight: 2, minAct: 2 },
+  { id: "UPRISING_INFRA", label: "closed-circuit facility route", weight: 1, minAct: 2 },
+  { id: "MUTANT_SURGE", label: "variant over-encounter pressure", weight: 2, minAct: 2 },
+  { id: "GOV_ORACLE_SUSPICION", label: "government / ORACLE branch suspicion", weight: 2, minAct: 2 }
 ];
 var SESSION_DECK_EXPANSION_CANDIDATES = [];
 var SESSION_DECK_VERSION = 2;
@@ -166,6 +166,12 @@ function getCardSessionDeckPack(card) {
   if (card.deckPack) return card.deckPack;
   var id = String(card.id || "");
   var tag = String(card.tag || "").toLowerCase();
+  var tagHas = function(token) {
+    var t = String(token || "").toLowerCase();
+    if (!tag || !t) return false;
+    if (tag === t) return true;
+    return tag.indexOf(t + "-") === 0 || tag.indexOf("-" + t) >= 0 || tag.indexOf("_" + t) >= 0;
+  };
 
   if (SESSION_DECK_MUTANT_SURGE_IDS[id] || tag === "mutant-surge") return "MUTANT_SURGE";
   if (SESSION_DECK_GOV_ORACLE_IDS[id] || tag === "gov-oracle-suspicion") return "GOV_ORACLE_SUSPICION";
@@ -180,7 +186,7 @@ function getCardSessionDeckPack(card) {
     id === "A2-TRIAGE-01" ||
     id.indexOf("CA-SEED-") === 0 ||
     /^C-32[0-5]$/.test(id) ||
-    tag.indexOf("b3") >= 0 ||
+    tagHas("b3") ||
     tag.indexOf("predecessor") >= 0
   ) return "B3_PREDECESSOR";
 
@@ -192,8 +198,8 @@ function getCardSessionDeckPack(card) {
     id.indexOf("CH-DG-") === 0 ||
     id.indexOf("CH-MD-") === 0 ||
     id.indexOf("CH-SUP-") === 0 ||
-    tag.indexOf("dg") >= 0 ||
-    tag.indexOf("meridian") >= 0
+    tagHas("dg") ||
+    tagHas("meridian")
   ) return "DG_MERIDIAN";
 
   if (id.indexOf("LJC-PROM-") === 0 || tag === "prometheus-lee" || tag === "midgame-prom") return "PROMETHEUS_TENSION";
@@ -247,6 +253,9 @@ function getEveningSessionDeckPack(chat) {
 function sessionDeckEveningOk(chat, ctx) {
   var packId = getEveningSessionDeckPack(chat);
   if (!packId) return true;
+  var defs = _sessionDeckDefMap();
+  var def = defs[packId];
+  if (def && def.minAct && ctx && ctx.act && ctx.act < def.minAct) return false;
   var deck = getActiveSessionDeck();
   if (!deck || !deck.packs || deck.packs.length === 0) return true;
   if (deck.packs.indexOf(packId) >= 0) return true;
@@ -256,6 +265,10 @@ function sessionDeckEveningOk(chat, ctx) {
 function sessionDeckOk(card, stats, gi, logs, act, facility) {
   var packId = getCardSessionDeckPack(card);
   if (!packId) return true;
+  var defs = _sessionDeckDefMap();
+  var def = defs[packId];
+  if (def && def.minAct && (act || 1) < def.minAct) return false;
+  if (def && def.minDay && stats && stats.day < def.minDay) return false;
   var deck = getActiveSessionDeck();
   if (!deck || !deck.packs || deck.packs.length === 0) return true;
   if (deck.packs.indexOf(packId) >= 0) return true;

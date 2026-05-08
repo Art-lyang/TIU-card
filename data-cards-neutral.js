@@ -36,7 +36,7 @@ var CARDS_NEUTRAL = [
     right: { label: "... 모르겠다, 솔직히", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -1 } },
 
   // ═══ OBSERVER 접속승인 — 히든 카드 (전 액트, 전 세션 1회, fullReset만 초기화) ═══
-  { id: "CA-OBS-PROTO", act: [1,2,3,4], priority: "하", once: true,
+  { id: "CA-OBS-PROTO", act: [2,3,4], priority: "하", once: true,
     glitch: true,
     req: function(s,g,logs){
       try{ if(localStorage.getItem('ts_observer_proto')) return false }catch(e){}

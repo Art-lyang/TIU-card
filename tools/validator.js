@@ -61,6 +61,7 @@ const DATA_FILES = [
   'data-facility-uprising-a.js',
   'data-facility-uprising-b.js',
   'data-cards-facility-propose.js',
+  'data-session-decks.js',
   'data-hidden-story.js',
   'data-evening-trust-1.js',
   'data-evening-trust-1b.js',
@@ -145,6 +146,7 @@ const issues = {
   orphanCards: [],
   cardStructure: [],
   onceWithoutLog: [],
+  sessionDeckActLeaks: [],
 };
 
 // === 1) 카드 ID 중복 ===
@@ -377,6 +379,29 @@ for (const c of ALL_CARDS) {
 // 정적으론 once:true인 카드가 여러 ONCE-{id} 로그 덮어쓰지 않도록 id unique만 보장하면 됨 (1)에서 커버됨
 
 // === 통계 ===
+// === 10) session deck pack minAct leak guard ===
+if (typeof sandbox.getCardSessionDeckPack === 'function' && Array.isArray(sandbox.SESSION_DECK_PACK_DEFS)) {
+  const deckDefs = new Map(sandbox.SESSION_DECK_PACK_DEFS.map(def => [def.id, def]));
+  for (const c of ALL_CARDS) {
+    let packId = null;
+    try { packId = sandbox.getCardSessionDeckPack(c); } catch (e) { packId = null; }
+    if (!packId) continue;
+    const def = deckDefs.get(packId);
+    if (!def || !def.minAct || !Array.isArray(c.act)) continue;
+    const badActs = c.act.filter(act => Number(act) < Number(def.minAct));
+    if (badActs.length) {
+      issues.sessionDeckActLeaks.push({
+        id: c.id,
+        from: c.__from,
+        pack: packId,
+        minAct: def.minAct,
+        act: c.act.slice(),
+        badActs,
+      });
+    }
+  }
+}
+
 const stats = {
   files: { loaded: DATA_FILES.length - loadErrors.length, failed: loadErrors.length },
   cards: { total: ALL_CARDS.length, uniqueIds: CARD_IDS.size, byArray: Object.fromEntries(Object.entries(cardsByArray).map(([k,v]) => [k, v.length])) },
@@ -428,6 +453,8 @@ warn(issues.evidenceUnreachable, '증거 src LOG 미도달', x => x.ev + ' ' + x
 warn(issues.endingLogMissing, '엔딩 필수 LOG 미생산', x => '엔딩 ' + x.ending + ': ' + x.log);
 warn(issues.orphanCards, '고아 카드 (act 없음, 잠금·체인·프롤로그 제외)', x => x.id + '  (' + x.from + ')');
 warn(issues.cardStructure, '카드 구조 이상', x => x.id + '  [' + x.problems.join('; ') + ']');
+
+warn(issues.sessionDeckActLeaks, 'session deck minAct보다 이른 act 포함', x => x.id + ' [' + x.pack + '] act=' + x.act.join(',') + ' minAct=' + x.minAct + ' (' + x.from + ')');
 
 const totalIssues = Object.values(issues).reduce((a, b) => a + b.length, 0);
 section(totalIssues === 0 ? '이슈 0건 — 정적 검증 통과' : '총 이슈 ' + totalIssues + '건');

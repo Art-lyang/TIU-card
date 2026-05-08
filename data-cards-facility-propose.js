@@ -13,9 +13,13 @@ var CARDS_FACILITY_PROPOSALS = [];
   }
 
   FACILITY_EXPANSIONS.forEach(function(fe, idx){
+    var minAct = Math.max(1, parseInt(fe.minAct || 1, 10) || 1);
+    var proposalActs = [];
+    for (var act = minAct; act <= 3; act++) proposalActs.push(act);
+    if (proposalActs.length === 0) proposalActs = [minAct];
     CARDS_FACILITY_PROPOSALS.push({
       id: 'FP-' + fe.id,
-      act: [1,2,3],
+      act: proposalActs,
       priority: idx < 4 ? '중' : '하',
       isFacilityProposal: true,
       feId: fe.id,
