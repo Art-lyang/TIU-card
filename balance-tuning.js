@@ -92,6 +92,7 @@
     var after = copyStats(nextStats);
     var day = before.day || 1;
     var currentAct = act || 1;
+    var cardId = String(card && card.id || '');
     var changed = false;
     var kind = '';
 
@@ -107,6 +108,33 @@
         changed = liftBelow(after, 'o', 5) || changed;
         changed = liftBelow(after, 'r', 5) || changed;
         kind = changed ? 'resistance-late-floor' : kind;
+      }
+    }
+
+    if (cardId === 'CE-005') {
+      // The observer contact should feel dangerous, but a single hidden output
+      // must not hard-delete an otherwise playable run through evaluation 0.
+      if ((nextGi || 0) < (beforeGi || 0) - 6) {
+        nextGi = (beforeGi || 0) - 6;
+        changed = true;
+        kind = 'observer-spike-cap';
+      }
+      if (after.o <= 0) {
+        changed = liftBelow(after, 'o', 5) || changed;
+        kind = changed ? 'observer-evaluation-floor' : kind;
+      }
+    }
+
+    if (cardId === 'CE-042' || cardId === 'CE-042B') {
+      // Final-route commitment can still be costly, but the decision should
+      // hand control back to the player instead of ending on a single click.
+      if (after.o <= 0) {
+        changed = liftBelow(after, 'o', 5) || changed;
+        kind = changed ? 'final-commitment-floor' : kind;
+      }
+      if (after.r <= 0) {
+        changed = liftBelow(after, 'r', 5) || changed;
+        kind = changed ? 'final-commitment-floor' : kind;
       }
     }
 

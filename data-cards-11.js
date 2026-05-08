@@ -75,7 +75,8 @@ var CARDS_CHAINS = [
       if(logs.includes("LOG-070")) cnt++;
       if(logs.includes("LOG-071")) cnt++;
       if(logs.includes("LOG-072")) cnt++;
-      return cnt >= 2 && !logs.includes("LOG-074") && !logs.includes("LOG-075") && s.day >= 21 },
+      var doyunUnavailable = logs.includes("LOG-065") && !logs.includes("LOG-065-END");
+      return cnt >= 2 && !doyunUnavailable && !logs.includes("LOG-074") && !logs.includes("LOG-075") && s.day >= 21 },
     msg: "지난 며칠간 미뤄 둔 야간 순찰 개편, 강도윤의 부상 보고, ORACLE 의존 경고가 한밤중에 한꺼번에 되돌아왔습니다.\n\n야간 경보 발령.\n\n봉쇄선 전 구역에서 동시다발 생체 반응 감지. 이전 경험과는 규모가 다릅니다.\n\n강도윤: \"전 방위입니다! 숫자가 너무 많습니다 — 사각지대로 몰려들고 있습니다!\"\n\n야간 순찰 루트의 허점을 정확히 파고든 습격입니다.",
     left: { label: "전원 전투 배치", fx: { c: -2, r: -2, t: 0, o: 0 }, g: 0 },
     right: { label: "방어 거점 집중", fx: { c: -1, r: -1, t: -1, o: 0 }, g: 0 } },

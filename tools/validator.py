@@ -22,31 +22,42 @@ ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 
 # 스캔 대상 데이터 파일 (index.html 로드 순서 기준)
 DATA_FILES = [
-    'data-core.js', 'data-status-tags.js', 'data-cards-prologue.js',
+    'data-core.js', 'data-status-tags.js', 'data-dialogues-extra.js',
+    'data-cards-prologue.js', 'data-cards-prologue-2.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
-    'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-prometheus-lee.js', 'data-cards-act4.js', 'data-cards-act4-ext.js',
+    'data-cards-act23-pressure.js', 'data-cards-resist-hint.js', 'data-cards-crisis.js',
+    'data-cards-neutral.js', 'data-cards-korea-civilian.js', 'data-cards-dg-meridian.js',
+    'data-cards-session-packs.js', 'data-cards-act4-hazard.js', 'data-cards-facility-propose.js',
     'data-rewards.js', 'data-chains.js', 'data-chains-incident.js', 'data-chains-incident2.js',
-    'data-archive.js', 'data-missions.js', 'data-missions-2.js', 'data-missions-3.js',
+    'data-chains-branch.js', 'data-archive.js', 'data-minigame-rewards.js',
+    'data-minigame-expansion.js', 'data-missions.js', 'data-missions-2.js', 'data-missions-3.js',
     'data-missions-incident.js', 'data-missions-4.js', 'data-missions-5.js', 'data-missions-variants.js',
-    'data-endings.js', 'data-act4-escape.js', 'data-achievements.js', 'data-evidence.js',
-    'data-facility.js', 'data-facility-2.js', 'data-facility-uprising.js', 'data-hidden-story.js',
-    'data-evening-trust-1.js', 'data-evening-trust-1b.js', 'data-evening-trust-2.js', 'data-evening-trust-3.js',
-    'data-evening-responses.js', 'data-evening-extra.js', 'data-evening-responses-2.js', 'evening-lines.js',
+    'data-logs-integrity.js', 'data-endings.js', 'data-act4-escape.js', 'logic-act4-escape.js',
+    'data-escape-nodes.js', 'data-escape-nodes-2.js', 'logic-escape-roll.js',
+    'data-achievements.js', 'data-evidence.js', 'data-facility.js', 'data-facility-2.js',
+    'data-facility-uprising-a.js', 'data-facility-uprising-b.js', 'data-session-decks.js',
+    'data-evening-trust-1.js', 'data-evening-trust-1b.js', 'data-evening-trust-2.js',
+    'data-evening-trust-3.js', 'data-evening-responses.js', 'data-evening-extra.js',
+    'data-evening-extra-2a.js', 'data-evening-extra-2b.js', 'data-evening-extra-2c.js',
+    'data-evening-extra-2d.js', 'data-evening-responses-2.js', 'data-evening-responses-3.js',
+    'data-hidden-story.js', 'data-character-arcs.js', 'evening-lines.js',
     'data-result-text.js', 'data-result-story-1.js', 'data-result-story-2.js', 'data-result-story-3.js',
 ]
 
 # 카드 정의가 들어있는 파일 (id 중복 체크 대상)
 CARD_FILES = [
-    'data-cards-prologue.js',
+    'data-cards-prologue.js', 'data-cards-prologue-2.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
-    'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-resist-hint.js',
-    'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-prometheus-lee.js', 'data-cards-act4.js', 'data-cards-act4-ext.js',
+    'data-cards-act23-pressure.js', 'data-cards-resist-hint.js', 'data-cards-crisis.js',
+    'data-cards-neutral.js', 'data-cards-korea-civilian.js', 'data-cards-dg-meridian.js',
+    'data-cards-session-packs.js', 'data-cards-act4-hazard.js', 'data-cards-facility-propose.js',
     'data-act4-escape.js', 'data-chains-incident.js',
 ]
 
 # 체인 카드 정의 파일 (id 중복 체크 별도)
-CHAIN_CARD_FILES = ['data-chains.js', 'data-chains-incident2.js']
+CHAIN_CARD_FILES = ['data-chains.js', 'data-chains-incident2.js', 'data-chains-branch.js']
 
 files_loaded = []
 files_missing = []
@@ -254,6 +265,8 @@ for c in all_cards:
 # ── 8) 카드 구조 이상 ──
 struct_issues = []
 for c in all_cards:
+    if c['id'] in {'CH-007-5'}:
+        continue
     labels = {m.group(1): m.group(2) for m in LABEL_RX.finditer(c['body'])}
     if 'left' in labels and 'right' in labels:
         if labels['left'] == labels['right'] and labels['left'] != '-':

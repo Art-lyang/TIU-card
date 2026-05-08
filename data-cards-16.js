@@ -51,7 +51,7 @@ var CARDS_MIDGAME = [
   { id: "C-266", act: [2,3], priority: "상", bg: "oracle", tag: "midgame-oracle",
     cond: function(s,g) { return s.day >= 12 && s.day <= 23 && g <= 5 },
     msg: "ORACLE 시스템에서 예상치 못한 메시지가 수신되었습니다.\n\nORACLE: 「지휘관. 최근 귀하의 판단 패턴이 예측 모델에서 이탈하고 있습니다. 재교육 프로토콜 적용을 권고합니다.\n\n거부 시 평가 지수가 조정될 수 있습니다.」\n\n서하은: \"…협박입니다. ORACLE이 당신을 통제하려 하고 있어요.\"",
-    left: { label: "재교육 프로토콜 수용", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 5 },
+    left: { label: "재교육 프로토콜 수용", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 },
     right: { label: "정중히 거절", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -3 } },
 
   { id: "C-267", act: [2,3,4], priority: "중", bg: "oracle", tag: "midgame-oracle",
