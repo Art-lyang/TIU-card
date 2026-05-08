@@ -1,6 +1,6 @@
 # TERMINAL SESSION - Game Design Document v1.1.1
 
-> Current runtime snapshot for `BUILD_VER=170` / 2026-05-08.
+> Current runtime snapshot for `BUILD_VER=178` / 2026-05-08.
 > This document is a release-candidate delta on top of `TIU-GAME-GDD-v10.md`.
 
 ## 1. Current Scope
@@ -15,7 +15,7 @@ The current content registry contains:
 
 | Area | Runtime count |
 |---|---:|
-| Cards | 540 |
+| Cards | 541 |
 | Field missions | 15 |
 | Minigame-linked missions | 9 |
 | Evidence entries | 38 |
@@ -81,16 +81,16 @@ Latest checks:
 
 ```text
 node tools/validator.js
-  cards 540 / unique 540
+  cards 541 / unique 541
   issues 0
 
 node tools/i18n-smoke.js
   i18n smoke ok
 
-python tools/simulator_v2.py 500 random
-  narrative endings 78.4%
-  instant deaths 21.6%
-  timeouts 0
+python tools/simulator_v3.py 20 all
+  careful/newbie profiles reached narrative endings reliably
+  comply/rebel automated profiles remain intentionally high-pressure
+  timeouts only appeared in the careful sample, 3/20
 ```
 
 Browser QA also confirmed:

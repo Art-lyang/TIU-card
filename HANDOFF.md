@@ -186,8 +186,8 @@
 ## 4. 핵심 수정 경로 빠른 참조
 
 ```
-worktree:  C:\Users\Administrator\TIU_CARD\.claude\worktrees\magical-cray-74f8c4
-local:     C:\Users\Administrator\TIU_CARD
+worktree:  `.claude/worktrees/magical-cray-74f8c4`
+local:     repository root
 
 # 카드게임 핵심 로직
 app-init.js      — drawCard / 강제 첫 카드 / Save.getLogs 직접 조회
@@ -251,8 +251,8 @@ iframe → 카드:
 ## 5. 다음 세션 시작 시 권장 명령
 
 ```bash
-# 1) worktree 위치 이동
-cd "C:/Users/Administrator/TIU_CARD/.claude/worktrees/magical-cray-74f8c4"
+# 1) 저장소 루트 또는 필요한 로컬 worktree로 이동
+cd <repository-root>
 
 # 2) 상태 확인
 git status

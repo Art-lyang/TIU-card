@@ -3,3 +3,12 @@ __pycache__/
 *.pyc
 TIU-Alpha.zip
 _qa_work/
+_workspace/
+_backups/
+.claude/worktrees/
+.playwright-cli/
+output/
+test-results/
+_tmp*
+-setup/MD/**/*.zip
+-setup/MD/**/PRIVATE/

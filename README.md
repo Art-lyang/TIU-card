@@ -3,7 +3,7 @@
 > Reigns식 카드 지휘, Suzerain식 압박, 한국 SF 감시 디스토피아를 섞은 정적 HTML 카드 게임.
 >
 > **장르**: 카드 스와이프 지휘 시뮬레이션 + 텍스트 어드벤처 + 현장임무 미니게임
-> **현재 빌드**: `BUILD_VER=170`
+> **현재 빌드**: `BUILD_VER=178`
 > **최종 검증일**: 2026-05-08
 > **배포 주소**: https://art-lyang.github.io/TIU-card/
 
@@ -19,7 +19,7 @@
 
 | 구분 | 현재 상태 |
 |---|---:|
-| 카드 | **540장** |
+| 카드 | **541장** |
 | 세션 카드팩 | 후보 **6종**, 세션마다 **4종** 선택 |
 | 카드 체인 | 메인 체인 **18개** + 사건/후속 체인 **10개** |
 | 현장임무 | **15개** |
@@ -36,7 +36,7 @@
 최신 정적 무결성 검사:
 
 ```text
-cards 540 / unique 540
+cards 541 / unique 541
 missions 15
 evidence 38 + combos 15
 archive 46
@@ -108,7 +108,7 @@ http://localhost:4173/index.html
 
 ```text
 TIU_CARD/
-├─ index.html                         # 진입점, BUILD_VER=170
+├─ index.html                         # 진입점, BUILD_VER=178
 ├─ app*.js                            # 앱 상태, 세이브, 로직, 사운드 훅
 ├─ components-*.js                    # 카드 UI, 이브닝, 대화, 브리핑, 아카이브, 설정, 미니게임
 ├─ data-*.js                          # 카드, 임무, 증거, 엔딩, 로그, 보상, 시설
@@ -214,4 +214,4 @@ All rights reserved.
 
 ---
 
-*최종 업데이트: 2026-05-08 / BUILD_VER=170*
+*최종 업데이트: 2026-05-08 / BUILD_VER=178*

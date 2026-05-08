@@ -2,8 +2,8 @@
 
 ## Build
 
-- Updated runtime reference to `BUILD_VER=170`.
-- Current validated registry: 540 unique cards.
+- Updated runtime reference to `BUILD_VER=178`.
+- Current validated registry: 541 unique cards.
 
 ## Session Deck Packs
 
@@ -62,6 +62,11 @@ python tools/simulator_v2.py 500 random
   narrative endings 392/500
   instant deaths 108/500
   timeouts 0
+
+python tools/simulator_v3.py 20 all
+  profile sweep completed
+  careful/newbie reached narrative endings in most runs
+  comply/rebel remain high-pressure automated profiles
 ```
 
 See `../../qa-report-2026-05-08.md` for the full QA note.
