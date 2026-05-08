@@ -44,6 +44,7 @@
 
 ```bash
 node tools/validator.js
+node tools/check_ending_routes.js
 python tools/simulator_v3.py 100 all
 node tools/i18n-smoke.js
 python -m http.server 4173

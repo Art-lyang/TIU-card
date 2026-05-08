@@ -5,6 +5,12 @@
 - Updated runtime reference to `BUILD_VER=178`.
 - Current validated registry: 541 unique cards.
 
+## 2026-05-09 후속 정리
+
+- `.claude/worktrees/`는 git 추적에서만 제거했습니다. 로컬 파일은 보존했습니다.
+- A/B/D/F/G 특수 엔딩 조건을 직접 확인하는 `tools/check_ending_routes.js`를 추가했습니다.
+- 엔딩 F가 Observer 승인 루트와 미승인 루트 양쪽에서 발생 가능함을 확인했습니다.
+
 ## Session Deck Packs
 
 - Added the session deck-pack layer.
@@ -57,6 +63,9 @@ node tools/validator.js
 
 node tools/i18n-smoke.js
   i18n smoke ok
+
+node tools/check_ending_routes.js
+  ending route check passed: 11/11
 
 python tools/simulator_v2.py 500 random
   narrative endings 392/500

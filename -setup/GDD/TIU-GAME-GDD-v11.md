@@ -1,6 +1,6 @@
 # TERMINAL SESSION - Game Design Document v1.1.1
 
-> Current runtime snapshot for `BUILD_VER=178` / 2026-05-08.
+> Current runtime snapshot for `BUILD_VER=178` / 2026-05-09.
 > This document is a release-candidate delta on top of `TIU-GAME-GDD-v10.md`.
 
 ## 1. Current Scope
@@ -86,6 +86,10 @@ node tools/validator.js
 
 node tools/i18n-smoke.js
   i18n smoke ok
+
+node tools/check_ending_routes.js
+  ending route check passed: 11/11
+  A/B/D/F/G special routes verified, including Ending F approved/unapproved observer routes
 
 python tools/simulator_v3.py 20 all
   careful/newbie profiles reached narrative endings reliably

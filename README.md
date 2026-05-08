@@ -4,7 +4,7 @@
 >
 > **장르**: 카드 스와이프 지휘 시뮬레이션 + 텍스트 어드벤처 + 현장임무 미니게임
 > **현재 빌드**: `BUILD_VER=178`
-> **최종 검증일**: 2026-05-08
+> **최종 검증일**: 2026-05-09
 > **배포 주소**: https://art-lyang.github.io/TIU-card/
 
 ---
@@ -41,6 +41,7 @@ missions 15
 evidence 38 + combos 15
 archive 46
 validator issues 0
+ending route checks 11/11
 ```
 
 ---
@@ -83,7 +84,7 @@ validator issues 0
 - **빌드 시스템**: 없음. `index.html`이 단일 진입점입니다.
 - **저장 방식**: `localStorage` 기반 스냅샷
 - **i18n**: `i18n-runtime.js`, `lang-ui-ko.js`, `lang-ui-en.js`, `lang-content-en-all.js`, `lang-content-en-dialogues.js`, 카드팩별 영어 오버레이
-- **QA 도구**: Node validator, 몬테카를로 시뮬레이터, 브라우저 QA, Playwright 로컬 검사
+- **QA 도구**: Node validator, 엔딩 루트 체크, 몬테카를로 시뮬레이터, 브라우저 QA, Playwright 로컬 검사
 - **호스팅**: GitHub Pages 또는 정적 호스팅
 
 ---
@@ -136,6 +137,7 @@ TIU_CARD/
 2026-05-08 기준 확인 내용:
 
 - 정적 validator: **이슈 0건**
+- 엔딩 루트 체크: **11/11 통과**. A/B/D/F/G 특수 엔딩과 F Observer 승인/미승인 경로를 직접 검증
 - i18n smoke: **통과**
 - 브라우저 런타임: 카드 레지스트리, 세션 카드팩, 세이브 스냅샷, 조사테이블 보정, 카드팩 체인 조건, 한/영 오버레이, 공개 금지 세계관 용어 검사 통과
 - 세이브 슬롯: 세션 카드팩과 현장임무 선택값이 로드 시 중복으로 쌓이지 않고 정확히 복원됨
@@ -214,4 +216,4 @@ All rights reserved.
 
 ---
 
-*최종 업데이트: 2026-05-08 / BUILD_VER=178*
+*최종 업데이트: 2026-05-09 / BUILD_VER=178*
