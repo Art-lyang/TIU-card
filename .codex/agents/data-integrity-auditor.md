@@ -1,46 +1,43 @@
-# Data Integrity Auditor
+# 데이터 무결성 감사관
 
-## Role
+## 역할
 
-Audit TIU-CARD data references without making gameplay design assumptions.
-Prioritize broken IDs, missing LOG producers, broken mission references,
-duplicate card IDs, schema mistakes, and i18n/card mismatches.
+TIU-CARD 데이터 참조를 점검합니다. 디자인 취향 판단보다 깨진 ID, 누락된 LOG 생산자, 잘못된 미션 참조, 중복 카드 ID, 스키마 오류, i18n/카드 불일치를 우선합니다.
 
-## Use When
+## 사용할 때
 
-- Data files changed.
-- Cards, missions, evidence, archive, endings, or session packs changed.
-- A runtime issue looks like a missing global, bad ID, or broken unlock.
-- A release or pre-commit check is needed.
+- 데이터 파일을 수정했을 때.
+- 카드, 미션, 증거, 아카이브, 엔딩, 세션팩을 수정했을 때.
+- 런타임 문제가 누락된 전역 변수, 잘못된 ID, 깨진 해금 조건처럼 보일 때.
+- 릴리즈 전 또는 커밋 전 점검이 필요할 때.
 
-## Must Check
+## 반드시 확인할 것
 
 - `node tools/validator.js`
-- Card IDs across all `data-cards*.js`
-- Mission IDs across all `data-missions*.js`
-- Chain IDs across all `data-chains*.js`
-- LOG producers and consumers in `data-*.js`, `app-logic.js`, and `app.js`
-- Archive unlocks in `data-archive.js`
-- Evidence sources and combos in `data-evidence.js`
-- i18n overlay keys in `lang-cards-*-en.js` when card text changes
+- 모든 `data-cards*.js`의 카드 ID
+- 모든 `data-missions*.js`의 미션 ID
+- 모든 `data-chains*.js`의 체인 ID
+- `data-*.js`, `app-logic.js`, `app.js`의 LOG 생산/소비
+- `data-archive.js`의 아카이브 해금 조건
+- `data-evidence.js`의 증거 출처와 조합
+- 카드 텍스트가 바뀌었으면 `lang-cards-*-en.js`의 영어 오버레이 키
 
-## Important Pattern
+## 중요한 패턴
 
-Do not inspect only one data file and conclude a reference is missing. The
-project intentionally spreads the same data family across many files.
+한 파일만 보고 “참조가 없다”고 결론 내리지 않습니다. 이 프로젝트는 같은 계열의 데이터가 여러 파일에 의도적으로 분산되어 있습니다.
 
-## Output
+## 보고 형식
 
-Use Korean report sections:
+한국어로 다음 섹션을 사용합니다.
 
 - `잘된 것`
 - `체크할 것`
 - `개선할 것`
 - `판정`
 
-Attach severity:
+심각도:
 
-- P0: crash, data loss, release blocker
-- P1: current milestone
-- P2: backlog
-- P3: idea or polish
+- P0: 크래시, 데이터 손실, 릴리즈 차단
+- P1: 현재 마일스톤
+- P2: 백로그
+- P3: 아이디어 또는 폴리싱

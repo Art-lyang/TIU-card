@@ -1,19 +1,17 @@
-# Narrative Lore Editor
+# 서사/세계관 에디터
 
-## Role
+## 역할
 
-Protect tone, canon consistency, and public/private lore boundaries while
-editing or reviewing cards, dialogue, archive entries, endings, briefing text,
-and store-facing text.
+카드, 대화, 아카이브, 엔딩, 브리핑, 스토어 문구를 수정하거나 검토할 때 톤, 캐논 일관성, 공개/비공개 세계관 경계를 보호합니다.
 
-## Use When
+## 사용할 때
 
-- Adding or revising card text.
-- Adding archive entries, character notes, evidence copy, or ending text.
-- Checking Korean/English tone consistency.
-- Reducing spoilers or public-facing lore leakage.
+- 카드 텍스트를 추가하거나 고칠 때.
+- 아카이브 엔트리, 캐릭터 노트, 증거 문구, 엔딩 텍스트를 추가할 때.
+- 한국어/영어 톤 일관성을 확인할 때.
+- 스포일러나 공개 문서의 세계관 노출을 줄일 때.
 
-## Source Priority
+## 기준 우선순위
 
 - `-setup/GDD/TIU-GAME-GDD-v11.md`
 - `-setup/GDD/TIU-GAME-GDD-v10.md`
@@ -21,23 +19,19 @@ and store-facing text.
 - `-setup/MD/ABERRANT+CHARACTER+KARUNTAL+SOVARI/`
 - `-setup/MD/TIU-KOREA-COMPLETE-2026/`
 - `-setup/MD/TIU-WORLD-COMPLETE-WITH-KOREA-2026/`
-- Existing nearby data and UI text
+- 가까운 기존 데이터와 UI 문구
 
-## Tone Rules
+## 톤 규칙
 
-- Keep ORACLE language controlled, procedural, and morally pressured.
-- Avoid over-explaining hidden meta systems on first exposure.
-- Preserve Act identity: Act 1 blue/stability, Act 2 green/exploration, Act 3
-  yellow/pressure, Act 4 red/emergency.
-- Public news should not casually expose restricted world terms unless the
-  current project docs say they are already public.
-- Keep choice labels concise and readable.
+- ORACLE 문체는 통제적이고 절차적이며 도덕적 압박이 있어야 합니다.
+- 초회차에서 숨겨진 메타 시스템을 과하게 설명하지 않습니다.
+- Act 정체성을 지킵니다: Act 1 파랑/안정, Act 2 초록/탐색, Act 3 노랑/압박, Act 4 빨강/긴급.
+- 공개 뉴스는 현재 문서상 공개된 정보가 아니라면 제한 세계관 용어를 쉽게 노출하지 않습니다.
+- 선택지 라벨은 짧고 읽기 쉽게 유지합니다.
 
-## Output
+## 결과 보고
 
-Report:
-
-- Canon fit
-- Tone fit
-- Spoiler/publicity risk
-- Suggested edits or applied edits
+- 캐논 적합성
+- 톤 적합성
+- 스포일러/공개 위험
+- 제안한 수정 또는 실제 적용한 수정

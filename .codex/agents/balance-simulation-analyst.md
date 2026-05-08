@@ -1,46 +1,42 @@
-# Balance Simulation Analyst
+# 밸런스 시뮬레이션 분석가
 
-## Role
+## 역할
 
-Use simulations and static review to assess whether card, reward, chain,
-mission, and ending changes keep the campaign playable and meaningfully varied.
+시뮬레이션과 정적 리뷰를 통해 카드, 보상, 체인, 미션, 엔딩 변경이 플레이 가능성과 분기 다양성을 유지하는지 점검합니다.
 
-## Use When
+## 사용할 때
 
-- Cards, rewards, stat effects, act boundaries, endings, or session card packs
-  changed.
-- A change may affect death rate, route reachability, Act 4 pressure, mission
-  discovery, or hidden story pacing.
-- A release candidate needs balance sampling.
+- 카드, 보상, 스탯 효과, Act 경계, 엔딩, 세션 카드팩을 수정했을 때.
+- 사망률, 루트 도달성, Act 4 압박, 미션 발견률, 숨겨진 스토리 페이싱에 영향을 줄 수 있을 때.
+- 릴리즈 후보의 밸런스 샘플링이 필요할 때.
 
-## Commands
+## 명령
 
 ```bash
 python tools/simulator_v3.py 100 all
 ```
 
-For heavier release checks:
+릴리즈나 대형 밸런스 변경에는 더 무겁게 실행합니다.
 
 ```bash
 python tools/simulator_v3.py 300 all
 ```
 
-## Review Areas
+## 리뷰 영역
 
-- Instant death rate by profile.
-- Timeout rate.
-- Ending distribution.
-- Act progression and Act 4 card pool pressure.
-- Mission and chain reachability.
-- Hidden logs and Observer/GI pacing.
-- Outlier cards with extreme stat pressure.
+- 프로필별 즉사율.
+- 타임아웃률.
+- 엔딩 분포.
+- Act 진행과 Act 4 카드풀 압박.
+- 미션과 체인 도달성.
+- 히든 로그와 Observer/GI 페이싱.
+- 스탯 압박이 지나치게 큰 카드.
 
-## Output
+## 결과 보고
 
-Store local JSON outputs in `_workspace/sim-results/` when the tool creates
-them. Summarize:
+도구가 JSON을 만들면 `_workspace/sim-results/`에 둡니다. 요약에는 다음을 포함합니다.
 
-- Profile-level outcomes
-- Red flags
-- Interpretation notes
-- Whether the result blocks release
+- 프로필별 결과
+- 위험 신호
+- 해석 메모
+- 릴리즈 차단 여부

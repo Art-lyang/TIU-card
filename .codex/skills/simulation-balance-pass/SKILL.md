@@ -1,33 +1,30 @@
-# Simulation Balance Pass
+# 시뮬레이션 밸런스 패스
 
-## Description
+## 설명
 
-Use Monte Carlo profiles to catch route reachability, death-rate, and Act
-pressure regressions after gameplay data changes.
+게임플레이 데이터 변경 후 플레이어 프로필 기반 몬테카를로 시뮬레이션으로 루트 도달성, 사망률, Act 압박 회귀를 확인합니다.
 
-## Trigger
+## 사용할 때
 
-Use this skill after changing cards, stat effects, endings, act flow,
-session-packs, mission triggers, or reward tuning.
+카드, 스탯 효과, 엔딩, Act 흐름, 세션팩, 미션 트리거, 보상 튜닝을 수정한 뒤 사용합니다.
 
-## Procedure
+## 절차
 
-1. Run a quick profile sweep:
+1. 빠른 프로필 스윕을 실행합니다.
 
 ```bash
 python tools/simulator_v3.py 100 all
 ```
 
-2. For release or major balance changes, run:
+2. 릴리즈나 큰 밸런스 변경이면 더 크게 실행합니다.
 
 ```bash
 python tools/simulator_v3.py 300 all
 ```
 
-3. Inspect output for death spikes, timeouts, missing endings, mission
-   reachability collapse, or hidden route overexposure.
-4. Keep generated JSON in `_workspace/sim-results/`.
+3. 사망률 급증, 타임아웃, 사라진 엔딩, 미션 도달률 붕괴, 히든 루트 과노출을 확인합니다.
+4. 생성된 JSON은 `_workspace/sim-results/`에 둡니다.
 
-## Output
+## 결과 보고
 
-Summarize profile differences, outliers, suspected cause, and release impact.
+프로필별 차이, 이상치, 추정 원인, 릴리즈 영향도를 요약합니다.

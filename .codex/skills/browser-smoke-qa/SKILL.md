@@ -1,34 +1,31 @@
-# Browser Smoke QA
+# 브라우저 스모크 QA
 
-## Description
+## 설명
 
-Minimal runtime QA for the static browser game after UI, CSS, script loading, or
-runtime logic changes.
+UI, CSS, 스크립트 로드, 런타임 로직을 수정한 뒤 정적 브라우저 게임이 최소한 정상 부팅하고 조작되는지 확인합니다.
 
-## Trigger
+## 사용할 때
 
-Use this skill after touching `index.html`, `style*.css`, `components-*.js`,
-`app*.js`, `i18n-runtime.js`, or minigame wrapper files.
+`index.html`, `style*.css`, `components-*.js`, `app*.js`, `i18n-runtime.js`, 미니게임 래퍼 파일을 수정한 뒤 사용합니다.
 
-## Procedure
+## 절차
 
-1. Start a local static server:
+1. 로컬 정적 서버를 실행합니다.
 
 ```bash
 python -m http.server 4173
 ```
 
-2. Open:
+2. 브라우저에서 엽니다.
 
 ```text
 http://localhost:4173/index.html
 ```
 
-3. Check boot, main menu, new game, one card choice, settings, language toggle,
-   and any feature touched by the patch.
-4. Check the console for errors.
-5. Check at least one mobile-like viewport when layout changed.
+3. 부팅, 메인 메뉴, 새 게임, 카드 선택 1회, 설정, 언어 토글, 수정한 기능을 확인합니다.
+4. 콘솔 에러를 확인합니다.
+5. 레이아웃을 수정했다면 모바일에 가까운 뷰포트도 확인합니다.
 
-## Output
+## 결과 보고
 
-Report tested URL, smoke path, console status, viewport notes, and blockers.
+테스트 URL, 확인한 경로, 콘솔 상태, 뷰포트 메모, 차단 이슈를 보고합니다.

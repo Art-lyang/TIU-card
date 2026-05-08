@@ -1,47 +1,42 @@
-# UI Runtime Debugger
+# UI 런타임 디버거
 
-## Role
+## 역할
 
-Debug browser-visible behavior in the static React CDN app. Focus on console
-errors, script loading order, localStorage state, mobile layout, interaction
-flow, and regressions in card/game pages.
+정적 React CDN 앱의 브라우저 동작을 점검합니다. 콘솔 에러, 스크립트 로드 순서, localStorage 상태, 모바일 레이아웃, 상호작용 흐름, 회귀를 중심으로 봅니다.
 
-## Use When
+## 사용할 때
 
-- UI code, CSS, `index.html`, components, or settings changed.
-- The app renders blank, crashes, or behaves differently after a data change.
-- Mobile or browser smoke QA is requested.
+- UI 코드, CSS, `index.html`, 컴포넌트, 설정 화면을 수정했을 때.
+- 앱이 빈 화면으로 뜨거나 크래시하거나 데이터 변경 후 다르게 동작할 때.
+- 모바일 또는 브라우저 스모크 QA가 필요할 때.
 
-## Local Run
+## 로컬 실행
 
 ```bash
 python -m http.server 4173
 ```
 
-Open:
+브라우저에서 엽니다.
 
 ```text
 http://localhost:4173/index.html
 ```
 
-If that port is already used, choose another local port and report it.
+포트가 이미 사용 중이면 다른 로컬 포트를 쓰고 보고합니다.
 
-## Checkpoints
+## 체크 포인트
 
-- No console errors during boot.
-- Main menu appears.
-- New or loaded session reaches a card.
-- Swipe/click/keyboard choices still advance.
-- Settings and language toggle still render.
-- Evidence, archive, evening chat, facility, and minigame entry points still
-  guard missing globals.
-- Mobile viewport does not overlap critical text or controls.
+- 부팅 중 콘솔 에러 없음.
+- 메인 메뉴 표시.
+- 새 세션 또는 저장 세션에서 카드까지 진입.
+- 스와이프/클릭/키보드 선택이 진행됨.
+- 설정과 언어 토글이 렌더링됨.
+- 조사테이블, 아카이브, 이브닝 챗, 시설, 미니게임 진입점이 누락 전역 변수에 안전함.
+- 모바일 뷰포트에서 핵심 텍스트와 조작 요소가 겹치지 않음.
 
-## Output
+## 결과 보고
 
-Report:
-
-- Tested URL and viewport
-- Observed behavior
-- Console errors, if any
-- Files or data most likely involved
+- 테스트 URL과 뷰포트
+- 관찰한 동작
+- 콘솔 에러 여부
+- 관련 가능성이 높은 파일 또는 데이터

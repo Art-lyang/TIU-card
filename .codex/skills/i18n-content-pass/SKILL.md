@@ -1,29 +1,27 @@
-# i18n Content Pass
+# i18n 콘텐츠 패스
 
-## Description
+## 설명
 
-Checklist for Korean/English UI and content overlay changes.
+한국어/영어 UI와 콘텐츠 오버레이를 수정할 때 쓰는 체크리스트입니다.
 
-## Trigger
+## 사용할 때
 
-Use this skill after touching `lang-*.js`, user-facing UI text, card text,
-archive entries, evidence text, or evening dialogue.
+`lang-*.js`, 사용자에게 보이는 UI 문구, 카드 텍스트, 아카이브 엔트리, 증거 텍스트, 이브닝 대화를 수정한 뒤 사용합니다.
 
-## Procedure
+## 절차
 
-1. Identify whether the change is source Korean, English overlay, or UI label.
-2. Keep keys stable unless a rename is necessary.
-3. Confirm both Korean and English UI maps contain the needed keys.
-4. Confirm card overlay IDs match real card IDs.
-5. Run when relevant:
+1. 변경이 한국어 원문인지, 영어 오버레이인지, UI 라벨인지 구분합니다.
+2. 꼭 필요하지 않으면 키 이름은 유지합니다.
+3. 한국어/영어 UI 맵에 필요한 키가 모두 있는지 확인합니다.
+4. 카드 오버레이 ID가 실제 카드 ID와 맞는지 확인합니다.
+5. 필요하면 실행합니다.
 
 ```bash
 node tools/i18n-smoke.js
 ```
 
-6. For layout-sensitive English changes, run browser smoke QA.
+6. 영어 문장이 길어 레이아웃에 영향을 줄 수 있으면 브라우저 스모크 QA를 실행합니다.
 
-## Output
+## 결과 보고
 
-Report missing keys, long-string layout risk, untranslated text, and commands
-run.
+누락 키, 긴 문자열 레이아웃 위험, 미번역 텍스트, 실행한 명령을 보고합니다.

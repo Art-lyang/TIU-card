@@ -1,35 +1,34 @@
-# Data Change Validation
+# 데이터 변경 검증
 
-## Description
+## 설명
 
-Repeatable checklist for validating changes to card, mission, chain, evidence,
-archive, facility, reward, ending, or session-pack data.
+카드, 미션, 체인, 증거, 아카이브, 시설, 보상, 엔딩, 세션팩 데이터를 수정한 뒤 반복해서 사용하는 검증 체크리스트입니다.
 
-## Trigger
+## 사용할 때
 
-Use this skill after editing any `data-*.js` or `lang-cards-*.js` file.
+`data-*.js` 또는 `lang-cards-*.js`를 수정한 뒤 사용합니다.
 
-## Procedure
+## 절차
 
-1. Identify the touched data family.
-2. Check adjacent files in the same family because data is intentionally split.
-3. Confirm IDs follow project naming:
-   - Cards: `C-XXX`, `CH-XXX-N`, `CS-XXX`, `CT-XXX`, `CA-XXX`, `CE-XXX`
-   - Logs: `LOG-*` or intentional `ONCE-*`
-   - Missions: existing `M-*` / `MI-*` pattern
-4. Confirm each new reference has a producer and consumer.
-5. Run:
+1. 수정한 데이터 계열을 확인합니다.
+2. 같은 계열의 인접 파일도 확인합니다. 이 프로젝트는 데이터가 의도적으로 여러 파일에 나뉘어 있습니다.
+3. ID 규칙을 확인합니다.
+   - 카드: `C-XXX`, `CH-XXX-N`, `CS-XXX`, `CT-XXX`, `CA-XXX`, `CE-XXX`
+   - 로그: `LOG-*` 또는 의도된 `ONCE-*`
+   - 미션: 기존 `M-*` / `MI-*` 패턴
+4. 새 참조마다 생산자와 소비자가 있는지 확인합니다.
+5. 실행합니다.
 
 ```bash
 node tools/validator.js
 ```
 
-6. If balance could change, run:
+6. 밸런스가 바뀔 수 있으면 실행합니다.
 
 ```bash
 python tools/simulator_v3.py 100 all
 ```
 
-## Output
+## 결과 보고
 
-Summarize validator status, simulation status if run, and any manual checks.
+validator 상태, 실행했다면 시뮬레이션 상태, 수동 확인 항목을 요약합니다.
