@@ -224,21 +224,32 @@ function App(){
   };
   var buildEvidenceFallbackDialogue=function(){
     var en=getLocale()==='en';
-    var enLines=[
+    var repeatSession=sessions>0;
+    var enFirstLines=[
+      'Commander, the investigation table is not online yet.',
+      'If leads keep scattering from here, it will be difficult to preserve their sequence later.',
+      'I will open the evidence analysis module with commander-only access for now.'
+    ];
+    var enRepeatLines=[
       'Commander, the investigation table should still be empty, but entries I never collected have already appeared.',
       'Some records were generated automatically before we attached a source. I do not know what process did this.',
       'I will open the evidence analysis module with commander-only access for now.'
     ];
-    var koLines=[
-      '\uc9c0\ud718\uad00\ub2d8, \uc870\uc0ac\ud14c\uc774\ube14\uc740 \uc544\uc9c1 \ube44\uc5b4 \uc788\uc5b4\uc57c \ud558\ub294\ub370... \uc81c\uac00 \uc218\uc9d1\ud558\uc9c0 \uc54a\uc740 \ud56d\ubaa9\ub4e4\uc774 \uc774\ubbf8 \uc0dd\uc131\ub3fc \uc788\uc2b5\ub2c8\ub2e4.',
-      '\ucd9c\ucc98\ub97c \ubd99\uc774\uae30 \uc804\uc5d0 \uc790\ub3d9\uc73c\ub85c \ub9cc\ub4e4\uc5b4\uc9c4 \ub85c\uadf8\uac00 \uc788\uc2b5\ub2c8\ub2e4. \uc5b4\ub5a4 \ud504\ub85c\uc138\uc2a4\uac00 \uc774\ub807\uac8c \ud55c \uac74\uc9c0 \ubaa8\ub974\uaca0\uc2b5\ub2c8\ub2e4.',
-      '\uc77c\ub2e8 \uc9c0\ud718\uad00 \uc804\uc6a9 \uad8c\ud55c\uc73c\ub85c \uc99d\uac70 \ubd84\uc11d \ubaa8\ub4c8\uc744 \uc5f4\uc5b4\ub450\uaca0\uc2b5\ub2c8\ub2e4.'
+    var koFirstLines=[
+      '지휘관님. 조사테이블이 아직 열려 있지 않습니다.',
+      '지금부터 단서가 흩어지기 시작하면 나중에 기록 순서를 맞추기 어렵습니다.',
+      '일단 지휘관 전용 권한으로 증거 분석 모듈을 열어두겠습니다.'
+    ];
+    var koRepeatLines=[
+      '지휘관님, 조사테이블은 아직 비어 있어야 하는데... 제가 수집하지 않은 항목들이 이미 생성돼 있습니다.',
+      '출처를 붙이기 전에 자동으로 만들어진 로그가 있습니다. 어떤 프로세스가 이렇게 한 건지 모르겠습니다.',
+      '일단 지휘관 전용 권한으로 증거 분석 모듈을 열어두겠습니다.'
     ];
     return {
       id:'DLG-EV-FORCE-ACT3',
       char:'\uc784\uc7ac\ud601',
       role:en?'Technical Officer':'\uae30\uc220\uad00',
-      lines:en?enLines:koLines,
+      lines:en?(repeatSession?enRepeatLines:enFirstLines):(repeatSession?koRepeatLines:koFirstLines),
       choices:en?[
         {label:'Activate the investigation table',tag:'Analysis',reply:'Authorization confirmed. The evidence table is now available from the terminal.',fx:{},g:0,trust:3,log:'LOG-EV-UNLOCK'},
         {label:'Open it with minimum privileges',tag:'Cold',reply:'Understood. I will keep it to read-only analysis access.',fx:{},g:0,trust:1,log:'LOG-EV-UNLOCK'}
@@ -515,7 +526,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
-  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
+  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,sessions:sessions,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,trust:trust,onComplete:hMission});
   if(phase==='escape_game')return h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult});

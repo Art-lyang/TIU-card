@@ -26,6 +26,9 @@ from simulator import (
 
 N_RUNS = int(sys.argv[1]) if len(sys.argv) > 1 else 500
 STRATEGY = sys.argv[2] if len(sys.argv) > 2 else 'neutral'
+STRATEGY = {'balanced': 'neutral'}.get(STRATEGY, STRATEGY)
+if STRATEGY not in ('random', 'neutral', 'resist'):
+    raise SystemExit('Unknown strategy: %s (use random, neutral, balanced, or resist)' % STRATEGY)
 random.seed(42)
 
 def extract_block(src, marker):
