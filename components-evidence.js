@@ -237,10 +237,12 @@ function EvidencePanel(p) {
         evidenceText('수집: ', 'COLLECTED: ') + collected.length + ' / ' + EVIDENCE.length),
       collected.length === 0 && h('div', { style: { fontSize: 12, color: 'rgba(var(--ui-rgb),.3)',
         textAlign: 'center', padding: '20px 0' } }, evidenceText('수집된 증거가 없습니다.', 'No evidence records collected.')),
-      h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6 } },
+      h('div', { className: 'ev-grid-scroll', style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6,
+        maxHeight: 'calc(2 * (72px + 6px))', overflowY: 'auto', scrollbarWidth: 'none',
+        msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } },
         collected.map(function(ev) {
           var cc = catColor[ev.cat] || 'var(--ui)';
-          return h('div', { key: ev.id, style: { flex: '0 0 calc(50% - 3px)', padding: '8px 10px',
+          return h('div', { key: ev.id, style: { padding: '8px 10px', minHeight: 72,
             border: '1px solid rgba(var(--ui-rgb),.1)', borderRadius: 2 } },
             h('div', { style: { display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 } },
               h('span', { style: { width: 6, height: 6, borderRadius: '50%', background: cc, flexShrink: 0 } }),

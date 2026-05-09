@@ -40,12 +40,13 @@ var CARDS_ACT3 = [
   // ═══ Act 3: OBSERVER 미스터리 ═══
 
   { id: "C-239", act: [3], priority: "상", bg: "oracle",
+    cond: function(s,g,logs){ return logs.indexOf("LOG-012")>=0 },
     msg: "단말기 화면에 등록되지 않은 텍스트가 0.5초간 나타났다 사라집니다.\n\n[TRUST EVALUATION: PASSED]\n[OBSERVER NOTE: CONTINUE MONITORING]\n\n임재혁: \"이건 ORACLE이 아닙니다. ORACLE도 이 레이어를 인식하지 못합니다.\"\n\n\"누군가가... ORACLE 안에서 우리를 지켜보고 있습니다.\"",
-    left: { label: "레이어 추적 시도", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3 },
-    right: { label: "기록만 하고 건드리지 마", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    left: { label: "레이어 추적 시도", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: "LOG-OBSERVER-INTRO" },
+    right: { label: "기록만 하고 건드리지 마", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0, log: "LOG-OBSERVER-INTRO" } },
 
   { id: "C-240", act: [3], priority: "상", bg: "oracle",
-    cond: function(s,g,logs){ return logs.includes("LOG-012") },
+    cond: function(s,g,logs){ return logs.indexOf("LOG-012")>=0 && logs.indexOf("LOG-OBSERVER-INTRO")>=0 },
     msg: "임재혁이 급하게 찾아옵니다.\n\n\"OBSERVER 레이어에서 메시지가 왔습니다. 직접 우리한테.\"\n\n단말기 화면:\n[DO NOT TRUST THE FINAL PROTOCOL.]\n[72 HOURS IS NOT A COUNTDOWN.]\n[IT IS A TRANSFER.]\n\n\"...ORACLE이 72시간 후에 뭔가를 '전송'한다는 뜻입니다.\"",
     left: { label: "최종 프로토콜 차단 준비", fx: { c: -1, r: -1, t: 2, o: -3 }, g: -5 },
     right: { label: "함정일 수 있다 — 경계만 유지", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },

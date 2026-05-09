@@ -157,6 +157,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .dialogue-card{width:100%;max-width:440px;flex:1;min-height:0;padding:18px 20px;cursor:default;display:flex;flex-direction:column;overflow:hidden;margin-bottom:0;user-select:none;-webkit-user-select:none;touch-action:none}
 .dialogue-scroll{flex:1;min-height:0;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none;padding:12px 2px 12px}
 .dialogue-scroll::-webkit-scrollbar{display:none}
+.ev-grid-scroll::-webkit-scrollbar{display:none}
 .dialogue-line{font-size:14px;line-height:1.7;color:rgba(var(--ui-rgb),.88);margin-bottom:6px;animation:fadeIn .3s ease}
 .dialogue-reply{font-size:14px;line-height:1.7;color:var(--ui);margin-top:8px;border-left:2px solid rgba(var(--ui-rgb),.55);padding-left:10px}
 .dialogue-reply--evening{font-size:13px;font-style:italic}
