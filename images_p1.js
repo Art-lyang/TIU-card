@@ -120,7 +120,7 @@
     'C-028': 'card_story_shelltalker_lure',
     'C-029': 'mission_m001',
     'C-031': 'card_story_shelltalker_body_bait',
-    'C-040': 'card_story_secret_escape_group',
+    'C-040': 'card_core_jaehyuk_overnight_data',
     'C-042': 'mission_m004',
     'C-044': 'mission_m005',
     'C-046': 'mission_m006',

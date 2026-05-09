@@ -149,8 +149,8 @@ var CARDS_NEW_A = [
 
   { id: "C-332", act: [1], priority: "하", bg: "base", flow: "daily",
     msg: "야간 휴게실 소등 시간이 제대로 지켜지지 않고 있습니다.\n\n수면 리듬이 무너지면 작은 실수가 늘어난다는 의무실 메모가 붙었습니다.",
-    left: { label: "소등 규칙 정리", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
-    right: { label: "자율에 맡긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    left: { label: "소등 규칙 정리", fx: { c: 0, r: 0, t: 5, o: 0 }, g: 0 },
+    right: { label: "자율에 맡긴다", fx: { c: 0, r: 0, t: 5, o: -5 }, g: 0 } },
 
   { id: "C-333", act: [1], priority: "하", bg: "supply", flow: "daily",
     msg: "소모품 재고표와 실제 수량이 맞지 않습니다.\n\n분실보다 기록 방식이 제각각이라 생긴 문제에 가깝다는 보고입니다.",
