@@ -19,13 +19,13 @@ if (typeof DIALOGUES !== 'undefined') {
     { char: "서하은", role: "부지휘관", actReq: 3, trustReq: function(tr){ return tr.haeun >= 55 },
       lines: [
         "지휘관님, 이건 개인적인 거예요.",
-        "저한테 언니가 한 명 있었어요. 서울 봉쇄 초기에 잃었어요.",
-        "그 때부터 ORACLE 데이터에 들어온 건데 — 처음엔 복수가 목적이었습니다.",
-        "지금은... 지휘관님 옆에 있는 이유가 더 많아요."
+        "이 지부에 오기 전엔, 정확한 데이터만 있으면 충분하다고 믿었습니다.",
+        "그런데 여기서는 숫자를 누가, 어떤 마음으로 읽느냐가 결과를 바꿉니다.",
+        "지금은... 지휘관님 옆에 남아 있는 이유가 더 많아요."
       ],
       choices: [
         { label: "고맙다. 나도 똑같이 느낀다", tag: "공감", reply: "...감사합니다.", fx: {}, g: -3, trust: 15 },
-        { label: "슬픔은 판단을 흐린다", tag: "냉정", reply: "...네, 알고 있어요.", fx: {}, g: 1, trust: -5 }
+        { label: "개인적 신뢰는 판단을 흐린다", tag: "냉정", reply: "...네. 그래서 기록은 더 정확하게 남기겠습니다.", fx: {}, g: 1, trust: -5 }
       ] },
     { char: "서하은", role: "부지휘관", actReq: 3, trustReq: function(tr){ return tr.haeun >= 70 },
       lines: [
@@ -40,7 +40,7 @@ if (typeof DIALOGUES !== 'undefined') {
       ] },
 
     // ─── 강도윤 Act 3 × 3 ──────────────
-    { char: "강도윤", role: "현장요원", actReq: 3,
+    { char: "강도윤", role: "전술지휘관", actReq: 3,
       lines: [
         "지휘관. 순찰 중 이상한 거 발견했습니다.",
         "봉쇄선 외곽 흙에 — 군화 자국이 있습니다. 우리 거 아닙니다.",
@@ -51,18 +51,18 @@ if (typeof DIALOGUES !== 'undefined') {
         { label: "감시조를 붙여라", tag: "분석", reply: "알겠습니다. 조용히 배치하겠습니다.", fx: {}, g: -2, trust: 10 },
         { label: "오인일 수 있다. 무시해", tag: "냉정", reply: "...네, 지휘관. 기록만 남기겠습니다.", fx: {}, g: 1, trust: -10 }
       ] },
-    { char: "강도윤", role: "현장요원", actReq: 3, trustReq: function(tr){ return tr.doyun >= 55 },
+    { char: "강도윤", role: "전술지휘관", actReq: 3, trustReq: function(tr){ return tr.doyun >= 55 },
       lines: [
         "지휘관. 한 가지 말씀드릴 게 있습니다.",
-        "저는 현역 때 — 네 명을 잃었습니다. 제 지휘 아래서.",
-        "그래서 여기 온 거예요. 다시는 잃지 않으려고.",
-        "...지휘관님 밑에서는, 느낌이 다릅니다."
+        "저는 이 일을 아버지한테 배운 것 같습니다. 말이 많은 분은 아니었습니다.",
+        "제가 해병대 간다고 했을 때도, 그냥 '가라' 한 마디뿐이었습니다.",
+        "그래서 압니다. 설명보다 오래 버티는 신뢰가 있다는 걸요."
       ],
       choices: [
-        { label: "그 경험을 믿는다", tag: "공감", reply: "...감사합니다.", fx: {}, g: -3, trust: 15 },
+        { label: "그 흔들리지 않음을 믿는다", tag: "공감", reply: "...감사합니다.", fx: {}, g: -3, trust: 15 },
         { label: "과거는 뒤로. 지금에 집중해", tag: "강경", reply: "...알겠습니다.", fx: {}, g: 0, trust: 0 }
       ] },
-    { char: "강도윤", role: "현장요원", actReq: 3, trustReq: function(tr){ return tr.doyun >= 70 },
+    { char: "강도윤", role: "전술지휘관", actReq: 3, trustReq: function(tr){ return tr.doyun >= 70 },
       lines: [
         "지휘관. 만약의 상황 대비해서 — 탈출 경로 세 개 개인적으로 매핑했습니다.",
         "제 판단으로 ORACLE 감시 사각지대만 활용한 겁니다.",
@@ -75,34 +75,34 @@ if (typeof DIALOGUES !== 'undefined') {
       ] },
 
     // ─── 윤세진 Act 3 × 3 ──────────────
-    { char: "윤세진", role: "연구원", actReq: 3,
+    { char: "윤세진", role: "연구원 / 의료관", actReq: 3,
       lines: [
         "지휘관님, 이변체 연구 중에 — 소름 돋는 걸 발견했어요.",
         "SPEC-001 감염체 마네킹의 DNA 일부가 — 인간 정상 범위와 98.7% 일치합니다.",
         "원래 인간이었다는 뜻이에요.",
-        "...제 이름의 '윤리학 박사'라는 타이틀이 — 지금은 부담스럽습니다."
+        "...생화학 박사라는 타이틀이 — 지금은 너무 작게 느껴져요."
       ],
       choices: [
         { label: "기록으로 남겨둬", tag: "분석", reply: "네. 조심히 다루겠습니다.", fx: {}, g: -2, trust: 10 },
         { label: "감정에 휘둘리지 마라", tag: "냉정", reply: "...알겠습니다.", fx: {}, g: 0, trust: -5 }
       ] },
-    { char: "윤세진", role: "연구원", actReq: 3, trustReq: function(tr){ return tr.sejin >= 55 },
+    { char: "윤세진", role: "연구원 / 의료관", actReq: 3, trustReq: function(tr){ return tr.sejin >= 55 },
       lines: [
         "지휘관님, 개인적인 이야기 해도 될까요.",
         "저는 박사 마치고 바로 여기 온 케이스예요. 현장 경험이 거의 없었어요.",
-        "솔직히 처음엔 — 그냥 전 여기에 제 논문을 쓰려고 왔습니다.",
-        "근데 요원들이 죽어가는 걸 본 후로는, 그게 —",
-        "…불가능해졌어요."
+        "처음엔 좋은 데이터만 있으면 충분하다고 생각했습니다.",
+        "근데 여기서 사람을 치료하고, 샘플이 사람에게서 온다는 걸 계속 보다 보니까 —",
+        "…그걸로는 부족해졌어요."
       ],
       choices: [
         { label: "그 변화가 너를 만든다", tag: "공감", reply: "...네. 그렇게 받아들이려고요.", fx: {}, g: -3, trust: 15 },
         { label: "개인 이야기는 여기까지", tag: "냉정", reply: "네... 죄송해요.", fx: {}, g: 1, trust: -10 }
       ] },
-    { char: "윤세진", role: "연구원", actReq: 3, trustReq: function(tr){ return tr.sejin >= 70 },
+    { char: "윤세진", role: "연구원 / 의료관", actReq: 3, trustReq: function(tr){ return tr.sejin >= 70 },
       lines: [
         "지휘관님. 제가 진단한 것 중 — 지휘관님께 안 알린 게 있어요.",
         "요원 박이경. 스트레스성 환각을 최근 호소 중입니다.",
-        "현역에서 빼면 — 팀 사기 떨어질 거 같아서 제가 억제제로 관리하고 있어요.",
+        "현역에서 빼면 — 팀 사기 떨어질 거 같아서 휴식 명령과 상담으로 버티게 했습니다.",
         "잘못된 판단일 수도 있어요. 지휘관님 판단 듣고 싶습니다."
       ],
       choices: [
@@ -111,7 +111,7 @@ if (typeof DIALOGUES !== 'undefined') {
       ] },
 
     // ─── 임재혁 Act 3 × 3 ──────────────
-    { char: "임재혁", role: "기술관", actReq: 3,
+    { char: "임재혁", role: "정보분석관 / 기술관", actReq: 3,
       lines: [
         "지휘관님. 시스템 로그 분석 결과 — ORACLE이 우리 단말기에 실시간 감시 패치를 넣고 있습니다.",
         "매 세션 시작 시 — 0.7초간 권한 확장이 일어납니다.",
@@ -122,7 +122,7 @@ if (typeof DIALOGUES !== 'undefined') {
         { label: "계속 추적해라", tag: "분석", reply: "네. 로그 캡처 스크립트 돌려두겠습니다.", fx: {}, g: -3, trust: 10 },
         { label: "위험하다. 중단해", tag: "냉정", reply: "...네, 알겠습니다.", fx: {}, g: 1, trust: -10 }
       ] },
-    { char: "임재혁", role: "기술관", actReq: 3, trustReq: function(tr){ return tr.jaehyuk >= 55 },
+    { char: "임재혁", role: "정보분석관 / 기술관", actReq: 3, trustReq: function(tr){ return tr.jaehyuk >= 55 },
       lines: [
         "지휘관님. 제 얘기 한 번도 안 드렸죠.",
         "저 어릴 때 컴퓨터 고장나면 밤새 뜯어보던 애였어요.",
@@ -133,7 +133,7 @@ if (typeof DIALOGUES !== 'undefined') {
         { label: "그게 너의 무기다", tag: "공감", reply: "...감사합니다.", fx: {}, g: -2, trust: 15 },
         { label: "지나친 집착은 해롭다", tag: "냉정", reply: "...저도 알고 있습니다.", fx: {}, g: 0, trust: -5 }
       ] },
-    { char: "임재혁", role: "기술관", actReq: 3, trustReq: function(tr){ return tr.jaehyuk >= 70 },
+    { char: "임재혁", role: "정보분석관 / 기술관", actReq: 3, trustReq: function(tr){ return tr.jaehyuk >= 70 },
       lines: [
         "지휘관님. 제가 개인 서버 하나 운영 중입니다. 기지 바깥에 — 익명으로.",
         "여기 로그 복사본들 백업해두는 용도예요.",

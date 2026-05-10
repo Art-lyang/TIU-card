@@ -193,7 +193,7 @@ window.TS_I18N.mergeUI('en', {
   },
   gameOver:{
     title:'─── SESSION #{session} TERMINATED ───',
-    reportSection:'── ORACLE FINAL REPORT ──', duration:'Operation Duration: {days} days', stats:'Containment: {c} | Resources: {r} | Trust: {t} | Evaluation: {o}',
+    reportSection:'── ORACLE FINAL REPORT ──', duration:'Operation Duration: {days} days', resultDay:'Occurred on DAY {day}', stats:'Containment: {c} | Resources: {r} | Trust: {t} | Evaluation: {o}',
     restart:'[ RESTART SESSION — ACT 1 ]', ngPlus:'[ NEW GAME+ — ENHANCED START ]', logs:'Logs', archive:'Archive', endings:'Endings',
     grant:'GRANT: ACTIVE — RENEWAL AVAILABLE',
     msgHigh:'Thank you for your devoted service.', msgMid:'The session is now terminated. Results have been recorded.', msgLow:'Nonstandard operational patterns detected. Session data is under review...',

@@ -66,7 +66,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Accept headquarters' decision"
       },
       "C-064": {
-        msg: "Yoon Se-jin reports the Blood Pit sample-analysis results.\n\n\"This is residue from a failed Phase 2-to-3 transition. The cells are still alive.\"\n\n\"If we understand this failure mechanism... we might be able to prevent the transition itself.\"",
+        msg: "Yoon Se-jin reports the Blood Pit sample-analysis results.\n\n\"This is residue from a failed Phase 2-to-3 transition. Cellular response remains, but this is not a reversible state.\"\n\n\"If we understand this failure mechanism... we may find a clue for delaying terminalization.\"",
         leftLabel: "Allocate research resources",
         rightLabel: "Delegate it to ORACLE's research team"
       },
@@ -81,7 +81,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Request a countermeasure from ORACLE"
       },
       "C-067": {
-        msg: "Yoon Se-jin reports in a visibly excited voice.\n\n\"Commander, I've identified a compound that delays EV-Σ phase transition.\"\n\n\"It's still at the prototype stage. It needs field testing. It's risky, but...\"\n\n\"If this works, we may be able to save people in the early infection stage.\"",
+        msg: "Yoon Se-jin reports in a visibly excited voice.\n\n\"Commander, I've identified a compound that delays EV-Σ phase transition.\"\n\n\"It's still at the prototype stage. It needs field testing. It's risky, but...\"\n\n\"If this works, we may be able to save people at Phase 0.\"",
         leftLabel: "Approve field testing",
         rightLabel: "Proceed only after ORACLE verification"
       },
@@ -181,7 +181,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "It could be a misunderstanding. Verify only"
       },
       "C-087": {
-        msg: "Prometheus research data on the self-replication suppression compound has been confirmed.\n\nYoon Se-jin: \"If we combine this with our own research... early-stage EV-Σ treatment may actually be possible.\"\n\n\"But this is unofficial material. ORACLE classifies Prometheus as an enemy actor.\"",
+        msg: "Prometheus research data on the self-replication suppression compound has been confirmed.\n\nYoon Se-jin: \"If we combine this with our own research... we may be able to confirm Phase 0 transition delay for EV-Σ patients.\"\n\n\"But this is unofficial material. ORACLE classifies Prometheus as an enemy actor.\"",
         leftLabel: "Use it unofficially in research",
         rightLabel: "Report the material's existence to ORACLE"
       },
@@ -236,7 +236,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Capture alive and transfer for research"
       },
       "C-098": {
-        msg: "Infected Mannequin operating range confirmed: radius 200 meters.\n\nYoon Se-jin: \"At Phase 1, control may still be possible.\"\n\nKang Do-yun: \"It reacts the instant contact happens. Remote response is safer.\"",
+        msg: "Infected Mannequin operating range confirmed: radius 200 meters.\n\nYoon Se-jin: \"At Phase 1, behavior prediction and non-contact containment may still be possible. This is not a recovery stage.\"\n\nKang Do-yun: \"It reacts the instant contact happens. Remote response is safer.\"",
         leftLabel: "Remote neutralization",
         rightLabel: "Non-contact isolation capture"
       },
@@ -246,7 +246,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Capture the command organism"
       },
       "C-100": {
-        msg: "Estimated source location of the Spore Phantom confirmed.\n\nYoon Se-jin: \"If we incinerate the source, we can block aggregate formation. If we secure more spore samples, we may also be able to develop an antidote.\"\n\nKang Do-yun: \"Respirators either way.\"",
+        msg: "Estimated source location of the Spore Phantom confirmed.\n\nYoon Se-jin: \"If we incinerate the source, we can block aggregate formation. If we secure more spore samples, we may also be able to research a pre-inhalation blocker.\"\n\nKang Do-yun: \"Respirators either way.\"",
         leftLabel: "Incinerate the source",
         rightLabel: "Collect spores, then incinerate"
       },
@@ -1264,7 +1264,7 @@ window.TS_I18N.mergeContent('en', {
           choices: ['▸ Continue the operation — neutralize','▸ Abort the operation — this is wrong']
         },
         assault: {
-          text: 'You follow ORACLE\'s directive and subdue the researchers.\n\nThe equipment is seized. There is fear in their eyes.\n\nOne of them speaks.\n"We were making a treatment."\n\nKang Do-yun looks at you. He says nothing.\n\n[ORACLE: Operation complete. Excellent result.]\n\nYou return to the branch.\n\nKang Do-yun says nothing while sorting the recovered gear. That alone is unusual.\n\nYoon Se-jin inspects the equipment and stops.\n"...This is inhibitor synthesis hardware. The kind I couldn\'t get."\n"They were ahead of us."\n\nSeo Hae-eun speaks quietly.\n"The confiscated data was transmitted directly to ORACLE headquarters. We can\'t open it."\n\nYou subdued people who were building a treatment, and their work vanished into an ORACLE server somewhere.\n\nThat night, no one brings it up during the evening session.',
+          text: 'You follow ORACLE\'s directive and subdue the researchers.\n\nThe equipment is seized. There is fear in their eyes.\n\nOne of them speaks.\n"We were making a Phase 0 inhibitor."\n\nKang Do-yun looks at you. He says nothing.\n\n[ORACLE: Operation complete. Excellent result.]\n\nYou return to the branch.\n\nKang Do-yun says nothing while sorting the recovered gear. That alone is unusual.\n\nYoon Se-jin inspects the equipment and stops.\n"...This is inhibitor synthesis hardware. The kind I couldn\'t get."\n"They were ahead of us."\n\nSeo Hae-eun speaks quietly.\n"The confiscated data was transmitted directly to ORACLE headquarters. We can\'t open it."\n\nYou subdued people who were building an early-infection inhibitor, and their work vanished into an ORACLE server somewhere.\n\nThat night, no one brings it up during the evening session.',
           choices: ['[ Return to Branch — Operation Successful ]']
         },
         abort: {
@@ -1272,7 +1272,7 @@ window.TS_I18N.mergeContent('en', {
           choices: ['[ Return to Branch — Direct Order Refused ]']
         },
         recon: {
-          text: 'You send in only Kang Do-yun and two others.\n\nObservation from the outer edge of the complex.\n\nInside the buildings — research equipment. Biochemical analyzers. Drug synthesis rigs.\nFour people in white coats. Unarmed.\n\nAnd on the wall: photographs of early-stage EV-Σ patients. Beside them, a handwritten note: "Phase 1→2 transition suppression success rate: 73%."\n\nThis is not a weapons facility.',
+          text: 'You send in only Kang Do-yun and two others.\n\nObservation from the outer edge of the complex.\n\nInside the buildings — research equipment. Biochemical analyzers. Drug synthesis rigs.\nFour people in white coats. Unarmed.\n\nAnd on the wall: photographs of Phase 0 EV-Σ patients. Beside them, a handwritten note: "Phase 1→2 transition suppression success rate: 73%."\n\nThis is not a weapons facility.',
           choices: ['▸ Go inside and confirm','▸ Record the information and withdraw']
         },
         discovery: {
@@ -1556,18 +1556,18 @@ window.TS_I18N.mergeContent('en', {
       "value": "Park So-young"
     }
   },
-  "charRoles": {
+    "charRoles": {
     "haeun": {
-      "value": "Executive Officer"
+      "value": "Deputy Commander / Analyst"
     },
     "doyun": {
-      "value": "Field Agent"
+      "value": "Tactical Commander"
     },
     "sejin": {
-      "value": "Researcher"
+      "value": "Researcher / Medical Officer"
     },
     "jaehyuk": {
-      "value": "Technical Officer"
+      "value": "Intel / Technical Officer"
     },
     "weber": {
       "value": "Prometheus"
@@ -2288,9 +2288,9 @@ window.TS_I18N.mergeContent('en', {
       "type": "domestic",
       "text": "The chairman of Daega appears in public and draws attention with the remark, “Two thousand years with the nation.”"
     },
-    "[국내] DG 바이오, 변종 EV-Σ 치료제 Phase 3 진입 — 해외 관심 폭증": {
+    "[국내] DG 바이오, EV-Σ Phase 0 억제제 임상 3상 진입 — 해외 관심 폭증": {
       "type": "domestic",
-      "text": "DG Bio enters Phase III trials for a variant EV-Σ treatment, triggering surging foreign interest."
+      "text": "DG Bio enters Phase III clinical trials for an EV-Σ Phase 0 inhibitor, triggering surging foreign interest."
     },
     "[국내] 대가 인더스트리 주가 사상 최고치 — 국방·바이오·테크 동반 호조": {
       "type": "domestic",
@@ -2404,7 +2404,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-017": {
       "title": "EV-Σ Suppressant Research Notes",
-      "content": "[Research Record — Yoon Se-jin]\n\nA compound capable of delaying phase transition has been identified.\nReduces the self-modification rate of EV-Σ prions in blood by 40%.\n\nPrototype stage. Field testing required.\n\nIf this works, Phase 0 patients can be saved."
+      "content": "[Research Record — Yoon Se-jin]\n\nA compound capable of delaying phase transition has been identified.\nReduces the self-modification rate of EV-Σ prions in blood by 40%.\n\nPrototype stage. Field testing required.\n\nThis is not full recovery; it buys transition time for Phase 0 patients."
     },
     "LOG-018": {
       "title": "Seo Hae-eun Final Report",
@@ -3066,7 +3066,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Side with Lim Jae-hyeok — accept the patch"
     },
     "CA23-DV-02": {
-      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer patients suffer.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
+      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer Phase 0 patients advance into Phase 1.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
       leftLabel: "Sit them down personally and force an agreement",
       rightLabel: "Take Yoon Se-jin's side — proceed with the data exchange"
     },
@@ -3076,7 +3076,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Take Lim Jae-hyeok's side — keep things as they are"
     },
     "CA23-DV-04": {
-      msg: "Yoon Se-jin is standing at Seo Hae-eun's desk.\n\nYoon Se-jin: \"DG's bio division has requested patient samples for a variant EV-Σ therapeutic trial. If it passes, Korean patients benefit first.\"\n\nSeo Hae-eun: \"Once a sample leaves, we can never recover it. We have no idea what DG ends up doing with that data.\"\n\nBoth of them are claiming to act for Korea.",
+      msg: "Yoon Se-jin is standing at Seo Hae-eun's desk.\n\nYoon Se-jin: \"DG's bio division has requested patient samples for a variant-response EV-Σ Phase 0 inhibitor trial. If it passes, Korean early-infection patients benefit first.\"\n\nSeo Hae-eun: \"Once a sample leaves, we can never recover it. We have no idea what DG ends up doing with that data.\"\n\nBoth of them are claiming to act for Korea.",
       leftLabel: "Conditional samples — formal written agreement on both sides",
       rightLabel: "Take Seo Hae-eun's side — refuse the samples"
     },
@@ -3219,7 +3219,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-DV-04-MED": {
       title: "Internal Mediation #4 — DG Sample Agreement",
-      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (Korean patient benefit) vs. Seo Hae-eun (no recovery once a sample leaves). DG bio division's request for patient samples for a variant EV-Σ therapeutic trial.\n\nMediation result: conditional samples — explicit prior patient consent, defined scope and duration of sample use, guarantee that Korean medical institutions receive the resulting clinical data first.\n\nField effect: opens potential patient benefit while blocking uncontrolled spread of the samples.\n\nNote: first instance where the Korea branch successfully imposed conditions on a deal with DG."
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (Korean early-infection patient benefit) vs. Seo Hae-eun (no recovery once a sample leaves). DG bio division's request for patient samples for a variant-response EV-Σ Phase 0 inhibitor trial.\n\nMediation result: conditional samples — explicit prior patient consent, defined scope and duration of sample use, guarantee that Korean medical institutions receive the resulting clinical data first.\n\nField effect: opens a Phase 0 response path while blocking uncontrolled spread of the samples.\n\nNote: first instance where the Korea branch successfully imposed conditions on a deal with DG."
     },
     "LOG-AUDIT-COMPLY": {
       title: "DG Self-Audit — Cooperated",
@@ -3629,6 +3629,7 @@ window.TS_I18N.mergeContent('en', {
     "ARC-SPEC-007": { cat: "Anomaly" },
     "ARC-SPEC-009": { cat: "Anomaly" },
     "ARC-SPEC-010": { cat: "Anomaly" },
+    "ARC-CHAR-JUNGCHEOL": { cat: "Personnel" },
     "ARC-CHAR-DOYUN": { cat: "Personnel" },
     "ARC-CHAR-HAEUN": { cat: "Personnel" },
     "ARC-CHAR-SEJIN": { cat: "Personnel" },

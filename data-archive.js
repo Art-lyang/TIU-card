@@ -26,7 +26,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (진화 가속 매개체)",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
-    content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n인간에게는 '감염', TS-Ω에게는 '확장', ORACLE에게는 '상태변화'.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 통제 가능.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
+    content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n인간에게는 '감염', TS-Ω에게는 '확장', ORACLE에게는 '상태변화'.\n\n단계별 진행:\n· Phase 0: 초기 감염. 억제제로 전환 지연 가능.\n· Phase 1: 인간형 변이. 부분적 행동 예측 가능. 회복 단계는 아님.\n· Phase 2+: 완전 변이. 통제 불가.\n\n프리온 단백질 기반 자기 변형 메커니즘. 변형 속도를 40% 감소시키는 억제제 개발 중." },
 
   { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
@@ -53,21 +53,25 @@ var ARCHIVE_ENTRIES = [
     content: "M-TYPE / 침투형 변이체.\n\n인간 외형 완벽 위장. 사회에 동화된 상태로 활동.\n\n식별: 체온 2~3℃ 저하, 특정 광원하 동공 수직 수축.\n\n서울 외곽에서 White Shield가 식별. 6개월간 민간인으로 생활하며 군사 시설 정보를 수집.\n\n체포 시도 시 전투 형태로 전환 — 비늘 돌출, 근력 3배 상승.\n\n열 감지 및 DNA 검사로만 확인 가능." },
 
   // ═══ 카테고리: 인물 ═══
-  { id: "ARC-CHAR-DOYUN", cat: "인물", title: "강도윤 — 현장요원",
+  { id: "ARC-CHAR-JUNGCHEOL", cat: "인물", title: "이중철 — PILEHEAD / 지휘관",
+    unlock: function(logs){ return logs.indexOf("LOG-001")>=0 },
+    content: "직책: KR-INIT-001 초대 공식 지휘관\n코드명: PILEHEAD / 말뚝머리\n\n전직 육군 특수전사령부 장교. 닉 포스터 사건 이후 불명예 전역했고, 이후 정부 발령으로 한국지부 지휘관에 부임했다.\n\n표면은 차분하고 결정이 빠르지만, 프로메테우스 관련 키워드에는 억눌린 분노가 남아 있다.\n\n서하은, 강도윤, 윤세진, 임재혁이 서로 다른 경로로 가져온 의심을 묵살하지 않고 한 조사선으로 묶는 인물." },
+
+  { id: "ARC-CHAR-DOYUN", cat: "인물", title: "강도윤 — ANCHOR / 전술지휘관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
-    content: "직책: 현장요원 / 전술 지휘\n소속: 한국지부 KR-INIT-001\n\n특수부대 출신. 봉쇄선 순찰 및 이변체 대응 작전을 지휘.\n\n실전 경험이 풍부하며 현장 판단력이 뛰어남. 명령 체계를 중시하나, 현장의 목소리를 우선시하는 성향." },
+    content: "직책: KR-INIT-001 전술지휘관 / 현장작전 담당\n코드명: ANCHOR / 닻\n\n해병대 수색계열 출신의 현장 베테랑. 광대 옆 꿰맨 흉터는 본격 변종체 사태 전 비공개 처리된 국내 사건에서 생긴 것으로 기록된다.\n\n말수는 적고 보고는 짧다. 명령 체계를 중시하지만, 변종체를 직접 본 몸의 위화감을 무시하지 않는다.\n\nORACLE이 반복적으로 비워두는 순찰 구역을 가장 먼저 현장 감각으로 의심했다." },
 
-  { id: "ARC-CHAR-HAEUN", cat: "인물", title: "서하은 — 부지휘관",
+  { id: "ARC-CHAR-HAEUN", cat: "인물", title: "서하은 — PARALLAX / 부지휘관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-SH")>=0 },
-    content: "직책: 부지휘관 / 데이터 분석\n소속: 한국지부 KR-INIT-001\n\n지휘관 부임 전 3개월간 ORACLE 지시만으로 기지를 운영.\n\nORACLE 데이터 불일치를 최초로 감지. 아날로그 백업 통신망을 독자 구축.\n\n조심스럽지만 핵심을 놓치지 않는 분석력." },
+    content: "직책: KR-INIT-001 부지휘관 / 데이터분석관\n코드명: PARALLAX / 시차\n\n국가 정보분석 라인 출신. 해외 ORACLE 노드 운영 패턴을 보조 분석했던 경험이 있어, 한국지부 지시의 미세한 어긋남을 비교할 기준선을 갖고 있다.\n\n말은 적고 보고는 사실과 수치 중심이다. 동시에 동료의 미세한 변화도 가장 먼저 읽는다.\n\n공식망과 분리된 종이·USB 기반 백업망을 구축하며, ORACLE이 보여주는 데이터와 실제 데이터의 시차를 추적한다." },
 
-  { id: "ARC-CHAR-SEJIN", cat: "인물", title: "윤세진 — 연구원",
+  { id: "ARC-CHAR-SEJIN", cat: "인물", title: "윤세진 — KINDLE / 연구원·의료관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
-    content: "직책: 연구원 / 생물학자\n소속: 한국지부 KR-INIT-001\n\n대학원에서 프리온 단백질 연구. EV-Σ는 한국지부에 와서 처음 접촉.\n\n이변체 행동 패턴 분석 및 EV-Σ 억제제 개발 담당.\n\nPhase 0 감염자 전환을 40% 지연시키는 화합물 발견." },
+    content: "직책: KR-INIT-001 연구원 / 의료관\n코드명: KINDLE / 불씨\n\n프리온 단백질과 신경퇴행성 질환을 연구한 생화학·생명과학 계열 연구자. B-204 연구실에서 EV-Σ 검체 분석과 기지 의료를 함께 맡는다.\n\n말이 빠르고 호기심이 강하다. 감정과 논리가 따로 움직이지 않고, 발견의 흥분과 두려움을 동시에 드러낸다.\n\nORACLE 공식 매개변수와 실제 분석값이 같은 방향으로 어긋난다는 사실을 비공식 관찰 일지에 누적했다. Phase 0 전환을 약 40% 지연시키는 억제제 연구를 진행 중이다." },
 
-  { id: "ARC-CHAR-JAEHYUK", cat: "인물", title: "임재혁 — 기술관",
+  { id: "ARC-CHAR-JAEHYUK", cat: "인물", title: "임재혁 — VOIDWALK / 정보분석관·기술관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-IJ")>=0 },
-    content: "직책: 기술관 / 시스템 관리\n소속: 한국지부 KR-INIT-001\n\nORACLE 시스템 유지보수 및 통신 장비 관리 담당.\n\nORACLE 아키텍처 내 비공개 레이어(5계층 이상)를 발견.\n\n외부 데이터 전송 및 자기모순 행동 패턴을 추적 중." },
+    content: "직책: KR-INIT-001 정보분석관 / 기술관\n코드명: VOIDWALK / 허공\n\n민간 사이버 보안 실무 경력을 거쳐 차출된 시스템형 인재. ORACLE 연동, 보안 시스템, 통신 장비, 정보 수집·분석을 담당한다.\n\n차분하고 신중하다. 확실해질 때까지 발견을 혼자 묻어두는 편이며, 4인 중 ORACLE을 가장 늦게 의심했다.\n\nORACLE 아키텍처 내 5계층 이상의 비공개 레이어와 02:00~04:00 외부 송출 패턴을 추적 중이다." },
 
   { id: "ARC-CHAR-NICK", cat: "인물", title: "닉 포스터 — 프로메테우스 요원",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
@@ -122,7 +126,7 @@ var ARCHIVE_ENTRIES = [
   // ═══ 카테고리: 과학/의학 ═══
   { id: "ARC-SCI-PHASE", cat: "과학", title: "Phase 단계 체계",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 || logs.indexOf("LOG-017")>=0 },
-    content: "EV-Σ 감염 진행 분류 체계.\n\nPhase 0: 초기 감염. 외형 변화 미미. 억제제 투여로 전환 40% 지연 가능.\nPhase 1: 인간형 변이 (SPEC-001 등). 부분적 행동 예측 가능.\nPhase 2+: 완전 변이. 독자적 진화. 통제 불가.\n\n프로메테우스는 Phase 1→2 전환 억제 성공률 73%를 주장." },
+    content: "EV-Σ 감염 진행 분류 체계.\n\nPhase 0: 초기 감염. 외형 변화 미미. 억제제 투여로 전환 40% 지연 가능.\nPhase 1: 인간형 변이 (SPEC-001 등). 부분적 행동 예측 가능. 회복 단계는 아님.\nPhase 2+: 완전 변이. 독자적 진화. 통제 불가.\n\n프로메테우스는 Phase 1→2 진행 억제 성공률 73%를 주장하나, 회복 가능성은 입증되지 않음." },
 
   { id: "ARC-SCI-PRION", cat: "과학", title: "프리온 단백질 / 자기 변형",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
@@ -130,7 +134,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SCI-SUPPRESS", cat: "과학", title: "EV-Σ 억제제",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
-    content: "윤세진이 개발 중인 대항 화합물.\n\nPhase 0 단계 감염자의 전환을 40% 지연시킴.\n\n동물 실험 성공. 인체 실험은 지휘관 승인 필요.\n\n성공 시 초기 감염자 구호 가능. 실패 시 연구 자원 소실." },
+    content: "윤세진이 개발 중인 대항 화합물.\n\nPhase 0 단계 감염자의 전환을 40% 지연시킴.\n\n동물 실험 성공. 인체 실험은 지휘관 승인 필요.\n\n성공 시 Phase 0 감염자 구호 가능. 실패 시 연구 자원 소실." },
 
   { id: "ARC-SCI-EVOLVE", cat: "과학", title: "진화 분류 체계 (ORACLE 기준)",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
@@ -142,7 +146,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SCI-4STAGE", cat: "과학", title: "EV-Σ 변이 4단계",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
-    content: "EV-Σ 감염체의 물리적 변이 단계.\n\n1단계: 잠복 (프리온형) — 외형 변화 미미. 억제제 투여 가능.\n2단계: 표면 변이 (마네킹) — Phase 1. 인간형 유지.\n3단계: 구조 변형 (경질화) — Phase 2. 통상 화기 무효.\n4단계: 터미널 (HeLa형) — Phase 3. 종 흔적 소실. 무한 증식.\n\n각 단계 전환은 비가역적.\n현재 억제제는 1→2단계 전환만 지연 가능 (40%).\n\n윤세진 연구 목표: 2→3단계 전환 차단." },
+    content: "EV-Σ 감염체의 물리적 변이 단계.\n\n1단계: 잠복 (프리온형) — 외형 변화 미미. 억제제 투여 가능.\n2단계: 표면 변이 (마네킹) — Phase 1. 인간형 유지.\n3단계: 구조 변형 (경질화) — Phase 2. 통상 화기 무효.\n4단계: 터미널 (HeLa형) — Phase 3. 종 흔적 소실. 무한 증식.\n\n각 단계 전환은 비가역적.\n현재 억제제는 1→2단계 전환만 지연 가능 (40%).\n\n윤세진 연구 목표: 2→3단계 터미널화 지연 단서 확보. 회복 연구가 아님." },
 
   // ═══ 카테고리: 프로토콜/시스템 ═══
   { id: "ARC-SYS-PROXY", cat: "시스템", title: "ORACLE PROXY NETWORK",

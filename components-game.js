@@ -837,10 +837,13 @@ function NewsReport3(p){
     var view=resolveNewsView(s);
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
-    var isGl=type==='redacted'||s.indexOf('분류 오류')>=0||s.indexOf('[삭제됨]')>=0;
+    var isGl=type==='redacted'||s.indexOf('분류 오류')>=0||s.indexOf('[삭제됨]')>=0||s.indexOf('[DELETED]')>=0;
     if(isGl)return{tag:'REDACTED',text:body,gl:true};
-    if(type==='foreign'||s.indexOf('[해외]')===0||s.indexOf('[OVERSEAS]')===0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}};
-    if(type==='domestic'||s.indexOf('[국내]')===0||s.indexOf('[DOMESTIC]')===0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}};
+    if(s.indexOf('[CLASSIFICATION HOLD]')===0)return{tag:'CLASSIFIED',text:body.replace('[CLASSIFICATION HOLD] ',''),gl:false};
+    if(s.indexOf('[INTERNAL]')===0)return{tag:'INTERNAL',text:body.replace('[INTERNAL] ',''),gl:false};
+    if(s.indexOf('[WARNING]')===0)return{tag:'WARNING',text:body.replace('[WARNING] ',''),gl:false};
+    if(type==='foreign'||s.indexOf('[해외]')===0||/^\[overseas\]/i.test(s)){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace(/^\[overseas\]\s*/i,''),gl:false}};
+    if(type==='domestic'||s.indexOf('[국내]')===0||/^\[domestic\]/i.test(s)){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace(/^\[domestic\]\s*/i,''),gl:false}};
     return{tag:'INTEL-01',text:body,gl:false};
   };
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
@@ -937,16 +940,18 @@ function GameOver(p){
   var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
   var narr=p.endNarr;
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
+  var resultDay=(p.resultDay||(p.stats&&p.stats.day)||'?');
+  var resultDayNode=h('div',{className:'go-stat'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay));
   var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
     h('button',{className:'btn btn-amber',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
     h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
-  if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:12,flexShrink:0}},'ENDING: '+narr.name),h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
+  if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:8,flexShrink:0}},'ENDING: '+narr.name),resultDayNode,h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
   var eid=p.endId||'',rsn=p.reason||'',goImg=null;
   if(eid.indexOf('C_c')===0||/봉쇄|Containment/i.test(rsn))goImg=IMG.ending_C_c;
   else if(eid==='C_r'||/자원|Resource/i.test(rsn))goImg=IMG.ending_C_r;
   else if(eid==='C_t'||/신뢰|Trust/i.test(rsn))goImg=IMG.ending_C_t;
   else if(eid==='C_o'||/평가|접속|Evaluation|ORACLE access/i.test(rsn))goImg=IMG.ending_C_o;
-  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},tt('gameOver.title',{session:p.sessions+1},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───')),h('div',{className:'go-reason'},p.reason),h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.78)',marginTop:12,letterSpacing:1}},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE'))),btns);
+  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},tt('gameOver.title',{session:p.sessions+1},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───')),h('div',{className:'go-reason'},p.reason),resultDayNode,h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.78)',marginTop:12,letterSpacing:1}},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE'))),btns);
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];

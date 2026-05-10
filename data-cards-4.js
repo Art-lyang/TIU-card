@@ -51,7 +51,7 @@ var CARDS_INVESTIGATE = [
 
   { id: "C-098", act: [3], priority: "상", tag: "spec-001",
     req: function(s,g,logs){ return logs.includes("LOG-022") },
-    msg: "감염체 마네킹 행동 범위 특정 완료. 반경 200m.\n\n윤세진: \"Phase 1 상태라 제어 가능성이 있습니다.\"\n\n강도윤: \"접촉 순간 반응합니다. 원거리 대응이 안전합니다.\"",
+    msg: "감염체 마네킹 행동 범위 특정 완료. 반경 200m.\n\n윤세진: \"Phase 1 상태라 행동 예측과 비접촉 격리는 가능할 수 있습니다. 치료나 회복 단계는 아닙니다.\"\n\n강도윤: \"접촉 순간 반응합니다. 원거리 대응이 안전합니다.\"",
     left: { label: "원거리 무력화", fx: { c: 2, r: -1, t: 0, o: 1 }, g: 1, mission: "M-004" },
     right: { label: "비접촉 격리 포획", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1, mission: "M-004" } },
 
@@ -63,7 +63,7 @@ var CARDS_INVESTIGATE = [
 
   { id: "C-100", act: [3], priority: "상", tag: "spec-008",
     req: function(s,g,logs){ return logs.includes("LOG-024") },
-    msg: "Spore Phantom 발생원 위치 추정 완료.\n\n윤세진: \"발생원 소각으로 집합체 형성을 차단할 수 있습니다. 포자 샘플을 더 확보하면 해독제 개발도 가능합니다.\"\n\n강도윤: \"방독면 필수. 어느 쪽이든.\"",
+    msg: "Spore Phantom 발생원 위치 추정 완료.\n\n윤세진: \"발생원 소각으로 집합체 형성을 차단할 수 있습니다. 포자 샘플을 더 확보하면 흡입 전 차단제 연구도 가능합니다.\"\n\n강도윤: \"방독면 필수. 어느 쪽이든.\"",
     left: { label: "발생원 소각", fx: { c: 2, r: -1, t: 0, o: 1 }, g: 1, mission: "M-006" },
     right: { label: "포자 채취 후 소각", fx: { c: 1, r: -2, t: 1, o: 0 }, g: 0, mission: "M-006" } },
 

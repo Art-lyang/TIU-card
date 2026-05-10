@@ -51,7 +51,7 @@ function EveningChat(p){
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
-  var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
+  var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
@@ -232,7 +232,7 @@ function EveningChat2(p){
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
-  var chars=[{name:'서하은',key:'haeun',role:'부지휘관'},{name:'강도윤',key:'doyun',role:'현장요원'},{name:'윤세진',key:'sejin',role:'연구원'},{name:'임재혁',key:'jaehyuk',role:'기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
+  var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};

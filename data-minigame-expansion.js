@@ -24,12 +24,59 @@
     }
   });
 
+  function ensureFieldMiniStart(missionId){
+    var configs=window.FIELD_MINIGAME_CONFIGS||(window.FIELD_MINIGAME_CONFIGS={});
+    configs[missionId]=configs[missionId]||{};
+    configs[missionId].start=configs[missionId].start||{};
+    return configs[missionId].start;
+  }
+
+  Object.assign(ensureFieldMiniStart("M-001"),{
+    doyun_joint: { key: "doyun_joint_assault", type: "sample", followupType: "doyun_assault" }
+  });
+  Object.assign(ensureFieldMiniStart("M-002"),{
+    sejin_decoy: { key: "sejin_decoy_signal", type: "signal" }
+  });
+  Object.assign(ensureFieldMiniStart("M-004"),{
+    jaehyuk_tech: { key: "jaehyuk_precision_scan", type: "scan" }
+  });
+  Object.assign(ensureFieldMiniStart("M-005"),{
+    haeun_intel: { key: "haeun_data_sort", type: "evidence" }
+  });
+  Object.assign(ensureFieldMiniStart("M-006"),{
+    sejin_field: { key: "sejin_spore_sample", type: "sample" }
+  });
+
   Object.assign(window.FIELD_MINIGAME_REWARDS||(window.FIELD_MINIGAME_REWARDS={}),{
+    "M-001": {
+      great: { result: { t: 1, o: 1 } },
+      success: { result: { t: 1 } },
+      partial: { result: { o: 1 } },
+      fail: { result: { r: -1 } }
+    },
     "M-003": {
       great: { result: { r: 1, o: 1 } },
       success: { result: { o: 1 } },
       partial: { result: { t: 1 } },
       fail: { result: { o: -1 } }
+    },
+    "M-004": {
+      great: { result: { o: 1, t: 1 } },
+      success: { result: { o: 1 } },
+      partial: { result: { t: 1 } },
+      fail: { result: { o: -1 } }
+    },
+    "M-005": {
+      great: { result: { c: 1, t: 1 } },
+      success: { result: { c: 1 } },
+      partial: { result: { t: 1 } },
+      fail: { result: { o: -1 } }
+    },
+    "M-006": {
+      great: { result: { t: 1, o: 1 } },
+      success: { result: { t: 1 } },
+      partial: { result: { r: -1 } },
+      fail: { result: { r: -1, t: -1 } }
     },
     "MI-02": {
       great: { result: { o: 1, t: 1 } },
@@ -130,6 +177,117 @@
           ko: { textSuffix: "[잠복 반응 스크리닝: 실패]\n정상 반응과 잠복 징후를 갈라내지 못한 채 시간이 흐른다.\n현장 판단은 이어지지만, 대기실 전체가 더 예민해진 상태다.", endLabel: "[ 기지 귀환 — 현장 선별 실패 ]" },
           en: { textSuffix: "[Latent Screening: Failure]\nTime burns away before normal response and latent exposure can be separated.\nThe operation continues, but the whole staging room becomes more brittle.", endLabel: "[ Return to Base — Screening Failed ]" }
         }
+      }
+    }
+  });
+
+  function ensureFieldMiniNarrative(missionId){
+    var narratives=window.FIELD_MINIGAME_NARRATIVES||(window.FIELD_MINIGAME_NARRATIVES={});
+    narratives[missionId]=narratives[missionId]||{};
+    return narratives[missionId];
+  }
+
+  Object.assign(ensureFieldMiniNarrative("M-001"),{
+    doyun_joint: {
+      great: {
+        ko: { textSuffix: "[양동 회수 판정: 대성공]\n강도윤의 교란선과 중심부 진입 타이밍이 정확히 맞물린다.\n오염원 핵심부가 노출된 짧은 순간, 표본 확보와 확산 억제가 동시에 끝난다.", endLabel: "[ 기지 귀환 — 합동 작전 완전 성공 ]" },
+        en: { textSuffix: "[Diversion Recovery: Great Success]\nDo-yun's diversion and the center entry line lock into the same window.\nThe core is exposed just long enough for both sample recovery and spread suppression.", endLabel: "[ Return to Base — Joint Operation Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[양동 회수 판정: 성공]\n교란선이 유지되는 동안 중심부 접근이 가능해진다.\n작전은 깔끔하게 닫혔고, 현장 우위도 남았다.", endLabel: "[ 기지 귀환 — 합동 작전 성공 ]" },
+        en: { textSuffix: "[Diversion Recovery: Success]\nThe center can be reached while the diversion line holds.\nThe operation closes cleanly and leaves a field advantage behind.", endLabel: "[ Return to Base — Joint Operation Successful ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[양동 회수 판정: 부분 성공]\n진입로는 열렸지만 소각선 일부가 흔들린다.\n핵심부는 확인했으나, 후속 정리에는 추가 시간이 필요하다.", endLabel: "[ 기지 귀환 — 핵심부 확인 / 정리 필요 ]" },
+        en: { textSuffix: "[Diversion Recovery: Partial Success]\nThe entry route opens, but part of the burn line wavers.\nThe core is confirmed, though cleanup will need more time.", endLabel: "[ Return to Base — Core Confirmed / Cleanup Needed ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[양동 회수 판정: 실패]\n교란선이 늦게 물리며 중심부 접근이 거칠어진다.\n작전은 끝났지만 장비와 체력 손실이 남는다.", endLabel: "[ 기지 귀환 — 합동 작전 불안정 ]" },
+        en: { textSuffix: "[Diversion Recovery: Failure]\nThe diversion line slips late and the center approach turns rough.\nThe operation ends, but gear and stamina are spent.", endLabel: "[ Return to Base — Joint Operation Unstable ]" }
+      }
+    }
+  });
+
+  Object.assign(ensureFieldMiniNarrative("M-002"),{
+    sejin_decoy: {
+      great: {
+        ko: { textSuffix: "[음성 디코이 정렬: 대성공]\n윤세진의 패턴 조율이 실제 목소리와 거의 구분되지 않는다.\nSPEC-011은 경계하지 못한 채 포획선 안으로 들어온다.", endLabel: "[ 기지 귀환 — 디코이 포획 완전 성공 ]" },
+        en: { textSuffix: "[Voice Decoy Alignment: Great Success]\nSe-jin's pattern work becomes almost indistinguishable from a real voice.\nSPEC-011 enters the capture line before it can guard itself.", endLabel: "[ Return to Base — Decoy Capture Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[음성 디코이 정렬: 성공]\n디코이가 충분히 안정되며 대상을 유인한다.\n포획은 성공했고, 잔향 데이터도 남았다.", endLabel: "[ 기지 귀환 — 디코이 포획 성공 ]" },
+        en: { textSuffix: "[Voice Decoy Alignment: Success]\nThe decoy stabilizes well enough to draw the target out.\nCapture succeeds and acoustic residue remains for analysis.", endLabel: "[ Return to Base — Decoy Capture Successful ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[음성 디코이 정렬: 부분 성공]\n유인은 되었지만 파형 일부가 흔들린다.\n대상은 포획됐으나 잔향 데이터의 신뢰도는 낮다.", endLabel: "[ 기지 귀환 — 포획 / 파형 불안정 ]" },
+        en: { textSuffix: "[Voice Decoy Alignment: Partial Success]\nThe lure works, but part of the waveform slips.\nThe target is captured, though the residue data is less reliable.", endLabel: "[ Return to Base — Captured / Waveform Unstable ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[음성 디코이 정렬: 실패]\n디코이가 목표 주파수를 벗어나며 대상이 경계한다.\n포획은 강행되지만 현장팀이 더 깊이 들어가야 했다.", endLabel: "[ 기지 귀환 — 디코이 불안정 ]" },
+        en: { textSuffix: "[Voice Decoy Alignment: Failure]\nThe decoy drifts away from the target frequency and the specimen becomes wary.\nCapture continues, but the field team has to push deeper.", endLabel: "[ Return to Base — Decoy Unstable ]" }
+      }
+    }
+  });
+
+  Object.assign(ensureFieldMiniNarrative("M-004"),{
+    jaehyuk_tech: {
+      great: {
+        ko: { textSuffix: "[정밀 스캔: 대성공]\n임재혁의 스캔망이 건물 내부의 이동선을 층별로 분리한다.\n진입팀은 거의 손상 없이 격리 지점을 차례로 닫는다.", endLabel: "[ 기지 귀환 — 정밀 격리 완료 ]" },
+        en: { textSuffix: "[Precision Scan: Great Success]\nJae-hyuk's scan net separates the interior routes by floor.\nThe entry team closes each isolation point with almost no damage.", endLabel: "[ Return to Base — Precision Isolation Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[정밀 스캔: 성공]\n주요 이동선이 드러나며 격리 순서가 잡힌다.\n건물 손상은 제한적이고, 현장팀의 부담도 낮아진다.", endLabel: "[ 기지 귀환 — 정밀 격리 성공 ]" },
+        en: { textSuffix: "[Precision Scan: Success]\nThe main movement lines resolve and the isolation order becomes clear.\nStructural damage stays limited and field strain drops.", endLabel: "[ Return to Base — Precision Isolation Successful ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[정밀 스캔: 부분 성공]\n일부 사각이 남아 진입 순서를 즉석에서 조정한다.\n격리는 성공했지만 현장 판단 의존도가 높았다.", endLabel: "[ 기지 귀환 — 격리 / 스캔 사각 존재 ]" },
+        en: { textSuffix: "[Precision Scan: Partial Success]\nA few blind spots remain and the entry order has to be adjusted on site.\nIsolation succeeds, but it depends heavily on field calls.", endLabel: "[ Return to Base — Isolated / Scan Blind Spots ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[정밀 스캔: 실패]\n열상 잡음이 개체 위치를 흐린다.\n격리는 끝났지만 장비 재점검과 추가 확인이 필요하다.", endLabel: "[ 기지 귀환 — 스캔 불량 ]" },
+        en: { textSuffix: "[Precision Scan: Failure]\nThermal noise blurs the specimen positions.\nIsolation ends, but gear review and another confirmation pass are needed.", endLabel: "[ Return to Base — Scan Degraded ]" }
+      }
+    }
+  });
+
+  Object.assign(ensureFieldMiniNarrative("M-005"),{
+    haeun_intel: {
+      great: {
+        ko: { textSuffix: "[데이터 선별: 대성공]\n서하은이 꺼낸 비공식 자료에서 지휘 신호의 핵심 패턴만 선명하게 남는다.\n교란파는 군체의 명령선을 정확히 끊는다.", endLabel: "[ 기지 귀환 — 군체 신호 차단 완료 ]" },
+        en: { textSuffix: "[Data Sort: Great Success]\nThe unofficial data Hae-eun surfaced leaves only the core command pattern behind.\nThe interference pulse cuts the swarm order line cleanly.", endLabel: "[ Return to Base — Swarm Signal Cut ]" }
+      },
+      success: {
+        ko: { textSuffix: "[데이터 선별: 성공]\n약점 주파수가 특정되며 교란값이 안정된다.\n군체 대형은 무너지고 현장 충돌은 피했다.", endLabel: "[ 기지 귀환 — 군체 교란 성공 ]" },
+        en: { textSuffix: "[Data Sort: Success]\nThe weakness frequency is identified and the interference value stabilizes.\nThe swarm formation breaks without a direct clash.", endLabel: "[ Return to Base — Swarm Disrupted ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[데이터 선별: 부분 성공]\n핵심 주파수는 잡았지만 보조 패턴이 남는다.\n군체는 흩어졌으나 일부 개체의 재집결 가능성이 있다.", endLabel: "[ 기지 귀환 — 군체 분산 / 재집결 감시 ]" },
+        en: { textSuffix: "[Data Sort: Partial Success]\nThe core frequency is caught, but secondary patterns remain.\nThe swarm scatters, though some units may regroup.", endLabel: "[ Return to Base — Swarm Scattered / Monitor Regrouping ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[데이터 선별: 실패]\nORACLE 자료의 잡음이 약점값을 흐린다.\n군체는 물러났지만, 왜 이 자료가 숨겨졌는지는 더 불분명해졌다.", endLabel: "[ 기지 귀환 — 데이터 혼선 ]" },
+        en: { textSuffix: "[Data Sort: Failure]\nNoise in the ORACLE file blurs the weakness value.\nThe swarm withdraws, but why the file was hidden becomes less clear.", endLabel: "[ Return to Base — Data Contaminated ]" }
+      }
+    }
+  });
+
+  Object.assign(ensureFieldMiniNarrative("M-006"),{
+    sejin_field: {
+      great: {
+        ko: { textSuffix: "[현장 샘플 회수: 대성공]\n윤세진이 포자 활성 구간을 정확히 붙잡는다.\nUV-C 억제값과 살아 있는 샘플이 동시에 확보된다.", endLabel: "[ 기지 귀환 — 억제값 및 샘플 확보 ]" },
+        en: { textSuffix: "[Field Sample Recovery: Great Success]\nSe-jin locks onto the active spore window exactly.\nThe UV-C suppression value and a live sample are secured together.", endLabel: "[ Return to Base — Suppression Value + Sample Secured ]" }
+      },
+      success: {
+        ko: { textSuffix: "[현장 샘플 회수: 성공]\n포자 반응이 안정 구간 안에 들어온다.\n억제법은 확인됐고, 연구실에서 재현 가능한 데이터도 남았다.", endLabel: "[ 기지 귀환 — 포자 억제법 확인 ]" },
+        en: { textSuffix: "[Field Sample Recovery: Success]\nThe spore response settles inside the stable window.\nThe suppression method is confirmed with reproducible lab data.", endLabel: "[ Return to Base — Spore Suppression Confirmed ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[현장 샘플 회수: 부분 성공]\n억제 반응은 확인했지만 샘플 일부가 손상된다.\n공식 절차로 올리기 전 추가 실험이 필요하다.", endLabel: "[ 기지 귀환 — 억제 반응 확인 / 샘플 손상 ]" },
+        en: { textSuffix: "[Field Sample Recovery: Partial Success]\nThe suppression response is confirmed, but part of the sample is damaged.\nMore testing is needed before it can become protocol.", endLabel: "[ Return to Base — Response Confirmed / Sample Damaged ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[현장 샘플 회수: 실패]\n포자 반응이 회수장 밖으로 튄다.\n억제법의 방향은 보였지만, 윤세진의 장비와 현장팀 모두 부담을 떠안는다.", endLabel: "[ 기지 귀환 — 회수 실패 / 억제값 불완전 ]" },
+        en: { textSuffix: "[Field Sample Recovery: Failure]\nThe spore response jumps outside the recovery field.\nThe suppression direction is visible, but the gear and field team both pay for it.", endLabel: "[ Return to Base — Recovery Failed / Value Incomplete ]" }
       }
     }
   });
@@ -340,16 +498,40 @@
 
   function applyTrustAssistFx(base, meta, side){
     var out={c:base.c||0,r:base.r||0,t:base.t||0,o:base.o||0};
-    if(!meta||!meta.trustAssist||meta.trustAssist.char!=='doyun')return out;
-    if(side==='left')out.t+=1;
-    else out.r+=1;
+    if(!meta||!meta.trustAssist)return out;
+    var ch=meta.trustAssist.char;
+    if(ch==='doyun'){
+      if(side==='left')out.t+=1;
+      else out.r+=1;
+    }else if(ch==='sejin'){
+      if(side==='left')out.o+=1;
+      else out.t+=1;
+    }else if(ch==='jaehyuk'){
+      if(side==='left')out.o+=1;
+      else out.c+=1;
+    }else if(ch==='haeun'){
+      if(side==='left')out.t+=1;
+      else out.c+=1;
+    }
     return out;
   }
 
   function trustAssistText(locale, meta){
-    if(!meta||!meta.trustAssist||meta.trustAssist.char!=='doyun')return '';
-    if(locale==='en')return 'Do-yun converts the field trust route into cleaner follow-up rewards.';
-    return '강도윤이 신뢰 루트의 현장 우위를 후속 보상으로 전환한다.';
+    if(!meta||!meta.trustAssist)return '';
+    var ch=meta.trustAssist.char;
+    var ko={
+      doyun:'강도윤이 신뢰 루트의 현장 우위를 후속 보상으로 전환한다.',
+      sejin:'윤세진이 신뢰 루트의 분석값을 후속 판단에 반영한다.',
+      jaehyuk:'임재혁이 신뢰 루트의 기술 데이터를 후속 조치에 연결한다.',
+      haeun:'서하은이 신뢰 루트에서 확보한 비공식 단서를 후속 판단에 정리한다.'
+    };
+    var en={
+      doyun:'Do-yun converts the field trust route into cleaner follow-up rewards.',
+      sejin:'Se-jin carries the trust-route analysis into the follow-up decision.',
+      jaehyuk:'Jae-hyuk turns the trust-route technical data into a follow-up option.',
+      haeun:'Hae-eun organizes the unofficial trust-route clue for the follow-up call.'
+    };
+    return (locale==='en'?en:ko)[ch]||'';
   }
 
   window.createFieldMiniGameFollowupCard = function(meta){

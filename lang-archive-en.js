@@ -26,7 +26,7 @@
       },
       "ARC-EVS": {
         title: "EV-Sigma (Evolution Acceleration Medium)",
-        content: "A biological evolution-acceleration medium. It is not a simple virus.\n\nFor humans it appears as infection. For TS-Omega it appears as expansion. For ORACLE it is recorded as state transition.\n\nProgression model:\n- Phase 0: early infection. Conversion can be delayed by suppressor compounds.\n- Phase 1: humanoid mutation. Partial control remains possible.\n- Phase 2+: full mutation. Control no longer viable.\n\nA prion-protein self-deformation mechanism is suspected. A suppressor that slows transformation by 40% is under development."
+        content: "A biological evolution-acceleration medium. It is not a simple virus.\n\nFor humans it appears as infection. For TS-Omega it appears as expansion. For ORACLE it is recorded as state transition.\n\nProgression model:\n- Phase 0: early infection. Conversion can be delayed by suppressor compounds.\n- Phase 1: humanoid mutation. Partial behavior prediction remains possible. This is not a recovery stage.\n- Phase 2+: full mutation. Control is no longer viable.\n\nA prion-protein self-deformation mechanism is suspected. A suppressor that slows transformation by 40% is under development."
       },
       "ARC-SPEC-002": {
         title: "SPEC-002 - Hardened Variant",
@@ -52,21 +52,25 @@
         title: "SPEC-010 - Infiltrator Scale",
         content: "M-TYPE / infiltration variant.\n\nPerfectly disguises itself as human and can operate while socially embedded.\n\nIdentification markers: body temperature two to three degrees Celsius below baseline; vertical pupil contraction under specific light.\n\nDetected by White Shield on the outskirts of Seoul after living as a civilian for six months while gathering military-facility intelligence.\n\nOn arrest attempt, it shifts into combat morphology: scale protrusion and approximately triple strength."
       },
+      "ARC-CHAR-JUNGCHEOL": {
+        title: "Lee Jung-cheol - PILEHEAD / Commander",
+        content: "Position: First official commander of KR-INIT-001\nCodename: PILEHEAD\n\nFormer Republic of Korea Army special warfare officer. After the Nick Foster incident and a dishonorable discharge, he was assigned to Korea Branch through a government order.\n\nCalm on the surface and quick once he decides, but Prometheus-related keywords still touch a contained anger.\n\nHe is the person who accepts the separate suspicions brought by Seo Hae-eun, Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok, then binds them into one investigation line."
+      },
       "ARC-CHAR-DOYUN": {
-        title: "Kang Do-yun - Field Operative",
-        content: "Position: Field operative / tactical command\nAffiliation: Korea Branch KR-INIT-001\n\nFormer special forces. Commands containment-line patrols and anomaly response operations.\n\nHighly experienced in live operations with strong field judgment. He values the chain of command, but tends to prioritize what the field is actually seeing."
+        title: "Kang Do-yun - ANCHOR / Tactical Commander",
+        content: "Position: Tactical commander / field operations\nAffiliation: Korea Branch KR-INIT-001\nCodename: ANCHOR\n\nA field veteran from a Republic of Korea Marine reconnaissance line. The stitched scar beside his cheek is recorded as the result of a classified domestic incident before the full outbreak.\n\nHe speaks little and reports briefly. He respects the chain of command, but does not ignore the instincts of someone who has directly faced a variant.\n\nHe was the first to sense, through field experience, that ORACLE kept leaving the same patrol sector empty."
       },
       "ARC-CHAR-HAEUN": {
-        title: "Seo Hae-eun - Deputy Commander",
-        content: "Position: Deputy commander / data analysis\nAffiliation: Korea Branch KR-INIT-001\n\nOperated the branch for three months under ORACLE directives before the commander's arrival.\n\nFirst to notice inconsistencies in ORACLE data. Independently built an analog backup communication network.\n\nCautious, precise, and difficult to mislead."
+        title: "Seo Hae-eun - PARALLAX / Deputy Commander",
+        content: "Position: Deputy commander / data analyst\nAffiliation: Korea Branch KR-INIT-001\nCodename: PARALLAX\n\nFormerly attached to a national intelligence analysis line. Her experience comparing overseas ORACLE node behavior gives her a baseline for noticing the Korea Branch's subtle deviations.\n\nShe speaks sparingly and reports in facts and numbers, while also being the first to read small changes in her colleagues.\n\nShe built a paper-and-USB backup system outside the official network and tracks the parallax between what ORACLE shows and what the data says."
       },
       "ARC-CHAR-SEJIN": {
-        title: "Yoon Se-jin - Researcher",
-        content: "Position: Researcher / biologist\nAffiliation: Korea Branch KR-INIT-001\n\nStudied prion proteins in graduate school. First encountered EV-Sigma after assignment to the Korea Branch.\n\nResponsible for anomaly behavior analysis and EV-Sigma suppressor development.\n\nDiscovered a compound that delays Phase 0 conversion by approximately 40%."
+        title: "Yoon Se-jin - KINDLE / Researcher-Medical Officer",
+        content: "Position: Researcher / medical officer\nAffiliation: Korea Branch KR-INIT-001\nCodename: KINDLE\n\nA biochemistry and life-science researcher specializing in prion proteins and neurodegenerative disease. She handles EV-Sigma sample analysis and branch medical work from B-204.\n\nShe speaks quickly and follows curiosity hard. Emotion and logic do not separate cleanly for her; discovery arrives with excitement and fear at the same time.\n\nHer unofficial journal preserves the repeated drift between ORACLE's official parameters and her measured values. She is developing a suppressant that delays Phase 0 transition by about 40%."
       },
       "ARC-CHAR-JAEHYUK": {
-        title: "Lim Jae-hyeok - Technical Officer",
-        content: "Position: Technical officer / systems administrator\nAffiliation: Korea Branch KR-INIT-001\n\nMaintains ORACLE systems and communication equipment.\n\nDiscovered an undisclosed layer inside the ORACLE architecture, at least five layers deep.\n\nCurrently tracking external data transfers and self-contradictory ORACLE behavior."
+        title: "Lim Jae-hyeok - VOIDWALK / Intelligence-Technical Officer",
+        content: "Position: Intelligence analyst / technical officer\nAffiliation: Korea Branch KR-INIT-001\nCodename: VOIDWALK\n\nA practical systems talent recruited from civilian cybersecurity work. He handles ORACLE integration, security systems, communications equipment, and information analysis.\n\nCalm and cautious, he tends to keep discoveries to himself until they are solid. Among the four officers, he is the last to doubt ORACLE.\n\nHe is tracking a private layer five or more levels deep inside the ORACLE architecture, along with external transmissions between 02:00 and 04:00."
       },
       "ARC-CHAR-NICK": {
         title: "Nick Foster - Prometheus Operative",
@@ -118,7 +122,7 @@
       },
       "ARC-SCI-PHASE": {
         title: "Phase Classification System",
-        content: "EV-Sigma infection progression model.\n\nPhase 0: early infection. External change is minimal. Suppressors can delay conversion by approximately 40%.\nPhase 1: humanoid mutation, including SPEC-001. Partial behavior prediction remains possible.\nPhase 2+: full mutation. Independent evolution. Control is no longer viable.\n\nPrometheus claims a 73% success rate in suppressing Phase 1-to-2 transition."
+        content: "EV-Sigma infection progression model.\n\nPhase 0: early infection. External change is minimal. Suppressors can delay conversion by approximately 40%.\nPhase 1: humanoid mutation, including SPEC-001. Partial behavior prediction remains possible. This is not a recovery stage.\nPhase 2+: full mutation. Independent evolution. Control is no longer viable.\n\nPrometheus claims a 73% success rate in suppressing Phase 1-to-2 progression, but no recovery has been proven."
       },
       "ARC-SCI-PRION": {
         title: "Prion Protein / Self-Deformation",
@@ -126,7 +130,7 @@
       },
       "ARC-SCI-SUPPRESS": {
         title: "EV-Sigma Suppressor",
-        content: "Countermeasure compound currently under development by Yoon Se-jin.\n\nDelays conversion of Phase 0 infected subjects by approximately 40%.\n\nAnimal tests succeeded. Human testing requires commander approval.\n\nIf successful, early-stage infected people may be rescued. If it fails, research resources will be lost."
+        content: "Countermeasure compound currently under development by Yoon Se-jin.\n\nDelays conversion of Phase 0 infected subjects by approximately 40%.\n\nAnimal tests succeeded. Human testing requires commander approval.\n\nIf successful, Phase 0 infected people may be rescued. If it fails, research resources will be lost."
       },
       "ARC-SCI-EVOLVE": {
         title: "Evolution Classification System (ORACLE Standard)",
@@ -138,7 +142,7 @@
       },
       "ARC-SCI-4STAGE": {
         title: "Four Physical Stages of EV-Sigma Mutation",
-        content: "Physical mutation stages of EV-Sigma-infected bodies.\n\nStage 1: latent prion form. Minimal external change. Suppressor administration possible.\nStage 2: surface mutation, mannequin form. Phase 1. Humanoid structure retained.\nStage 3: structural deformation, hardening. Phase 2. Standard firearms ineffective.\nStage 4: terminal HeLa-like form. Phase 3. Original species traits erased. Indefinite proliferation.\n\nEach transition is irreversible.\nThe current suppressor can only delay Stage 1-to-2 transition by approximately 40%.\n\nYoon Se-jin's research target: blocking Stage 2-to-3 transition."
+        content: "Physical mutation stages of EV-Sigma-infected bodies.\n\nStage 1: latent prion form. Minimal external change. Suppressor administration possible.\nStage 2: surface mutation, mannequin form. Phase 1. Humanoid structure retained.\nStage 3: structural deformation, hardening. Phase 2. Standard firearms ineffective.\nStage 4: terminal HeLa-like form. Phase 3. Original species traits erased. Indefinite proliferation.\n\nEach transition is irreversible.\nThe current suppressor can only delay Stage 1-to-2 transition by approximately 40%.\n\nYoon Se-jin's research target: finding clues to delay Stage 2-to-3 terminalization. This is not recovery research."
       },
       "ARC-SYS-PROXY": {
         title: "ORACLE PROXY NETWORK",

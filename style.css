@@ -118,7 +118,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .evening-contact-portrait{width:50px;height:50px;border-radius:50%;border:1px solid rgba(var(--ui-rgb),.38);display:block;margin:0 auto 7px;object-fit:cover;filter:saturate(.88) contrast(1.04);box-shadow:0 0 0 2px rgba(0,0,0,.22),0 0 12px rgba(var(--ui-rgb),.08)}
 .evening-contact-portrait-empty{background:rgba(var(--ui-rgb),.12)}
 .evening-contact-name{font-size:12px;line-height:1.2;color:var(--ui);font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.evening-contact-role{font-family:'Share Tech Mono',monospace;font-size:8px;line-height:1.2;color:rgba(var(--ui-rgb),.48);margin-top:4px;letter-spacing:.7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.evening-contact-role{font-family:'Share Tech Mono',monospace;font-size:8px;line-height:1.25;color:rgba(var(--ui-rgb),.48);margin-top:4px;letter-spacing:.7px;white-space:normal;overflow:visible;text-overflow:clip}
 .evening-relations{width:100%;max-width:420px;margin:0 auto 2px;border:1px solid rgba(var(--ui-rgb),.18);border-radius:5px;background:linear-gradient(180deg,rgba(var(--ui-rgb),.045),rgba(2,7,8,.88));box-shadow:inset 0 1px 0 rgba(var(--ui-rgb),.06),0 10px 22px rgba(0,0,0,.14);padding:9px;box-sizing:border-box}
 .evening-relations-head{display:flex;align-items:center;justify-content:space-between;padding:0 2px 8px;border-bottom:1px solid rgba(var(--ui-rgb),.08);font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(var(--ui-rgb),.46);letter-spacing:1.8px}
 .evening-relations-head span:last-child{color:rgba(var(--ui-rgb),.5);letter-spacing:1px}
@@ -151,7 +151,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .comm-panel__empty{width:100%;height:100%;background:rgba(var(--ui-rgb),.08)}
 .comm-panel__meta{min-width:0}
 .comm-panel__name{font-size:22px;font-weight:700;color:var(--ui);line-height:1.2;margin-bottom:7px}
-.comm-panel__role{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(var(--ui-rgb),.55);letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.comm-panel__role{font-family:'Share Tech Mono',monospace;font-size:11px;line-height:1.35;color:rgba(var(--ui-rgb),.55);letter-spacing:1px;white-space:normal;overflow:visible;text-overflow:clip}
 .comm-panel__identity{margin-top:12px;padding-top:8px;border-top:1px solid rgba(var(--ui-rgb),.14);font-family:'Share Tech Mono',monospace;color:rgba(var(--ui-rgb),.48)}
 .comm-panel__code{font-size:9px;letter-spacing:1.2px;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .comm-panel__bars{font-size:11px;letter-spacing:2px;line-height:1;color:rgba(var(--ui-rgb),.42);white-space:nowrap;overflow:hidden}

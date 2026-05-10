@@ -65,7 +65,7 @@ var CARDS_ACT4 = [
 
   { id:"CA4-G004", act:[4], once:true, transReq:"A4_GREY", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-G003')>=0 },
-    msg:"윤세진이 연구 노트를 건넵니다.\n\n\"ORACLE에 제출하지 않은 데이터입니다.\"\n\"볼 수 있는 것만 보면, 볼 수 없는 것은 없는 게 됩니다.\"\n\n노트에는 치료제 관련 임상 수치와 — ORACLE이 삭제한 실험 결과가 있습니다.",
+    msg:"윤세진이 연구 노트를 건넵니다.\n\n\"ORACLE에 제출하지 않은 데이터입니다.\"\n\"볼 수 있는 것만 보면, 볼 수 없는 것은 없는 게 됩니다.\"\n\n노트에는 Phase 0 억제제 관련 임상 수치와 — ORACLE이 삭제한 실험 결과가 있습니다.",
     left:{ label:"노트를 받아 읽는다", fx:{c:0,r:0,t:2,o:-2}, g:-3 },
     right:{ label:"ORACLE에 제출하게 한다", fx:{c:0,r:0,t:-2,o:2}, g:2 } },
 
@@ -106,7 +106,7 @@ var CARDS_ACT4 = [
 
   { id:"CA4-R003", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R002')>=0||logs.indexOf('ONCE-CA4-R002B')>=0 },
-    msg:"윤세진이 독립 연구 데이터를 정리했습니다.\n\n\"어디에 있어도 연구는 계속할 수 있습니다.\"\n\"치료제 개발에 필요한 데이터는 전부 여기 있어요.\"\n\nORACLE에 보고되지 않은 실험 기록입니다.",
+    msg:"윤세진이 독립 연구 데이터를 정리했습니다.\n\n\"어디에 있어도 연구는 계속할 수 있습니다.\"\n\"Phase 0 억제제와 전환 지연 연구에 필요한 데이터는 전부 여기 있어요.\"\n\nORACLE에 보고되지 않은 실험 기록입니다.",
     left:{ label:"가져가라", fx:{c:0,r:-1,t:2,o:-2}, g:-4 },
     right:{ label:"두고 가야 한다", fx:{c:0,r:0,t:-1,o:0}, g:-1 } },
 

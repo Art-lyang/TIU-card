@@ -212,6 +212,7 @@ window.TS_I18N.mergeUI('ko', {
     title:'─── SESSION #{session} TERMINATED ───',
     reportSection:'── ORACLE 최종 보고 ──',
     duration:'운영 기간: {days}일',
+    resultDay:'발생 DAY: {day}',
     stats:'봉쇄: {c} | 자원: {r} | 신뢰: {t} | 평가: {o}',
     restart:'[ 세션 재개시 — ACT 1 ]',
     ngPlus:'[ NEW GAME+ — 강화 시작 ]',

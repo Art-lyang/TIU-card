@@ -131,12 +131,14 @@ function FieldMission(p){
   }
 
   function getTrustAssist(choice){
-    if(!choice||!choice.trustReq||!choice.trustReq.doyun)return null;
-    return { char:'doyun', source:'trust_route', rankBoost:1 };
+    if(!choice||!choice.trustReq)return null;
+    var keys=Object.keys(choice.trustReq);
+    if(!keys.length)return null;
+    return { char:keys[0], source:'trust_route', rankBoost:1 };
   }
 
   function boostRank(rank,assist){
-    if(!assist||assist.char!=='doyun')return rank;
+    if(!assist||!assist.rankBoost)return rank;
     if(rank==='partial')return 'success';
     if(rank==='success')return 'great';
     return rank;
@@ -153,8 +155,8 @@ function FieldMission(p){
       nodeId: nextNodeId,
       rank: finalRank,
       originalRank: rank,
-      type: activeMiniGame?activeMiniGame.type:null,
-      key: activeMiniGame?activeMiniGame.key:null,
+      type: activeMiniGame?(activeMiniGame.followupType||activeMiniGame.type):null,
+      key: activeMiniGame?(activeMiniGame.followupKey||activeMiniGame.key):null,
       trustAssist: assist
     }});
     if(reward)setMissionBonus(reward);
