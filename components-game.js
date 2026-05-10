@@ -500,7 +500,7 @@ function CardC(p){
     }
     return tags.length?tags:null;
   };
-  var showFxHints=card.showFxHint!==false;
+  var showFxHints=card.showFxHint===true;
   var leftFx=showFxHints?fxHint(card.left.fx):null,rightFx=showFxHints?fxHint(card.right.fx):null;
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   var cueClass=(choiceCue==='left'?' is-cue-left':choiceCue==='right'?' is-cue-right':'')+(chosen==='left'?' is-commit-left':chosen==='right'?' is-commit-right':'');

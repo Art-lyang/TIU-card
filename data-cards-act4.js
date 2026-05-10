@@ -43,7 +43,11 @@ var CARDS_ACT4 = [
   // ══════════════════════════════════════════════════════
 
   { id:"CA4-G001", act:[4], once:true, transReq:"A4_GREY", priority:"상",
-    msg:"당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤: \"지휘관님은 무언가를 보신 거 같습니다. 뭔가요?\"",
+    msg:function(s,g,logs){
+      var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]);
+      if(liveLogs.indexOf('LOG-075')>=0)return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤이 남긴 빈자리는 회의실 한쪽에 그대로 남아 있습니다.\n\n임재혁이 조용히 묻습니다. \"지휘관님은 무언가를 보신 거죠. 뭔가요?\"";
+      return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤: \"지휘관님은 무언가를 보신 거 같습니다. 뭔가요?\"";
+    },
     left:{ label:"\"아직 모르겠다\"", fx:{c:0,r:0,t:2,o:-1}, g:-2 },
     right:{ label:"\"별거 아니야\"", fx:{c:0,r:0,t:-1,o:1}, g:1 } },
 

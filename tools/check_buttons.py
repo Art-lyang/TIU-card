@@ -94,6 +94,12 @@ issues = {
     'intentionally_locked': [],  # req=>false 인 잠금 카드
 }
 
+SPECIAL_NO_EFFECT_CARDS = {
+    # Handled by explicit runtime branches instead of side fx/g/log payloads.
+    'CA-OBS-PROTO',
+    'CH-007-5',
+}
+
 total_cards = 0
 NON_CARD_PREFIXES = ('LOG-', 'EV-', 'SCENE-', 'FAC-', 'CMB-')
 for f in CARD_FILES:
@@ -134,7 +140,7 @@ for f in CARD_FILES:
                 issues['double_escape'].append({'card': c, 'side': side, 'label': lbl})
 
         # 6) 양쪽 다 무효
-        if not has_fx_or_log(body, 'left') and not has_fx_or_log(body, 'right'):
+        if c['id'] not in SPECIAL_NO_EFFECT_CARDS and not has_fx_or_log(body, 'left') and not has_fx_or_log(body, 'right'):
             issues['both_sides_no_effect'].append(c)
 
 def section(t): print('\n' + '='*62 + '\n ' + t + '\n' + '='*62)
