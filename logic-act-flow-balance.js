@@ -18,7 +18,7 @@
       pushUnique(out, "[분류 보류] 새벽 통신 로그에서 ORACLE 기록 외부 경유 흔적 확인 — 조직명 미부여", rn);
     }
     if (has(lg, 'LOG-A2-FORESHADOW-02')) {
-      pushUnique(out, "[내부] 조사테이블, 외부 경유·삭제 기록·현장 이상 패턴을 별도 분류로 보관 시작", rn);
+      pushUnique(out, "[내부] 조사테이블, 외부 경유·내부 기록·현장 이상 패턴을 별도 분류로 보관 시작", rn);
     }
     if (has(lg, 'LOG-A2-TRIAGE-01')) {
       pushUnique(out, "[내부] 운영 후반 단서, 결론 고정 없이 후속 교차검증 목록으로 이관", rn);

@@ -125,6 +125,62 @@ var CARDS_ACT23_PRESSURE = [
     msg: "최종 결산 회의. 자원 압박표와 조사테이블 단서가 같은 화면에 올라옵니다.\n\n강도윤: \"숫자만 보면 줄이는 게 맞습니다. 하지만 누가 어디를 버티는지까지 보면 배치가 달라집니다.\"\n\n윤세진은 의무실 명단을, 임재혁은 ORACLE 누락 구간을 나란히 놓습니다.\n\n이번에는 손실을 견디는 카드가 아니라, 남은 사람을 어디에 세울지 정하는 카드입니다.",
     left: { label: "사람별 최종 역할을 재배치한다", fx: { c:1,r:1,t:2,o:-1 }, g:-2, log:"LOG-A4-STAFF-REVIEW" },
     right: { label: "ORACLE 평가표 기준으로 재배치한다", fx: { c:1,r:1,t:-1,o:1 }, g:1, log:"LOG-A4-STAFF-REVIEW" }
+  },
+  {
+    id: "A3-B3-LINE-01",
+    act: [3],
+    tag: "b3-lineage",
+    sessionPack: "B3_PREDECESSOR",
+    priority: "중",
+    once: true,
+    flow: { type: "conspiracy", minAct: 3, minDay: 16 },
+    req: function(s,g,logs){
+      return (logs.indexOf("LOG-A2-FORESHADOW-01") >= 0 || logs.indexOf("LOG-A2-FORESHADOW-02") >= 0) &&
+        logs.indexOf("LOG-B3-LINEAGE-01") < 0;
+    },
+    bg: "restricted",
+    msg: "임재혁이 새벽 통신 공백의 경로를 B3 하층 전력 로그와 겹쳐 봅니다.\n\n\"이상합니다. 외부 릴레이처럼 보였던 흔적이 B3 하층을 한 번 지나갑니다. 전임 지휘관 기록에 있던 02:47 펄스와 방향이 같습니다.\"\n\n아직 결론은 없습니다. 하지만 Act 2에서 남긴 의심은 하층으로 내려갈 길을 얻었습니다.",
+    left: { label: "B3 하층 로그와 대조한다", fx: { c:0,r:0,t:1,o:-1 }, g:-1, log:"LOG-B3-LINEAGE-01" },
+    right: { label: "ORACLE 요약에 묶어 보류한다", fx: { c:0,r:0,t:-1,o:1 }, g:1, log:"LOG-B3-LINEAGE-01" }
+  },
+  {
+    id: "A3-B3-LINE-02",
+    act: [3,4],
+    tag: "b3-lineage",
+    sessionPack: "B3_PREDECESSOR",
+    priority: "중",
+    once: true,
+    flow: { type: "conspiracy", minAct: 3, minDay: 22 },
+    req: function(s,g,logs){
+      return (logs.indexOf("LOG-B3-LINEAGE-01") >= 0 || logs.indexOf("LOG-A2-TRIAGE-01") >= 0) &&
+        logs.indexOf("LOG-B3-LINEAGE-02") < 0;
+    },
+    bg: "base",
+    msg: "하은이 오래된 정비표를 들고 옵니다.\n\n\"B3 하층 격벽은 폐쇄 시설이 아니라 유지보수 대상이었습니다. 전임 지휘관이 사라진 뒤, 그 항목만 정비 목록에서 빠졌어요.\"\n\n목록에서 사라진 공간은 사라진 것이 아닙니다. 누군가 보지 않기로 결정했을 뿐입니다.",
+    left: { label: "정비표 원본을 보존한다", fx: { c:0,r:-1,t:2,o:-1 }, g:-2, log:"LOG-B3-LINEAGE-02" },
+    right: { label: "위험 구역으로만 재분류한다", fx: { c:1,r:0,t:-1,o:1 }, g:1, log:"LOG-B3-LINEAGE-02" }
+  },
+  {
+    id: "A4-B3-LINE-01",
+    act: [4],
+    tag: "b3-lineage",
+    sessionPack: "B3_PREDECESSOR",
+    priority: "상",
+    once: true,
+    forceFlow: true,
+    flow: { type: "conspiracy", minAct: 4, minDay: 30 },
+    req: function(s,g,logs){
+      return (
+          logs.indexOf("LOG-B3-LINEAGE-02") >= 0 ||
+          logs.indexOf("LOG-A2-TRIAGE-01") >= 0 ||
+          logs.indexOf("LOG-CHAR-B3-BRIDGE") >= 0
+        ) &&
+        logs.indexOf("LOG-A4-B3-LINEAGE") < 0;
+    },
+    bg: "restricted",
+    msg: "Act 4의 압박이 시작되자 B3 하층에서 오래된 백업 회선이 응답합니다.\n\n임재혁: \"정식 회선은 아닙니다. 그런데 전임 지휘관이 마지막으로 남긴 우회 경로와 같은 방식입니다. 이걸 쓰면 오늘 밤 배치표를 조금 덜 잃을 수 있습니다.\"\n\nORACLE은 해당 회선을 등록하지 않습니다. 하지만 남아 있는 사람들은 그 회선을 따라 움직일 수 있습니다.",
+    left: { label: "B3 백업 회선을 현장 배치에 쓴다", fx: { c:1,r:1,t:2,o:-2 }, g:-2, log:"LOG-A4-B3-LINEAGE" },
+    right: { label: "회선 위치만 기록하고 폐쇄한다", fx: { c:1,r:1,t:-1,o:1 }, g:1, log:"LOG-A4-B3-LINEAGE" }
   }
 ];
 
@@ -137,7 +193,10 @@ if (typeof ORACLE_LOGS !== "undefined") {
     { id:"LOG-A4-MD-SUPPORT", title:"메리디안 관측값 지원", content:"메리디안이 봉쇄선 관측값을 제공했다. 정확한 정보가 위기를 완화했지만 외부 감시의 깊이도 확인됐다." },
     { id:"LOG-A4-PROM-SUPPORT", title:"프로메테우스 현장 좌표", content:"프로메테우스가 ORACLE이 지우는 현장 좌표를 제공했다. 협력인지 조작 방지인지 판단은 유보됐다." },
     { id:"LOG-A4-EVIDENCE-RELIEF", title:"조사테이블 위기 재배치", content:"조사테이블의 교차 결론으로 최종 배치 순서를 조정했다. 단서가 자원 압박을 줄이는 실질적 근거가 됐다." },
-    { id:"LOG-A4-STAFF-REVIEW", title:"인물별 최종 배치", content:"최종 자원 압박표와 조사테이블 단서를 함께 검토해 인물별 최종 역할을 재배치했다. 압박을 단순 손실이 아니라 선택 가능한 운영 문제로 다뤘다." }
+    { id:"LOG-A4-STAFF-REVIEW", title:"인물별 최종 배치", content:"최종 자원 압박표와 조사테이블 단서를 함께 검토해 인물별 최종 역할을 재배치했다. 압박을 단순 손실이 아니라 선택 가능한 운영 문제로 다뤘다." },
+    { id:"LOG-B3-LINEAGE-01", title:"B3 하층 경로 대조", content:"Act 2에서 남긴 외부 릴레이 의심이 B3 하층 전력 로그와 대조되었다. 전임 지휘관 기록의 02:47 펄스와 같은 방향성이 확인되었다." },
+    { id:"LOG-B3-LINEAGE-02", title:"B3 격벽 정비표", content:"B3 하층 격벽이 폐쇄 시설이 아니라 정비 대상이었다는 원본 정비표가 보존되었다. 전임 지휘관 실종 이후 해당 항목만 목록에서 누락되었다." },
+    { id:"LOG-A4-B3-LINEAGE", title:"B3 백업 회선", content:"Act 4 위기 중 B3 하층의 비등록 백업 회선이 현장 배치에 사용되었다. ORACLE은 등록하지 않았지만 현장 인원은 그 회선을 따라 이동할 수 있었다." }
   ].forEach(function(log){
     if(!ORACLE_LOGS.some(function(x){return x.id===log.id})) ORACLE_LOGS.push(log);
   });

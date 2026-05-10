@@ -220,12 +220,29 @@ function _sessionDeckHasAnyLog(logs, prefixes) {
 
 function _sessionDeckLogFallback(packId, logs) {
   if (packId === "DG_MERIDIAN") return _sessionDeckHasAnyLog(logs, ["LOG-DG", "LOG-MD", "LOG-DV", "LOG-SUPPLY-DG", "LOG-SUPPLY-MD"]);
-  if (packId === "B3_PREDECESSOR") return _sessionDeckHasAnyLog(logs, ["LOG-090", "LOG-091", "LOG-092", "LOG-093", "LOG-CHAR-", "LOG-A2-FORESHADOW", "LOG-A2-TRIAGE"]);
+  if (packId === "B3_PREDECESSOR") return _sessionDeckHasAnyLog(logs, ["LOG-090", "LOG-091", "LOG-092", "LOG-093", "LOG-CHAR-", "LOG-A2-FORESHADOW", "LOG-A2-TRIAGE", "LOG-B3-LINEAGE", "LOG-A4-B3-LINEAGE"]);
   if (packId === "PROMETHEUS_TENSION") return _sessionDeckHasAnyLog(logs, ["LOG-LJC-PROM", "LOG-PROM"]);
   if (packId === "UPRISING_INFRA") return _sessionDeckHasAnyLog(logs, ["LOG-UPRISING"]);
   if (packId === "MUTANT_SURGE") return _sessionDeckHasAnyLog(logs, ["LOG-MS-"]);
   if (packId === "GOV_ORACLE_SUSPICION") return _sessionDeckHasAnyLog(logs, ["LOG-GOV-"]);
   return false;
+}
+
+function sessionDeckLineageWeight(card, stats, gi, logs, act, tRoute) {
+  var packId = getCardSessionDeckPack(card);
+  if (!packId || !card) return 1;
+  var currentAct = act || 1;
+  if (currentAct < 3) return 1;
+  if (card.transReq) return 1;
+  var deck = getActiveSessionDeck();
+  var active = !!(deck && deck.packs && deck.packs.indexOf(packId) >= 0);
+  var touched = _sessionDeckLogFallback(packId, logs || []);
+  var weight = 1;
+  if (touched) weight += currentAct >= 4 ? 0.75 : 0.55;
+  else if (active) weight += currentAct >= 4 ? 0.35 : 0.25;
+  if (packId === "B3_PREDECESSOR" && touched) weight += 0.15;
+  if (card.once) weight += 0.1;
+  return Math.max(0.75, Math.min(2.1, weight));
 }
 
 function getEveningSessionDeckPack(chat) {

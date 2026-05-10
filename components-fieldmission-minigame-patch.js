@@ -130,16 +130,32 @@ function FieldMission(p){
     finalizeChoice(choice);
   }
 
+  function getTrustAssist(choice){
+    if(!choice||!choice.trustReq||!choice.trustReq.doyun)return null;
+    return { char:'doyun', source:'trust_route', rankBoost:1 };
+  }
+
+  function boostRank(rank,assist){
+    if(!assist||assist.char!=='doyun')return rank;
+    if(rank==='partial')return 'success';
+    if(rank==='success')return 'great';
+    return rank;
+  }
+
   function handleMiniGameDone(rank){
-    var baseReward=getFieldMiniGameReward(mission.id||p.missionId,rank)||null;
+    var assist=getTrustAssist(pendingChoice);
+    var finalRank=boostRank(rank,assist);
+    var baseReward=getFieldMiniGameReward(mission.id||p.missionId,finalRank)||null;
     var nextNodeId=pendingChoice?pendingChoice.next:null;
-    var narrative=nextNodeId?getFieldMiniGameNarrative(mission.id||p.missionId,nextNodeId,rank):null;
+    var narrative=nextNodeId?getFieldMiniGameNarrative(mission.id||p.missionId,nextNodeId,finalRank):null;
     var reward=Object.assign({},baseReward||{},{ miniGame:{
       missionId: mission.id||p.missionId,
       nodeId: nextNodeId,
-      rank: rank,
+      rank: finalRank,
+      originalRank: rank,
       type: activeMiniGame?activeMiniGame.type:null,
-      key: activeMiniGame?activeMiniGame.key:null
+      key: activeMiniGame?activeMiniGame.key:null,
+      trustAssist: assist
     }});
     if(reward)setMissionBonus(reward);
     setMissionNarrative(narrative?Object.assign({nodeId:nextNodeId},narrative):null);

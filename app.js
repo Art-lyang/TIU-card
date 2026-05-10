@@ -206,10 +206,10 @@ function App(){
     if(newAct===2){tryUnlock('LOG-ACT2');Save.set('ts_act2_reached',true);setAct2Reached(true);}
     if(newAct===3)tryUnlock('LOG-ACT3');
     if(newAct===4)tryUnlock('LOG-ACT4');
-    var penalty=newAct===4
-      ?(route==='A4_COMPLY'?0:route==='A4_GREY'?3:route==='A4_RESIST'?5:7)
-      :(route==='A'?0:route==='B'||route==='C'?2:4)+(newAct===3?3:0);
-    if(penalty>0){var ns={c:clamp(s.c-penalty),r:clamp(s.r-penalty),t:clamp(s.t-penalty),o:clamp(s.o-penalty),day:s.day};setStats(ns)}
+    var statPenalty=newAct===4
+      ?(route==='A4_COMPLY'?0:(route==='A4_GREY'||route==='A4_RESIST')?5:10)
+      :(newAct===3?((route==='A'||route==='B'||route==='C')?5:10):(route==='A'?0:5));
+    if(statPenalty>0){var ns={c:clamp(s.c-statPenalty),r:clamp(s.r-statPenalty),t:clamp(s.t-statPenalty),o:clamp(s.o-statPenalty),day:s.day};setStats(ns)}
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(newAct);
     setPhase('briefing');
   };
@@ -359,15 +359,17 @@ function App(){
   var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return};if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));setTimeout(function(){setToast('')},2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
-    if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-1);ns.r=Math.max(0,ns.r-(act3LoyalRelief?0:1))}
+    if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3LoyalRelief?0:5))}
     if(act===4){
       var loyalRelief=gi>=40||transRoute==='A4_COMPLY';
-      ns.c=Math.max(0,ns.c-2);
-      ns.r=Math.max(0,ns.r-(loyalRelief?1:2));
-      ns.t=Math.max(0,ns.t-(loyalRelief?0:1));
+      ns.c=Math.max(0,ns.c-10);
+      ns.r=Math.max(0,ns.r-(loyalRelief?5:10));
+      ns.t=Math.max(0,ns.t-(loyalRelief?0:5));
     }
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1};
     var nextGi=gi;
+    var rewardTuned=(typeof applyRewardBalanceTuning==='function')?applyRewardBalanceTuning(stats,next,nextGi,r,act):null;
+    if(rewardTuned&&rewardTuned.stats){next=rewardTuned.stats;if(typeof rewardTuned.gi==='number')nextGi=rewardTuned.gi}
     var nextFacility=normalizeFacilityState(facility);
     var completedFacility=false;
     var feDef=null;

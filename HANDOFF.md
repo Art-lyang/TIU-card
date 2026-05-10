@@ -1,9 +1,51 @@
 # TIU-CARD 작업 인수인계 (Handoff)
 
-> **작성일**: 2026-05-06 (문서/QA 기준 갱신)
+> **작성일**: 2026-05-10 (세션 덱 계승/QA 기준 갱신)
 > **작업 브랜치**: `main` (origin/main 동기화 완료)
-> **마지막 BUILD_VER**: `159`
-> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG.md` 2026-05-06 스냅샷
+> **마지막 BUILD_VER**: `178`
+> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG-2026-05-08.md` 2026-05-10 후속 스냅샷
+
+---
+
+## 0-0. 2026-05-10 현재 기준 — 세션 덱 계승 및 Act4 압박 보정
+
+### 현재 기준 수치
+
+| 항목 | 수치 |
+|---|---|
+| 카드 | 544장 / 고유 ID 544 |
+| 체인 | 메인 18 + 사건/후속 10 |
+| 미션 | 15개 |
+| 미니게임 연동 | 9개 임무 |
+| 증거 | 38조각 + 15조합 |
+| 이브닝챗 | 103엔트리, 하루 1명 대화 |
+| 엔딩 | 16종 |
+| 아카이브 | 46종 |
+| 세이브 | 3슬롯 독립 저장/로드 구조 유지 |
+
+### 이번 세션 완료
+
+- Act 2에서 선택/발견한 세션팩이 Act 3~4 후속 카드 가중치에 반영되도록 `sessionDeckLineageWeight`를 추가.
+- 메인 루트 전환 카드(`transReq`)는 세션팩 보정 대상에서 제외해 필수 분기 잠김을 방지.
+- 실제 사용 중인 이브닝챗 렌더 경로에도 `sessionDeckEveningOk` 필터를 적용해 세션팩 대화 노출 기준을 통일.
+- `B3_PREDECESSOR` 후속 풀이 약했던 문제를 보완하기 위해 Act 3~4 전임 지휘관 계승 카드 3장과 대응 로그/영어 오버레이를 추가.
+- Act 4 초반 중립 루트에서 자원이 0 이하로 떨어지는 자동 전략 핫스팟을 줄이기 위해 런타임/시뮬레이터 보정을 day 34까지 확장.
+
+### 검증 결과
+
+- `node tools/validator.js`: 카드 544 / 고유 ID 544 / 이슈 0건.
+- `node tools/i18n-smoke.js`: 통과.
+- `node tools/check_ending_routes.js`: 11/11 통과.
+- `node _workspace/codex/route-integrity-audit.js`: 대상 루트 무결성 통과.
+- `node _workspace/codex/session-deck-affinity-audit.js`: 약한 세션팩 0, 메인 루트 카드 세션팩 누수 0.
+- `python tools/simulator_v3.py 100 all`: comply 서사 98%, rebel 서사 86%, careful 서사 88%, explorer 서사 98%, newbie 서사 69%.
+
+### 남은 관찰 지점
+
+1. explorer/newbie 자동 전략은 Act 4 압박 엔딩 비중이 여전히 높으므로 인간 플레이테스트에서 체감 난도를 확인해야 함.
+2. 이번 작업의 `_workspace/codex/*audit*` 산출물과 백업은 로컬 QA 자료이므로 릴리즈 패키지 기준 파일로 쓰지 않음.
+
+아래 2026-05-06 기록은 변경 이력 보존용이다. 현재 판단 기준은 `README.md`, `-setup/GDD/TIU-GAME-GDD-v11.md`, `qa-report-2026-05-08.md`, `-setup/MD/TIU-ALPHA-CHANGELOG-2026-05-08.md`를 우선한다.
 
 ---
 

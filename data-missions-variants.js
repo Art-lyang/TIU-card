@@ -11,7 +11,8 @@ MISSIONS['M-001'].nodes.start.choices.push({
 MISSIONS['M-001'].nodes['doyun_joint'] = {
   text: "강도윤이 고개를 끄덕인다.\n\n\"지휘관. 제가 서쪽에서 교란합니다. 지휘관은 중심부로.\"\n\n양동 작전. 강도윤이 화염 장비로 서쪽을 소각하며 점액의 주의를 끈다.\n\n당신은 중심부로 접근 — 오염원의 핵심체를 직접 관찰할 수 있다.\n\n윤세진이 원하던 고순도 샘플. 핵심부 조직. 동시에 서쪽의 소각으로 확산이 억제된다.\n\n강도윤이 무전한다.\n\"여기 정리됐습니다. 지휘관 쪽은?\"\n\n\"확보 완료.\"\n\n\"...좋습니다.\"\n\n돌아오는 길에 강도윤이 말합니다.\n\"지휘관을 믿지 않았으면 이 작전은 불가능했습니다.\"\n\n소각과 확보를 동시에. 신뢰가 만든 결과입니다.",
   choices: [{ label: "[ 기지 귀환 — 합동 작전 성공 ]", next: "end",
-    result: { c: 2, r: -1, t: 2, o: 0 }, log: ["LOG-005","LOG-RES-012"] }]
+    result: { c: 2, r: -1, t: 2, o: 0 }, log: ["LOG-005","LOG-RES-012"],
+    miniGame: { missionId: "M-001", nodeId: "doyun_joint", rank: "great", type: "doyun_assault", key: "doyun_joint_assault", trustAssist: { char: "doyun", source: "trust_route", rankBoost: 1 } } }]
 };
 
 // ══ M-002: SPEC-011 — 윤세진 분석 루트 ══

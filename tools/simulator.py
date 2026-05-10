@@ -82,6 +82,14 @@ def parse_bg(body):
     m = re.search(r'\bbg:\s*"([^"]+)"', body)
     return m.group(1) if m else None
 
+def parse_session_pack(body):
+    m = re.search(r'\b(?:sessionPack|deckPack):\s*"([^"]+)"', body)
+    return m.group(1) if m else None
+
+def parse_trans_req(body):
+    m = re.search(r'\btransReq:\s*"([^"]+)"', body)
+    return m.group(1) if m else None
+
 def parse_req_or_cond(body):
     """req / cond 함수 본문을 Python eval 가능한 식으로 변환."""
     m = re.search(r'\b(?:req|cond):\s*function\s*\([^)]*\)\s*\{([^}]*?)\}', body, re.S)
@@ -141,6 +149,8 @@ for f in CARD_FILES:
             'tag': parse_tag(body),
             'once': parse_once(body),
             'bg': parse_bg(body),
+            'sessionPack': parse_session_pack(body),
+            'transReq': parse_trans_req(body),
             'req': parse_req_or_cond(body),
             'left': parse_side(body, 'left'),
             'right': parse_side(body, 'right'),

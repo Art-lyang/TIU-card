@@ -256,9 +256,9 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Activate containment-line power barrier"
       },
       "C-178": {
-        msg: "Yoon Se-jin has analyzed the remains from the night assault.\n\n\"Two different signature classes are confirmed.\"\n\"One is acoustic-based — it imitates human voices.\"\n\"The other is mucosal — capable of dissolving organic matter.\"\n\n\"Which one do you want to track first?\"",
+        msg: "Yoon Se-jin has analyzed the remains from the night assault.\n\n\"Two different signature classes are confirmed.\"\n\"One is acoustic-based — it imitates human voices.\"\n\"The other is slime-based — capable of dissolving organic matter.\"\n\n\"Which one do you want to track first?\"",
         leftLabel: "Track the acoustic specimen (Shell Talker)",
-        rightLabel: "Track the mucosal specimen (Blood Pit)"
+        rightLabel: "Track the slime specimen (Blood Pit)"
       },
       "C-271": {
         msg: "Yoon Se-jin emergency report.\n\n\"I've analyzed the spore-zone survey data.\"\n\"The spore source — SPEC-004, Seed Spreader — has been identified.\"\n\n\"This is not just another mutant. It's a dispersal organism spreading EV-Σ itself.\"\n\"It's the source that creates the others.\"\n\n\"If it was found inside the containment line... that means it already got in.\"",
@@ -605,10 +605,10 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
       "C-162": {
         msg: "Abandoned supplies from a previous unit are scattered along a mountain path near the containment zone.\n\nKang Do-yun: \"Ammo crates, batteries, cold-weather gear... there's a fair amount here we can still use. Recovering it would save resources.\"",
         leftLabel: "Dispatch a recovery team",
-        rightLabel: "Ignore contamination risk"
+        rightLabel: "Ignore it due to contamination risk"
       },
       "C-163": {
-        msg: "Kang Do-yun proposes a revision to the night patrol route.\n\n\"The current route leaves blind spots.\"\n\nIt will require additional manpower.",
+        msg: "Kang Do-yun proposes a revision to the night patrol route.\n\n\"The current route leaves blind spots.\"\n\nHe marks red points on the outer-route map. \"They look minor, but at night they are exactly where people lose sight first.\"\n\nIt will require additional manpower.",
         leftLabel: "Proceed with route revision",
         rightLabel: "Keep current patrol route"
       },
@@ -669,7 +669,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Dispose of some samples"
       },
       "C-175": {
-        msg: "A large-scale mutant activity signal has been detected in the center of the containment zone.\n\nORACLE's long-range sensor array has temporarily stopped responding.\n\nKang Do-yun: \"We can't sit here and trust the sensors alone. I'll go out and confirm it myself.",
+        msg: "A large-scale mutant activity signal has been detected in the center of the containment zone.\n\nORACLE's long-range sensor array has temporarily stopped responding.\n\nKang Do-yun: \"We can't sit here and trust the sensors alone. I'll go out and confirm it myself.\"",
         leftLabel: "Launch reconnaissance",
         rightLabel: "Wait for ORACLE recovery"
       },
@@ -679,42 +679,42 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Remain in command of the branch"
       },
       "C-179": {
-        msg: "The training results for the new agent have been reported.\n\nKang Do-yun: \"Below operational response standards. Marksmanship, communications procedure — all of it is lacking.\"\n\n\"If we send them into the field like this, it's dangerous.",
+        msg: "The training results for the new agent have been reported.\n\nKang Do-yun: \"Below operational response standards. Marksmanship, communications procedure — all of it is lacking.\"\n\n\"If we send them into the field like this, it's dangerous.\"",
         leftLabel: "Order strict retraining",
         rightLabel: "The field is the best training"
       },
       "C-180": {
-        msg: "The newly retrained agent has been deployed on a field mission.\n\nKang Do-yun: \"The training paid off. Reporting now.\"\n\nContact with a mutant occurred during a patrol in Containment Sector 3 — the new agent responded calmly.\n\n\"They moved exactly as trained. It was an excellent mission.",
+        msg: "The newly retrained agent has been deployed on a field mission.\n\nKang Do-yun: \"The training paid off. Reporting now.\"\n\nContact with a mutant occurred during a patrol in Containment Sector 3 — the new agent responded calmly.\n\n\"They moved exactly as trained. It was an excellent mission.\"",
         leftLabel: "Tell them they did well",
         rightLabel: "Leave it in the record only"
       },
       "C-181": {
-        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.",
+        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.\"",
         leftLabel: "The responsibility is mine",
         rightLabel: "Write the report"
       },
       "C-182": {
-        msg: "Night alert.\n\nMutant activity detected within a 500-meter radius of the previous mission-failure site. Estimated to have followed the smell of blood.\n\nKang Do-yun cannot take field command due to injury. Replacement personnel are insufficient.\n\n\"Abnormal vibration detected in Containment Sector 2!",
+        msg: "Night alert.\n\nMutant activity detected within a 500-meter radius of the previous mission-failure site. Estimated to have followed the smell of blood.\n\nKang Do-yun cannot take field command due to injury. Replacement personnel are insufficient.\n\n\"Abnormal vibration detected in Containment Sector 2!\"",
         leftLabel: "Mobilize all remaining personnel",
         rightLabel: "Hold the defensive position"
       },
       "C-183": {
-        msg: "[ORACLE Recommendation]\n\n\"A chain of incidents has occurred due to insufficient training of newly assigned personnel.\nFor future deployments, ORACLE recommends applying the enhanced ORACLE training protocol.\"\n\n\"Compliance rate of 100% is guaranteed. Approve?",
+        msg: "[ORACLE Recommendation]\n\n\"A chain of incidents has occurred due to insufficient training of newly assigned personnel.\nFor future deployments, ORACLE recommends applying the enhanced ORACLE training protocol.\"\n\n\"Compliance rate of 100% is guaranteed. Approve?\"",
         leftLabel: "Approve",
         rightLabel: "Humans will handle training"
       },
       "C-184": {
-        msg: "Emergency report.\n\nTwelve branch personnel are showing symptoms of mass food poisoning.\n\nYoon Se-jin: \"This is the result of accumulated water contamination. The purification system was not functioning properly.\"\n\n\"Immediate repair and decontamination are both required. Both will cost resources... but a choice has to be made.",
+        msg: "Emergency report.\n\nTwelve branch personnel are showing symptoms of mass food poisoning.\n\nYoon Se-jin: \"This is the result of accumulated water contamination. The purification system was not functioning properly.\"\n\n\"Immediate repair and decontamination are both required. Both will cost resources... but a choice has to be made.\"",
         leftLabel: "Replace the full purification system",
         rightLabel: "Emergency repair + medication"
       },
       "C-185": {
-        msg: "Available field personnel have been reduced due to lingering effects from the food-poisoning incident.\n\nKang Do-yun: \"Patrol manpower has been cut in half. Blind spots along the containment line have increased.\"\n\n\"For at least five days, reduced operations are unavoidable.",
+        msg: "Available field personnel have been reduced due to lingering effects from the food-poisoning incident.\n\nKang Do-yun: \"Patrol manpower has been cut in half. Blind spots along the containment line have increased.\"\n\n\"For at least five days, reduced operations are unavoidable.\"",
         leftLabel: "Adjust patrol intervals",
-        rightLabel: "Return lightly injured staff to duty"
+        rightLabel: "Return lightly affected staff to duty"
       },
       "C-186": {
-        msg: "[ORACLE Warning]\n\n\"A power decline caused by failure in branch sanitation management has been detected.\nA reassessment of the commander's infrastructure-management capability has been scheduled.\"\n\n\"If a similar incident occurs again, control will be transferred to ORACLE's automated management system.",
+        msg: "[ORACLE Warning]\n\n\"A decline in operational strength caused by failure in branch sanitation management has been detected.\nA reassessment of the commander's infrastructure-management capability has been scheduled.\"\n\n\"If a similar incident occurs again, control will be transferred to ORACLE's automated management system.\"",
         leftLabel: "Submit improvement plan",
         rightLabel: "Respect field judgment"
       },
@@ -725,7 +725,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
   window.TS_I18N.mergeContent('en', {
     cards: {
     "C-188": {
-        "msg": "The delayed night-patrol revision, Kang Do-yun's injury reports, and ORACLE dependency warnings all return at once in the middle of the night.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe attack is exploiting gaps in our night patrol routes with precision.",
+        "msg": "The risk signals delayed over the past few days return all at once in the middle of the night.\n\nA small gap left in the night patrol table, tired field judgment, and boundary calibration left to ORACLE all overlap in the same direction.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe empty points marked on the map have become the exact assault routes.",
         "leftLabel": "Full combat deployment",
         "rightLabel": "Hold defensive strongpoints"
     },
@@ -755,9 +755,9 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Reduce surveillance coverage"
     },
     "C-194": {
-        "msg": "A sewage-system backflow has occurred inside the branch. Wastewater is rising through the B1 corridor.\n\nLim Jae-hyeok: \"The piping is outdated. It really needs a full replacement. We can hold with emergency treatment for now, but...\"\n\n\"It could turn into a hygiene problem.\"",
+        "msg": "A sewage-system backflow has occurred inside the branch. Wastewater is rising through the B1 corridor.\n\nLim Jae-hyeok: \"The piping is outdated. It really needs a full replacement. We can hold with an emergency patch for now, but...\"\n\n\"It could turn into a hygiene problem.\"",
         "leftLabel": "Replace the full pipe line",
-        "rightLabel": "Hold with emergency treatment"
+        "rightLabel": "Hold with an emergency patch"
     },
     "C-195": {
         "msg": "Medical reserves in the infirmary are nearly exhausted.\n\nYoon Se-jin: \"We're short on painkillers and antibiotics. If casualties occur, response capacity will drop sharply.\"\n\nAny outside resupply request must pass through the ORACLE supply channel.",
@@ -2006,7 +2006,7 @@ window.TS_I18N.mergeContent('en', {
         "reply": "Understood. I'll organize it and send it up."
       }
     },
-    "doyun_2_11-17": {
+    "doyun_2_11-14": {
       "a": {
         "label": "Then we hold the line together.",
         "reply": "...Understood. I'll follow your lead, Commander."
@@ -2016,7 +2016,7 @@ window.TS_I18N.mergeContent('en', {
         "reply": "Understood. I'll prepare an operations plan."
       }
     },
-    "haeun_2_11-17": {
+    "haeun_2_11-14": {
       "a": {
         "label": "Then we verify it together.",
         "reply": "Yes. If you review it with me, the analysis will go faster."
@@ -2026,7 +2026,37 @@ window.TS_I18N.mergeContent('en', {
         "reply": "Understood. I'll keep digging."
       }
     },
-    "sejin_2_11-17": {
+    "haeun_4_32-33": {
+      "a": {
+        "label": "Do it carefully, not quickly.",
+        "reply": "Yes. I will not miss a single fragment."
+      },
+      "b": {
+        "label": "Keep me updated.",
+        "reply": "I will summarize the progress every day."
+      }
+    },
+    "haeun_4_34-35": {
+      "a": {
+        "label": "Dig all the way through.",
+        "reply": "...I will uncover it. All of it."
+      },
+      "b": {
+        "label": "Keep the restored files safe.",
+        "reply": "Yes. They are backed up twice."
+      }
+    },
+    "haeun_4_29-99": {
+      "a": {
+        "label": "Let's uncover the truth together.",
+        "reply": "...Yes. I will stay with this to the end."
+      },
+      "b": {
+        "label": "Don't push yourself too hard.",
+        "reply": "...Thank you. I will be careful."
+      }
+    },
+    "sejin_2_11-14": {
       "a": {
         "label": "Keep the research moving.",
         "reply": "Thank you. I'll tell you the moment I have something solid."
@@ -2036,7 +2066,7 @@ window.TS_I18N.mergeContent('en', {
         "reply": "...Yes. I'll be careful."
       }
     },
-    "jaehyuk_2_11-17": {
+    "jaehyuk_2_11-14": {
       "a": {
         "label": "That's a useful find.",
         "reply": "Thank you. I'll dig deeper."
@@ -2986,8 +3016,8 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Refuse — wait for HQ resupply"
     },
     "DG-03": {
-      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have been in Korea longer than ORACLE. The figure 'two thousand years' is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to draw a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
-      leftLabel: "Accept the line",
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have been in Korea longer than ORACLE. The figure 'two thousand years' is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      leftLabel: "Accept the connection",
       rightLabel: "Recognize only official channels"
     },
     "DG-04": {
@@ -3011,7 +3041,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Defer with conditions"
     },
     "MD-04": {
-      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. We'll make it worth your information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
+      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. It will help our information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
       leftLabel: "Side with DG — help block Meridian",
       rightLabel: "Keep distance from both"
     },
@@ -3251,6 +3281,10 @@ window.TS_I18N.mergeContent('en', {
     }
   },
   oracleLogs: {
+    "LOG-OBSERVER-INTRO": {
+      title: "Unregistered Layer First Identified",
+      content: "[Technical Report - Lim Jae-hyeok]\nUnregistered text output confirmed on the terminal display.\nContent: [TRUST EVALUATION: PASSED] / [OBSERVER NOTE: CONTINUE MONITORING]\n\nAn observation layer is operating inside ORACLE that ORACLE itself does not recognize.\n\nAssessment: possible third-party observer present."
+    },
     "LOG-OBSERVER-01": {
       title: "Observer Process Record",
       content: "[Technical Report - Lim Jae-hyeok]\nA monitoring process operating outside the ORACLE architecture was detected.\n\nORACLE attempts to describe the process as an internal routine, but the access authority and call path do not match.\n\nAssessment: possible external observation layer that ORACLE itself does not recognize."
@@ -3321,7 +3355,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Maintain the ORACLE-designated route"
     },
     "C-322": {
-      msg: "Yoon Se-jin pushes a comparison sheet across the B-204 lab bench.\n\n\"Commander, this is strange. Really.\"\n\nMeasured EV-Sigma values and ORACLE's official parameters keep drifting in the same direction. It is an unofficial observation journal, difficult to put into a formal report.",
+      msg: "Yoon Se-jin pushes a comparison sheet across the B-204 lab bench.\n\n\"Commander, this is strange. Really.\"\n\nMeasured EV-Σ values and ORACLE's official parameters keep drifting in the same direction. It is an unofficial observation journal, difficult to put into a formal report.",
       leftLabel: "Protect the unofficial journal",
       rightLabel: "Recheck against official values"
     },
@@ -3331,7 +3365,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Ask ORACLE for an explanation first"
     },
     "C-324": {
-      msg: "The four reports are combined into a single investigation sheet.\n\nHae-eun's time offset. Do-yun's empty sector. Se-jin's parameter drift. Jae-hyeok's private layer.\n\nThey began from different places, but all four point to a structure ORACLE is not showing you.",
+      msg: "The four reports are combined into a single investigation sheet.\n\nSeo Hae-eun's time offset. Kang Do-yun's empty sector. Yoon Se-jin's parameter drift. Lim Jae-hyeok's private layer.\n\nThey began from different places, but all four point to a structure ORACLE is not showing you.",
       leftLabel: "Integrate the four suspicion axes",
       rightLabel: "Store each report separately"
     },
@@ -3370,7 +3404,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-CHAR-SEJIN-KINDLE": {
       title: "Yoon Se-jin Unofficial Journal: Parameter Drift",
-      content: "Yoon Se-jin preserved a comparison between measured EV-Sigma values and ORACLE's official parameters. The repeated error suggests a bias in the model, not a single bad sample."
+      content: "Yoon Se-jin preserved a comparison between measured EV-Σ values and ORACLE's official parameters. The repeated error suggests a bias in the model, not a single bad sample."
     },
     "LOG-CHAR-JAEHYUK-VOIDWALK": {
       title: "Lim Jae-hyeok Printout: Private Layer",

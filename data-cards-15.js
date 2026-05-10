@@ -49,8 +49,8 @@ var CARDS_EXTERNAL = [
   { id: "C-254", act: [1], priority: "하", bg: "forest",
     cond: function(s,g,logs){ return s.day>=3 },
     msg: "강도윤의 순찰 보고.\n\n\"봉쇄선 동측 500m 지점. 흙에 찍힌 발자국입니다.\"\n\n군화도 아니고 민간 등산화도 아닙니다. 패턴이 의도적으로 지워진 것처럼 불규칙합니다.\n\n\"누군가 여길 지나갔는데, 우리한테 보이지 않으려고 했습니다.\"",
-    left: { label: "정밀 수색 — 3시간", fx: { c: 5, r: -5, t: 0, o: 0 }, g: 0 },
-    right: { label: "기록만 남긴다", fx: { c: 0, r: 0, t: 0, o: 5 }, g: 0 } },
+    left: { label: "정밀 수색 — 3시간", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "기록만 남긴다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
 
   { id: "C-255", act: [1,2], priority: "하", bg: "comms",
     cond: function(s,g,logs){ return s.day>=4 },

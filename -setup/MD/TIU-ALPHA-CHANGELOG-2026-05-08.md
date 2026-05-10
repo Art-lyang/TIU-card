@@ -3,7 +3,41 @@
 ## Build
 
 - Updated runtime reference to `BUILD_VER=178`.
-- Current validated registry: 541 unique cards.
+- Current validated registry: 544 unique cards.
+
+## 2026-05-10 후속 정리
+
+- Current validated registry: 544 unique cards.
+- Act 2에서 선택되었거나 관련 로그를 발견한 세션팩이 Act 3~4 후속 카드 가중치에 반영되도록 `sessionDeckLineageWeight`를 추가했습니다.
+- 메인 루트 전환 카드(`transReq`)는 세션팩 보정 대상에서 제외해 필수 루트 잠김을 방지했습니다.
+- 실제 사용 중인 이브닝챗 경로에 `sessionDeckEveningOk` 필터를 적용해 세션팩 대화 노출 기준을 통일했습니다.
+- `B3_PREDECESSOR` 전용 Act 3~4 후속 카드 3장과 대응 LOG/영어 오버레이를 추가했습니다.
+- Act 4 초반 중립 루트의 자동 전략 자원 탈락을 줄이기 위해 런타임/시뮬레이터 보정을 day 34까지 확장했습니다.
+
+검증:
+
+```text
+node tools/validator.js
+  cards 544 / unique 544
+  issues 0
+
+node tools/i18n-smoke.js
+  i18n smoke ok
+
+node tools/check_ending_routes.js
+  ending route check passed: 11/11
+
+node _workspace/codex/session-deck-affinity-audit.js
+  weak packs 0
+  route deck leaks 0
+
+python tools/simulator_v3.py 100 all
+  comply narrative 98.0% / instant 2.0%
+  rebel narrative 86.0% / instant 14.0%
+  careful narrative 88.0% / timeout 12.0%
+  explorer narrative 98.0% / instant 2.0%
+  newbie narrative 69.0% / instant 31.0%
+```
 
 ## 2026-05-09 후속 정리
 

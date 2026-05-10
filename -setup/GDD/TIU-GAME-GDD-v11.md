@@ -1,6 +1,6 @@
 # TERMINAL SESSION - Game Design Document v1.1.1
 
-> Current runtime snapshot for `BUILD_VER=178` / 2026-05-09.
+> Current runtime snapshot for `BUILD_VER=178` / 2026-05-10.
 > This document is a release-candidate delta on top of `TIU-GAME-GDD-v10.md`.
 
 ## 1. Current Scope
@@ -15,7 +15,7 @@ The current content registry contains:
 
 | Area | Runtime count |
 |---|---:|
-| Cards | 541 |
+| Cards | 544 |
 | Field missions | 15 |
 | Minigame-linked missions | 9 |
 | Evidence entries | 38 |
@@ -32,6 +32,7 @@ The session pack layer exists to improve replay texture and reduce Act 2 overloa
 - Core cards always remain available.
 - Evidence-table unlocks, basic facility expansion, save normalization, and field-mission infrastructure are not blocked by optional packs.
 - Pack-gated chains should only affect optional narrative arcs and their related endings.
+- In Acts 3 and 4, cards from the selected or discovered session packs receive lineage draw-weight boosts. Main-route transition cards with `transReq` must not be blocked or boosted as optional pack content.
 
 Current optional pack candidates:
 
@@ -45,6 +46,8 @@ Current optional pack candidates:
 | `GOV_ORACLE_SUSPICION` | Haejinhoe incidents, nearby-settlement pressure, and government suspicion of the branch |
 
 Design rule: do not invent named settlements or named organizations casually. Use generic wording such as "nearby settlement" or "settlement near the barrier" unless the worldbuilding file already defines a proper name.
+
+2026-05-10 follow-up rule: `B3_PREDECESSOR` now has dedicated Act 3/4 predecessor-lineage cards and logs so the Act 2 pack choice can remain visible after the initial branch without forcing the main route.
 
 ## 3. Public Lore Visibility
 
@@ -81,7 +84,7 @@ Latest checks:
 
 ```text
 node tools/validator.js
-  cards 541 / unique 541
+  cards 544 / unique 544
   issues 0
 
 node tools/i18n-smoke.js
@@ -91,10 +94,19 @@ node tools/check_ending_routes.js
   ending route check passed: 11/11
   A/B/D/F/G special routes verified, including Ending F approved/unapproved observer routes
 
-python tools/simulator_v3.py 20 all
-  careful/newbie profiles reached narrative endings reliably
-  comply/rebel automated profiles remain intentionally high-pressure
-  timeouts only appeared in the careful sample, 3/20
+python tools/simulator_v3.py 100 all
+  comply   narrative 98.0% / instant 2.0%
+  rebel    narrative 86.0% / instant 14.0%
+  careful  narrative 88.0% / timeout 12.0% / instant 0.0%
+  explorer narrative 98.0% / instant 2.0%
+  newbie   narrative 69.0% / instant 31.0%
+
+node _workspace/codex/route-integrity-audit.js
+  targeted route checks passed
+
+node _workspace/codex/session-deck-affinity-audit.js
+  weak packs 0
+  route deck leaks 0
 ```
 
 Browser QA also confirmed:
@@ -104,9 +116,10 @@ Browser QA also confirmed:
 - Act 2+ snapshots preserve investigation-table unlocks correctly.
 - Active field mission specs remain capped at 2 in the checked runtime path.
 - New pack cards and pack-linked logs have English overlays.
+- Active session-pack evening chats and Act 3/4 follow-up cards now respect the same session-deck lineage assumptions.
 
 ## 7. Remaining Watch Items
 
 - Resistance-route resource pressure remains high in automated simulations and needs human playtest tuning.
 - `check_buttons.py` still reports special transition cards with no direct stat effect.
-- Act 4 card-pool lower tails should continue to be watched after additional pack tuning.
+- Act 4 pressure endings, especially explorer/newbie automated profiles, should continue to be watched in human playtests.

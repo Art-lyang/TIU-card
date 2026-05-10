@@ -89,7 +89,7 @@ var cardFlowOk=function(c,stats,gi,logs,currentAct,recent){
   return true;
 };
 var cardWeight=function(c){var w=1;if(!c)return w;if(c.priority==='상')w+=5;else if(c.priority==='중')w+=2;else if(c.priority==='event')w+=6;if(c.once)w+=2;if(c.transReq)w+=4;if(c.glitch)w+=1;return w};
-var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent){
+var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent,tRoute){
   var w=cardWeight(c),type=cardFlowType(c,stats,gi,logs),day=(stats&&stats.day)||1,act=currentAct||1,phase=actFlowPhase(day,act);
   var critical=stats&&(stats.c<=35||stats.r<=25||stats.t<=25||stats.o<=25);
   if(act<=1){
@@ -128,14 +128,17 @@ var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent){
     if((rc[type]||0)>=2)w*=0.35;
     else if((rc[type]||0)>=1)w*=0.65;
   }
+  if(typeof sessionDeckLineageWeight==='function'){
+    try{w*=sessionDeckLineageWeight(c,stats,gi,logs,act,tRoute||'')}catch(e){}
+  }
   return Math.max(0.2,w);
 };
-var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent){
+var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent,tRoute){
   if(!a||a.length===0)return null;
   var total=0;
-  for(var i=0;i<a.length;i++){total+=cardFlowWeight(a[i],stats,gi,logs,currentAct,recent)}
+  for(var i=0;i<a.length;i++){total+=cardFlowWeight(a[i],stats,gi,logs,currentAct,recent,tRoute)}
   var roll=Math.random()*total;
-  for(var j=0;j<a.length;j++){roll-=cardFlowWeight(a[j],stats,gi,logs,currentAct,recent);if(roll<=0)return a[j]}
+  for(var j=0;j<a.length;j++){roll-=cardFlowWeight(a[j],stats,gi,logs,currentAct,recent,tRoute);if(roll<=0)return a[j]}
   return a[a.length-1];
 };
 var oracleSafeguardEligible=function(stats,gi,logs,tRoute){
@@ -218,7 +221,7 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec);
+  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec,tr);
 };
 
 function getMaxActForDay(day){

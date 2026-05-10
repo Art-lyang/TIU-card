@@ -272,6 +272,21 @@
       },
       fx: { left: { o: 1, r: -1 }, right: { c: 1, t: 1 } }
     },
+    doyun_assault: {
+      ko: {
+        title: '강도윤 합동작전 사후 정리',
+        prompt: '양동 작전으로 확보한 현장 우위를 추적 작전에 연결할지, 회수한 장비와 인원을 재정비할지 결정한다.',
+        left: '추적 작전으로 즉시 연결',
+        right: '장비와 인원을 재정비'
+      },
+      en: {
+        title: 'Do-yun Joint Assault Follow-Up',
+        prompt: 'Decide whether the field advantage from the coordinated assault becomes a tracking operation or a recovery window.',
+        left: 'Press into follow-up tracking',
+        right: 'Recover gear and personnel'
+      },
+      fx: { left: { o: 1, t: 1 }, right: { r: 1, t: 1 } }
+    },
     statement: {
       ko: {
         title: '면담 기록 후속 조치',
@@ -323,27 +338,42 @@
     return out;
   }
 
+  function applyTrustAssistFx(base, meta, side){
+    var out={c:base.c||0,r:base.r||0,t:base.t||0,o:base.o||0};
+    if(!meta||!meta.trustAssist||meta.trustAssist.char!=='doyun')return out;
+    if(side==='left')out.t+=1;
+    else out.r+=1;
+    return out;
+  }
+
+  function trustAssistText(locale, meta){
+    if(!meta||!meta.trustAssist||meta.trustAssist.char!=='doyun')return '';
+    if(locale==='en')return 'Do-yun converts the field trust route into cleaner follow-up rewards.';
+    return '강도윤이 신뢰 루트의 현장 우위를 후속 보상으로 전환한다.';
+  }
+
   window.createFieldMiniGameFollowupCard = function(meta){
     if(!meta||!meta.type)return null;
     var tpl=FOLLOWUP_TEMPLATES[meta.type];
     if(!tpl)return null;
     var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
     var text=tpl[locale];
+    var assist=trustAssistText(locale,meta);
     var stamp=(Date.now()%1000000).toString(36);
     return {
       id: 'FMF-'+String(meta.type).toUpperCase()+'-'+String(meta.missionId||'GEN')+'-'+String(meta.rank||'success').toUpperCase()+'-'+stamp,
-      priority: meta.rank==='fail'?'상':(meta.rank==='great'?'상':'중'),
+      priority: meta.trustAssist?'상':(meta.rank==='fail'?'상':(meta.rank==='great'?'상':'중')),
       msg: (locale==='en'
-        ? '[Field Follow-Up]\n\n'+text.title+'\n\n'+rankFlavor(locale,meta.rank)+'\n\n'+text.prompt
-        : '[현장 후속 카드]\n\n'+text.title+'\n\n'+rankFlavor(locale,meta.rank)+'\n\n'+text.prompt),
+        ? '[Field Follow-Up]\n\n'+text.title+'\n\n'+rankFlavor(locale,meta.rank)+(assist?'\n'+assist:'')+'\n\n'+text.prompt
+        : '[현장 후속 카드]\n\n'+text.title+'\n\n'+rankFlavor(locale,meta.rank)+(assist?'\n'+assist:'')+'\n\n'+text.prompt),
       left: {
         label: text.left,
-        fx: adjustFx(tpl.fx.left,meta.rank,'left'),
+        fx: applyTrustAssistFx(adjustFx(tpl.fx.left,meta.rank,'left'),meta,'left'),
         g: meta.rank==='great'?1:0
       },
       right: {
         label: text.right,
-        fx: adjustFx(tpl.fx.right,meta.rank,'right'),
+        fx: applyTrustAssistFx(adjustFx(tpl.fx.right,meta.rank,'right'),meta,'right'),
         g: meta.rank==='fail'?-1:0
       }
     };

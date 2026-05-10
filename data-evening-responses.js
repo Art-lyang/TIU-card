@@ -33,19 +33,19 @@ var EVENING_RESPONSES = {
     b: { label: '시스템 현황 보고 부탁한다.', trust: 1, reply: '알겠습니다. 정리해서 올리겠습니다.' }
   },
   // (삭제) 'jaehyuk_1_5-8' 고아 응답 제거 — 조사테이블 해금 응답은 data-evening-extra-2a.js의 'jaehyuk_1_5-99'/'jaehyuk_2_5-99'로 단일화
-  'doyun_2_11-17': {
+  'doyun_2_11-14': {
     a: { label: '함께 지킨다.', trust: 2, reply: '...알겠습니다. 지휘관님 결정 따르겠습니다.' },
     b: { label: '전략을 세우자.', trust: 1, reply: '알겠습니다. 작전안 준비하겠습니다.' }
   },
-  'haeun_2_11-17': {
+  'haeun_2_11-14': {
     a: { label: '함께 확인하자.', trust: 2, reply: '네, 같이 봐주시면 분석이 빨라질 것 같습니다.' },
     b: { label: '증거를 더 모아.', trust: 0, reply: '알겠습니다. 더 조사해보겠습니다.' }
   },
-  'sejin_2_11-17': {
+  'sejin_2_11-14': {
     a: { label: '연구를 계속해.', trust: 2, reply: '감사합니다. 결과가 나오면 바로 알려드릴게요.' },
     b: { label: '건강 먼저 챙겨.', trust: 2, reply: '...네, 주의하겠습니다.' }
   },
-  'jaehyuk_2_11-17': {
+  'jaehyuk_2_11-14': {
     a: { label: '좋은 발견이다.', trust: 2, reply: '감사합니다. 더 파보겠습니다.' },
     b: { label: 'ORACLE에 들키면 안 된다.', trust: 1, reply: '네, 조심하겠습니다.' }
   },

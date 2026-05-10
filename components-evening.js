@@ -322,20 +322,23 @@ function EveningChat2(p){
       if(!ec.condFn)return true;
       try{return ec.condFn(eveningContext())}catch(e){return true}
     };
+    var deckCond=function(ec){
+      try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,eveningContext())}catch(e){return true}
+    };
     var matches=EVENING_CHATS.filter(function(ec){
-      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)
+      return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)
     }).sort(sortByDay);
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
     if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
     else{
-      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+      matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)}).sort(sortByDay);
       if(matches.length>0){chat=matches[0]}
       else{
-        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+        matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)}).sort(sortByDay);
         if(matches.length>0)chat=matches[matches.length-1];
         else{
-          matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&skipIntro(ec)&&evalCond(ec)}).sort(sortByDay);
+          matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)}).sort(sortByDay);
           chat=matches.length>0?matches[matches.length-1]:null
         }
       }
@@ -371,8 +374,9 @@ function EveningChat2(p){
     var sortD=function(a,b){return a.dayMin-b.dayMin};
     var il2=INTRO_LOG_MAP[c.name];var id2=il2&&p.logs.indexOf(il2)>=0;var si2=function(ec){return!(id2&&ec.dayMin===1&&ec.act.indexOf(1)>=0)};
     var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn(eveningContext())}catch(e){return true}};
-    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
-    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)}).sort(sortD);
+    var dc2=function(ec){try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,eveningContext())}catch(e){return true}};
+    var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
     var evM=m2.filter(function(ec){return ec.priority==='event'});
     var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
     if(pick&&p.onMarkEvening)p.onMarkEvening(ecKey(pick))

@@ -121,6 +121,127 @@ def apply_resistance_safeguard(s, gi, logs):
         if item not in logs: logs.append(item)
     return ns, gi - 3, True
 
+def oracle_safeguard_eligible(s, gi, logs):
+    if 'ONCE-ORC-LOYAL-SAFE-01' in logs or 'LOG-ORACLE-SAFEGUARD' in logs: return False
+    if s.get('o', 0) <= 0: return False
+    if gi < 10: return False
+    return s['c'] <= 20 or s['r'] <= 20 or s['t'] <= 20
+
+def apply_oracle_safeguard(s, gi, logs):
+    if not oracle_safeguard_eligible(s, gi, logs): return s, gi, False
+    ns = dict(s)
+    ns['c'] = max(ns['c'], 40); ns['r'] = max(ns['r'], 40); ns['t'] = max(ns['t'], 40)
+    for item in ('LOG-ORACLE-SAFEGUARD', 'ONCE-ORC-LOYAL-SAFE-01'):
+        if item not in logs: logs.append(item)
+    return ns, gi + 3, True
+
+def apply_route_safeguard(s, gi, logs):
+    ns, ng, applied = apply_resistance_safeguard(s, gi, logs)
+    if applied: return ns, ng, True
+    return apply_oracle_safeguard(s, gi, logs)
+
+def _clamp_stat(v):
+    return max(0, min(100, v))
+
+def _as_log_list(choice):
+    return choice.get('logs', []) if choice else []
+
+def _has_log_prefix(choice, prefixes):
+    for log in _as_log_list(choice):
+        for prefix in prefixes:
+            if str(log).startswith(prefix): return True
+    return False
+
+def _raises(before, after, key):
+    return after[key] > before[key]
+
+def _lift_below(after, key, target):
+    if after[key] < target:
+        after[key] = _clamp_stat(target)
+        return True
+    return False
+
+def _cap_above(after, key, target):
+    if after[key] > target:
+        after[key] = _clamp_stat(target)
+        return True
+    return False
+
+def is_resistance_choice(card, choice, before_gi, after_gi):
+    cid = str(card.get('id', '')) if card else ''
+    g = choice.get('g', 0) if choice else 0
+    if g < 0: return True
+    if cid.startswith('RH-'): return True
+    if cid.startswith('LJC-PROM-') and g <= 0: return True
+    return _has_log_prefix(choice, ('LOG-RH-', 'LOG-CHAR-', 'LOG-RECON-', 'LOG-LJC-PROM-', 'LOG-UPRISING-'))
+
+def is_loyal_choice(card, choice, before_gi, after_gi, before, after):
+    cid = str(card.get('id', '')) if card else ''
+    g = choice.get('g', 0) if choice else 0
+    if g > 0 or after_gi > before_gi: return True
+    if cid.startswith('CB-') or cid.startswith('ORC-LOYAL-'): return True
+    return _raises(before, after, 'o') and not _raises(before, after, 't')
+
+def is_neutral_route(gi):
+    return gi > -35 and gi < 8
+
+def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice, act):
+    ns = dict(after)
+    ng = after_gi
+    day = before.get('day', 1)
+    changed = False
+    cid = str(card.get('id', '')) if card else ''
+
+    if is_resistance_choice(card, choice, before_gi, after_gi):
+        if act <= 3 and day <= 18:
+            changed = _lift_below(ns, 'c', 15) or changed
+            changed = _lift_below(ns, 'o', 15) or changed
+            changed = _lift_below(ns, 'r', 15) or changed
+            changed = _lift_below(ns, 't', 15) or changed
+        elif act <= 3:
+            changed = _lift_below(ns, 'c', 10) or changed
+            changed = _lift_below(ns, 'o', 10) or changed
+            changed = _lift_below(ns, 'r', 10) or changed
+
+    if act <= 3 and ng <= -35:
+        changed = _lift_below(ns, 'c', 10) or changed
+        changed = _lift_below(ns, 'o', 10) or changed
+        changed = _lift_below(ns, 'r', 10) or changed
+
+    if cid == 'CE-005':
+        if ng < before_gi - 6:
+            ng = before_gi - 6
+            changed = True
+        changed = _lift_below(ns, 'o', 5) or changed
+
+    if cid in ('CE-042', 'CE-042B'):
+        changed = _lift_below(ns, 'o', 5) or changed
+        changed = _lift_below(ns, 'r', 5) or changed
+
+    if act <= 2 and day <= 10 and before['o'] > 0 and ns['o'] <= 0:
+        changed = _lift_below(ns, 'o', 5) or changed
+
+    if act <= 3 and is_neutral_route(ng) and before['r'] > 0 and ns['r'] <= 0:
+        changed = _lift_below(ns, 'r', 10) or changed
+
+    if act == 4 and day <= 34 and is_neutral_route(ng) and before['r'] > 0 and ns['r'] <= 0:
+        changed = _lift_below(ns, 'r', 10) or changed
+
+    if is_loyal_choice(card, choice, before_gi, ng, before, ns):
+        if act <= 3 and ng >= 8:
+            changed = _lift_below(ns, 'r', 35) or changed
+            changed = _lift_below(ns, 't', 35) or changed
+            changed = _lift_below(ns, 'c', 32) or changed
+        if act >= 4 and ng >= 40:
+            changed = _lift_below(ns, 'r', 30) or changed
+            changed = _lift_below(ns, 't', 30) or changed
+            changed = _lift_below(ns, 'c', 30) or changed
+
+    if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
+        changed = _cap_above(ns, 'c', 95) or changed
+
+    return ns, ng, changed
+
 REWARDS = parse_rewards()
 
 N_RUNS = int(sys.argv[1]) if len(sys.argv) > 1 else 300
@@ -162,6 +283,7 @@ def collect_hidden_logs():
         'prometheus': ['LOG-PROM-CONTACT', 'LOG-LJC-PROM-01'],
         'uprising': ['LOG-UPRISING-01', 'LOG-UPRISING-02'],
         'resistance_safe': ['LOG-RH-SAFEGUARD'],
+        'oracle_safe': ['LOG-ORACLE-SAFEGUARD'],
     }
 
 def collect_mission_trigger_cards():
@@ -187,6 +309,118 @@ MISSION_IDS = collect_mission_ids()
 CHAIN_IDS = collect_chain_ids()
 HIDDEN_LOG_GROUPS = collect_hidden_logs()
 MISSION_TRIGGERS = collect_mission_trigger_cards()
+
+SESSION_DECK_PACK_WEIGHTS = [
+    ('DG_MERIDIAN', 2),
+    ('B3_PREDECESSOR', 2),
+    ('PROMETHEUS_TENSION', 2),
+    ('UPRISING_INFRA', 1),
+    ('MUTANT_SURGE', 2),
+    ('GOV_ORACLE_SUSPICION', 2),
+]
+SESSION_DECK_PICK_COUNT = 4
+SESSION_DECK_MUTANT_SURGE_IDS = {
+    'C-030', 'C-031', 'C-045', 'C-047', 'C-066',
+    'C-175', 'CE-021', 'CE-025', 'CE-036',
+    'C-271', 'C-272', 'C-273', 'C-274', 'C-275',
+}
+
+def pick_session_deck():
+    pool = list(SESSION_DECK_PACK_WEIGHTS)
+    picked = []
+    while pool and len(picked) < SESSION_DECK_PICK_COUNT:
+        total = sum(w for _, w in pool)
+        roll = random.random() * total
+        acc = 0
+        for idx, (pack, weight) in enumerate(pool):
+            acc += weight
+            if roll <= acc:
+                picked.append(pack)
+                pool.pop(idx)
+                break
+    return set(picked)
+
+def _tag_has(tag, token):
+    tag = str(tag or '').lower()
+    token = str(token or '').lower()
+    if not tag or not token: return False
+    return tag == token or tag.startswith(token + '-') or ('-' + token) in tag or ('_' + token) in tag
+
+def get_card_session_deck_pack(card):
+    if not card: return None
+    if card.get('sessionPack'): return card.get('sessionPack')
+    cid = str(card.get('id', ''))
+    tag = str(card.get('tag') or '').lower()
+    if cid in SESSION_DECK_MUTANT_SURGE_IDS or tag == 'mutant-surge': return 'MUTANT_SURGE'
+    if tag == 'gov-oracle-suspicion': return 'GOV_ORACLE_SUSPICION'
+    if tag == 'uprising-hint' or cid.startswith('HH-'): return 'UPRISING_INFRA'
+    if (
+        cid in ('A2-FORESHADOW-01', 'A2-FORESHADOW-02', 'A2-TRIAGE-01') or
+        cid.startswith('A3-B3-') or cid.startswith('A4-B3-') or
+        cid.startswith('CA-SEED-') or re.match(r'^C-32[0-5]$', cid) or
+        _tag_has(tag, 'b3') or 'predecessor' in tag
+    ):
+        return 'B3_PREDECESSOR'
+    if (
+        cid.startswith(('DG-', 'MD-', 'SUP-DM-', 'CA23-DV-', 'CH-DG-', 'CH-MD-', 'CH-SUP-')) or
+        _tag_has(tag, 'dg') or _tag_has(tag, 'meridian')
+    ):
+        return 'DG_MERIDIAN'
+    if cid.startswith('LJC-PROM-') or tag in ('prometheus-lee', 'midgame-prom'):
+        return 'PROMETHEUS_TENSION'
+    return None
+
+def _session_deck_log_fallback(pack, logs):
+    prefixes = {
+        'DG_MERIDIAN': ('LOG-DG', 'LOG-MD', 'LOG-DV', 'LOG-SUPPLY-DG', 'LOG-SUPPLY-MD'),
+        'B3_PREDECESSOR': ('LOG-090', 'LOG-091', 'LOG-092', 'LOG-093', 'LOG-CHAR-', 'LOG-A2-FORESHADOW', 'LOG-A2-TRIAGE', 'LOG-B3-LINEAGE', 'LOG-A4-B3-LINEAGE'),
+        'PROMETHEUS_TENSION': ('LOG-LJC-PROM', 'LOG-PROM'),
+        'UPRISING_INFRA': ('LOG-UPRISING',),
+        'MUTANT_SURGE': ('LOG-MS-',),
+        'GOV_ORACLE_SUSPICION': ('LOG-GOV-',),
+    }.get(pack, ())
+    return any(str(log).startswith(prefixes) for log in logs)
+
+def session_deck_ok(card, logs, act, session_deck):
+    pack = get_card_session_deck_pack(card)
+    if not pack: return True
+    min_act = 3 if pack == 'DG_MERIDIAN' else 2
+    if act < min_act: return False
+    if pack in session_deck: return True
+    return _session_deck_log_fallback(pack, logs)
+
+def session_deck_lineage_weight(card, logs, act, session_deck):
+    pack = get_card_session_deck_pack(card)
+    if not pack or act < 3: return 1.0
+    if card.get('transReq'): return 1.0
+    active = pack in session_deck
+    touched = _session_deck_log_fallback(pack, logs)
+    weight = 1.0
+    if touched:
+        weight += 0.75 if act >= 4 else 0.55
+    elif active:
+        weight += 0.35 if act >= 4 else 0.25
+    if pack == 'B3_PREDECESSOR' and touched:
+        weight += 0.15
+    if card.get('once'):
+        weight += 0.1
+    return max(0.75, min(2.1, weight))
+
+def weighted_card_choice(pool, logs, act, session_deck):
+    total = sum(session_deck_lineage_weight(c, logs, act, session_deck) for c in pool)
+    if total <= 0: return random.choice(pool)
+    roll = random.random() * total
+    for c in pool:
+        roll -= session_deck_lineage_weight(c, logs, act, session_deck)
+        if roll <= 0:
+            return c
+    return pool[-1]
+
+def note_hidden_logs(logs, hidden_logs_found):
+    for L in logs:
+        for group_logs in HIDDEN_LOG_GROUPS.values():
+            if L in group_logs:
+                hidden_logs_found.add(L)
 
 # ═══════════ 성격 프로필 선택 로직 ═══════════
 
@@ -310,13 +544,32 @@ def choose_reward_profile(options, s, profile):
 
     return max(options, key=score)
 
-def apply_reward(s, reward):
+def apply_reward(s, reward, act=None, gi=0):
     if not reward:
         return s
     ns = dict(s)
     for k in 'crto':
         ns[k] += reward['fx'].get(k, 0) * 5
-        ns[k] = max(5, min(95, ns[k]))
+        ns[k] = max(0, min(100, ns[k]))
+    if act == 3:
+        ns['c'] = max(0, ns['c'] - 5)
+        if gi < 35:
+            ns['r'] = max(0, ns['r'] - 5)
+    elif act == 4:
+        loyal_relief = gi >= 40
+        ns['c'] = max(0, ns['c'] - 10)
+        ns['r'] = max(0, ns['r'] - (5 if loyal_relief else 10))
+        ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
+    if act is not None and act <= 3 and s.get('c', 0) < 100 and ns['c'] >= 100:
+        ns['c'] = 95
+    if act is not None and act <= 3 and gi <= -35:
+        ns['c'] = max(ns['c'], 10)
+        ns['o'] = max(ns['o'], 10)
+        ns['r'] = max(ns['r'], 10)
+    if act is not None and act <= 3 and is_neutral_route(gi) and s.get('r', 0) > 0 and ns['r'] <= 0:
+        ns['r'] = 10
+    if act == 4 and s.get('day', 1) <= 34 and is_neutral_route(gi) and s.get('r', 0) > 0 and ns['r'] <= 0:
+        ns['r'] = 10
     return ns
 
 # ═══════════ 시뮬 본체 ═══════════
@@ -328,6 +581,7 @@ def simulate_one(profile):
     trust = {ch: 50 for ch in CHAR_KEYS}
     recent = collections.deque(maxlen=60)
     tag_cd = {}
+    session_deck = pick_session_deck()
     card_freq = collections.Counter()
     ending = None
     max_days = 50
@@ -344,10 +598,11 @@ def simulate_one(profile):
 
     while s['day'] <= max_days and ending is None:
         act = get_act(s['day'])
-        for k, v in DECAY[act].items():
-            s[k] += v
+        # Runtime applies act pressure after the daily reward pick; keep the
+        # start-of-day pass side-effect free so simulator timings match app.js.
 
-        s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+        s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
+        if safeguarded: note_hidden_logs(logs, hidden_logs_found)
 
         go = chk_game_over(s)
         if go:
@@ -360,6 +615,7 @@ def simulate_one(profile):
         for _ in range(n):
             pool = []
             for c in CARDS:
+                if c['id'] in ('ORC-LOYAL-SAFE-01', 'RH-SAFE-01'): continue
                 if c['id'] in recent: continue
                 if act not in c['act']: continue
                 if c['tag'] and tag_cd.get(c['tag'], -99) >= s['day'] - 3: continue
@@ -369,19 +625,23 @@ def simulate_one(profile):
                         if c['id'] in tag_cd: continue
                     elif tag_cd.get(c['id'], -99) >= s['day'] - 15: continue
                 if c['once'] and ('ONCE-' + c['id']) in logs: continue
+                if not session_deck_ok(c, logs, act, session_deck): continue
                 if not eval_req(c['req'], s, gi, logs): continue
                 pool.append(c)
 
             if not pool:
                 break
 
-            c = random.choice(pool)
+            c = weighted_card_choice(pool, logs, act, session_deck)
             dir_choice = choose_side_profile(c, s, gi, profile, logs)
             side = c[dir_choice]
+            before_s = dict(s)
+            before_gi = gi
             if side:
                 for k, v in side['fx'].items():
-                    s[k] += v
+                    s[k] = _clamp_stat(s[k] + v * 5)
                 gi += side['g']
+                s, gi, _ = apply_choice_balance_tuning(before_s, before_gi, s, gi, c, side, act)
                 for L in side['logs']:
                     if L not in logs:
                         logs.append(L)
@@ -425,7 +685,8 @@ def simulate_one(profile):
                 tag_cd[c['id']] = s['day']
             card_freq[c['id']] += 1
 
-            s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+            s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
+            if safeguarded: note_hidden_logs(logs, hidden_logs_found)
             go = chk_game_over(s)
             if go:
                 ending = go
@@ -449,9 +710,10 @@ def simulate_one(profile):
 
         reward_options = random.sample(REWARDS, min(4, len(REWARDS))) if REWARDS else []
         chosen = choose_reward_profile(reward_options, s, profile)
-        s = apply_reward(s, chosen)
+        s = apply_reward(s, chosen, act, gi)
 
-        s, gi, safeguarded = apply_resistance_safeguard(s, gi, logs)
+        s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
+        if safeguarded: note_hidden_logs(logs, hidden_logs_found)
         go = chk_game_over(s)
         if go:
             ending = go
