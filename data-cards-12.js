@@ -43,12 +43,13 @@ var CARDS_NEW_A = [
     right: { label: "현장 유지 — 적응해야 한다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
   { id: "C-200", act: [1,2], priority: "하", bg: "base",
+    cond: function(s,g,logs){ return logs.indexOf("LOG-050") < 0 },
     msg: "요원 두 명이 보급품 분배 문제로 언쟁을 벌이고 있습니다.\n\n서하은: \"사소한 일이지만, 방치하면 다른 불만도 터질 수 있습니다.\"\n\n\"직접 개입하시겠습니까?\"",
     left: { label: "직접 중재", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "자율 해결에 맡긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   { id: "C-201", act: [1,2], priority: "하", bg: "base", img: "char_haeun_tense",
-    cond: function(s,g,logs){ return !logs.includes("LOG-076") },
+    cond: function(s,g,logs){ return !logs.includes("LOG-076") && logs.indexOf("LOG-050") < 0 },
     msg: "익명 건의함에 지휘관 비판 투서가 들어왔습니다.\n\n\"현장을 모르는 사람이 결정을 내리고 있다.\"\n\n서하은이 조심스럽게 보여줍니다. \"...어떻게 하시겠습니까?\"",
     left: { label: "전체 회의에서 의견 수렴", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "무시한다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },

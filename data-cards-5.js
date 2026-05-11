@@ -32,7 +32,7 @@ var CARDS_RESOURCE = [
     right: { label: "봉쇄 자재 우선 배치", fx: { c: 2, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-106", act: [2,3,4], priority: "하", bg: "supply",
-    req: function(s,g,logs){ return !logs.includes("LOG-026") },
+    req: function(s,g,logs){ return !logs.includes("LOG-C106-HERB") },
     msg: "윤세진이 기지 내 약초 재배 실험에 성공했습니다.\n\n\"기본 해열제와 소독제를 자체 생산할 수 있게 됐습니다.\"\n\n\"작지만 꾸준한 자원입니다.\"",
     left: { label: "재배 규모 확대", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 },
     right: { label: "현 규모 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -76,7 +76,7 @@ var CARDS_RESOURCE = [
     left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-154", act: [2,3,4], priority: "하", bg: "lab",
-    req: function(s,g,logs){ return logs.includes("LOG-026") && s.day >= 8 },
+    req: function(s,g,logs){ return logs.includes("LOG-C106-HERB") && s.day >= 8 },
     msg: "윤세진: \"약초 재배가 안정기에 접어들었습니다.\"\n\n\"이번 수확분으로 해열제 10일분을 추가 확보했습니다.\"",
     left: { label: "비축 처리", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
     right: { label: "즉시 배분", fx: { c: 0, r: 1, t: 1, o: 0 }, g: 0 } }

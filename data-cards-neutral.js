@@ -43,6 +43,6 @@ var CARDS_NEUTRAL = [
       return Math.random() < 0.05;
     },
     msg: "[ERR:0x8F2A — UNREGISTERED PROTOCOL DETECTED]\n\nPROTOCOL: OBSERVER\n접속 승인 요청\n\n출처: ████████\n프로토콜: 미등록\n보안 등급: ████\n인증 상태: BYPASSED\n\nORACLE 승인 없이\n외부 접속이 시도되고 있습니다.\n\n승인하시겠습니까?",
-    left: { label: "승인 허가", fx: {c:0,r:0,t:0,o:0}, g: 0 },
-    right: { label: "거절", fx: {c:0,r:0,t:0,o:0}, g: 0 } }
+    left: { label: "승인 허가", fx: {c:0,r:0,t:-1,o:-1}, g: -2 },
+    right: { label: "거절", fx: {c:0,r:0,t:0,o:1}, g: 1 } }
 ];

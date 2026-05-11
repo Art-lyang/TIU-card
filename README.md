@@ -3,7 +3,7 @@
 > Reigns식 카드 지휘, Suzerain식 압박, 한국 SF 감시 디스토피아를 섞은 정적 HTML 카드 게임.
 >
 > **장르**: 카드 스와이프 지휘 시뮬레이션 + 텍스트 어드벤처 + 현장임무 미니게임
-> **현재 빌드**: `BUILD_VER=186`
+> **현재 빌드**: `BUILD_VER=187`
 > **최종 검증일**: 2026-05-11
 > **배포 주소**: https://art-lyang.github.io/TIU-card/
 
@@ -109,7 +109,7 @@ http://localhost:4173/index.html
 
 ```text
 TIU_CARD/
-├─ index.html                         # 진입점, BUILD_VER=186
+├─ index.html                         # 진입점, BUILD_VER=187
 ├─ app*.js                            # 앱 상태, 세이브, 로직, 사운드 훅
 ├─ components-*.js                    # 카드 UI, 이브닝, 대화, 브리핑, 아카이브, 설정, 미니게임
 ├─ data-*.js                          # 카드, 임무, 증거, 엔딩, 로그, 보상, 시설
@@ -164,7 +164,7 @@ simulator_v3.py 50 all
 
 남은 관찰 지점:
 
-- `check_buttons.py`는 특수 전환/히든 카드 `CA-OBS-PROTO`, `CH-007-5`의 무효과 버튼 경고를 계속 표시합니다.
+- `check_buttons.py`는 특수 전환 카드 `CH-007-5`의 무효과 버튼 경고를 계속 표시합니다.
 - Act 4 하위 카드풀 압박과 explorer/newbie 자동 전략의 압박 엔딩 비중은 인간 플레이테스트에서 계속 봐야 합니다.
 
 ---
@@ -210,4 +210,4 @@ All rights reserved.
 
 ---
 
-*최종 업데이트: 2026-05-11 / BUILD_VER=186*
+*최종 업데이트: 2026-05-11 / BUILD_VER=187*

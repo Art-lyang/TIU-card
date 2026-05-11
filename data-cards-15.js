@@ -31,6 +31,7 @@ var CARDS_EXTERNAL = [
 
   // ═══ 박소영 — C-081에서 후보 A 선택 시 합류 (LOG-082) ═══
 
+  // C-251 is intentionally unused; the facility-pressure branch resumes at C-252 after prior card-pool pruning.
   { id: "C-252", act: [4], priority: "상", bg: "base",
     cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-082-REPORT')<0 },
     msg: "박소영이 합류한 지 이틀째.\n\n첫 보고가 올라왔습니다.\n\n\"ORACLE 데이터 스트림 구조를 파악했습니다. 서하은 선배의 분석 로그가 큰 도움이 됐어요.\"\n\n임재혁: \"솔직히 놀랐습니다. 외부인이 이렇게 빨리 적응하는 건 처음 봅니다.\"\n\n... 유능합니다. 의심할 이유가 없습니다.",

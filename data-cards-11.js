@@ -68,6 +68,7 @@ var CARDS_CHAINS = [
 
   // ═══ 체인 3: 야간 변이체 습격 + 강도윤 생존/사망 ═══
   // 조건: LOG-070(미휴식) + LOG-071(미개편) + LOG-072(ORACLE 의존) 중 2개 이상
+  // C-187 is intentionally unused; the night-assault route starts at C-188 after earlier gap-preserving content moves.
   // C-188: 야간 습격 전조
   { id: "C-188", act: [3], priority: "상", bg: "forest",
     cond: function(s,g,logs){

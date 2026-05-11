@@ -46,6 +46,7 @@ function boot(locale) {
   runFile(ctx, 'lang-cards-cs-en.js');
   runFile(ctx, 'lang-cards-side-en.js');
   runFile(ctx, 'lang-cards-c-en.js');
+  runFile(ctx, 'data-core.js');
   runFile(ctx, 'data-result-text.js');
   runFile(ctx, 'data-result-story-1.js');
   runFile(ctx, 'data-minigame-rewards.js');
@@ -468,6 +469,89 @@ function checkIssue21Overlays(ctx, errors) {
   });
 }
 
+function checkNewsPoolOverlays(ctx, errors) {
+  const pools = ctx.NP || {};
+  Object.keys(pools).forEach((poolKey) => {
+    const items = Array.isArray(pools[poolKey]) ? pools[poolKey] : [];
+    items.forEach((headline, index) => {
+      const val = ctx.tc('newsItems', headline, null);
+      if (!val) {
+        errors.push(`[en] missing newsItems overlay NP.${poolKey}[${index}]`);
+        return;
+      }
+      if (HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in newsItems NP.${poolKey}[${index}]: ${val.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(val)) errors.push(`[en] mojibake leaked in newsItems NP.${poolKey}[${index}]: ${val.slice(0, 80)}`);
+    });
+  });
+}
+
+function checkIssue22Overlays(ctx, errors) {
+  const chainIds = [
+    'CH-I01A-1', 'CH-I01A-2', 'CH-I01B-1', 'CH-I01B-2',
+    'CH-I02A-1', 'CH-I02A-2', 'CH-I02B-1', 'CH-I02B-2',
+    'CH-I03A-1', 'CH-I03A-2', 'CH-I03B-1', 'CH-I03B-2',
+    'CH-I04A-1', 'CH-I04A-2', 'CH-I04B-1', 'CH-I04B-2',
+    'CH-I05A-1', 'CH-I05A-2', 'CH-I05B-1', 'CH-I05B-2'
+  ];
+  chainIds.forEach((id) => {
+    const view = ctx.tc('cards', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue22 chain card overlay ${id}`);
+      return;
+    }
+    ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue22 chain card ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue22 chain card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in issue22 chain card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+
+  const logIds = ['LOG-ACT1-SKIP', 'LOG-OBSERVER-APPROVED', 'LOG-C106-HERB', 'LOG-C159-GYM'];
+  logIds.forEach((id) => {
+    const view = ctx.tc('oracleLogs', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue22 oracle log overlay ${id}`);
+      return;
+    }
+    ['title', 'content'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue22 oracle log ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue22 oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in issue22 oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+
+  const eveningKeys = [
+    'haeun_2a_7-12', 'haeun_3a_14-18', 'haeun_3a_19-23', 'haeun_4a_29-31',
+    'haeun_4a_32-33', 'haeun_4a_34-35',
+    'jaehyuk_3a_14-17', 'jaehyuk_3a_18-23', 'jaehyuk_4a_29-30',
+    'jaehyuk_4a_31-32', 'jaehyuk_4a_33', 'jaehyuk_4a_34', 'jaehyuk_4a_35',
+    'doyun_2b_8-11', 'doyun_3b_19-23', 'doyun_4b_31-32', 'doyun_4b_33',
+    'doyun_4b_34', 'doyun_4b_35',
+    'sejin_2b_9-12', 'sejin_3b_13-16', 'sejin_3b_17-23',
+    'sejin_4b_31-32', 'sejin_4b_33', 'sejin_4b_34', 'sejin_4b_35'
+  ];
+  eveningKeys.forEach((key) => {
+    const chat = ctx.tc('eveningChats', key, null);
+    const resp = ctx.tc('eveningResponses', key, null);
+    if (!chat || !Array.isArray(chat.lines)) errors.push(`[en] missing issue22 evening chat ${key}`);
+    if (!resp || !resp.a || !resp.b) errors.push(`[en] missing issue22 evening response ${key}`);
+    flatten({ chat, resp }, `issue22Evening.${key}`, []).forEach((item) => {
+      if (HANGUL_RE.test(item.value)) errors.push(`[en] Hangul leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(item.value)) errors.push(`[en] mojibake leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+    });
+  });
+}
+
 function checkCoreCardOverlays(ctx, errors) {
   const ids = [
     'C-133', 'C-134', 'C-135', 'C-136', 'C-137', 'C-138', 'C-139',
@@ -656,6 +740,8 @@ function main() {
   checkCsCardOverlays(en, errors);
   checkSideCardOverlays(en, errors);
   checkIssue21Overlays(en, errors);
+  checkNewsPoolOverlays(en, errors);
+  checkIssue22Overlays(en, errors);
   checkCoreCardOverlays(en, errors);
   checkMiniGameNarrativeOverlays(en, errors);
   checkResultTextOverlays(en, errors);

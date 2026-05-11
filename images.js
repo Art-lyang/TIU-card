@@ -39,6 +39,7 @@ const IMG = {
   ending_B: "assets/images/endings/ending_B.png",
   ending_C_c: "assets/images/endings/ending_C_c.png",
   ending_C_cs: "assets/images/endings/ending_C_cs.png",
+  // C_cst is a C_cs variant and intentionally shares the base containment-success ending art until a dedicated image is produced.
   ending_C_cst: "assets/images/endings/ending_C_cs.png",
   ending_C_o: "assets/images/endings/ending_C_o.png",
   ending_C_r: "assets/images/endings/ending_C_r.png",

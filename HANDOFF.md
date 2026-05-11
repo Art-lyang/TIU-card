@@ -1,9 +1,34 @@
 # TIU-CARD 작업 인수인계 (Handoff)
 
-> **작성일**: 2026-05-11 (Issue #21 P0~P3 QA 기준 갱신)
+> **작성일**: 2026-05-11 (Issue #22 P0~P3 보완 작업 기준 갱신)
 > **작업 브랜치**: `main` (로컬 미커밋 검증분 존재)
-> **마지막 BUILD_VER**: `186`
-> **대응 체인지로그**: GitHub Issue #21 P0~P3 보완 및 2026-05-11 검증 스냅샷
+> **마지막 BUILD_VER**: `187`
+> **대응 체인지로그**: GitHub Issue #22 P0~P3 보완 및 2026-05-11 검증 스냅샷
+
+---
+
+## 0-0. 2026-05-11 현재 기준 — Issue #22 P0~P3 보완
+
+### 이번 세션 완료
+
+- P0: `LOG-OBSERVER-APPROVED`, `LOG-ACT1-SKIP`, `LOG-C106-HERB`, `LOG-C159-GYM` 정의와 영어 오버레이를 보강.
+- P0: `LOG-026`을 SPEC-004/M-009 전용으로 유지하고, `C-106` 약초 재배 후속은 `LOG-C106-HERB`로 분리.
+- P1: `C-159` Act 1 체력 단련 공간 로그를 중기 운영 기록 `LOG-078`에서 `LOG-C159-GYM`으로 분리.
+- P1: 서하은 전출(`LOG-050`) 이후 `C-200`, `C-201`이 등장하지 않도록 조건을 보강.
+- P1: `C-189` 영어 부상 묘사를 한국어 원문과 같은 왼쪽 어깨/옆구리 파편상으로 수정.
+- P2/P3: `CA-SEED-01/02`, `CA-OBS-PROTO`, `C-034`의 선택지 수치 차이를 명확히 하고 과도한 초반 페널티를 완화.
+- P2/P3: CH-I01~CH-I05 후속 연계 카드와 추가 이브닝챗 영어 오버레이를 보강.
+- P2/P3: 루트 중복 엔딩 PNG를 제거하고 `assets/images/endings/` 경로를 단일 기준으로 유지.
+- 검증 보강: `tools/issue22_audit.js`를 추가하고 `tools/i18n-smoke.js`가 NP 뉴스풀, Issue #22 연계카드/이브닝/로그 오버레이를 점검하도록 확장.
+
+### 검증 결과
+
+- `node tools/validator.js`: 카드 548 / 고유 ID 548 / 이슈 0건.
+- `node tools/i18n-smoke.js`: 통과.
+- `node tools/issue22_audit.js`: 통과.
+- `node tools/check_ending_routes.js`: 13/13 통과.
+- `python tools/simulator_v3.py 20 all`: comply 즉사 0%, rebel 15%, careful 0%, explorer 0%, newbie 20%.
+- Playwright CLI 스크린샷 스모크: `http://localhost:4173/index.html` desktop 1366x768 / mobile 390x844, BUILD_VER 187 부팅 화면 렌더 확인.
 
 ---
 

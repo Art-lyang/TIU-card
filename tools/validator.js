@@ -11,6 +11,7 @@
 //  7) 고아 카드 (act 배열 없음 + 의도 잠금도 아님)
 //  8) 한 카드 내 left/right 동일 라벨, 빈 fx
 //  9) once 플래그 선언했으나 ONCE- 로그로 추적 안 하는 카드
+// 10) 생산되는 LOG가 ORACLE_LOGS에 정의되어 있는지
 
 const fs = require('fs');
 const path = require('path');
@@ -140,6 +141,7 @@ const issues = {
   brokenMiniGameRefs: [],
   brokenMissionNodes: [],
   brokenFollowupTypes: [],
+  undefinedProducedLogs: [],
   unproducedLogs: [],
   evidenceUnreachable: [],
   endingLogMissing: [],
@@ -323,6 +325,13 @@ for (const file of ['app-logic.js', 'app.js']) {
   } catch (e) {}
 }
 
+// 생산되는 일반 LOG는 로그 탭/i18n에서 조회될 수 있으므로 정의가 필요하다.
+for (const log of producedLogs) {
+  if (log.startsWith('LOG-') && !definedLogIds.has(log)) {
+    issues.undefinedProducedLogs.push({ log });
+  }
+}
+
 // 소비됐으나 어디서도 생산 안 된 LOG
 for (const [log, places] of consumedLogs) {
   if (!producedLogs.has(log) && !definedLogIds.has(log)) {
@@ -448,6 +457,7 @@ warn(issues.brokenMissionRefs, '카드→미션 참조 깨짐', x => x.card + '.
 warn(issues.brokenMiniGameRefs, '미니게임 연동 참조 깨짐', x => x.missionId + '/' + x.nodeId + ' → ' + x.nextId + ' (' + x.reason + ')');
 warn(issues.brokenMissionNodes, '미션 노드 참조 깨짐', x => x.missionId + '/' + x.nodeId + ' (' + x.reason + ')');
 warn(issues.brokenFollowupTypes, '현장 후속 카드 생성 실패', x => x.missionId + '/' + x.nodeId + ' → ' + x.nextId + ' [' + x.type + ']');
+warn(issues.undefinedProducedLogs, '생산되지만 정의되지 않은 LOG', x => x.log);
 warn(issues.unproducedLogs, '참조되지만 생산되지 않는 LOG', x => x.log + '  (' + x.totalRefs + '곳 참조: ' + x.consumedBy.slice(0, 2).join(', ') + ')');
 warn(issues.evidenceUnreachable, '증거 src LOG 미도달', x => x.ev + ' ' + x.name + ' ← ' + x.srcLog);
 warn(issues.endingLogMissing, '엔딩 필수 LOG 미생산', x => '엔딩 ' + x.ending + ': ' + x.log);

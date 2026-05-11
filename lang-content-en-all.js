@@ -730,7 +730,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Hold defensive strongpoints"
     },
     "C-189": {
-        "msg": "The raid is continuing. The eastern wall of the branch has collapsed.\n\nKang Do-yun: \"The east side is down! Evacuate everyone—\"\n\nPersonnel are withdrawing through the emergency tunnel.\n\nKang Do-yun covers the rear and enters the tunnel last. He suffers a severe burn to his right leg, but survives.\n\nYoon Se-jin: \"Thermal injury to the leg. Field deployment is no longer possible. But he lived.\"",
+        "msg": "The raid is continuing. The eastern wall of the branch has collapsed.\n\nKang Do-yun: \"The east side is down! Evacuate everyone—\"\n\nPersonnel are withdrawing through the emergency tunnel.\n\nKang Do-yun covers the rear and enters the tunnel last. He suffers shrapnel wounds to his left shoulder and side, but survives.\n\nYoon Se-jin: \"The bleeding is controlled. Field deployment is no longer possible. But he lived.\"",
         "leftLabel": "Check equipment and respond",
         "rightLabel": "Prioritize treatment of the wounded"
     },
@@ -1165,9 +1165,6 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
     }
   });
 
-// --- lang-content-en.phase17-cards.js ---
-// --- lang-content-en.phase18-cards.js ---
-// --- lang-content-en.phase19-cards.js ---
 // --- lang-content-en.phase2.js ---
 window.TS_I18N.mergeContent('en', {
   briefings: {
@@ -3516,6 +3513,10 @@ window.TS_I18N.mergeContent('en', {
   oracleLogs: {
     "LOG-055": { title: "Seo Hae-eun USB Data", content: "Backup data Seo Hae-eun kept outside the official network. It includes ORACLE deletion logs, GRANT authority fragments, and time-offset analysis of Korea Branch directive patterns." },
     "LOG-080": { title: "Markus Weber Contact Record", content: "Unofficial contact record with Markus Weber, commander of the Prometheus Korea operations team. COASTAL MIRROR material indicates that an unclassified 31 percent of Korea containment success is linked to unofficial Prometheus technical support." },
+    "LOG-ACT1-SKIP": { title: "Act 1 Skip Record", content: "A repeat-session record showing that the initial briefing segment was skipped and the branch moved directly into active operations. It is a session-flow marker and does not directly affect ending conditions." },
+    "LOG-OBSERVER-APPROVED": { title: "OBSERVER Access Approved", content: "An unregistered OBSERVER protocol connection passed through by command approval. It remains outside ORACLE's official approval chain and is classified as key evidence for data-corruption endings." },
+    "LOG-C106-HERB": { title: "Herb Cultivation Experiment", content: "Record of an internal herb cultivation test at the branch. The basic growth conditions are stable, while later harvest and distribution choices are stored as a separate resource-management trace." },
+    "LOG-C159-GYM": { title: "Temporary Fitness Space", content: "Record of reviewing whether limited base space should be converted into a physical training area. It preserves an early operations decision between morale and resource allocation." },
     "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation depending on the selected response." },
     "LOG-041": { title: "SPEC-015 Tracking Operation Complete", content: "The BS-GANGWON-01 response operation has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
     "LOG-RES-012": { title: "SPEC-012 Biological Sample Secured", content: "Blood Pit sample acquisition record. Yoon Se-jin's research team registered the tissue reaction and regeneration pattern inside the containment vessel for long-term observation." },
