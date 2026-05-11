@@ -19,7 +19,7 @@ var CARDS_ENDING = [
       var n = (typeof Save!=='undefined'?Save.getSessions():0);
       return "단말기 화면이 0.5초간 암전됩니다.\n\n지정되지 않은 서체로 텍스트가 출력됩니다:\n\n'" + n + "회 권한 사용을 관측. 매 세션마다 새로운 데이터 습득 중.\n관찰 지속.'\n\n[ORACLE: 출력 오류 — 해당 로그 항목이 존재하지 않습니다. 무시를 권장합니다.]";
     },
-    left:  { label: "…누구지?",       fx: { c: 0, r: 0, t: 0, o: -5 }, g: -8,
+    left:  { label: "…누구지?",       fx: { c: 0, r: 0, t: 0, o: -5 }, g: -6,
       replyMsg: "'좋은 질문이다.' 라는 추가 출력 후 화면이 정상 복귀합니다." },
     right: { label: "ORACLE 진단 실행", fx: { c: -1, r: 0, t: 0, o: -1 }, g: -2,
       replyMsg: "[ORACLE: 진단 결과 — 이상 없음. 로그 항목 정상.]\n(진단 중 0.003초 공백 존재. ORACLE 보고서에 기록되지 않음.)" } },

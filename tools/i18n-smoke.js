@@ -389,8 +389,9 @@ function checkCsCardOverlays(ctx, errors) {
 
 function checkSideCardOverlays(ctx, errors) {
   const ids = [
-    'RH-01', 'RH-02', 'RH-03', 'RH-04', 'RH-05',
+    'RH-01', 'RH-02', 'RH-03', 'RH-04', 'RH-05', 'RH-06',
     'HH-01', 'HH-02',
+    'OBS-HINT-01',
     'CR-001', 'CR-002', 'CR-003', 'CR-004', 'CR-005', 'CR-006',
     'CA-SEED-01', 'CA-SEED-02', 'CA-SEED-03', 'CA-SEED-04',
     'CN-001', 'CN-002', 'CN-003', 'CN-004', 'CN-005',
@@ -407,6 +408,61 @@ function checkSideCardOverlays(ctx, errors) {
       if (!val) errors.push(`[en] missing side card ${id}.${prop}`);
       if (typeof val === 'string' && HANGUL_RE.test(val)) {
         errors.push(`[en] Hangul leaked in side card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+}
+
+function checkIssue21Overlays(ctx, errors) {
+  const cardIds = [
+    'LJC-PROM-01', 'LJC-PROM-02', 'LJC-PROM-03', 'LJC-PROM-04',
+    'LJC-PROM-05', 'LJC-PROM-06', 'LJC-PROM-07',
+    'KC-01', 'KC-02', 'KC-03', 'KC-04', 'KC-05', 'KC-06', 'KC-07', 'KC-08',
+    'A2-FORESHADOW-01', 'A2-FORESHADOW-02', 'A2-TRIAGE-01',
+    'A4-SUPPORT-DG-01', 'A4-SUPPORT-MD-01', 'A4-SUPPORT-PROM-01',
+    'A4-EVIDENCE-RELIEF-01', 'A4-STAFF-REVIEW-01',
+    'A3-B3-LINE-01', 'A3-B3-LINE-02', 'A4-B3-LINE-01'
+  ];
+  cardIds.forEach((id) => {
+    const view = ctx.tc('cards', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue21 card overlay ${id}`);
+      return;
+    }
+    ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue21 card ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue21 card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+
+  const logIds = [
+    'LOG-KR-CIV-REPORT', 'LOG-KR-CIV-QUIET', 'LOG-KR-GATE-STRICT', 'LOG-KR-GATE-REVIEW',
+    'LOG-KR-HOSPITAL-CENTRAL', 'LOG-KR-HOSPITAL-FAMILY', 'LOG-KR-MARKET-DG', 'LOG-KR-MARKET-LOCAL',
+    'LOG-KR-SCHOOL-CLOSE', 'LOG-KR-SCHOOL-CONTINUE', 'LOG-KR-RECORD-PRESERVE', 'LOG-KR-RECORD-RESTORE',
+    'LOG-KR-HUB-LOCK', 'LOG-KR-HUB-OPEN', 'LOG-KR-REGISTRY-SEAL', 'LOG-KR-REGISTRY-SHARE',
+    'LOG-LJC-PROM-01', 'LOG-LJC-PROM-02', 'LOG-LJC-PROM-03', 'LOG-LJC-PROM-04',
+    'LOG-LJC-PROM-05', 'LOG-LJC-PROM-06', 'LOG-LJC-PROM-07',
+    'LOG-A2-FORESHADOW-01', 'LOG-A2-FORESHADOW-02', 'LOG-A2-TRIAGE-01',
+    'LOG-A4-DG-SUPPORT', 'LOG-A4-MD-SUPPORT', 'LOG-A4-PROM-SUPPORT',
+    'LOG-A4-EVIDENCE-RELIEF', 'LOG-A4-STAFF-REVIEW',
+    'LOG-B3-LINEAGE-01', 'LOG-B3-LINEAGE-02', 'LOG-A4-B3-LINEAGE',
+    'LOG-INTRO-SH', 'LOG-INTRO-KD', 'LOG-INTRO-YS', 'LOG-INTRO-IJ',
+    'LOG-ACT2', 'LOG-ACT3', 'LOG-ACT4'
+  ];
+  logIds.forEach((id) => {
+    const view = ctx.tc('oracleLogs', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue21 log overlay ${id}`);
+      return;
+    }
+    ['title', 'content'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue21 log ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue21 log ${id}.${prop}: ${val.slice(0, 80)}`);
       }
     });
   });
@@ -599,6 +655,7 @@ function main() {
   checkCtCardOverlays(en, errors);
   checkCsCardOverlays(en, errors);
   checkSideCardOverlays(en, errors);
+  checkIssue21Overlays(en, errors);
   checkCoreCardOverlays(en, errors);
   checkMiniGameNarrativeOverlays(en, errors);
   checkResultTextOverlays(en, errors);

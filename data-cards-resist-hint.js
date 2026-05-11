@@ -1,9 +1,17 @@
 // data-cards-resist-hint.js
-// Phase 4 — 저항 루트(B/D/F) 밸런싱 카드 5장
+// Phase 4 — 저항 루트(B/D/F) 밸런싱 카드
 //   목적: 시뮬레이터 resist 전략 실행 시 C_o(ORACLE 차단) 100% → GI↓과 o↓의 과도한 결합 완화
 //   설계: "GI는 낮추되 o 스탯은 유지/상승"하는 선택지 제공 (지휘 능숙 + 정보 장악)
 // Phase 5 — 엔딩 H "점거" 디스커버러빌리티 힌트 2장
 //   목적: 플레이어가 자연스럽게 uprising 경로를 알 수 있게 Act 2 중반 임재혁 힌트
+
+if (typeof ORACLE_LOGS !== 'undefined' && !ORACLE_LOGS.some(function(x){ return x.id === 'LOG-RH-QUIET-FREEDOM'; })) {
+  ORACLE_LOGS.push({
+    id: 'LOG-RH-QUIET-FREEDOM',
+    title: '조용한 자유 준비 기록',
+    content: '[비공식 대피 순서]\n\n공식 명령 체계를 뒤집지 않는다. 공개적인 탈주 선언도 하지 않는다.\n\n서하은은 인원 명단을 둘로 나누고, 강도윤은 봉쇄선의 빈 시간을 표시했다. 윤세진은 이동 가능한 환자를 추렸고, 임재혁은 ORACLE이 늦게 읽는 보고 큐를 만들었다.\n\n목표는 승리가 아니다. 모두가 사라지기 전에, 조용히 빠져나갈 수 있는 틈을 만드는 것이다.'
+  });
+}
 
 var CARDS_RESIST_HINT = [
 
@@ -46,6 +54,23 @@ var CARDS_RESIST_HINT = [
     left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4, log: "LOG-RH-COUNTERMEMO" },
     right: { label: "ORACLE 판단만 통과", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
 
+  // RH-06: 엔딩 D(조용한 자유) 도달 가이드. B 엔딩보다 앞서 분기 의도를 고정한다.
+  { id: "RH-06", act: [3], priority: "상", tag: "quiet-freedom-guide", once: true, forceFlow: true,
+    req: function(s,g,logs){ return s.day >= 18 && g <= -20 && logs.indexOf('LOG-RH-QUIET-FREEDOM') < 0; },
+    msg: "서하은이 문서철을 덮고 말합니다.\n\n\"공개적으로 저항하면 ORACLE이 먼저 압박합니다.\"\n\"하지만 모두가 같은 날 같은 방향으로 움직이지 않아도 됩니다.\"\n\n강도윤은 봉쇄선 교대 시간표를, 윤세진은 이동 가능한 환자 명단을, 임재혁은 늦게 읽히는 보고 큐를 올립니다.\n\n이건 승리 선언이 아닙니다. 조용히 사라질 준비입니다.",
+    left:  { label: "비공식 대피 순서를 만든다", fx: { c: 0, r: 1, t: 2, o: -1 }, g: -3, log: "LOG-RH-QUIET-FREEDOM" },
+    right: { label: "각자 기록만 분산 보관한다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1 } },
+
+  // OBS-HINT-01: 엔딩 F(Observer) 도달 가이드. LOG-012 이후 관측 로그를 명시적으로 연결한다.
+  { id: "OBS-HINT-01", act: [3,4], priority: "상", tag: "observer-route-guide", once: true, glitch: 2, forceFlow: true,
+    req: function(s,g,logs){
+      return s.day >= 22 && g <= 5 && logs.indexOf('LOG-OBSERVER-01') < 0 &&
+        (logs.indexOf('LOG-012') >= 0 || logs.indexOf('LOG-OBSERVER-APPROVED') >= 0 || g <= -10);
+    },
+    msg: "임재혁이 LOG-012의 미등록 UI 요소를 다시 띄웁니다.\n\n\"캐시 오류가 아니었습니다.\"\n\"이 요소는 ORACLE 내부가 아니라, ORACLE 바깥에서 우리 화면을 보고 있습니다.\"\n\n그는 접근 경로를 하나 더 표시합니다.\n\n[UNREGISTERED OBSERVATION LAYER]\n[ORACLE: 인식 불가]",
+    left:  { label: "관측 레이어를 추적한다", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: ["LOG-012","LOG-OBSERVER-01"] },
+    right: { label: "접근 기록을 닫는다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
   // ════════════════════════════════
   //  Phase 6 — 충성 루트 완충 3장
   // ════════════════════════════════
@@ -70,7 +95,7 @@ var CARDS_RESIST_HINT = [
 
   // 오라클 충성 루트 1회성 안전장치.
   // 조건과 강제 노출은 app-init.js / app.js에서 보장한다.
-  { id: "ORC-LOYAL-SAFE-01", act: [2,3,4], priority: "event", tag: "oracle-loyalty-safeguard", once: true, bg: "oracle", glitch: true,
+  { id: "ORC-LOYAL-SAFE-01", act: [2,3,4], priority: "상", tag: "oracle-loyalty-safeguard", once: true, bg: "oracle", glitch: true, forceFlow: true,
     req: function(s,g,logs){
       return typeof oracleSafeguardEligible === 'function'
         ? oracleSafeguardEligible(s,g,logs)
@@ -99,7 +124,7 @@ var CARDS_RESIST_HINT = [
     left:  { label: "검토 명단에 올려둬라", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2, trust: 5 },
     right: { label: "아직 단계가 아니다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
 
-  { id: "RH-SAFE-01", act: [2,3,4], priority: "event", tag: "resist-safeguard", once: true, bg: "supply",
+  { id: "RH-SAFE-01", act: [2,3,4], priority: "상", tag: "resist-safeguard", once: true, bg: "supply", forceFlow: true,
     req: function(s,g,logs){
       return typeof resistanceSafeguardEligible === 'function'
         ? resistanceSafeguardEligible(s,g,logs)

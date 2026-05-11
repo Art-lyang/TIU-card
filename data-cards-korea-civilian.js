@@ -33,7 +33,13 @@ var CARDS_KOREA_CIVILIAN = [
     right:{label:"낙인 방지 문구를 함께 제안",fx:{c:-1,r:0,t:1,o:-1},g:-1,log:"LOG-KR-SCHOOL-CONTINUE"} },
 
   { id:"KC-06", act:[3], tag:"kr-record", priority:"상", once:true,
-    cond:function(s){return s.day>=15},
+    cond:function(s,g,logs){
+      return s.day>=15 && [
+        "LOG-KR-GATE-REVIEW","LOG-KR-GATE-STRICT",
+        "LOG-KR-HOSPITAL-FAMILY","LOG-KR-HOSPITAL-CENTRAL",
+        "LOG-KR-SCHOOL-CLOSE","LOG-KR-SCHOOL-CONTINUE"
+      ].some(function(id){ return logs.includes(id); });
+    },
     msg:"기록보존실 B-12에서 오래된 문서 제목만 복원되었습니다.\n\n제목: '민간 피해 없음 — 강원 동부 작전 사후 정리본'\n\n본문은 사라졌지만, 같은 시각 유족 편지 스캔본이 옆 폴더에 남아 있습니다.",
     left:{label:"제목만 보존 — 접근 제한",fx:{c:0,r:0,t:-1,o:1},g:1,log:"LOG-KR-RECORD-PRESERVE"},
     right:{label:"사본 복원 시도",fx:{c:0,r:-1,t:1,o:-1},g:-3,log:"LOG-KR-RECORD-RESTORE"} },

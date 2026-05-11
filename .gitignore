@@ -10,5 +10,11 @@ _backups/
 output/
 test-results/
 _tmp*
+TEST/
+TEST.zip
+mission_playtest.html
+qa-phase11-results.json
+qa-minigame-ui.png
+advance_button.png
 -setup/MD/**/*.zip
 -setup/MD/**/PRIVATE/

@@ -1,44 +1,45 @@
 # TIU-CARD 작업 인수인계 (Handoff)
 
-> **작성일**: 2026-05-10 (세션 덱 계승/QA 기준 갱신)
-> **작업 브랜치**: `main` (origin/main 동기화 완료)
-> **마지막 BUILD_VER**: `178`
-> **대응 체인지로그**: `-setup/MD/TIU-ALPHA-CHANGELOG-2026-05-08.md` 2026-05-10 후속 스냅샷
+> **작성일**: 2026-05-11 (Issue #21 P0~P3 QA 기준 갱신)
+> **작업 브랜치**: `main` (로컬 미커밋 검증분 존재)
+> **마지막 BUILD_VER**: `186`
+> **대응 체인지로그**: GitHub Issue #21 P0~P3 보완 및 2026-05-11 검증 스냅샷
 
 ---
 
-## 0-0. 2026-05-10 현재 기준 — 세션 덱 계승 및 Act4 압박 보정
+## 0-0. 2026-05-11 현재 기준 — Issue #21 P0~P3 보완 및 QA 재검증
 
 ### 현재 기준 수치
 
 | 항목 | 수치 |
 |---|---|
-| 카드 | 544장 / 고유 ID 544 |
+| 카드 | 548장 / 고유 ID 548 |
 | 체인 | 메인 18 + 사건/후속 10 |
 | 미션 | 15개 |
-| 미니게임 연동 | 9개 임무 |
+| 미니게임 연동 | 13개 임무 |
 | 증거 | 38조각 + 15조합 |
 | 이브닝챗 | 103엔트리, 하루 1명 대화 |
 | 엔딩 | 16종 |
-| 아카이브 | 46종 |
+| 아카이브 | 47종 |
 | 세이브 | 3슬롯 독립 저장/로드 구조 유지 |
 
 ### 이번 세션 완료
 
-- Act 2에서 선택/발견한 세션팩이 Act 3~4 후속 카드 가중치에 반영되도록 `sessionDeckLineageWeight`를 추가.
-- 메인 루트 전환 카드(`transReq`)는 세션팩 보정 대상에서 제외해 필수 분기 잠김을 방지.
-- 실제 사용 중인 이브닝챗 렌더 경로에도 `sessionDeckEveningOk` 필터를 적용해 세션팩 대화 노출 기준을 통일.
-- `B3_PREDECESSOR` 후속 풀이 약했던 문제를 보완하기 위해 Act 3~4 전임 지휘관 계승 카드 3장과 대응 로그/영어 오버레이를 추가.
-- Act 4 초반 중립 루트에서 자원이 0 이하로 떨어지는 자동 전략 핫스팟을 줄이기 위해 런타임/시뮬레이터 보정을 day 34까지 확장.
+- Issue #21 P0: `EV-01` 출처를 `LOG-006` 기준으로 확인하고, `EV-02`는 실제 새벽 통신 로그인 `LOG-019`로 분리.
+- Issue #21 P1: `C-332`, `CH-003-2`, `CA4-OR-02`, `CE-005`의 과도한 수치/ORACLE 편중을 완화.
+- Issue #21 P1/P2: `C-015` 영어 함수형 선택지 라벨 렌더, `C-021` 조기 등장, `KC-06` 선행조건, 서하은 Act4 이브닝 조건을 보완.
+- Issue #21 P2/P3: `TEST/`와 루트 `advance_button.png`를 릴리즈 추적 대상에서 제거하고 알파 ZIP 패키징 제외를 검증.
+- README 기준 수치와 BUILD_VER를 2026-05-11 검증값으로 갱신.
 
 ### 검증 결과
 
-- `node tools/validator.js`: 카드 544 / 고유 ID 544 / 이슈 0건.
+- `node tools/validator.js`: 카드 548 / 고유 ID 548 / 이슈 0건.
 - `node tools/i18n-smoke.js`: 통과.
-- `node tools/check_ending_routes.js`: 11/11 통과.
+- `node tools/check_ending_routes.js`: 13/13 통과.
 - `node _workspace/codex/route-integrity-audit.js`: 대상 루트 무결성 통과.
 - `node _workspace/codex/session-deck-affinity-audit.js`: 약한 세션팩 0, 메인 루트 카드 세션팩 누수 0.
-- `python tools/simulator_v3.py 100 all`: comply 서사 98%, rebel 서사 86%, careful 서사 88%, explorer 서사 98%, newbie 서사 69%.
+- `python tools/simulator_v3.py 50 all`: comply 서사 98%, rebel 서사 72%, careful 서사 100%, explorer 서사 94%, newbie 서사 88%.
+- Playwright 모바일 390x844 부팅/메뉴 스모크: BUILD_VER 184, 콘솔 오류 0건.
 
 ### 남은 관찰 지점
 

@@ -93,17 +93,70 @@ def chk_special_ending(s, gi, act, trust, logs):
     if act < 3: return None
     def t(v): return 1 if v >= 65 else 0
     def m(v): return 1 if v >= 60 else 0
-    any55 = sum(1 for v in trust.values() if v >= 55)
     high = t(trust['haeun']) + t(trust['doyun']) + t(trust['sejin']) + t(trust['jaehyuk'])
     mid = m(trust['haeun']) + m(trust['doyun']) + m(trust['sejin']) + m(trust['jaehyuk'])
+    any70 = sum(1 for ch in CHAR_KEYS if trust[ch] >= 70)
+    any55 = sum(1 for ch in CHAR_KEYS if trust[ch] >= 55)
     lc = len(logs)
-    hL12 = 'LOG-012' in logs; hL13 = 'LOG-013' in logs
-    hObs = 'LOG-OBSERVER-APPROVED' in logs
-    if hL12 and hL13 and hObs and s['day'] >= 30 and gi <= 0: return 'F'
-    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 32: return 'D'
-    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 28: return 'B'
-    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 30: return 'G'
+    has_log_12 = 'LOG-012' in logs
+    has_observer = 'LOG-OBSERVER-01' in logs
+    has_approved = 'LOG-OBSERVER-APPROVED' in logs
+    has_quiet_freedom = 'LOG-RH-QUIET-FREEDOM' in logs
+    if act >= 4 and s['day'] >= 30 and gi >= 55 and s['c'] >= 70 and s['o'] >= 60: return 'A'
+    if has_log_12 and has_observer and has_approved and s['day'] >= 25 and gi <= 5: return 'F'
+    if has_log_12 and has_observer and has_approved and s['day'] >= 28 and gi <= 0: return 'F'
+    if has_log_12 and has_observer and not has_approved and s['day'] >= 33 and gi <= -20 and high >= 2: return 'F'
+    if has_quiet_freedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 25: return 'D'
+    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 28: return 'D'
+    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 30: return 'D'
+    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 25: return 'B'
+    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 28: return 'B'
+    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 28: return 'G'
+    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 31: return 'G'
     return None
+
+def resolve_time_up(s, gi, trust, logs):
+    high = sum(1 for ch in CHAR_KEYS if trust[ch] >= 65)
+    if gi >= 40: return 'A'
+    if gi <= -20 and high >= 1: return 'D'
+    if gi <= -15: return 'B'
+    return 'G'
+
+def get_transition_route(new_act, act_flags, gi):
+    if new_act == 2:
+        return 'A'
+    if new_act == 3:
+        prom_met = bool(act_flags.get('prom_met'))
+        mission_done = bool(act_flags.get('mission_done'))
+        if prom_met and mission_done: return 'A'
+        if prom_met: return 'B'
+        if mission_done: return 'C'
+        return 'D'
+    if new_act == 4:
+        if gi >= 10: return 'A4_COMPLY'
+        if gi >= -15: return 'A4_GREY'
+        if gi >= -30: return 'A4_RESIST'
+        return 'A4_OBSERVER'
+    return ''
+
+def transition_penalty(new_act, route):
+    if new_act == 4:
+        if route == 'A4_COMPLY': return 0
+        return 5
+    if new_act == 3:
+        return 5 if route in ('A', 'B', 'C') else 10
+    if new_act == 2:
+        return 0 if route == 'A' else 5
+    return 0
+
+def apply_transition_penalty(s, new_act, route):
+    penalty = transition_penalty(new_act, route)
+    if penalty <= 0:
+        return s
+    ns = dict(s)
+    for k in 'crto':
+        ns[k] = max(0, min(100, ns[k] - penalty))
+    return ns
 
 def resistance_safeguard_eligible(s, gi, logs):
     if 'ONCE-RH-SAFE-01' in logs or 'LOG-RH-SAFEGUARD' in logs: return False
@@ -227,6 +280,12 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
     if act == 4 and day <= 34 and is_neutral_route(ng) and before['r'] > 0 and ns['r'] <= 0:
         changed = _lift_below(ns, 'r', 10) or changed
 
+    if act == 4 and day <= 30:
+        for key in 'crto':
+            floor = 5 if key == 'o' else 10
+            if before[key] > 0 and ns[key] <= 0:
+                changed = _lift_below(ns, key, floor) or changed
+
     if is_loyal_choice(card, choice, before_gi, ng, before, ns):
         if act <= 3 and ng >= 8:
             changed = _lift_below(ns, 'r', 35) or changed
@@ -238,6 +297,9 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
             changed = _lift_below(ns, 'c', 30) or changed
 
     if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
+        changed = _cap_above(ns, 'c', 95) or changed
+
+    if act == 4 and day <= 34 and _raises(before, ns, 'c') and ns['c'] >= 100:
         changed = _cap_above(ns, 'c', 95) or changed
 
     return ns, ng, changed
@@ -277,12 +339,12 @@ def collect_chain_ids():
 def collect_hidden_logs():
     """히든 스토리/옵저버/특수 루트에 필요한 LOG ID."""
     return {
-        'observer': ['LOG-OBSERVER-APPROVED', 'LOG-012', 'LOG-013'],
+        'observer': ['LOG-OBSERVER-APPROVED', 'LOG-OBSERVER-01', 'LOG-012', 'LOG-013'],
         'hidden_story': ['LOG-HIDDEN-01', 'LOG-HIDDEN-02', 'LOG-HIDDEN-03'],
         'investigation': ['LOG-EV-UNLOCK'],
         'prometheus': ['LOG-PROM-CONTACT', 'LOG-LJC-PROM-01'],
         'uprising': ['LOG-UPRISING-01', 'LOG-UPRISING-02'],
-        'resistance_safe': ['LOG-RH-SAFEGUARD'],
+        'resistance_safe': ['LOG-RH-SAFEGUARD', 'LOG-RH-QUIET-FREEDOM'],
         'oracle_safe': ['LOG-ORACLE-SAFEGUARD'],
     }
 
@@ -406,12 +468,29 @@ def session_deck_lineage_weight(card, logs, act, session_deck):
         weight += 0.1
     return max(0.75, min(2.1, weight))
 
+def card_base_weight(card):
+    w = 1.0
+    priority = card.get('priority')
+    if priority == '상':
+        w += 5
+    elif priority == '중':
+        w += 2
+    elif priority == 'event':
+        w += 6
+    if card.get('once'):
+        w += 2
+    if card.get('transReq'):
+        w += 4
+    if card.get('glitch'):
+        w += 1
+    return w
+
 def weighted_card_choice(pool, logs, act, session_deck):
-    total = sum(session_deck_lineage_weight(c, logs, act, session_deck) for c in pool)
+    total = sum(card_base_weight(c) * session_deck_lineage_weight(c, logs, act, session_deck) for c in pool)
     if total <= 0: return random.choice(pool)
     roll = random.random() * total
     for c in pool:
-        roll -= session_deck_lineage_weight(c, logs, act, session_deck)
+        roll -= card_base_weight(c) * session_deck_lineage_weight(c, logs, act, session_deck)
         if roll <= 0:
             return c
     return pool[-1]
@@ -544,7 +623,7 @@ def choose_reward_profile(options, s, profile):
 
     return max(options, key=score)
 
-def apply_reward(s, reward, act=None, gi=0):
+def apply_reward(s, reward, act=None, gi=0, trans_route=''):
     if not reward:
         return s
     ns = dict(s)
@@ -553,10 +632,10 @@ def apply_reward(s, reward, act=None, gi=0):
         ns[k] = max(0, min(100, ns[k]))
     if act == 3:
         ns['c'] = max(0, ns['c'] - 5)
-        if gi < 35:
+        if gi < 35 and trans_route != 'A4_COMPLY':
             ns['r'] = max(0, ns['r'] - 5)
     elif act == 4:
-        loyal_relief = gi >= 40
+        loyal_relief = gi >= 40 or trans_route == 'A4_COMPLY'
         ns['c'] = max(0, ns['c'] - 10)
         ns['r'] = max(0, ns['r'] - (5 if loyal_relief else 10))
         ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
@@ -570,6 +649,13 @@ def apply_reward(s, reward, act=None, gi=0):
         ns['r'] = 10
     if act == 4 and s.get('day', 1) <= 34 and is_neutral_route(gi) and s.get('r', 0) > 0 and ns['r'] <= 0:
         ns['r'] = 10
+    if act == 4 and s.get('day', 1) <= 30:
+        for key in 'crto':
+            floor = 5 if key == 'o' else 10
+            if s.get(key, 0) > 0 and ns[key] <= 0:
+                ns[key] = max(ns[key], floor)
+    if act == 4 and s.get('day', 1) <= 34 and s.get('c', 0) < 100 and ns['c'] >= 100:
+        ns['c'] = 95
     return ns
 
 # ═══════════ 시뮬 본체 ═══════════
@@ -582,6 +668,8 @@ def simulate_one(profile):
     recent = collections.deque(maxlen=60)
     tag_cd = {}
     session_deck = pick_session_deck()
+    act_flags = {'prom_met': False, 'mission_done': False, 'chain_done': False, 'prom_mission': False}
+    trans_route = ''
     card_freq = collections.Counter()
     ending = None
     max_days = 50
@@ -597,6 +685,9 @@ def simulate_one(profile):
     evening_log = []
 
     while s['day'] <= max_days and ending is None:
+        if s['day'] > 35:
+            ending = resolve_time_up(s, gi, trust, logs)
+            break
         act = get_act(s['day'])
         # Runtime applies act pressure after the daily reward pick; keep the
         # start-of-day pass side-effect free so simulator timings match app.js.
@@ -642,6 +733,10 @@ def simulate_one(profile):
                     s[k] = _clamp_stat(s[k] + v * 5)
                 gi += side['g']
                 s, gi, _ = apply_choice_balance_tuning(before_s, before_gi, s, gi, c, side, act)
+                if side.get('mission'):
+                    act_flags['mission_done'] = True
+                    if side.get('mission') in ('M-003', 'M-007'):
+                        act_flags['prom_mission'] = True
                 for L in side['logs']:
                     if L not in logs:
                         logs.append(L)
@@ -649,6 +744,10 @@ def simulate_one(profile):
                         for group, group_logs in HIDDEN_LOG_GROUPS.items():
                             if L in group_logs:
                                 hidden_logs_found.add(L)
+
+            if c['id'] == 'CA-OBS-PROTO' and dir_choice == 'left' and 'LOG-OBSERVER-APPROVED' not in logs:
+                logs.append('LOG-OBSERVER-APPROVED')
+                note_hidden_logs(logs, hidden_logs_found)
 
             for rd, rl in card_log_rules.get(c['id'], []):
                 if rd is None or rd == dir_choice:
@@ -662,6 +761,9 @@ def simulate_one(profile):
             if c['id'] in MISSION_TRIGGERS:
                 missions_triggered.add(MISSION_TRIGGERS[c['id']])
 
+            if c['id'] in ('C-006', 'C-011'):
+                act_flags['prom_met'] = True
+
             # 체인 추적
             cid = c['id']
             if cid.startswith('CH-'):
@@ -674,6 +776,7 @@ def simulate_one(profile):
                     next_id = f'{chain_base}-{chain_num + 1}'
                     if not any(cc['id'] == next_id for cc in CARDS):
                         chains_completed.add(chain_base)
+                        act_flags['chain_done'] = True
 
             if c['once']:
                 if ('ONCE-' + c['id']) not in logs:
@@ -710,7 +813,7 @@ def simulate_one(profile):
 
         reward_options = random.sample(REWARDS, min(4, len(REWARDS))) if REWARDS else []
         chosen = choose_reward_profile(reward_options, s, profile)
-        s = apply_reward(s, chosen, act, gi)
+        s = apply_reward(s, chosen, act, gi, trans_route)
 
         s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
         if safeguarded: note_hidden_logs(logs, hidden_logs_found)
@@ -721,18 +824,31 @@ def simulate_one(profile):
             death_act = act
             break
 
-        se = chk_special_ending(s, gi, act, trust, logs)
+        s['day'] += 1
+
+        if s['day'] > 35:
+            ending = resolve_time_up(s, gi, trust, logs)
+            break
+
+        next_act = get_act(s['day'])
+        if next_act > act:
+            trans_route = get_transition_route(next_act, act_flags, gi)
+            s = apply_transition_penalty(s, next_act, trans_route)
+            go = chk_game_over(s)
+            if go:
+                ending = go
+                death_day = s['day']
+                death_act = next_act
+                break
+            continue
+
+        se = chk_special_ending(s, gi, next_act, trust, logs)
         if se:
             ending = se
             break
 
-        s['day'] += 1
-
     if ending is None:
-        if gi >= 60:
-            ending = 'A'
-        else:
-            ending = 'TIMEOUT'
+        ending = resolve_time_up(s, gi, trust, logs)
 
     return {
         'ending': ending,

@@ -75,6 +75,15 @@ const cases = [
     logs: [],
   },
   {
+    name: 'Ending F guided approved observer route',
+    expected: 'F',
+    stats: stats({ day: 25 }),
+    gi: 5,
+    act: 3,
+    trust: trust(),
+    logs: logs(0, ['LOG-012', 'LOG-OBSERVER-01', 'LOG-OBSERVER-APPROVED']),
+  },
+  {
     name: 'Ending F approved observer route',
     expected: 'F',
     stats: stats({ day: 28 }),
@@ -100,6 +109,15 @@ const cases = [
     act: 3,
     trust: trust({ haeun: 65, doyun: 65 }),
     logs: logs(0, ['LOG-012']),
+  },
+  {
+    name: 'Ending D guided quiet freedom route',
+    expected: 'D',
+    stats: stats({ day: 25 }),
+    gi: -30,
+    act: 3,
+    trust: trust({ haeun: 60, doyun: 60, sejin: 60 }),
+    logs: logs(8, ['LOG-RH-QUIET-FREEDOM']),
   },
   {
     name: 'Ending D canonical route',

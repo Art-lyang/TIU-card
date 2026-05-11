@@ -167,6 +167,16 @@
       kind = changed ? 'act4-neutral-resource-floor' : kind;
     }
 
+    if (currentAct === 4 && day <= 30) {
+      ['c', 'r', 't', 'o'].forEach(function(key){
+        var floor = key === 'o' ? 5 : 10;
+        if (before[key] > 0 && after[key] <= 0) {
+          changed = liftBelow(after, key, floor) || changed;
+          kind = changed ? 'act4-entry-floor' : kind;
+        }
+      });
+    }
+
     if (isLoyalChoice(card, choice, beforeGi || 0, nextGi || 0, before, after)) {
       // Loyal ORACLE choices can still cost human trust/resources, but routine
       // compliance should not force the one-time safeguard every run.
@@ -187,6 +197,11 @@
     if (currentAct <= 3 && raisesStat(before, after, 'c') && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;
       kind = changed ? 'early-overcontainment-buffer' : kind;
+    }
+
+    if (currentAct === 4 && day <= 34 && raisesStat(before, after, 'c') && after.c >= 100) {
+      changed = capAbove(after, 'c', 95) || changed;
+      kind = changed ? 'act4-overcontainment-buffer' : kind;
     }
 
     if (!changed) return null;
@@ -221,6 +236,21 @@
     if (currentAct === 4 && day <= 34 && isNeutralRoute(gi) && before.r > 0 && after.r <= 0) {
       changed = liftBelow(after, 'r', 10) || changed;
       kind = changed ? 'act4-neutral-reward-resource-floor' : kind;
+    }
+
+    if (currentAct === 4 && day <= 30) {
+      ['c', 'r', 't', 'o'].forEach(function(key){
+        var floor = key === 'o' ? 5 : 10;
+        if (before[key] > 0 && after[key] <= 0) {
+          changed = liftBelow(after, key, floor) || changed;
+          kind = changed ? 'act4-entry-reward-floor' : kind;
+        }
+      });
+    }
+
+    if (currentAct === 4 && day <= 34 && before.c < 100 && after.c >= 100) {
+      changed = capAbove(after, 'c', 95) || changed;
+      kind = changed ? 'act4-reward-overcontainment-buffer' : kind;
     }
 
     if (!changed) return null;

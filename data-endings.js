@@ -300,6 +300,7 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   var hasLog12 = logs.indexOf('LOG-012') >= 0;
   var hasObserver = logs.indexOf('LOG-OBSERVER-01') >= 0;
   var hasObsApproved = logs.indexOf('LOG-OBSERVER-APPROVED') >= 0;
+  var hasQuietFreedom = logs.indexOf('LOG-RH-QUIET-FREEDOM') >= 0;
 
   // ═══ 엔딩 A 정상형 (신규) — 이상적 운용자 완주 ═══
   // Act4 + day≥30 + GI≥55 + c≥70 + o≥60
@@ -309,8 +310,11 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   // ═══ 엔딩 F: Observer 레이어 발견 ═══
-  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥28 + GI≤0
+  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥25/28 + GI≤0
   // 변형: LOG-012+Observer + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 25 && gi <= 5) {
+    return 'F';
+  }
   if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 28 && gi <= 0) {
     return 'F';
   }
@@ -319,8 +323,12 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   // ═══ 엔딩 D: 조용한 자유 ═══
+  // 가이드형: 조용한 자유 준비 기록 + GI≤-30 + midTrust≥3 + log≥8 + day≥25
   // 정상형: GI≤-30 + midTrust≥3 + log≥8 + day≥28
   // 변형: GI≤-35 + r≥35 + 한명 trust≥70 + log≥10 + day≥30 (소수 탈출)
+  if (hasQuietFreedom && gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 25) {
+    return 'D';
+  }
   if (gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 28) {
     return 'D';
   }

@@ -6,8 +6,8 @@ import os, sys, zipfile
 ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '..'))
 OUT = os.path.join(ROOT, 'TIU-Alpha.zip')
 
-EXCLUDE_DIRS = {'.git', '-Backup_all', '__pycache__', '.claude', 'tmp_endings'}
-EXCLUDE_FILES = {'TIU-Alpha.zip', '.gitignore', '.git'}
+EXCLUDE_DIRS = {'.git', '-Backup_all', '__pycache__', '.claude', 'tmp_endings', 'TEST', '_workspace', 'output', 'test-results', '_tmp_test_results', '.playwright-cli'}
+EXCLUDE_FILES = {'TIU-Alpha.zip', '.gitignore', '.git', 'TEST.zip', 'advance_button.png', 'mission_playtest.html', 'qa-phase11-results.json', 'qa-minigame-ui.png'}
 EXCLUDE_EXT = {'.pyc', '.zip'}
 
 added = 0

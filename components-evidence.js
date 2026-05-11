@@ -40,13 +40,41 @@ function evidenceFailText(selected) {
     '교차 분석에는 최소 두 개 이상의 단서가 필요합니다.';
 }
 
+function renderEvidenceInsights(unlocked, compact) {
+  if (!unlocked || !unlocked.length) return null;
+  return h('div', { style: { marginTop: compact ? 10 : 14, paddingTop: compact ? 8 : 10,
+    borderTop: '1px solid rgba(var(--ui-rgb),.08)' } },
+    h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: compact ? 9 : 10,
+      color: 'rgba(var(--ui-rgb),.42)', letterSpacing: 1, marginBottom: 6 } },
+      evidenceText('통찰: ', 'INSIGHTS: ') + unlocked.length + '/' + EVIDENCE_COMBOS.length),
+    unlocked.map(function(cid) {
+      var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
+      if (!c) return null;
+      return h('div', { key: cid, style: { marginBottom: compact ? 6 : 8,
+        padding: compact ? '0 0 0 8px' : '0 0 0 10px',
+        borderLeft: '2px solid rgba(240,160,48,.25)' } },
+        h('div', { style: { fontSize: compact ? 9 : 10, color: 'rgba(240,160,48,.72)',
+          marginBottom: 2 } }, '\u2713 ' + c.name),
+        h('div', { style: { fontSize: compact ? 9 : 10, color: 'rgba(var(--ui-rgb),.46)',
+          lineHeight: 1.5 } }, c.result));
+    }));
+}
+
 function EvidenceTable(p) {
   var logs = p.logs || [];
-  var collected = getCollectedEvidence(logs).map(localizeEvidenceRecord);
+  var allCollected = getCollectedEvidence(logs).map(localizeEvidenceRecord);
+  var collected = (typeof getActiveEvidence === 'function' ? getActiveEvidence(logs) : getCollectedEvidence(logs)).map(localizeEvidenceRecord);
   var unlocked = getUnlockedCombos();
   var s1 = useState([]), selected = s1[0], setSelected = s1[1];
   var s2 = useState(null), result = s2[0], setResult = s2[1];
   var s3 = useState(!!p.forceOpen), show = s3[0], setShow = s3[1];
+  var activeIds = collected.map(function(ev) { return ev.id; }).join('|');
+
+  useEffect(function() {
+    setSelected(function(prev) {
+      return prev.filter(function(id) { return activeIds.split('|').indexOf(id) >= 0; });
+    });
+  }, [activeIds]);
 
   if (!p.unlocked) return null;
 
@@ -62,8 +90,10 @@ function EvidenceTable(p) {
   var submit = function() {
     var combo = localizeEvidenceCombo(checkEvidenceCombo(selected));
     if (combo) {
-      if (unlocked.indexOf(combo.id) < 0) {
+      var wasNew = unlocked.indexOf(combo.id) < 0;
+      if (wasNew) {
         saveUnlockedCombo(combo.id);
+        if (typeof markEvidenceComboUsed === 'function') markEvidenceComboUsed(combo.id);
         if (combo.reward) {
           if (combo.reward.trust && p.onTrust) {
             for (var ck in combo.reward.trust) p.onTrust(ck, combo.reward.trust[ck]);
@@ -74,9 +104,11 @@ function EvidenceTable(p) {
             else p.onLog(combo.reward.log);
           }
         }
+      } else if (typeof markEvidenceComboUsed === 'function') {
+        markEvidenceComboUsed(combo.id);
       }
       if(typeof SFX!=='undefined')SFX.play('check');
-      setResult({ success: true, combo: combo });
+      setResult({ success: true, combo: combo, wasNew: wasNew });
     } else {
       if(typeof SFX!=='undefined')SFX.play('btn_off');
       setResult({ success: false });
@@ -100,18 +132,20 @@ function EvidenceTable(p) {
         evidenceText('조사테이블 대기', 'EVIDENCE TABLE STANDBY')),
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(240,160,48,.65)', letterSpacing: 1 } },
-        collected.length + '/2')),
+        collected.length + '/2 · ' + evidenceText('수집 ', 'COL ') + allCollected.length)),
     h('div', { style: { fontSize: 11, color: 'rgba(var(--ui-rgb),.45)',
       lineHeight: 1.5, marginTop: 8 } },
-      evidenceText('교차 분석을 시작하려면 증거 기록이 최소 2개 필요합니다.',
-        'At least two evidence records are required before cross-analysis can begin.')));
+      evidenceText('교차 분석 가능한 새 자료가 부족합니다. 분석 완료 자료는 로그 탭과 통찰 목록에 보존됩니다.',
+        'Not enough active records are available for cross-analysis. Analyzed records remain in Logs and the insight list.')),
+    renderEvidenceInsights(unlocked, true));
 
   // 접힌 상태
   if (!show && !p.forceOpen) return h('div', outerProps,
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'rgba(var(--ui-rgb),.5)', letterSpacing: 2 } },
-        evidenceText('조사테이블 (' + collected.length + ')', 'EVIDENCE TABLE (' + collected.length + ')')),
+        evidenceText('조사테이블 (' + collected.length + '/' + allCollected.length + ')',
+          'EVIDENCE TABLE (' + collected.length + '/' + allCollected.length + ')')),
       h('div', { onClick: function() { setShow(true) }, style: { cursor: 'pointer',
         padding: '4px 12px', border: '1px solid rgba(var(--ui-rgb),.25)',
         borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
@@ -126,14 +160,17 @@ function EvidenceTable(p) {
       })),
     collected.length > 4 && h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)',
       textAlign: 'center', marginTop: 4, fontFamily: "'Share Tech Mono',monospace" } },
-      evidenceText('+ ' + (collected.length - 4) + '건 더 있음', '+ ' + (collected.length - 4) + ' more')));
+      evidenceText('+ ' + (collected.length - 4) + '건 더 있음', '+ ' + (collected.length - 4) + ' more')),
+    unlocked.length > 0 && h('div', { style: { fontSize: 9, color: 'rgba(240,160,48,.42)',
+      marginTop: 6, fontFamily: "'Share Tech Mono',monospace" } },
+      evidenceText('분석 완료 ', 'ANALYZED ') + unlocked.length));
 
   // 열린 상태: 같은 외부 사이즈, 내부 스크롤
   return h('div', outerProps,
     // 헤더
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블', 'EVIDENCE TABLE')),
+        color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블 ', 'EVIDENCE TABLE ') + '(' + collected.length + '/' + allCollected.length + ')'),
       h('div', { onClick: function() { setShow(false) }, style: { cursor: 'pointer',
         padding: '4px 12px', border: '1px solid rgba(var(--ui-rgb),.25)',
         borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
@@ -171,9 +208,13 @@ function EvidenceTable(p) {
           '\u25B8 ' + result.combo.name),
         h('div', { style: { fontSize: 12, color: 'var(--ui-text)',
           lineHeight: 1.6 } }, result.combo.result),
-        unlocked.indexOf(result.combo.id) < 0 &&
+        result.wasNew &&
           h('div', { style: { fontSize: 9, color: 'var(--ui)', marginTop: 6,
             fontFamily: "'Share Tech Mono',monospace" } }, '+ NEW INSIGHT UNLOCKED'),
+        h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.42)', marginTop: 6,
+          fontFamily: "'Share Tech Mono',monospace" } },
+          evidenceText('사용한 자료는 활성 목록에서 정리되고, 원본은 로그 탭에 보존됩니다.',
+            'Used records are removed from the active list; source logs remain in Logs.')),
         h('div', { onClick: reset, style: { marginTop: 8, fontSize: 10,
           color: 'rgba(var(--ui-rgb),.4)', cursor: 'pointer',
           fontFamily: "'Share Tech Mono',monospace" } }, '[ RESET ]')),
@@ -187,17 +228,7 @@ function EvidenceTable(p) {
           fontFamily: "'Share Tech Mono',monospace" } }, '[ RESET ]')),
 
       // 해금된 조합 목록
-      unlocked.length > 0 && h('div', { style: { marginTop: 10, paddingTop: 8,
-        borderTop: '1px solid rgba(var(--ui-rgb),.06)' } },
-        h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 9,
-          color: 'rgba(var(--ui-rgb),.3)', letterSpacing: 1, marginBottom: 4 } },
-          evidenceText('통찰: ', 'INSIGHTS: ') + unlocked.length + '/' + EVIDENCE_COMBOS.length),
-        unlocked.map(function(cid) {
-          var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
-          if (!c) return null;
-          return h('div', { key: cid, style: { fontSize: 9, color: 'rgba(240,160,48,.5)',
-            marginBottom: 2 } }, '\u2713 ' + c.name);
-        }))),
+      renderEvidenceInsights(unlocked, true)),
 
     // 선택 상태 + 제출 (스크롤 영역 밖, 하단 고정)
     !result && h('div', { style: { display: 'flex', gap: 8, alignItems: 'center',
@@ -216,7 +247,8 @@ function EvidenceTable(p) {
 
 // 게임 화면용 증거 패널 오버레이 (열람 전용, 조합 불가)
 function EvidencePanel(p) {
-  var collected = getCollectedEvidence(p.logs || []).map(localizeEvidenceRecord);
+  var allCollected = getCollectedEvidence(p.logs || []).map(localizeEvidenceRecord);
+  var collected = (typeof getActiveEvidence === 'function' ? getActiveEvidence(p.logs || []) : getCollectedEvidence(p.logs || [])).map(localizeEvidenceRecord);
   var unlocked = getUnlockedCombos();
   var catColor = { oracle: 'rgba(var(--ui-rgb),.9)', field: 'var(--ui)', external: 'rgba(var(--ui-rgb),.78)', incident: '#ff6666', internal: 'rgba(var(--ui-rgb),.58)' };
   var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
@@ -234,9 +266,14 @@ function EvidencePanel(p) {
           border: '1px solid rgba(var(--ui-rgb),.2)' } }, '[ ' + evidenceText('닫기', 'CLOSE') + ' ]')),
       h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.4)',
         fontFamily: "'Share Tech Mono',monospace", marginBottom: 10 } },
-        evidenceText('수집: ', 'COLLECTED: ') + collected.length + ' / ' + EVIDENCE.length),
+        evidenceText('활성: ', 'ACTIVE: ') + collected.length + ' / ' + allCollected.length + ' · ' +
+          evidenceText('수집 ', 'COLLECTED ') + allCollected.length + ' / ' + EVIDENCE.length),
       collected.length === 0 && h('div', { style: { fontSize: 12, color: 'rgba(var(--ui-rgb),.3)',
-        textAlign: 'center', padding: '20px 0' } }, evidenceText('수집된 증거가 없습니다.', 'No evidence records collected.')),
+        textAlign: 'center', padding: '20px 0', lineHeight: 1.6 } },
+        allCollected.length === 0
+          ? evidenceText('수집된 증거가 없습니다.', 'No evidence records collected.')
+          : evidenceText('현재 조합 가능한 활성 자료가 없습니다. 분석 완료 정보는 아래 통찰 목록과 로그 탭에서 확인할 수 있습니다.',
+            'No active records are currently available. Completed insight data remains below and in Logs.')),
       h('div', { className: 'ev-grid-scroll', style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6,
         maxHeight: 'calc(2 * (72px + 6px))', overflowY: 'auto', scrollbarWidth: 'none',
         msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } },
@@ -250,16 +287,7 @@ function EvidencePanel(p) {
             h('div', { style: { fontSize: 11, color: 'var(--ui)', lineHeight: 1.4 } }, ev.name),
             h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.3)', marginTop: 2 } }, ev.desc));
         })),
-      unlocked.length > 0 && h('div', { style: { marginTop: 14, paddingTop: 10,
-        borderTop: '1px solid rgba(var(--ui-rgb),.08)' } },
-        h('div', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-          color: 'rgba(var(--ui-rgb),.4)', letterSpacing: 1, marginBottom: 6 } },
-          evidenceText('통찰: ', 'INSIGHTS: ') + unlocked.length + '/' + EVIDENCE_COMBOS.length),
-        unlocked.map(function(cid) {
-          var c = localizeEvidenceCombo(EVIDENCE_COMBOS.filter(function(x) { return x.id === cid; })[0]);
-          return c ? h('div', { key: cid, style: { fontSize: 10, color: 'rgba(240,160,48,.6)',
-            marginBottom: 3 } }, '\u2713 ' + c.name) : null;
-        })),
+      renderEvidenceInsights(unlocked, false),
       h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)', textAlign: 'center',
         marginTop: 16, fontFamily: "'Share Tech Mono',monospace" } },
         evidenceText('증거 조합은 이브닝 챗에서 가능합니다.', 'Evidence combinations are available during Evening Chat.'))));

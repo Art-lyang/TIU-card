@@ -26,7 +26,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Transmit the documents to ORACLE"
       },
       "C-056": {
-        msg: "A figure has been captured on the outer surveillance cameras.\n\nWestern male. Cigarette in his mouth. Looking straight into the lens. Smiling.\n\nLim Jae-hyeok: \"Prometheus database match — Nick Foster.\"",
+        msg: "A figure appears on the outer surveillance cameras.\n\nA foreign man stands just outside the fence line, cigarette ember briefly lighting his face. He looks straight into the lens and smiles as if he knows exactly where the blind spots end.\n\nLim Jae-hyeok: \"Prometheus database match. Candidate code: FOSTER.\"",
         leftLabel: "Ignore it",
         rightLabel: "Send Kang Do-yun"
       },
@@ -2796,7 +2796,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Assemble contact investigation team"
       },
       "C-031": {
-        msg: "Yoon Se-jin report: seasonal change is being observed in anomaly behavior patterns.\n\n\"Shell Talker range expanded by 40% from last week.\"\n\n\"This isn't simple movement. It looks like it's searching for something.\"",
+        msg: "Yoon Se-jin report: seasonal change is being observed in anomaly behavior patterns.\n\n\"Shell Talker range expanded by 40% over the last seven days.\"\n\n\"This isn't simple movement. It looks like it's searching for something.\"",
         leftLabel: "Support Yoon Se-jin's research",
         rightLabel: "Request pattern analysis from ORACLE"
       },
@@ -3373,6 +3373,16 @@ window.TS_I18N.mergeContent('en', {
       msg: "The lines on the Evidence Table converge beneath B3.\n\nThe previous commander's record, the 02:47 pulse, the B3 bulkhead anomaly, and the four suspicion axes.\n\nSeo Hae-eun: \"The previous commander suspected things in the same order. This time, the record remains.\"",
       leftLabel: "Strengthen the B3 lower-level inquiry",
       rightLabel: "Postpone B3 access"
+    },
+    "C-335": {
+      msg: "Seo Hae-eun brings a draft report before approval.\n\n\"There is a sentence at the end that I have not written yet.\"\n\nThe sentence is short. [The commander stops at the same place again.] Seo Hae-eun says she never saved it.",
+      leftLabel: "Preserve the draft unofficially",
+      rightLabel: "Treat it as an ORACLE template error"
+    },
+    "C-336": {
+      msg: "Kang Do-yun marks a new perimeter route.\n\n\"It is my first time taking this path, but my body knew the cover points first.\"\n\nHe tries to laugh it off, then stops. The marked cover points are absent from ORACLE's map, but all of them exist in the field photos.",
+      leftLabel: "Record that instinct",
+      rightLabel: "Report fatigue and order rest"
     }
   },
   rewards: {

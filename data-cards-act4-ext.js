@@ -112,8 +112,8 @@ var CARDS_ACT4_EXT = [
   { id:"CA4-OR-02", act:[4], tag:"endgame-oracle", priority:"상",
     req:function(s,g,logs){ return s.day >= 32 },
     msg:"[ORACLE: 운영 효율 최종 단계 제안]\n\n\"지휘관. 남은 기간 동안 의사결정을 ORACLE 자동화로 완전 위임할 경우, 기지 안정성을 100% 보장합니다.\"\n\n당신의 마지막 판단이 될 수 있습니다.",
-    left:{ label:"거절 — 수동 유지", fx:{c:-1,r:0,t:2,o:-2}, g:-4 },
-    right:{ label:"승인 — 자동화 위임", fx:{c:2,r:0,t:-4,o:2}, g:4 } },
+    left:{ label:"거절 — 수동 유지", fx:{c:-1,r:1,t:2,o:-1}, g:-3 },
+    right:{ label:"승인 — 자동화 위임", fx:{c:1,r:0,t:-3,o:1}, g:3 } },
 
   { id:"CA4-OR-03", act:[4], tag:"endgame-oracle", priority:"상",
     req:function(s,g,logs){ return s.day >= 33 },

@@ -29,11 +29,18 @@ CARD_FILES = [
     'data-cards-prologue.js',
     'data-cards-prologue-2.js',
 ] + [f'data-cards-{i}.js' for i in range(1, 17)] + [
+    'data-cards-prometheus-lee.js',
     'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-act4-hazard.js',
     'data-cards-act23-pressure.js', 'data-cards-resist-hint.js',
     'data-cards-crisis.js', 'data-cards-neutral.js',
+    'data-cards-korea-civilian.js',
     'data-cards-dg-meridian.js',
     'data-cards-session-packs.js',
+    'data-chains-incident.js',
+    'data-act4-escape.js',
+    'data-facility-2.js',
+    'data-cards-facility-propose.js',
+    'data-character-arcs.js',
 ]
 
 def read(p):
@@ -44,9 +51,9 @@ def extract_card_objects(src):
     cards = []
     i = 0
     while i < len(src):
-        m = re.search(r'\{\s*id:\s*"([A-Z0-9_\-]+)"', src[i:])
+        m = re.search(r'\{\s*id:\s*([\'"])([A-Z0-9_\-]+)\1', src[i:])
         if not m: break
-        cid = m.group(1)
+        cid = m.group(2)
         start = i + m.start()
         depth, end, in_s, sc, esc = 0, start, False, '', False
         for j in range(start, len(src)):
@@ -72,22 +79,22 @@ def parse_act(body):
     return xs or None
 
 def parse_tag(body):
-    m = re.search(r'\btag:\s*"([^"]+)"', body)
+    m = re.search(r'\btag:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
 def parse_once(body):
     return bool(re.search(r'\bonce:\s*true\b', body))
 
 def parse_bg(body):
-    m = re.search(r'\bbg:\s*"([^"]+)"', body)
+    m = re.search(r'\bbg:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
 def parse_session_pack(body):
-    m = re.search(r'\b(?:sessionPack|deckPack):\s*"([^"]+)"', body)
+    m = re.search(r'\b(?:sessionPack|deckPack):\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
 def parse_trans_req(body):
-    m = re.search(r'\btransReq:\s*"([^"]+)"', body)
+    m = re.search(r'\btransReq:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
 def parse_req_or_cond(body):
@@ -124,13 +131,13 @@ def parse_side(body, side):
     gm = re.search(r'\bg:\s*(-?\d+)', b)
     g = int(gm.group(1)) if gm else 0
     logs = []
-    lm = re.search(r'\blog:\s*"([^"]+)"', b)
+    lm = re.search(r'\blog:\s*[\'"]([^\'"]+)[\'"]', b)
     if lm: logs.append(lm.group(1))
     else:
         lam = re.search(r'\blog:\s*\[([^\]]+)\]', b)
         if lam:
-            logs.extend(re.findall(r'"([^"]+)"', lam.group(1)))
-    mission = re.search(r'\bmission:\s*"([^"]+)"', b)
+            logs.extend(re.findall(r'[\'"]([^\'"]+)[\'"]', lam.group(1)))
+    mission = re.search(r'\bmission:\s*[\'"]([^\'"]+)[\'"]', b)
     trust_val = None
     tm = re.search(r'\btrust:\s*(-?\d+)', b)
     if tm: trust_val = int(tm.group(1))
@@ -143,19 +150,56 @@ for f in CARD_FILES:
     src = read(f)
     for cid, body in extract_card_objects(src):
         if cid.startswith(('LOG-', 'EV-', 'SCENE-', 'FAC-')): continue
+        act = parse_act(body)
+        if not act: continue
+        left = parse_side(body, 'left')
+        right = parse_side(body, 'right')
+        if not left and not right: continue
         card = {
             'id': cid, 'file': f, 'body': body,
-            'act': parse_act(body) or [2, 3, 4],
+            'act': act,
             'tag': parse_tag(body),
             'once': parse_once(body),
             'bg': parse_bg(body),
             'sessionPack': parse_session_pack(body),
             'transReq': parse_trans_req(body),
             'req': parse_req_or_cond(body),
-            'left': parse_side(body, 'left'),
-            'right': parse_side(body, 'right'),
+            'left': left,
+            'right': right,
         }
         ALL_CARDS.append(card)
+
+def build_facility_proposal_cards():
+    """Mirror data-cards-facility-propose.js enough for draw/balance simulation."""
+    try:
+        src = read('data-facility.js')
+    except FileNotFoundError:
+        return []
+    out = []
+    for fe_id, body in extract_card_objects(src):
+        if not fe_id.startswith('FE-'): continue
+        min_day_m = re.search(r'\bminDay:\s*(\d+)', body)
+        min_act_m = re.search(r'\bminAct:\s*(\d+)', body)
+        min_day = int(min_day_m.group(1)) if min_day_m else 1
+        min_act = max(1, int(min_act_m.group(1)) if min_act_m else 1)
+        acts = list(range(min_act, 4)) or [min_act]
+        out.append({
+            'id': 'FP-' + fe_id,
+            'file': 'data-cards-facility-propose.js',
+            'body': body,
+            'act': acts,
+            'tag': 'facility-proposal-' + fe_id,
+            'once': False,
+            'bg': None,
+            'sessionPack': None,
+            'transReq': None,
+            'req': f's["day"] >= {min_day} and s["day"] <= 29',
+            'left': {'fx': {'c': 0, 'r': 0, 't': 0, 'o': 0}, 'g': 0, 'logs': [], 'mission': None, 'trust': None},
+            'right': {'fx': {'c': 0, 'r': 0, 't': 0, 'o': 0}, 'g': 0, 'logs': [], 'mission': None, 'trust': None},
+        })
+    return out
+
+ALL_CARDS.extend(build_facility_proposal_cards())
 
 # 중복 id 제거 (validator에서 0이지만 안전망)
 seen_ids = set()
@@ -183,9 +227,9 @@ for m in RULE_ANY_RX.finditer(APP_LOGIC + APP_JS):
 
 # ═══════════ 게임 규칙 ═══════════
 
-ACT_BOUNDS = [(1, 5, 1), (6, 19, 2), (20, 29, 3), (30, 999, 4)]  # day_from, day_to, act
+ACT_BOUNDS = [(1, 4, 1), (5, 13, 2), (14, 28, 3), (29, 35, 4)]  # day_from, day_to, act
 CARDS_PER_DAY = {1: 4, 2: 5, 3: 6, 4: 7}
-DECAY = {1: {}, 2: {}, 3: {'c': -1, 'r': -1}, 4: {'c': -2, 'r': -2, 't': -1}}
+DECAY = {1: {}, 2: {}, 3: {'c': -5, 'r': -5}, 4: {'c': -10, 'r': -10, 't': -5}}
 
 def get_act(day):
     for lo, hi, a in ACT_BOUNDS:
@@ -205,23 +249,40 @@ def chk_special_ending(s, gi, act, trust, logs):
     if act < 3: return None
     def t(v): return 1 if v >= 65 else 0
     def m(v): return 1 if v >= 60 else 0
+    any70 = sum(1 for v in trust.values() if v >= 70)
     high = t(trust['haeun']) + t(trust['doyun']) + t(trust['sejin']) + t(trust['jaehyuk'])
     mid = m(trust['haeun']) + m(trust['doyun']) + m(trust['sejin']) + m(trust['jaehyuk'])
     any55 = sum(1 for v in trust.values() if v >= 55)
     lc = len(logs)
     hL12 = 'LOG-012' in logs
-    hL13 = 'LOG-013' in logs
-    hObs = 'LOG-OBSERVER-APPROVED' in logs
-    if hL12 and hL13 and hObs and s['day'] >= 30 and gi <= 0: return 'F'
-    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 32: return 'D'
-    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 28: return 'B'
-    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 30: return 'G'
+    hObserver = 'LOG-OBSERVER-01' in logs
+    hApproved = 'LOG-OBSERVER-APPROVED' in logs
+    hQuietFreedom = 'LOG-RH-QUIET-FREEDOM' in logs
+    if act >= 4 and s['day'] >= 30 and gi >= 55 and s['c'] >= 70 and s['o'] >= 60: return 'A'
+    if hL12 and hObserver and hApproved and s['day'] >= 25 and gi <= 5: return 'F'
+    if hL12 and hObserver and hApproved and s['day'] >= 28 and gi <= 0: return 'F'
+    if hL12 and hObserver and not hApproved and s['day'] >= 33 and gi <= -20 and high >= 2: return 'F'
+    if hQuietFreedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 25: return 'D'
+    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 28: return 'D'
+    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 30: return 'D'
+    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 25: return 'B'
+    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 28: return 'B'
+    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 28: return 'G'
+    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 31: return 'G'
     return None
 
 def chk_gi_ending(gi, act):
     """Act 4 종료 시점(day>=35)에 A(GI≥60) 또는 F 계열 판정."""
     if gi >= 60: return 'A'
     return None
+
+def resolve_time_up(s, gi, trust, logs):
+    """app.js resolveTimeUp 포팅."""
+    high = sum(1 for v in trust.values() if v >= 65)
+    if gi >= 40: return 'A'
+    if gi <= -20 and high >= 1: return 'D'
+    if gi <= -15: return 'B'
+    return 'G'
 
 def eval_req(expr, s, gi, logs):
     if not expr: return True
@@ -245,6 +306,9 @@ def simulate_one():
     max_days = 45
 
     while s['day'] <= max_days and ending is None:
+        if s['day'] > 35:
+            ending = resolve_time_up(s, gi, trust, logs)
+            break
         act = get_act(s['day'])
         # 감쇠
         for k, v in DECAY[act].items(): s[k] += v
@@ -274,10 +338,12 @@ def simulate_one():
             dir_choice = random.choice(['left', 'right'])
             side = c[dir_choice]
             if side:
-                for k, v in side['fx'].items(): s[k] += v
+                for k, v in side['fx'].items(): s[k] = max(0, min(100, s[k] + v * 5))
                 gi += side['g']
                 for L in side['logs']:
                     if L not in logs: logs.append(L)
+            if c['id'] == 'CA-OBS-PROTO' and dir_choice == 'left' and 'LOG-OBSERVER-APPROVED' not in logs:
+                logs.append('LOG-OBSERVER-APPROVED')
             # app-logic 하드코딩 규칙
             for rd, rl in card_log_rules.get(c['id'], []):
                 if rd is None or rd == dir_choice:
@@ -300,10 +366,8 @@ def simulate_one():
 
         s['day'] += 1
 
-    # 마지막 GI 엔딩 체크 (Act4 30일+이면 A 가능)
     if ending is None:
-        se = chk_gi_ending(gi, act)
-        ending = se or 'TIMEOUT'
+        ending = resolve_time_up(s, gi, trust, logs)
 
     return {
         'ending': ending, 'day': s['day'], 'gi': gi,

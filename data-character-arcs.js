@@ -5,6 +5,10 @@ if (typeof EVIDENCE_COMBOS === 'undefined') var EVIDENCE_COMBOS = [];
 if (typeof EVENING_CHATS === 'undefined') var EVENING_CHATS = [];
 if (typeof EVENING_RESPONSES === 'undefined') var EVENING_RESPONSES = {};
 
+function tiuMetaSessionCount(){
+  try{return (typeof Save!=='undefined'&&Save.getSessions)?Save.getSessions():0}catch(e){return 0}
+}
+
 (function(){
   function hasLog(id){
     for (var i = 0; i < ORACLE_LOGS.length; i++) if (ORACLE_LOGS[i] && ORACLE_LOGS[i].id === id) return true;
@@ -82,6 +86,15 @@ if (typeof EVENING_RESPONSES === 'undefined') var EVENING_RESPONSES = {};
     a:{ label:'종이 출력물을 받는다.', trust:2, reply:'디지털 기록은 남기지 않았습니다. 그래서 종이로 가져왔습니다.', log:'LOG-CHAR-JAEHYUK-VOIDWALK' },
     b:{ label:'위험 범위를 먼저 묻는다.', trust:1, reply:'위험합니다. 하지만 모르는 채로 운용하는 쪽이 더 위험합니다.', log:'LOG-CHAR-JAEHYUK-VOIDWALK' }
   };
+  EVENING_CHATS.push(
+    { char:'윤세진', act:[2,3], dayMin:9, dayMax:22, responseKey:'sejin_session_echo_02',
+      condFn:function(ctx){return (ctx.sessions||0)>=1 && ctx.logs.indexOf('LOG-EV-UNLOCK')>=0 && ctx.logs.indexOf('ONCE-META-SEJIN-ECHO-02')<0;},
+      lines:['지휘관님, 검체 보정표에 이상한 칸이 하나 있습니다.','제가 아직 입력하지 않은 비교값인데, 수식만 먼저 맞춰져 있어요.','단순 자동완성일 수도 있습니다. 그런데 기준값이 너무 정확합니다.','마치 누군가가 제가 나중에 적을 값을 먼저 비워둔 것 같습니다.'] }
+  );
+  EVENING_RESPONSES['sejin_session_echo_02'] = {
+    a:{ label:'비공식으로 보관한다', trust:2, reply:'네. 공식 보고서에는 넣지 않겠습니다. 그래도 값은 남겨두겠습니다.', log:'ONCE-META-SEJIN-ECHO-02' },
+    b:{ label:'ORACLE 자동 보정을 확인한다', trust:1, reply:'알겠습니다. 원인을 먼저 확인하겠습니다. 틀렸으면 틀렸다는 기록도 남기겠습니다.', log:'ONCE-META-SEJIN-ECHO-02' }
+  };
 })();
 
 var CARDS_CHARACTER_ARCS = [
@@ -117,5 +130,15 @@ var CARDS_CHARACTER_ARCS = [
     req:function(s,g,logs){return logs.indexOf('LOG-CHAR-FOUR-AXIS')>=0 && (logs.indexOf('LOG-090')>=0 || logs.indexOf('LOG-091')>=0 || logs.indexOf('LOG-093')>=0) && logs.indexOf('LOG-CHAR-B3-BRIDGE')<0;},
     msg:'조사테이블의 선들이 B3 하부로 모입니다.\n\n전임 지휘관 기록, 02:47 펄스, B3 격벽 이상, 그리고 4인의 의심 축.\n\n서하은: "전임 지휘관도 같은 순서로 의심했습니다. 이번에는 기록이 남아 있습니다."',
     left:{label:'B3 하부 조사선을 보강한다',fx:{c:0,r:-1,t:2,o:-3},g:-4,log:'LOG-CHAR-B3-BRIDGE'},
-    right:{label:'B3 접근은 보류한다',fx:{c:0,r:0,t:-1,o:1},g:1} }
+    right:{label:'B3 접근은 보류한다',fx:{c:0,r:0,t:-1,o:1},g:1} },
+  { id:'C-335', act:[2,3], priority:'하', bg:'base', img:'char_haeun_tense', once:true, flow:{type:'conspiracy',minAct:2,minDay:10,maxDay:24},
+    req:function(s,g,logs){return tiuMetaSessionCount()>=4 && logs.indexOf('LOG-EV-UNLOCK')>=0;},
+    msg:'서하은이 결재 전 보고서 초안을 들고 옵니다.\n\n"제가 아직 쓰지 않은 문장이 문서 끝에 남아 있습니다."\n\n문장은 짧습니다. [지휘관은 이번에도 같은 곳에서 멈춘다.] 서하은은 자신이 저장한 적 없는 문장이라고 말합니다.',
+    left:{label:'초안을 비공식 보존한다',fx:{c:0,r:0,t:1,o:-1},g:-1},
+    right:{label:'ORACLE 양식 오류로 처리한다',fx:{c:0,r:0,t:-1,o:1},g:1} },
+  { id:'C-336', act:[3,4], priority:'하', bg:'forest', img:'char_doyun', once:true, flow:{type:'conspiracy',minAct:3,minDay:18,maxDay:34},
+    req:function(s,g,logs){return tiuMetaSessionCount()>=6 && logs.indexOf('LOG-EV-UNLOCK')>=0 && logs.indexOf('LOG-075')<0 && (logs.indexOf('LOG-065')<0 || logs.indexOf('LOG-065-END')>=0);},
+    msg:'강도윤이 새 경계 루트를 표시합니다.\n\n"처음 가는 길인데, 몸이 엄폐 지점을 먼저 알고 있었습니다."\n\n그는 농담처럼 넘기려다 멈춥니다. 표시된 엄폐 지점들은 ORACLE 도면에는 없지만, 실제 현장 사진에는 모두 존재합니다.',
+    left:{label:'그 직감을 기록해둔다',fx:{c:0,r:0,t:1,o:-1},g:-1},
+    right:{label:'피로 누적으로 보고 휴식 지시',fx:{c:0,r:0,t:1,o:0},g:0} }
 ];

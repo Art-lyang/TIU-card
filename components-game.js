@@ -364,8 +364,8 @@ function CardC(p){
   var resolveVal=function(v){return typeof v==='function'?v():v};
   var timerTotal=resolveVal(card.timer)||0;
   var cardLoc=(typeof tc==='function')?tc('cards',card.id,null):null;
-  var leftLabel=(cardLoc&&cardLoc.leftLabel)||resolveVal(card.left&&card.left.label)||'';
-  var rightLabel=(cardLoc&&cardLoc.rightLabel)||resolveVal(card.right&&card.right.label)||'';
+  var leftLabel=resolveVal((cardLoc&&cardLoc.leftLabel!=null)?cardLoc.leftLabel:(card.left&&card.left.label))||'';
+  var rightLabel=resolveVal((cardLoc&&cardLoc.rightLabel!=null)?cardLoc.rightLabel:(card.right&&card.right.label))||'';
   var cardHint=(cardLoc&&cardLoc.hint)||card.hint;
   var inlineCardHint=card.isFacilityProposal?null:cardHint;
   var facilityCardHint=card.isFacilityProposal?cardHint:null;

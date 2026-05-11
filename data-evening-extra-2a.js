@@ -88,6 +88,7 @@ EVENING_CHATS.push(
     ] },
   { char: '서하은', act: [4], dayMin: 34, dayMax: 35,
     responseKey: 'haeun_4a_34-35',
+    condFn: function(ctx){ return ctx.logs.indexOf('LOG-052') >= 0; },
     lines: [
       "이 기지에 처음 왔을 때 — 저는 ORACLE이 완벽하다고 믿었어요.",
       "그런데 지휘관님이 오시고 나서야 — 완벽함과 옳음이 다르다는 걸 알았어요.",

@@ -278,7 +278,7 @@ var Save={
     var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],sessionDeck:sessionDeck});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_sessionDeck');if(typeof clearSessionDeck==='function')clearSessionDeck()},
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');if(typeof clearSessionDeck==='function')clearSessionDeck()},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -307,6 +307,7 @@ var Save={
       seenArchive:Save.get('ts_seenArchive',[]),
       facility:Save.get('ts_facility',null),
       combos:Save.get('ts_combos',[]),
+      evidenceUsed:Save.get('ts_evidence_used',[]),
       onceShown:Save.get('ts_onceShown',[]),
       recentNews:Save.get('ts_recentNews',[]),
       recentRewards:Save.get('ts_recentRewards',[]),
@@ -345,6 +346,7 @@ var Save={
     Save.set('ts_seenArchive',pack.seenArchive||[]);
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
     if(pack.combos)Save.set('ts_combos',pack.combos);else Save.del('ts_combos');
+    if(pack.evidenceUsed)Save.set('ts_evidence_used',pack.evidenceUsed);else Save.del('ts_evidence_used');
     Save.set('ts_onceShown',pack.onceShown||[]);
     Save.set('ts_recentNews',pack.recentNews||[]);
     Save.set('ts_recentRewards',pack.recentRewards||[]);

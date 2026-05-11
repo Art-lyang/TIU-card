@@ -4,8 +4,8 @@
 // ═══ 증거 조각 정의 ═══
 // src: 해당 LOG가 있으면 증거 보유
 var EVIDENCE = [
-  { id: "EV-01", name: "ORACLE 데이터 불일치", desc: "특정 시간대에 데이터가 조작된 흔적", src: "LOG-003", cat: "oracle" },
-  { id: "EV-02", name: "새벽 교신 기록", desc: "02:00~04:00 사이 미확인 교신", src: "LOG-006", cat: "oracle" },
+  { id: "EV-01", name: "ORACLE 데이터 불일치", desc: "특정 시간대에 데이터가 조작된 흔적", src: "LOG-006", cat: "oracle" },
+  { id: "EV-02", name: "새벽 교신 기록", desc: "02:00~04:00 사이 미확인 교신", src: "LOG-019", cat: "oracle" },
   { id: "EV-03", name: "SPEC-012 서식지 데이터", desc: "오염 확산 패턴 분석 자료", src: "LOG-005", cat: "field" },
   { id: "EV-04", name: "SPEC-011 음성 패턴", desc: "희생자 음성 복제 주파수 기록", src: "LOG-004", cat: "field" },
   { id: "EV-05", name: "미분류 흔적 좌표", desc: "해안 방벽 노드와 일치하는 좌표", src: "LOG-008", cat: "external" },
@@ -140,6 +140,91 @@ function saveUnlockedCombo(comboId) {
   var arr = getUnlockedCombos();
   if (arr.indexOf(comboId) < 0) { arr.push(comboId); }
   try { localStorage.setItem('ts_combos', JSON.stringify(arr)); } catch(e) {}
+}
+
+function getEvidenceComboById(comboId) {
+  for (var i = 0; i < EVIDENCE_COMBOS.length; i++) {
+    if (EVIDENCE_COMBOS[i].id === comboId) return EVIDENCE_COMBOS[i];
+  }
+  return null;
+}
+
+function uniqueEvidenceIds(ids) {
+  var out = [];
+  (ids || []).forEach(function(id) {
+    if (typeof id === 'string' && id.length && out.indexOf(id) < 0) out.push(id);
+  });
+  return out;
+}
+
+function getSavedEvidenceUsedIds() {
+  try {
+    var d = localStorage.getItem('ts_evidence_used');
+    var parsed = d ? JSON.parse(d) : [];
+    return Array.isArray(parsed) ? uniqueEvidenceIds(parsed) : [];
+  } catch(e) { return []; }
+}
+
+function getEvidenceUsedIds() {
+  var out = getSavedEvidenceUsedIds();
+  getUnlockedCombos().forEach(function(comboId) {
+    var combo = getEvidenceComboById(comboId);
+    if (!combo || !Array.isArray(combo.combo)) return;
+    combo.combo.forEach(function(evId) {
+      if (out.indexOf(evId) < 0) out.push(evId);
+    });
+  });
+  return out;
+}
+
+function saveEvidenceUsedIds(ids) {
+  try { localStorage.setItem('ts_evidence_used', JSON.stringify(uniqueEvidenceIds(ids))); } catch(e) {}
+}
+
+function markEvidenceComboUsed(comboId) {
+  var combo = getEvidenceComboById(comboId);
+  if (!combo || !Array.isArray(combo.combo)) return getEvidenceUsedIds();
+  var used = getEvidenceUsedIds();
+  combo.combo.forEach(function(evId) {
+    if (used.indexOf(evId) < 0) used.push(evId);
+  });
+  saveEvidenceUsedIds(used);
+  return used;
+}
+
+function evidenceNeededForReadyCombo(evId, collectedIds, unlockedIds) {
+  for (var i = 0; i < EVIDENCE_COMBOS.length; i++) {
+    var combo = EVIDENCE_COMBOS[i];
+    if (!combo || unlockedIds.indexOf(combo.id) >= 0) continue;
+    if (combo.combo.indexOf(evId) < 0) continue;
+    var ready = true;
+    for (var j = 0; j < combo.combo.length; j++) {
+      if (collectedIds.indexOf(combo.combo[j]) < 0) { ready = false; break; }
+    }
+    if (ready) return true;
+  }
+  return false;
+}
+
+// 조사테이블 활성 자료 목록. 분석 완료 자료는 숨기되, 다른 미해금 조합이
+// 지금 즉시 완성 가능한 경우에는 다시 노출한다.
+function getActiveEvidence(logs) {
+  var collected = getCollectedEvidence(logs);
+  var collectedIds = collected.map(function(ev) { return ev.id; });
+  var usedIds = getEvidenceUsedIds();
+  var unlockedIds = getUnlockedCombos();
+  return collected.filter(function(ev) {
+    return usedIds.indexOf(ev.id) < 0 || evidenceNeededForReadyCombo(ev.id, collectedIds, unlockedIds);
+  });
+}
+
+function getEvidenceTableCounts(logs) {
+  return {
+    collected: getCollectedEvidence(logs).length,
+    active: getActiveEvidence(logs).length,
+    insights: getUnlockedCombos().length,
+    total: EVIDENCE.length
+  };
 }
 
 // 유효한 조합 체크: 선택한 증거 id 배열 → 매칭 레시피 반환
