@@ -14,7 +14,7 @@
   }
 
   [
-    { id: "LOG-VOSS-STANDBY", title: "Weber standby channel via VOSS relay", content: "A Prometheus-side standby channel was preserved outside the normal ORACLE reporting route. VOSS marks the relay tag; Markus Weber is waiting for an encrypted response window." },
+    { id: "LOG-VOSS-STANDBY", title: "VOSS 릴레이 대기 채널", content: "ORACLE 공식 보고 경로 밖에 보존된 프로메테우스 측 대기 채널 기록. VOSS는 릴레이 태그이며, 마르쿠스 베버가 암호화 응답 창을 열어둔 상태다." },
     { id: "LOG-CE-017", title: "복종 프로토콜 문서 공유", content: "프로메테우스가 확보한 ORACLE PROXY NETWORK 운영 매뉴얼 발췌본이 팀 내부에 공유되었다. 자발적 복종 프로토콜은 지휘관의 선택을 보조하는 절차가 아니라, 선택지를 통제하기 위한 심리적 순응 체계로 기술되어 있다." },
     { id: "LOG-SUPPLY-102", title: "폐건물 보급품 확보", content: "기지 외곽 폐건물에서 이전 부대가 남긴 군용 물자를 확보했다. 식량, 의약품, 통신장비 부품이 회수되었으며, 후속 수색 가능성이 현장 보고서에 남았다." },
     { id: "LOG-FOSTER-CASE", title: "닉 포스터 과거 작전 파일", content: "닉 포스터가 과거 한국지부 주변 작전에서 봉쇄선 내부 요원을 미끼로 쓴 정황이 복원되었다. 공식 보고서에는 전술적 오판으로 축약되어 있으나, 현장 요원들은 그 사건을 아직 잊지 못하고 있다." },
@@ -91,7 +91,7 @@
     { id: "LOG-065-ATK", title: "현장 충돌 교전 기록", content: "현장 충돌 중 교전이 발생한 기록. 요원 대응과 장비 소모가 후속 판단에 반영된다." },
     { id: "LOG-065-END", title: "현장 충돌 종결", content: "현장 충돌 체인 종결 기록. 피해 규모와 대응 방식이 내부 교범에 반영된다." },
     { id: "LOG-066", title: "식수 정화 조치", content: "식수 정화 시설 이상 대응 기록. ORACLE 최적안 또는 현장 응급 수리가 보존되었다." },
-    { id: "LOG-067", title: "중기 위기 대응 기록", content: "중기 위기 카드의 후속 기록. 선택 결과가 보급 안정성과 인원 신뢰에 영향을 남겼다." },
+    { id: "LOG-067", title: "정수 시설 오염 방치 기록", content: "기지 정수 시설의 유기물 오염 징후를 필터 교체 없이 모니터링으로 넘긴 기록. 수치는 음용 기준 이내였지만, 후속 점검 대상으로 남았다." },
     { id: "LOG-068", title: "봉쇄선 대응 기록", content: "봉쇄선 관련 후속 기록. 현장 방어선 조정과 ORACLE 평가가 함께 남았다." },
     { id: "LOG-069", title: "기지 작전 체인 개시", content: "기지 작전 체인이 개시된 기록. 초기 판단이 후속 요원 동선과 보급 체계에 반영된다." },
     { id: "LOG-069-CREW", title: "작전 인원 재배치", content: "기지 작전 중 인원 재배치가 이루어진 기록. 동행 가능 인원과 신뢰 흐름에 영향을 준다." },

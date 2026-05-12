@@ -87,13 +87,13 @@ var CARDS_PROLOGUE = [
     right: { label: "원격 임시 조치만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   // ═══ ORACLE 이상 징후 — Act 1 후반 (CA-014~CA-018) ═══
-  { id: "CA-014", act: [1,2], priority: "하", bg: "comms", once: true,
+  { id: "CA-014", act: [2], priority: "하", bg: "comms", once: true,
     req: function(s){ return s.day >= 5 },
     msg: "임재혁이 시스템 로그를 확인하다 잠시 멈췄습니다.\n\n\"지휘관님, 어제 02:17분에 ORACLE 응답이 0.8초 지연됐습니다. 기록상 처음이에요.\"\n\n잠깐 침묵이 흘렀습니다.\n\n\"...아마 서버 부하겠죠. 별거 아닐 겁니다.\"",
     left: { label: "기록해두라고 한다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
     right: { label: "정상 범주로 처리", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 1 } },
 
-  { id: "CA-015", act: [1,2], priority: "하", bg: "comms", once: true,
+  { id: "CA-015", act: [2], priority: "하", bg: "comms", once: true,
     req: function(s){ return s.day >= 5 },
     msg: "[ORACLE: 봉쇄선 서측 이상 반응 감지.]\n\n강도윤이 확인하고 돌아왔습니다.\n\n\"이상 없습니다. 아까 제가 직접 점검하고 온 구역이에요.\"\n\n잠시 후 단말기가 자동 업데이트됩니다.\n\n[ORACLE: 경보 취소. 오감지로 분류 완료.]",
     left: { label: "기록은 남겨두겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },

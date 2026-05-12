@@ -3561,7 +3561,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-065-ATK": { title: "Field Clash Engagement Record", content: "An engagement occurred during the field clash. Agent response and equipment consumption affect later judgment." },
     "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual." },
     "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
-    "LOG-067": { title: "Mid-stage Crisis Response Record", content: "Follow-up record from a mid-stage crisis card. The selected result affected supply stability and personnel trust." },
+    "LOG-067": { title: "Water-purification Contamination Watch", content: "Record that trace organic contamination in the branch water-purification system was left under monitoring instead of immediate filter replacement. The level stayed within drinking standards, but it remained flagged for follow-up inspection." },
     "LOG-068": { title: "Containment-line Response Record", content: "Follow-up record for a containment-line issue. Field defensive adjustment and ORACLE evaluation both remained." },
     "LOG-069": { title: "Base Operation Chain Started", content: "Base operation chain initiation record. Initial judgment affects later personnel movement and supply systems." },
     "LOG-069-CREW": { title: "Operation Crew Reassignment", content: "Personnel reassignment was carried out during a base operation. It affects available companions and trust flow." },

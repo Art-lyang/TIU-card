@@ -119,4 +119,33 @@ window.TS_I18N.mergeContent('en', {
     "sejin_4b_35": { a: { label: "Show it to me later.", reply: "I will. After this is over." }, b: { label: "Keep it safe.", reply: "Yes. I saved an offline copy." } }
   }
 });
+
+window.TS_I18N.mergeContent('en', {
+  eveningTrustLines: {
+    doyun_injured: {
+      low: [
+        "...Reporting in.",
+        "Returning to field duty is impossible.",
+        "That is all."
+      ],
+      mid: [
+        "...I can still function.",
+        "Not being able to return to the field is... frustrating.",
+        "Commander. If it concerns the mission, tell me. My head is still clear."
+      ],
+      high: [
+        "Commander.",
+        "Honestly... I am uneasy about not being out there. If something happens outside.",
+        "I can still give operational advice. That is what I can do right now.",
+        "...Please understand even if I am not beside you. I will follow your judgment."
+      ],
+      bond: [
+        "Commander.",
+        "...If I am alive, does this still count as serving? I feel like I will lose my mind if I cannot step into the field.",
+        "But my head still works. Operations, personnel placement, anything. Ask me.",
+        "...I understand the decision you made that night to keep me alive. I will not forget it."
+      ]
+    }
+  }
+});
 })();

@@ -140,9 +140,10 @@ function getFactionRelations(logs,gi){
   return out;
 }
 
-function genNews(s,g,logs){var l=[],recent=getRecentNewsItems();if(s.c>60)pushNewsPick(l,NP.gc,recent);else if(s.c<40)pushNewsPick(l,NP.bc,recent);if(s.r<30)pushNewsPick(l,NP.br,recent);pushNewsPick(l,NP.w,recent);if(Math.random()<0.5)pushNewsPick(l,NP.w,recent);if(s.day>3&&Math.random()<0.5)pushNewsPick(l,NP.p,recent);if(g<=-10&&s.day>5&&Math.random()<0.5)pushNewsPick(l,NP.gl,recent);
+function genNews(s,g,logs){var l=[],recent=getRecentNewsItems(),lg=logs||[];if(s.c>60)pushNewsPick(l,NP.gc,recent);else if(s.c<40)pushNewsPick(l,NP.bc,recent);if(s.r<30)pushNewsPick(l,NP.br,recent);pushNewsPick(l,NP.w,recent);if(Math.random()<0.5)pushNewsPick(l,NP.w,recent);if(s.day>3&&Math.random()<0.5)pushNewsPick(l,NP.p,recent);
+  var glReady=g<=-10&&s.day>5&&(lg.indexOf('LOG-012')>=0||lg.indexOf('LOG-016')>=0||lg.indexOf('LOG-018')>=0||lg.indexOf('LOG-019')>=0||lg.indexOf('LOG-050')>=0||lg.indexOf('LOG-051')>=0||lg.indexOf('LOG-OBSERVER-INTRO')>=0);
+  if(glReady&&Math.random()<0.5){var glPool=NP.gl;if(lg.indexOf('LOG-016')<0&&Array.isArray(glPool)){glPool=glPool.filter(function(item){return String(item).indexOf('31%')<0})}pushNewsPick(l,glPool,recent)}
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
-  var lg=logs||[];
   if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)pushNewsPick(l,NP.dg,recent);
   if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)pushNewsPick(l,NP.md,recent);
   genChoiceReactionNews(s,g,lg,recent).forEach(function(item){pushUniqueNews(l,item)});

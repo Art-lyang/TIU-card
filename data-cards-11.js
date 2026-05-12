@@ -107,8 +107,8 @@ var CARDS_CHAINS = [
   { id: "C-192", act: [3,4], priority: "상", bg: "oracle",
     cond: function(s,g,logs){ return logs.includes("LOG-075") && !logs.includes("LOG-075-ORC") },
     msg: "[ORACLE 긴급 보고]\n\n\"현장요원 강도윤의 상태를 확인할 수 없습니다. 사실상 임무 수행 불가.\"\n\n\"비상 대피 경로가 부재한 상황에서 요원을 잃었습니다.\"\n\n\"지휘관의 인프라 관리 역량에 대해 심각한 재평가가 예정되어 있습니다.\"\n\n[ORACLE: 평가 지표 하향 조정]",
-    left: { label: "...책임을 진다", fx: { c: -1, r: 0, t: -2, o: -3 }, g: -4 },
-    right: { label: "수색을 멈추지 않는다", fx: { c: -1, r: -1, t: 0, o: -2 }, g: -2 } },
+    left: { label: "...책임을 진다", fx: { c: -1, r: 0, t: -1, o: -2 }, g: -3 },
+    right: { label: "수색을 멈추지 않는다", fx: { c: -1, r: -1, t: 1, o: -1 }, g: -1 } },
 
 ];
 

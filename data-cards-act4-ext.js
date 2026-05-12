@@ -44,7 +44,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"보고서는 ORACLE 형식으로", fx:{c:0,r:0,t:-1,o:1}, g:1, trust:-8 } },
 
   { id:"CA4-CH-02", act:[4], tag:"endgame-char", priority:"중",
-    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 },
+    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"강도윤이 현장 복귀를 공식 요청합니다.\n\n\"지휘관. 이 방 안에서 지도만 보는 건 제 일이 아닙니다. 마지막이 될지도 모릅니다 — 제 방식으로 끝내고 싶습니다.\"",
     left:{ label:"복귀 승인", fx:{c:1,r:-1,t:1,o:-1}, g:-2, trust:10 },
     right:{ label:"지휘소 유지 명령", fx:{c:0,r:0,t:-1,o:1}, g:2, trust:-10 } },

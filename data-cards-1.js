@@ -55,7 +55,7 @@ var CARDS_BASE = [
   { id: "C-026", act: [2], priority: "중", msg: "기지 보안 점검 중 CCTV 사각지대 3곳이 발견되었습니다. 임재혁이 즉시 보완을 건의합니다.", left: { label: "즉시 보완", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "ORACLE 감시 시스템으로 대체", fx: { c: 1, r: 0, t: -1, o: 1 }, g: 2 } },
   { id: "C-027", act: [2,3,4], priority: "하", msg: "기지 인원의 평균 수면 시간이 4.2시간으로 떨어졌습니다. 윤세진이 건강 악화를 경고합니다.", left: { label: "순환 휴가 편성", fx: { c: -1, r: 0, t: 2, o: 0 }, g: 0 }, right: { label: "현 상태 유지 (작전 우선)", fx: { c: 0, r: 0, t: -2, o: 1 }, g: 1 } },
   // ── 추가 카드: 이변체 (태그 + 텍스트 변형) ──
-  { id: "C-028", act: [2,3], priority: "중", tag: "spec-011", img: "card_shelltalker_lure", msg: "봉쇄선 북측 감시 장비에서 인간 음성 패턴이 감지되었습니다.\n\n음성 분석 결과: SPEC-011 (Shell Talker) 활동으로 추정.\n\n해당 음성은 3개월 전 실종된 인접 셀 요원의 것입니다.", left: { label: "기록만 남기고 경계", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 }, right: { label: "음성 데이터 수집팀 파견", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
+  { id: "C-028", act: [2,3], priority: "중", tag: "spec-011", img: "card_shelltalker_lure", msg: "봉쇄선 북측 감시 장비에서 인간 음성 패턴이 감지되었습니다.\n\n음성 분석 결과: SPEC-011 (Shell Talker) 활동으로 추정.\n\n해당 음성은 3개월 전 실종된 인접 셀 요원의 것입니다.", left: { label: "기록만 남기고 경계", fx: { c: 1, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "음성 데이터 수집팀 파견", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
   { id: "C-029", act: [2,3], priority: "중", tag: "spec-012", msg: "봉쇄 구역 동측 건물 지하에서 적갈색 액체 웅덩이가 다수 확인되었습니다.\n\nORACLE 분석: SPEC-012 (Blood Pit). 변이 실패체의 용해 잔해.\n\n밟으면 고착됩니다. 이동 경로 재설정이 필요합니다.", left: { label: "지하 경로 폐쇄", fx: { c: -1, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "표시 후 우회 경로 설정", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
   { id: "C-030", act: [2,3], priority: "상", msg: "강도윤 긴급 보고: 봉쇄 구역 내에서 기존 분류에 없는 생체 반응 감지.\n\n\"기존 이변체와 패턴이 다릅니다. 새로운 종일 수 있습니다.\"\n\n[ORACLE: 데이터 불충분. 분류 보류.]", left: { label: "원거리 관측만 실시", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "접근 조사팀 편성", fx: { c: 1, r: -2, t: 0, o: 1 }, g: 1 } },
   { id: "C-031", act: [2,3], priority: "중", tag: "spec-011", req: function(s,g,logs){ return s.day >= 6 && logs.includes("LOG-004") }, msg: "윤세진 보고: 이변체 행동 패턴에 계절적 변화가 관측됩니다.\n\n\"Shell Talker의 활동 반경이 최근 7일 기준 40% 확대되었습니다.\"\n\n\"이건 단순한 이동이 아니에요. 뭔가를 찾고 있는 것처럼 보입니다.\"", left: { label: "윤세진 연구 지원", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE에 패턴 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
@@ -64,7 +64,7 @@ var CARDS_BASE = [
   { id: "C-033", act: [2,3], priority: "중", msg: "기지 외곽 300m 지점에서 버려진 장비가 발견되었습니다.\n\n분석 결과: 프로메테우스 규격 야간 투시경. 최근 제조.\n\n누군가 이곳을 감시하고 있었습니다.", left: { label: "장비를 미끼로 역감시", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE에 보고 + 장비 전송", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 3 } },
   { id: "C-034", act: [3], priority: "상", req: (s, g, logs) => logs.includes("LOG-003") && g <= 35, oracleBlock: 3, oracleBlockDir: "right", oracleBlockMsgs: ["[ORACLE: 적대 세력 접촉 시도 감지 — 격리 권고]","[ORACLE: 접선 차단 중 — 프로메테우스: 위험 등급 A]","[ORACLE: 경고 — 접촉 이력 보안 기록 등재]"], msg: "기지 통신 채널에 미확인 메시지가 수신되었습니다.\n\n\"우리는 적이 아닙니다. 대화할 의향이 있다면, 내일 밤 북측 500m 지점.\"\n\n발신자 불명. 프로메테우스 암호 패턴과 70% 일치.", left: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "접선에 응한다", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4 } },
   // ── 추가 카드: ORACLE ──
-  { id: "C-035", act: [3], priority: "하",
+  { id: "C-035", act: [3], priority: "중",
     timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);

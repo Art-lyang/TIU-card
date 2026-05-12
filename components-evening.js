@@ -277,9 +277,17 @@ function EveningChat2(p){
     });
     return bestKey?bucket[bestKey]:null;
   }
+  function linesSame(a,b){
+    if(!Array.isArray(a)||!Array.isArray(b)||a.length!==b.length)return false;
+    for(var i=0;i<a.length;i++)if(a[i]!==b[i])return false;
+    return true;
+  }
   function localizeChatLines(ec, fallbackLines){
+    var baseLines=resolveChatLines((ec&&ec.lines)||[]);
+    var adjustedLines=resolveChatLines(fallbackLines);
+    if(!linesSame(baseLines,adjustedLines))return adjustedLines;
     var loc = resolveEveningBucketEntry('eveningChats', ec);
-    return resolveChatLines((loc && loc.lines) ? loc.lines : fallbackLines);
+    return resolveChatLines((loc && loc.lines) ? loc.lines : adjustedLines);
   }
   function eveningContext(){
     return {logs:p.logs||[],trust:p.trust,facility:p.facility,day:p.day,act:p.act,sessions:p.sessions||0};
@@ -344,7 +352,14 @@ function EveningChat2(p){
       }
     }
   }
-  var chatLines=chat?localizeChatLines(chat,chat.lines||[]):[];
+  function trustAdjustedChatLines(ec){
+    var base=(ec&&ec.lines)||[];
+    if(ec&&typeof getEveningLines==='function'){
+      try{return getEveningLines(ec,p.trust,p.logs||[])||base}catch(e){return base}
+    }
+    return base;
+  }
+  var chatLines=chat?localizeChatLines(chat,trustAdjustedChatLines(chat)):[];
   var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
   var noChat=selChar&&(!chat||chatLines.length===0);
   var noChatText=tt('evening.noAvailableChat',null,'오늘은 추가 대화 기록이 없습니다.');

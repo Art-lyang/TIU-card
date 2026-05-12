@@ -1,30 +1,58 @@
-// TERMINAL SESSION — 이브닝 챗 대사 신뢰도 적용 함수
-// data-evening-trust-2.js에서 분리
+// evening-lines.js - trust and state adjusted evening chat lines
 
-// 이브닝 챗 대사에 신뢰도 구간을 적용하는 함수
+function localizedTrustLines(key, tier) {
+  try {
+    var api = (typeof window !== 'undefined') ? window.TS_I18N : null;
+    if (!api || !api.getLocale || api.getLocale() !== 'en' || typeof tc !== 'function') return null;
+    var entry = tc('eveningTrustLines', key, null);
+    if (!entry) return null;
+    if (entry[tier]) return entry[tier];
+    if (tier === 'bond' && entry.high) return entry.high;
+    return entry.mid || null;
+  } catch (e) {
+    return null;
+  }
+}
+
 function getEveningLines(chat, trust, logs) {
-  var charKeyMap = {'서하은':'haeun','강도윤':'doyun','윤세진':'sejin','임재혁':'jaehyuk','마르쿠스 베버':'weber','닉 포스터':'foster','박소영':'soyoung'};
+  if (!chat) return [];
+  var charKeyMap = {
+    '서하은': 'haeun',
+    '강도윤': 'doyun',
+    '윤세진': 'sejin',
+    '임재혁': 'jaehyuk',
+    '마르쿠스 베버': 'weber',
+    '닉 포스터': 'foster',
+    '박소영': 'soyoung'
+  };
   var charKey = charKeyMap[chat.char];
-  if (!charKey) return chat.lines;
+  if (!charKey) return chat.lines || [];
 
-  // 강도윤 부상 상태: LOG-074-DONE 있고 LOG-075 없으면 부상 대사
+  var tier = (typeof getTrustTier === 'function') ? getTrustTier(trust, charKey) : 'mid';
+
+  // Kang Do-yun survived the night assault but cannot return to field duty.
   if (charKey === 'doyun' && logs && logs.indexOf('LOG-074-DONE') >= 0 && logs.indexOf('LOG-075') < 0) {
-    var tier = getTrustTier(trust, charKey);
+    var localized = localizedTrustLines('doyun_injured', tier);
+    if (localized) return localized;
     if (DOYUN_INJURED_LINES[tier]) return DOYUN_INJURED_LINES[tier];
     return DOYUN_INJURED_LINES.mid;
   }
 
-  var tier = getTrustTier(trust, charKey);
-  if (tier === 'mid') return chat.lines; // 기본 대사 유지
+  if (tier === 'mid') return chat.lines || [];
 
-  // 키 생성: "charKey_act_dayMin-dayMax"
   var actNum = chat.act[0];
   var key = charKey + '_' + actNum + '_' + chat.dayMin + '-' + chat.dayMax;
+  var localizedVariant = localizedTrustLines(key, tier);
+  if (localizedVariant) return localizedVariant;
+  try {
+    if (typeof window !== 'undefined' && window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale() === 'en') {
+      return chat.lines || [];
+    }
+  } catch (e) {}
   var variants = EVENING_TRUST_LINES[key];
 
   if (variants && variants[tier]) return variants[tier];
-  // bond 구간인데 bond 전용이 없으면 high로 폴백
   if (tier === 'bond' && variants && variants.high) return variants.high;
 
-  return chat.lines; // 변형 데이터 없으면 기본
+  return chat.lines || [];
 }

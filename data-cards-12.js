@@ -46,7 +46,7 @@ var CARDS_NEW_A = [
     cond: function(s,g,logs){ return logs.indexOf("LOG-050") < 0 },
     msg: "요원 두 명이 보급품 분배 문제로 언쟁을 벌이고 있습니다.\n\n서하은: \"사소한 일이지만, 방치하면 다른 불만도 터질 수 있습니다.\"\n\n\"직접 개입하시겠습니까?\"",
     left: { label: "직접 중재", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
-    right: { label: "자율 해결에 맡긴다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    right: { label: "자율 해결에 맡긴다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
   { id: "C-201", act: [1,2], priority: "하", bg: "base", img: "char_haeun_tense",
     cond: function(s,g,logs){ return !logs.includes("LOG-076") && logs.indexOf("LOG-050") < 0 },
@@ -125,7 +125,7 @@ var CARDS_NEW_A = [
     cond: function(s,g,logs){ return logs.includes("LOG-LIGHT-01") && !logs.includes("LOG-LIGHT-02") },
     msg: "윤세진이 보존된 감시 영상을 프레임 단위로 분석했습니다.\n\n\"밝아서 도망친 게 아니에요. 특정 파장대에서 조직 경계가 흐트러지는 반응입니다.\"\n\n보고서 제목은 아직 임시입니다.\n\n[광반응성 관찰 기록 — 확정 아님]",
     left: { label: "파장별 반응 테스트 승인", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1, log: "LOG-LIGHT-02" },
-    right: { label: "현장 기록으로만 보관", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    right: { label: "현장 기록으로만 보관", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-328", act: [2,3], priority: "중", bg: "forest", flow: "threat",
     cond: function(s,g,logs){ return logs.includes("LOG-LIGHT-02") && !logs.includes("LOG-LIGHT-03") },

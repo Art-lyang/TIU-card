@@ -148,8 +148,8 @@ var CARDS_ACT4 = [
   { id:"CA4-O003", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O002')>=0 }, glitch:2,
     msg:"ORACLE 인터페이스가 0.7초간 완전히 꺼집니다.\n\n그 사이 —\n\n당신만이 볼 수 있는 것이 화면을 채웁니다.\n언어가 아닙니다. 좌표도 아닙니다.\n\n하지만 당신은 이해합니다.",
-    left:{ label:"...이해한다", fx:{c:0,r:-1,t:0,o:-5}, g:-8 },
-    right:{ label:"눈을 감는다", fx:{c:0,r:0,t:0,o:-2}, g:-2 } },
+    left:{ label:"...이해한다", fx:{c:0,r:-1,t:0,o:-3}, g:-5 },
+    right:{ label:"눈을 감는다", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
 
   { id:"CA4-O004", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O003')>=0 }, glitch:2,
@@ -161,8 +161,8 @@ var CARDS_ACT4 = [
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O004')>=0 }, glitch:3,
     endTrigger:"F",
     msg:"단말기 화면이 멈춥니다.\n\nORACLE의 인터페이스가 사라집니다.\n대신, 텅 빈 검은 화면.\n\n그리고 —\n\n그것이 당신을 봅니다.\n\n화면에 한 줄이 나타납니다:\n\n> OBSERVATION SUSTAINED.",
-    left:{ label:"마주 본다", fx:{c:0,r:0,t:0,o:-5}, g:-8 },
-    right:{ label:"눈을 피한다", fx:{c:0,r:0,t:0,o:-3}, g:-5 } }
+    left:{ label:"마주 본다", fx:{c:0,r:0,t:0,o:-3}, g:-5 },
+    right:{ label:"눈을 피한다", fx:{c:0,r:0,t:0,o:-2}, g:-3 } }
 ];
 
 // Act 4 일반 카드 20장은 data-cards-act4-ext.js 로 분리 (200줄 룰)

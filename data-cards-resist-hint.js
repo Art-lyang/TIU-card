@@ -131,8 +131,8 @@ var CARDS_RESIST_HINT = [
         : !!(s && g <= -35 && s.day >= 8 && (s.c <= 25 || s.r <= 25 || s.t <= 20 || s.o <= 20) && logs.indexOf('ONCE-RH-SAFE-01') < 0);
     },
     msg: "[현장 비상망: 수동 동기화]\n\nORACLE 권고를 계속 우회하면서 공식 보급 순서와 현장 판단 사이의 간격이 벌어졌습니다.\n\n서하은이 비공식 협조 명단을 올립니다.\n\"본부 명령을 뒤집자는 뜻이 아닙니다. 살아남을 수 있는 최소 순서를 다시 짜자는 뜻입니다.\"\n\n임재혁이 짧게 덧붙입니다.\n\"기록은 남기겠습니다. 나중에 누가 보더라도, 우리가 왜 이 선택을 했는지 알 수 있게요.\"\n\n이 비상망은 이번 작전 중 한 번만 가동할 수 있습니다.",
-    left:  { label: "비공식 보급망을 가동한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 45, t: 35, o: 25 }, g: -3, log: "LOG-RH-SAFEGUARD" },
-    right: { label: "증거 묶음으로 본부를 설득한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 40, t: 35, o: 35 }, g: -1, log: "LOG-RH-SAFEGUARD" } }
+    left:  { label: "비공식 보급망을 가동한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 45, t: 35, o: 25 }, floorCriticalOnly: true, g: -3, log: "LOG-RH-SAFEGUARD" },
+    right: { label: "증거 묶음으로 본부를 설득한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 40, t: 35, o: 35 }, floorCriticalOnly: true, g: -1, log: "LOG-RH-SAFEGUARD" } }
 ];
 
 // CARDS 배열에 주입
