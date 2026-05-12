@@ -318,6 +318,7 @@ window.TS_I18N.mergeUI('ko', {
     snapshotLoaded:'슬롯 {slot} 로드 완료 (DAY {day})',
     achievement:'[ 업적 ] {name}',
     companionsLost:'[이번 작전에 함께하지 못한 동료: {names}]',
-    companionsAll:'[간부진 전원 동행 확정]'
+    companionsAll:'[간부진 전원 동행 확정]',
+    resourceReserveUsed:'[비상물자 발견] 보급창고 뒤편의 미등록 비상물자를 투입했습니다. 해당 업무는 처리되었고, 자원 고갈은 이번 세션에서 한 번만 보전됩니다.'
   }
 });
