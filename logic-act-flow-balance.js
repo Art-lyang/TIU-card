@@ -21,7 +21,7 @@
       pushUnique(out, "[내부] 조사테이블, 외부 경유·내부 기록·현장 이상 패턴을 별도 분류로 보관 시작", rn);
     }
     if (has(lg, 'LOG-A2-TRIAGE-01')) {
-      pushUnique(out, "[내부] 운영 후반 단서, 결론 고정 없이 후속 교차검증 목록으로 이관", rn);
+      pushUnique(out, "[내부] 조사테이블 미해결 기록, 외부 경유·내부 기록·현장 이상 분류로 이관", rn);
     }
     if (has(lg, 'LOG-A4-DG-SUPPORT')) {
       pushUnique(out, "[국내] DG 연계 긴급 민간 보급망 가동 — 방벽 인접 물류 공백 일부 완화", rn);

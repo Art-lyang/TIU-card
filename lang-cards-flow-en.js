@@ -5,7 +5,7 @@ if(!window.TS_I18N || typeof window.TS_I18N.mergeContent !== 'function') return;
 
 var newsA2Foreshadow01 = "[분류 보류] 새벽 통신 로그에서 ORACLE 기록 외부 경유 흔적 확인 — 조직명 미부여";
 var newsA2Foreshadow02 = "[내부] 조사테이블, 외부 경유·내부 기록·현장 이상 패턴을 별도 분류로 보관 시작";
-var newsA2Triage01 = "[내부] 운영 후반 단서, 결론 고정 없이 후속 교차검증 목록으로 이관";
+var newsA2Triage01 = "[내부] 조사테이블 미해결 기록, 외부 경유·내부 기록·현장 이상 분류로 이관";
 var newsA4DgSupport = "[국내] DG 연계 긴급 민간 보급망 가동 — 방벽 인접 물류 공백 일부 완화";
 var newsA4MdSupport = "[해외] 메리디안 관측망, 한국 방벽 변동값 보정 자료를 비공개 전달";
 var newsA4PromSupport = "[분류 보류] 프로메테우스 제공 좌표와 ORACLE 누락 구역 일부 일치 — 공식 검증 대기";
@@ -25,7 +25,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Compress it into ORACLE report format"
     },
     "A2-TRIAGE-01": {
-      msg: "Late operation cycle. The clues gathered on the evidence table point in different directions.\n\nSeo Hae-eun says, \"If we label the conclusion now, ORACLE's summary will swallow it. I will separate outside relay, internal records, and field anomalies, then pass them into the next cross-check list.\"\n\nSometimes delaying the answer is also a command decision.",
+      msg: "The clues gathered on the evidence table point in different directions.\n\nSeo Hae-eun says, \"If we label the conclusion now, ORACLE's summary will swallow it. I will separate outside relay, internal records, and field anomalies, then pass them into the next cross-check list.\"\n\nSometimes delaying the answer is also a command decision.",
       leftLabel: "Move it to the next cross-check list",
       rightLabel: "Leave only the ORACLE summary"
     },
@@ -81,7 +81,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-A2-TRIAGE-01": {
       title: "Cross-Check List",
-      content: "Late-cycle clues were not fixed into a conclusion. They were separated into outside relay, internal record, and field anomaly lines, then passed into the next cross-check list."
+      content: "Unresolved evidence-table records were not fixed into a conclusion. They were separated into outside relay, internal record, and field anomaly lines, then passed into the next cross-check list."
     },
     "LOG-B3-LINEAGE-01": {
       title: "Lower B3 Path Comparison",
@@ -120,7 +120,7 @@ window.TS_I18N.mergeContent('en', {
     var items = {};
     items[newsA2Foreshadow01] = { type: 'classified', text: "[CLASSIFICATION HOLD] Dawn comms log shows an outside relay trace absent from ORACLE records — no organization assigned." };
     items[newsA2Foreshadow02] = { type: 'internal', text: "[INTERNAL] Evidence table begins storing outside relay, internal records, and field-anomaly patterns as a separate category." };
-    items[newsA2Triage01] = { type: 'internal', text: "[INTERNAL] Late-cycle clues moved to the next cross-check list without forcing a conclusion." };
+    items[newsA2Triage01] = { type: 'internal', text: "[INTERNAL] Unresolved evidence-table records moved into outside relay, internal record, and field-anomaly classifications." };
     items[newsA4DgSupport] = { type: 'domestic', text: "[DOMESTIC] DG-linked emergency civilian logistics network activates — partial relief for supply gaps near the barrier." };
     items[newsA4MdSupport] = { type: 'overseas', text: "[OVERSEAS] Meridian observation network privately delivers correction values for Korean containment-line fluctuation." };
     items[newsA4PromSupport] = { type: 'classified', text: "[CLASSIFICATION HOLD] Prometheus coordinates partially match zones omitted by ORACLE — formal verification pending." };

@@ -1192,7 +1192,7 @@ window.TS_I18N.mergeContent('en', {
     C_t: { name: 'Trust Lost', hint: 'Allow your people to turn away from you.', narrative: ['[ORACLE ASSESSMENT - COMMAND FAILURE]','','Field trust: 0%.','Operation orders are still being received. Compliance is not.','','Someone submitted a report late.','Someone stopped answering radio calls.','Someone put down their equipment and walked out the door.','','The branch is still standing.','But no one is waiting for your instructions.','','ORACLE revokes command authority.','','[Session terminated - OPERATOR AUTHORITY: VOID]'] },
     C_o: { name: 'Access Revoked', hint: 'Let ORACLE cut you off.', narrative: ['[ORACLE ASSESSMENT - ACCESS REVOKED]','','ORACLE evaluation: 0%.','Temporary operator authority has fallen below threshold.','','The green lines on the terminal go dark one by one.','Briefing channels close, supply request queues are deleted, and operation approval authority is revoked.','','The final message is short.','','"Inefficient operators are system risk factors."','','Your access has been severed.','','[Session terminated - ORACLE LINK: TERMINATED]'] },
     D: { name: 'Quiet Freedom', hint: 'Find liberation inside revolt.', narrative: ['No one broke the door down.','There were no alarms. No pursuit.','','Someone left a communications net.','Someone left a route.','Someone left the data.','Someone erased the final traces.','','04:00.','You and the people who remained left the base.','','ORACLE did not detect your absence until six hours later.','By then —','','nothing remained to trace.','','[Session terminated — OPERATOR STATUS: UNLINKED]'] },
-    E: { name: 'Escape', hint: 'Reach the coast.', narrative: ['The vehicle cleared the outer perimeter of the coastal barrier.','','Black water. The sound of waves.','Three figures stood at the rendezvous point.','','Weber. And beside him — a woman you did not recognize.','"Agent Kang," Weber said, by way of introduction.','"I have been observing this operation from the beginning. I could not give you my name until now."','','Nick Foster stood beside her. He gave a short nod. It was not an apology.','But something in his expression had loosened.','','"ORACLE will need roughly six hours to confirm your absence," Agent Kang said.','"By then, you will already exist under different names."','','You did not look back.','','[Session terminated — OPERATOR STATUS: UNLINKED]','[OBSERVATION: Link severed]'] },
+    E: { name: 'Escape', hint: 'Reach the coast.', narrative: ['The vehicle cleared the outer perimeter of the coastal barrier.','','Black water. The sound of waves.','Three figures stood at the rendezvous point.','','Weber. And beside him — a woman you did not recognize.','Weber introduced her only as an unidentified observer.','"I have been observing this operation from the beginning. I could not give you my identity until now."','','Nick Foster stood beside her. He gave a short nod. It was not an apology.','But something in his expression had loosened.','','"ORACLE will need roughly six hours to confirm your absence," the observer said.','"By then, you will already exist under different names."','','You did not look back.','','[Session terminated — OPERATOR STATUS: UNLINKED]','[OBSERVATION: Link severed]'] },
     E_c: { name: 'SIGNAL ACQUIRED', hint: 'Fail during the escape.', narrative: ['Hit during the engagement.','','Last visual — blurred concrete. Dim light.','','A single line came through the radio:','', '> SIGNAL ACQUIRED.','> TARGET NEUTRALIZED.','','ORACLE updated the record.','','[ERROR: OPERATOR OFFLINE]','[No redeployment candidate]'] },
     E_bad: { name: 'LOST IN TRANSIT', hint: 'Follow a familiar voice into the dark.', narrative: ['A voice came from beyond the isolation chamber.','','"Commander. It\'s me. Lieutenant Park Sang-hun."','','Lieutenant Park Sang-hun. Listed missing in your former unit.','After Han Dong-hyeok — another one. And you knew it.','','Hesitation. 0.4 seconds.','','It was enough.','','The mimic organism came out of the bulkhead shadow.','Its first strike was precise.','','For the unprepared, an unprepared ending arrives.','','[LOST IN TRANSIT]','[Record terminated — coordinates unknown]'] },
     F: { name: '[DATA CORRUPTED]', hint: '???', narrative: ['The terminal display freezes.','','ORACLE\'s interface disappears.','In its place: a black, empty screen.','','And then —','','you see something.','Not ORACLE.','Not EV-Σ.','','It was always there.','Beneath ORACLE. Beyond ORACLE. Before ORACLE.','','It looks back at you.','','One line appears on the screen:','', '> OBSERVATION SUSTAINED.','','The terminal powers down.','It does not turn on again.','','[ERROR: SESSION DATA CORRUPTED]','[OPERATOR RECORD: ██████████]'] },
@@ -2265,9 +2265,9 @@ window.TS_I18N.mergeContent('en', {
       "type": "redacted",
       "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ORACLE data transmission log — recipient: ██████\n[Deleted]"
     },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 인더스트리, 기록되지 않은 2000년 — 출처 불명\n[삭제됨]": {
+    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 인더스트리, 방벽 장비 납품 전 계약서 원본 누락\n[삭제됨]": {
       "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ████ Industries, an unrecorded 2,000 years — source unknown.\n[Deleted]"
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ████ Industries, original pre-delivery contract for barrier equipment is missing.\n[Deleted]"
     },
     "[국내] 대가 인더스트리, EV-Σ Phase 0 백신 2세대 임상 성공 발표": {
       "type": "domestic",
@@ -2281,9 +2281,9 @@ window.TS_I18N.mergeContent('en', {
       "type": "domestic",
       "text": "Daega's defense division wins a sole contract for new Korea Barrier equipment, drawing industry backlash."
     },
-    "[국내] 대가 회장 공개석상 등장 — '국가와 함께 한 2000년' 발언 화제": {
+    "[국내] 대가 회장 공개석상 등장 — '국가와 함께 축적한 기록' 발언 화제": {
       "type": "domestic",
-      "text": "The chairman of Daega appears in public and draws attention with the remark, “Two thousand years with the nation.”"
+      "text": "The chairman of Daega appears in public and draws attention with a remark about records accumulated with the nation."
     },
     "[국내] DG 바이오, EV-Σ Phase 0 억제제 임상 3상 진입 — 해외 관심 폭증": {
       "type": "domestic",
@@ -3013,7 +3013,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Refuse — wait for HQ resupply"
     },
     "DG-03": {
-      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have been in Korea longer than ORACLE. The figure 'two thousand years' is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have handled Korea's infrastructure longer than ORACLE has. That difference is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
       leftLabel: "Accept the connection",
       rightLabel: "Recognize only official channels"
     },
@@ -3148,7 +3148,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-DG-CONTACT": {
       title: "Daega Industries — Unofficial Contact",
-      content: "[Branch internal record]\n\nSender: Daega Industries (DG), External Liaison Office\nRecipient: KR-INIT-001\nRoute: unofficial. Bypasses ORACLE reporting network.\n\nGist of proposal: unofficial supply channel for medicine and spare parts.\n\nNote: DG is a Korean conglomerate covering vaccines, defense, biotech, and telecoms.\nCorporate slogan: \"Two thousand years alongside the nation.\""
+      content: "[Branch internal record]\n\nSender: Daega Industries (DG), External Liaison Office\nRecipient: KR-INIT-001\nRoute: unofficial. Bypasses ORACLE reporting network.\n\nGist of proposal: unofficial supply channel for medicine and spare parts.\n\nNote: DG is a Korean conglomerate covering vaccines, defense, biotech, and telecoms."
     },
     "LOG-DG-DEAL": {
       title: "DG Deal Concluded",

@@ -56,9 +56,9 @@ var CARDS_SESSION_PACKS = [
   {
     id: "GOV-ORC-04", act: [2, 3], priority: "중", once: true, tag: "gov-oracle-suspicion", sessionPack: "GOV_ORACLE_SUSPICION", bg: "comms",
     req: function(s,g,logs){ return s.day >= 13 && !logs.includes("LOG-GOV-BRIEF-LOCAL") && !logs.includes("LOG-GOV-BRIEF-ORACLE") },
-    msg: "지자체 합동 브리핑 요청이 들어왔습니다.\n\n주제는 방벽 인근 대피소 운영 지침입니다. 표면적으로는 민간 안내문이지만, 질문지는 한국지부가 어느 선까지 현장 판단을 하는지 묻고 있습니다.\n\n서하은: \"대피소 안내문처럼 보이지만, 사실상 권한 확인입니다. 너무 ORACLE식으로 쓰면 주민들이 이해하지 못하고, 너무 현장식으로 쓰면 본부가 싫어할 겁니다.\"",
+    msg: "지자체 합동 브리핑 요청이 들어왔습니다.\n\n주제는 방벽 인근 대피소 운영 지침입니다. 표면적으로는 민간 안내문이지만, 질문지는 한국지부가 어느 선까지 현장 판단을 하는지 묻고 있습니다.\n\n서하은: \"대피소 안내문처럼 보이지만, 사실상 권한 확인입니다. 너무 본부 표준안처럼 쓰면 주민들이 이해하지 못하고, 너무 현장식으로 쓰면 본부가 싫어할 겁니다.\"",
     left: { label: "현장 언어로 브리핑 초안 작성", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1, log: "LOG-GOV-BRIEF-LOCAL" },
-    right: { label: "ORACLE 표준 문안만 제출", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1, log: "LOG-GOV-BRIEF-ORACLE" }
+    right: { label: "본부 표준 문안만 제출", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1, log: "LOG-GOV-BRIEF-ORACLE" }
   },
   {
     id: "GOV-ORC-05", act: [3], priority: "중", once: true, tag: "gov-oracle-suspicion", sessionPack: "GOV_ORACLE_SUSPICION", bg: "restricted",
@@ -90,8 +90,8 @@ if (typeof ORACLE_LOGS !== "undefined") {
     { id: "LOG-GOV-AUDIT-ORACLE", title: "국방부 질의 ORACLE 라인 통일", content: "국방부 질의 회신을 ORACLE 지휘 라인으로 통일했다. 평가 안정성은 유지되었으나 정부 측 의심은 해소되지 않았다." },
     { id: "LOG-GOV-BRANCH-LOCAL", title: "한국 비상시설 권한 명시", content: "정부 연락관에게 한국지부가 한국 비상시설로서 현장 판단 권한을 가진다고 명시했다. ORACLE 지휘체계와의 긴장이 공식 기록에 남았다." },
     { id: "LOG-GOV-BRANCH-ORACLE", title: "ORACLE 현장 노드 답변", content: "정부 연락관 질의에 ORACLE 지휘체계를 우선한다는 답변을 제출했다. 본부 평가는 안정되었지만 한국 정부 라인의 정기 점검 가능성이 높아졌다." },
-    { id: "LOG-GOV-BRIEF-LOCAL", title: "지자체 브리핑 현장 초안", content: "방벽 인근 대피소 운영 지침을 주민이 이해할 수 있는 현장 언어로 작성했다. 신뢰는 보강되었지만 ORACLE 표준 문안과의 차이가 남았다." },
-    { id: "LOG-GOV-BRIEF-ORACLE", title: "지자체 브리핑 ORACLE 문안", content: "지자체 합동 브리핑에 ORACLE 표준 문안을 제출했다. 본부 평가는 안정되었지만 현장과 주민에게는 설명 부족으로 남았다." },
+    { id: "LOG-GOV-BRIEF-LOCAL", title: "지자체 브리핑 현장 초안", content: "방벽 인근 대피소 운영 지침을 주민이 이해할 수 있는 현장 언어로 작성했다. 신뢰는 보강되었지만 본부 표준 문안과의 차이가 남았다." },
+    { id: "LOG-GOV-BRIEF-ORACLE", title: "지자체 브리핑 표준 문안", content: "지자체 합동 브리핑에 본부 표준 문안을 제출했다. 본부 평가는 안정되었지만 현장과 주민에게는 설명 부족으로 남았다." },
     { id: "LOG-GOV-SHELTER-RAW", title: "대피소 CCTV와 센서 공백 제출", content: "방벽 인근 대피소 CCTV 시간대와 한국지부 센서 공백 기록을 함께 제출했다. 정부 라인은 사건을 한국지부의 감지 책임과 연결하기 시작했다." },
     { id: "LOG-GOV-SHELTER-ORACLE", title: "대피소 드론 항적 별도 격리", content: "대피소 상공의 미식별 드론 항적을 ORACLE 분류 체계 안에서 별도 격리했다. 공식 노출은 줄었지만 원본 대조 요구 가능성이 남았다." },
     { id: "LOG-GOV-INSPECT-LIMITED", title: "합동 점검 제한 허용", content: "합동 점검반에 제한 구역을 나눈 현장 점검을 허용했다. 신뢰 회복 가능성이 생겼으나 환자 기록과 격리 기록 보호 부담이 커졌다." },

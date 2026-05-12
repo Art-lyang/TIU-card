@@ -26,7 +26,7 @@
       },
       "ARC-EVS": {
         title: "EV-Sigma (Evolution Acceleration Medium)",
-        content: "A biological evolution-acceleration medium. It is not a simple virus.\n\nFor humans it appears as infection. For TS-Omega it appears as expansion. For ORACLE it is recorded as state transition.\n\nProgression model:\n- Phase 0: early infection. Conversion can be delayed by suppressor compounds.\n- Phase 1: humanoid mutation. Partial behavior prediction remains possible. This is not a recovery stage.\n- Phase 2+: full mutation. Control is no longer viable.\n\nA prion-protein self-deformation mechanism is suspected. A suppressor that slows transformation by 40% is under development."
+        content: "A biological evolution-acceleration medium. It is not a simple virus.\n\nCurrently available information is limited to infection stages and field-response standards.\n\nProgression model:\n- Phase 0: early infection. The only stage where treatment remains possible.\n- Phase 1: humanoid mutation. Suppression or delay research may be possible, but this is not a recovery stage.\n- Phase 2+: full mutation. Human bodily continuity is heavily damaged and control is no longer viable.\n\nAdditional biological records require related logs."
       },
       "ARC-SPEC-002": {
         title: "SPEC-002 - Hardened Variant",
@@ -45,8 +45,8 @@
         content: "M-TYPE / final EV-Sigma Phase 3 mutation.\n\nAll traces of the original species are lost.\n\nCell behavior resembles an immortalized HeLa-like model. The condition is irreversible.\n\nBody structure changes in real time according to environment. Gunshot wounds through the torso have regenerated within three seconds.\n\nDo not approach within 300 meters. Live capture is absolutely prohibited."
       },
       "ARC-SPEC-009": {
-        title: "SPEC-009 - TS-Omega Core",
-        content: "X-TYPE / Sovereign Shell core. [Access restricted]\n\nCentral oceanic cluster consciousness. Physical scale: ██████.\n\nRelationship to ██████ acoustic source: ██████.\n\nRelationship to the Philadelphia Zone: ██████.\n\nKorea recognition status: ██████.\n\nExcerpt from Kang Do-yun's verbal report: \"In the Philadelphia footage, something was out toward the sea. I could not estimate the size.\"\n\nAdditional data requires OMEGA clearance."
+        title: "TS-Omega Core",
+        content: "X-TYPE / Sovereign Shell core. [Access restricted]\n\nClassified as a central oceanic cluster record.\n\nPhysical scale, acoustic-source relationship, Philadelphia Zone connection, and Korea recognition status are unavailable at current access level.\n\nAdditional data requires OMEGA clearance."
       },
       "ARC-SPEC-010": {
         title: "SPEC-010 - Infiltrator Scale",
@@ -54,23 +54,23 @@
       },
       "ARC-CHAR-JUNGCHEOL": {
         title: "Lee Jung-cheol - PILEHEAD / Commander",
-        content: "Position: First official commander of KR-INIT-001\nCodename: PILEHEAD\n\nFormer Republic of Korea Army special warfare officer. After the Nick Foster incident and a dishonorable discharge, he was assigned to Korea Branch through a government order.\n\nCalm on the surface and quick once he decides, but Prometheus-related keywords still touch a contained anger.\n\nHe is the person who accepts the separate suspicions brought by Seo Hae-eun, Kang Do-yun, Yoon Se-jin, and Lim Jae-hyeok, then binds them into one investigation line."
+        content: "Position: KR-INIT-001 commander\nCodename: PILEHEAD\n\nOfficial commander assigned to Korea Branch by government order.\n\nAvailable record is limited to appointment information and command authority scope.\n\nORACLE record: new commander authentication complete."
       },
       "ARC-CHAR-DOYUN": {
         title: "Kang Do-yun - ANCHOR / Tactical Commander",
-        content: "Position: Tactical commander / field operations\nAffiliation: Korea Branch KR-INIT-001\nCodename: ANCHOR\n\nA field veteran from a Republic of Korea Marine reconnaissance line. The stitched scar beside his cheek is recorded as the result of a classified domestic incident before the full outbreak.\n\nHe speaks little and reports briefly. He respects the chain of command, but does not ignore the instincts of someone who has directly faced a variant.\n\nHe was the first to sense, through field experience, that ORACLE kept leaving the same patrol sector empty."
+        content: "Position: Tactical commander / field operations\nCodename: ANCHOR\n\nResponsible for field missions and containment-line patrol judgment.\n\nReports tend to be brief and chain-of-command focused.\n\nAdditional service history and classified operation records are unavailable at current access level."
       },
       "ARC-CHAR-HAEUN": {
         title: "Seo Hae-eun - PARALLAX / Deputy Commander",
-        content: "Position: Deputy commander / data analyst\nAffiliation: Korea Branch KR-INIT-001\nCodename: PARALLAX\n\nFormerly attached to a national intelligence analysis line. Her experience comparing overseas ORACLE node behavior gives her a baseline for noticing the Korea Branch's subtle deviations.\n\nShe speaks sparingly and reports in facts and numbers, while also being the first to read small changes in her colleagues.\n\nShe built a paper-and-USB backup system outside the official network and tracks the parallax between what ORACLE shows and what the data says."
+        content: "Position: Deputy commander / data analyst\nCodename: PARALLAX\n\nSupports branch operations and reviews data reports.\n\nHer reporting style is centered on numbers and confirmed facts.\n\nDetailed career records and unofficial analysis notes are unavailable at current access level."
       },
       "ARC-CHAR-SEJIN": {
         title: "Yoon Se-jin - KINDLE / Researcher-Medical Officer",
-        content: "Position: Researcher / medical officer\nAffiliation: Korea Branch KR-INIT-001\nCodename: KINDLE\n\nA biochemistry and life-science researcher specializing in prion proteins and neurodegenerative disease. She handles EV-Sigma sample analysis and branch medical work from B-204.\n\nShe speaks quickly and follows curiosity hard. Emotion and logic do not separate cleanly for her; discovery arrives with excitement and fear at the same time.\n\nHer unofficial journal preserves the repeated drift between ORACLE's official parameters and her measured values. She is developing a suppressant that delays Phase 0 transition by about 40%."
+        content: "Position: Researcher / medical officer\nCodename: KINDLE\n\nResponsible for sample analysis and branch medical response.\n\nHolds biological analysis clearance for EV-Sigma cases.\n\nCurrent research details remain locked until related logs are confirmed."
       },
       "ARC-CHAR-JAEHYUK": {
         title: "Lim Jae-hyeok - VOIDWALK / Intelligence-Technical Officer",
-        content: "Position: Intelligence analyst / technical officer\nAffiliation: Korea Branch KR-INIT-001\nCodename: VOIDWALK\n\nA practical systems talent recruited from civilian cybersecurity work. He handles ORACLE integration, security systems, communications equipment, and information analysis.\n\nCalm and cautious, he tends to keep discoveries to himself until they are solid. Among the four officers, he is the last to doubt ORACLE.\n\nHe is tracking a private layer five or more levels deep inside the ORACLE architecture, along with external transmissions between 02:00 and 04:00."
+        content: "Position: Intelligence analyst / technical officer\nCodename: VOIDWALK\n\nHandles ORACLE integration, security systems, communications equipment, and information analysis.\n\nHas maintenance authority for analysis modules and branch terminals.\n\nPrivate analysis details remain locked until related logs are confirmed."
       },
       "ARC-CHAR-NICK": {
         title: "Nick Foster - Prometheus Operative",
@@ -78,15 +78,15 @@
       },
       "ARC-CHAR-WEBER": {
         title: "Markus Weber - Prometheus Commander",
-        content: "Affiliation: Prometheus Korea operations team commander\n\nSpeaks English with a German accent. Calm, logical, and deliberate.\n\nClaims ORACLE is exploiting Korea containment data.\n\nProvided information that the unclassified external factor behind Korea's containment success may be Prometheus technical support.\n\nPossesses evidence that Seo Hae-eun's transfer order originated from an automated ORACLE system."
+        content: "Affiliation: Prometheus\n\nExternal contact connected to Korea Branch events.\n\nPresented separate claims regarding ORACLE and Korean containment data.\n\nThe authenticity and background of the supplied material require further verification."
       },
       "ARC-CHAR-SOYOUNG": {
         title: "Park So-young - Analyst",
-        content: "Position: Data analyst, Seo Hae-eun's replacement\n\nA civilian data scientist who joined through Seo Hae-eun's recommendation.\n\nAdapted quickly to ORACLE data-stream analysis and inherited Seo Hae-eun's methodology.\n\nIndependently confirmed selective data-delay patterns."
+        content: "Position: Data analyst\n\nBranch data-analysis support personnel.\n\nAssists with ORACLE data-stream review and reporting.\n\nDetailed assignment background and analysis results remain restricted until related records are unlocked."
       },
       "ARC-CHAR-KANG": {
-        title: "Agent Kang - Unidentified Observer",
-        content: "Identity: Unknown\n\nAn unidentified figure who has left only traces around the branch since Act 1.\n\nFootprints that match neither military nor civilian gear, short-wave scans, unrecognized server-room sessions, and a professional observation post have been recorded.\n\nNeither ORACLE nor Prometheus can be confirmed as the source.\n\nWarning: ORACLE does not appear to recognize this presence."
+        title: "Unidentified Observer",
+        content: "Identity: Unknown\n\nIntermittent traces around the branch have been grouped under this record.\n\nFootprints, short-wave scan traces, and unidentified access records may be related.\n\nAffiliation and objective are unconfirmed.\n\nWarning: ORACLE does not classify this as an official personnel record."
       },
       "ARC-ORG-ORACLE": {
         title: "ORACLE",
@@ -94,7 +94,7 @@
       },
       "ARC-ORG-PROM": {
         title: "Prometheus",
-        content: "Unidentified organization with confirmed activity inside Korea.\n\nPossesses advanced technology, including drones, encrypted communications, and tactical equipment.\n\nORACLE classifies Prometheus as a hostile actor, but the group appears to be conducting independent EV-Sigma suppressor research.\n\nPossible connection to the coastal barrier system. Unconfirmed intelligence suggests Prometheus technical support may account for 31% of Korea's containment success."
+        content: "Unidentified organization with confirmed traces of activity inside Korea.\n\nAdvanced technical capability is suspected, but equipment origin and purpose are unconfirmed.\n\nORACLE classifies Prometheus as a hostile actor.\n\nDetailed research activity and its relationship to the Korean containment system remain restricted until related logs are confirmed."
       },
       "ARC-ORG-BRANCH": {
         title: "Korea Branch KR-INIT-001",
@@ -102,7 +102,7 @@
       },
       "ARC-ORG-WHITESHIELD": {
         title: "White Shield (Korean Military Response)",
-        content: "Republic of Korea military EV-Sigma response system.\n\nContainment success rate: 97.3%, highest in the world.\n\nThe only military response system among five nations maintaining above 95%.\n\nComparison: ARES (United States) 62%, Red Dragon (China) 41%, Permafrost (Russia) 38%.\n\nORACLE assessment: \"This region should have failed. Outcome does not match model.\"\n\nSuccess factors: terrain advantage, early response, and possible Prometheus technical support."
+        content: "Republic of Korea military EV-Sigma response system.\n\nCurrent public records identify it as the primary field-response body for the Korean containment line.\n\nContainment efficiency is reported as very high, but comparative rates and detailed success factors are unavailable at current access level.\n\nFurther assessment requires related logs."
       },
       "ARC-FAC-SEAL": {
         title: "Containment Line",
@@ -134,7 +134,7 @@
       },
       "ARC-SCI-EVOLVE": {
         title: "Evolution Classification System (ORACLE Standard)",
-        content: "EV-Sigma evolution-state classification used by ORACLE.\n\nOVERDRIVE: Philadelphia. Collapse. Evolution speed cannot be controlled.\nCONTROLLED: Korea. Sustainable. Evolution speed is being managed.\nDELAYED: Silent Belt. Slow progression.\nSTAGNANT: DPRK. Nearly halted.\nCOMPLETE: TS-Omega. No further change required.\n\nKorea is classified as CONTROLLED, the only region where evolution speed is being artificially managed. This is Korea's strategic value and why ORACLE treats it as an exception variable."
+        content: "EV-Sigma evolution-state classification used by ORACLE.\n\nThe terminal currently exposes only partial class names and limited regional mapping.\n\nOVERDRIVE / CONTROLLED / DELAYED / STAGNANT / COMPLETE\n\nExact regional assignment and the reason Korea Branch is treated as an exception variable are unavailable at current access level.\n\nAdditional classification data requires related logs."
       },
       "ARC-SCI-TEMP": {
         title: "EV-Sigma Environmental Response Conditions",
@@ -154,7 +154,7 @@
       },
       "ARC-SYS-COASTAL": {
         title: "COASTAL MIRROR Operation",
-        content: "Prometheus operation codename.\n\nRefers to cooperative exchange between Korea's coastal barrier system and Prometheus technology.\n\nPrometheus support is believed to account for 31% of Korea's 97.3% containment success rate.\n\nORACLE does not disclose this information."
+        content: "Prometheus-related operation codename.\n\nA relationship with the Korean coastal barrier system is suspected, but available records do not confirm the details.\n\nQuantitative contribution values and ORACLE disclosure status remain restricted until related logs are confirmed."
       },
       "ARC-SYS-GENESIS": {
         title: "GENESIS BREAK (First Outbreak)",
@@ -162,7 +162,7 @@
       },
       "ARC-LOC-PHILA": {
         title: "Philadelphia Z-Omega Zone",
-        content: "Zone class: Z-Omega COLLAPSE.\nEvolution state: OVERDRIVE.\n\nRepresentative case of global containment failure. The city fully collapsed overnight.\n\nKang Do-yun confirmed it through footage. No direct visit record.\n\"Once you see it, you do not forget. The whole city turned inside out overnight.\"\n\nWithin the influence range of the TS-Omega Core. The Philadelphia Zone is effectively a quarantine territory.\n\nA reminder of why the Korea Branch containment line matters.\n\"If that side breaks, this side ends too.\" - Kang Do-yun"
+        content: "Zone class: Z-Omega COLLAPSE.\n\nRepresentative case of global containment failure.\n\nKang Do-yun confirmed it through footage. No direct visit record exists.\n\nDetailed collapse cause and external influence data are unavailable at current access level."
       },
       "ARC-LOC-DPRK": {
         title: "DPRK Black Zone",
@@ -170,7 +170,7 @@
       },
       "ARC-LOC-KOREA": {
         title: "Z-0 Korea Zone",
-        content: "ORACLE zone class: Z-0.\nEvolution state: CONTROLLED.\n\nContainment success rate: 97.3%, the only region in the world above 95%.\n\nInternal ORACLE assessment:\n\"This region should have failed. Outcome does not match model.\"\nEXCEPTION_INDEX: HIGH\nOBSERVER_INTEREST: SUSTAINED\n\nNext Wave simulation:\n- coastal spores 72% / multi-point Spreader 44.8%\n- internal NODE 31.1% / TS-Omega pressure 18.6%\n\nTS-Omega field response: Korea is not recognized. It is detected only as a signal-failure interval."
+        content: "ORACLE zone class: Z-0.\n\nPrimary containment zone observed and supported by Korea Branch.\n\nBasic records identify high containment efficiency, but internal exception indices, next-wave simulations, and external field-response data are unavailable at current access level.\n\nDetailed metrics require related logs."
       },
       "ARC-LOC-ASHFALL": {
         title: "Ashfall City (Z-3)",

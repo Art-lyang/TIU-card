@@ -1,9 +1,9 @@
 // components-facility.js — 시설 확장 UI 컴포넌트
-// FacilityPanel: 탭 전환 (시설도 iframe + 확장 관리)
+// FacilityPanel: 확장 관리 전용 패널
 // FacilityStatusSection: 뉴스 페이즈 시설 상태 표시
 
 function FacilityPanel(p) {
-  var s1 = useState('map'), tab = s1[0], setTab = s1[1];
+  var tab = 'manage';
   var fac = p.facility || { approved: [], pending: [], completed: [], proposed: [] };
 
   // 탭 스타일
@@ -17,7 +17,7 @@ function FacilityPanel(p) {
         borderBottom: active ? '2px solid var(--ui)' : '2px solid transparent',
         transition: 'all 0.2s'
       },
-      onClick: function() { setTab(key); }
+      onClick: function() {}
     }, label);
   };
 
@@ -37,7 +37,6 @@ function FacilityPanel(p) {
       }
     },
       h('div', { style: { display: 'flex', gap: 4 } },
-        tabBtn('map', tt('facility.mapTab',null,'Facility Map')),
         tabBtn('manage', tt('facility.manageTab',null,'Expansion Management'))),
       h('span', {
         style: {
@@ -49,13 +48,7 @@ function FacilityPanel(p) {
       }, tt('facility.close',null,'[ Close ]'))),
 
     // 컨텐츠
-    tab === 'map' ? h('iframe', {
-      src: 'building/oracle-base.html',
-      style: {
-        flex: 1, border: 'none', width: '100%',
-        background: 'rgba(3,7,8,.98)'
-      }
-    }) : h(FacilityManageTab, {
+    h(FacilityManageTab, {
       facility: fac, onApprove: p.onApprove
     })
   );
@@ -72,6 +65,13 @@ function FacilityManageTab(p) {
     return fac.completed.indexOf(id) < 0;
   }).map(getExp).filter(Boolean);
   var completed = fac.completed.map(getExp).filter(Boolean);
+  var rewardView = function(fe) {
+    if (!fe) return null;
+    var bonus = (typeof REWARDS_FACILITY_BONUS !== 'undefined' ? REWARDS_FACILITY_BONUS : []).filter(function(r) { return r.feReq === fe.id; })[0];
+    if (!bonus) return null;
+    var loc = (typeof tc === 'function') ? tc('rewards', bonus.id, null) : null;
+    return Object.assign({}, bonus, loc || {});
+  };
 
   var sec = { marginBottom: 16, padding: '10px 0', borderBottom: '1px solid rgba(var(--ui-rgb),.1)' };
   var lbl = { fontFamily: "'Share Tech Mono',monospace", fontSize: 10, color: 'rgba(var(--ui-rgb),.55)', letterSpacing: 1, marginBottom: 8 };
@@ -109,9 +109,15 @@ function FacilityManageTab(p) {
     completed.length > 0 && h('div', { style: sec },
       h('div', { style: lbl }, tt('facility.completed',null,'[COMPLETED]')),
       completed.map(function(fe) {
+        var rw = rewardView(fe);
         return h('div', { key: fe.id, style: Object.assign({}, itm, { borderColor: 'rgba(var(--ui-rgb),.25)' }) },
           h('div', { style: Object.assign({}, nm, { color: 'var(--ui)' }) }, fe.name + ' OK'),
-          h('div', { style: ds }, fe.desc));
+          h('div', { style: ds }, fe.desc),
+          h('div', { style: { marginTop: 8, padding: '7px 9px', border: '1px solid rgba(var(--ui-rgb),.18)', background: 'rgba(var(--ui-rgb),.035)', fontSize: 10, color: 'rgba(var(--ui-rgb),.78)', lineHeight: 1.55 } },
+            h('div', { style: { color: 'var(--ui)', fontFamily: "'Share Tech Mono',monospace", letterSpacing: 1, marginBottom: 2 } }, tt('facility.completedEffect',null,'완료 효과')),
+            h('div', null, (fe.rewardBenefit || '') + (fe.rewardCost ? ' / ' + fe.rewardCost : '')),
+            rw && h('div', { style: { marginTop: 4, color: '#f0a030' } },
+              tt('facility.rewardUnlocked',null,'보상카드 추가') + ': ' + (rw.title || '') + ' — ' + (rw.benefit || '') + (rw.cost ? ' / ' + rw.cost : ''))));
       })),
     pending.length === 0 && approved.length === 0 && completed.length === 0 &&
       h('div', { style: { textAlign: 'center', padding: '40px 0', fontFamily: "'Share Tech Mono',monospace", fontSize: 12, color: 'rgba(var(--ui-rgb),.4)', letterSpacing: 1 } },

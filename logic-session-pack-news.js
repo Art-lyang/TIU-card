@@ -113,14 +113,14 @@
       en:"[WARNING] Wide-area mutation response pattern conflicts with existing SPEC taxonomy - further field verification required" },
 
     { pack:"GOV_ORACLE_SUSPICION", minAct:2, maxAct:2,
-      ko:"[국내] 지자체, 대피소 브리핑 자료와 ORACLE 권고문 차이 해명 요구",
-      en:"[DOMESTIC] Local governments request an explanation for gaps between shelter briefings and ORACLE advisories" },
+      ko:"[국내] 지자체, 대피소 브리핑 자료와 중앙 지침서 차이 해명 요구",
+      en:"[DOMESTIC] Local governments request an explanation for gaps between shelter briefings and central guidance" },
     { pack:"GOV_ORACLE_SUSPICION", minAct:3,
       ko:"[국내] 국방부 합동상황실, 강원지부 원본 센서 로그 제출 여부 검토",
       en:"[DOMESTIC] Defense joint situation room reviews whether Gangwon Branch raw sensor logs should be submitted" },
     { pack:"GOV_ORACLE_SUSPICION", minAct:4,
-      ko:"[분류 보류] 정부 비상시설 권한과 ORACLE 현장 노드 권한 충돌 사례 임시 보관",
-      en:"[CLASSIFICATION HOLD] Cases of authority conflict between emergency facilities and ORACLE field nodes are temporarily archived" }
+      ko:"[분류 보류] 정부 비상시설 권한과 외부 지휘체계 권한 충돌 사례 임시 보관",
+      en:"[CLASSIFICATION HOLD] Cases of authority conflict between emergency facilities and an external command chain are temporarily archived" }
   ];
 
   var ORACLE_DELETION_NEWS = [
@@ -140,8 +140,8 @@
       ko:"[분류 오류 — 자동 삭제 예정]\n[국내] 생체값 0의 감시 영상 공백, 자동 오류가 아닌 수동 격리 태그로 확인\n[삭제됨]",
       en:"[CLASSIFICATION ERROR - SCHEDULED FOR AUTO-DELETION]\n[DOMESTIC] Zero-biosignal surveillance blank confirmed as a manual quarantine tag, not an automatic error.\n[DELETED]" },
     { pack:"GOV_ORACLE_SUSPICION", minAct:2,
-      ko:"[분류 오류 — 자동 삭제 예정]\n[국내] 지방청 원본 로그 요청서, ORACLE 자동 응답 전 별도 반려 기록 확인\n[삭제됨]",
-      en:"[CLASSIFICATION ERROR - SCHEDULED FOR AUTO-DELETION]\n[DOMESTIC] Local agency raw-log request shows a separate rejection record before ORACLE's auto-response.\n[DELETED]" },
+      ko:"[분류 오류 — 자동 삭제 예정]\n[국내] 지방청 원본 로그 요청서, 중앙 자동 응답 전 별도 반려 기록 확인\n[삭제됨]",
+      en:"[CLASSIFICATION ERROR - SCHEDULED FOR AUTO-DELETION]\n[DOMESTIC] Local agency raw-log request shows a separate rejection record before the central auto-response.\n[DELETED]" },
     { minAct:3,
       ko:"[분류 오류 — 자동 삭제 예정]\n[국내] 한국지부 일일 보고서 첨부 순서, 제출 직후 본부 서버에서 재정렬된 흔적\n[삭제됨]",
       en:"[CLASSIFICATION ERROR - SCHEDULED FOR AUTO-DELETION]\n[DOMESTIC] Korea Branch daily report attachments show signs of HQ-side reordering immediately after submission.\n[DELETED]" }
@@ -170,8 +170,8 @@
       ko:"[국내] 국방부 합동상황실, 주변 마을 습격 전 외곽 센서 원본 로그 제출 여부 검토",
       en:"[DOMESTIC] Defense situation room reviews raw outer-sensor logs from before the nearby village attack" },
     { logs:["LOG-GOV-BRANCH-LOCAL", "LOG-GOV-BRANCH-ORACLE"],
-      ko:"[국내] 한국지부 운영 권한 범위 질의 증가 — 정부 비상시설과 ORACLE 현장 노드 지위 재검토",
-      en:"[DOMESTIC] Questions rise over Korea Branch authority - emergency-facility status and ORACLE node status under review" },
+      ko:"[국내] 한국지부 운영 권한 범위 질의 증가 — 정부 비상시설과 외부 지휘체계 지위 재검토",
+      en:"[DOMESTIC] Questions rise over Korea Branch authority - emergency-facility status and external command-chain status under review" },
     { logs:["LOG-GOV-INSPECT-LIMITED", "LOG-GOV-INSPECT-REMOTE"],
       ko:"[국내] 방벽 인근 대피 체계 합동 점검 예고 — 한국지부 기록 대조 여부 주목",
       en:"[DOMESTIC] Joint inspection announced for barrier-adjacent evacuation systems - attention turns to Korea Branch record comparison" }
@@ -215,7 +215,7 @@
   BASE_REACTION_NEWS_EN["[국내] 중앙 자동화와 현장 설명 절차를 병행한 지부, 봉쇄 효율과 내부 신뢰 동시 개선"] = "[DOMESTIC] Branch using both central automation and field explanation procedures improves containment efficiency and internal trust";
   BASE_REACTION_NEWS_EN["[내부] ORACLE 평가 지표 하락 경보 발령 — 비공식 기록 보존 요청이 내부 채널에서 증가 추세"] = "[INTERNAL] ORACLE evaluation metric decline alert issued; requests to preserve unofficial records rise on internal channels";
   BASE_REACTION_NEWS_EN["[내부] ORACLE 순응 절차가 안정성을 높였지만, 보급·신뢰 완충 계획 없이는 현장 피로가 누적될 수 있음"] = "[INTERNAL] ORACLE compliance procedures improve stability, but field fatigue may accumulate without supply and trust buffers";
-  BASE_REACTION_NEWS_EN["[경고] 일일 결산에서 위험 자원 하락 원인이 표시됨 — 다음 DAY 보상과 이브닝 대화에서 보완 선택 권고"] = "[WARNING] Daily settlement now shows causes of critical resource drops - stabilization choices recommended in the next DAY reward and evening chat";
+  BASE_REACTION_NEWS_EN["[경고] 일일 결산에서 위험 지표 하락 원인이 표시됨 — 야간 보정 회의 및 보급 재배치 검토 필요"] = "[WARNING] Daily settlement now lists causes of critical metric drops - night correction meeting and supply redistribution recommended";
   BASE_REACTION_NEWS_EN["[국내] 방벽 내부 주민 신뢰 지수 하락 — 신고보다 침묵을 택하는 사례 증가"] = "[DOMESTIC] Resident trust index inside the barrier falls as more cases choose silence over reporting";
   BASE_REACTION_NEWS_EN["[국내] 중앙 분류망과 현장 판단 불일치 사례, 비공개 감사 대상으로 전환"] = "[DOMESTIC] Cases where central classification and field judgment diverge move into nonpublic audit review";
   BASE_REACTION_NEWS_EN["[국내] 방벽 주변 검역 도장 식품 가격 상승 — 군납품 암시장 거래 단속"] = "[DOMESTIC] Quarantine-stamped food prices rise near the barrier as black-market military-supply trades are targeted";

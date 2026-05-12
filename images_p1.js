@@ -58,7 +58,7 @@
     logo_oracle_hq: 'assets/images/logos/logo_oracle_hq_v1.png',
     logo_prometheus_hq: 'assets/images/logos/logo_prometheus_hq_v1.png',
     char_doyun_hq: 'assets/images/characters/char_doyun_hq_v3.jpg',
-    // 에이전트 강은 정체 공개 전까지 패널 자동 연결 없이 명시 장면에서만 사용한다.
+    // 미확인 관찰자는 정체 공개 전까지 패널 자동 연결 없이 명시 장면에서만 사용한다.
     char_agent_kang_hq: 'assets/images/characters/char_agent_kang_hq_v1.jpg',
     char_foster_hq: 'assets/images/characters/char_foster_hq_v1.jpg',
     char_weber_hq: 'assets/images/characters/char_weber_hq_v1.jpg'

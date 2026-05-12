@@ -8,6 +8,12 @@ function uniqueHeadlines(headlines){
   (headlines||[]).forEach(function(item){if(item&&out.indexOf(item)<0)out.push(item)});
   return out;
 }
+function stablePickFromPool(pool,seed){
+  if(!Array.isArray(pool)||pool.length===0)return '';
+  var s=String(seed||''),hash=0;
+  for(var i=0;i<s.length;i++)hash=((hash*31)+s.charCodeAt(i))&0x7fffffff;
+  return pool[hash%pool.length];
+}
 
 var REWARD_RECENT_KEY='ts_recentRewards';
 var REWARD_RECENT_LIMIT=6;
@@ -504,12 +510,16 @@ function CardC(p){
   var leftFx=showFxHints?fxHint(card.left.fx):null,rightFx=showFxHints?fxHint(card.right.fx):null;
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   var cueClass=(choiceCue==='left'?' is-cue-left':choiceCue==='right'?' is-cue-right':'')+(chosen==='left'?' is-commit-left':chosen==='right'?' is-commit-right':'');
-  return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0}},
+  return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
     h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease, opacity 0.18s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
+      h('span',{className:'card-corner-node card-corner-node--tl','aria-hidden':true}),
+      h('span',{className:'card-corner-node card-corner-node--tr','aria-hidden':true}),
+      h('span',{className:'card-corner-node card-corner-node--bl','aria-hidden':true}),
+      h('span',{className:'card-corner-node card-corner-node--br','aria-hidden':true}),
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
       card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},card.glitch?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
@@ -564,7 +574,7 @@ function News(p){
   var parseHL=function(raw){var s=String(raw||'');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false}}return{tag:'INTEL-01',text:s,gl:false}};
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={h:["운영 효율 양호. 현행 유지 권고.","ORACLE 권고 이행률 우수. 한국 지부 성과 상위권.","지휘관 판단 신뢰도 높음. 현 운영 방침 유지.","기지 안정성 확인. 추가 권한 부여 검토 중."],m:["운영 안정. 일부 비표준 패턴 감지.","전반적 안정. 독립적 판단 빈도 소폭 증가.","기지 운영 정상 범위. 일부 지표 변동 주시 중.","ORACLE 권고 이행률 보통. 관찰 지속."],l:["비표준 판단 빈도 증가. 모니터링 강화.","독자적 의사결정 패턴 감지. 분석 중.","ORACLE 권고 이탈 빈도 상승. 기록 중.","운영 데이터 분석 — 비표준 항목 다수 확인."],v:["비표준 운영 패턴 다수 감지. 주의 요망.","지휘관 신뢰 지표 하락 중. 재평가 예정.","ORACLE 권고 무시 빈도 위험 수준 접근.","운영 이상 감지. 본부 보고 검토 중."]};
-  var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|')].join('|'));
   var statBar=function(k,v,nm){var d=v<=20;return h('div',{key:k,style:{display:'flex',alignItems:'center',gap:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},h('span',{style:{color:'rgba(var(--ui-rgb),.55)',width:24}},nm),h('div',{style:{flex:1,height:3,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.6)',width:20,textAlign:'right',fontSize:9}},v))};
   return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginTop:'auto',marginBottom:'auto',display:'flex',flexDirection:'column',maxHeight:'calc(100vh - 60px)',overflow:'hidden'}},
     h('div',{className:'oracle-card__glow'}),
@@ -622,7 +632,7 @@ function NewsReport(p){
     v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
   };
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
-  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|'),locale].join('|'));
   var statBar=function(k,v,nm){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
@@ -730,7 +740,7 @@ function NewsReport2(p){
     v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
   };
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
-  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|'),locale].join('|'));
   var statBar=function(k,v,nm){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
@@ -856,7 +866,7 @@ function NewsReport3(p){
     v:[tt('news.assess.veryLow1',null,'Multiple abnormal operational patterns detected. Caution advised.'),tt('news.assess.veryLow2',null,'Commander trust index declining. Reassessment pending.'),tt('news.assess.veryLow3',null,'ORACLE advisory override frequency entering risk threshold.'),tt('news.assess.veryLow4',null,'Operational anomaly detected. Headquarters review under consideration.')]
   };
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;
-  var assess=aPool[Math.floor(Math.random()*aPool.length)];
+  var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|'),locale].join('|'));
   var statBar=function(k,v,nm){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'96px minmax(0,1fr) 32px',alignItems:'center',columnGap:10,fontFamily:"'Share Tech Mono',monospace",fontSize:10,lineHeight:1.2}},

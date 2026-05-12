@@ -194,14 +194,9 @@
       }
     }
 
-    if (currentAct <= 3 && raisesStat(before, after, 'c') && after.c >= 100) {
+    if (currentAct === 1 && raisesStat(before, after, 'c') && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;
-      kind = changed ? 'early-overcontainment-buffer' : kind;
-    }
-
-    if (currentAct === 4 && day <= 34 && raisesStat(before, after, 'c') && after.c >= 100) {
-      changed = capAbove(after, 'c', 95) || changed;
-      kind = changed ? 'act4-overcontainment-buffer' : kind;
+      kind = changed ? 'act1-overcontainment-buffer' : kind;
     }
 
     if (!changed) return null;
@@ -216,9 +211,9 @@
     var changed = false;
     var kind = '';
 
-    if (currentAct <= 3 && before.c < 100 && after.c >= 100) {
+    if (currentAct === 1 && before.c < 100 && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;
-      kind = changed ? 'early-reward-overcontainment-buffer' : kind;
+      kind = changed ? 'act1-reward-overcontainment-buffer' : kind;
     }
 
     if (currentAct <= 3 && (gi || 0) <= -35) {
@@ -246,11 +241,6 @@
           kind = changed ? 'act4-entry-reward-floor' : kind;
         }
       });
-    }
-
-    if (currentAct === 4 && day <= 34 && before.c < 100 && after.c >= 100) {
-      changed = capAbove(after, 'c', 95) || changed;
-      kind = changed ? 'act4-reward-overcontainment-buffer' : kind;
     }
 
     if (!changed) return null;

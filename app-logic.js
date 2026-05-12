@@ -71,7 +71,7 @@ function genChoiceReactionNews(s,g,logs){
   if(has('LOG-CB-SUSTAINED'))pool.push("[국내] 중앙 자동화와 현장 설명 절차를 병행한 지부, 봉쇄 효율과 내부 신뢰 동시 개선");
   if(g<=-15&&s.o<=40)pool.push("[내부] ORACLE 평가 지표 하락 경보 발령 — 비공식 기록 보존 요청이 내부 채널에서 증가 추세");
   if(g>=15&&(s.r<=40||s.t<=40))pool.push("[내부] ORACLE 순응 절차가 안정성을 높였지만, 보급·신뢰 완충 계획 없이는 현장 피로가 누적될 수 있음");
-  if(s.c<=30||s.r<=30||s.t<=30||s.o<=30)pool.push("[경고] 일일 결산에서 위험 자원 하락 원인이 표시됨 — 다음 DAY 보상과 이브닝 대화에서 보완 선택 권고");
+  if(s.c<=30||s.r<=30||s.t<=30||s.o<=30)pool.push("[경고] 일일 결산에서 위험 지표 하락 원인이 표시됨 — 야간 보정 회의 및 보급 재배치 검토 필요");
   if(pool.length===0){
     if(s.t<35)pool.push("[국내] 방벽 내부 주민 신뢰 지수 하락 — 신고보다 침묵을 택하는 사례 증가");
     if(s.o<35)pool.push("[국내] 중앙 분류망과 현장 판단 불일치 사례, 비공개 감사 대상으로 전환");
@@ -230,7 +230,7 @@ function checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock){
     if(cid==='C-080')tryUnlock('LOG-079');
     if(cid==='C-201')tryUnlock('LOG-076');
     if(cid==='C-215')tryUnlock('LOG-077');
-    // ═══ 외부 인물 + 에이전트 강 (data-cards-15.js) ═══
+    // ═══ 외부 인물 + 미확인 관찰자 (data-cards-15.js) ═══
     if(cid==='CH-005-3')tryUnlock('LOG-080');
     if(cid==='C-248'&&dir==='left')tryUnlock('LOG-081');
     if(cid==='C-249'&&dir==='left')tryUnlock('LOG-081-DATA');

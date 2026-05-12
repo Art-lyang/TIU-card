@@ -62,7 +62,7 @@ function Dialogue(p){
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
   },[sc,picked,chosen,choices]);
-  return h('div',{className:'screen'},
+  return h('div',{className:'screen dialogue-screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // COMMUNICATION')),
     h(CharacterCommPanel,{nameKey:d.char,displayName:charName,role:charRole}),
     h('div',{className:'oracle-card dialogue-card'},
@@ -80,7 +80,19 @@ function LogViewer(p){
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isEn=locale==='en';
   var s1=useState(null),sel=s1[0],setSel=s1[1];
+  var s2=useState(0),page=s2[0],setPage=s2[1];
   var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ul.length;
+  var pageSize=12,totalPages=Math.max(1,Math.ceil(ul.length/pageSize));
+  var safePage=Math.max(0,Math.min(page,totalPages-1));
+  var pageLogs=ul.slice(safePage*pageSize,safePage*pageSize+pageSize);
+  var pager=function(){
+    if(totalPages<=1)return null;
+    var btn=function(label,disabled,nextPage){return h('button',{className:'btn',disabled:disabled,style:{fontSize:11,padding:'7px 14px',marginTop:0,opacity:disabled?0.35:1,cursor:disabled?'default':'pointer'},onClick:function(){if(!disabled)setPage(nextPage)}},label)};
+    return h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:10,margin:'12px 0'}},
+      btn(isEn?'Prev':'이전',safePage<=0,Math.max(0,safePage-1)),
+      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',minWidth:72,textAlign:'center'}},(safePage+1)+' / '+totalPages),
+      btn(isEn?'Next':'다음',safePage>=totalPages-1,Math.min(totalPages-1,safePage+1)));
+  };
   var getLogText=function(log){
     var overlay=(isEn&&typeof tc==='function')?tc('oracleLogs',log.id,null):null;
     return {title:(overlay&&overlay.title)||log.title,content:(overlay&&overlay.content)||log.content};
@@ -101,7 +113,9 @@ function LogViewer(p){
   return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
     h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},tt('logs.unlocked',{current:ul.length,total:ORACLE_LOGS.length},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'))),
-    ul.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between'}},h('span',{style:{fontSize:13,color:'var(--ui)'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)'}},l.id)))}),
+    pager(),
+    pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between',gap:12,alignItems:'center'}},h('span',{style:{fontSize:13,color:'var(--ui)',minWidth:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',flexShrink:0}},l.id)))}),
+    pager(),
     lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다'))),
     h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기'))
   ));

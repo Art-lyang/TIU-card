@@ -226,6 +226,7 @@ function EveningChat(p){
 
 function EveningChat2(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
+  var _active=useState(null),activeChat=_active[0],setActiveChat=_active[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
@@ -315,8 +316,9 @@ function EveningChat2(p){
     var loc=(typeof tc==='function')?tc('charRoles',charObj.key,null):null;
     return (loc&&loc.value)||charObj.role;
   }
-  var chat=null;
-  if(selChar){
+  var chatState=activeChat;
+  var chat=(chatState&&chatState.chat)?chatState.chat:null;
+  if(selChar&&!chat){
     var ck=charKeyMap2[selChar.name]||'';
     var tier=(typeof getTrustTier==='function'&&ck)?getTrustTier(p.trust,ck):'mid';
     var tierDayCap={low:10,mid:24,high:99,bond:99};
@@ -358,8 +360,8 @@ function EveningChat2(p){
     }
     return base;
   }
-  var chatLines=chat?localizeChatLines(chat,trustAdjustedChatLines(chat)):[];
-  var resp=(chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null;
+  var chatLines=(chatState&&Array.isArray(chatState.lines))?chatState.lines:(chat?localizeChatLines(chat,trustAdjustedChatLines(chat)):[]);
+  var resp=(chatState&&chatState.hasOwnProperty('resp'))?chatState.resp:((chat)?localizeResp(chat,(typeof getEveningResponse==='function')?getEveningResponse(chat,p.trust):null):null);
   var noChat=selChar&&(!chat||chatLines.length===0);
   var noChatText=tt('evening.noAvailableChat',null,'오늘은 추가 대화 기록이 없습니다.');
   var evidenceUnlocked=!!(p.logs&&p.logs.indexOf('LOG-EV-UNLOCK')>=0);
@@ -382,7 +384,6 @@ function EveningChat2(p){
   };
   var pickChar=function(c){
     if(isEveningContactDisabled(c))return;
-    setSelChar(c);if(p.onChat)p.onChat(c.name);
     var ck2=charKeyMap2[c.name]||'';var tier2=(typeof getTrustTier==='function'&&ck2)?getTrustTier(p.trust,ck2):'mid';
     var dayCap2=({low:10,mid:24,high:99,bond:99})[tier2]||99;
     var sortD=function(a,b){return a.dayMin-b.dayMin};
@@ -390,7 +391,22 @@ function EveningChat2(p){
     var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn(eveningContext())}catch(e){return true}};
     var dc2=function(ec){try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,eveningContext())}catch(e){return true}};
     var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
-    if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+    var ev2=m2.filter(function(ec){return ec.priority==='event'});
+    var chosen=ev2.length>0?ev2[0]:(m2.length>0?m2[0]:null);
+    if(!chosen){
+      m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+      if(m2.length>0)chosen=m2[0];
+      else{
+        m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+        if(m2.length>0)chosen=m2[m2.length-1];
+        else{
+          m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+          chosen=m2.length>0?m2[m2.length-1]:null;
+        }
+      }
+    }
+    setActiveChat(chosen?{chat:chosen,lines:localizeChatLines(chosen,trustAdjustedChatLines(chosen)),resp:localizeResp(chosen,(typeof getEveningResponse==='function')?getEveningResponse(chosen,p.trust):null)}:{chat:null,lines:[],resp:null});
+    setSelChar(c);if(p.onChat)p.onChat(c.name);
   };
   var pickResp=function(opt){
     var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
@@ -400,7 +416,7 @@ function EveningChat2(p){
   var returnToEvening=function(){
     if(selChar)setDoneToday(function(prev){var next=Object.assign({},prev);next[selChar.name]=true;return next});
     if(chat&&p.onMarkEvening)p.onMarkEvening(ecKey(chat));
-    setSelChar(null);setShowSkipConfirm(false);
+    setActiveChat(null);setSelChar(null);setShowSkipConfirm(false);
   };
   useEffect(function(){
     var onKey=function(e){
@@ -449,7 +465,7 @@ function EveningChat2(p){
         h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel',null,'Cancel')),
         h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},tt('common.confirm',null,'Confirm')))));
   var portrait=CHAR_IMG[selChar.name]||null;
-  return h('div',{className:'screen'},
+  return h('div',{className:'screen dialogue-screen evening-dialogue-screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h(CharacterCommPanel,{nameKey:selChar.name,charKey:selChar.key,displayName:localizeCharName(selChar),role:localizeCharRole(selChar),portrait:portrait}),
     h('div',{className:'oracle-card dialogue-card'},

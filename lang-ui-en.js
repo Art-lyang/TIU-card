@@ -189,6 +189,8 @@ window.TS_I18N.mergeUI('en', {
     uprisingTag:'INDEPENDENT INFRA',
     approve:'[ APPROVE ]',
     rewardPending:'Selectable during the next reward phase.',
+    completedEffect:'Completed effect',
+    rewardUnlocked:'Reward card added',
     empty:'No facility expansions are currently available.\nNew proposals will appear through operation cards.'
   },
   gameOver:{
