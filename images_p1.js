@@ -55,7 +55,10 @@
     facility_fe008_north_patrol: 'assets/images/facility/facility_fe008_north_patrol.jpg',
 
     ending_escape_p1_hq: 'assets/images/endings/ending_escape_p1_hq.jpg',
+    logo_oracle_hq: 'assets/images/logos/logo_oracle_hq_v1.png',
+    logo_prometheus_hq: 'assets/images/logos/logo_prometheus_hq_v1.png',
     char_doyun_hq: 'assets/images/characters/char_doyun_hq_v3.jpg',
+    // 에이전트 강은 정체 공개 전까지 패널 자동 연결 없이 명시 장면에서만 사용한다.
     char_agent_kang_hq: 'assets/images/characters/char_agent_kang_hq_v1.jpg',
     char_foster_hq: 'assets/images/characters/char_foster_hq_v1.jpg',
     char_weber_hq: 'assets/images/characters/char_weber_hq_v1.jpg'
@@ -136,7 +139,23 @@
     'FP-FE-005': 'facility_fe005_supply_route',
     'FP-FE-006': 'facility_fe006_cctv_control',
     'FP-FE-007': 'facility_fe007_emergency_bunker',
-    'FP-FE-008': 'facility_fe008_north_patrol'
+    'FP-FE-008': 'facility_fe008_north_patrol',
+    'FP-FE-009': 'facility_fe001_cryo_storage',
+    'FP-FE-010': 'facility_fe006_cctv_control',
+    'FP-FE-011': 'facility_fe004_medical_bay',
+    'FP-FE-012': 'facility_fe006_cctv_control',
+    'FP-FE-013': 'card_core_jaehyuk_overnight_data',
+    'FP-FE-014': 'facility_fe005_supply_route',
+    'FP-FE-015': 'card_core_officers_command_room',
+    'FP-FE-016': 'facility_fe002_training_ground',
+    'C-FE009-A': 'facility_fe001_cryo_storage',
+    'C-FE010-A': 'facility_fe006_cctv_control',
+    'C-FE011-A': 'facility_fe004_medical_bay',
+    'C-FE012-A': 'facility_fe006_cctv_control',
+    'C-FE013-A': 'card_core_jaehyuk_overnight_data',
+    'C-FE014-A': 'facility_fe005_supply_route',
+    'C-FE015-A': 'card_core_officers_command_room',
+    'C-FE016-A': 'facility_fe002_training_ground'
   };
 
   function patchList(list){

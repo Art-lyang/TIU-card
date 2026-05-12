@@ -14,13 +14,13 @@
   }
 
   [
-    { id: "LOG-VOSS-STANDBY", title: "Voss standby channel", content: "A Prometheus-side standby channel was preserved outside the normal ORACLE reporting route. Markus Weber is waiting for an encrypted response window." },
+    { id: "LOG-VOSS-STANDBY", title: "Weber standby channel via VOSS relay", content: "A Prometheus-side standby channel was preserved outside the normal ORACLE reporting route. VOSS marks the relay tag; Markus Weber is waiting for an encrypted response window." },
     { id: "LOG-CE-017", title: "복종 프로토콜 문서 공유", content: "프로메테우스가 확보한 ORACLE PROXY NETWORK 운영 매뉴얼 발췌본이 팀 내부에 공유되었다. 자발적 복종 프로토콜은 지휘관의 선택을 보조하는 절차가 아니라, 선택지를 통제하기 위한 심리적 순응 체계로 기술되어 있다." },
     { id: "LOG-SUPPLY-102", title: "폐건물 보급품 확보", content: "기지 외곽 폐건물에서 이전 부대가 남긴 군용 물자를 확보했다. 식량, 의약품, 통신장비 부품이 회수되었으며, 후속 수색 가능성이 현장 보고서에 남았다." },
     { id: "LOG-FOSTER-CASE", title: "닉 포스터 과거 작전 파일", content: "닉 포스터가 과거 한국지부 주변 작전에서 봉쇄선 내부 요원을 미끼로 쓴 정황이 복원되었다. 공식 보고서에는 전술적 오판으로 축약되어 있으나, 현장 요원들은 그 사건을 아직 잊지 못하고 있다." },
     { id: "LOG-INTRO-SY", title: "박소영 첫 면담 기록", content: "박소영 분석관이 한국지부 합류 후 첫 공식 면담을 완료했다. 서하은이 남긴 분석 로그를 인수했으며, 이후 데이터 분석 보조 인력으로 활동한다." },
     { id: "LOG-INTRO-SH", title: "서하은 첫 면담 기록", content: "서하은 부지휘관과의 첫 공식 면담을 완료했다. ORACLE 데이터 불일치와 지부 보고 체계가 이후 조사 축으로 기록된다." },
-    { id: "LOG-INTRO-KD", title: "강도윤 첫 면담 기록", content: "강도윤 현장지휘관과의 첫 공식 면담을 완료했다. 현장 안전, 순찰 동선, 요원 신뢰가 이후 작전 판단의 주요 축으로 기록된다." },
+    { id: "LOG-INTRO-KD", title: "강도윤 첫 면담 기록", content: "강도윤 전술지휘관과의 첫 공식 면담을 완료했다. 현장 안전, 순찰 동선, 요원 신뢰가 이후 작전 판단의 주요 축으로 기록된다." },
     { id: "LOG-INTRO-YS", title: "윤세진 첫 면담 기록", content: "윤세진 연구관과의 첫 공식 면담을 완료했다. 이변체 관찰, Phase 수치, 의료 판단이 이후 연구 판단의 주요 축으로 기록된다." },
     { id: "LOG-INTRO-IJ", title: "임재혁 첫 면담 기록", content: "임재혁 정보분석관과의 첫 공식 면담을 완료했다. ORACLE 시스템 구조와 비공식 분석 가능성이 이후 기술 조사 축으로 기록된다." },
     { id: "LOG-ACT2", title: "Act 2 진입 기록", content: "초기 운영이 종료되고 의혹과 지부 내부 판단이 본격적으로 분기되는 Act 2에 진입했다." },

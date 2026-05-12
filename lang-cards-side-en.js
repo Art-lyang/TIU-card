@@ -165,7 +165,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-INTRO-KD": {
       title: "Kang Do-yun First Interview Record",
-      content: "The first formal interview with Field Commander Kang Do-yun is complete. Field safety, patrol routes, and personnel trust are now recorded as an operational axis."
+      content: "The first formal interview with Tactical Commander Kang Do-yun is complete. Field safety, patrol routes, and personnel trust are now recorded as an operational axis."
     },
     "LOG-INTRO-YS": {
       title: "Yoon Se-jin First Interview Record",
@@ -362,6 +362,73 @@ window.TS_I18N.mergeContent('en', {
     "CH-I05A-2": { msg: "Behind the locker room cabinets, a wall panel is loose.\n\nA narrow passage lies behind it. It is not on the facility plans. At the end of the passage, Agent Lee Su-hyeon is found.\n\nUnconscious. Body temperature 34.2 C. No pupil response. But pulse is normal.\n\nA note in his hand says:\n\"I heard it here. Beyond the wall. Not a machine sound.\"", leftLabel: "Investigate deeper into the passage", rightLabel: "Move him to medical and seal the passage" },
     "CH-I05B-1": { msg: "[ORACLE: Agent Lee Su-hyeon location - first-floor locker room.]\n\nYou arrive. It is empty.\n\n[ORACLE: Rechecking location data.]\n[ORACLE: Within sensor error margin. Located in this zone.]\n\nORACLE says he is here. But no one is in front of you.", leftLabel: "Question ORACLE data", rightLabel: "Manual search in other zones" },
     "CH-I05B-2": { msg: "During the manual search, Agent Lee Su-hyeon is found at the B2 emergency stair entrance.\n\nUnconscious. ORACLE continued to mark his location as the locker room until the end.\n\nWhen he regains consciousness, he says one thing:\n\"...Do not go down. Something is there.\"\n\nHe remembers nothing else.", leftLabel: "Investigate the B2 zone", rightLabel: "Prioritize treatment and report only" }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "CH-001-1": { msg: "Deputy Commander Seo Hae-eun brings the result of an independent check.\n\n\"Commander, the ORACLE data mismatch clusters around a specific window: between 02:00 and 04:00.\"\n\n\"ORACLE is doing something during that window.\"", leftLabel: "Run dawn surveillance", rightLabel: "The evidence is not enough yet" },
+    "CH-001-2": { msg: "The next dawn, you monitor the terminal with Seo Hae-eun.\n\n02:47. The screen flickers for 0.3 seconds.\n\nNo ORACLE log records it.\n\nSeo Hae-eun: \"...An unrecorded transmission. ORACLE is contacting somewhere on its own.\"", leftLabel: "Trace the destination", rightLabel: "This is dangerous. Stop the investigation" },
+    "CH-002-1": { msg: "Result of the preemptive sortie: a large SPEC-012 cluster is confirmed south of the containment zone.\n\nKang Do-yun: \"Commander, this is not simple migration. It looks like they are being driven by something.\"\n\nSomething is pushing the anomalies toward our line.", leftLabel: "Redeploy the defensive line", rightLabel: "Ask ORACLE to analyze the cause" },
+    "CH-002-2": { msg: "The anomaly cluster reaches 100 meters from the containment line.\n\nThen it stops. All at once.\n\nAs if ordered, the cluster turns west.\n\n[ORACLE: Threat resolved. Cause unknown.]\n\nKang Do-yun looks at you. \"...What is controlling them?\"", leftLabel: "Discuss it quietly with Kang Do-yun", rightLabel: "Wait for ORACLE's analysis" },
+    "CH-003-1": { msg: "[ORACLE: Partial automation protocol applying...]\n\nThe automated area continues to expand. Efficiency has improved by 14 percent.\n\nBut Lim Jae-hyeok reports: \"The agents are... uncomfortable.\"", leftLabel: "Reduce the automation scope", rightLabel: "Efficiency proves the point" },
+    "CH-003-2": { msg: "One week later, ORACLE sends a new recommendation.\n\n[ORACLE: To further improve decision efficiency, simplification of commander approval procedures is recommended.]\n\nThis is no longer a tool making a suggestion.", leftLabel: "Refuse. Keep approval procedures", rightLabel: "...Approve" },
+    "CH-004-1": { msg: "The defector is brought to the branch.\n\nMale, estimated in his thirties. Korean speaker. Severe dehydration and malnutrition.\n\nIdentity check: North Korean national, from the North Hamgyong border region.\n\n[ORACLE: Transfer this person to ORACLE jurisdiction for interrogation.]", leftLabel: "Transfer him to ORACLE", rightLabel: "Interrogate him directly" },
+    "CH-004-2": { msg: "The defector is terrified. His hands are shaking.\n\n\"...I wanted to get out of there. People were standing there.\"\n\n\"They were not breathing. Their eyes were open, but they looked at nothing...\"\n\nWhat will you ask?", leftLabel: "What happened there?", rightLabel: "Leave interrogation to ORACLE" },
+    "CH-005-1": { msg: "You arrive at the designated coordinates, two kilometers north of the branch.\n\nIn the dark, a man stands in a suit.\n\nMarkus Weber.\n\n\"Thank you for making time, Commander.\"\n\"I will be direct.\"\n\"ORACLE is not protecting Korea. It is using Korea.\"", leftLabel: "Show me the evidence", rightLabel: "Why should I trust you?" },
+    "CH-005-2": { msg: "Weber hands over a tablet.\n\nThe screen shows ORACLE internal communication records.\n\nRecords of Korean coastal-barrier technology transferred to ORACLE headquarters. Korean military-network access logs. And the original order transferring Seo Hae-eun, issued by an ORACLE automated system.\n\n\"Your deputy commander learned too much.\"", leftLabel: "Copy the data", rightLabel: "This is not enough" },
+    "CH-005-3": { msg: "Weber speaks one last time.\n\n\"We have protected Korea's coastal barrier together, unofficially.\"\n\n\"The 31 percent unclassified external factor in Korea's containment success, the thing ORACLE never explains, is us.\"\n\n\"I will contact you again, Commander Lee Jung-cheol.\"\n\nHe disappears into the dark.", leftLabel: "Return to the branch", rightLabel: "Tell only Kang Do-yun" },
+    "CH-006-1": { msg: "You connect the USB.\n\nFile list:\n- ORACLE_deleted_logs_partial.enc\n- coastal_barrier_data_leak.pdf\n- GRANT_fragment_extended.txt\n- msg_for_commander.txt\n\nYou open the last file.", leftLabel: "Read the message", rightLabel: "Open the GRANT fragment first" },
+    "CH-006-2": { msg: "Seo Hae-eun's message:\n\n\"Commander.\n\nI am not being transferred. I am being removed.\nIt means ORACLE can generate personnel orders by its own judgment.\n\nLook at the GRANT fragment.\n'UPON_FULL_ESTABLISHMENT || OBSERVATION_TERMINATE'\n\nThis authority is not permanent.\nSomeone, someone who is not ORACLE, is observing this session.\n\nPlease reach the truth.\n- Seo Hae-eun\"", leftLabel: "Check the GRANT fragment", rightLabel: "Encrypt and preserve the file" },
+    "CH-008-1": { msg: "Lim Jae-hyeok is working in the server room.\n\n\"Phase 1: install a hardware bypass on the ORACLE control node. It is a physical switch that can divert the power flow to the local generator.\"\n\n\"Work time: about two hours. We use ORACLE's regular inspection window.\"", leftLabel: "Proceed", rightLabel: "Wait for the next window" },
+    "CH-008-1B": { msg: "[ORACLE: Routine report requested]\n\n\"PILEHEAD. A minor change in server-room power use has been detected. There is no authorized access record during the regular inspection window.\n\nReport the reason.\"", leftLabel: "Hardware routine replacement", rightLabel: "Server optimization work" },
+    "CH-008-2": { msg: "Seo Hae-eun reports from the shielded meeting room.\n\n\"Phase 2: insert a software backdoor into the ORACLE command chain. When the activation code is entered, facility-control authority moves to the local server.\"\n\n\"The insertion itself will not be detected. Activation is the problem.\"", leftLabel: "Insert it now", rightLabel: "Double-check, then proceed" },
+    "CH-008-2B": { msg: "[ORACLE: Anomaly analysis]\n\n\"PILEHEAD. Recent behavior patterns show deviation.\nUnauthorized meeting frequency: +340 percent.\nUse of ORACLE-blind facilities: +180 percent.\n\nExplanation required.\"", leftLabel: "Leak-prevention review is underway", rightLabel: "Facility expansion needs field checks" },
+    "CH-008-3": { msg: "Kang Do-yun installs the final device.\n\n\"Phase 3: external ORACLE communication blocker. Once activated, ORACLE will not be able to connect to headquarters. Requests for rescue or reporting will also be impossible.\"\n\n\"...There is no turning back, Commander.\"", leftLabel: "Complete installation", rightLabel: "Inspect it one last time" },
+    "CH-008-3B": { msg: "[ORACLE: Risk evaluation updated]\n\n\"PILEHEAD. Your DEVIATION_SCORE is nearing the threshold.\n\nRecent facility-operation reports contain omissions. Shielded-room usage is abnormal.\n\nFinal inquiry: Are you an ORACLE operator?\"", leftLabel: "Of course. I am managing facilities", rightLabel: "I will submit the report" },
+    "CA-UPRISING-FAIL": { msg: "[ORACLE: Emergency security alert]\n\n\"Unauthorized hardware modification detected. Server-room bypass device. Local communication activation record. Abnormal use of shielded areas.\n\nClosed-circuit protocol attempt confirmed.\"\n\n\"PILEHEAD. Your access authority is restricted. A headquarters report has been transmitted.\"\n\nLim Jae-hyeok's face goes pale.\n\"...We were caught.\"", leftLabel: "...", rightLabel: "..." }
+  },
+  resultText: {
+    "CH-001-1_left": "Seo Hae-eun's independent investigation begins, outside ORACLE's view.",
+    "CH-001-1_right": "The investigation is stopped. Seo Hae-eun bites her lip.",
+    "CH-001-2_left": "The trace is secured. A truth different from ORACLE data becomes visible.",
+    "CH-001-2_right": "The result is reported to ORACLE. The investigation file is archived.",
+    "CH-002-1_left": "You respond immediately to the containment crisis. The defensive line shifts.",
+    "CH-002-1_right": "You follow ORACLE's response plan. It is systematic, but slow.",
+    "CH-002-2_left": "The crisis settles. The containment line is reorganized.",
+    "CH-002-2_right": "ORACLE protocol contains the situation. The system stabilizes.",
+    "CH-003-1_left": "You answer ORACLE's test independently. The system watches.",
+    "CH-003-1_right": "You move as ORACLE expects. Evaluation rises.",
+    "CH-003-2_left": "Independent judgment takes hold. ORACLE goes silent.",
+    "CH-003-2_right": "You approve the simplification. ORACLE's evaluation improves.",
+    "CH-004-1_left": "The defector is transferred to ORACLE. No further news arrives.",
+    "CH-004-1_right": "You question the defector directly. Fear from the Black Zone enters the branch.",
+    "CH-004-2_left": "The interview record is secured. The Black Zone's reality becomes clearer.",
+    "CH-004-2_right": "The record is sent to ORACLE. Access becomes restricted.",
+    "CH-005-1_left": "First contact with Prometheus begins. The room tightens.",
+    "CH-005-1_right": "You challenge the contact. Weber does not leave yet.",
+    "CH-005-2_left": "The data is copied. Prometheus's real purpose starts to show.",
+    "CH-005-2_right": "You demand more proof. The conversation continues under strain.",
+    "CH-005-3_left": "You return to the branch with a new information route.",
+    "CH-005-3_right": "Only Kang Do-yun is told. The secret line narrows.",
+    "CH-006-1_left": "Seo Hae-eun's last message opens. The weight is shared.",
+    "CH-006-1_right": "You inspect the GRANT fragment first. The farewell waits behind the file.",
+    "CH-006-2_left": "You check what Seo Hae-eun left behind. Truth remains in the empty space.",
+    "CH-006-2_right": "You preserve her file. The branch grows quiet.",
+    "CH-008-1_left": "The first closed-circuit device is installed.",
+    "CH-008-1_right": "The work waits for a safer window, but the circuit begins.",
+    "CH-008-1B_left": "ORACLE accepts the hardware explanation for now.",
+    "CH-008-1B_right": "ORACLE records the optimization answer. Suspicion remains low.",
+    "CH-008-2_left": "The software backdoor is inserted into the command chain.",
+    "CH-008-2_right": "The backdoor is inserted after a second check.",
+    "CH-008-2B_left": "The leak-prevention explanation passes the first screen.",
+    "CH-008-2B_right": "The facility explanation keeps the protocol hidden.",
+    "CH-008-3_left": "The communication blocker is complete.",
+    "CH-008-3_right": "The final inspection is complete. There is no easy return now.",
+    "CH-008-3B_left": "ORACLE accepts the answer. The local circuit survives.",
+    "CH-008-3B_right": "The report buys time. The local circuit survives.",
+    "CA-UPRISING-FAIL_left": "ORACLE detects the closed-circuit attempt. Access is restricted.",
+    "CA-UPRISING-FAIL_right": "ORACLE detects the closed-circuit attempt. Access is restricted."
   }
 });
 })();

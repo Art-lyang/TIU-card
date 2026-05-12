@@ -77,7 +77,7 @@ var CARDS_ACT1_DAILY = [
   { id: "C-128", act: [2], priority: "하", bg: "comms",
     msg: "[ORACLE: 정기 데이터 동기화 예정.]\n\n4시간 동안 처리 속도가 저하됩니다.",
     left: { label: "야간에 진행", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 },
-    right: { label: "즉시 진행", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    right: { label: "즉시 진행", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
   { id: "C-129", act: [2], priority: "하", bg: "comms",
     msg: "타 지부에서 봉쇄 운영 데이터 공유를 요청합니다.\n\n[ORACLE: 공유를 권장합니다.]",
     left: { label: "데이터 공유", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 2 },

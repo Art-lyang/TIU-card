@@ -99,13 +99,13 @@ var CARDS_PROLOGUE = [
     left: { label: "기록은 남겨두겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "오감지로 처리", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "CA-016", act: [1,2], priority: "중", bg: "base", once: true,
+  { id: "CA-016", act: [2], priority: "중", bg: "base", once: true,
     req: function(s){ return s.day >= 6 },
     msg: "서하은이 ORACLE 데이터 요약본을 검토하다 화면을 응시했습니다.\n\n\"이상하다고 할 정도는 아닌데요. 같은 시간대 데이터인데 요약본이랑 원본이 수치가 살짝 다릅니다.\"\n\n\"...제가 잘못 읽은 거겠죠.\"",
     left: { label: "같이 다시 확인해보자", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -3 },
     right: { label: "재확인은 불필요하다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "CA-017", act: [1,2], priority: "중", bg: "base", once: true,
+  { id: "CA-017", act: [2], priority: "중", bg: "base", once: true,
     req: function(s){ return s.day >= 6 },
     msg: "야간 점검 중 기지 내부 온도 센서가 잠깐 이상값을 표시했습니다.\n\n[ORACLE: 센서 캘리브레이션 오류. 자동 보정 완료.]\n\n임재혁: \"뭐... ORACLE이 알아서 처리하긴 했는데요.\"\n\n그가 조금 오래 화면을 바라봅니다.",
     left: { label: "센서 수동 점검 지시", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 },

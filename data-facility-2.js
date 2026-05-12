@@ -59,6 +59,11 @@ var CARDS_FACILITY = [
     left: { label: "기존 주기 유지", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "백업 빈도 증가", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1 } },
 
+  // FE-011: B3 환기 시스템 개선
+  { id: "C-FE011-A", act: [2,3], feReq: "FE-011", tag: "fe011a", msg: "의무실: B3 환기 시스템 개선 보고.\n\n\"두통 호소가 줄었습니다. 다만 필터 교체 주기를 늦추면 다시 공기질이 흔들릴 수 있습니다.\"", bg: "base",
+    left: { label: "정기 교체 유지", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 },
+    right: { label: "소모품 절약 운용", fx: { c: 1, r: 0, t: -1, o: 0 }, g: 0 } },
+
   // FE-012: 자체 서버룸 (uprising)
   { id: "C-FE012-A", act: [2,3], feReq: "FE-012", tag: "fe012a", msg: "임재혁: 자체 서버룸 운영 보고.\n\n\"로컬 서버에 독립 백업이 쌓이고 있습니다. ORACLE에도 원하는 만큼만 공유할 수 있어요.\"", bg: "research",
     left: { label: "ORACLE 공유 유지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 },
@@ -68,6 +73,16 @@ var CARDS_FACILITY = [
   { id: "C-FE013-A", act: [2,3], feReq: "FE-013", tag: "fe013a", msg: "서하은: 단파 통신실 보고.\n\n\"외부 접선용 채널이 확보되었습니다. 프로메테우스 측 주파수도 감지 가능합니다.\"", bg: "default",
     left: { label: "수신만 유지", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
     right: { label: "양방향 시험 운용", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2 } },
+
+  // FE-014: 비상 발전기 증설
+  { id: "C-FE014-A", act: [2,3], feReq: "FE-014", tag: "fe014a", msg: "임재혁: 예비 전원 시험 가동 보고.\n\n\"72시간 자가 운용은 가능합니다. 문제는 연료입니다. 장기전이 되면 배분 기준을 먼저 정해야 합니다.\"", bg: "supply",
+    left: { label: "연료 배분표 확정", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "ORACLE 절전안 적용", fx: { c: 0, r: 1, t: -1, o: 1 }, g: 1 } },
+
+  // FE-015: 차폐 회의실
+  { id: "C-FE015-A", act: [2,3], feReq: "FE-015", tag: "fe015a", msg: "서하은: 차폐 회의실 사용 보고.\n\n\"간부 회의 기록이 ORACLE 회선에 남지 않았습니다. 대신 회의록은 우리가 직접 보관해야 합니다.\"", bg: "restricted",
+    left: { label: "수기 회의록 보관", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
+    right: { label: "요약본만 공식 제출", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // FE-016: 무기고 확장 (uprising)
   { id: "C-FE016-A", act: [2,3], feReq: "FE-016", tag: "fe016a", msg: "강도윤: 무기고 정비 보고.\n\n\"대인 장비 비축분이 충분합니다. 다만 — 언제 이걸 쓰게 될지가 문제입니다.\"", bg: "default",

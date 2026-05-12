@@ -81,8 +81,8 @@ var CARDS_ACT4_EXT = [
   { id:"CA4-CR-04", act:[4], tag:"endgame-crisis", priority:"상",
     req:function(s,g,logs){ return s.r <= 30 },
     msg:"자원 고갈 임박.\n\n[ORACLE: 지휘관. 현 상태 유지 시 5일 내 자원 0 도달. 긴급 조달 승인을 권고합니다.]\n\n\"조달처는 추후 보고하겠습니다.\"",
-    left:{ label:"ORACLE 조달 승인", fx:{c:0,r:3,t:-1,o:1}, g:2 },
-    right:{ label:"거절 — 자체 조달", fx:{c:0,r:1,t:1,o:-2}, g:-2 } },
+    left:{ label:"ORACLE 조달 승인", fx:{c:0,r:3,t:-2,o:2}, g:3 },
+    right:{ label:"거절 — 자체 조달", fx:{c:-1,r:2,t:1,o:-3}, g:-3 } },
 
   // ─── 외부 / 프로메테우스 (endgame-external) × 3 ───
   { id:"CA4-EX-01", act:[4], tag:"endgame-external", priority:"중",

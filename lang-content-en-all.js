@@ -795,7 +795,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Ignore it"
     },
     "C-202": {
-        "msg": "Multiple wild-animal carcasses have been discovered beyond the outer containment line. The wounds do not match normal predation patterns.\n\nYoon Se-jin: \"The tissue necrosis pattern is similar to EV-Σ infection. We need to determine the spread radius.\"\n\nKang Do-yun: \"That means going outside the line.\"",
+        "msg": "Multiple wild-animal carcasses have been discovered beyond the outer containment line. The wounds do not match normal predation patterns.\n\nYoon Se-jin: \"The tissue necrosis pattern is similar to an early EV-Sigma exposure response. We need to determine the spread radius.\"\n\nKang Do-yun: \"That means going outside the line.\"",
         "leftLabel": "Assemble an outer survey team",
         "rightLabel": "Reinforce inner-line monitoring"
     },
@@ -2968,7 +2968,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Assume it is an error"
     },
     "CA3-VOSS-STANDBY": {
-      msg: "An unregistered signal arrives on an external terminal channel.\nIt is not written to the ORACLE log.\n\nShort encrypted message:\n\n[Emergency standby channel - Weber]\n[Reply whenever you choose.]\n\nThis is a communication line ORACLE does not know about.\nDo you save it, or erase it?",
+      msg: "An unregistered signal arrives on an external terminal channel.\nIt is not written to the ORACLE log.\n\nShort encrypted message:\n\n[Emergency standby channel - Weber]\n[Relay tag: VOSS]\n[Reply whenever you choose.]\n\nVOSS is the channel marker. Markus Weber is the response window.\nDo you save it, or erase it?",
       leftLabel: "Save the channel",
       rightLabel: "Delete it. Too dangerous"
     },
@@ -3120,7 +3120,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-VOSS-STANDBY": {
       title: "Encrypted Standby Channel Saved",
-      content: "[Unregistered communication channel]\n\nSender: Markus Weber\nChannel: outside ORACLE surveillance scope\nMessage: \"Reply whenever you choose.\"\n\nEmergency extraction line. Use pending."
+      content: "[Unregistered communication channel]\n\nSender: Markus Weber\nRelay tag: VOSS\nChannel: outside ORACLE surveillance scope\nMessage: \"Reply whenever you choose.\"\n\nEmergency extraction line. Use pending."
     },
     "LOG-GENERAL-ROUTE": {
       title: "Escape Route: Main Gate Breakout",
@@ -3578,6 +3578,8 @@ window.TS_I18N.mergeContent('en', {
     "LOG-076": { title: "Anonymous Complaint Handling Record", content: "Record of handling an anonymous complaint against the commander. An open meeting or dismissal changes internal trust flow." },
     "LOG-077": { title: "ORACLE Update Record", content: "Response record for an ORACLE self-update. Whether the branch demanded disclosure or allowed it remained in system trust." },
     "LOG-078": { title: "Mid-stage Operation Record 078", content: "Choice record from a mid-stage operation card. It affects later base-operation pressure and field trust." },
+    "LOG-RH-NETWORK": { title: "Quiet Resistance Line", content: "Report format, outer patrol routes, and internal query maps have connected into a quiet circuit. It is not public rebellion, but the Korean branch now has a minimal structure for independent judgment." },
+    "LOG-CB-SUSTAINED": { title: "Sustainable Loyalty", content: "ORACLE procedure was combined with briefings, retraining, and field appendices. This creates a buffer so loyalty does not only mean consuming personnel." },
     "LOG-079": { title: "Mid-stage Operation Record 079", content: "Additional record from a mid-stage operation card. The result is used in later news and log conditions." },
     "LOG-081": { title: "Nick Foster Encounter Record", content: "First direct encounter record with Nick Foster. A possible contact line opened between the Korea Branch and an external information network." },
     "LOG-081-DATA": { title: "Nick Foster Data Provided", content: "Data fragment provided by Nick Foster. It is used to cross-check Prometheus and external intelligence-network material." },

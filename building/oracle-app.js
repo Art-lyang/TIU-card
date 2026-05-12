@@ -6,12 +6,23 @@
 var currentFloor = "level1";
 var selectedRoom = null;
 function isMobile() { return window.innerWidth <= 900; }
+function htmlText(value) {
+  return String(value == null ? "" : value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+function htmlRichText(value) {
+  return htmlText(value).replace(/&lt;br\s*\/?&gt;/gi, "<br>");
+}
 
 // ── UPDATE STATIC UI ──
 function updateStaticUI() {
   document.getElementById("hdr-title").textContent = ui("headerTitle");
   document.getElementById("hdr-subtitle").textContent = ui("headerSub");
-  document.getElementById("hdr-sysinfo").innerHTML = ui("sysInfo");
+  document.getElementById("hdr-sysinfo").innerHTML = htmlRichText(ui("sysInfo"));
   document.getElementById("panel-hdr").textContent = ui("panelHeader");
   document.getElementById("tab-restricted").textContent = ui("tabRestricted");
   document.getElementById("tab-exterior").textContent = ui("tabExterior");
@@ -46,7 +57,7 @@ function renderFloor(floorId) {
   if (floor.masked) {
     var mask = document.createElement("div");
     mask.className = "floor-masked";
-    mask.innerHTML = '<div class="lock-icon">&#9608;&#9608;&#9608;</div><div class="lock-text blink">' + ui("accessDenied") + '</div><div class="lock-sub">' + ui("clearanceReq") + '</div><div class="lock-sub" style="margin-top:20px;color:#221a1a">' + ui("partialData") + '</div>';
+    mask.innerHTML = '<div class="lock-icon">&#9608;&#9608;&#9608;</div><div class="lock-text blink">' + htmlText(ui("accessDenied")) + '</div><div class="lock-sub">' + htmlText(ui("clearanceReq")) + '</div><div class="lock-sub" style="margin-top:20px;color:#221a1a">' + htmlText(ui("partialData")) + '</div>';
     container.appendChild(mask);
     setTimeout(function() { renderRooms(floor, container, true); }, 800);
     updateInfoPanel(null); renderMobileIfNeeded(floorId); return;
@@ -85,7 +96,7 @@ function renderRooms(floor, container, dimmed) {
     el.style.borderColor = isExp ? "#4ae" : isUpg ? "#6f6" : tc.border;
     el.style.background = isExp ? "rgba(74,170,238,.08)" : isUpg ? "rgba(100,255,100,.06)" : tc.bg;
     if (dimmed) { el.style.opacity = "0.35"; el.style.borderStyle = "dashed"; }
-    el.innerHTML = '<div class="room-upgrade-dot"></div><div class="room-label" style="color:' + (isExp ? "#4ae" : isUpg ? "#6f6" : tc.label) + '">' + t(room.name) + '</div><div class="room-type-badge">' + tType(room.type) + '</div>';
+    el.innerHTML = '<div class="room-upgrade-dot"></div><div class="room-label" style="color:' + (isExp ? "#4ae" : isUpg ? "#6f6" : tc.label) + '">' + htmlText(t(room.name)) + '</div><div class="room-type-badge">' + htmlText(tType(room.type)) + '</div>';
     el.addEventListener("click", function(e) {
       e.stopPropagation();
       document.querySelectorAll(".room.selected,.ext-zone.selected").forEach(function(r) { r.classList.remove("selected"); });
@@ -144,7 +155,7 @@ function renderExterior(floor, container) {
     var tc = typeColors[zone.type] || typeColors.terrain;
     el.style.borderColor = isExp ? "#4ae" : tc.border;
     el.style.background = isExp ? "rgba(74,170,238,.06)" : tc.bg;
-    el.innerHTML = '<div class="ez-label" style="color:' + (isExp ? "#4ae" : tc.label) + '">' + t(zone.name) + '</div><div class="ez-type">' + tType(zone.type) + '</div>';
+    el.innerHTML = '<div class="ez-label" style="color:' + (isExp ? "#4ae" : tc.label) + '">' + htmlText(t(zone.name)) + '</div><div class="ez-type">' + htmlText(tType(zone.type)) + '</div>';
     el.addEventListener("click", function(e) {
       e.stopPropagation();
       document.querySelectorAll(".room.selected,.ext-zone.selected").forEach(function(r) { r.classList.remove("selected"); });
@@ -157,20 +168,20 @@ function renderExterior(floor, container) {
   var legend = document.createElement("div");
   legend.className = "ext-legend";
   var extLeg = floor.patrolRoutes.extendedRoute ? '<div class="leg-item"><div class="leg-swatch" style="background:rgba(100,255,150,0.6)"></div>' + (currentLang === "ko" ? "확장" : "EXTENDED") + '</div>' : "";
-  legend.innerHTML = '<div class="leg-item"><div class="leg-swatch" style="background:rgba(255,170,50,0.6)"></div>' + ui("patrolDefault") + '</div>' +
-    '<div class="leg-item"><div class="leg-swatch" style="background:rgba(100,200,255,0.5)"></div>' + ui("patrolAlt") + '</div>' + extLeg;
+  legend.innerHTML = '<div class="leg-item"><div class="leg-swatch" style="background:rgba(255,170,50,0.6)"></div>' + htmlText(ui("patrolDefault")) + '</div>' +
+    '<div class="leg-item"><div class="leg-swatch" style="background:rgba(100,200,255,0.5)"></div>' + htmlText(ui("patrolAlt")) + '</div>' + extLeg;
   container.appendChild(legend);
 }
 
 // ── INFO PANEL (desktop) ──
 function updateInfoPanel(room) {
   var panel = document.querySelector("#info-panel .panel-content");
-  if (!room) { panel.innerHTML = '<div class="placeholder">' + ui("panelPlaceholder") + '</div>'; return; }
+  if (!room) { panel.innerHTML = '<div class="placeholder">' + htmlRichText(ui("panelPlaceholder")) + '</div>'; return; }
   var tc = typeColors[room.type] || typeColors.access;
   var isClassified = room.type === "classified";
   var statusClass = isClassified ? "" : " online";
   var statusText = isClassified ? ui("statusRedacted") : (room.type === "patrol" ? ui("statusPatrol") : ui("statusOnline"));
-  var upgradeHtml = room.upgradable ? '<div style="margin-top:12px;padding:6px 8px;border:1px solid #1a3a1a;font-size:8px;color:#1a6a2a;letter-spacing:1px;text-transform:uppercase">' + ui("upgradeAvail") + '</div>' : "";
+  var upgradeHtml = room.upgradable ? '<div style="margin-top:12px;padding:6px 8px;border:1px solid #1a3a1a;font-size:8px;color:#1a6a2a;letter-spacing:1px;text-transform:uppercase">' + htmlText(ui("upgradeAvail")) + '</div>' : "";
   var expBadge = room._expanded ? '<div style="margin-top:8px;padding:4px 8px;border:1px solid #4ae;font-size:9px;color:#4ae;letter-spacing:1px">[EXPANSION — GAME LINKED]</div>' : "";
   var upgBadge = room._upgraded ? '<div style="margin-top:8px;padding:4px 8px;border:1px solid #6f6;font-size:9px;color:#6f6;letter-spacing:1px">[UPGRADED — GAME LINKED]</div>' : "";
   // Stat alert in panel
@@ -183,7 +194,7 @@ function updateInfoPanel(room) {
       alertHtml = '<div style="margin-top:8px;padding:6px 8px;border:1px solid ' + aC + ';color:' + aC + ';font-size:9px;letter-spacing:1px;text-transform:uppercase">' + (lvl === "critical" ? "⚠ CRITICAL — STAT BELOW THRESHOLD" : "⚠ WARNING — LOW STAT") + '</div>';
     }
   }
-  panel.innerHTML = '<div class="room-title" style="color:' + tc.label + '">' + t(room.name) + '</div><div class="room-type">' + tType(room.type) + '</div><div class="room-desc">' + t(room.desc) + '</div><div class="room-status' + statusClass + '">' + statusText + '</div>' + upgradeHtml + expBadge + upgBadge + alertHtml;
+  panel.innerHTML = '<div class="room-title" style="color:' + tc.label + '">' + htmlText(t(room.name)) + '</div><div class="room-type">' + htmlText(tType(room.type)) + '</div><div class="room-desc">' + htmlText(t(room.desc)) + '</div><div class="room-status' + statusClass + '">' + htmlText(statusText) + '</div>' + upgradeHtml + expBadge + upgBadge + alertHtml;
 }
 
 // ── LANGUAGE SWITCH ──

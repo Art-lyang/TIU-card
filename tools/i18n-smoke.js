@@ -564,7 +564,8 @@ function checkCoreCardOverlays(ctx, errors) {
     'C-FE001-A', 'C-FE001-B', 'C-FE002-A', 'C-FE003-A',
     'C-FE004-A', 'C-FE005-A', 'C-FE005-B', 'C-FE006-A',
     'C-FE007-A', 'C-FE008-A', 'C-FE009-A', 'C-FE010-A',
-    'C-FE012-A', 'C-FE013-A', 'C-FE016-A'
+    'C-FE011-A', 'C-FE012-A', 'C-FE013-A', 'C-FE014-A',
+    'C-FE015-A', 'C-FE016-A'
   ];
   ids.forEach((id) => {
     const view = ctx.tc('cards', id, null);
@@ -606,6 +607,54 @@ function checkMiniGameNarrativeOverlays(ctx, errors) {
         }
       });
     });
+  });
+}
+
+function checkIssue23Overlays(ctx, errors) {
+  const cardIds = [
+    'CH-001-1', 'CH-001-2',
+    'CH-002-1', 'CH-002-2',
+    'CH-003-1', 'CH-003-2',
+    'CH-004-1', 'CH-004-2',
+    'CH-005-1', 'CH-005-2', 'CH-005-3',
+    'CH-006-1', 'CH-006-2',
+    'CH-008-1', 'CH-008-1B',
+    'CH-008-2', 'CH-008-2B',
+    'CH-008-3', 'CH-008-3B',
+    'CA-UPRISING-FAIL'
+  ];
+  cardIds.forEach((id) => {
+    const view = ctx.tc('cards', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue23 card overlay ${id}`);
+      return;
+    }
+    ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue23 card ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue23 card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in issue23 card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+
+  const resultIds = [];
+  cardIds.forEach((id) => {
+    resultIds.push(`${id}_left`, `${id}_right`);
+  });
+  resultIds.forEach((key) => {
+    const val = ctx.tc('resultText', key, null);
+    if (!val) {
+      errors.push(`[en] missing issue23 resultText ${key}`);
+      return;
+    }
+    const text = typeof val === 'string' ? val : val.text;
+    if (!text) errors.push(`[en] empty issue23 resultText ${key}`);
+    if (text && HANGUL_RE.test(text)) errors.push(`[en] Hangul leaked in issue23 resultText ${key}: ${text.slice(0, 80)}`);
+    if (text && MOJIBAKE_RE.test(text)) errors.push(`[en] mojibake leaked in issue23 resultText ${key}: ${text.slice(0, 80)}`);
   });
 }
 
@@ -743,6 +792,7 @@ function main() {
   checkNewsPoolOverlays(en, errors);
   checkIssue22Overlays(en, errors);
   checkCoreCardOverlays(en, errors);
+  checkIssue23Overlays(en, errors);
   checkMiniGameNarrativeOverlays(en, errors);
   checkResultTextOverlays(en, errors);
   checkEveningExtraOverlays(en, errors);

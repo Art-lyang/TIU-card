@@ -76,8 +76,8 @@ var CARDS_INVESTIGATE = [
              !logs.includes("LOG-013") && !logs.includes("LOG-014") &&
              !logs.includes("LOG-015") && !logs.includes("LOG-060") },
     msg: "야간 경보.\n\n봉쇄선 4구역에서 미확인 생체 반응 다수 감지. 기지 외벽에 충격.\n\n강도윤: \"이변체입니다! 최소 3개체 이상 — 기지에 접근하고 있습니다!\"\n\n윤세진: \"이런 규모의 접촉은 처음입니다. 데이터가 전무합니다.\"",
-    left: { label: "전투 요원 투입", fx: { c: -1, r: -1, t: 1, o: 0 }, g: -1 },
-    right: { label: "봉쇄선 전력 차단벽 가동", fx: { c: 1, r: -2, t: 0, o: 0 }, g: 0 } },
+    left: { label: "전투 요원 투입", fx: { c: -1, r: -1, t: 1, o: 0 }, g: -2 },
+    right: { label: "봉쇄선 전력 차단벽 가동", fx: { c: 1, r: -2, t: 0, o: 0 }, g: 2 } },
 
   { id: "C-178", act: [3], priority: "상", bg: "lab",
     req: function(s,g,logs){

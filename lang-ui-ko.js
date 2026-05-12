@@ -49,6 +49,7 @@ window.TS_I18N.mergeUI('ko', {
     ]
   },
   menu:{
+    // 메인 터미널 HUD 문구는 세계관상 ORACLE 단말기 영문 약어를 의도적으로 유지한다.
     startGame:'[ \uAC8C\uC784 \uC2DC\uC791 ]',
     continue:'[ \uC774\uC5B4\uD558\uAE30 ]',
     headerTitle:'ORACLE // KOREA BRANCH TERMINAL',

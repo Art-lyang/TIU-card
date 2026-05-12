@@ -46,27 +46,27 @@ var CARDS_EXTERNAL = [
 
   // ═══ 에이전트 강 — 흔적만 남기는 관찰자 ═══
 
-  // Act 1: 미세한 이상 징후
-  { id: "C-254", act: [1], priority: "하", bg: "forest",
-    cond: function(s,g,logs){ return s.day>=3 },
+  // Act 3: 에이전트 강 관측 흔적은 프로메테우스 접촉 이후부터 노출
+  { id: "C-254", act: [3], priority: "하", bg: "forest",
+    cond: function(s,g,logs){ return s.day>=14 },
     msg: "강도윤의 순찰 보고.\n\n\"봉쇄선 동측 500m 지점. 흙에 찍힌 발자국입니다.\"\n\n군화도 아니고 민간 등산화도 아닙니다. 패턴이 의도적으로 지워진 것처럼 불규칙합니다.\n\n\"누군가 여길 지나갔는데, 우리한테 보이지 않으려고 했습니다.\"",
     left: { label: "정밀 수색 — 3시간", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "기록만 남긴다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 0 } },
 
-  { id: "C-255", act: [1,2], priority: "하", bg: "comms",
-    cond: function(s,g,logs){ return s.day>=4 },
+  { id: "C-255", act: [3], priority: "하", bg: "comms",
+    cond: function(s,g,logs){ return s.day>=15 },
     msg: "임재혁이 야간 통신 로그를 분석하던 중.\n\n\"03:14에 0.7초간 외부 전파 교란이 있었습니다.\"\n\n자연 현상으로 보기엔 너무 깨끗한 파형입니다.\n\n\"누군가 우리 통신 주파수를 스캔한 겁니다. 단, 감청까지는 아닙니다.\"\n\n[ORACLE: 해당 시간대 이상 기록 없음.]",
     left: { label: "통신 암호 교체", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 0 },
     right: { label: "모니터링 강화만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  // Act 2: 관찰이 구체화
-  { id: "C-256", act: [2,3], priority: "하", bg: "restricted",
-    cond: function(s,g,logs){ return s.day>=13 },
+  // Act 3: 관찰이 구체화
+  { id: "C-256", act: [3], priority: "하", bg: "restricted",
+    cond: function(s,g,logs){ return s.day>=16 },
     msg: "서버실 접근 로그에 이상 기록.\n\n임재혁: \"02:41. 인식 불가 세션이 0.3초 접속했습니다.\"\n\n인증 토큰이 없습니다. 하지만 차단되지도 않았습니다.\n\n\"마치... 시스템이 이 접근을 허용한 것처럼 보입니다.\"\n\n[ORACLE: 정기 자가 진단 세션입니다. 이상 없음.]",
     left: { label: "ORACLE 설명을 의심한다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -3 },
     right: { label: "ORACLE 설명을 받아들인다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-257", act: [2,3], priority: "하", bg: "forest",
+  { id: "C-257", act: [3], priority: "하", bg: "forest",
     cond: function(s,g,logs){ return s.day>=17 },
     msg: "강도윤이 기지 북동측 고지대에서 무언가를 발견했습니다.\n\n\"관찰 거점입니다. 최소 2주 이상 사용된 흔적.\"\n\n방수포 흔적, 압축된 풀, 배수구까지 파여 있습니다.\n\n\"전문가 수준입니다. 그런데 물건은 하나도 안 남겼어요.\"\n\n이 거점에서 기지 전체가 내려다보입니다.",
     left: { label: "함정을 설치한다", fx: { c: 1, r: -1, t: 0, o: 0 }, g: -1 },
@@ -79,7 +79,7 @@ var CARDS_EXTERNAL = [
     left: { label: "전체 기지 보안 수색", fx: { c: -1, r: -2, t: 1, o: 0 }, g: -2 },
     right: { label: "ORACLE에 보안 감사 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-259", act: [3,4], priority: "중", bg: "comms",
+  { id: "C-259", act: [4], priority: "중", bg: "comms",
     cond: function(s,g,logs){ return s.day>=30 },
     msg: "야간. ORACLE 외부 채널에서 미식별 암호화 신호가 포착되었습니다.\n\n임재혁: \"이건... ORACLE 프로토콜이 아닙니다. 프로메테우스도 아니에요.\"\n\n신호는 4.2초간 지속. 기지 좌표를 향하고 있었습니다.\n\n\"제3자입니다. 우리를 보고 있는 누군가.\"\n\nORACLE도 프로메테우스도 아닌 존재.\n\n[ORACLE: 분석 불가. 무시를 권고합니다.]",
     left: { label: "역추적을 시도한다", fx: { c: 0, r: -1, t: 0, o: -2 }, g: -4 },

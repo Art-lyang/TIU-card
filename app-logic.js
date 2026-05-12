@@ -225,6 +225,7 @@ function checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock){
     if(cid==='C-191')tryUnlock('LOG-074-ORC');
     if(cid==='C-192')tryUnlock('LOG-075-ORC');
     if(cid==='C-159')tryUnlock('LOG-C159-GYM');
+    if(cid==='C-078')tryUnlock('LOG-078');
     if(cid==='C-080')tryUnlock('LOG-079');
     if(cid==='C-201')tryUnlock('LOG-076');
     if(cid==='C-215')tryUnlock('LOG-077');
