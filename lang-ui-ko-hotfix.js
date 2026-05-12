@@ -22,7 +22,7 @@
         trust: { low:'\uACBD\uACC4', mid:'\uC77C\uBC18', high:'\uD611\uC870', bond:'\uC2E0\uB8B0' },
         special: {
           haeunStay:'\uC794\uB958', haeunRecover:'\uB370\uC774\uD130 \uBCF5\uAD6C \uC911',
-          doyunAlive:'\uC0DD\uC874', doyunWounded:'\uBD80\uC0C1',
+          doyunAlive:'\uC0DD\uC874', doyunWounded:'\uBD80\uC0C1', doyunMinorWound:'\uACBD\uC0C1',
           sejinResearch:'\uC5F0\uAD6C \uC9C4\uD589', sejinAnalysis:'\uBD84\uC11D \uC911',
           jaehyeokTech:'\uAE30\uC220 \uBD84\uC11D', weberContact:'\uC811\uCD09 \uC131\uB9BD', fosterInfo:'\uC815\uBCF4 \uC81C\uACF5',
           soyoungExposed:'\uC815\uCCB4 \uB178\uCD9C', soyoungJoined:'\uD569\uB958'

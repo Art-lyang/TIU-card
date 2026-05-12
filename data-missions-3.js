@@ -88,15 +88,15 @@
       },
       witness: {
         text: "캡처 이미지를 확인합니다.\n\n\"관측 종료. 세션 범위 초과.\"\n\nORACLE의 메시지가 아닙니다. 형식이 다릅니다.\n\nORACLE은 \"세션\"이라는 단어를 쓰지 않습니다.\n\"관측\"도 ORACLE의 용어가 아닙니다.\n\n누군가가 — ORACLE이 아닌 누군가가 — 이 구역을 만들었습니다.\n그리고 방금 당신이 그것을 봤다는 것을 알고 있습니다.\n\n[ORACLE: 해당 구역 데이터 접근이 차단되었습니다.]\n[ORACLE: 귀환하십시오. 이것은 명령입니다.]",
-        choices: [{ label: "[ 기지 귀환 — 관측 데이터 확보 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -3 }, g: -6, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — 관측 데이터 확보 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -3 }, g: -6, log: "LOG-OBS-ZONE" }]
       },
       witness_memory: {
         text: "캡처는 실패했습니다. 화면이 너무 빨리 꺼졌습니다.\n\n하지만 기억에 남았습니다.\n\n\"관측 종료. 세션 범위 초과.\"\n\n이 문장을 어디서 본 적이 있습니다.\nDPRK 블랙존 관련 데이터에서... ORACLE이 삭제한 파일의 메타데이터에서...\n\n서하은이 복구한 키워드 중 하나: 'GRANT'.\nGRANT — 임시 권한 부여.\n\n누군가가 ORACLE에 권한을 주었습니다.\n그리고 이 구역은 — 그 \"누군가\"의 능력이 흘러나온 흔적입니다.\n\n[ORACLE: 귀환하십시오.]",
-        choices: [{ label: "[ 기지 귀환 — 기억만 확보 ]", next: "end", result: { c: 0, r: 0, t: 1, o: -2 }, g: -5, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — 기억만 확보 ]", next: "end", result: { c: 0, r: 0, t: 1, o: -2 }, g: -5, log: "LOG-OBS-ZONE" }]
       },
       exit_quick: {
         text: "즉시 구역을 벗어납니다.\n\n밖으로 나오자 시계가 정상으로 돌아옵니다.\n\n강도윤: \"4분 있었습니다. 안에서는 20분처럼 느껴졌습니다.\"\n\n구역은 여전히 존재합니다. 사슴도 여전히 서 있습니다.",
-        choices: [{ label: "[ 기지 귀환 ]", next: "end", result: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 ]", next: "end", result: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-OBS-ZONE" }]
       },
       perimeter: {
         text: "외곽에서 장비를 설치합니다. 온도계, 방사선 측정기, 음파 센서.\n\n결과:\n- 구역 내 온도: 외부 대비 -7.3°C\n- 방사선: 정상\n- 음파: 0.7Hz 초저주파 진동 (인간 가청 범위 미달)\n- 자기장: 비정상적 패턴 — 어떤 기존 모델과도 불일치\n\n임재혁 (무전): \"이 데이터... EV-Σ 패턴이 아닙니다. 아무 패턴과도 안 맞아요.\"",
@@ -114,15 +114,15 @@
       },
       override: {
         text: "임재혁에게 접근 권한 복원을 지시합니다.\n\n임재혁: \"시도하겠습니다만...\"\n\n3분 후.\n\n\"안 됩니다. ORACLE이 아닌 다른 레벨에서 잠겨 있습니다.\"\n\"이건 ORACLE보다 상위 권한입니다.\"\n\nORACLE보다 상위?",
-        choices: [{ label: "[ 기지 귀환 — 상위 권한 확인 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -3 }, g: -5, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — 상위 권한 확인 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -3 }, g: -5, log: "LOG-OBS-ZONE" }]
       },
       comply: {
         text: "\"알겠다. 본부 판단에 따르자.\"\n\n강도윤이 당신을 봅니다. 아무 말도 하지 않습니다.\n\n장비를 철수합니다. 구역은 남겨두고.\n\n돌아오는 길에 강도윤이 말합니다.\n\"지휘관. 저 구역... 함경북도 보고서에서 읽은 것과 같습니다.\"\n\"사람이 서 있었다는 그 구역.\"",
-        choices: [{ label: "[ 기지 귀환 — ORACLE 지시 이행 ]", next: "end", result: { c: 0, r: 0, t: -1, o: 1 }, g: 2, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — ORACLE 지시 이행 ]", next: "end", result: { c: 0, r: 0, t: -1, o: 1 }, g: 2, log: "LOG-OBS-ZONE" }]
       },
       local_save: {
         text: "ORACLE에 전송하지 않고 로컬 장비에만 저장합니다.\n\n강도윤이 고개를 끄덕입니다.\n\n기지로 돌아와 임재혁에게만 데이터를 넘깁니다.\n\n임재혁: \"이 초저주파 패턴... DPRK 블랙존 위성 데이터에서 같은 걸 본 적 있습니다.\"\n\"ORACLE이 삭제하기 전에요.\"",
-        choices: [{ label: "[ 기지 귀환 — 비공식 데이터 보관 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -2 }, g: -4, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — 비공식 데이터 보관 ]", next: "end", result: { c: 0, r: -1, t: 1, o: -2 }, g: -4, log: "LOG-OBS-ZONE" }]
       },
       oracle_remote: {
         text: "[ORACLE: 원격 분석 프로토콜 가동...]\n[ORACLE: ...]\n[ORACLE: 해당 구역에 대한 분석이 차단되었습니다.]\n[ORACLE: 본부 관할 사안입니다. 접근하지 마십시오.]\n\n3초 침묵.\n\n[ORACLE: 이것은 EV-Σ와 무관한 현상입니다.]\n[ORACLE: 무관한 현상에 자원을 할당하지 마십시오.]\n\nEV-Σ와 무관하다는 걸 ORACLE은 어떻게 알고 있는가?\n분석도 하기 전에?",
@@ -133,7 +133,7 @@
       },
       denied: {
         text: "돌아갑니다.\n\n하지만 질문이 남습니다.\n\nORACLE은 분석하지 않고 \"무관하다\"고 했습니다.\n그것은 이미 알고 있다는 뜻입니다.\n\nORACLE은 이 현상을 알고 있었고, 숨기고 있었습니다.",
-        choices: [{ label: "[ 기지 귀환 — ORACLE 지시 이행 ]", next: "end", result: { c: 0, r: 0, t: 0, o: 1 }, g: 1, log: "LOG-017" }]
+        choices: [{ label: "[ 기지 귀환 — ORACLE 지시 이행 ]", next: "end", result: { c: 0, r: 0, t: 0, o: 1 }, g: 1, log: "LOG-OBS-ZONE" }]
       },
     }
   },

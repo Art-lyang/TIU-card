@@ -102,13 +102,14 @@ function App(){
     if(chainDone)next.chain_done=true;
     return next;
   };
-  var persistGame=function(s,g,a,af,tr,cd,rc,curCt,cq,fac){
+  var persistGame=function(s,g,a,af,tr,cd,rc,curCt,cq,fac,pb){
     Save.saveGame(
       s,g,a,af,tr,
       cd||cooldowns,
       rc||recentCards,
       typeof curCt==='number'?curCt:ct,
-      cq||chainQueue
+      cq||chainQueue,
+      pb!==undefined?pb:pendingBonus
     );
     if(fac)Save.saveFacility(fac);
   };
@@ -128,14 +129,15 @@ function App(){
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
     var sf=Save.getFacility();if(sf){sf=normalizeFacilityState(sf);Save.saveFacility(sf);setFacility(sf)}
     var sg=Save.get('ts_game',null);
-    // 기존 세이브 마이그레이션: once 카드 ONCE 플래그 추가
-    if(sg&&sg.stats&&sg.stats.day>1&&sl){var onceMig=false;['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0){sl.push('ONCE-'+cid);onceMig=true}});if(onceMig){Save.saveLogs(sl);setLogs(sl)}}
+    // 기존 세이브 마이그레이션: legacy onceShown과 초반 once 카드 ONCE 플래그 병합
+    if(sg&&sg.stats&&sl){var beforeOnceLen=sl.length;if(typeof migrateOnceShownLogs==='function')sl=migrateOnceShownLogs(sl,Save.get('ts_onceShown',[]));if(sg.stats.day>1){['CA-001','CA-001B','CA-002','CA-003','CA-004','CA-005','CA-006'].forEach(function(cid){if(sl.indexOf('ONCE-'+cid)<0)sl.push('ONCE-'+cid)})}if(sl.length!==beforeOnceLen){Save.saveLogs(sl);setLogs(sl);if(typeof window!=='undefined')window.__ts_liveLogs=sl.slice();}}
     if(sg&&sg.act){setAct(sg.act);if(sg.actFlags)setActFlags(sg.actFlags);if(typeof sg.transRoute==='string')setTransRoute(sg.transRoute);if(sg.cooldowns)setCooldowns(sg.cooldowns);if(sg.recentCards)setRecentCards(sg.recentCards);if(typeof sg.ct==='number')setCt(sg.ct)}
     else{sl=resetSessionLogs(sl||['LOG-001']);Save.saveLogs(sl);setLogs(sl);Save.del('ts_combos');Save.del('ts_evidence_used');setUsedDlg([]);Save.saveUsedDlg([]);setUsedEvening([]);Save.saveUsedEvening([])}
     // ═══ 세이브 복원: stats/gi 로드 (기존 누락 수정) ═══
     var initStats={c:50,r:65,t:50,o:40,day:1};
     var initGi=0;
     if(sg&&sg.stats){initStats=sg.stats;setStats(sg.stats);initGi=sg.gi||0;setGi(initGi)}
+    if(sg&&sg.pendingBonus)setPendingBonus(sg.pendingBonus);
     var initAct=(sg&&sg.act)||1;
     var initCd=(sg&&sg.cooldowns)||{};
     var initRecent=(sg&&sg.recentCards)||[];
@@ -283,6 +285,7 @@ function App(){
   },[phase,act,logs]);
   var swipe=function(dir){
     SFX.play('swipe');setToast('');
+    var pendingBonusForSave=pendingBonus||null;
     // 카드 글리치 트리거 — 스와이프 시작 시점에 발동
     if(curCard&&curCard.glitch)triggerGlitch(curCard.glitch);
     if(curCard.isFacilityProposal){
@@ -306,7 +309,7 @@ function App(){
     if(curCard.bg==='supply'&&fx&&fx.r>=2&&Math.random()<0.2){fx={};for(var k in ch.fx)fx[k]=ch.fx[k];fx.r=0;riskFired=RISK_MSG[Math.floor(Math.random()*RISK_MSG.length)]}
     var ns=applyFx(stats,fx),ng=gi+(ch.g||0);
     if(ch.floor){['c','r','t','o'].forEach(function(k){if(ch.floor[k]!==undefined&&ns[k]<ch.floor[k]&&(!ch.floorCriticalOnly||ns[k]<=20))ns[k]=ch.floor[k]})}
-    if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);clearToastAfter(2400)},600)}
+    if(pendingBonus){var pb=pendingBonus;ns.c=clamp(ns.c+(pb.c||0)*5);ns.r=clamp(ns.r+(pb.r||0)*5);ns.t=clamp(ns.t+(pb.t||0)*5);ns.o=clamp(ns.o+(pb.o||0)*5);var pbMsg=pb.msg;pendingBonusForSave=null;setPendingBonus(null);setTimeout(function(){setToastType('');setToast(pbMsg);clearToastAfter(2400)},600)}
     var tuned=(typeof applyChoiceBalanceTuning==='function')?applyChoiceBalanceTuning(stats,gi,ns,ng,curCard,ch,logs,act):null;
     if(tuned&&tuned.stats){ns=tuned.stats;if(typeof tuned.gi==='number')ng=tuned.gi}
     setStats(ns);setGi(ng);
@@ -317,7 +320,7 @@ function App(){
     var nextLogs=getLiveLogs(logs);
     // ═══ OBSERVER 접속승인 카드 — 전 세션 1회 특수 처리 ═══
     if(curCard.id==='CA-OBS-PROTO'){try{localStorage.setItem('ts_observer_proto','seen')}catch(e){}if(dir==='left'){tryUnlock('LOG-OBSERVER-APPROVED')}SFX.play('glitch');setTimeout(function(){setToastType('alert');setToast(tt('app.observerError',null,'[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]'));clearToastAfter(3200)},500)}
-    var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey])setPendingBonus(REFUSAL_BONUSES[rwdKey]);
+    var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey]){pendingBonusForSave=REFUSAL_BONUSES[rwdKey];setPendingBonus(pendingBonusForSave)}
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
     var nextActFlags=updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
 
@@ -325,7 +328,7 @@ function App(){
     if(ch.fePropose){var fpId=ch.fePropose;if(!facilityHasExpansion(facility,fpId)){facilityForNext=registerFacilityExpansion(facility,fpId,'approved');setFacility(facilityForNext);Save.saveFacility(facilityForNext);setToastType('');setToast(tt('app.facilityRegistered',null,'시설 확장이 보상 풀에 등록되었습니다'));clearToastAfter(2200)}}
     var isDanger=ns.c<=25||ns.r<=25||ns.t<=25||ns.o<=25;BGM.setDanger(isDanger);
     var nct=ct+1;setCt(nct);
-    persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue,facilityForNext);
+    persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue,facilityForNext,pendingBonusForSave);
     // endTrigger: 루트 클라이맥스 카드 → 해당 엔딩 강제 발동 (게임오버 체크 우선)
     var et=ch.endTrigger||curCard.endTrigger;
     if(et&&ENDING_DEFS&&ENDING_DEFS[et]){SFX.play('gameover');doGO(ENDING_DEFS[et].name,ns,ng,et);return}
@@ -336,7 +339,12 @@ function App(){
     // CA-001B right: 2회차+ ORACLE 적응기간 생략 — Act 2 직행
     if(curCard.id==='CA-001B'&&dir==='right'){
       tryUnlock('LOG-ACT1-SKIP');
-      setTimeout(function(){doBriefing(2,ns,'A')},500);
+      var skipStats={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:5};
+      var skipFlags=deriveActFlags(nextActFlags,null,null,false);
+      skipFlags.act1_skipped=true;
+      setStats(skipStats);setActFlags(skipFlags);
+      persistGame(skipStats,ng,2,skipFlags,'A',ncd,recentCards,0,[],facilityForNext,pendingBonusForSave);
+      setTimeout(function(){doBriefing(2,skipStats,'A')},500);
       return;
     }
     // ═══ 폐쇄회로 발각 체크: PHASE1 이후 GI ≤ -40이면 ORACLE 감지 ═══
@@ -357,7 +365,7 @@ function App(){
     if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
-    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext)}
+    var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext,pendingBonusForSave)}
     if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
     else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
@@ -366,7 +374,7 @@ function App(){
     if(riskFired){setTimeout(function(){setToastType('risk');setToast(riskFired);clearToastAfter(2800)},600)}
     else if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);clearToastAfter(2400)},400)}}
   };
-  var hMission=function(o){if(o.gOnly){setGi(function(g){return g+(o.g||0)});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return};if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
+  var hMission=function(o){if(o.gOnly){setGi(function(g){var ng0=g+(o.g||0);persistGame(stats,ng0,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng0});return}SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return}nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
     if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3LoyalRelief?0:5))}
@@ -480,7 +488,7 @@ function App(){
     if(!savedCard&&pcq.length>0){savedCard=pcq[0];restoredQueue=pcq.slice(1)}
     setCooldowns(pcd);setRecentCards(prc);setChainQueue(restoredQueue);
     setLogs(plogs);if(typeof window!=='undefined')window.__ts_liveLogs=plogs.slice();setTrust(ptrust);setUsedDlg(pud);setUsedEvening(pue);setSeenArchive(psa);setFacility(pfac);
-    setCt(typeof pg.ct==='number'?pg.ct:0);setCurDlg(null);setCurMission(null);setPendingBonus(null);
+    setCt(typeof pg.ct==='number'?pg.ct:0);setCurDlg(null);setCurMission(null);setPendingBonus(pg.pendingBonus||null);
     setFp(false);setShowSettings(false);
     // 저장된 현재 카드가 있으면 그대로 복원하고, 없을 때만 새로 뽑는다.
     var nc=savedCard||drawCard(ps,pgi,plogs,pcd,prc,pact,ptr,pfac);
@@ -548,7 +556,7 @@ function App(){
   if(phase==='go')return h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,resultDay:goDay,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}});
   if(phase==='news')return h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){setPhase('reward')}}));
   if(phase==='reward')return h(RewardScreen,{stats:stats,onPick:hReward,facility:facility});
-  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,sessions:sessions,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){return g+v})},onLog:function(id){tryUnlock(id)}}))};
+  if(phase==='evening'){BGM.setTempVolume(0.04);return h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,sessions:sessions,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){var ng=g+v;persistGame(stats,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng})},onLog:function(id){tryUnlock(id)}}))};
   if(phase==='dialogue'&&curDlg)return h(Dialogue,{dialogue:curDlg,onChoice:hDlg});
   if(phase==='mission'&&curMission)return h(FieldMission,{missionId:curMission,trust:trust,onComplete:hMission});
   if(phase==='escape_game')return h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult});

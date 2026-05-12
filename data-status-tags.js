@@ -50,6 +50,7 @@ var CHAR_STATUS_TAGS={
     {char:'서하은',log:'LOG-051',key:'statusTags.character.special.haeunStay',label:'잔류 결정',cls:'ctag-special'},
     {char:'서하은',log:'LOG-052',key:'statusTags.character.special.haeunRecover',label:'데이터 복구 중',cls:'ctag-special'},
     {char:'강도윤',log:'LOG-074-DONE',key:'statusTags.character.special.doyunWounded',label:'부상',cls:'ctag-danger'},
+    {char:'강도윤',log:'LOG-DOYUN-MINOR-WOUND',key:'statusTags.character.special.doyunMinorWound',label:'경상',cls:'ctag-special'},
     {char:'윤세진',log:'LOG-RES-012',key:'statusTags.character.special.sejinResearch',label:'연구 진행',cls:'ctag-special'},
     {char:'윤세진',log:'LOG-RES-011',key:'statusTags.character.special.sejinAnalysis',label:'분석 중',cls:'ctag-special'},
     {char:'임재혁',log:'LOG-RES-001',key:'statusTags.character.special.jaehyeokTech',label:'기술 분석',cls:'ctag-special'},

@@ -261,7 +261,7 @@ window.TS_I18N.mergeUI('en', {
       trust:{ low:'Guarded', mid:'Normal', high:'Cooperative', bond:'Trusted' },
       special:{
         haeunStay:'Staying Behind', haeunRecover:'Data Recovery In Progress',
-        doyunAlive:'Alive', doyunWounded:'Wounded',
+        doyunAlive:'Alive', doyunWounded:'Wounded', doyunMinorWound:'Minor Wound',
         sejinResearch:'Research Active', sejinAnalysis:'Analyzing',
         jaehyeokTech:'Technical Analysis', weberContact:'Contact Established', fosterInfo:'Intel Provided',
         soyoungExposed:'Identity Exposed', soyoungJoined:'Joined'

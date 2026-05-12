@@ -12,11 +12,6 @@
         reverse: { key: "log_reconstruction", type: "reconstruction" }
       }
     },
-    "MI-05": {
-      start: {
-        interview: { key: "statement_verify", type: "statement" }
-      }
-    },
     "M-007": {
       start: {
         strike: { key: "latent_screen", type: "screening" }
@@ -30,6 +25,10 @@
     configs[missionId].start=configs[missionId].start||{};
     return configs[missionId].start;
   }
+
+  Object.assign(ensureFieldMiniStart("MI-05"),{
+    interview: { key: "statement_verify", type: "statement" }
+  });
 
   Object.assign(ensureFieldMiniStart("M-001"),{
     doyun_joint: { key: "doyun_joint_assault", type: "sample", followupType: "doyun_assault" }

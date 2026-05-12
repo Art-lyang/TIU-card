@@ -52,7 +52,8 @@ function EveningChat(p){
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
-  var available=chars.filter(function(c){if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0)return false;if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -146,10 +147,6 @@ function EveningChat(p){
     var dc2=function(ec){try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,{logs:p.logs,trust:p.trust,facility:p.facility,day:p.day,act:p.act})}catch(e){return true}};
     var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
     if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
-    // 이벤트성 이브닝 우선 마크
-    var evM=m2.filter(function(ec){return ec.priority==='event'});
-    var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
-    if(pick&&p.onMarkEvening)p.onMarkEvening(ecKey(pick))
   };
   var pickResp=function(opt){
     var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
@@ -158,6 +155,7 @@ function EveningChat(p){
   };
   var returnToEvening=function(){
     if(selChar)setDoneToday(function(prev){var next=Object.assign({},prev);next[selChar.name]=true;return next});
+    if(chat&&p.onMarkEvening)p.onMarkEvening(ecKey(chat));
     setSelChar(null);setShowSkipConfirm(false);
   };
   useEffect(function(){
@@ -233,7 +231,8 @@ function EveningChat2(p){
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
-  var available=chars.filter(function(c){if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0)return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -392,9 +391,6 @@ function EveningChat2(p){
     var dc2=function(ec){try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,eveningContext())}catch(e){return true}};
     var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
     if(m2.length===0)m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
-    var evM=m2.filter(function(ec){return ec.priority==='event'});
-    var pick=evM.length>0?evM[0]:(m2.length>0?m2[0]:null);
-    if(pick&&p.onMarkEvening)p.onMarkEvening(ecKey(pick))
   };
   var pickResp=function(opt){
     var cn=selChar.name;if(p.onResponse)p.onResponse(cn,opt.trust||0);
@@ -403,6 +399,7 @@ function EveningChat2(p){
   };
   var returnToEvening=function(){
     if(selChar)setDoneToday(function(prev){var next=Object.assign({},prev);next[selChar.name]=true;return next});
+    if(chat&&p.onMarkEvening)p.onMarkEvening(ecKey(chat));
     setSelChar(null);setShowSkipConfirm(false);
   };
   useEffect(function(){

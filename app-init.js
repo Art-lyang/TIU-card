@@ -235,6 +235,22 @@ function normalizeGameSave(game){
   if(!game||!game.stats)return game;
   var day=parseInt(game.stats.day||1,10)||1;
   var act=parseInt(game.act||1,10)||1;
+  if(act===2&&day<5){
+    var skip=false;
+    try{
+      var raw=localStorage.getItem('ts_logs');
+      var lg=raw?JSON.parse(raw):[];
+      skip=Array.isArray(lg)&&lg.indexOf('LOG-ACT1-SKIP')>=0;
+    }catch(e){}
+    if(skip||(game.actFlags&&game.actFlags.act1_skipped)){
+      var skipped={};
+      for(var sk in game)skipped[sk]=game[sk];
+      skipped.stats={c:game.stats.c,r:game.stats.r,t:game.stats.t,o:game.stats.o,day:5};
+      skipped.act=2;
+      skipped.__normalized='act1-skip-day';
+      return skipped;
+    }
+  }
   var maxAct=getMaxActForDay(day);
   if(act<=maxAct)return game;
   var fixed={};
@@ -268,17 +284,35 @@ function sanitizeSnapshotLogsForGame(logs,game,normalized){
   if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
   return out;
 }
+function migrateOnceShownLogs(logs,onceShown){
+  var out=Array.isArray(logs)?logs.slice():['LOG-001'];
+  var seen={};
+  out.forEach(function(id){if(id)seen[id]=true});
+  var validOnce={};
+  if(typeof CARDS!=='undefined'&&Array.isArray(CARDS)){
+    CARDS.forEach(function(c){if(c&&c.once&&c.id)validOnce[c.id]=true});
+  }
+  (Array.isArray(onceShown)?onceShown:[]).forEach(function(id){
+    id=String(id||'').replace(/^ONCE-/,'');
+    if(!id)return;
+    if(Object.keys(validOnce).length>0&&!validOnce[id])return;
+    var flag='ONCE-'+id;
+    if(!seen[flag]){seen[flag]=true;out.push(flag)}
+  });
+  if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
+  return out;
+}
 
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed)}return fixed}return parsed}catch(e){return def}},
+  get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){var hardNormalized=fixed.__normalized===true;fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed);if(hardNormalized)try{Save.saveLogs(sanitizeSnapshotLogsForGame(Save.get('ts_logs',['LOG-001']),fixed,true))}catch(e){}}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
-  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq){
+  saveGame:function(s,g,a,af,tr,cd,rc,ct,cq,pb){
     var sessionDeck=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
-    var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],sessionDeck:sessionDeck});
+    var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],pendingBonus:pb||null,sessionDeck:sessionDeck});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');if(typeof clearSessionDeck==='function')clearSessionDeck()},
+  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -327,7 +361,7 @@ var Save={
     var pack=Save.get('ts_snap_'+slot,null);if(!pack)return null;
     if(pack.game){
       var fixedGame=normalizeGameSave(pack.game);
-      var normalized=!!(fixedGame&&fixedGame.__normalized);
+      var normalized=!!(fixedGame&&fixedGame.__normalized===true);
       pack.game=cleanGameSaveMeta(fixedGame);
       if(normalized){pack.currentCardId=null;pack.currentCard=null}
       var packAct=pack.game&&pack.game.act||1;
@@ -339,7 +373,7 @@ var Save={
       }
       Save.set('ts_game',pack.game)
     }else Save.del('ts_game');
-    if(pack.logs){pack.logs=sanitizeSnapshotLogsForGame(pack.logs,pack.game,normalized);Save.set('ts_logs',pack.logs)}
+    if(pack.logs){pack.logs=sanitizeSnapshotLogsForGame(pack.logs,pack.game,normalized);pack.logs=migrateOnceShownLogs(pack.logs,pack.onceShown||[]);Save.set('ts_logs',pack.logs)}
     if(pack.trust)Save.set('ts_trust',pack.trust);else Save.del('ts_trust');
     Save.set('ts_usedDlg',pack.usedDlg||[]);
     Save.set('ts_usedEvening',pack.usedEvening||[]);
