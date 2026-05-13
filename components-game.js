@@ -98,10 +98,14 @@ function Boot(p){
 }
 // ═══ 메인 메뉴 ═══
 function MainMenu(p){
+  var getMenuLocale=function(){return (window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko'};
+  var _loc=useState(getMenuLocale()),locale=_loc[0],setLocale=_loc[1];
+  var switchLocale=function(next){if(next===locale)return;if(window.TS_I18N&&window.TS_I18N.setLocale)window.TS_I18N.setLocale(next);setLocale(next)};
   var mono={fontFamily:"'Share Tech Mono',monospace"};
   var _sub=useState(null),sub=_sub[0],setSub=_sub[1];
   var _sel=useState(null),selectedIndex=_sel[0],setSelectedIndex=_sel[1];
   var _gl=useState(''),glitchKey=_gl[0],setGlitchKey=_gl[1];
+  var _sp=useState(false),showSnapshotSelect=_sp[0],setShowSnapshotSelect=_sp[1];
   var _now=useState('02:41:11 KST'),nowText=_now[0],setNowText=_now[1];
   var fmtTime=function(date){
     try{
@@ -115,9 +119,36 @@ function MainMenu(p){
     var timer=setInterval(function(){setNowText(fmtTime(new Date()))},1000);
     return function(){clearInterval(timer)};
   },[]);
+  var snapshotSlots=(typeof Save!=='undefined'&&Save.listSnapshots)?Save.listSnapshots():[];
+  var manualSnapshotSlots=snapshotSlots.filter(function(s){return s&&s.data});
+  var hasManualSnapshots=manualSnapshotSlots.length>0;
+  var formatSnapshotTime=function(ts){
+    if(!ts)return '';
+    try{
+      var parts=new Intl.DateTimeFormat(locale==='en'?'en-US':'ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date(ts));
+      var out={};parts.forEach(function(part){out[part.type]=part.value});
+      return out.month+'/'+out.day+' '+out.hour+':'+out.minute+' KST';
+    }catch(e){return ''}
+  };
+  var getSnapshotMeta=function(s){
+    var d=s&&s.data||{};
+    var g=d.game||{};
+    var st=g.stats||{};
+    var day=st.day||d.day||'?';
+    var act=g.act||d.act||'?';
+    return d.label||('DAY '+day+' / ACT '+act);
+  };
+  var loadSnapshotSlot=function(slot){
+    setShowSnapshotSelect(false);
+    if(p.onLoadSnap)p.onLoadSnap(slot);
+  };
+  var continueRoute=function(){
+    if(hasManualSnapshots){setShowSnapshotSelect(true);return}
+    if(p.onContinue)p.onContinue();
+  };
   var menuItems=[];
   if(p.hasSave){
-    menuItems.push({key:'continue',primary:true,icon:'resume',title:tt('menu.routes.continue.title',null,'[ 이어하기 ]'),sub:tt('menu.routes.continue.sub',null,'RESUME SAVED OPERATION'),action:tt('menu.routes.continue.action',null,'RESUME SESSION'),onClick:p.onContinue});
+    menuItems.push({key:'continue',primary:true,icon:'resume',title:tt('menu.routes.continue.title',null,'[ 이어하기 ]'),sub:tt('menu.routes.continue.sub',null,'RESUME SAVED OPERATION'),action:tt('menu.routes.continue.action',null,'RESUME SESSION'),onClick:continueRoute});
     menuItems.push({key:'start',primary:false,icon:'command',title:tt('menu.routes.new.title',null,'[ 새 세션 시작 ]'),sub:tt('menu.routes.new.sub',null,'FIELD COMMAND SIMULATION'),action:tt('menu.routes.new.action',null,'NEW SESSION'),onClick:p.onPlay});
   }else{
     menuItems.push({key:'start',primary:true,icon:'command',title:tt('menu.routes.start.title',null,'[ 게임 시작 ]'),sub:tt('menu.routes.start.sub',null,'FIELD COMMAND SIMULATION'),action:tt('menu.routes.start.action',null,'ENTER SESSION'),onClick:p.onPlay});
@@ -139,6 +170,15 @@ function MainMenu(p){
   };
   useEffect(function(){
     var onKey=function(e){
+      if(showSnapshotSelect){
+        if(e.key==='Escape'){e.preventDefault();setShowSnapshotSelect(false);return}
+        if(/^[1-3]$/.test(e.key)){
+          var slotNum=parseInt(e.key,10);
+          var hit=manualSnapshotSlots.filter(function(s){return s.slot===slotNum})[0];
+          if(hit){e.preventDefault();loadSnapshotSlot(hit.slot)}
+        }
+        return;
+      }
       var n=-1;
       if(/^[1-9]$/.test(e.key))n=parseInt(e.key,10)-1;
       else if(e.code&&/^Numpad[1-9]$/.test(e.code))n=parseInt(e.code.slice(6),10)-1;
@@ -149,7 +189,7 @@ function MainMenu(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selectedIndex,menuItems.length,p.hasSave]);
+  },[selectedIndex,menuItems.length,p.hasSave,showSnapshotSelect,manualSnapshotSlots.length]);
   // 설정 서브뷰
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
@@ -162,8 +202,13 @@ function MainMenu(p){
     h('main',{className:'main-terminal-frame','aria-label':'ORACLE Korea Branch terminal main menu'},
       h('header',{className:'main-terminal-header'},
         h('div',{className:'main-terminal-header-main'},
-          h('span',{className:'main-terminal-header-title'},tt('menu.headerTitle',null,'ORACLE // KOREA BRANCH TERMINAL')),
-          h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i')))),
+          h('span',{className:'main-terminal-header-title'},'ORACLE //'),
+          h('div',{className:'main-terminal-header-tools'},
+            h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength'},h('i'),h('i'),h('i'),h('i'))),
+            h('div',{className:'terminal-boot-locale main-terminal-locale','aria-label':tt('boot.language',null,'Language')},
+              ['ko','en'].map(function(l){
+                return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase());
+              })))),
         h('div',{className:'main-terminal-header-status'},
           h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
           h('span',{className:'main-terminal-time'},tt('menu.timeLabel',{time:nowText},'TIME: '+nowText)))),
@@ -193,7 +238,21 @@ function MainMenu(p){
             h('span',{className:'main-terminal-button-action'},'>> ',h('em',null,item.action))))})),
       h('footer',{className:'main-terminal-footer'},
         h('div',null,tt('menu.footerAuth',null,'AUTH: GUEST'),' | ',tt('menu.footerVersion',null,'VER: 1.11.7'),' | ',tt('menu.footerBuild',{build:(typeof BUILD_VER!=='undefined')?BUILD_VER:'?'},'BUILD: '+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))),
-        h('div',null,h('span',{className:'main-terminal-footer-bar','aria-hidden':true}),tt('menu.footerInternal',null,'ORACLE KOREA BRANCH - INTERNAL')))));
+        h('div',null,h('span',{className:'main-terminal-footer-bar','aria-hidden':true}),tt('menu.footerInternal',null,'ORACLE KOREA BRANCH - INTERNAL'))),
+      showSnapshotSelect&&h('div',{className:'main-terminal-save-overlay',onClick:function(){setShowSnapshotSelect(false)}},
+        h('section',{className:'main-terminal-save-modal','aria-label':tt('menu.savePicker.title',null,'SAVE SLOT SELECT'),onClick:function(e){e.stopPropagation()}},
+          h('header',{className:'main-terminal-save-head'},
+            h('strong',null,tt('menu.savePicker.title',null,'SAVE SLOT SELECT')),
+            h('button',{type:'button',className:'main-terminal-save-close',onClick:function(){setShowSnapshotSelect(false)}},tt('menu.savePicker.close',null,'CLOSE'))),
+          h('p',{className:'main-terminal-save-help'},tt('menu.savePicker.help',null,'Manual save slots were detected. Select a session to resume.')),
+          h('div',{className:'main-terminal-save-list'},
+            manualSnapshotSlots.map(function(s){
+              return h('button',{key:s.slot,type:'button',className:'main-terminal-save-slot',onClick:function(){loadSnapshotSlot(s.slot)}},
+                h('span',{className:'main-terminal-save-slot-id'},tt('menu.savePicker.slot',{slot:s.slot},'SLOT '+s.slot)),
+                h('span',{className:'main-terminal-save-slot-meta'},getSnapshotMeta(s)),
+                h('span',{className:'main-terminal-save-slot-time'},formatSnapshotTime(s.data&&s.data.timestamp)));
+            })),
+          h('button',{type:'button',className:'main-terminal-save-auto',onClick:function(){setShowSnapshotSelect(false);if(p.onContinue)p.onContinue()}},tt('menu.savePicker.auto',null,'CONTINUE CURRENT AUTO SAVE'))))));
 }
 function Stats(p){
   var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
@@ -480,7 +539,7 @@ function CardC(p){
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-004':IMG.spec_004_seedspreader,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit,'spec-015':IMG.spec_015_brainseeker};
-  var bgImgMap={base:IMG.bg_base,default:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,research:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather};
+  var bgImgMap={base:IMG.bg_base,default:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,research:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather,command:IMG.bg_command,corridor:IMG.bg_corridor,seoul:IMG.bg_seoul_a,seoul_a:IMG.bg_seoul_a,seoul_b:IMG.bg_seoul_b,bg_command:IMG.bg_command,bg_seoul_a:IMG.bg_seoul_a,bg_seoul_b:IMG.bg_seoul_b};
   var specBg=card.img?IMG[card.img]:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:tt('stats.c',null,'봉쇄'),r:tt('stats.r',null,'자원'),t:tt('stats.t',null,'신뢰'),o:tt('stats.o',null,'평가')};
@@ -649,7 +708,7 @@ function NewsReport(p){
     var lines=[];
     var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
     var feNameMapEn={
-      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard and Support Facility','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
       'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
@@ -754,7 +813,7 @@ function NewsReport2(p){
     var fac=p.facility||{},comp=fac.completed||[],appr=fac.approved||[],lines=[];
     var cm={red:'#ff4444',orange:'#f0a030',green:'var(--ui)',gray:'rgba(var(--ui-rgb),.4)'};
     var feNameMapEn={
-      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard and Support Facility','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
       'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'
@@ -880,7 +939,7 @@ function NewsReport3(p){
     var fac=p.facility||{},comp=fac.completed||[],appr=fac.approved||[],lines=[];
     var cm={red:'#ff6644',orange:'#f0a030',green:'rgba(var(--ui-rgb),.82)',gray:'rgba(var(--ui-rgb),.48)'};
     var feNameMapEn={
-      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
+      'FE-001':'Cryostorage Expansion','FE-002':'Outdoor Training Yard and Support Facility','FE-003':'High-Sensitivity Sensor Array','FE-004':'Medical Wing Expansion',
       'FE-005':'Secondary Supply Route','FE-006':'CCTV Grid Replacement','FE-007':'Emergency Shelter Bunker','FE-008':'Forward Observation Route',
       'FE-009':'Quarantine Response Lab','FE-010':'Research Data Backup Array','FE-011':'B3 Lower Systems Upgrade','FE-012':'Independent Server Room',
       'FE-013':'Independent Communications Room','FE-014':'Emergency Generator Wing','FE-015':'Shielded Briefing Room','FE-016':'Armory Expansion'

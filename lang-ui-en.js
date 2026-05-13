@@ -68,6 +68,13 @@ window.TS_I18N.mergeUI('en', {
     footerVersion:'VER: 1.11.7',
     footerBuild:'BUILD: {build}',
     footerInternal:'ORACLE KOREA BRANCH - INTERNAL',
+    savePicker:{
+      title:'SAVE SLOT SELECT',
+      help:'Manual save slots were detected. Select a session to resume.',
+      slot:'SLOT {slot}',
+      auto:'CONTINUE CURRENT AUTO SAVE',
+      close:'CLOSE'
+    },
     routes:{
       start:{title:'[ GAME START ]',sub:'FIELD COMMAND SIMULATION',action:'ENTER SESSION'},
       continue:{title:'[ CONTINUE ]',sub:'SAVED FIELD OPERATION',action:'RESUME SESSION'},

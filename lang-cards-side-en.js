@@ -70,17 +70,6 @@ window.TS_I18N.mergeContent('en', {
     "LJC-PROM-05": { msg: "An old radio-frequency comparison arrives.\n\nThe final rescue call from the eastern Gangwon operation partially overlaps with the noise pattern in a recent Prometheus encrypted channel.\n\nThe match rate is low. But the overlap sits in the same place too cleanly to ignore.\n\nLee Jung-cheol turns one page of the report and stops.\n\n\"That name again. Here.\"", leftLabel: "Keep the comparison unofficially", rightLabel: "File it under ORACLE standard classification", leftReplyMsg: "[Unofficial hold: old rescue call compared with current channel noise]", rightReplyMsg: "[Standard classification: Prometheus relevance marked low]" },
     "LJC-PROM-06": { msg: "A Prometheus proxy sends a short list.\n\nThere is no title. Only dates, coordinates, and failed rescue counts.\n\nOne entry overlaps the missing window in the eastern Gangwon operation.\n\nLim Jae-hyeok says, \"If this list is real, they were not burying that day. They were chasing it too.\"\n\nLee Jung-cheol does not answer immediately.", leftLabel: "Preserve the list as possible evidence", rightLabel: "Quarantine it as unverified-source material", leftReplyMsg: "[Evidence candidate preserved: Prometheus failed-rescue list]", rightReplyMsg: "[Unverified-source quarantine: held out of operational judgment]" },
     "LJC-PROM-07": { msg: "After the night report ends, Seo Hae-eun remains in the room.\n\n\"Commander, you do not trust Prometheus. Everyone knows that.\"\n\nShe chooses her words carefully.\n\n\"But if that distrust is used only in the direction ORACLE wants, we should also ask who benefits.\"\n\nLee Jung-cheol closes the old operation file on his desk.", leftLabel: "Record the reason for distrust", rightLabel: "Leave emotion out of the record", leftReplyMsg: "[Judgment reason recorded: distrust separated from operational grounds]", rightReplyMsg: "[Emotion record excluded: only official judgment retained]" },
-    "A2-FORESHADOW-01": { msg: "While sorting night communication logs, Lim Jae-hyeok finds a branch in the record.\n\n\"This does not look like a missed connection. It is an external relay trace that does not exist in ORACLE's record. It is too early to name an organization. For now, we should preserve the pattern.\"\n\nIt is still a trace before it is proof.", leftLabel: "Record only the pattern", rightLabel: "Ask Jae-hyeok for unofficial reanalysis" },
-    "A2-FORESHADOW-02": { msg: "A new classification field appears on the Evidence Table.\n\n[External relay / Internal record / Field anomaly]\n\nSeo Hae-eun says, \"If we force a conclusion now, ORACLE's summary will swallow it. Today, we should only build the trail.\"\n\nThe Evidence Table is not an answer sheet. It is a place to return to later.", leftLabel: "Confirm only the classification rule", rightLabel: "Condense it into ORACLE report format" },
-    "A2-TRIAGE-01": { msg: "Late in the operation, the clues on the Evidence Table point in different directions.\n\nSeo Hae-eun says, \"If we attach an answer now, it will be swallowed by ORACLE's summary. I will split external relay, internal record, and field anomaly into a follow-up cross-check list.\"\n\nPostponing an answer is also an operational judgment.", leftLabel: "Move them to the follow-up cross-check list", rightLabel: "Keep only ORACLE's summary" },
-    "A4-SUPPORT-DG-01": { msg: "Right after the resource shortage warning, DG opens an unofficial logistics window.\n\n\"This is not a formal contract. But if Gangwon Branch cannot get through tonight, our side has a problem too. Record it as emergency civilian support.\"\n\nAccepting it is intervention. The borrowed line will leave a name.", leftLabel: "Accept DG emergency logistics", rightLabel: "Accept only the minimum and keep a public record" },
-    "A4-SUPPORT-MD-01": { msg: "Meridian sends a delayed response.\n\n\"There is a correction error in the containment fluctuation observation values. We can correct it immediately if our observed values match. In return, we request a portion of field-response logs.\"\n\nThe information is accurate. The question is how much of the outside you allow inside.", leftLabel: "Use their values to correct containment", rightLabel: "Use only coordinates and refuse raw data" },
-    "A4-SUPPORT-PROM-01": { msg: "The Prometheus channel opens very late.\n\n\"We are not asking you to escape. If you want to hold the containment line tonight, you need field coordinates ORACLE is erasing. Do not trust us. Just preserve the record.\"\n\nLim Jae-hyeok looks at the screen and says, \"This is less cooperation than insurance against manipulation.\"", leftLabel: "Apply the coordinates to field judgment", rightLabel: "Preserve the record and keep ORACLE reporting" },
-    "A4-EVIDENCE-RELIEF-01": { msg: "Two pieces of evidence on the Evidence Table point to the same conclusion.\n\nYoon Se-jin says, \"This is not just a resource shortage. It is a placement-order problem. The table explains why we keep losing sight of the same places.\"\n\nEnough evidence can turn a crisis from a number into a structure you can fix.", leftLabel: "Change the placement order using the inquiry result", rightLabel: "Reflect only the ORACLE summary" },
-    "A4-STAFF-REVIEW-01": { msg: "Final settlement meeting. Resource-status values and Evidence Table clues rise on the same screen.\n\nKang Do-yun says, \"If we look only at numbers, cutting staff is correct. But if we look at who holds which point, the placement changes.\"\n\nYoon Se-jin's duty list and Jae-hyeok's ORACLE drop zones overlap.\n\nThis is not a card about how much resource remains. It is a card about where people stand.", leftLabel: "Redistribute final roles by person", rightLabel: "Redistribute by ORACLE evaluation values" },
-    "A3-B3-LINE-01": { msg: "Lim Jae-hyeok compares the night communication branch with B3 lower-level power logs.\n\n\"The external relay trace I saw does not stop at the perimeter. It bends once toward B3 lower level. It resembles the direction of the 02:47 pulse in the previous commander's record.\"\n\nThere is still no conclusion. But the suspicion left in Act 2 has opened a path downward.", leftLabel: "Cross-check the B3 lower-level logs", rightLabel: "Attach it to ORACLE's summary and hold" },
-    "A3-B3-LINE-02": { msg: "The old maintenance sheet is opened.\n\n\"The B3 lower bulkhead is not a containment facility. It has maintenance entries. After the previous commander disappeared, only that item was erased from the list.\"\n\nA space missing from the list is not a space that disappeared. It is a space someone chose not to show.", leftLabel: "Preserve the original maintenance sheet", rightLabel: "Classify it only as a hazardous zone" },
-    "A4-B3-LINE-01": { msg: "As Act 4 begins to tighten, an old backup line answers from B3 lower level.\n\nLim Jae-hyeok says, \"This is not an official line. It looks like the last bypass route the previous commander left. If it opens tonight, we may gain a little more room to place people.\"\n\nORACLE does not register the line. But the people who remain can move along it.", leftLabel: "Open the B3 backup line for field placement", rightLabel: "Record the line location and keep it closed" }
   },
   oracleLogs: {
     "LOG-LJC-PROM-01": {
@@ -115,49 +104,9 @@ window.TS_I18N.mergeContent('en', {
       title: "Seo Hae-eun Interview Record: The Commander's Pause",
       content: "[Senior officer interview summary]\n\nSeo Hae-eun confirmed that the commander's response slows whenever Prometheus-related reports appear.\n\nHe does not refuse the order. He simply pauses once before the confirmation key.\n\nAssessment: memories of a past operation repeatedly intrude on Prometheus-related judgment."
     },
-    "LOG-A2-FORESHADOW-01": {
-      title: "External Relay Trace",
-      content: "Lim Jae-hyeok separated an external relay trace that does not appear in ORACLE's record. It is not yet attributed to a specific faction and is preserved as a pattern only."
-    },
-    "LOG-A2-FORESHADOW-02": {
-      title: "Evidence Table Classification Rule",
-      content: "The Evidence Table began storing external relay, internal record, and field anomaly as separate categories. Conclusions are deferred to follow-up cross-checking."
-    },
-    "LOG-A2-TRIAGE-01": {
-      title: "Cross-Check List",
-      content: "Late-operation clues were not fixed into a single conclusion. They were moved to a follow-up cross-check list divided into external relay, internal record, and field anomaly."
-    },
-    "LOG-A4-DG-SUPPORT": {
-      title: "DG Emergency Logistics Support",
-      content: "During the final crisis, DG provided unofficial logistics support. Immediate resource pressure fell, but post-operation influence cost remains."
-    },
-    "LOG-A4-MD-SUPPORT": {
-      title: "Meridian Observation-Value Support",
-      content: "Meridian supplied containment fluctuation observation values. Accurate outside data eased the crisis while confirming the depth of external monitoring."
-    },
-    "LOG-A4-PROM-SUPPORT": {
-      title: "Prometheus Field Coordinates",
-      content: "Prometheus provided field coordinates that ORACLE was erasing. Whether this is cooperation or anti-manipulation insurance remains a command judgment."
-    },
-    "LOG-A4-EVIDENCE-RELIEF": {
-      title: "Evidence Table Crisis Redistribution",
-      content: "The Evidence Table's cross-checked conclusion changed final placement order. The crisis was reframed as a structure that can be corrected, not only a resource shortage."
-    },
-    "LOG-A4-STAFF-REVIEW": {
-      title: "Person-by-Person Final Placement",
-      content: "Final resource pressure and Evidence Table clues were reviewed together, and final roles were assigned by person. The shortage became an operational placement problem."
-    },
-    "LOG-B3-LINEAGE-01": {
-      title: "B3 Lower-Level Route Cross-Check",
-      content: "The external relay suspicion left in Act 2 was cross-checked against B3 lower-level power logs. The previous commander's 02:47 pulse points in the same direction."
-    },
-    "LOG-B3-LINEAGE-02": {
-      title: "B3 Bulkhead Maintenance Sheet",
-      content: "The B3 lower bulkhead was confirmed as a maintenance target, not a simple containment structure. After the previous commander vanished, only that item disappeared from the list."
-    },
-    "LOG-A4-B3-LINEAGE": {
-      title: "B3 Backup Line",
-      content: "During the Act 4 crisis, an unregistered backup line from B3 lower level was opened for field placement. ORACLE does not register it, but remaining personnel can move along it."
+    "LOG-M001-REMOTE": {
+      title: "SPEC-012 Remote Analysis Report",
+      content: "A record of replacing direct entry into the Blood Pit habitat with ORACLE remote-drone analysis. The model marked the decision as sufficient, but some traits that require field sampling or direct visual confirmation were missing."
     },
     "LOG-INTRO-SH": {
       title: "Seo Hae-eun First Interview Record",

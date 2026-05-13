@@ -1,6 +1,6 @@
-// data-cards-6.js — Act 1 일상 카드 (C-113~C-132)
+// data-cards-6.js — Act 2 일상 카드 (C-113~C-132)
 
-var CARDS_ACT1_DAILY = [
+var CARDS_ACT2_DAILY = [
   // ═══ 보급 / 자원 ═══
   { id: "C-113", act: [2], priority: "하", bg: "supply",
     msg: "정기 보급 트럭이 도착했습니다.\n\n물자 목록: 식량 2주분, 의약품, 배터리.",

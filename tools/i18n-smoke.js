@@ -46,6 +46,7 @@ function boot(locale) {
   runFile(ctx, 'lang-cards-cs-en.js');
   runFile(ctx, 'lang-cards-side-en.js');
   runFile(ctx, 'lang-cards-c-en.js');
+  runFile(ctx, 'lang-cards-flow-en.js');
   runFile(ctx, 'data-core.js');
   runFile(ctx, 'data-result-text.js');
   runFile(ctx, 'data-result-story-1.js');

@@ -1886,7 +1886,7 @@ window.TS_I18N.mergeContent('en', {
         "I'll report them when the timing is right. Right now... it's still too dangerous."
       ]
     },
-    "weber_4_29-39": {
+    "weber_4_29-35": {
       "lines": [
         "Good evening, Commander.",
         "The fact that you're still here means you haven't given up yet.",
@@ -1901,7 +1901,7 @@ window.TS_I18N.mergeContent('en', {
         "That difference is what separates us."
       ]
     },
-    "foster_4_31-39": {
+    "foster_4_31-35": {
       "lines": [
         "...Awkward, isn't it? It is for me too.",
         "I don't regret what I did to your people. But I can admit it was pointless.",
@@ -1916,7 +1916,7 @@ window.TS_I18N.mergeContent('en', {
         "The difference is that Korea is the successful case. That's what makes it more dangerous."
       ]
     },
-    "soyoung_4_32-39": {
+    "soyoung_4_32-35": {
       "lines": [
         "Commander, I've organized today's analysis results.",
         "Seo Hae-eun's methodology is exceptionally systematic. Thanks to that, I've adapted faster than expected.",

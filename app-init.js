@@ -1,7 +1,7 @@
 // TERMINAL SESSION — app-init.js
 // 글로벌 유틸리티, CARDS 배열, drawCard, Save, SFX
 var RISK_MSG=["물자 상태 불량 — 자원 확보 실패","운송 중 파손 — 사용 불가 판정","유통기한 초과 — 폐기 처리","오염 감지 — 안전 기준 미달"];
-var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(CARDS_ACT1_DAILY).concat(CARDS_ACT2_DAILY).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(typeof CARDS_CHAINS!=='undefined'?CARDS_CHAINS:[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4!=='undefined'?CARDS_ACT4:[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_CHARACTER_ARCS!=='undefined'?CARDS_CHARACTER_ARCS:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_SESSION_PACKS!=='undefined'?CARDS_SESSION_PACKS:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
+var CARDS = CARDS_PROLOGUE.concat(CARDS_BASE).concat(CARDS_STORY).concat(CARDS_ENDING).concat(CARDS_INVESTIGATE).concat(CARDS_RESOURCE).concat(typeof CARDS_ACT2_DAILY!=='undefined'?CARDS_ACT2_DAILY:[]).concat(typeof CARDS_ACT3_DAILY!=='undefined'?CARDS_ACT3_DAILY:[]).concat(CARDS_TRANSITION).concat(CARDS_HAEUN).concat(CARDS_EXTRA).concat(typeof CARDS_CHAINS!=='undefined'?CARDS_CHAINS:[]).concat(CARDS_NEW_A||[]).concat(CARDS_NEW_B||[]).concat(CARDS_ACT3||[]).concat(CARDS_EXTERNAL||[]).concat(CARDS_MIDGAME||[]).concat(typeof CARDS_ACT4!=='undefined'?CARDS_ACT4:[]).concat(typeof CARDS_ACT4_EXT!=='undefined'?CARDS_ACT4_EXT:[]).concat(typeof CARDS_ACT4_HAZARD!=='undefined'?CARDS_ACT4_HAZARD:[]).concat(typeof CARDS_ACT23_PRESSURE!=='undefined'?CARDS_ACT23_PRESSURE:[]).concat(typeof CARDS_CHARACTER_ARCS!=='undefined'?CARDS_CHARACTER_ARCS:[]).concat(typeof CARDS_KOREA_CIVILIAN!=='undefined'?CARDS_KOREA_CIVILIAN:[]).concat(typeof CARDS_DG_MERIDIAN!=='undefined'?CARDS_DG_MERIDIAN:[]).concat(typeof CARDS_SESSION_PACKS!=='undefined'?CARDS_SESSION_PACKS:[]).concat(typeof CARDS_INCIDENT!=='undefined'?CARDS_INCIDENT:[]).concat(typeof CARDS_RESIST_HINT!=='undefined'?CARDS_RESIST_HINT:[]).concat(typeof CARDS_FACILITY!=='undefined'?CARDS_FACILITY:[]).concat(typeof CARDS_FACILITY_PROPOSALS!=='undefined'?CARDS_FACILITY_PROPOSALS:[]).concat(typeof CARDS_CRISIS!=='undefined'?CARDS_CRISIS:[]).concat(typeof CARDS_NEUTRAL!=='undefined'?CARDS_NEUTRAL:[]);
 var CARD_BY_ID={};for(var _ci=0;_ci<CARDS.length;_ci++){if(CARDS[_ci]&&CARDS[_ci].id)CARD_BY_ID[CARDS[_ci].id]=CARDS[_ci]}
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickWeighted=function(a){if(!a||a.length===0)return null;var total=0;for(var i=0;i<a.length;i++){total+=cardWeight(a[i])}var roll=Math.random()*total;for(var j=0;j<a.length;j++){roll-=cardWeight(a[j]);if(roll<=0)return a[j]}return a[a.length-1]};
@@ -303,6 +303,14 @@ function migrateOnceShownLogs(logs,onceShown){
   return out;
 }
 
+var SAVE_SNAPSHOT_KEYS=['ts_snap_1','ts_snap_2','ts_snap_3'];
+var preserveSnapshotSlots=function(fn){
+  var saved={};
+  SAVE_SNAPSHOT_KEYS.forEach(function(k){try{saved[k]=localStorage.getItem(k)}catch(e){saved[k]=null}});
+  if(typeof fn==='function')fn();
+  SAVE_SNAPSHOT_KEYS.forEach(function(k){try{if(saved[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,saved[k])}catch(e){}});
+};
+
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
   get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){var hardNormalized=fixed.__normalized===true;fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed);if(hardNormalized)try{Save.saveLogs(sanitizeSnapshotLogsForGame(Save.get('ts_logs',['LOG-001']),fixed,true))}catch(e){}}return fixed}return parsed}catch(e){return def}},
@@ -312,7 +320,7 @@ var Save={
     var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],pendingBonus:pb||null,sessionDeck:sessionDeck});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()},
+  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -342,6 +350,7 @@ var Save={
       facility:Save.get('ts_facility',null),
       combos:Save.get('ts_combos',[]),
       evidenceUsed:Save.get('ts_evidence_used',[]),
+      resourceReserveUsed:Save.get('ts_resourceReserveUsed',false)===true,
       onceShown:Save.get('ts_onceShown',[]),
       recentNews:Save.get('ts_recentNews',[]),
       recentRewards:Save.get('ts_recentRewards',[]),
@@ -381,10 +390,11 @@ var Save={
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
     if(pack.combos)Save.set('ts_combos',pack.combos);else Save.del('ts_combos');
     if(pack.evidenceUsed)Save.set('ts_evidence_used',pack.evidenceUsed);else Save.del('ts_evidence_used');
+    if(Object.prototype.hasOwnProperty.call(pack,'resourceReserveUsed')){if(pack.resourceReserveUsed===true)Save.set('ts_resourceReserveUsed',true);else Save.del('ts_resourceReserveUsed')}else Save.del('ts_resourceReserveUsed');
     Save.set('ts_onceShown',pack.onceShown||[]);
     Save.set('ts_recentNews',pack.recentNews||[]);
     Save.set('ts_recentRewards',pack.recentRewards||[]);
-    if(pack.activeSpecs){ACTIVE_SPECS=typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(pack.activeSpecs):pack.activeSpecs;if(ACTIVE_SPECS.length>=2)Save.set('ts_activeSpecs',ACTIVE_SPECS);else{Save.del('ts_activeSpecs');initActiveSpecs&&initActiveSpecs()}}else{Save.del('ts_activeSpecs');ACTIVE_SPECS=[]}
+    if(pack.activeSpecs){ACTIVE_SPECS=typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(pack.activeSpecs):pack.activeSpecs;if(ACTIVE_SPECS.length>=2)Save.set('ts_activeSpecs',ACTIVE_SPECS);else{Save.del('ts_activeSpecs');if(typeof initActiveSpecs==='function')initActiveSpecs()}}else{Save.del('ts_activeSpecs');if(typeof initActiveSpecs==='function')initActiveSpecs();else ACTIVE_SPECS=[]}
     var restoredDeck=pack.sessionDeck||(pack.game&&pack.game.sessionDeck)||null;
     if(restoredDeck){Save.set('ts_sessionDeck',restoredDeck);if(typeof setActiveSessionDeck==='function')setActiveSessionDeck(restoredDeck)}
     else{Save.del('ts_sessionDeck');if(typeof clearSessionDeck==='function')clearSessionDeck()}

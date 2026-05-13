@@ -11,8 +11,8 @@ var CARDS_FACILITY = [
     left: { label: "절전 모드 적용", fx: { c: 0, r: 1, t: 0, o: 0 }, g: 0 },
     right: { label: "최대 냉각 유지", fx: { c: 0, r: -1, t: 0, o: 1 }, g: -1 } },
 
-  // FE-002: 야외 훈련장
-  { id: "C-FE002-A", act: [1,2,3], feReq: "FE-002", tag: "fe002a", msg: "강도윤: 야외 훈련장 보고.\n\n\"요원들 체력이 눈에 띄게 올랐습니다.\n다만 훈련 중 소음이 민간 지역까지 들릴 수 있습니다.\"", bg: "default",
+  // FE-002: 야외 훈련장 및 시설
+  { id: "C-FE002-A", act: [1,2,3], feReq: "FE-002", tag: "fe002a", msg: "강도윤: 야외 훈련장 및 시설 보고.\n\n\"요원들 체력이 눈에 띄게 올랐습니다.\n다만 훈련 중 소음이 민간 지역까지 들릴 수 있습니다.\"", bg: "default",
     left: { label: "야간 훈련으로 전환", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "주간 훈련 유지", fx: { c: 1, r: 0, t: 0, o: -1 }, g: -1 } },
 
@@ -142,7 +142,7 @@ function getFacilityStatusLines(stats, completedFE, approvedFE) {
 var REWARDS_FACILITY_BONUS = [
   { id: "RF-001", feReq: "FE-001", title: "냉동고 연구 데이터", desc: "저온 보관 샘플에서 새로운 분석 결과를 확보합니다.",
     benefit: "평가 +10", cost: "자원 -5", fx: { c: 0, r: -1, t: 0, o: 2 } },
-  { id: "RF-002", feReq: "FE-002", title: "전투 태세 강화", desc: "훈련장 요원들의 대응력이 향상되었습니다.",
+  { id: "RF-002", feReq: "FE-002", title: "야외 훈련장 운영 보고", desc: "야외 훈련장과 보조 시설 운용으로 요원 대응력이 향상되었습니다.",
     benefit: "봉쇄 +10, 신뢰 +5", cost: "자원 -5", fx: { c: 2, r: -1, t: 1, o: 0 } },
   { id: "RF-003", feReq: "FE-003", title: "센서 경보 분석", desc: "고감도 센서가 새로운 패턴을 포착했습니다.",
     benefit: "봉쇄 +10, 평가 +5", cost: "", fx: { c: 2, r: 0, t: 0, o: 1 } },

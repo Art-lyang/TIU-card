@@ -46,7 +46,12 @@ var Save={
   get:function(k,def){try{var d=localStorage.getItem(k);return d?JSON.parse(d):def}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr){Save.set('ts_game',{stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||''})},
-  clearGame:function(){Save.del('ts_game');Save.del('ts_onceShown');_onceShown.length=0},
+  clearGame:function(){
+    var snapshots={};
+    ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{snapshots[k]=localStorage.getItem(k)}catch(e){snapshots[k]=null}});
+    Save.del('ts_game');Save.del('ts_onceShown');_onceShown.length=0;
+    ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{if(snapshots[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,snapshots[k])}catch(e){}});
+  },
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},

@@ -109,3 +109,17 @@ if (typeof EVENING_RESPONSES !== 'undefined') {
       log: null }
   };
 }
+
+function registerUprisingEveningResponses() {
+  if (typeof EVENING_RESPONSES === 'undefined') return;
+  if (EVENING_RESPONSES['jaehyuk_2_18-30']) return;
+  EVENING_RESPONSES['jaehyuk_2_18-30'] = {
+    a: { label: '자체회로를 설치한다.', trust: 3,
+      reply: '알겠습니다. 시작하겠습니다. 지휘관님을 믿겠습니다.',
+      log: 'LOG-UPRISING-OFFER' },
+    b: { label: '아직은 대기한다.', trust: -1,
+      reply: '알겠습니다. 준비는 유지하겠습니다. 필요하실 때 말씀해 주십시오.',
+      log: null }
+  };
+}
+registerUprisingEveningResponses();

@@ -69,6 +69,13 @@ window.TS_I18N.mergeUI('ko', {
     footerVersion:'VER: 1.11.7',
     footerBuild:'BUILD: {build}',
     footerInternal:'ORACLE KOREA BRANCH - INTERNAL',
+    savePicker:{
+      title:'저장 슬롯 선택',
+      help:'수동 저장 슬롯이 발견되었습니다. 이어갈 세션을 선택하십시오.',
+      slot:'슬롯 {slot}',
+      auto:'현재 자동 저장 이어하기',
+      close:'닫기'
+    },
     routes:{
       start:{title:'[ 게임 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'ENTER SESSION'},
       continue:{title:'[ 이어하기 ]',sub:'SAVED FIELD OPERATION',action:'RESUME SESSION'},

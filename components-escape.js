@@ -38,7 +38,20 @@ function EscapeGameScreen(p){
   var _decSec = useState(30); var decSec = _decSec[0], setDecSec = _decSec[1];
   var _pickedIdx = useState(-1); var pickedIdx = _pickedIdx[0], setPickedIdx = _pickedIdx[1];
 
-  var node = ESCAPE_NODES[state.nodeId];
+  var locale = (window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale() === 'en') ? 'en' : 'ko';
+  function localizeEscapeNode(nodeId){
+    var base = ESCAPE_NODES[nodeId];
+    if (!base || locale !== 'en' || typeof ESCAPE_NODES_EN === 'undefined' || !ESCAPE_NODES_EN[nodeId]) return base;
+    var copy = Object.assign({}, base, ESCAPE_NODES_EN[nodeId]);
+    if (Array.isArray(base.choices)) {
+      var enChoices = ESCAPE_NODES_EN[nodeId].choices || [];
+      copy.choices = base.choices.map(function(ch, i){
+        return Object.assign({}, ch, enChoices[i] || {});
+      });
+    }
+    return copy;
+  }
+  var node = localizeEscapeNode(state.nodeId);
 
   // 노드 진입 — globalCost 차감 + companion drop + 타이핑 리셋
   useEffect(function(){
@@ -216,7 +229,7 @@ function EscapeGameScreen(p){
     // 선택지
     phase==='choices' && h('div',{className:'escape-choices'},
       h('div',{className:'escape-dec-timer' + (decSec<=5?' warn':'')},
-        '결정 ' + decSec + 's'),
+        (locale==='en'?'DECISION ':'결정 ') + decSec + 's'),
       node.choices.map(function(ch, i){
         return h('button',{
           key:i, className:'escape-choice-btn',

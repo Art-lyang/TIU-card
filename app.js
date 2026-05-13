@@ -95,7 +95,7 @@ function App(){
     return normalizeFacilityState(next);
   };
   var shouldUseOracleLink=function(ph){
-    return ph==='game'||ph==='go'||ph==='news'||ph==='reward'||ph==='evening'||ph==='dialogue'||ph==='mission'||ph==='escape_game';
+    return ph==='game'||ph==='news'||ph==='reward'||ph==='evening'||ph==='dialogue'||ph==='mission'||ph==='escape_game';
   };
   var deriveActFlags=function(prev,cardId,missionId,chainDone){
     var next={prom_met:!!prev.prom_met,mission_done:!!prev.mission_done,chain_done:!!prev.chain_done,prom_mission:!!prev.prom_mission};
@@ -435,7 +435,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed'].forEach(function(k){Save.del(k)});if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     var ns={c:50,r:65,t:50,o:40,day:1};
     setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);

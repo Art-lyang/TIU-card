@@ -1,6 +1,6 @@
-// data-cards-7.js — Act 2 일상 카드 (C-133~C-152)
+// data-cards-7.js — Act 3 일상 카드 (C-133~C-152)
 
-var CARDS_ACT2_DAILY = [
+var CARDS_ACT3_DAILY = [
   // ═══ 보급 / 자원 ═══
   { id: "C-133", act: [3], priority: "하", bg: "supply",
     msg: "보급 지연 통보. 예정보다 3일 늦습니다.\n\n[ORACLE: 타 지부 우선 배정. 양해 바랍니다.]",

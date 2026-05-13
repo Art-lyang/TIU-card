@@ -83,3 +83,7 @@ function getEveningResponse(chat, trust) {
   }
   return null;
 }
+
+if (typeof registerUprisingEveningResponses === 'function') {
+  registerUprisingEveningResponses();
+}
