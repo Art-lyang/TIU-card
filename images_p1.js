@@ -64,7 +64,6 @@
     char_weber_hq: 'assets/images/characters/char_weber_hq_v1.jpg'
   });
 
-  IMG.ending_E = IMG.ending_escape_p1_hq;
   IMG.char_doyun = IMG.char_doyun_hq;
   IMG.char_doyun_panel = IMG.char_doyun_hq;
   IMG.char_foster_panel = IMG.char_foster_hq;

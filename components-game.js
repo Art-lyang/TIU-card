@@ -263,7 +263,7 @@ function Stats(p){
   var giFill=Math.max(0,Math.min(100,((p.gi||0)/60)*100));
   return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=(pv[s.k]||0)*5;var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=pv.__delta?(pv[s.k]||0):((pv[s.k]||0)*5);var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
       h('div',{className:'gauge-icon gauge-icon-'+s.k}),
       h('span',{className:'gauge-label'},s.l),
       h('div',{className:'gauge-bar'},
@@ -461,7 +461,7 @@ function CardC(p){
   };
   var previewChoice=function(kdir){
     if(!kdir||!card[kdir]||!p.onPreview)return;
-    p.onPreview(card[kdir].fx||null);
+    p.onPreview(p.getPreviewDelta?p.getPreviewDelta(card,kdir):(card[kdir].fx||null));
   };
   var choiceDirFromX=function(x){
     var el=cardRef.current;
@@ -1008,6 +1008,10 @@ function GameOver(p){
   useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
   var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
   var narr=p.endNarr;
+  if(p.endId&&typeof tc==='function'){
+    var endView=tc('endings',p.endId,null);
+    if(endView)narr=Object.assign({},narr||{},endView);
+  }
   var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
   var resultDay=(p.resultDay||(p.stats&&p.stats.day)||'?');
   var resultDayNode=h('div',{className:'go-stat'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay));
@@ -1075,10 +1079,12 @@ function RewardScreen(p){
     if(idx>=0&&idx<av.length){e.preventDefault();setSel(idx);return}
     if((e.key==='Enter'||e.key===' ')&&sel>=0&&av[sel]){e.preventDefault();p.onPick(av[sel])}
   };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[av,sel]);
-  var dangerC=av.some(function(r){return p.stats.c+(r.fx.c||0)*5>=100});
-  var fxList=function(fx){var pos=[],neg=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0)*5;if(v>0)pos.push({k:k,v:v});if(v<0)neg.push({k:k,v:v})});return{pos:pos,neg:neg}};
+  var previewDelta=function(r){return p.getRewardPreviewDelta?p.getRewardPreviewDelta(r):(r.fx||{})};
+  var previewValue=function(fx,k){return fx&&fx.__delta?(fx[k]||0):((fx&&fx[k]||0)*5)};
+  var dangerC=av.some(function(r){var pd=previewDelta(r);return p.stats.c+previewValue(pd,'c')>=100});
+  var fxList=function(fx){var pos=[],neg=[];['c','r','t','o'].forEach(function(k){var v=previewValue(fx,k);if(v>0)pos.push({k:k,v:v});if(v<0)neg.push({k:k,v:v})});return{pos:pos,neg:neg}};
   var miniBar=function(fx){return h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 1fr 1fr',gap:4,marginTop:8}},
-    ['c','r','t','o'].map(function(k){var cur=p.stats[k];var chg=(fx[k]||0)*5;var nxt=Math.max(0,Math.min(100,cur+chg));var isPos=chg>0;var isNeg=chg<0;
+    ['c','r','t','o'].map(function(k){var cur=p.stats[k];var chg=previewValue(fx,k);var nxt=Math.max(0,Math.min(100,cur+chg));var isPos=chg>0;var isNeg=chg<0;
       return h('div',{key:k,style:{fontSize:9,fontFamily:"'Share Tech Mono',monospace"}},
         h('div',{style:{color:'rgba(var(--ui-rgb),.5)',marginBottom:2,textAlign:'center'}},SN[k]),
         h('div',{style:{height:4,background:'rgba(255,255,255,.06)',position:'relative',overflow:'hidden'}},
@@ -1104,7 +1110,7 @@ function RewardScreen(p){
       scrollHint.bottom&&h('div',{style:{position:'absolute',bottom:0,left:0,right:0,zIndex:3,textAlign:'center',pointerEvents:'none',animation:'scrollArrowBlink 1.2s ease-in-out infinite'}},
         h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'var(--ui)',textShadow:'0 0 8px var(--ui)',letterSpacing:4}},'▼  ▼  ▼')),
       h('div',{ref:_scrollRef,style:{height:'100%',overflowY:'auto',padding:'0 2px'}},
-      av.map(function(r,i){var fl=fxList(r.fx);var isSel=sel===i;var willEnd=p.stats.c+(r.fx.c||0)*5>=100;var rLoc=(typeof tc==='function')?tc('rewards',r.id,null):null;var rTitle=(rLoc&&rLoc.title)||r.title;var rDesc=(rLoc&&rLoc.desc)||r.desc;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
+      av.map(function(r,i){var pd=previewDelta(r);var fl=fxList(pd);var isSel=sel===i;var willEnd=p.stats.c+previewValue(pd,'c')>=100;var rLoc=(typeof tc==='function')?tc('rewards',r.id,null):null;var rTitle=(rLoc&&rLoc.title)||r.title;var rDesc=(rLoc&&rLoc.desc)||r.desc;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
         h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
         h('div',{className:'oracle-card__title'},rTitle),
@@ -1113,7 +1119,7 @@ function RewardScreen(p){
           fl.pos.map(function(e){var arrow=Math.abs(e.v)>=10?'▲▲':'▲';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--pos'},arrow+' '+SN[e.k]+' +'+e.v)}),
           fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})
         ),
-        miniBar(r.fx),
+        miniBar(pd),
         isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
       )}))
     ),
