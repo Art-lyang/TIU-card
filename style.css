@@ -457,9 +457,9 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .main-terminal-oracle-mark::after{content:"";position:absolute;left:-13px;right:-13px;top:50%;height:1px;background:currentColor;box-shadow:0 -12px 0 rgba(108,255,170,.55),0 12px 0 rgba(108,255,170,.55)}
 .main-terminal-oracle-copy{display:flex;flex-direction:column;font-family:'Share Tech Mono',monospace;letter-spacing:.16em;line-height:1.1}
 .main-terminal-oracle-copy b{font-size:16px;font-weight:400;letter-spacing:.24em}.main-terminal-oracle-copy small{font-size:10px;color:var(--mt-dim)}
-.main-terminal-menu-list{position:relative;display:flex;flex:1 1 auto;min-height:0;flex-direction:column;justify-content:space-between;gap:7px;padding:13px 12px;border:1px solid rgba(80,255,150,.34);background:linear-gradient(180deg,rgba(2,12,7,.5),rgba(0,6,4,.84));clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%)}
+.main-terminal-menu-list{position:relative;display:flex;flex:0 0 auto;min-height:0;flex-direction:column;justify-content:flex-start;gap:10px;padding:13px 12px;border:1px solid rgba(80,255,150,.34);background:linear-gradient(180deg,rgba(2,12,7,.5),rgba(0,6,4,.84));clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%)}
 .main-terminal-menu-list::before{content:none}
-.main-terminal-row{position:relative;display:block;min-height:52px;flex:1 1 52px;max-height:68px}
+.main-terminal-row{position:relative;display:block;height:68px;min-height:68px;flex:0 0 68px}
 .main-terminal-cursor{position:absolute;left:12px;top:50%;z-index:2;display:block;color:var(--mt-orange);font-family:'Share Tech Mono',monospace;font-size:18px;line-height:1;opacity:0;transform:translate(-4px,-50%);transition:opacity .18s ease,transform .18s ease;pointer-events:none}
 .main-terminal-row.is-selected .main-terminal-cursor,.main-terminal-row:hover .main-terminal-cursor,.main-terminal-row:focus-within .main-terminal-cursor{opacity:1;transform:translate(0,-50%)}
 .main-terminal-button{width:100%;height:100%;display:grid;grid-template-columns:48px minmax(0,1fr) auto;align-items:center;gap:12px;padding:0 16px 0 16px;color:var(--mt-text);border-color:rgba(80,255,150,.36);background:rgba(2,12,7,.86);cursor:pointer;text-align:left;transition:color .24s ease,border-color .24s ease,background-color .24s ease;font:inherit;clip-path:polygon(0 8px,8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%)}
@@ -476,7 +476,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .main-terminal-button-copy small{display:block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;opacity:.78;color:currentColor;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .main-terminal-button-action{justify-self:end;display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.1em;color:currentColor;opacity:.78;white-space:nowrap}
 .main-terminal-button-action em{font-style:normal}
-.main-terminal-footer{height:34px;flex:0 0 34px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--mt-dim);overflow:hidden}
+.main-terminal-footer{height:34px;flex:0 0 34px;margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--mt-dim);overflow:hidden}
 .main-terminal-save-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.68);backdrop-filter:blur(2px)}
 .main-terminal-save-modal{width:min(100%,460px);max-height:min(82vh,560px);display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid rgba(80,255,150,.58);background:linear-gradient(180deg,rgba(1,14,8,.97),rgba(0,5,3,.98));box-shadow:0 0 30px rgba(0,0,0,.65),0 0 24px rgba(80,255,150,.18),inset 0 0 0 1px rgba(80,255,150,.08);clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%);font-family:'Share Tech Mono','Noto Sans KR',monospace}
 .main-terminal-save-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(80,255,150,.2);color:var(--mt-text);letter-spacing:.12em}
@@ -502,7 +502,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-frame{gap:12px}
   .main-terminal-feed{height:clamp(250px,32vh,320px);flex-basis:clamp(250px,32vh,320px)}
   .main-terminal-log{height:84px;flex-basis:84px;padding:12px 26px}
-  .main-terminal-row{min-height:76px;flex-basis:76px;max-height:92px}
+  .main-terminal-row{height:82px;min-height:82px;flex-basis:82px}
   .main-terminal-menu-list{gap:12px}
   .main-terminal-button-copy strong{font-size:21px}
   .main-terminal-footer{height:40px;flex-basis:40px}
@@ -524,26 +524,29 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .terminal-boot-lines{font-size:12px;line-height:1.65}
   .terminal-boot-start{width:100%;height:42px;flex-basis:42px;font-size:11px;padding:0 14px}
   .main-terminal-menu{display:block;padding:0}
-  .main-terminal-frame{width:100%;min-height:100svh;padding:8px;gap:7px;border-left:0;border-right:0}
-  .main-terminal-header{height:94px;flex-basis:94px;padding:10px 12px}
-  .main-terminal-header-main{align-items:flex-start;gap:8px}
-  .main-terminal-header-status{align-items:flex-start;flex-direction:column;gap:5px}
-  .main-terminal-header-title{font-size:22px}
-  .main-terminal-header-tools{gap:6px}
-  .main-terminal-session{font-size:9px;gap:6px}
+  .main-terminal-frame{width:100%;min-height:100svh;padding:10px;gap:9px;border-left:0;border-right:0}
+  .main-terminal-frame::before{inset:8px}
+  .main-terminal-header{height:120px;flex-basis:120px;padding:12px 13px 15px}
+  .main-terminal-header::after{left:14px;right:14px;bottom:8px;opacity:.68}
+  .main-terminal-header-main{align-items:stretch;flex-direction:column;gap:8px}
+  .main-terminal-header-status{position:relative;z-index:1;align-items:center;flex-direction:row;justify-content:space-between;gap:10px;padding-right:4px;font-size:9px;letter-spacing:.06em}
+  .main-terminal-header-status .main-terminal-status-left,.main-terminal-header-status .main-terminal-time{white-space:nowrap}
+  .main-terminal-header-title{font-size:24px;letter-spacing:.07em;white-space:nowrap}
+  .main-terminal-header-tools{width:100%;justify-content:space-between;gap:8px;padding-top:0}
+  .main-terminal-session{font-size:10px;gap:7px;letter-spacing:.08em}
   .main-terminal-locale .terminal-boot-locale-btn{min-width:34px;height:26px;font-size:10px}
-  .main-terminal-feed{height:clamp(142px,20svh,170px);min-height:142px;flex:0 0 clamp(142px,20svh,170px)}
+  .main-terminal-feed{height:clamp(140px,19svh,166px);min-height:140px;flex:0 0 clamp(140px,19svh,166px)}
   .main-terminal-feed-hud{left:14px;right:14px;font-size:10px}
-  .main-terminal-log{height:56px;flex-basis:56px;padding:8px 12px}
+  .main-terminal-log{height:60px;flex-basis:60px;padding:9px 13px}
   .main-terminal-log-copy{font-size:10px;line-height:1.35}
   .main-terminal-oracle{display:none}
-  .main-terminal-menu-list{gap:6px;flex:1 1 auto;justify-content:space-between;padding:10px 8px}
-  .main-terminal-row{min-height:50px;flex:1 1 50px;max-height:64px}
-  .main-terminal-cursor{left:8px;font-size:14px}
-  .main-terminal-button{grid-template-columns:36px minmax(0,1fr);gap:8px;padding:0 9px 0 14px}
-  .main-terminal-icon{width:28px;height:28px}
-  .main-terminal-button-copy strong{font-size:13px;margin-bottom:1px}
-  .main-terminal-button-copy small{font-size:8px}
+  .main-terminal-menu-list{gap:10px;flex:0 0 auto;justify-content:flex-start;padding:12px 10px}
+  .main-terminal-row{height:76px;min-height:76px;flex:0 0 76px}
+  .main-terminal-cursor{left:10px;font-size:16px}
+  .main-terminal-button{grid-template-columns:42px minmax(0,1fr);gap:11px;padding:0 13px 0 16px}
+  .main-terminal-icon{width:32px;height:32px}
+  .main-terminal-button-copy strong{font-size:15px;margin-bottom:3px}
+  .main-terminal-button-copy small{font-size:8.5px;letter-spacing:.07em}
   .main-terminal-button-action{display:none}
   .main-terminal-footer{height:30px;flex-basis:30px;flex-direction:row;align-items:center;gap:8px;padding:3px 8px;font-size:7px}
   .main-terminal-footer div:last-child{display:none}
