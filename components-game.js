@@ -470,7 +470,7 @@ function CardC(p){
     return x<(r.left+r.width/2)?'left':'right';
   };
   useEffect(function(){return function(){clearHoldPreview();clearChoiceCue()}},[]);
-  useEffect(function(){setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
+  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];

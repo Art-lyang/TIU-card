@@ -30,7 +30,8 @@ function App(){
   var _toast=useState(''),toast=_toast[0],setToast=_toast[1];
   var _tt2=useState(''),toastType=_tt2[0],setToastType=_tt2[1];
   var toastDuration=function(ms){return Math.round((ms||2400)*1.35)};
-  var clearToastAfter=function(ms){return setTimeout(function(){setToast('')},toastDuration(ms))};
+  var _toastTimer=useRef(null);
+  var clearToastAfter=function(ms){if(_toastTimer.current)clearTimeout(_toastTimer.current);_toastTimer.current=setTimeout(function(){setToast('');_toastTimer.current=null},toastDuration(ms));return _toastTimer.current};
   var RESOURCE_RESERVE_KEY='ts_resourceReserveUsed';
   var isResourceReserveUsed=function(){return Save.get(RESOURCE_RESERVE_KEY,false)===true};
   var markResourceReserveUsed=function(){Save.set(RESOURCE_RESERVE_KEY,true)};
@@ -228,14 +229,16 @@ function App(){
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(newAct);
     setPhase('briefing');
   };
+  var _glitchTimer=useRef(null);
   var triggerGlitch=function(level){
     if(!level||level<=0)return;
     if(fxMode==='off')return;
+    if(_glitchTimer.current)clearTimeout(_glitchTimer.current);
     var lvl=fxMode==='reduced'?Math.min(level,2):level;
     setGlitchLevel(lvl);
     var defaultDur=lvl===1?400:lvl===2?1500:3500;
     var dur=fxMode==='reduced'?Math.floor(defaultDur*0.5):defaultDur;
-    setTimeout(function(){setGlitchLevel(0)},dur);
+    _glitchTimer.current=setTimeout(function(){setGlitchLevel(0);_glitchTimer.current=null},dur);
   };
   var buildEvidenceFallbackDialogue=function(){
     var en=getLocale()==='en';
@@ -584,7 +587,7 @@ function App(){
       (function(){var fc=(facility.completed||[]).length,fa=(facility.approved||[]).length,fp=(facility.pending||[]).length;var total=fc+fa+fp;if(total===0)return null;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowFacility(true)}},tt('scenario.facility',{done:fc,total:total},getLocale()==='en'?('FAC '+fc+'/'+total):('시설 '+fc+'/'+total)))})(),
       logs.indexOf('LOG-EV-UNLOCK')>=0&&(function(){var col=typeof getActiveEvidence==='function'?getActiveEvidence(logs).length:(typeof getCollectedEvidence==='function'?getCollectedEvidence(logs).length:0);return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowEvidence(true)}},tt('scenario.evidence',{count:col},getLocale()==='en'?('EVIDENCE '+col):('증거 '+col)))})(),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
-    h(CardC,{card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);clearToastAfter(2600)},onReply:function(msg){setToastType('');setToast(msg);clearToastAfter(1500)}}),
+    h(CardC,{key:curCard.id+'_'+stats.day+'_'+ct,card:curCard,onSwipe:swipe,onPreview:setPreview,gi:gi,day:stats.day,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);clearToastAfter(2600)},onReply:function(msg){setToastType('');setToast(msg);clearToastAfter(1500)}}),
     toast&&h('div',{style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line'}})()},toast.replace(/\. /g,'.\n')),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
