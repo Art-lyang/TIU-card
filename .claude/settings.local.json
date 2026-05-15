@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(git checkout:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(mkdir -p /home/user/TIU-card/.claude/_audit/daily && ls /home/user/TIU-card/.claude/_audit/ 2>&1)"
     ]
   }
 }
