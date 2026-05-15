@@ -1,1 +1,1 @@
-var BGM_MAIN = 'bgm_main.mp3';
+var BGM_MAIN = 'audio/bgm_main.mp3';

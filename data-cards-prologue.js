@@ -86,7 +86,7 @@ var CARDS_PROLOGUE = [
     left: { label: "강도윤 파견", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0 },
     right: { label: "원격 임시 조치만", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  // ═══ ORACLE 이상 징후 — Act 1 후반 (CA-014~CA-018) ═══
+  // ═══ ORACLE 이상 징후 — Act 2 초입 (CA-014~CA-018) ═══
   { id: "CA-014", act: [2], priority: "하", bg: "comms", once: true,
     req: function(s){ return s.day >= 5 },
     msg: "임재혁이 시스템 로그를 확인하다 잠시 멈췄습니다.\n\n\"지휘관님, 어제 02:17분에 ORACLE 응답이 0.8초 지연됐습니다. 기록상 처음이에요.\"\n\n잠깐 침묵이 흘렀습니다.\n\n\"...아마 서버 부하겠죠. 별거 아닐 겁니다.\"",

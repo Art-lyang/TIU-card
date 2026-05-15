@@ -7,28 +7,28 @@ var CARDS_ACT4_EXT = [
   // ─── 데일리 필러 (endgame-daily) × 6 ───
   { id:"CA4-FL-01", act:[4], tag:"endgame-daily", priority:"하",
     msg:"종결기 식량 재고 점검 보고.\n\n\"배급 주기를 조정하지 않으면 일주일 이내 부족합니다.\"\n\n현장 요원 사기에 직접 영향을 미칩니다.",
-    left:{ label:"배급제 강화", fx:{c:0,r:1,t:-1,o:0}, g:0 },
+    left:{ label:"배급제 강화", fx:{c:0,r:2,t:-1,o:0}, g:-1 },
     right:{ label:"외부 보급 요청", fx:{c:0,r:2,t:0,o:-1}, g:-1 } },
 
   { id:"CA4-FL-02", act:[4], tag:"endgame-daily", priority:"하",
     msg:"외곽 순찰조 복귀 보고.\n\n\"이상 징후는 없었습니다. 다만 봉쇄선 바깥이 — 너무 조용합니다.\"\n\n평온인지, 폭풍 전인지.",
-    left:{ label:"경계 태세 유지", fx:{c:1,r:-1,t:0,o:0}, g:0 },
-    right:{ label:"정찰 범위 축소", fx:{c:-1,r:1,t:0,o:0}, g:0 } },
+    left:{ label:"경계 태세 유지", fx:{c:2,r:-1,t:0,o:0}, g:-1 },
+    right:{ label:"정찰 범위 축소", fx:{c:-1,r:1,t:-1,o:1}, g:1 } },
 
   { id:"CA4-FL-03", act:[4], tag:"endgame-daily", priority:"하",
     msg:"통신 장비 자가진단 — 오류 3건 감지.\n\n임재혁: \"외부 간섭 패턴입니다. 물리적 고장은 아닙니다.\"\n\n누군가 청취하고 있을 수도.",
-    left:{ label:"즉시 암호 키 교체", fx:{c:0,r:-1,t:0,o:1}, g:1 },
+    left:{ label:"즉시 암호 키 교체", fx:{c:0,r:-1,t:-1,o:2}, g:2 },
     right:{ label:"역추적 시도", fx:{c:0,r:-1,t:1,o:-1}, g:-2 } },
 
   { id:"CA4-FL-04", act:[4], tag:"endgame-daily", priority:"하",
     msg:"발전기 2호 출력 저하.\n\n\"부품이 닳고 있습니다. 교체부가 없습니다. 우리는 더 이상 보급받지 못합니다.\"\n\n절약할지, 여유를 쓸지.",
-    left:{ label:"비필수 구역 절전", fx:{c:-1,r:1,t:-1,o:0}, g:0 },
-    right:{ label:"연료 예비분 투입", fx:{c:0,r:-2,t:1,o:0}, g:0 } },
+    left:{ label:"비필수 구역 절전", fx:{c:-1,r:1,t:-1,o:0}, g:-1 },
+    right:{ label:"연료 예비분 투입", fx:{c:0,r:-2,t:1,o:0}, g:1 } },
 
   { id:"CA4-FL-05", act:[4], tag:"endgame-daily", priority:"하",
     msg:"의무실 보고.\n\n윤세진: \"장기 스트레스 반응이 임계치입니다. 요원 4명에게 진정제가 필요합니다. 재고는 5회분뿐입니다.\"\n\n처방할지, 아낄지.",
     left:{ label:"처방한다", fx:{c:0,r:-1,t:2,o:0}, g:0 },
-    right:{ label:"대체 요법으로", fx:{c:0,r:0,t:-1,o:0}, g:0 } },
+    right:{ label:"대체 요법으로", fx:{c:0,r:1,t:-2,o:0}, g:1 } },
 
   { id:"CA4-FL-06", act:[4], tag:"endgame-daily", priority:"하",
     cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 },

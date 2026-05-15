@@ -103,7 +103,7 @@ function getFactionRelations(logs,gi){
   var out=[];
   var oracle=clampRel(65+(gi||0));
   out.push({id:'oracle',name:'ORACLE',value:oracle,status:oracle>=75?'감시 우호':oracle>=55?'명령 체계 안정':oracle>=35?'의심 누적':'이탈 위험',tone:oracle>=75?'#66aaff':oracle>=35?'var(--ui)':'#ff6644',hint:oracle>=75?'통제 친화':'독자 판단 여지'});
-  if(has('LOG-080')||has('LOG-081')||has('LOG-VOSS-STANDBY')||has('LOG-LJC-PROM-01')||has('LOG-LJC-PROM-02')||has('LOG-LJC-PROM-03')||has('LOG-LJC-PROM-04')){
+  if(has('LOG-080')||has('LOG-081')||has('LOG-VOSS-STANDBY')||has('LOG-LJC-PROM-01')||has('LOG-LJC-PROM-02')||has('LOG-LJC-PROM-03')||has('LOG-LJC-PROM-04')||has('LOG-LJC-PROM-05')||has('LOG-LJC-PROM-06')||has('LOG-LJC-PROM-07')){
     var prom=25;
     if(has('LOG-080'))prom+=15;
     if(has('LOG-081'))prom+=10;
@@ -112,6 +112,9 @@ function getFactionRelations(logs,gi){
     if(has('LOG-LJC-PROM-02'))prom+=8;
     if(has('LOG-LJC-PROM-03'))prom+=10;
     if(has('LOG-LJC-PROM-04'))prom+=15;
+    if(has('LOG-LJC-PROM-05'))prom+=6;
+    if(has('LOG-LJC-PROM-06'))prom+=8;
+    if(has('LOG-LJC-PROM-07'))prom+=10;
     out.push({id:'prometheus',name:'PROMETHEUS',value:clampRel(prom),status:prom>=70?'협력 가능':prom>=50?'접촉 유지':prom>=35?'불신 속 대화':'적대 기억',tone:'#f0a030',hint:'진실/탈출 루트'});
   }
   if(has('LOG-DG-CONTACT')){

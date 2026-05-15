@@ -37,6 +37,7 @@ function createI18nContext() {
     'lang-cards-ca4-en.js',
     'lang-cards-ct-en.js',
     'lang-cards-cs-en.js',
+    'lang-cards-flow-en.js',
     'lang-cards-side-en.js',
     'lang-cards-c-en.js'
   ].forEach((rel) => vm.runInContext(read(rel), ctx, { filename: rel }));

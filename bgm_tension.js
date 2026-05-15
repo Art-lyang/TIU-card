@@ -1,1 +1,1 @@
-var BGM_TENSION = 'bgm_tension.mp3';
+var BGM_TENSION = 'audio/bgm_tension.mp3';

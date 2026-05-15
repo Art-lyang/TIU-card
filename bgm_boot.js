@@ -1,1 +1,1 @@
-var BGM_BOOT = 'bgm_boot.mp3';
+var BGM_BOOT = 'audio/bgm_boot.mp3';

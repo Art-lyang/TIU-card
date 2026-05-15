@@ -31,7 +31,7 @@ var CARDS_BASE = [
       return "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.";
     },
     left:  { label: "거절: 수동 유지",  fx: { c: 0, r: 1, t: 1, o: -2 }, g: -4 },
-    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: 0, o: 3 }, g: 4 } },
+    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
   // 조건부 카드
   { id: "C-016", act: [2,3], priority: "상", req: (s, g) => g <= 40, msg: "[미분류 통신] ORACLE 데이터 링크 일시적 불안정. 미확인 암호화 통신(소바리 발신 추정)이 수신되었습니다.", left: { label: "무시 (권장)", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "독자 해독 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   { id: "C-017", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-003"), msg: "이전 수집된 프로메테우스 통신 패턴을 기반으로 인근의 은신처를 특정했습니다.", left: { label: "ORACLE 보고", fx: { c: 1, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "비공식 접촉", fx: { c: -1, r: 0, t: 2, o: -2 }, g: -4 } },
