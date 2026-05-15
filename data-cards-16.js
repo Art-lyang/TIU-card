@@ -58,7 +58,7 @@ var CARDS_MIDGAME = [
     cond: function(s,g) { return s.day >= 15 && g >= 15 },
     msg: "ORACLE에서 보상 패키지가 도착했습니다.\n\nORACLE: 「지휘관의 충실한 운영에 감사합니다. 특별 보급 물자를 발송했습니다. 계속 권고를 따르시기 바랍니다.」\n\n강도윤: \"…물자는 반갑지만, 이게 보상인지 미끼인지 판단이 안 서네요.\"",
     left: { label: "감사히 수령 — ORACLE 노선 유지", fx: { c: 0, r: 2, t: 0, o: 1 }, g: 2 },
-    right: { label: "물자만 받고 경계 유지", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 } },
+    right: { label: "물자만 받고 경계 유지", fx: { c: 0, r: 1, t: 1, o: -1 }, g: -1 } },
 
   // ═══ 내부 갈등 / 인간 드라마 ═══
 

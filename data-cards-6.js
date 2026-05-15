@@ -10,6 +10,7 @@ var CARDS_ACT2_DAILY = [
     req: function(s,g,logs){ return !logs.includes("LOG-027") },
     msg: "인근 폐쇄 군부대에서 잔여 물자 발견 보고.\n\n강도윤: \"연료와 방한 장비가 있습니다.\"",
     left: { label: "회수팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
+    // right is an intentional no-recovery refusal; LOG-027 is only produced by the left choice.
     right: { label: "위험 — 무시", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
   { id: "C-115", act: [2], priority: "하", bg: "supply",
     msg: "임재혁이 태양광 패널 설치를 제안합니다.\n\n\"전력 자급률을 높일 수 있습니다.\"",
@@ -18,7 +19,7 @@ var CARDS_ACT2_DAILY = [
   { id: "C-116", act: [2], priority: "하", bg: "supply",
     msg: "ORACLE 보급 스케줄 갱신.\n\n[ORACLE: 다음 보급까지 8일. 현 소비율 유지 시 3일 여유.]",
     left: { label: "배급량 줄여 비축", fx: { c: 0, r: 2, t: -1, o: 1 }, g: 1 },
-    right: { label: "현 배급 유지", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
+    right: { label: "현 배급 유지", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 } },
 
   // ═══ 인사 / 사기 ═══
   { id: "C-117", act: [2], priority: "하", bg: "base",

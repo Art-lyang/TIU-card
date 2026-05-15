@@ -40,7 +40,8 @@ var CARDS_CHAINS = [
     right: { label: "인간이 교육한다", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2 } },
 
   // ═══ 체인 2: 식수 오염 연쇄 ═══
-  // 조건: LOG-066, LOG-067, LOG-068 중 2개 이상 → C-184 집단 식중독
+  // 조건: LOG-066(정화 지연), LOG-067(수질 감시), LOG-068(식수 탱크 정화 보류) 중 2개 이상 → C-184 집단 식중독
+  // C-184 itself unlocks LOG-069, so the same contamination chain cannot re-open after it fires.
   { id: "C-184", act: [2,3], priority: "상", bg: "base",
     cond: function(s,g,logs){
       var cnt = 0;

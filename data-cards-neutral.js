@@ -40,7 +40,19 @@ var CARDS_NEUTRAL = [
     glitch: true,
     req: function(s,g,logs){
       try{ if(localStorage.getItem('ts_observer_proto')) return false }catch(e){}
-      return Math.random() < 0.05;
+      var key = 'ts_observer_proto_roll_' + (s && s.day ? s.day : 0);
+      var roll = null;
+      try{ roll = localStorage.getItem(key); }catch(e){}
+      if(roll === null || roll === undefined){
+        var sessions = 0;
+        try{ sessions = (typeof Save !== 'undefined' && Save.getSessions) ? Save.getSessions() : 0; }catch(e){}
+        var seed = String([sessions, s&&s.day, s&&s.c, s&&s.r, s&&s.t, s&&s.o, g].join('|'));
+        var hash = 0;
+        for(var i=0;i<seed.length;i++) hash = ((hash * 31) + seed.charCodeAt(i)) >>> 0;
+        roll = (hash % 100) < 5 ? '1' : '0';
+        try{ localStorage.setItem(key, roll); }catch(e){}
+      }
+      return roll === '1';
     },
     msg: "[ERR:0x8F2A — UNREGISTERED PROTOCOL DETECTED]\n\nPROTOCOL: OBSERVER\n접속 승인 요청\n\n출처: ████████\n프로토콜: 미등록\n보안 등급: ████\n인증 상태: BYPASSED\n\nORACLE 승인 없이\n외부 접속이 시도되고 있습니다.\n\n승인하시겠습니까?",
     left: { label: "승인 허가", fx: {c:0,r:0,t:-1,o:-1}, g: -2 },

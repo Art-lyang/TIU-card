@@ -41,6 +41,7 @@
       },
       {
         id: "LOG-LJC-PROM-DLG",
+        // Dialogue-scoped log: produced only by the Seo Hae-eun choices pushed below.
         title: "서하은 면담 기록: 지휘관의 정지",
         content: "[간부 면담 요약]\n\n서하은은 프로메테우스 관련 보고가 올라올 때마다 지휘관의 반응 속도가 늦어지는 것을 확인했다.\n\n그는 명령을 거부하지 않는다. 다만, 확인 버튼 앞에서 한 번 멈춘다.\n\n분석: 프로메테우스 관련 판단에는 과거 작전 기억이 반복적으로 개입한다."
       }

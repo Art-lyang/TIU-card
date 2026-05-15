@@ -36,9 +36,12 @@ function boot(locale) {
   const ctx = createSandbox(locale);
   runFile(ctx, 'i18n-runtime.js');
   runFile(ctx, 'lang-ui-ko.js');
+  runFile(ctx, 'lang-ui-ko-hotfix.js');
   runFile(ctx, 'lang-ui-en.js');
   runFile(ctx, 'lang-content-en-all.js');
+  runFile(ctx, 'lang-evidence-hidden-en.js');
   runFile(ctx, 'lang-archive-en.js');
+  runFile(ctx, 'lang-content-en-dialogues.js');
   runFile(ctx, 'lang-evening-extra-en.js');
   runFile(ctx, 'lang-cards-ce-en.js');
   runFile(ctx, 'lang-cards-ca4-en.js');
@@ -48,13 +51,34 @@ function boot(locale) {
   runFile(ctx, 'lang-cards-c-en.js');
   runFile(ctx, 'lang-cards-flow-en.js');
   runFile(ctx, 'data-core.js');
+  runFile(ctx, 'data-chains.js');
+  runFile(ctx, 'data-chains-incident.js');
+  runFile(ctx, 'data-chains-incident2.js');
   runFile(ctx, 'data-result-text.js');
   runFile(ctx, 'data-result-story-1.js');
   runFile(ctx, 'data-minigame-rewards.js');
   runFile(ctx, 'data-achievements.js');
   runFile(ctx, 'data-facility.js');
   runFile(ctx, 'data-facility-2.js');
+  runFile(ctx, 'data-facility-uprising-a.js');
+  runFile(ctx, 'data-facility-uprising-b.js');
   runFile(ctx, 'data-cards-facility-propose.js');
+  runFile(ctx, 'data-session-decks.js');
+  runFile(ctx, 'data-evening-trust-1.js');
+  runFile(ctx, 'data-evening-trust-1b.js');
+  runFile(ctx, 'data-evening-trust-2.js');
+  runFile(ctx, 'data-evening-trust-3.js');
+  runFile(ctx, 'data-evening-responses.js');
+  runFile(ctx, 'data-evening-extra.js');
+  runFile(ctx, 'data-evening-extra-2a.js');
+  runFile(ctx, 'data-evening-extra-2b.js');
+  runFile(ctx, 'data-evening-extra-2c.js');
+  runFile(ctx, 'data-evening-extra-2d.js');
+  runFile(ctx, 'data-evening-responses-2.js');
+  runFile(ctx, 'data-evening-responses-3.js');
+  runFile(ctx, 'data-hidden-story.js');
+  runFile(ctx, 'data-character-arcs.js');
+  runFile(ctx, 'evening-lines.js');
   ctx.TS_I18N.setLocale(locale);
   return ctx;
 }
@@ -77,6 +101,7 @@ function flatten(value, prefix, out) {
 function checkCriticalKeys(ctx, locale, errors) {
   const keys = [
     'boot.startGame',
+    'boot.progress',
     'menu.startGame',
     'menu.continue',
     'stats.c',
@@ -480,8 +505,13 @@ function checkNewsPoolOverlays(ctx, errors) {
         errors.push(`[en] missing newsItems overlay NP.${poolKey}[${index}]`);
         return;
       }
-      if (HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in newsItems NP.${poolKey}[${index}]: ${val.slice(0, 80)}`);
-      if (MOJIBAKE_RE.test(val)) errors.push(`[en] mojibake leaked in newsItems NP.${poolKey}[${index}]: ${val.slice(0, 80)}`);
+      const text = typeof val === 'string' ? val : val.text;
+      if (!text) {
+        errors.push(`[en] empty newsItems overlay NP.${poolKey}[${index}]`);
+        return;
+      }
+      if (HANGUL_RE.test(text)) errors.push(`[en] Hangul leaked in newsItems NP.${poolKey}[${index}]: ${text.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(text)) errors.push(`[en] mojibake leaked in newsItems NP.${poolKey}[${index}]: ${text.slice(0, 80)}`);
     });
   });
 }
@@ -579,6 +609,51 @@ function checkCoreCardOverlays(ctx, errors) {
       if (!val) errors.push(`[en] missing core card ${id}.${prop}`);
       if (typeof val === 'string' && HANGUL_RE.test(val)) {
         errors.push(`[en] Hangul leaked in core card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+}
+
+function checkIssue28Overlays(ctx, errors) {
+  const cardIds = [
+    'C-085', 'C-089', 'C-178', 'C-253',
+    'CE-004', 'CE-005', 'CA4-CR-03',
+    'CT-C01', 'CT-T01', 'CT-O01', 'CT-B01', 'CT-B02', 'CT-B03',
+    'C-320', 'C-321', 'C-322', 'C-323', 'C-324', 'C-325', 'C-335', 'C-336'
+  ];
+  cardIds.forEach((id) => {
+    const view = ctx.tc('cards', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue28 card overlay ${id}`);
+      return;
+    }
+    ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue28 card ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue28 card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in issue28 card ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+
+  const logIds = ['LOG-020', 'LOG-021', 'LOG-022', 'LOG-023', 'LOG-024', 'LOG-068', 'LOG-079'];
+  logIds.forEach((id) => {
+    const view = ctx.tc('oracleLogs', id, null);
+    if (!view) {
+      errors.push(`[en] missing issue28 oracle log overlay ${id}`);
+      return;
+    }
+    ['title', 'content'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing issue28 oracle log ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in issue28 oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in issue28 oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
       }
     });
   });
@@ -708,6 +783,98 @@ function checkEveningExtraOverlays(ctx, errors) {
   });
 }
 
+function getEveningOverlayKey(chat) {
+  if (!chat) return '';
+  if (chat.responseKey) return chat.responseKey;
+  const charKeyMap = {
+    '\uc11c\ud558\uc740': 'haeun',
+    '\uac15\ub3c4\uc724': 'doyun',
+    '\uc724\uc138\uc9c4': 'sejin',
+    '\uc784\uc7ac\ud601': 'jaehyuk',
+    '\ub9c8\ub974\ucfe0\uc2a4 \ubca0\ubc84': 'weber',
+    '\ub2c9 \ud3ec\uc2a4\ud130': 'foster',
+    '\ubc15\uc18c\uc601': 'soyoung'
+  };
+  const ck = charKeyMap[chat.char] || '';
+  return ck ? `${ck}_${chat.act && chat.act[0]}_${chat.dayMin}-${chat.dayMax}` : '';
+}
+
+function checkAllEveningOverlays(ctx, errors) {
+  const chatKeys = new Set();
+  (ctx.EVENING_CHATS || []).forEach((chat, index) => {
+    const key = getEveningOverlayKey(chat);
+    if (!key) {
+      errors.push(`[en] cannot derive evening chat overlay key at index ${index}`);
+      return;
+    }
+    chatKeys.add(key);
+  });
+  chatKeys.forEach((key) => {
+    const chat = ctx.tc('eveningChats', key, null);
+    if (!chat || (!Array.isArray(chat.lines) && typeof chat.lines !== 'function')) {
+      errors.push(`[en] missing evening chat overlay ${key}`);
+      return;
+    }
+    flatten(chat, `eveningChats.${key}`, []).forEach((item) => {
+      if (HANGUL_RE.test(item.value)) errors.push(`[en] Hangul leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(item.value)) errors.push(`[en] mojibake leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+    });
+  });
+  Object.keys(ctx.EVENING_RESPONSES || {}).forEach((key) => {
+    const resp = ctx.tc('eveningResponses', key, null);
+    if (!resp || !resp.a || !resp.b) {
+      errors.push(`[en] missing evening response overlay ${key}`);
+      return;
+    }
+    flatten(resp, `eveningResponses.${key}`, []).forEach((item) => {
+      if (HANGUL_RE.test(item.value)) errors.push(`[en] Hangul leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(item.value)) errors.push(`[en] mojibake leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+    });
+  });
+}
+
+function checkAllDialogueOverlays(ctx, errors) {
+  (ctx.DIALOGUES || []).forEach((dialogue, index) => {
+    const key = `${dialogue.char || ''}|${(dialogue.lines && dialogue.lines[0]) || ''}`;
+    const overlay = ctx.tc('dialogues', key, null);
+    if (!overlay) {
+      errors.push(`[en] missing dialogue overlay at index ${index}`);
+      return;
+    }
+    if (!Array.isArray(overlay.lines) || !Array.isArray(overlay.choices)) {
+      errors.push(`[en] incomplete dialogue overlay at index ${index}`);
+      return;
+    }
+    flatten(overlay, `dialogues[${index}]`, []).forEach((item) => {
+      if (HANGUL_RE.test(item.value)) errors.push(`[en] Hangul leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+      if (MOJIBAKE_RE.test(item.value)) errors.push(`[en] mojibake leaked in ${item.key}: ${item.value.slice(0, 80)}`);
+    });
+  });
+}
+
+function checkAllChainCardOverlays(ctx, errors) {
+  Object.keys(ctx.CHAINS || {}).forEach((chainId) => {
+    const chain = ctx.CHAINS[chainId];
+    (chain.cards || []).forEach((card) => {
+      const view = ctx.tc('cards', card.id, null);
+      if (!view) {
+        errors.push(`[en] missing chain card overlay ${card.id}`);
+        return;
+      }
+      ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+        const val = view[prop];
+        if (!val) errors.push(`[en] missing chain card ${card.id}.${prop}`);
+        if (typeof val === 'string' && HANGUL_RE.test(val)) {
+          errors.push(`[en] Hangul leaked in chain card ${card.id}.${prop}: ${val.slice(0, 80)}`);
+        }
+        if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+          errors.push(`[en] mojibake leaked in chain card ${card.id}.${prop}: ${val.slice(0, 80)}`);
+        }
+      });
+    });
+  });
+}
+
 function checkArchiveOverlays(ctx, errors) {
   const ids = [
     'ARC-SPEC-001',
@@ -793,10 +960,14 @@ function main() {
   checkNewsPoolOverlays(en, errors);
   checkIssue22Overlays(en, errors);
   checkCoreCardOverlays(en, errors);
+  checkIssue28Overlays(en, errors);
   checkIssue23Overlays(en, errors);
   checkMiniGameNarrativeOverlays(en, errors);
   checkResultTextOverlays(en, errors);
   checkEveningExtraOverlays(en, errors);
+  checkAllEveningOverlays(en, errors);
+  checkAllDialogueOverlays(en, errors);
+  checkAllChainCardOverlays(en, errors);
   checkArchiveOverlays(en, errors);
 
   if (warnings.length) {

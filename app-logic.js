@@ -183,7 +183,7 @@ function checkLogs(s,g,cid,dc,di,dir,logs,trust,tryUnlock){
     if(cid==='C-091')tryUnlock('LOG-020');if(cid==='C-092')tryUnlock('LOG-021');
     if(cid==='C-093')tryUnlock('LOG-022');if(cid==='C-094')tryUnlock('LOG-023');if(cid==='C-095')tryUnlock('LOG-024');
     if(cid==='C-106')tryUnlock('LOG-C106-HERB');
-    if(cid==='C-114')tryUnlock('LOG-027');if(cid==='C-124')tryUnlock('LOG-028');
+    if(cid==='C-114'&&dir==='left')tryUnlock('LOG-027');if(cid==='C-124')tryUnlock('LOG-028');
     if(cid==='CT-001')tryUnlock('LOG-030');if(cid==='CT-002')tryUnlock('LOG-031');
     if(cid==='CT-003')tryUnlock('LOG-032');if(cid==='CT-004')tryUnlock('LOG-033');
     if(cid==='CT-005')tryUnlock('LOG-034');if(cid==='CT-006')tryUnlock('LOG-035');

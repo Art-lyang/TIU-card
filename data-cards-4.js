@@ -83,8 +83,8 @@ var CARDS_INVESTIGATE = [
     req: function(s,g,logs){
       return logs.includes("LOG-060") && !logs.includes("LOG-061") },
     msg: "윤세진이 야간 습격 잔해를 분석했습니다.\n\n\"두 종류의 시그니처가 확인됩니다.\"\n\"하나는 음파 기반 — 인간 음성을 모방합니다.\"\n\"다른 하나는 점액질 — 유기물 용해 능력 보유.\"\n\n\"어느 쪽을 먼저 추적하시겠습니까?\"",
-    left: { label: "음파 개체 추적 (Shell Talker)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
-    right: { label: "점액질 개체 추적 (Blood Pit)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
+    left: { label: "음파 개체 추적 (Shell Talker)", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
+    right: { label: "점액질 개체 추적 (Blood Pit)", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 } },
 
   // ═══ SPEC-004 Seed Spreader 연쇄 ═══
 

@@ -12,6 +12,7 @@
 //  8) 한 카드 내 left/right 동일 라벨, 빈 fx
 //  9) once 플래그 선언했으나 ONCE- 로그로 추적 안 하는 카드
 // 10) 생산되는 LOG가 ORACLE_LOGS에 정의되어 있는지
+// 11) 카드 ID가 문서화된 패밀리/접두사 규칙 안에 있는지
 
 const fs = require('fs');
 const path = require('path');
@@ -149,6 +150,7 @@ const issues = {
   cardStructure: [],
   onceWithoutLog: [],
   sessionDeckActLeaks: [],
+  nonstandardCardIds: [],
 };
 
 // === 1) 카드 ID 중복 ===
@@ -164,6 +166,38 @@ for (const [id, arrs] of idMap) {
   if (arrs.length > 1) issues.duplicates.push({ id, arrays: arrs });
 }
 const CARD_IDS = new Set(idMap.keys());
+
+// === 1b) 카드 ID 패밀리 정책 ===
+// New content packs can add prefixes, but the prefix must be documented here so
+// accidental typos such as "C320" or "DG_01" do not silently enter the pool.
+const CARD_ID_FORMAT_RULES = [
+  /^C-\d{3}$/,
+  /^C-FE\d{3}-[AB]$/,
+  /^C-HINT-[A-Z0-9-]+$/,
+  /^CA-\d{3}B?$/,
+  /^CA-(OBS-PROTO|SEED-\d{2})$/,
+  /^CA\d+-(C|G|O|R)\d{3}B?$/,
+  /^CA\d+-(CH|CR|DV|EX|FL|HZ|OR)-\d{2}$/,
+  /^CA\d+-(ESCAPE-OFFER|VOSS-STANDBY)$/,
+  /^A[234]-(B3-LINE|EVIDENCE-RELIEF|FORESHADOW|STAFF-REVIEW|SUPPORT-DG|SUPPORT-MD|SUPPORT-PROM|TRIAGE)-\d{2}$/,
+  /^(CE|CS|CT)-\d{3}B?$/,
+  /^CT-[BCOT]\d{2}$/,
+  /^(CB|CN|CR|DG|HH|KC|MD|MS|RH)-\d{2,3}$/,
+  /^FP-FE-\d{3}$/,
+  /^GOV-ORC-\d{2}$/,
+  /^LJC-PROM-\d{2}$/,
+  /^OBS-HINT-\d{2}$/,
+  /^ORC-LOYAL-SAFE-\d{2}$/,
+  /^RH-SAFE-\d{2}$/,
+  /^SUP-DM-\d{2}$/,
+  /^CH-[A-Z0-9]+(?:-[A-Z0-9]+)*-\d+$/,
+];
+
+for (const c of ALL_CARDS) {
+  if (!CARD_ID_FORMAT_RULES.some(rx => rx.test(c.id))) {
+    issues.nonstandardCardIds.push({ id: c.id, from: c.__from });
+  }
+}
 
 // === 2) 체인 trigger 유효성 ===
 const CHAINS = sandbox.CHAINS || {};
@@ -452,6 +486,7 @@ console.log('  LOG: 생산 ' + stats.logs.produced + ' / 코어정의 ' + stats.
 
 section('이슈 리포트');
 warn(issues.duplicates, '카드 ID 중복', x => x.id + '  (in: ' + x.arrays.join(', ') + ')');
+warn(issues.nonstandardCardIds, '문서화되지 않은 카드 ID 패밀리', x => x.id + '  (' + x.from + ')');
 warn(issues.brokenChainTriggers, '체인 trigger 카드 누락', x => x.chain + ' → ' + x.trigger + ' (카드 ' + x.missingCard + ' 없음) [' + x.kind + ']');
 warn(issues.brokenMissionRefs, '카드→미션 참조 깨짐', x => x.card + '.' + x.side + ' → mission=' + x.missing);
 warn(issues.brokenMiniGameRefs, '미니게임 연동 참조 깨짐', x => x.missionId + '/' + x.nodeId + ' → ' + x.nextId + ' (' + x.reason + ')');

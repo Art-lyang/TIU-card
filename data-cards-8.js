@@ -79,6 +79,7 @@ var CARDS_TRANSITION = [
   //  Act 2→3 루트 C: 미션만 완료 (연쇄 미완)
   // ════════════════════════════════════
 
+  // Route C only: transReq keeps this unfinished-investigation pressure out of other Act 3 routes.
   { id: "CT-009", act: [3], priority: "상", bg: "base",
     req: function(s,g,logs){ return s.day <= 28 && !logs.includes("LOG-038") && !logs.includes("LOG-050") },
     transReq: "C",

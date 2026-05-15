@@ -761,7 +761,7 @@ def simulate_one(profile):
             if c['id'] in MISSION_TRIGGERS:
                 missions_triggered.add(MISSION_TRIGGERS[c['id']])
 
-            if c['id'] in ('C-006', 'C-011'):
+            if c['id'] in ('C-006', 'C-011') and dir_choice == 'left':
                 act_flags['prom_met'] = True
 
             # 체인 추적

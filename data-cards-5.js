@@ -74,7 +74,7 @@ var CARDS_RESOURCE = [
     req: function(s,g,logs){ return logs.includes("LOG-SUPPLY-102") },
     msg: "이전에 발견한 폐건물 인근에서 추가 물자 흔적이 보고되었습니다.\n\n강도윤: \"아직 수색하지 않은 구역이 남아 있습니다. 물자가 더 있을 가능성이 높습니다.\"",
     left: { label: "탐색팀 파견", fx: { c: 0, r: 2, t: 0, o: 0 }, g: 0 },
-    right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    right: { label: "위험 — 포기", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
   { id: "C-154", act: [2,3,4], priority: "하", bg: "lab",
     req: function(s,g,logs){ return logs.includes("LOG-C106-HERB") && s.day >= 8 },
     msg: "윤세진: \"약초 재배가 안정기에 접어들었습니다.\"\n\n\"이번 수확분으로 해열제 10일분을 추가 확보했습니다.\"",

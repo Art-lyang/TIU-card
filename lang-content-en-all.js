@@ -2906,13 +2906,6 @@ window.TS_I18N.mergeContent('en', {
 
 window.TS_I18N.mergeContent('en', {
   cards: {
-    "CE-004": {
-      oracleBlockMsgs: [
-        "[ORACLE: This process is an internal stabilization routine]",
-        "[ORACLE: Isolation attempt denied - operational integrity prioritized]",
-        "[ORACLE: Intervention forbidden - system protection mode active]"
-      ]
-    },
     "CE-005": {
       oracleBlockMsgs: [
         "[ORACLE: Unidentified output blocked - do not respond]",
@@ -3566,7 +3559,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual." },
     "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
     "LOG-067": { title: "Water-purification Contamination Watch", content: "Record that trace organic contamination in the branch water-purification system was left under monitoring instead of immediate filter replacement. The level stayed within drinking standards, but it remained flagged for follow-up inspection." },
-    "LOG-068": { title: "Containment-line Response Record", content: "Follow-up record for a containment-line issue. Field defensive adjustment and ORACLE evaluation both remained." },
+    "LOG-068": { title: "Drinking-water Tank Purification Deferred", content: "Record that the branch postponed the scheduled drinking-water tank purification cycle. It reduced short-term workload, but left a water-quality risk that accumulates with LOG-066/067 toward the contamination chain." },
     "LOG-069": { title: "Base Operation Chain Started", content: "Base operation chain initiation record. Initial judgment affects later personnel movement and supply systems." },
     "LOG-069-CREW": { title: "Operation Crew Reassignment", content: "Personnel reassignment was carried out during a base operation. It affects available companions and trust flow." },
     "LOG-069-END": { title: "Base Operation Chain Closed", content: "The base operation chain has ended. Only minimal information is disclosed in the follow-up report." },
@@ -3584,7 +3577,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-078": { title: "Mid-stage Operation Record 078", content: "Choice record from a mid-stage operation card. It affects later base-operation pressure and field trust." },
     "LOG-RH-NETWORK": { title: "Quiet Resistance Line", content: "Report format, outer patrol routes, and internal query maps have connected into a quiet circuit. It is not public rebellion, but the Korean branch now has a minimal structure for independent judgment." },
     "LOG-CB-SUSTAINED": { title: "Sustainable Loyalty", content: "ORACLE procedure was combined with briefings, retraining, and field appendices. This creates a buffer so loyalty does not only mean consuming personnel." },
-    "LOG-079": { title: "Mid-stage Operation Record 079", content: "Additional record from a mid-stage operation card. The result is used in later news and log conditions." },
+    "LOG-079": { title: "B2 Expansion Proposal Review", content: "Record of reviewing ORACLE's proposal to excavate and expand B2. Whether approved or refused, it preserves the pressure to expand the branch and the commander's long-term operations judgment." },
     "LOG-081": { title: "Nick Foster Encounter Record", content: "First direct encounter record with Nick Foster. A possible contact line opened between the Korea Branch and an external information network." },
     "LOG-081-DATA": { title: "Nick Foster Data Provided", content: "Data fragment provided by Nick Foster. It is used to cross-check Prometheus and external intelligence-network material." },
     "LOG-081-INTEL": { title: "Nick Foster Intelligence Analysis", content: "Follow-up analysis of Nick Foster's intelligence. Evidence accumulates for judging whether it is a threat or a cooperation line." },

@@ -98,9 +98,9 @@ function App(){
   var shouldUseOracleLink=function(ph){
     return ph==='game'||ph==='news'||ph==='reward'||ph==='evening'||ph==='dialogue'||ph==='mission'||ph==='escape_game';
   };
-  var deriveActFlags=function(prev,cardId,missionId,chainDone){
+  var deriveActFlags=function(prev,cardId,missionId,chainDone,dir){
     var next={prom_met:!!prev.prom_met,mission_done:!!prev.mission_done,chain_done:!!prev.chain_done,prom_mission:!!prev.prom_mission};
-    if(cardId==='C-006'||cardId==='C-011')next.prom_met=true;
+    if((cardId==='C-006'||cardId==='C-011')&&dir==='left')next.prom_met=true;
     if(missionId)next.mission_done=true;
     if(missionId==='M-003'||missionId==='M-007')next.prom_mission=true;
     if(chainDone)next.chain_done=true;
@@ -234,8 +234,8 @@ function App(){
     if(g<=-15)return'B';
     return'G';
   };
-  var updateActFlags=function(cardId,missionId,chainDone){
-    var next=deriveActFlags(actFlags,cardId,missionId,chainDone);
+  var updateActFlags=function(cardId,missionId,chainDone,dir){
+    var next=deriveActFlags(actFlags,cardId,missionId,chainDone,dir);
     setActFlags(next);
     return next;
   };
@@ -345,11 +345,11 @@ function App(){
     if(ch.log){if(Array.isArray(ch.log))ch.log.forEach(function(l){tryUnlock(l)});else tryUnlock(ch.log)}
     if(curCard.once)tryUnlock('ONCE-'+curCard.id);
     var nextLogs=getLiveLogs(logs);
-    // ═══ OBSERVER 접속승인 카드 — 전 세션 1회 특수 처리 ═══
+    // CA-OBS-PROTO has ordinary visible fx, plus this one-time hidden approval log/glitch branch.
     if(curCard.id==='CA-OBS-PROTO'){try{localStorage.setItem('ts_observer_proto','seen')}catch(e){}if(dir==='left'){tryUnlock('LOG-OBSERVER-APPROVED')}SFX.play('glitch');setTimeout(function(){setToastType('alert');setToast(tt('app.observerError',null,'[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]'));clearToastAfter(3200)},500)}
     var rwdKey=curCard.id+'-'+dir;if(typeof RECON_TRIGGERS!=='undefined'&&RECON_TRIGGERS[rwdKey])tryUnlock(RECON_TRIGGERS[rwdKey]);if(typeof REFUSAL_BONUSES!=='undefined'&&REFUSAL_BONUSES[rwdKey]){pendingBonusForSave=REFUSAL_BONUSES[rwdKey];setPendingBonus(pendingBonusForSave)}
     var isChainDone=curCard.id.indexOf('CH-')===0&&chainQueue.length===0;
-    var nextActFlags=updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone);
+    var nextActFlags=updateActFlags(curCard.id,ch.mission?ch.mission:null,isChainDone,dir);
 
     var facilityForNext=facility;
     if(ch.fePropose){var fpId=ch.fePropose;if(!facilityHasExpansion(facility,fpId)){facilityForNext=registerFacilityExpansion(facility,fpId,'approved');setFacility(facilityForNext);Save.saveFacility(facilityForNext);setToastType('');setToast(tt('app.facilityRegistered',null,'시설 확장이 보상 풀에 등록되었습니다'));clearToastAfter(2200)}}

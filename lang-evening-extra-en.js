@@ -121,6 +121,64 @@ window.TS_I18N.mergeContent('en', {
 });
 
 window.TS_I18N.mergeContent('en', {
+  eveningResponses: {
+    "doyun_2_5-7": { a: { label: "Do not forget Philadelphia.", reply: "...Yes. I feel the same way." }, b: { label: "Focus on holding the line.", reply: "Understood. That is my duty." } },
+    "doyun_2_8-10": { a: { label: "Strengthen night patrols.", reply: "I will adjust the roster immediately." }, b: { label: "Leave it as an old field story.", reply: "...Understood." } },
+    "doyun_3_15-21": { a: { label: "Assign budget for replacements.", reply: "Thank you. I will organize the priorities and submit them." }, b: { label: "Make the current gear last.", reply: "...Yes. I will use what we have as well as I can." } },
+    "doyun_3_22-28": { a: { label: "Proceed with wall reinforcement.", reply: "Yes. I will start with the materials list." }, b: { label: "I will leave field judgment to you.", reply: "...Understood. I will take responsibility." } },
+    "doyun_4_29-99": { a: { label: "We go together.", reply: "...Yes. I will follow you to the end." }, b: { label: "Do your part.", reply: "Understood, Commander." } },
+    "haeun_2_5-7": { a: { label: "Are any records from then left?", reply: "Some. I will organize them and share them with you." }, b: { label: "Things are normal now, so it is fine.", reply: "...If so, that is a relief." } },
+    "haeun_2_8-10": { a: { label: "Start recording the pattern.", reply: "Yes. I will proceed carefully." }, b: { label: "It may be a misunderstanding.", reply: "...It could be." } },
+    "haeun_3_15-21": { a: { label: "Keep digging into that gap.", reply: "Yes. I will expand the sample and verify it." }, b: { label: "Secure proof first.", reply: "Yes. I will gather it carefully." } },
+    "haeun_3_22-28": { a: { label: "Find out who is doing it.", reply: "Yes. I will start with the access logs." }, b: { label: "Restrict access to your logs.", reply: "Yes. I will take action within my authority." } },
+    "jaehyuk_2_5-7": { a: { label: "Approve the pipe and distributor replacements.", reply: "Thank you. I will begin work tomorrow." }, b: { label: "Postpone low-priority repairs.", reply: "...Understood. I will handle the urgent items first." } },
+    "jaehyuk_2_8-10": { a: { label: "I am thinking the same thing.", reply: "...I will record that. Please keep watching too, Commander." }, b: { label: "Focus on the job assigned.", reply: "...Yes. Understood." } },
+    "jaehyuk_3_15-21": { a: { label: "Find a bypass route.", reply: "...Yes. I will look for an unofficial channel." }, b: { label: "Follow ORACLE's judgment.", reply: "...Understood." } },
+    "jaehyuk_3_22-28": { a: { label: "Dig into that layer.", reply: "...I will be careful. I will leave records." }, b: { label: "It is dangerous. Keep your distance.", reply: "...Yes. I will judge carefully." } },
+    "jaehyuk_4_29-99": { a: { label: "Share everything you learned.", reply: "...Yes. I will trust only you with this." }, b: { label: "Keep it hidden until it is safe.", reply: "Understood. At the right moment." } },
+    "sejin_2_5-7": { a: { label: "Analyze the cause of the drift too.", reply: "Yes. I will repeat observations and confirm it." }, b: { label: "It may be chance.", reply: "...It may be." } },
+    "sejin_2_8-10": { a: { label: "Use that memory in the research.", reply: "Yes... I will not forget it." }, b: { label: "Remove emotion. Treat it as data.", reply: "Understood. I will stay objective." } },
+    "sejin_3_15-21": { a: { label: "Find out what that structure is.", reply: "Yes. I will organize the observation protocol." }, b: { label: "Hypotheses come after proof.", reply: "...Understood. I will approach it carefully." } },
+    "sejin_3_22-28": { a: { label: "Find proof of parameter tampering.", reply: "Thank you. You will review it with me, right?" }, b: { label: "Keep observing for now.", reply: "...Yes. I will keep the records going." } },
+    "sejin_4_29-99": { a: { label: "The inhibitor research is top priority.", reply: "...Thank you. I will complete it." }, b: { label: "Work only within safe limits.", reply: "Yes. I will proceed carefully." } },
+    "jaehyuk_2_18-30": { a: { label: "Install the closed circuit.", reply: "Understood. I will begin. I will trust you, Commander.", log: "LOG-UPRISING-OFFER" }, b: { label: "Stand by for now.", reply: "Understood. I will keep preparations ready. Tell me when you need it.", log: null } },
+    "weber_4_29-35": { a: { label: "I want to find the truth.", reply: "...Good. We will share what we have." }, b: { label: "I will withhold judgment for now.", reply: "A wise posture. There is still time." } },
+    "weber_4_40-99": { a: { label: "I understand that difference.", reply: "...Then I hope you will work with us, Commander." }, b: { label: "I still cannot trust the organization.", reply: "...That is rational too." } },
+    "foster_4_31-35": { a: { label: "You can still change.", reply: "...Thank you. I do not deserve to hear that." }, b: { label: "Leave the past buried.", reply: "...Thank you. That may let me take one step forward." } },
+    "foster_4_40-99": { a: { label: "Korea being the success case is the danger.", reply: "Exactly. That is why you matter." }, b: { label: "Thank you for the information.", reply: "...If you need more, I will provide it." } },
+    "soyoung_4_32-35": { a: { label: "Carry on Seo Hae-eun's work too.", reply: "...Yes. I will make sure it continues." }, b: { label: "If you have adapted, that is enough.", reply: "Thank you. I will live up to your expectations." } },
+    "soyoung_4_40-99": { a: { label: "Share that pattern immediately.", reply: "Yes. I will send all analysis material." }, b: { label: "Hold until you have confirmation.", reply: "...Understood. I will gather more." } },
+    "weber_4c_29-30": { a: { label: "I understand. Continue.", reply: "I am glad we can speak plainly." }, b: { label: "I will withhold judgment for now.", reply: "...There is time." } },
+    "weber_4c_31-33": { a: { label: "Share that information.", reply: "It is already prepared." }, b: { label: "If you have interests here, there are conditions.", reply: "...The condition is your judgment." } },
+    "weber_4c_34-35": { a: { label: "You are carrying his part too.", reply: "...Thank you. I will continue." }, b: { label: "Revenge will not find the answer.", reply: "I know. That is why I called it resolve." } },
+    "foster_early_27-30": { a: { label: "I will listen. Keep the channel open.", reply: "...Good. Then next time, let us speak face to face." }, b: { label: "I still cannot trust you.", reply: "I expected that. But this channel will stay alive for a while." } },
+    "foster_4c_29-30": { a: { label: "We both had a reason to make it this far.", reply: "...Correct." }, b: { label: "Analysis. Cold of you.", reply: "...That is how I survived." } },
+    "foster_4c_31-33": { a: { label: "You are not replaceable either.", reply: "...Thank you. No one has told me that before." }, b: { label: "So self-preservation comes first.", reply: "...It is a realistic judgment." } },
+    "foster_4c_34-35": { a: { label: "Korea will be different.", reply: "...You are the one who has to prove that." }, b: { label: "Thank you for the information.", reply: "...I hope it is useful." } },
+    "soyoung_4c_29-30": { a: { label: "I trust your intentions.", reply: "...Thank you. I will do my best." }, b: { label: "Check Seo Hae-eun's contact path.", reply: "Yes... I will try." } },
+    "soyoung_4c_31-33": { a: { label: "Share the analysis immediately.", reply: "Yes. I will organize it and send it over." }, b: { label: "Approach it carefully.", reply: "Yes. I will avoid ORACLE's notice." } },
+    "soyoung_4c_34-35": { a: { label: "I believe you.", reply: "...Thank you, Commander." }, b: { label: "Show it through results.", reply: "...Yes. I will prove it with results." } },
+    "haeun_3_20-24": { a: { label: "Show me the previous commander's record.", reply: "Here. I restored the voice memo too. ...Please brace yourself before you listen.", log: "LOG-090" }, b: { label: "There is an audio record too?", reply: "Yes. The quality is poor, but it contains the final moments.", log: "LOG-091" } },
+    "jaehyuk_3_19-23": { a: { label: "I need to see the captured screen.", reply: "Here it is. A thirty-eight-second record. I captured all of it.", log: "LOG-092" }, b: { label: "Show me the cable trace too.", reply: "It runs down to the B3 lower bulkhead. The same place where the previous commander disappeared.", log: "LOG-093" } }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  eveningChats: {
+    "jaehyuk_2_18-30": { lines: ["Commander. Do you have a moment?", "I would like to speak in the shielded conference room.", "...", "Independent server, independent comms, independent power. Everything is ready.", "These are the facilities you approved.", "It means this base can operate without ORACLE.", "...", "We plant the closed circuit.", "An independent control system that bypasses ORACLE's command structure.", "Seo Hae-eun will handle the software. I will handle the hardware.", "Kang Do-yun will handle physical control.", "...", "We can trust Prometheus, or we can escape.", "But we are the ones who protected this base.", "There is no reason to hand it over."] },
+    "haeun_3_20-24": { lines: ["Commander... this is not an official report.", "I found something while restoring deleted operations logs.", "Before your assignment... it was not that this base had no commander.", "There was one. The records were deleted.", "And that person had the same questions you do."] },
+    "jaehyuk_3_19-23": { lines: ["Commander. 02:47.", "You remember that something happens in the server room at that time.", "I lay in wait. Three days. Alone.", "And I saw it.", "...You need to see this yourself. Words are not enough."] },
+    "weber_4c_29-30": { lines: ["Prometheus is not a government.", "It is a civilian organization. We are not asking you to join. We are asking for cooperation.", "Few people understand that distinction.", "I thought you might."] },
+    "weber_4c_31-33": { lines: ["Your country's coastal barrier - we helped reinforce its design.", "A technical contribution. No compensation.", "Why? Because if Korea collapses, all of East Asia follows.", "We have interests here too. That much is true."] },
+    "weber_4c_34-35": { lines: ["The reason I joined Prometheus in Germany is not complicated.", "My brother died in a Rhine anomaly incident. 2029.", "ORACLE classified it as an administrative error.", "After that, this stopped being calculation. It became resolve."] },
+    "foster_early_27-30": { lines: ["A short voice packet arrives through an external channel.", "The sender does not identify himself, but the accent and phrasing match the records.", "\"Nick Foster. I am not asking to meet in person.\"", "\"If you listened to Weber, you should hear my side too.\""] },
+    "foster_4c_29-30": { lines: ["Lee Jung-cheol. The time I came to your unit - that was a mistake.", "Do not misunderstand. This is not an apology. It is an analysis.", "If you had not stopped me then, the whole operation would have gone wrong.", "Neither of us would have made it this far."] },
+    "foster_4c_31-33": { lines: ["Weber is a strategist. I am someone who works under him.", "There is a clear difference. If Weber dies, he is replaced.", "If someone like me dies, that is simply the end.", "That is why I am careful. Just know that."] },
+    "foster_4c_34-35": { lines: ["Whether you use my information or not, I have done my part.", "One request, though.", "The commander in Philadelphia was not someone like you.", "That side is already too late. Korea is not. Not yet."] },
+    "soyoung_4c_29-30": { lines: ["Commander, have you heard anything about Senior Seo Hae-eun?", "Officially she was transferred to another branch, but contact is poor.", "...I think she knew this would happen.", "I just want to finish what she could not."] },
+    "soyoung_4c_31-33": { lines: ["I found a repeated pattern in the ORACLE query structure.", "Every session, your unusual decisions are being catalogued.", "Everything you decide is being classified and stored.", "...This is not simple logging."] },
+    "soyoung_4c_34-35": { lines: ["Commander. I had several reasons for coming here.", "Senior Seo Hae-eun's request, my own curiosity, and other reasons too.", "But now the biggest reason I am staying is that I like the people here.", "That much is real. Please believe me."] }
+  },
   eveningTrustLines: {
     doyun_injured: {
       low: [

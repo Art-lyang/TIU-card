@@ -76,7 +76,7 @@ var CARDS_ACT4_EXT = [
     req:function(s,g,logs){ return s.day >= 34 && logs.indexOf('LOG-075')<0 },
     msg:"외곽 정찰조 2명 — 통신 두절.\n\n마지막 위치: 봉쇄선 북쪽 1.8km.\n\n강도윤: \"구조를 갑니다. 허가만 주십시오.\"",
     left:{ label:"구조 작전 승인", fx:{c:-1,r:-2,t:2,o:-1}, g:-2 },
-    right:{ label:"위험 과다 — 철수 대기", fx:{c:1,r:0,t:-3,o:0}, g:0 } },
+    right:{ label:"위험 과다 — 철수 대기", fx:{c:1,r:0,t:-2,o:0}, g:0 } },
 
   { id:"CA4-CR-04", act:[4], tag:"endgame-crisis", priority:"상",
     req:function(s,g,logs){ return s.r <= 30 },

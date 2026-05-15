@@ -38,7 +38,7 @@ var CARDS_EXTERNAL = [
     left: { label: "핵심 데이터 접근 허가", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2 },
     right: { label: "제한된 접근만 허용", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-253", act: [3,4], priority: "상", bg: "forest",
+  { id: "C-253", act: [4], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-081')>=0 && logs.indexOf('LOG-083')<0 && s.day>=32 },
     msg: "포스터와의 대화 중.\n\n\"아, 새 분석관이 왔다면서요?\"\n\n무심하게 말합니다.\n\n\"소영이... 잘 적응하던가요?\"\n\n이름을 알고 있습니다.\n\n\"... 아. 몰랐어요? 우리 쪽 사람인데.\"\n\n웃습니다.\n\n\"서하은이 추천했다고요? 맞아요. 소영이가 그렇게 부탁한 거니까.\"",
     left: { label: "박소영을 추궁한다", fx: { c: 0, r: 0, t: -2, o: -1 }, g: -3 },

@@ -1,4 +1,7 @@
 // TERMINAL SESSION - P1 image pack mappings
+// Loads after images.js/images_bg.js/images_cards.js as a deliberate patch layer:
+// Object.assign upgrades existing IMG keys, then CARD_IMAGE_PATCHES mutates loaded
+// card arrays so the static runtime can use the new P1 artwork without a build step.
 (function(){
   if (typeof IMG === 'undefined') return;
 

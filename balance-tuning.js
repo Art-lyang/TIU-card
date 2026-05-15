@@ -128,8 +128,8 @@
     if (cardId === 'CE-005') {
       // The observer contact should feel dangerous, but a single hidden output
       // must not hard-delete an otherwise playable run through evaluation 0.
-      if ((nextGi || 0) < (beforeGi || 0) - 6) {
-        nextGi = (beforeGi || 0) - 6;
+      if ((nextGi || 0) < (beforeGi || 0) - 5) {
+        nextGi = (beforeGi || 0) - 5;
         changed = true;
         kind = 'observer-spike-cap';
       }

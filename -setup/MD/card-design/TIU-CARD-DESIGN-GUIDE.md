@@ -1,6 +1,6 @@
 # TERMINAL SESSION — 카드 설계 가이드 v4
 
-> 최종 업데이트: 2026-04-17 (337장+ 반영, Act 4 캐논 카드 추가)
+> 최종 업데이트: 2026-05-15 (Issue #28 ID 패밀리/특수 카드 정책 반영)
 
 ## 카드 구조
 
@@ -29,7 +29,7 @@
 
 | 필드 | 타입 | 설명 |
 |------|------|------|
-| `id` | string | `C-XXX`, `CE-XXX`, `CT-XXX`, `CS-XXX` |
+| `id` | string | `C-XXX`, `CE-XXX`, `CT-XXX`, `CS-XXX` 및 아래 ID 접두사 규칙 |
 | `act` | array | 활성 Act 목록 `[1]`, `[1,2]`, `[2,3]` 등 |
 | `priority` | string | `"상"` / `"중"` / `"하"` — 카드 상단 표시 |
 | `tag` | string | 쿨다운 태그. 같은 태그 카드는 3일 간격 |
@@ -91,7 +91,18 @@
 | `CA4-G001~` | data-cards-act4.js | **Act 4 캐논 GREY 루트** |
 | `CA4-R001~` | data-cards-act4.js | **Act 4 캐논 RESIST 루트** |
 | `CA4-O001~` | data-cards-act4.js | **Act 4 캐논 OBSERVER 루트** |
+| `CA4-CH/CR/EX/FL/HZ/OR-XX` | data-cards-act4-ext/hazard.js | Act 4 확장/위기/위험 카드 |
+| `CA23-DV-XX` | data-cards-dg-meridian.js | Act 2~3 내부 분열 중재 |
+| `DG-XX`, `MD-XX`, `SUP-DM-XX` | data-cards-dg-meridian.js | DG/Meridian 외부 세력 및 보급 택일 |
+| `KC-XX`, `GOV-ORC-XX` | data-cards-korea-civilian.js | 한국 민간/정부 압박 라인 |
+| `RH-XX`, `RH-SAFE-XX`, `CB-XX`, `MS-XX`, `HH-XX`, `CN-XXX`, `CR-XXX` | side/crisis packs | 저항 힌트, 충성 완충, 중립/위기 보조 카드 |
+| `CT-C01`, `CT-T01`, `CT-O01`, `CT-B01~03` | data-cards-crisis.js | 자원 임계 경고 및 각성 전조 카드 |
+| `FP-FE-XXX`, `C-FEXXX-A/B` | data-cards-facility-propose.js / facility cards | 시설 제안 자동 카드 및 시설 후속 카드 |
+| `A2/A3/A4-*`, `LJC-PROM-XX` | data-cards-prometheus-lee.js 등 | 이중철/프로메테우스/Act 보강 라인 |
+| `CA-OBS-PROTO`, `OBS-HINT-XX`, `ORC-LOYAL-SAFE-XX` | neutral/side packs | 미확인 관찰자 및 ORACLE 충성 특수 카드 |
 | `CH-XXX-N` | data-chains.js | 연쇄 카드 내부 |
+
+새 ID 패밀리를 추가하면 `tools/validator.js`의 `CARD_ID_FORMAT_RULES`와 영어 오버레이 smoke 범위를 함께 갱신한다. 고의로 비워둔 번호(`C-187`, `C-251` 등)는 해당 데이터 파일의 주석으로 남기고, 임의 재사용하지 않는다.
 
 ## 카드 카테고리별 현황 (337장+)
 

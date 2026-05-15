@@ -1,6 +1,7 @@
 // data-cards-dg-meridian.js — DG / Meridian 콘텐츠 팩 v1.2
 // 한국 토착 재벌 '대가 인더스트리(DG)'와 외국계 글로벌 PMC/바이오자산 '메리디안(MD)' 양대 축.
 // 트리거 코드(app-logic.js)와 정확히 매칭된 ID 사용. 카드 ID 변경 금지.
+// QA policy: DG/MD/SUP-DM/CH-* IDs are accepted nonstandard families in tools/validator.js.
 
 var CARDS_DG_MERIDIAN = [
   // ═══════════════════════════════════════════════════════════
@@ -16,6 +17,7 @@ var CARDS_DG_MERIDIAN = [
     right: { label: "ORACLE 보고로 회신한다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
 
   // DG-02 — 거래 1차
+  // req consumes LOG-DG-CONTACT, produced by app-logic when DG-01 opens the contact line.
   { id: "DG-02", act: [3], priority: "중", bg: "base",
     cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DG-DEAL')<0 },
     msg: "DG 측 제안. 봉쇄선 노후 센서 12기를 무상 교체해주겠다는 안건.\n\n조건은 단 하나 — 교체 작업 중 수집되는 봉쇄선 인근 EV-Σ 활동 데이터의 사본을 DG 연구부에 제공.\n\n서하은: \"센서 노후는 사실입니다. 본부 보급은 빨라야 두 달 뒤예요.\"\n\n... 그러나 데이터를 외부에 흘리는 건 별개의 문제입니다.",
@@ -48,6 +50,7 @@ var CARDS_DG_MERIDIAN = [
     right: { label: "발신지를 차단한다", fx: { c: 1, r: 0, t: -1, o: 2 }, g: 2 } },
 
   // MD-02 — 정보 수령
+  // req consumes LOG-MD-CONTACT, produced by app-logic when MD-01 opens the Meridian line.
   { id: "MD-02", act: [3], priority: "중", bg: "comms",
     cond: function(s,g,logs){ return logs.indexOf('LOG-MD-CONTACT')>=0 && logs.indexOf('LOG-MD-INTEL')<0 },
     msg: "메리디안에서 첫 번째 인텔 패키지가 도착.\n\n동해안 봉쇄선 외측에서 자체 위성으로 잡은 야간 열원 12건. ORACLE 보고에는 없는 좌표가 셋 섞여 있습니다.\n\n\"ORACLE이 빼놓은 것일 수도, 보지 못한 것일 수도 있습니다. 어느 쪽이든 알 가치가 있죠.\"\n\n... 받으면 빚을 진 셈이 됩니다.",
