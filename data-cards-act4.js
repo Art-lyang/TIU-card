@@ -21,7 +21,11 @@ var CARDS_ACT4 = [
 
   { id:"CA4-C003", act:[4], once:true, transReq:"A4_COMPLY", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-C002')>=0 },
-    msg:"ORACLE이 인사 이동 명령을 하달합니다.\n\n서하은, 강도윤, 윤세진, 임재혁 전원 타 지부 재배치.\n후임은 'ORACLE 최적화 팀'으로 구성됩니다.\n\n팀원들은 당신의 방 앞에 서 있습니다.",
+    msg:function(s,g,logs){
+      var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]);
+      if(liveLogs.indexOf('LOG-075')>=0)return "ORACLE이 인사 이동 명령을 하달합니다.\n\n서하은, 윤세진, 임재혁 전원 타 지부 재배치.\n강도윤의 이름은 명단에 없습니다. ORACLE은 그의 빈자리를 '현장 손실'로만 표기합니다.\n\n후임은 'ORACLE 최적화 팀'으로 구성됩니다.\n\n남은 팀원들은 당신의 방 앞에 서 있습니다.";
+      return "ORACLE이 인사 이동 명령을 하달합니다.\n\n서하은, 강도윤, 윤세진, 임재혁 전원 타 지부 재배치.\n후임은 'ORACLE 최적화 팀'으로 구성됩니다.\n\n팀원들은 당신의 방 앞에 서 있습니다.";
+    },
     left:{ label:"명령을 이행한다", fx:{c:0,r:0,t:-3,o:4}, g:5 },
     right:{ label:"팀 유지를 요청한다", fx:{c:0,r:0,t:0,o:-2}, g:-2 } },
 
@@ -136,33 +140,33 @@ var CARDS_ACT4 = [
 
   { id:"CA4-O001", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상", glitch:2,
     msg:"임재혁이 긴급 보고합니다.\n\n\"ORACLE이 인식하지 못하는 레이어를 찾았습니다.\"\n\"ORACLE 아래에 — 다른 무언가가 있습니다.\"\n\n단말기 팬 소음이 멈춥니다.",
-    left:{ label:"계속 파고들어라", fx:{c:0,r:-2,t:1,o:-4}, g:-6 },
+    left:{ label:"계속 파고들어라", fx:{c:0,r:-1,t:1,o:-3}, g:-4 },
     right:{ label:"지금 당장 멈춰라", fx:{c:1,r:0,t:-1,o:1}, g:1 } },
 
   { id:"CA4-O002", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O001')>=0 }, glitch:2,
     msg:"단말기에 새 로그가 추가됩니다.\n\n작성자: [공란]\n타임스탬프: [00:00:00.000]\n내용: 'OBSERVATION SUSTAINED.'\n\nORACLE은 이 로그를 인식하지 못합니다.",
-    left:{ label:"로그에 응답을 입력한다", fx:{c:0,r:-1,t:0,o:-4}, g:-6 },
+    left:{ label:"로그에 응답을 입력한다", fx:{c:0,r:0,t:0,o:-3}, g:-4 },
     right:{ label:"로그를 삭제한다", fx:{c:0,r:0,t:-1,o:1}, g:1 } },
 
   { id:"CA4-O003", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O002')>=0 }, glitch:2,
     msg:"ORACLE 인터페이스가 0.7초간 완전히 꺼집니다.\n\n그 사이 —\n\n당신만이 볼 수 있는 것이 화면을 채웁니다.\n언어가 아닙니다. 좌표도 아닙니다.\n\n하지만 당신은 이해합니다.",
-    left:{ label:"...이해한다", fx:{c:0,r:-1,t:0,o:-3}, g:-5 },
-    right:{ label:"눈을 감는다", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
+    left:{ label:"...이해한다", fx:{c:0,r:0,t:0,o:-2}, g:-3 },
+    right:{ label:"눈을 감는다", fx:{c:0,r:0,t:0,o:0}, g:-1 } },
 
   { id:"CA4-O004", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O003')>=0 }, glitch:2,
     msg:"임재혁의 마지막 보고.\n\n\"지휘관님. 우리가 보고 있는 건 ORACLE이 아닙니다.\"\n\"EV-Σ도 아닙니다. 프로메테우스도 아닙니다.\"\n\"이건 — 우리가 여기 있기 전부터 있었습니다.\"\n\n[자동 해금: LOG-OBSERVER-01]",
-    left:{ label:"어디에?", fx:{c:0,r:-2,t:1,o:-4}, g:-6, log:"LOG-OBSERVER-01" },
-    right:{ label:"...알고 있었다", fx:{c:0,r:-1,t:1,o:-3}, g:-5, log:"LOG-OBSERVER-01" } },
+    left:{ label:"어디에?", fx:{c:0,r:-1,t:1,o:-3}, g:-4, log:"LOG-OBSERVER-01" },
+    right:{ label:"...알고 있었다", fx:{c:0,r:0,t:1,o:-2}, g:-3, log:"LOG-OBSERVER-01" } },
 
   { id:"CA4-O005", act:[4], once:true, transReq:"A4_OBSERVER", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-O004')>=0 }, glitch:3,
     endTrigger:"F",
     msg:"단말기 화면이 멈춥니다.\n\nORACLE의 인터페이스가 사라집니다.\n대신, 텅 빈 검은 화면.\n\n그리고 —\n\n그것이 당신을 봅니다.\n\n화면에 한 줄이 나타납니다:\n\n> OBSERVATION SUSTAINED.",
-    left:{ label:"마주 본다", fx:{c:0,r:0,t:0,o:-3}, g:-5 },
-    right:{ label:"눈을 피한다", fx:{c:0,r:0,t:0,o:-2}, g:-3 } }
+    left:{ label:"마주 본다", fx:{c:0,r:0,t:0,o:-2}, g:-3 },
+    right:{ label:"눈을 피한다", fx:{c:0,r:0,t:0,o:-1}, g:-2 } }
 ];
 
 // Act 4 일반 카드 20장은 data-cards-act4-ext.js 로 분리 (200줄 룰)

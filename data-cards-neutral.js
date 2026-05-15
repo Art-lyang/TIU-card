@@ -36,6 +36,7 @@ var CARDS_NEUTRAL = [
     right: { label: "... 모르겠다, 솔직히", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -1 } },
 
   // ═══ OBSERVER 접속승인 — 히든 카드 (전 액트, 전 세션 1회, fullReset만 초기화) ═══
+  // 5% 일일 판정으로 승인 시 LOG-OBSERVER-APPROVED를 열고, Act4 GI<-30 OBSERVER 루트의 엔딩 F 접근 단서가 된다.
   { id: "CA-OBS-PROTO", act: [2,3,4], priority: "하", once: true,
     glitch: true,
     req: function(s,g,logs){

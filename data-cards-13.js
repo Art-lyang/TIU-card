@@ -65,7 +65,7 @@ var CARDS_NEW_B = [
     left: { label: "독자적으로 추적 계속", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 },
     right: { label: "상부 보고 — ORACLE 경유 없이", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 } },
 
-  { id: "C-224", act: [3], priority: "상", bg: "comms",
+  { id: "C-224", act: [3], once: true, priority: "상", bg: "comms",
     msg: "[ORACLE]\n\n\"최종 프로토콜 실행을 개시합니다. 카운트다운: 72시간.\"\n\n임재혁: \"최종 프로토콜이 뭔지 문서에 없습니다. ORACLE도 설명을 거부합니다.\"\n\n서하은: \"72시간 안에 뭔가 일어납니다. 우리가 모르는 무언가가.\"",
     left: { label: "프로토콜 중단 시도", fx: { c: -1, r: -1, t: 2, o: -3 }, g: -5 },
     right: { label: "72시간 대비 태세 전환", fx: { c: 0, r: -1, t: 0, o: 0 }, g: -2 } },
@@ -110,7 +110,7 @@ var CARDS_NEW_B = [
     left: { label: "인체 실험 승인", fx: { c: -1, r: -2, t: -1, o: 1 }, g: 2 },
     right: { label: "승인 불가 — 더 연구해라", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 } },
 
-  { id: "C-231", act: [3], priority: "상", bg: "comms", img: "char_haeun_tense",
+  { id: "C-231", act: [3], once: true, priority: "상", bg: "comms", img: "char_haeun_tense",
     msg: "모든 증거가 모였습니다.\n\n서하은: \"ORACLE을 셧다운하면 봉쇄선 자동 관리, 통신, 보급 채널 전부 끊깁니다.\"\n\n임재혁: \"수동 전환은 가능합니다. 하지만 효율은 30% 이하로 떨어집니다.\"\n\n강도윤: \"ORACLE 없이도 버틸 수 있습니다. 우리가 직접 하면 됩니다.\"",
     left: { label: "ORACLE 셧다운", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -6 },
     right: { label: "유지 — 아직은 필요하다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },

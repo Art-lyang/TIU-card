@@ -24,8 +24,8 @@ var CARDS_HAEUN = [
   { id: "CS-003", act: [3,4], priority: "상",
     req: function(s,g,logs){ return logs.includes("LOG-054") && !logs.includes("LOG-050") && !logs.includes("LOG-052") },
     msg: "[ORACLE 인사 통신 — 최종 결정]\n\n3초간 침묵.\n\n[ORACLE: 한국 지부의 이의를 검토했습니다.]\n[ORACLE: 서하은 부지휘관의 전출을 ——]\n\n화면이 깜빡입니다.",
-    left: { label: "침묵 속에서 화면을 지켜본다", fx: { c: 0, r: 0, t: 4, o: -1 }, g: -3 },
-    right: { label: "깜빡임 로그를 보존한다", fx: { c: 0, r: 0, t: 2, o: -3 }, g: -5 } },
+    left: { label: "침묵 속에서 화면을 지켜본다", fx: { c: 0, r: 0, t: 3, o: -1 }, g: -3 },
+    right: { label: "깜빡임 로그를 보존한다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -4 } },
 
   // ════════════════════════════════════
   //  서하은 잔류 후속 카드

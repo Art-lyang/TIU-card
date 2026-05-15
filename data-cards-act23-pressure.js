@@ -55,7 +55,7 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){ return s.r <= 35 && logs.indexOf("LOG-DG-CONTACT") >= 0 && logs.indexOf("LOG-A4-DG-SUPPORT") < 0; },
     bg: "base",
     msg: "자원 고갈 경보 직후, DG 라인에서 비공식 물류 창구를 열겠다는 연락이 들어왔습니다.\n\n\"정식 계약은 아닙니다. 다만 강원지부가 오늘 밤을 넘기지 못하면 우리 쪽도 곤란합니다. 기록에는 긴급 민간 보급 협조로 남기십시오.\"\n\n받으면 숨통은 트입니다. 대신 빚의 이름이 남습니다.",
-    left: { label: "DG 긴급 물류를 받는다", fx: { c:1,r:4,t:0,o:-2 }, g:-3, log:"LOG-A4-DG-SUPPORT" },
+    left: { label: "DG 긴급 물류를 받는다", fx: { c:1,r:3,t:0,o:-2 }, g:-3, log:"LOG-A4-DG-SUPPORT" },
     right: { label: "최소분만 받고 공적 기록을 남긴다", fx: { c:0,r:2,t:1,o:-1 }, g:-1, log:"LOG-A4-DG-SUPPORT" }
   },
   {

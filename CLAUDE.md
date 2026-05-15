@@ -22,12 +22,18 @@
 
 ## Card ID Naming
 
-- 기본 카드: `C-XXX`
-- 체인: `CH-XXX-N`
-- 사이드: `CS-XXX`
-- 위기: `CT-XXX`
-- Act4: `CA-XXX`
+카드 ID 계열은 `tools/validator.js`의 `CARD_ID_FORMAT_RULES`가 기준이다. 현재 실사용 계열은 아래 10종으로 관리한다.
+
+- 기본/힌트: `C-XXX`, `C-FE###-A/B`, `C-HINT-*`
+- 캐릭터/중립 Act 카드: `CA-XXX`, `CA-XXXB`, `CA-OBS-PROTO`, `CA-SEED-##`
+- Act 4 루트/필러/위험: `CA3-*`, `CA4-*`
+- Act 2~4 흐름/지원: `A2-*`, `A3-*`, `A4-*`
 - 이벤트: `CE-XXX`
+- 사이드/인물 체인: `CS-XXX`, `CS-XXXB`
+- 위기/크라이시스: `CT-XXX`, `CT-B##`, `CT-C##`, `CT-O##`, `CT-T##`
+- 체인 카드: `CH-...-N`
+- 지역/조직 팩: `CB-*`, `CN-*`, `CR-*`, `DG-*`, `HH-*`, `KC-*`, `MD-*`, `MS-*`, `RH-*`
+- 특수 팩: `FP-FE-*`, `GOV-ORC-*`, `LJC-PROM-*`, `OBS-HINT-*`, `ORC-LOYAL-SAFE-*`, `RH-SAFE-*`, `SUP-DM-*`
 
 ## Act Color Identity
 

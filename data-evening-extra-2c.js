@@ -45,6 +45,7 @@ EVENING_CHATS.push(
     ] },
   { char: '닉 포스터', act: [4], dayMin: 29, dayMax: 30,
     responseKey: 'foster_4c_29-30',
+    condFn: function(ctx){ var logs=ctx.logs||[]; return logs.indexOf('LOG-081')>=0; },
     lines: [
       "이중철. 내가 그때 당신 부대 찾아간 거 — 실수였습니다.",
       "오해하지 마세요. 사과 아닙니다. 분석 결과예요.",
@@ -53,6 +54,7 @@ EVENING_CHATS.push(
     ] },
   { char: '닉 포스터', act: [4], dayMin: 31, dayMax: 33,
     responseKey: 'foster_4c_31-33',
+    condFn: function(ctx){ var logs=ctx.logs||[]; return logs.indexOf('LOG-081')>=0; },
     lines: [
       "베버는 전략가입니다. 나는 — 그 밑에서 일하는 사람이고요.",
       "차이는 분명합니다. 베버는 죽어도 대체됩니다.",
@@ -61,6 +63,7 @@ EVENING_CHATS.push(
     ] },
   { char: '닉 포스터', act: [4], dayMin: 34, dayMax: 35,
     responseKey: 'foster_4c_34-35',
+    condFn: function(ctx){ var logs=ctx.logs||[]; return logs.indexOf('LOG-081')>=0; },
     lines: [
       "당신이 내 정보를 쓰든 말든 — 제 책임은 다한 겁니다.",
       "다만, 부탁 하나만.",

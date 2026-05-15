@@ -2965,11 +2965,6 @@ window.TS_I18N.mergeContent('en', {
       leftLabel: "Save the channel",
       rightLabel: "Delete it. Too dangerous"
     },
-    "CA4-ESCAPE-OFFER": {
-      msg: "First day of the final phase.\n\nA message arrives through the encrypted channel you saved. Weber.\n\n\"Commander. The situation has reached its threshold.\"\n\n\"ORACLE is finalizing its evaluation of you. Once the result is issued, you may follow the same path as Deputy Commander Seo Hae-eun.\"\n\n\"Twenty-four hours. Decide within that window.\"\n\"We can extract you and your team. This is the last chance.\"",
-      leftLabel: "I will consider it",
-      rightLabel: "Refuse"
-    },
     "CH-007-1": {
       msg: "Two kilometers north of the branch. Midnight rendezvous point.\n\nWeber delivers a compressed operation plan.\n\n\"There are two routes. I will explain the characteristics of each.\"\n\n\"First: breach through the main gate. Initial resistance will be heavy, but after the breakout you only need to cross the outer infected zone. Outdoor contact can be avoided.\"\n\n\"Second: B3 emergency exit. Initial entry is quiet. However, the route passes through the isolation chamber. You can likely guess what may be waiting there.\"",
       leftLabel: "I understand",
@@ -3556,7 +3551,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-064": { title: "Internal Incident Alternate Branch", content: "Alternate response record from the internal incident chain. A field judgment different from ORACLE recommendation remains." },
     "LOG-065": { title: "Field Clash Chain Started", content: "A field-clash incident has begun. Agent injury and containment-line stability are tracked together." },
     "LOG-065-ATK": { title: "Field Clash Engagement Record", content: "An engagement occurred during the field clash. Agent response and equipment consumption affect later judgment." },
-    "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual." },
+    "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual. After treatment and rehabilitation, Kang Do-yun returned to the command structure; this record clears his temporary injury state." },
     "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
     "LOG-067": { title: "Water-purification Contamination Watch", content: "Record that trace organic contamination in the branch water-purification system was left under monitoring instead of immediate filter replacement. The level stayed within drinking standards, but it remained flagged for follow-up inspection." },
     "LOG-068": { title: "Drinking-water Tank Purification Deferred", content: "Record that the branch postponed the scheduled drinking-water tank purification cycle. It reduced short-term workload, but left a water-quality risk that accumulates with LOG-066/067 toward the contamination chain." },

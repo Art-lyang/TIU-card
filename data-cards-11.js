@@ -16,7 +16,7 @@ var CARDS_CHAINS = [
     cond: function(s,g,logs){ return logs.includes("LOG-063") && !logs.includes("LOG-063-DONE") },
     msg: "재훈련을 마친 신규 요원이 현장 임무에 투입되었습니다.\n\n강도윤: \"훈련 성과가 나왔습니다. 보고드리겠습니다.\"\n\n봉쇄선 3구역 순찰 중 이변체 접촉 — 신규 요원이 침착하게 대응했습니다.\n\n\"훈련대로 움직였습니다. 훈륭한 임무 수행이었습니다.\"",
     left: { label: "잘했다고 전해라", fx: { c: 1, r: 0, t: 2, o: 1 }, g: 1 },
-    right: { label: "기록만 남겨두어라", fx: { c: 1, r: 0, t: 1, o: 1 }, g: 1 } },
+    right: { label: "기록만 남겨두어라", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 } },
 
   // 안일한 대처 실패 루트: LOG-064 → C-181
   { id: "C-181", act: [2,3], priority: "상", bg: "forest",
