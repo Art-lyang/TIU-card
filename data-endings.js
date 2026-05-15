@@ -22,7 +22,7 @@ var ENDING_DEFS = {
   },
   B: {
     name: "각성",
-    condition: "Act 3, GI ≤ -15, 신뢰 캐릭터 2+명 ≥ 65, 로그 6+개",
+    condition: "Act 4, GI ≤ -15, 신뢰 캐릭터 2+명 ≥ 65, 로그 6+개, day ≥ 30",
     narrative: [
       "모든 것이 맞아떨어지는 순간은 없었다.",
       "",
@@ -41,7 +41,7 @@ var ENDING_DEFS = {
   },
   D: {
     name: "조용한 자유",
-    condition: "Act 3, GI ≤ -30, 신뢰 캐릭터 3+명 ≥ 60, 로그 8+개",
+    condition: "Act 4, GI ≤ -30, 신뢰 캐릭터 3+명 ≥ 60, 로그 8+개, day ≥ 31",
     narrative: [
       "아무도 문을 부수지 않았다.",
       "경보도, 추격도 없었다.",
@@ -195,7 +195,7 @@ var ENDING_DEFS = {
   },
   G: {
     name: "관망자",
-    condition: "Act 3, GI 0~20, 신뢰 캐릭터 1+명 ≥ 50, 로그 4+개, day ≥ 26",
+    condition: "Act 4, GI 0~20, 신뢰 캐릭터 1+명 ≥ 55, 로그 7+개, day ≥ 30",
     narrative: [
       "당신은 어느 쪽도 선택하지 않았다.",
       "",
@@ -238,7 +238,7 @@ var ENDING_DEFS = {
   },
   F: {
     name: "[데이터 손상]",
-    condition: "Act 3, LOG-012 해금, Observer 카드 조우",
+    condition: "Act 4, LOG-012 해금, Observer 카드 조우, day ≥ 30",
     narrative: [
       "단말기 화면이 멈춘다.",
       "",
@@ -273,7 +273,8 @@ var ENDING_DEFS = {
 // 35일 캡 기준으로 day 임계값 재조정됨
 // 반환: 엔딩 ID 문자열 또는 null
 function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
-  if (act < 3) return null;
+  // 모든 특수 엔딩은 Act 4에서만 발동 — Act 1~3은 여정, Act 4는 결말
+  if (act < 4) return null;
 
   // ═══ 엔딩 H: 기지 점거 (폐쇄회로 완료) — 최우선 체크 ═══
   if (typeof chkUprisingEnding === 'function' && facility) {
@@ -305,17 +306,18 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   // ═══ 엔딩 A 정상형 (신규) — 이상적 운용자 완주 ═══
   // Act4 + day≥30 + GI≥55 + c≥70 + o≥60
   // 파탄형(c≥100+GI≥60)은 doGO에서 기존대로 처리
-  if (act >= 4 && stats.day >= 30 && gi >= 55 && stats.c >= 70 && stats.o >= 60) {
+  if (stats.day >= 30 && gi >= 55 && stats.c >= 70 && stats.o >= 60) {
     return 'A';
   }
 
   // ═══ 엔딩 F: Observer 레이어 발견 ═══
-  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥25/28 + GI≤0
+  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥30 + GI≤5
+  // 완화형: LOG-012+Observer + OBSERVER-APPROVED + day≥31 + GI≤0
   // 변형: LOG-012+Observer + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
-  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 25 && gi <= 5) {
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 30 && gi <= 5) {
     return 'F';
   }
-  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 28 && gi <= 0) {
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 31 && gi <= 0) {
     return 'F';
   }
   if (hasLog12 && hasObserver && !hasObsApproved && stats.day >= 33 && gi <= -20 && highTrust >= 2) {
@@ -323,36 +325,36 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   // ═══ 엔딩 D: 조용한 자유 ═══
-  // 가이드형: 조용한 자유 준비 기록 + GI≤-30 + midTrust≥3 + log≥8 + day≥25
-  // 정상형: GI≤-30 + midTrust≥3 + log≥8 + day≥28
-  // 변형: GI≤-35 + r≥35 + 한명 trust≥70 + log≥10 + day≥30 (소수 탈출)
-  if (hasQuietFreedom && gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 25) {
+  // 가이드형: 조용한 자유 준비 기록 + GI≤-30 + midTrust≥3 + log≥8 + day≥30
+  // 정상형: GI≤-30 + midTrust≥3 + log≥8 + day≥31
+  // 변형: GI≤-35 + r≥35 + 한명 trust≥70 + log≥10 + day≥32 (소수 탈출)
+  if (hasQuietFreedom && gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 30) {
     return 'D';
   }
-  if (gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 28) {
+  if (gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 31) {
     return 'D';
   }
-  if (gi <= -35 && stats.r >= 35 && anyTrust70 >= 1 && logCount >= 10 && stats.day >= 30) {
+  if (gi <= -35 && stats.r >= 35 && anyTrust70 >= 1 && logCount >= 10 && stats.day >= 32) {
     return 'D';
   }
 
   // ═══ 엔딩 B: 각성 ═══
-  // 정상형: GI≤-15 + highTrust≥2 + log≥6 + day≥25
-  // 변형: GI≤-25 + highTrust≤1 + log≥10 + day≥28 (고독한 각성)
-  if (gi <= -15 && highTrust >= 2 && logCount >= 6 && stats.day >= 25) {
+  // 정상형: GI≤-15 + highTrust≥2 + log≥6 + day≥30
+  // 변형: GI≤-25 + highTrust≤1 + log≥10 + day≥31 (고독한 각성)
+  if (gi <= -15 && highTrust >= 2 && logCount >= 6 && stats.day >= 30) {
     return 'B';
   }
-  if (gi <= -25 && highTrust <= 1 && logCount >= 10 && stats.day >= 28) {
+  if (gi <= -25 && highTrust <= 1 && logCount >= 10 && stats.day >= 31) {
     return 'B';
   }
 
   // ═══ 엔딩 G: 관망자 ═══
-  // 정상형: GI 0~20 + anyTrust55≥1 + log≥7 + day≥28
-  // 변형: GI -5~25 + anyTrust55≥2 + log≥9 + day≥31 (현자 관망)
-  if (gi >= 0 && gi <= 20 && anyTrust55 >= 1 && logCount >= 7 && stats.day >= 28) {
+  // 정상형: GI 0~20 + anyTrust55≥1 + log≥7 + day≥30
+  // 변형: GI -5~25 + anyTrust55≥2 + log≥9 + day≥32 (현자 관망)
+  if (gi >= 0 && gi <= 20 && anyTrust55 >= 1 && logCount >= 7 && stats.day >= 30) {
     return 'G';
   }
-  if (gi >= -5 && gi <= 25 && anyTrust55 >= 2 && logCount >= 9 && stats.day >= 31) {
+  if (gi >= -5 && gi <= 25 && anyTrust55 >= 2 && logCount >= 9 && stats.day >= 32) {
     return 'G';
   }
 

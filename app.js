@@ -327,7 +327,8 @@ function App(){
       else{setToastType('');setToast(tt('app.facilityPending',null,'확장 제안이 대기 목록에 추가되었습니다'));clearToastAfter(2200)}
       var nct=ct+1;setCt(nct);
       persistGame(fpStats,fpGi,act,actFlags,transRoute,cooldowns,recentCards,nct,chainQueue,fpFacility);
-      if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(fpStats,fpGi,logs));setTimeout(function(){setPhase('news')},400)}
+      if(chainQueue&&chainQueue.length>0){nextCard(fpStats,fpGi,logs,chainQueue,act,cooldowns,recentCards,transRoute,fpFacility)}
+      else if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(fpStats,fpGi,logs));setTimeout(function(){setPhase('news')},400)}
       else{nextCard(fpStats,fpGi,logs,chainQueue,act,cooldowns,recentCards,transRoute,fpFacility)}
       return;
     }
@@ -393,7 +394,9 @@ function App(){
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
     var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext,pendingBonusForSave)}
-    if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
+    // 체인 큐에 카드가 남아 있으면 DAY 종료보다 우선 처리 (서사 연속성 보장)
+    if(cq&&cq.length>0){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
+    else if(nct>=cpd){SFX.play('news');setNh(genNewsHeadlines(ns,ng,nextLogs));setTimeout(function(){setPhase('news')},400)}
     else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
     else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
     else{nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}

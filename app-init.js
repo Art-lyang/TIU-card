@@ -21,7 +21,7 @@ var introOk=function(c,logs,stats,gi){var txt=_introMsgText(c,stats,gi,logs);for
 // ═══ 세션별 변이체 체인 제한 (2종 고정) ═══
 var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
 var ACTIVE_SPECS=[];
-var ACTIVE_SPEC_COUNT=2;
+var ACTIVE_SPEC_COUNT=3;
 var normalizeActiveSpecs=function(list){var seen={},out=[];if(!Array.isArray(list))return out;for(var i=0;i<list.length;i++){var id=String(list[i]||'');if(ALL_SPEC_TAGS.indexOf(id)>=0&&!seen[id]){out.push(id);seen[id]=true}if(out.length>=ACTIVE_SPEC_COUNT)break}return out};
 var initActiveSpecs=function(){ACTIVE_SPECS=normalizeActiveSpecs(pickN(ALL_SPEC_TAGS,ACTIVE_SPEC_COUNT));try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);var normalized=normalizeActiveSpecs(parsed);if(normalized.length===ACTIVE_SPEC_COUNT){ACTIVE_SPECS=normalized;localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
@@ -71,8 +71,9 @@ var cardFlowOk=function(c,stats,gi,logs,currentAct,recent){
     if(flow.maxAct&&act>flow.maxAct)return false;
   }
   var critical=stats&&(stats.c<=35||stats.r<=25||stats.t<=25||stats.o<=25);
-  var explicit=!!(c.req||c.cond||c.transReq||c.mission||c.oracleBlock);
-  var mustRun=!!(c.transReq||c.mission||c.oracleBlock);
+  var hasMission=cardHasMission(c);
+  var explicit=!!(c.req||c.cond||c.transReq||c.mission||hasMission||c.oracleBlock);
+  var mustRun=!!(c.transReq||c.mission||hasMission||c.oracleBlock);
   if(type==='climax'){
     if(act<3)return false;
     if(act===3&&day<23)return false;
@@ -127,6 +128,8 @@ var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent,tRoute){
     if((rc[type]||0)>=2)w*=0.35;
     else if((rc[type]||0)>=1)w*=0.65;
   }
+  // 미션 트리거 카드 가중치 부스트 — 미션 경험 보장
+  if(cardHasMission(c))w*=1.6;
   if(typeof sessionDeckLineageWeight==='function'){
     try{w*=sessionDeckLineageWeight(c,stats,gi,logs,act,tRoute||'')}catch(e){}
   }
