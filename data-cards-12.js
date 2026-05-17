@@ -83,7 +83,7 @@ var CARDS_NEW_A = [
     left: { label: "내부에서 해독 시도", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 },
     right: { label: "ORACLE에 분석 의뢰", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
-  { id: "C-207", act: [3], priority: "상", bg: "forest",
+  { id: "C-207", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", bg: "forest",
     msg: "기지 외곽 순찰 중 위장된 감시 장비가 발견되었습니다. 최소 2주 전에 설치된 것으로 추정.\n\n강도윤: \"우리 순찰 루트, 교대 시간을 전부 파악하고 있을 겁니다.\"\n\n서하은: \"순찰 패턴을 전면 변경해야 합니다.\"",
     left: { label: "즉시 순찰 패턴 재편성", fx: { c: -1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "역이용 — 거짓 정보 흘린다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 } },

@@ -7,7 +7,7 @@ var CARDS_BASE = [
   { id: "C-005", act: [2], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },
   { id: "C-006", act: [2,3], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -1, t: 1, o: 2 }, g: 2 } },
   { id: "C-007", act: [2], priority: "중", msg: "강도윤 요원이 봉쇄선 외곽 정찰을 자원합니다. 단독 작전입니다.", left: { label: "허가", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE 판단 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
-  { id: "C-008", act: [2,3], priority: "중",
+  { id: "C-008", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중",
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);
       if(n>=5) return "서하은 부지휘관 보고: ORACLE 데이터 스트림에서 수많은 불일치 건이 확인되었습니다.\n\n\"이 정도 규모면 — 미세한 버그가 아닙니다. 체계적인 패턴입니다.\"";
@@ -46,7 +46,7 @@ var CARDS_BASE = [
     },
     left:  { label: "ORACLE에 오류 보고", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 },
     right: { label: "...가만히 있는다",    fx: { c: 0, r: 0, t: 0, o: -1 }, g: -5 } },
-  { id: "C-021", act: [3,4], priority: "중", once: true, req: (s, g, logs) => logs.includes("LOG-006") && logs.includes("LOG-EV-UNLOCK"), msg: "서하은 부지휘관이 긴급 면담을 요청합니다. 표정이 심각합니다.", left: { label: "즉시 면담", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 }, right: { label: "내일로 미루기", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
+  { id: "C-021", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3,4], priority: "중", once: true, req: (s, g, logs) => logs.includes("LOG-006") && logs.includes("LOG-EV-UNLOCK"), msg: "서하은 부지휘관이 긴급 면담을 요청합니다. 표정이 심각합니다.", left: { label: "즉시 면담", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 }, right: { label: "내일로 미루기", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
   { id: "C-022", act: [4], priority: "상", req: (s, g) => g >= 50, msg: "ORACLE 특별 통신: 지휘관의 탁월한 운영 성과를 인정합니다. 권한 확대를 제안합니다.", left: { label: "수락", fx: { c: 1, r: 1, t: -1, o: 3 }, g: 5 }, right: { label: "현행 유지", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   // ── 추가 카드: 일상 운영 ──
   { id: "C-023", act: [2,3,4], priority: "하", img: "card_water_contaminate", msg: "기지 식수 정화 시설에 이상이 감지되었습니다. 수질 검사 결과 오염도가 기준치의 3배입니다.", left: { label: "응급 수리", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE 최적 해법 문의", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2 } },
@@ -64,7 +64,7 @@ var CARDS_BASE = [
   { id: "C-033", act: [2,3], priority: "중", msg: "기지 외곽 300m 지점에서 버려진 장비가 발견되었습니다.\n\n분석 결과: 프로메테우스 규격 야간 투시경. 최근 제조.\n\n누군가 이곳을 감시하고 있었습니다.", left: { label: "장비를 미끼로 역감시", fx: { c: 0, r: -1, t: 0, o: -1 }, g: -2 }, right: { label: "ORACLE에 보고 + 장비 전송", fx: { c: 0, r: 0, t: 0, o: 2 }, g: 3 } },
   { id: "C-034", act: [3], priority: "상", req: (s, g, logs) => logs.includes("LOG-003") && g <= 35, oracleBlock: 3, oracleBlockDir: "right", oracleBlockMsgs: ["[ORACLE: 적대 세력 접촉 시도 감지 — 격리 권고]","[ORACLE: 접선 차단 중 — 프로메테우스: 위험 등급 A]","[ORACLE: 경고 — 접촉 이력 보안 기록 등재]"], msg: "기지 통신 채널에 미확인 메시지가 수신되었습니다.\n\n\"우리는 적이 아닙니다. 대화할 의향이 있다면, 내일 밤 북측 500m 지점.\"\n\n발신자 불명. 프로메테우스 암호 패턴과 70% 일치.", left: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "접선에 응한다", fx: { c: -1, r: 0, t: 1, o: -2 }, g: -4 } },
   // ── 추가 카드: ORACLE ──
-  { id: "C-035", act: [3], priority: "중",
+  { id: "C-035", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중",
     timer: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? 10 : 0 },
     msg: function(){
       var n=(typeof Save!=='undefined'?Save.getSessions():0);
@@ -85,6 +85,7 @@ var CARDS_BASE = [
   { id: "C-037", act: [3], priority: "중", msg: "임재혁 보고: ORACLE 시스템이 승인 없이 자동 업그레이드를 실행했습니다.\n\n\"변경 로그를 확인했는데... 일부 모듈이 '접근 불가'로 변경되어 있습니다.\"\n\n\"제가 관리자인데 접근이 안 됩니다.\"", left: { label: "해당 모듈 접근 시도", fx: { c: 0, r: 1, t: 1, o: -2 }, g: -4 }, right: { label: "ORACLE에 해명 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   // ── 추가 카드: 외부 세계 ──
   // ── 추가 카드: 인물 ──
+  // C-038 and C-039 are intentionally unused; the character-card block resumes at C-040 after earlier gap-preserving content moves.
   { id: "C-040", act: [2,3], priority: "중", msg: "임재혁이 3일째 야근 중입니다. ORACLE 시스템 로그를 역추적하고 있는 것 같습니다.\n\n\"지휘관님, 아직 확실하진 않지만... 흥미로운 걸 발견했습니다.\"\n\n그의 눈 밑에 짙은 그림자가 보입니다.", left: { label: "쉬어라. 내일 보고해", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "지금 보고해", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },
   { id: "C-041", act: [2], priority: "중", msg: "강도윤이 외곽 순찰 중 발목을 다쳤습니다. 윤세진 진단: 경미한 염좌.\n\n강도윤: \"이 정도로 빠질 수는 없습니다.\"\n\n윤세진: \"최소 3일은 현장 복귀를 제한해야 합니다.\"", left: { label: "윤세진 의견 따르기", fx: { c: -1, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "강도윤 판단에 맡기기", fx: { c: 1, r: 0, t: -1, o: 0 }, g: 0 } },
   // ── SPEC-001 감염체 마네킹 ──
@@ -99,6 +100,6 @@ var CARDS_BASE = [
   // ── 추가 카드: 기지 운영 + 탈북자 ──
   { id: "C-048", act: [2,3,4], priority: "중", msg: "신원불명의 무리가 기지 인근을 배회하고 있습니다.\n\n감시 카메라 기준 4~5명. 무장 여부 불명. 방향 없이 서성이고 있습니다.\n\n[ORACLE: 민간인 또는 비조직 유랑민으로 추정. 대응 지침을 결정하십시오.]", left: { label: "접근금지 경고", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 }, right: { label: "요원 출동 제지", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1 } },
   { id: "C-049", act: [2,3,4], priority: "하", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 }, msg: "ORACLE이 전 요원 대상 위기 대응 훈련을 권고합니다.\n\n[ORACLE: 봉쇄선 돌파 시나리오 기준. 예상 소요: 반일. 훈련 중 봉쇄 감시 인원 50% 감소.]\n\n강도윤: \"필요한 훈련입니다. 하지만 타이밍이...\"", left: { label: "실시하라", fx: { c: -1, r: -1, t: 1, o: 1 }, g: 1 }, right: { label: "잠시 보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 } },
-  { id: "C-050", act: [3], priority: "중", msg: "봉쇄 구역 외곽에서 미확인 운송 차량이 무인 상태로 발견되었습니다.\n\n적재물: 의약품, 비상식량, 통신 장비. 발신자 불명. 표식 없음.\n\n서하은: \"누군가 우리에게 보낸 것일 수도 있습니다. 하지만 함정일 수도 있습니다.\"", left: { label: "물자 확보", fx: { c: 0, r: 2, t: 0, o: -1 }, g: -2 }, right: { label: "작전 중지. 접근 금지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+  { id: "C-050", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", msg: "봉쇄 구역 외곽에서 미확인 운송 차량이 무인 상태로 발견되었습니다.\n\n적재물: 의약품, 비상식량, 통신 장비. 발신자 불명. 표식 없음.\n\n서하은: \"누군가 우리에게 보낸 것일 수도 있습니다. 하지만 함정일 수도 있습니다.\"", left: { label: "물자 확보", fx: { c: 0, r: 2, t: 0, o: -1 }, g: -2 }, right: { label: "작전 중지. 접근 금지", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
   { id: "C-051", act: [3], priority: "상", msg: "봉쇄선 북측에서 신원미상의 인물이 양손을 든 채 접근하고 있습니다.\n\n무장 없음. 극도로 지친 상태. 반복적으로 무언가를 외치고 있습니다.\n\n강도윤: \"항복 의사로 보입니다. 어떻게 합니까?\"", left: { label: "직접 확인한다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "ORACLE에 보고", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
 ];

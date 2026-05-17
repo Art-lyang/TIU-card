@@ -7,7 +7,7 @@ var CARDS_MIDGAME = [
   // ═══ 이변체 접근 이벤트 ═══
 
   { id: "C-260", act: [2,3], priority: "상", bg: "restricted", tag: "midgame-ev",
-    cond: function(s) { return s.day >= 12 && s.day <= 22 },
+    cond: function(s) { return (s.day >= 12 && s.day <= 22) && logs.indexOf('LOG-050')<0 },
     msg: "새벽 3시. 봉쇄선 3구역 센서가 동시에 반응했습니다.\n\n강도윤: \"이 패턴… EV-Σ 변이체입니다. 종류가 다릅니다. 기존 데이터에 없는 주파수예요.\"\n\n윤세진: \"표본 채취 기회입니다. 이 변종은 연구 가치가 높아요.\"\n\n서하은: \"요원들의 안전이 우선입니다. 봉쇄선을 보강하세요.\"",
     left: { label: "봉쇄선 보강 — 안전 최우선", fx: { c: 2, r: -1, t: 1, o: 0 }, g: 1 },
     right: { label: "포획 시도 — 연구 가치 우선", fx: { c: -1, r: -1, t: 0, o: 0 }, g: -1 } },
@@ -35,7 +35,7 @@ var CARDS_MIDGAME = [
   // ═══ 기지 위기 이벤트 ═══
 
   { id: "C-264", act: [2,3], priority: "상", bg: "base", tag: "midgame-crisis",
-    cond: function(s) { return s.day >= 14 && s.day <= 22 },
+    cond: function(s) { return (s.day >= 14 && s.day <= 22) && logs.indexOf('LOG-050')<0 },
     msg: "기지 발전기 3기 중 1기가 과부하로 정지했습니다. 나머지 2기로는 전체 시설 운영이 불가능합니다.\n\n임재혁: \"응급 수리에 12시간, 예비 부품이 필요합니다.\"\n\n서하은: \"B2 연구실과 B3 격리실 중 하나의 전력을 차단해야 합니다. 둘 다 유지할 전력이 없습니다.\"",
     left: { label: "B2 연구실 전력 차단 — 격리 우선", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 1 },
     right: { label: "B3 격리실 전력 차단 — 연구 우선", fx: { c: -1, r: -1, t: 0, o: 0 }, g: -1 } },
@@ -49,7 +49,7 @@ var CARDS_MIDGAME = [
   // ═══ ORACLE 개입 이벤트 ═══
 
   { id: "C-266", act: [2,3], priority: "상", bg: "oracle", tag: "midgame-oracle",
-    cond: function(s,g) { return s.day >= 12 && s.day <= 23 && g <= 5 },
+    cond: function(s,g) { return (s.day >= 12 && s.day <= 23 && g <= 5) && logs.indexOf('LOG-050')<0 },
     msg: "ORACLE 시스템에서 예상치 못한 메시지가 수신되었습니다.\n\nORACLE: 「지휘관. 최근 귀하의 판단 패턴이 예측 모델에서 이탈하고 있습니다. 재교육 프로토콜 적용을 권고합니다.\n\n거부 시 평가 지수가 조정될 수 있습니다.」\n\n서하은: \"…협박입니다. ORACLE이 당신을 통제하려 하고 있어요.\"",
     left: { label: "재교육 프로토콜 수용", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 },
     right: { label: "정중히 거절", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -3 } },
@@ -75,7 +75,7 @@ var CARDS_MIDGAME = [
     right: { label: "보고 의무 준수 — ORACLE에 보고", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2 } },
 
   { id: "C-270", act: [2,3], priority: "중", bg: "base", tag: "midgame-drama",
-    cond: function(s) { return s.day >= 16 && s.day <= 23 },
+    cond: function(s) { return (s.day >= 16 && s.day <= 23) && logs.indexOf('LOG-050')<0 },
     msg: "기지 복도에서 요원들이 모여 속삭이는 것을 목격했습니다. 당신을 보자 즉시 흩어졌습니다.\n\n서하은: \"…지휘관에 대한 불만은 아닌 것 같습니다. 그보다는 ORACLE에 대한 두려움이에요.\n\n최근 ORACLE의 요구가 점점 비합리적이 되고 있다는 걸 모두가 느끼고 있습니다.\"",
     left: { label: "전체 회의 소집 — 투명하게 논의", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 },
     right: { label: "개별 면담으로 조용히 파악", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } }

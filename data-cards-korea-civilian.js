@@ -27,7 +27,7 @@ var CARDS_KOREA_CIVILIAN = [
     right:{label:"지역 상인망을 조건부 유지",fx:{c:-1,r:1,t:1,o:-1},g:-1,log:"LOG-KR-MARKET-LOCAL"} },
 
   { id:"KC-05", act:[3], tag:"kr-school", priority:"중", once:true,
-    cond:function(s){return s.day>=16},
+    cond:function(s){return (s.day>=16) && logs.indexOf('LOG-050')<0},
     msg:"방벽 내부 학교에서 학생 한 명이 감지 게이트 재검 후 등교하지 않았다는 문의가 교육청 경로로 공유되었습니다.\n\n등교 여부와 수업 방식은 교육청과 보건당국이 결정합니다. 지부에는 위험 평가와 공개 문구 자문만 요청되었습니다.\n\n서하은: \"문구를 잘못 쓰면 감염 이력자 가족 전체가 낙인찍힙니다. 우리가 정할 건 학교 운영이 아니라, 어떤 정보를 넘길지입니다.\"",
     left:{label:"폐쇄 필요성 자료를 중립 전달",fx:{c:1,r:0,t:-1,o:1},g:1,log:"LOG-KR-SCHOOL-CLOSE"},
     right:{label:"낙인 방지 문구를 함께 제안",fx:{c:-1,r:0,t:1,o:-1},g:-1,log:"LOG-KR-SCHOOL-CONTINUE"} },
@@ -51,7 +51,7 @@ var CARDS_KOREA_CIVILIAN = [
     right:{label:"영상 회수와 동선 유지 권고",fx:{c:-1,r:0,t:1,o:-1},g:-1,log:"LOG-KR-HUB-OPEN"} },
 
   { id:"KC-08", act:[3,4], tag:"kr-registry", priority:"중", once:true,
-    cond:function(s){return s.day>=20},
+    cond:function(s){return (s.day>=20) && logs.indexOf('LOG-050')<0},
     msg:"감염 이력자 채용 차별 제보가 들어왔습니다.\n\n공개 원장에는 '의료 관찰 종료'로 표시되어 있지만, 기업 심사망에는 비공개 플래그가 남아 있습니다.\n\n서하은: \"기록은 삭제되지 않습니다. 문제는 누가 볼 수 있느냐예요.\"",
     left:{label:"비공개 플래그 접근권 축소",fx:{c:0,r:0,t:1,o:-1},g:-1,log:"LOG-KR-REGISTRY-SEAL"},
     right:{label:"위험 사업장에는 공유 유지",fx:{c:1,r:0,t:-2,o:1},g:1,log:"LOG-KR-REGISTRY-SHARE"} }

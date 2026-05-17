@@ -100,7 +100,7 @@ var CARDS_CRISIS = [
 
   // 전조 1단계: 미세한 변화
   { id: "CT-B01", act: [2,3], priority: "중", once: true,
-    cond: function(s,g,logs){ return g <= -5 && s.day >= 16 && logs.length >= 3; },
+    cond: function(s,g,logs){ return (g <= -5 && s.day >= 16 && logs.length >= 3) && logs.indexOf('LOG-050')<0; },
     msg: "서하은이 평소보다 오래 단말기 앞에 앉아 있습니다.\n\n돌아보는 눈빛이 다릅니다. 무언가를 알고 있는 사람의 눈.\n\n\"...지휘관님. 혹시 느끼고 계십니까?\"\n\"ORACLE의 판단과 현실 사이에 점점 틈이 벌어지고 있다는 거.\"",
     left: { label: "무슨 뜻이지?", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "...느끼고 있다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2 } },
@@ -121,7 +121,7 @@ var CARDS_CRISIS = [
     cond: function(s,g,logs){
       var ht=0;
       try{var t=Save.get('ts_trust',{});if((t.haeun||0)>=65)ht++;if((t.doyun||0)>=65)ht++;if((t.sejin||0)>=65)ht++;if((t.jaehyuk||0)>=65)ht++}catch(e){}
-      return g <= -13 && ht >= 2 && logs.length >= 6 && s.day >= 23;
+      return g <= -13 && ht >= 2 && logs.length >= 6 && s.day >= 23 && logs.indexOf('LOG-050')<0;
     },
     msg: "[시스템 로그 — 비정상 패턴 감지]\n\nORACLE이 당신의 최근 의사결정 패턴을 분석한 보고서를 생성했습니다.\n결론: \"비효율적 독립 판단 증가 추세.\"\n\n서하은이 조용히 말합니다.\n\"지휘관님. 우리가 알게 된 것들... 이제 모른 척할 수 없습니다.\"\n\"돌아갈 수 없는 선을 넘고 있어요. 지휘관님도, 저희도.\"",
     left: { label: "알고 있다. 각오는 되어 있다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -3 },

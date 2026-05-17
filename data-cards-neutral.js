@@ -11,7 +11,7 @@ var CARDS_NEUTRAL = [
     left: { label: "이행률을 올리겠다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 },
     right: { label: "내 방식대로 하겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 } },
 
-  { id: "CN-002", act: [3], priority: "중",
+  { id: "CN-002", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중",
     req: function(s,g){ return g >= -5 && g <= 15 && s.day >= 8; },
     msg: "서하은이 조심스럽게 물어봅니다.\n\n\"지휘관님은... ORACLE을 어떻게 생각하세요?\"\n\"순종도 반항도 아닌 것 같아서. 솔직히 읽기가 어렵습니다.\"",
     left: { label: "나도 아직 판단 중이다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: 0 },

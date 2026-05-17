@@ -252,9 +252,6 @@ window.TS_I18N.mergeUI('ko', {
     skip:'건너뛰기',
     skipConfirm:'대화를 건너뛰시겠습니까?',
     noAvailableChat:'오늘은 추가 대화 기록이 없습니다.',
-    completeNoteNoEvidence:'오늘 대화를 완료했습니다. 다음 DAY로 진행할 수 있습니다.'
-  },
-  eveningExtra:{
     completedRole:'오늘 대화 완료했습니다',
     lockedRole:'오늘은 대화 불가',
     completeNote:'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.',
@@ -309,6 +306,41 @@ window.TS_I18N.mergeUI('ko', {
     version:'버전', engine:'엔진',
     logsOpen:'LOG 열람', archiveOpen:'ARCHIVE 열람',
     archive:'아카이브'
+  },
+  statusTags:{
+    facility:{
+      c:{ safe:'봉쇄선 안정', warn:'봉쇄선 경계', danger:'봉쇄선 균열', critical:'봉쇄 붕괴 임박' },
+      r:{ safe:'보급 충분', warn:'보급 유지', danger:'보급 불안정', critical:'보급 고갈 임박' },
+      t:{ safe:'부대 결속', warn:'신뢰 유지', danger:'불만 확산', critical:'이탈 위험' },
+      o:{ safe:'ORACLE 신뢰', warn:'관찰 대상', danger:'의심 증가', critical:'교체 검토' }
+    },
+    character:{
+      trust:{ low:'경계', mid:'일반', high:'협조', bond:'신뢰' },
+      special:{
+        haeunStay:'잔류', haeunRecover:'데이터 복구 중',
+        doyunAlive:'생존', doyunWounded:'부상', doyunMinorWound:'경상',
+        sejinResearch:'연구 진행', sejinAnalysis:'분석 중',
+        jaehyeokTech:'기술 분석', weberContact:'접촉 성립', fosterInfo:'정보 제공',
+        soyoungExposed:'정체 노출', soyoungJoined:'합류'
+      }
+    },
+    situation:{
+      cDrop:'봉쇄선 이탈자가 대규모로 보고되었습니다.',
+      rDrop:'보급량이 빠르게 감소하고 있습니다.',
+      tDrop:'지부 인원 사이에 불만이 확산되고 있습니다.',
+      oDrop:'ORACLE 평가가 급격히 하락했습니다. 주의가 필요합니다.',
+      cRise:'봉쇄선 보강이 성공적으로 완료되었습니다.',
+      rRise:'주요 보급품이 도착해 자원 상태가 안정되었습니다.',
+      tRise:'인원 사기가 크게 상승했습니다.',
+      cLow:'봉쇄선이 임계치에 접근했습니다.',
+      rLow:'자원 재고가 위험 수위입니다.',
+      tLow:'인원 이탈 위험이 감지되었습니다.',
+      oLow:'ORACLE이 지휘관 교체를 검토하고 있습니다.',
+      cCritical:'봉쇄선 균열이 지속됩니다. 즉시 조치가 필요합니다.',
+      rCritical:'보급 고갈이 지속됩니다.',
+      actStable:'지부 운영이 안정적입니다. 현 정책을 유지하세요.',
+      actCrisis:'복합 위기가 진행 중입니다. 부서 간 협조가 필요합니다.'
+    }
   },
   app:{
     fallbackCardMsg:'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...',

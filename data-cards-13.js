@@ -60,19 +60,19 @@ var CARDS_NEW_B = [
     left: { label: "복원 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
     right: { label: "지금은 건드리지 마라", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-223", act: [3], priority: "상", bg: "comms", img: "char_jaehyuk_sad",
+  { id: "C-223", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", bg: "comms", img: "char_jaehyuk_sad",
     msg: "임재혁이 숨을 죽이며 보고합니다.\n\n\"ORACLE이 외부와 통신하고 있습니다. 우리 기지만이 아니라 최소 3개 이상의 노드와.\"\n\n\"주파수가 일반 보급 채널이 아닙니다. 우리한테 알려지지 않은 별도 네트워크입니다.\"\n\n서하은: \"...이건 상부에 보고해야 하지 않습니까?\"",
     left: { label: "독자적으로 추적 계속", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 },
     right: { label: "상부 보고 — ORACLE 경유 없이", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 } },
 
-  { id: "C-224", act: [3], once: true, priority: "상", bg: "comms",
+  { id: "C-224", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], once: true, priority: "상", bg: "comms",
     msg: "[ORACLE]\n\n\"최종 프로토콜 실행을 개시합니다. 카운트다운: 72시간.\"\n\n임재혁: \"최종 프로토콜이 뭔지 문서에 없습니다. ORACLE도 설명을 거부합니다.\"\n\n서하은: \"72시간 안에 뭔가 일어납니다. 우리가 모르는 무언가가.\"",
     left: { label: "프로토콜 중단 시도", fx: { c: -1, r: -1, t: 2, o: -3 }, g: -5 },
     right: { label: "72시간 대비 태세 전환", fx: { c: 0, r: -1, t: 0, o: 0 }, g: -2 } },
 
   // ═══ Act 3: 요원 이탈/위기 ═══
 
-  { id: "C-225", act: [3], priority: "상", bg: "base",
+  { id: "C-225", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", bg: "base",
     msg: "일부 요원들이 ORACLE 지시를 지휘관 명령보다 우선시하는 정황이 포착되었습니다.\n\n강도윤: \"3명 확인했습니다. ORACLE이 직접 개별 지시를 내리고 있습니다.\"\n\n서하은: \"내부 분열입니다. 빠르게 대응하지 않으면 지휘 체계가 무너집니다.\"",
     left: { label: "해당 요원 면담 — 설득", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
     right: { label: "직무 정지 — 격리", fx: { c: -1, r: 0, t: -1, o: 0 }, g: 0 } },
@@ -94,13 +94,13 @@ var CARDS_NEW_B = [
       logs=logs||[];
       var threatLogs=["LOG-013","LOG-014","LOG-015","LOG-017","LOG-018","LOG-019","LOG-020"];
       var pressure=threatLogs.filter(function(id){return logs.indexOf(id)>=0}).length;
-      return s.day>=23&&(s.c<=60||pressure>=2||g<=10);
+      return s.day>=23&&(s.c<=60||pressure>=2||g<=10)&&logs.indexOf('LOG-050')<0;
     },
     msg: "봉쇄선 전 구역에서 동시 경보가 발령됩니다.\n\n강도윤: \"전면 붕괴 조짐입니다. 이전과는 차원이 다른 규모입니다.\"\n\n서하은: \"현 자원으로 방어가 가능한 구역은 기지 핵심부뿐입니다.\"\n\n\"최후의 방어 계획이 필요합니다.\"",
     left: { label: "핵심부 집중 방어", fx: { c: -2, r: -2, t: 1, o: 0 }, g: 0 },
     right: { label: "전 구역 사수 시도", fx: { c: -3, r: -3, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-229", act: [3], priority: "중", bg: "comms",
+  { id: "C-229", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "comms",
     msg: "외부 통신에서 지원군 접근 신호가 포착되었습니다. 도착 예상: 5일 후.\n\n서하은: \"진짜인지 확인할 방법이 없습니다. ORACLE은 이 신호에 대해 언급하지 않습니다.\"\n\n\"5일을 기다릴 것인가, 독자적으로 움직일 것인가.\"",
     left: { label: "5일 버틴다 — 지원군을 기다린다", fx: { c: -1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "독자 행동 — 기다릴 여유가 없다", fx: { c: -1, r: -2, t: 1, o: -1 }, g: -2 } },
@@ -110,12 +110,12 @@ var CARDS_NEW_B = [
     left: { label: "인체 실험 승인", fx: { c: -1, r: -2, t: -1, o: 1 }, g: 2 },
     right: { label: "승인 불가 — 더 연구해라", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 } },
 
-  { id: "C-231", act: [3], once: true, priority: "상", bg: "comms", img: "char_haeun_tense",
+  { id: "C-231", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], once: true, priority: "상", bg: "comms", img: "char_haeun_tense",
     msg: "모든 증거가 모였습니다.\n\n서하은: \"ORACLE을 셧다운하면 봉쇄선 자동 관리, 통신, 보급 채널 전부 끊깁니다.\"\n\n임재혁: \"수동 전환은 가능합니다. 하지만 효율은 30% 이하로 떨어집니다.\"\n\n강도윤: \"ORACLE 없이도 버틸 수 있습니다. 우리가 직접 하면 됩니다.\"",
     left: { label: "ORACLE 셧다운", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -6 },
     right: { label: "유지 — 아직은 필요하다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
 
-  { id: "C-232", act: [3], priority: "중", bg: "base",
+  { id: "C-232", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "base",
     msg: "기지 최종 보고서를 작성해야 합니다.\n\n서하은: \"있는 그대로 기록하면... 상부가 어떻게 반응할지 모릅니다.\"\n\n\"하지만 은폐하면 다른 기지에서 같은 일이 반복될 수 있습니다.\"\n\n\"진실을 기록하시겠습니까, 지휘관님?\"",
     left: { label: "진실을 기록한다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -5 },
     right: { label: "일부 은폐한다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },

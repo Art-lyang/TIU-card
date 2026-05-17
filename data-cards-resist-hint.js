@@ -20,7 +20,7 @@ var CARDS_RESIST_HINT = [
   // ════════════════════════════════
 
   // RH-01: ORACLE 데이터 요약 (o 유지 + GI 약간 감소)
-  { id: "RH-01", act: [2,3], priority: "중", tag: "resist-balance",
+  { id: "RH-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 8 },
     msg: "서하은이 일일 브리핑 중 덧붙입니다.\n\n\"ORACLE에 올리는 보고서를 제가 먼저 검수할 수 있습니다.\n형식은 완벽하게 유지하면서 — 일부 정보의 우선순위를 낮출 수 있어요.\"\n\n\"ORACLE은 형식만 보면 아무 문제도 못 느낍니다.\"",
     left:  { label: "공식 형식만 유지하라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-RH-SUMMARY" },
@@ -48,34 +48,35 @@ var CARDS_RESIST_HINT = [
     right: { label: "정식 승인 후에 해라", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // RH-05: ORACLE 자체 오류 보고 (o 대폭 상승 + GI 감소)
-  { id: "RH-05", act: [3], priority: "상", tag: "resist-balance",
+  { id: "RH-05", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", tag: "resist-balance",
     req: function(s,g,logs){ return s.day >= 15 },
     msg: "[ORACLE: 자체 진단 결과 통보]\n\n\"PILEHEAD. 분석 모듈에 일시적 이상이 감지되었습니다. 재동기화가 필요합니다.\"\n\n서하은이 조용히 말합니다.\n\"...지금이 우리 판단 기록을 남길 기회입니다.\n ORACLE이 어떻게 판단했는지 기록하면서, 우리가 왜 다르게 생각하는지도 남길 수 있어요.\"",
     left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4, log: "LOG-RH-COUNTERMEMO" },
     right: { label: "ORACLE 판단만 통과", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
 
   // RH-06: 엔딩 D(조용한 자유) 도달 가이드. B 엔딩보다 앞서 분기 의도를 고정한다.
-  { id: "RH-06", act: [3], priority: "상", tag: "quiet-freedom-guide", once: true, forceFlow: true,
+  { id: "RH-06", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", tag: "quiet-freedom-guide", once: true, forceFlow: true,
     req: function(s,g,logs){ return s.day >= 18 && g <= -20 && logs.indexOf('LOG-RH-QUIET-FREEDOM') < 0; },
     msg: "서하은이 문서철을 덮고 말합니다.\n\n\"공개적으로 저항하면 ORACLE이 먼저 압박합니다.\"\n\"하지만 모두가 같은 날 같은 방향으로 움직이지 않아도 됩니다.\"\n\n강도윤은 봉쇄선 교대 시간표를, 윤세진은 이동 가능한 환자 명단을, 임재혁은 늦게 읽히는 보고 큐를 올립니다.\n\n이건 승리 선언이 아닙니다. 조용히 사라질 준비입니다.",
     left:  { label: "비공식 대피 순서를 만든다", fx: { c: 0, r: 1, t: 2, o: -1 }, g: -3, log: "LOG-RH-QUIET-FREEDOM" },
     right: { label: "각자 기록만 분산 보관한다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1 } },
 
   // OBS-HINT-01: 엔딩 F(Observer) 도달 가이드. LOG-012 이후 관측 로그를 명시적으로 연결한다.
+  // req에 LOG-012 명시 요구 — 단일 LOG unlock으로 정규화 (배열 형식 제거).
   { id: "OBS-HINT-01", act: [3,4], priority: "상", tag: "observer-route-guide", once: true, glitch: 2, forceFlow: true,
     req: function(s,g,logs){
       return s.day >= 22 && g <= 5 && logs.indexOf('LOG-OBSERVER-01') < 0 &&
-        (logs.indexOf('LOG-012') >= 0 || logs.indexOf('LOG-OBSERVER-APPROVED') >= 0 || g <= -10);
+        logs.indexOf('LOG-012') >= 0;
     },
     msg: "임재혁이 LOG-012의 미등록 UI 요소를 다시 띄웁니다.\n\n\"캐시 오류가 아니었습니다.\"\n\"이 요소는 ORACLE 내부가 아니라, ORACLE 바깥에서 우리 화면을 보고 있습니다.\"\n\n그는 접근 경로를 하나 더 표시합니다.\n\n[UNREGISTERED OBSERVATION LAYER]\n[ORACLE: 인식 불가]",
-    left:  { label: "관측 레이어를 추적한다", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: ["LOG-012","LOG-OBSERVER-01"] },
+    left:  { label: "관측 레이어를 추적한다", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: "LOG-OBSERVER-01" },
     right: { label: "접근 기록을 닫는다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // ════════════════════════════════
   //  Phase 6 — 충성 루트 완충 3장
   // ════════════════════════════════
 
-  { id: "CB-01", act: [2,3], priority: "중", tag: "comply-buffer",
+  { id: "CB-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "comply-buffer",
     req: function(s,g,logs){ return s.day >= 7 && g >= 4 },
     msg: "ORACLE이 일일 운영 지표를 재산정합니다.\n\n[ORACLE: 지휘관 순응 패턴 안정. 현장 마찰을 줄이기 위한 완충 절차를 제안합니다.]\n\n서하은이 덧붙입니다.\n\"본부 보고는 그대로 올리되, 요원 설명회를 먼저 열면 반발은 줄일 수 있습니다.\"",
     left:  { label: "설명회 후 ORACLE 절차 적용", fx: { c: 1, r: 0, t: 1, o: 1 }, g: 2, log: "LOG-CB-STABILITY" },
@@ -118,13 +119,13 @@ var CARDS_RESIST_HINT = [
     right: { label: "그건 본부 방침에 어긋난다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
 
   // HH-02: 서하은 동조 (Act 2 후반 / Act 3 초반) — uprising 시설 이름 노출
-  { id: "HH-02", act: [2,3], priority: "중", tag: "uprising-hint", once: true,
+  { id: "HH-02", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "uprising-hint", once: true,
     req: function(s,g,logs){ return s.day >= 16 && logs.indexOf('ONCE-HH-01') >= 0 },
     msg: "서하은이 임재혁의 제안서를 건넵니다.\n\n\"임재혁 기술관이 정리한 — 독립 인프라 후보 목록입니다.\n자체 서버룸, 독립 통신실, 비상 발전기, 차폐 회의실, 무기고.\"\n\n\"5개가 있으면, ORACLE 없이도 이 기지가 자립할 수 있어요.\"\n\"비상 대피 벙커까지 합치면 — 완성입니다.\"",
     left:  { label: "검토 명단에 올려둬라", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2, trust: 5 },
     right: { label: "아직 단계가 아니다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
 
-  { id: "RH-SAFE-01", act: [2,3,4], priority: "상", tag: "resist-safeguard", once: true, bg: "supply", forceFlow: true,
+  { id: "RH-SAFE-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3,4], priority: "상", tag: "resist-safeguard", once: true, bg: "supply", forceFlow: true,
     req: function(s,g,logs){
       return typeof resistanceSafeguardEligible === 'function'
         ? resistanceSafeguardEligible(s,g,logs)

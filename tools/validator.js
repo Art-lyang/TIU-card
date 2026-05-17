@@ -180,7 +180,7 @@ const CARD_ID_FORMAT_RULES = [
   /^CA\d+-(CH|CR|DV|EX|FL|HZ|OR)-\d{2}$/,
   /^CA\d+-(ESCAPE-OFFER|VOSS-STANDBY)$/,
   /^A[234]-(B3-LINE|EVIDENCE-RELIEF|FORESHADOW|STAFF-REVIEW|SUPPORT-DG|SUPPORT-MD|SUPPORT-PROM|TRIAGE)-\d{2}$/,
-  /^(CE|CS|CT)-\d{3}B?$/,
+  /^(CE|CS|CT)-\d{3}[BCD]?$/,
   /^CT-[BCOT]\d{2}$/,
   /^(CB|CN|CR|DG|HH|KC|MD|MS|RH)-\d{2,3}$/,
   /^FP-FE-\d{3}$/,

@@ -36,7 +36,6 @@ function boot(locale) {
   const ctx = createSandbox(locale);
   runFile(ctx, 'i18n-runtime.js');
   runFile(ctx, 'lang-ui-ko.js');
-  runFile(ctx, 'lang-ui-ko-hotfix.js');
   runFile(ctx, 'lang-ui-en.js');
   runFile(ctx, 'lang-content-en-all.js');
   runFile(ctx, 'lang-evidence-hidden-en.js');

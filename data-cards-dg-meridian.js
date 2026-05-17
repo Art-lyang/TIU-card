@@ -19,7 +19,7 @@ var CARDS_DG_MERIDIAN = [
   // DG-02 — 거래 1차
   // req consumes LOG-DG-CONTACT, produced by app-logic when DG-01 opens the contact line.
   { id: "DG-02", act: [3], priority: "중", bg: "base",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DG-DEAL')<0 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DG-DEAL')<0) && logs.indexOf('LOG-050')<0 },
     msg: "DG 측 제안. 봉쇄선 노후 센서 12기를 무상 교체해주겠다는 안건.\n\n조건은 단 하나 — 교체 작업 중 수집되는 봉쇄선 인근 EV-Σ 활동 데이터의 사본을 DG 연구부에 제공.\n\n서하은: \"센서 노후는 사실입니다. 본부 보급은 빨라야 두 달 뒤예요.\"\n\n... 그러나 데이터를 외부에 흘리는 건 별개의 문제입니다.",
     left: { label: "수락 — 데이터 사본 제공", fx: { c: 2, r: 1, t: -2, o: -3 }, g: -4 },
     right: { label: "거절 — 본부 보급 대기", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 2 } },
@@ -44,7 +44,7 @@ var CARDS_DG_MERIDIAN = [
 
   // MD-01 — 첫 접촉
   { id: "MD-01", act: [3], priority: "상", bg: "comms",
-    cond: function(s,g,logs){ return s.day>=16 && logs.indexOf('LOG-MD-CONTACT')<0 },
+    cond: function(s,g,logs){ return (s.day>=16 && logs.indexOf('LOG-MD-CONTACT')<0) && logs.indexOf('LOG-050')<0 },
     msg: "외교부 비공식 라인을 통해 들어온 메시지.\n\n\"메리디안 BioAsset Division. 한국 시장 진입 심의에서 거부된 기관입니다.\"\n\n발신 내용: \"귀 기관의 봉쇄 관련 데이터에 접근할 방법이 없습니다. 그래서 봉쇄선 근처 인디펜던트 관측소를 운영해왔습니다. 당신과 데이터 교환을 제안합니다.\"\n\n서하은: \"...외부 독립 관측 데이터는 사실 우리한테도 가치가 큽니다.\"",
     left: { label: "교환 채널을 연다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
     right: { label: "발신지를 차단한다", fx: { c: 1, r: 0, t: -1, o: 2 }, g: 2 } },
@@ -104,7 +104,7 @@ var CARDS_DG_MERIDIAN = [
 
   // CA23-DV-01 — 서하은 vs 임재혁 (DG 데이터 사본 건)
   { id: "CA23-DV-01", act: [3], priority: "중", bg: "base",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DV-01-MED')<0 && s.day>=17 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-CONTACT')>=0 && logs.indexOf('LOG-DV-01-MED')<0 && s.day>=17) && logs.indexOf('LOG-050')<0 },
     msg: "회의실. 서하은과 임재혁이 마주 앉아 있습니다.\n\n임재혁: \"DG가 보내는 펌웨어 패치, 안 받으면 다음 달부터 통신 효율이 30% 떨어집니다.\"\n\n서하은: \"받으면 우리 통신이 DG 백본을 무조건 한 번 거치게 됩니다. 그게 어떤 의미인지 알면서.\"\n\n... 둘 다 옳습니다. 한쪽을 누르면 다른 쪽이 깨집니다.",
     left: { label: "둘 다 부르고 절충안을 만든다", fx: { c: 0, r: -1, t: 2, o: 0 }, g: -1 },
     right: { label: "임재혁 손을 들어준다 — 패치 수용", fx: { c: 1, r: 0, t: -1, o: 0 }, g: -1 } },
@@ -126,7 +126,7 @@ var CARDS_DG_MERIDIAN = [
 
   // CA23-DV-04 — 서하은 vs 윤세진 (DG 거래 확장 건)
   { id: "CA23-DV-04", act: [3,4], priority: "상", bg: "restricted",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-DV-04-MED')<0 && s.day>=22 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-DV-04-MED')<0 && s.day>=22) && logs.indexOf('LOG-050')<0 },
     msg: "윤세진이 서하은의 책상 앞에 서 있습니다.\n\n윤세진: \"DG 바이오부서가 변종 대응형 EV-Σ Phase 0 억제제 임상에 우리 환자 검체를 요청했어요. 통과하면 한국의 초기 감염자가 먼저 혜택을 봅니다.\"\n\n서하은: \"검체 한 번 흘러나가면 회수 못 합니다. DG가 이 데이터로 뭘 할지 우리는 모릅니다.\"\n\n둘 다 한국을 위한다고 말하고 있습니다.",
     left: { label: "조건부 검체 — 양측 합의문 작성", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 },
     right: { label: "서하은 의견 채택 — 검체 거부", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
@@ -138,7 +138,7 @@ var CARDS_DG_MERIDIAN = [
 
   // CH-DG-04-L-2 — DG 역사 자료를 더 깊게 파고드는 후속
   { id: "CH-DG-04-L-2", act: [3,4], priority: "상", bg: "restricted",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-HISTORY')>=0 && logs.indexOf('LOG-DG-HISTORY-DEEP')<0 && s.day>=22 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-HISTORY')>=0 && logs.indexOf('LOG-DG-HISTORY-DEEP')<0 && s.day>=22) && logs.indexOf('LOG-050')<0 },
     msg: "DG가 보낸 자료에 본문 외 부록이 첨부돼 있었습니다.\n\n암호화된 회의록 사본 — 1998년, 2009년, 2018년. 한국 안보·보건 정책 결정 회의에 DG 임원이 비공식 참석한 기록입니다.\n\n임재혁: \"...이건 기록되면 안 되는 자료입니다. 우리한테 보낸 이유가 뭘까요?\"\n\n서하은: \"카드를 까보이는 겁니다. 우리도 같이 카드를 까라는 신호.\"",
     left: { label: "전부 해독해 보존한다", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -5 },
     right: { label: "원본 폐기 후 보고 누락", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
@@ -152,7 +152,7 @@ var CARDS_DG_MERIDIAN = [
 
   // CH-SUP-DG-1-R-2 — DG 거래 장부의 일부가 흘러나옴
   { id: "CH-SUP-DG-1-R-2", act: [3,4], priority: "상", bg: "restricted",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-SUPPLY-DG')>=0 && logs.indexOf('LOG-DG-LEDGER')<0 && s.day>=26 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-SUPPLY-DG')>=0 && logs.indexOf('LOG-DG-LEDGER')<0 && s.day>=26) && logs.indexOf('LOG-050')<0 },
     msg: "지난번 DG 보급 화물에 종이 한 장이 잘못 끼어 있었습니다.\n\n출고 장부 발췌. 우리 기지 외에도 7개 처에 동일 시기 동일 수량 보급이 나갔습니다.\n\n수신처 중 셋이 — 외부에 알려진 적 없는 비공식 시설 코드입니다.\n\n서하은: \"DG는 한국 안에서 우리가 모르는 시설들에 같이 물자를 대고 있어요.\"",
     left: { label: "장부를 본격 분석한다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
     right: { label: "단순 실수로 처리, 폐기", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
@@ -166,21 +166,21 @@ var CARDS_DG_MERIDIAN = [
 
   // CH-DG-WARN-R-1 — DG가 ORACLE 감사를 빌미로 압박
   { id: "CH-DG-WARN-R-1", act: [3,4], priority: "상", bg: "base",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-AUDIT-COMPLY')<0 && s.day>=24 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-AUDIT-COMPLY')<0 && s.day>=24) && logs.indexOf('LOG-050')<0 },
     msg: "DG 대외협력실로부터 정중한 통보.\n\n\"본사가 강원지부 운영 자료에 대한 자체 감사를 진행할 예정입니다. 일부 자료 열람을 협조해주십시오. 거부하셔도 됩니다 — 다만 다음 거래 단가에 반영됩니다.\"\n\n서하은: \"...자체 감사? 우리 기지에 대한? 권한 어디서 나온 겁니까.\"\n\n임재혁: \"근거는 없습니다. 그러나 거부하면 다음 보급이 끊깁니다.\"",
     left: { label: "감사에 협조한다 — 자료 일부 제공", fx: { c: 0, r: 1, t: -1, o: -2 }, g: -3 },
     right: { label: "감사를 거부한다", fx: { c: 0, r: -2, t: 1, o: 1 }, g: 2 } },
 
   // CH-MD-04-R-1 — 메리디안의 비공식 무상 보류 제안 (MD-04 우 선택 후)
   { id: "CH-MD-04-R-1", act: [3,4], priority: "상", bg: "comms",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-MD-INTEL')>=0 && logs.indexOf('LOG-MD-BACKCHANNEL')<0 && logs.indexOf('LOG-DG-VS-MD')<0 && s.day>=24 && s.day<=27 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-MD-INTEL')>=0 && logs.indexOf('LOG-MD-BACKCHANNEL')<0 && logs.indexOf('LOG-DG-VS-MD')<0 && s.day>=24 && s.day<=27) && logs.indexOf('LOG-050')<0 },
     msg: "메리디안 측에서 비공식 채널로 짧은 메시지가 왔습니다.\n\n\"DG가 본부에 자체 감사 명목으로 압박을 시작했다는 정보를 받았습니다. 강요받지 마십시오.\n\n저희는 지금 거래를 요구하지 않습니다. 다만 — 필요할 때 우리 위성 자산을 한 차례 무상으로 사용하실 수 있도록 비축해두겠습니다. 회신은 자유입니다.\"\n\n임재혁: \"무상이라니요. 그럴 리가 없을 텐데요.\"\n\n서하은: \"...정말 무상은 아닐 겁니다. 채권을 빌려두는 거예요. 받는 순간부터.\"",
     left: { label: "보류 라인을 받아둔다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
     right: { label: "응답하지 않는다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // CH-DG-WARN-R-2 — DG 보복 본격화, 외부 동맹 제안 (CH-DG-WARN-R-1 우 선택 후)
   { id: "CH-DG-WARN-R-2", act: [4], priority: "상", bg: "base",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-AUDIT-COMPLY')<0 && logs.indexOf('LOG-AUDIT-ALLY')<0 && s.day>=28 },
+    cond: function(s,g,logs){ return (logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-AUDIT-COMPLY')<0 && logs.indexOf('LOG-AUDIT-ALLY')<0 && s.day>=28) && logs.indexOf('LOG-050')<0 },
     msg: "DG의 다음 보복이 시작됐습니다.\n\n월간 보급 송출이 \"공정 점검\" 명목으로 18일 지연. 동시에 익명 언론에 강원지부 운영 의혹 풍문 노출. 출처는 명확합니다.\n\n그때 — 본부 외부 채널로 짧은 연락. 정부 시설관리국 산하 감사독립위원회. 비공식 동맹 제안.\n\n\"DG의 자체 감사 권한은 법적 근거가 없습니다. 저희가 공식 감사 요청을 발의하면 DG는 즉시 물러납니다. 다만 — 동맹이 형성된 이후로는 저희도 강원지부 운영 일부를 정기 검토합니다.\"\n\n서하은: \"...DG에서 정부 감사로 종속이 옮겨가는 것뿐입니다.\"\n\n강도윤: \"적어도 정부는 봉쇄 임무를 인정하고 있는 쪽입니다.\"",
     left: { label: "감사독립위와 동맹을 공식화", fx: { c: 1, r: 1, t: 0, o: -1 }, g: -2 },
     right: { label: "단독으로 버틴다", fx: { c: -1, r: -2, t: 1, o: 1 }, g: 1 } },

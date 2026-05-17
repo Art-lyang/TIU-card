@@ -452,16 +452,16 @@ function EveningChat2(p){
       h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),
       h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'You can speak with one senior officer.')),
-      !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'12px auto 16px',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,tt('eveningExtra.proceedNextDay',null,'다음 DAY 진행')):tt('evening.skip',null,'SKIP'))+' ]'),
+      !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'12px auto 16px',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,'다음 DAY 진행'):tt('evening.skip',null,'SKIP'))+' ]'),
       h(FactionRelationPanel,{logs:p.logs,gi:p.gi}),
       h('div',{className:'evening-select-grid'},
         available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=isEveningContactDisabled(c);return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
           h('span',{className:'evening-contact-index'},'0'+(idx+1)),
           portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
           h('div',{className:'evening-contact-name'},localizeCharName(c)),
-          h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,tt('eveningExtra.completedRole',null,'오늘 대화 완료했습니다')):(locked?tt('evening.lockedRole',null,tt('eveningExtra.lockedRole',null,'오늘은 대화 불가')):localizeCharRole(c))))})),
+          h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,'오늘 대화 완료했습니다'):(locked?tt('evening.lockedRole',null,'오늘은 대화 불가'):localizeCharRole(c))))})),
       (evidenceUnlocked&&typeof EvidenceTable==='function')&&h(EvidenceTable,{logs:p.logs,unlocked:true,onTrust:p.onTrustMod,onGi:p.onGiMod,onLog:p.onLog}),
-      Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},evidenceUnlocked?tt('evening.completeNote',null,tt('eveningExtra.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.')):tt('evening.completeNoteNoEvidence',null,tt('eveningExtra.completeNoteNoEvidence',null,'오늘 대화를 완료했습니다. 다음 DAY로 진행할 수 있습니다.')))),
+      Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},evidenceUnlocked?tt('evening.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'):tt('evening.completeNoteNoEvidence',null,'오늘 대화를 완료했습니다. 다음 DAY로 진행할 수 있습니다.'))),
     showSkipConfirm&&h('div',{style:{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,.5)',zIndex:9998},onClick:function(){setShowSkipConfirm(false)}}),
     showSkipConfirm&&h('div',{style:{position:'fixed',top:60,left:'50%',transform:'translateX(-50%)',zIndex:9999,maxWidth:320,width:'90%',border:'1px solid rgba(var(--ui-rgb),.25)',background:'rgba(3,7,8,.98)',borderRadius:4,padding:'16px 20px',textAlign:'center',boxShadow:'0 4px 24px rgba(0,0,0,.6)'}},
       h('div',{style:{fontSize:13,color:'var(--ui-text)',lineHeight:1.6,marginBottom:14}},tt('evening.skipConfirm',null,'Skip tonight\'s conversation?')),
@@ -482,5 +482,5 @@ function EveningChat2(p){
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText))),
     done&&!choiceDone&&resp&&h('div',{className:'dialogue-choices'},
       [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,className:'dialogue-choice-btn',style:{border:'1px solid '+bdrCol},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
-    (noChat||done)&&(!resp||choiceDone)&&h('div',{className:'dialogue-choices'},h('button',{className:'btn btn-amber',style:{display:'block',margin:'4px auto 0',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,tt('eveningExtra.returnToEvening',null,'이브닝 화면으로 돌아가기'))+' ]')));
+    (noChat||done)&&(!resp||choiceDone)&&h('div',{className:'dialogue-choices'},h('button',{className:'btn btn-amber',style:{display:'block',margin:'4px auto 0',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,'이브닝 화면으로 돌아가기')+' ]')));
 }

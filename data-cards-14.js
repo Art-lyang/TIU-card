@@ -5,7 +5,7 @@ var CARDS_ACT3 = [
 
   // ═══ Act 3: 기지 일상 — 위기 속 일상 ═══
 
-  { id: "C-233", act: [3], priority: "하", bg: "base",
+  { id: "C-233", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "하", bg: "base",
     msg: "야간 교대 중 요원 2명이 말다툼을 벌였습니다. 수면 부족과 긴장이 원인입니다.\n\n강도윤: \"사기가 바닥입니다. 처벌보다는 환기가 필요합니다.\"\n\n서하은: \"하지만 규율이 무너지면 통제를 잃습니다.\"",
     left: { label: "면담 후 경고 — 규율 유지", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 },
     right: { label: "하루 휴식 부여 — 환기 우선", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
@@ -22,17 +22,17 @@ var CARDS_ACT3 = [
 
   // ═══ Act 3: 외부 압박 — 고립 속 연결 ═══
 
-  { id: "C-236", act: [3], priority: "중", bg: "comms",
+  { id: "C-236", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "comms",
     msg: "White Shield 암호 채널에서 긴급 경고가 수신되었습니다.\n\n\"한국 내 특정 군사 시설에서 ORACLE의 비인가 접속 노드가 탐지됐다. 해당 지점을 경유한 내부망 정보 유출 정황 포착.\"\n\n임재혁: \"...White Shield가 ORACLE의 한국 내부망 침투를 눈치챈 겁니다.\"\n\n서하은: \"우리 기지가 의심 대상에 포함될 수 있습니다. White Shield가 우리를 적으로 볼 수 있어요.\"",
     left: { label: "White Shield에 협력 제안", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
     right: { label: "묵살 — 개입은 위험하다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-237", act: [3], priority: "중", bg: "comms",
+  { id: "C-237", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "comms",
     msg: "인접 기지에서 긴급 구조 요청이 수신되었습니다. 통신 상태가 불안정합니다.\n\n\"...봉쇄선 붕괴... 요원 3명 부상... 지원 요청...\"\n\n강도윤: \"왕복 8시간입니다. 우리 인원을 빼면 여기가 비게 됩니다.\"\n\n서하은: \"하지만 무시하면 그쪽 기지가 무너질 수 있습니다.\"",
     left: { label: "소규모 지원팀 파견", fx: { c: -1, r: -1, t: 1, o: 0 }, g: 0 },
     right: { label: "지원 불가 통보 — 자체 방어 우선", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-238", act: [3], priority: "중", bg: "comms",
+  { id: "C-238", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "comms",
     msg: "임재혁이 ORACLE 외부 통신 채널을 감청하던 중 암호화되지 않은 교신을 포착했습니다.\n\n\"...all stations, this is ARES Pacific Command... containment failure in Sector 7... requesting any available...\"\n\n임재혁: \"미군 ARES 통신입니다. 태평양 구역이 뚫린 것 같습니다. ORACLE은 이 정보를 우리에게 전달하지 않았습니다.\"\n\n서하은: \"ARES도 ORACLE과는 별개 조직입니다. 이 교신이 감지되면 우리가 도청한 걸로 간주될 수 있습니다.\"",
     left: { label: "감청 기록 보존 — 정보가 무기다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
     right: { label: "즉시 삭제 — 발각 위험", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
@@ -54,13 +54,13 @@ var CARDS_ACT3 = [
   // ═══ Act 3: 프로메테우스 접촉 ═══
 
   { id: "C-241", act: [3], priority: "상", bg: "forest",
-    cond: function(s,g,logs){ return logs.includes("LOG-016") },
+    cond: function(s,g,logs){ return (logs.includes("LOG-016")) && logs.indexOf('LOG-050')<0 },
     msg: "봉쇄선 외곽 감시 카메라에 의도적으로 촬영된 듯한 영상이 기록되었습니다.\n\n전술 장비를 착용한 인물이 카메라를 향해 천천히 손을 듭니다. 위협이 아닌 대화 요청.\n\n강도윤: \"프로메테우스입니다. 접촉을 시도하고 있습니다.\"\n\n서하은: \"ORACLE은 절대 허가하지 않을 겁니다.\"",
     left: { label: "비공식 접촉 허가", fx: { c: -1, r: 0, t: 1, o: -3 }, g: -4 },
     right: { label: "무시 — ORACLE 지침 준수", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   { id: "C-242", act: [3], priority: "중", bg: "restricted",
-    cond: function(s,g,logs){ return logs.includes("LOG-016") },
+    cond: function(s,g,logs){ return (logs.includes("LOG-016")) && logs.indexOf('LOG-050')<0 },
     msg: "기지 외곽에서 소형 방수 케이스가 발견되었습니다. 내부에 USB 드라이브와 메모가 있습니다.\n\n메모: '당신들이 ORACLE에 대해 알아야 할 것들. — P'\n\n임재혁: \"프로메테우스에서 온 것 같습니다. 열어볼까요?\"\n\n서하은: \"바이러스일 수도 있습니다. 격리된 단말기에서만 열어야 합니다.\"",
     left: { label: "격리 단말기에서 확인", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3 },
     right: { label: "폐기 — 위험을 감수할 수 없다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
@@ -72,14 +72,14 @@ var CARDS_ACT3 = [
     left: { label: "유인제 제작 — 과학적 대응", fx: { c: 0, r: -2, t: 1, o: 0 }, g: 0 },
     right: { label: "방어 진지 구축 — 전통적 대응", fx: { c: -1, r: -1, t: 0, o: 0 }, g: 0 } },
 
-  { id: "C-244", act: [3], priority: "중", bg: "forest",
+  { id: "C-244", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "forest",
     msg: "순찰 중 봉쇄선 철조망 일부가 내부에서 절단된 흔적이 발견되었습니다.\n\n강도윤: \"외부 침입이 아닙니다. 안에서 밖으로 나간 겁니다.\"\n\n서하은: \"...누군가 기지에서 이탈했다는 뜻입니까?\"",
     left: { label: "인원 점호 — 이탈자 확인", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 },
     right: { label: "절단 구간 복구 우선", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
 
   // ═══ Act 3: 사기/인간적 순간 ═══
 
-  { id: "C-245", act: [3], priority: "하", bg: "base",
+  { id: "C-245", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "하", bg: "base",
     msg: "윤세진이 연구실에서 나오지 않습니다. 36시간째 식사를 거르고 있습니다.\n\n임재혁: \"억제제 연구에 매달리고 있습니다. 자기가 해내지 않으면 안 된다는 듯이.\"\n\n서하은: \"쓰러지면 연구도 끝입니다.\"",
     left: { label: "연구실에 가서 직접 쉬게 한다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "식사만 보내고 판단을 맡긴다", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 } },
@@ -89,7 +89,7 @@ var CARDS_ACT3 = [
     left: { label: "ORACLE 권고 무시 — 내버려둔다", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -1 },
     right: { label: "적당한 선에서 해산시킨다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
-  { id: "C-247", act: [3], priority: "중", bg: "comms",
+  { id: "C-247", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "comms",
     msg: "서하은이 개인적으로 찾아옵니다.\n\n\"지휘관님, 한 가지만 여쭤봐도 될까요.\"\n\n\"이 모든 게 끝나면... 우리는 어떻게 되는 건가요?\"\n\n\"ORACLE 없이, 상부의 지원 없이. 그냥 우리만 남으면.\"\n\n\"...그래도 괜찮은 건가요?\"",
     left: { label: "우리는 해낼 수 있다", fx: { c: 0, r: 0, t: 2, o: 0 }, g: 0 },
     right: { label: "솔직히 모르겠다. 하지만 포기는 없다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
