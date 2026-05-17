@@ -13,6 +13,7 @@
 //  9) once 플래그 선언했으나 ONCE- 로그로 추적 안 하는 카드
 // 10) 생산되는 LOG가 ORACLE_LOGS에 정의되어 있는지
 // 11) 카드 ID가 문서화된 패밀리/접두사 규칙 안에 있는지
+// 12) ESCAPE_NODES choice.to 가 실제 노드 또는 'ENDING' 인지 (Act4 엔딩 분기)
 
 const fs = require('fs');
 const path = require('path');
@@ -56,6 +57,8 @@ const DATA_FILES = [
   'data-logs-integrity.js',
   'data-endings.js',
   'data-act4-escape.js',
+  'data-escape-nodes.js',
+  'data-escape-nodes-2.js',
   'data-achievements.js',
   'data-evidence.js',
   'data-facility.js',
@@ -151,6 +154,7 @@ const issues = {
   onceWithoutLog: [],
   sessionDeckActLeaks: [],
   nonstandardCardIds: [],
+  escapeNodeRefs: [],
 };
 
 // === 1) 카드 ID 중복 ===
@@ -445,6 +449,32 @@ if (typeof sandbox.getCardSessionDeckPack === 'function' && Array.isArray(sandbo
   }
 }
 
+// === 11) ESCAPE_NODES choice.to 참조 유효성 ===
+// Act4 탈출 분기는 ESCAPE_NODES 그래프를 따라 진행된다. 각 choice.to 는
+// 같은 객체의 다른 노드 키이거나 종결 토큰 'ENDING' 이어야 한다.
+// 'start' 키는 진입 노드 ID를 가리키는 문자열.
+const ESCAPE_NODES = sandbox.ESCAPE_NODES || {};
+const ESCAPE_NODE_KEYS = new Set(
+  Object.keys(ESCAPE_NODES).filter(k => ESCAPE_NODES[k] && typeof ESCAPE_NODES[k] === 'object')
+);
+if (typeof ESCAPE_NODES.start === 'string' && !ESCAPE_NODE_KEYS.has(ESCAPE_NODES.start)) {
+  issues.escapeNodeRefs.push({ node: '(start)', choiceIdx: -1, to: ESCAPE_NODES.start, reason: 'start node missing' });
+}
+for (const [nodeId, node] of Object.entries(ESCAPE_NODES)) {
+  if (!node || typeof node !== 'object') continue;
+  if (!Array.isArray(node.choices)) continue;
+  node.choices.forEach((ch, idx) => {
+    if (!ch || typeof ch.to !== 'string' || !ch.to) {
+      issues.escapeNodeRefs.push({ node: nodeId, choiceIdx: idx, to: '(empty)', reason: 'missing to' });
+      return;
+    }
+    if (ch.to === 'ENDING') return;
+    if (!ESCAPE_NODE_KEYS.has(ch.to)) {
+      issues.escapeNodeRefs.push({ node: nodeId, choiceIdx: idx, to: ch.to, reason: 'unknown target' });
+    }
+  });
+}
+
 const stats = {
   files: { loaded: DATA_FILES.length - loadErrors.length, failed: loadErrors.length },
   cards: { total: ALL_CARDS.length, uniqueIds: CARD_IDS.size, byArray: Object.fromEntries(Object.entries(cardsByArray).map(([k,v]) => [k, v.length])) },
@@ -500,6 +530,7 @@ warn(issues.orphanCards, '고아 카드 (act 없음, 잠금·체인·프롤로�
 warn(issues.cardStructure, '카드 구조 이상', x => x.id + '  [' + x.problems.join('; ') + ']');
 
 warn(issues.sessionDeckActLeaks, 'session deck minAct보다 이른 act 포함', x => x.id + ' [' + x.pack + '] act=' + x.act.join(',') + ' minAct=' + x.minAct + ' (' + x.from + ')');
+warn(issues.escapeNodeRefs, 'ESCAPE_NODES choice.to 참조 깨짐', x => x.node + (x.choiceIdx >= 0 ? '[' + x.choiceIdx + ']' : '') + ' → ' + x.to + ' (' + x.reason + ')');
 
 const totalIssues = Object.values(issues).reduce((a, b) => a + b.length, 0);
 section(totalIssues === 0 ? '이슈 0건 — 정적 검증 통과' : '총 이슈 ' + totalIssues + '건');
