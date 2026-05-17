@@ -270,7 +270,7 @@ function SignalMiniGame(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey);};
-  });
+  },[cursor,time]);
 
   function confirmHit(){
     if(finished.current)return;

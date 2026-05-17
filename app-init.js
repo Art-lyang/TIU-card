@@ -233,8 +233,15 @@ function getMaxActForDay(day){
   if(day>=5)return 2;
   return 1;
 }
+// ts_game 페이로드의 현재 스키마 버전.
+// 향후 세이브 구조 변경 시 이 값을 올리고 normalizeGameSave에서 마이그레이션을 분기한다.
+var TS_GAME_SCHEMA_VERSION=1;
 function normalizeGameSave(game){
   if(!game||!game.stats)return game;
+  // schemaVersion 체크: 현재는 1만 지원. 미래 버전 세이브가 들어오면 로깅만 하고 그대로 진행.
+  if(typeof game.schemaVersion==='number'&&game.schemaVersion>TS_GAME_SCHEMA_VERSION){
+    try{if(typeof console!=='undefined'&&console.warn)console.warn('[ts_game] unknown schemaVersion',game.schemaVersion,'> supported',TS_GAME_SCHEMA_VERSION)}catch(e){}
+  }
   var day=parseInt(game.stats.day||1,10)||1;
   var act=parseInt(game.act||1,10)||1;
   if(act===2&&day<5){
@@ -320,7 +327,7 @@ var Save={
   saveGame:function(s,g,a,af,tr,cd,rc,ct,cq,pb,cm,ph){
     var sessionDeck=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
     var serializedCq=(cq||[]).map(function(c){return typeof c==='string'?c:(c&&c.id)}).filter(Boolean);
-    var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:serializedCq,pendingBonus:pb||null,sessionDeck:sessionDeck,curMission:cm||null,phase:ph||null});
+    var payload=normalizeGameSave({schemaVersion:TS_GAME_SCHEMA_VERSION,stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:serializedCq,pendingBonus:pb||null,sessionDeck:sessionDeck,curMission:cm||null,phase:ph||null});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
   clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},

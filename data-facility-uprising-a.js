@@ -29,10 +29,9 @@ var UPRISING_REQUIRED = ["FE-007", "FE-012", "FE-013", "FE-014", "FE-015", "FE-0
 var UPRISING_MIN_TOTAL = 10;
 
 function checkUprisingReady(facility, trust) {
-  if (typeof getActiveSessionDeck === "function") {
-    var activeDeck = getActiveSessionDeck();
-    if (activeDeck && activeDeck.packs && activeDeck.packs.length > 0 && typeof hasSessionDeckPack === "function" && !hasSessionDeckPack("UPRISING_INFRA")) return false;
-  }
+  // 세션 덱이 UPRISING_INFRA 팩을 포함하지 않아도 폐쇄회로/엔딩 H 경로는 항상 접근 가능.
+  // (이전: 세션 덱 활성 + 팩 미포함 시 시설 10개를 다 지어도 엔딩 H 영구 차단되는 문제 보강)
+  // UPRISING_INFRA 팩은 카드/이벤트 보강 용도로만 사용되며, 해금 게이트로는 쓰지 않는다.
   if (!facility || !facility.completed) return false;
   var comp = facility.completed;
   if (comp.length < UPRISING_MIN_TOTAL) return false;
