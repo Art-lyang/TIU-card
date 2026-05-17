@@ -106,14 +106,16 @@ function App(){
     if(chainDone)next.chain_done=true;
     return next;
   };
-  var persistGame=function(s,g,a,af,tr,cd,rc,curCt,cq,fac,pb){
+  var persistGame=function(s,g,a,af,tr,cd,rc,curCt,cq,fac,pb,cm,ph){
     Save.saveGame(
       s,g,a,af,tr,
       cd||cooldowns,
       rc||recentCards,
       typeof curCt==='number'?curCt:ct,
       cq||chainQueue,
-      pb!==undefined?pb:pendingBonus
+      pb!==undefined?pb:pendingBonus,
+      cm!==undefined?cm:curMission,
+      ph!==undefined?ph:phase
     );
     if(fac)Save.saveFacility(fac);
   };
@@ -149,7 +151,7 @@ function App(){
     loadActiveSpecs();
     if(sg&&sg.sessionDeck&&typeof setActiveSessionDeck==='function')setActiveSessionDeck(sg.sessionDeck);
     else if(typeof loadSessionDeck==='function')loadSessionDeck();
-    var initQueue=(sg&&Array.isArray(sg.chainQueue))?sg.chainQueue:[];
+    var initQueue=(sg&&Array.isArray(sg.chainQueue))?sg.chainQueue.map(function(c){return typeof c==='string'?(typeof CARD_BY_ID!=='undefined'?CARD_BY_ID[c]:null):c}).filter(Boolean):[];
     if(initQueue.length>0){setCurCard(initQueue[0]);setChainQueue(initQueue.slice(1))}
     else{setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}))}
   },[]);
@@ -219,7 +221,7 @@ function App(){
     setTimeout(function(){setPhase('go')},goDelay)};
   var tryDlg=function(logsOverride){
     var lg=Array.isArray(logsOverride)?logsOverride:logs;
-    var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&lg.indexOf('LOG-050')>=0)return false;if(d.logReq&&lg.indexOf(d.logReq)<0)return false;if(d.actReq&&act<d.actReq)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust))&&(!d2.logReq||lg.indexOf(d2.logReq)>=0))earlier=true});return!earlier});
+    var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&lg.indexOf('LOG-050')>=0)return false;if(d.char==='\uac15\ub3c4\uc724'&&lg.indexOf('LOG-075')>=0)return false;if(d.logReq&&lg.indexOf(d.logReq)<0)return false;if(d.actReq&&act<d.actReq)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust))&&(!d2.logReq||lg.indexOf(d2.logReq)>=0))earlier=true});return!earlier});
     if(!isIntrosDone(lg)){var introAv=av.filter(function(d){return isIntroDlgCheck(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}
     // 박소영 합류 후 첫 대화 보장
     if(lg.indexOf('LOG-082')>=0&&lg.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}
@@ -477,7 +479,9 @@ function App(){
   };
   var restart=function(){BGM.stop();BGM.started=false;startNewCampaign(false)};
   var continueSavedCampaign=function(){
-    setPhase('game');
+    var pg=Save.get('ts_game',null);
+    if(pg&&pg.curMission)setCurMission(pg.curMission);
+    setPhase((pg&&pg.phase)||'game');
   };
   var returnToMainMenu=function(){
     setShowSettings(false);
@@ -505,7 +509,7 @@ function App(){
     var ptr=pg.transRoute||'';
     var pcd=pg.cooldowns||{};
     var prc=pg.recentCards||[];
-    var pcq=pg.chainQueue||[];
+    var pcq=(pg.chainQueue||[]).map(function(c){return typeof c==='string'?(typeof CARD_BY_ID!=='undefined'?CARD_BY_ID[c]:null):c}).filter(Boolean);
     var plogs=pack.logs||['LOG-001'];
     var ptrust=pack.trust||{haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40};
     var pud=pack.usedDlg||[];
@@ -518,13 +522,13 @@ function App(){
     if(!savedCard&&pcq.length>0){savedCard=pcq[0];restoredQueue=pcq.slice(1)}
     setCooldowns(pcd);setRecentCards(prc);setChainQueue(restoredQueue);
     setLogs(plogs);if(typeof window!=='undefined')window.__ts_liveLogs=plogs.slice();setTrust(ptrust);setUsedDlg(pud);setUsedEvening(pue);setSeenArchive(psa);setFacility(pfac);
-    setCt(typeof pg.ct==='number'?pg.ct:0);setCurDlg(null);setCurMission(null);setPendingBonus(pg.pendingBonus||null);
+    setCt(typeof pg.ct==='number'?pg.ct:0);setCurDlg(null);setCurMission(pg.curMission||null);setPendingBonus(pg.pendingBonus||null);
     setFp(false);setShowSettings(false);
     // 저장된 현재 카드가 있으면 그대로 복원하고, 없을 때만 새로 뽑는다.
     var nc=savedCard||drawCard(ps,pgi,plogs,pcd,prc,pact,ptr,pfac);
     if(nc)setCurCard(nc);
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(pact);
-    setPhase('game');
+    setPhase(pg.phase||'game');
     setToastType('');setToast(tt('app.snapshotLoaded',{slot:slot,day:ps.day},'슬롯 '+slot+' 로드 완료 (DAY '+ps.day+')'));
     clearToastAfter(2200);
   };

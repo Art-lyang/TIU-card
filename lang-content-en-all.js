@@ -1893,7 +1893,7 @@ window.TS_I18N.mergeContent('en', {
         "Finding the truth inside a world built by ORACLE isn't easy. But it isn't impossible either."
       ]
     },
-    "weber_4_33-35": {
+    "weber_4_40-99": {
       "lines": [
         "Commander Lee Jung-cheol.",
         "My organization is not perfect either. But one thing is certain...",
