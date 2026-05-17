@@ -170,6 +170,9 @@ function MainMenu(p){
   };
   useEffect(function(){
     var onKey=function(e){
+      // 서브 뷰(설정 등)가 열려 있으면 메인메뉴 1-9/방향키 입력을 모두 무시.
+      // SettingsPanel 등 하위 컴포넌트가 자체 키 처리를 한다.
+      if(sub)return;
       if(showSnapshotSelect){
         if(e.key==='Escape'){e.preventDefault();setShowSnapshotSelect(false);return}
         if(/^[1-3]$/.test(e.key)){
@@ -189,7 +192,7 @@ function MainMenu(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selectedIndex,menuItems.length,p.hasSave,showSnapshotSelect,manualSnapshotSlots.length]);
+  },[selectedIndex,menuItems.length,p.hasSave,showSnapshotSelect,manualSnapshotSlots.length,sub]);
   // 설정 서브뷰
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
@@ -506,6 +509,8 @@ function CardC(p){
   },[remaining,card.id,chosen,shaking]);
   useEffect(function(){
     var onKey=function(e){
+      // 설정/시설/증거 등 오버레이 모달이 떠 있을 때는 카드 키 입력을 무시한다.
+      if(p.modalActive)return;
       if(chosen||shaking)return;
       var kdir=null;
       if(e.key==='ArrowLeft'||e.key==='1'||e.code==='Numpad1')kdir='left';
@@ -517,7 +522,7 @@ function CardC(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[card,chosen,shaking,blockCount]);
+  },[card,chosen,shaking,blockCount,p.modalActive]);
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){

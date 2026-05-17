@@ -100,7 +100,8 @@ if(typeof ENDING_DEFS!=='undefined'){
 var CARDS_ESCAPE_EXTRA = [
   // Act3 초반 힌트 카드 — 임재혁
   { id:"C-HINT-SHELLTALKER", act:[3], once:true, priority:"상",
-    req:function(s,g,logs){ return s.day>=15 && s.day<=24 && logs.indexOf('LOG-SHELLTALKER-CAP')<0; },
+    // day 상한 24 → 32 확대: 좁은 10일 창에서 한 번도 안 뽑히면 엔딩 E/E_c/E_bad 세 종이 영구 차단되는 문제 보강 (once:true 유지)
+    req:function(s,g,logs){ return s.day>=15 && s.day<=32 && logs.indexOf('LOG-SHELLTALKER-CAP')<0; },
     msg:"임재혁이 비공식 보고를 가져왔습니다.\n\n\"지휘관님. ORACLE 아키텍처 격리 레이어에서 뭔가 포착했습니다.\"\n\n\"제 권한으론 접근 불가인데, 메타데이터 태그만 잡혔습니다.\"\n\n\"태그 — 'SPEC-011 / 음성 패턴 학습체 / 보존 중'.\"\n\n\"...이 기지 어딘가에, 쉘 토커 한 개체가 비공개 보관되어 있다는 뜻입니다.\"",
     left:{ label:"기록해둬라", fx:{c:0,r:0,t:1,o:-2}, g:-2, log:"LOG-SHELLTALKER-CAP" },
     right:{ label:"착오일 것이다", fx:{c:0,r:0,t:-1,o:1}, g:1 } },

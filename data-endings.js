@@ -220,9 +220,13 @@ var ENDING_DEFS = {
       "[세션 종료 — OPERATOR STATUS: INDETERMINATE]"
     ]
   },
+  // ※ 주의: TIME_UP.narrative는 게임 내에서 직접 표시되지 않는다.
+  //    DAY 35 초과 시 app.js의 resolveTimeUp()이 상태(GI/신뢰)에 따라
+  //    A/B/D/G 중 하나의 실제 엔딩 narrative로 디스패치하기 때문이다.
+  //    이 narrative는 디스패치 실패 폴백/디버그 참조용으로만 유지된다.
   TIME_UP: {
     name: "세션 만료",
-    condition: "DAY 35 초과 — 상태 기반 자동 디스패치",
+    condition: "DAY 35 초과 — 상태 기반 자동 디스패치 (실제 narrative는 A/B/D/G로 대체됨)",
     narrative: [
       "[ORACLE ASSESSMENT — SESSION TIMEOUT]",
       "",
@@ -232,6 +236,8 @@ var ENDING_DEFS = {
       "세션 데이터가 아카이브로 이관됩니다.",
       "",
       "당신이 남긴 궤적 — 그것이 당신의 판결입니다.",
+      "",
+      "(세션 만료로 인한 자동 디스패치 — 실제 결말은 운용 궤적에 따라 결정됩니다)",
       "",
       "[세션 종료 — DISPATCH EXPIRED]"
     ]
@@ -311,13 +317,15 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   // ═══ 엔딩 F: Observer 레이어 발견 ═══
-  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥30 + GI≤5
-  // 완화형: LOG-012+Observer + OBSERVER-APPROVED + day≥31 + GI≤0
+  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥30 + 0<GI≤5  (애매한 정렬)
+  // 완화형: LOG-012+Observer + OBSERVER-APPROVED + day≥30 + GI≤0     (저항 정렬)
+  //   ※ 두 분기는 GI>0 vs GI≤0 으로 상호 배타. 이전엔 정상형이 완화형을 완전히 포함해
+  //     완화형이 영구 dead branch였음.
   // 변형: LOG-012+Observer + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
-  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 30 && gi <= 5) {
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 30 && gi > 0 && gi <= 5) {
     return 'F';
   }
-  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 31 && gi <= 0) {
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 30 && gi <= 0) {
     return 'F';
   }
   if (hasLog12 && hasObserver && !hasObsApproved && stats.day >= 33 && gi <= -20 && highTrust >= 2) {
