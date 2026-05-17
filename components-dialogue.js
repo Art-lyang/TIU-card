@@ -17,7 +17,7 @@ var getDialogueName=function(d,overlay){
 var getDialogueRole=function(d,overlay){
   if(overlay&&overlay.role)return overlay.role;
   if(window.TS_I18N&&window.TS_I18N.getLocale()==='en'){
-    var roleMap={'부지휘관':'Deputy Commander','현장요원':'Field Operative','연구원':'Researcher','기술관':'Technical Officer','분석관':'Analyst'};
+    var roleMap={'부지휘관':'Deputy Commander','현장요원':'Field Operative','연구원':'Researcher','기술관':'Technical Officer','분석관':'Analyst','전술지휘관':'Tactical Commander','연구원 / 의료관':'Researcher / Medical Officer','정보분석관 / 기술관':'Intelligence / Technical Officer','부지휘관 / 데이터분석관':'Deputy Commander / Data Analyst'};
     return roleMap[d.role]||d.role;
   }
   return d.role;
@@ -38,7 +38,18 @@ function CharacterCommPanel(p){
 function Dialogue(p){
   var d=p.dialogue,overlay=getDialogueOverlay(d);
   var lines=(overlay&&overlay.lines)||d.lines;
-  var choices=(overlay&&overlay.choices)||d.choices;
+  var choices=d.choices;
+  if(overlay&&Array.isArray(overlay.choices)){
+    choices=d.choices.map(function(base,i){
+      var en=overlay.choices[i]||{};
+      // KO base wins for fx/log/g/trust; EN overlay supplies label/reply/tag only.
+      return Object.assign({},base,{
+        label:en.label||base.label,
+        reply:en.reply||base.reply,
+        tag:en.tag||base.tag
+      });
+    });
+  }
   var charName=getDialogueName(d,overlay);
   var charRole=getDialogueRole(d,overlay);
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
