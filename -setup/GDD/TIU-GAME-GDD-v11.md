@@ -1,6 +1,6 @@
 # TERMINAL SESSION - Game Design Document v1.1.1
 
-> Current runtime snapshot for `BUILD_VER=178` / 2026-05-10.
+> Current runtime snapshot for `BUILD_VER=203` / 2026-05-18.
 > This document is a release-candidate delta on top of `TIU-GAME-GDD-v10.md`.
 
 ## 1. Current Scope
@@ -15,13 +15,13 @@ The current content registry contains:
 
 | Area | Runtime count |
 |---|---:|
-| Cards | 544 |
+| Cards | 558 |
 | Field missions | 15 |
-| Minigame-linked missions | 9 |
+| Minigame-linked missions | 13 |
 | Evidence entries | 38 |
 | Evidence combinations | 15 |
 | Endings | 16 |
-| Archive entries | 46 |
+| Archive entries | 47 |
 | Facility items | 16 |
 
 ## 2. Session Deck-Pack Model
@@ -67,7 +67,24 @@ Card and dialogue text should not expose odd small-unit predictions such as `+1`
 - Player-facing card bodies should describe expected consequences narratively.
 - Explicit effect labels should remain in the established card-effect UI pattern, not as improvised in-world dialogue.
 
-## 5. Mobile Main Menu Rule
+## 5. Resource Pressure And Character-State Rules
+
+The Reigns-like pressure loop depends on resources being allowed to fail. Runtime balance helpers must not broadly prevent `c`, `r`, `t`, or `o` from reaching terminal thresholds.
+
+- Normal card choices and reward results may reduce a resource to 0 and trigger the corresponding game over.
+- Broad route floors for resistance, neutral, loyalty, Act 4 entry, and reward phases are not allowed.
+- Narrow exceptions are permitted only when a named narrative card needs to hand control back to the player instead of ending immediately. Current explicit exceptions are `CE-005` and `CE-042/B`, both capped at a low floor of 3.
+- Simulators must match runtime balance helpers. They may model card-level `floor` safeguards, but must not keep legacy route-wide soft floors after the runtime removes them.
+
+Character state must affect action availability, not only dialogue text.
+
+- `LOG-075` means Kang Do-yun is dead or permanently absent.
+- `LOG-074-DONE` means Kang Do-yun survived with a critical wound and is not field-deployable.
+- `LOG-DOYUN-MINOR-WOUND` means a minor wound and should block high-risk direct action choices where the card or mission explicitly depends on Kang Do-yun's physical deployment.
+- Direct field dispatch, escape accompaniment, and trust-gated Doyun action variants must check the relevant unavailable-state logs.
+- Non-action dialogue can remain available only if the text is compatible with the current state or has a state-specific variant.
+
+## 6. Mobile Main Menu Rule
 
 The main terminal menu must fit a common mobile viewport without hiding the footer below the first screen.
 
@@ -78,48 +95,47 @@ Verified baseline:
 - Footer visible without vertical sliding.
 - No DLC route-selection surface in the current PC build.
 
-## 6. QA Baseline
+## 7. QA Baseline
 
 Latest checks:
 
 ```text
 node tools/validator.js
-  cards 544 / unique 544
+  cards 558 / unique 558
   issues 0
 
 node tools/i18n-smoke.js
   i18n smoke ok
 
-node tools/check_ending_routes.js
-  ending route check passed: 11/11
-  A/B/D/F/G special routes verified, including Ending F approved/unapproved observer routes
+node tools/issue22_audit.js
+  issue22 audit ok
 
-python tools/simulator_v3.py 100 all
-  comply   narrative 98.0% / instant 2.0%
-  rebel    narrative 86.0% / instant 14.0%
-  careful  narrative 88.0% / timeout 12.0% / instant 0.0%
-  explorer narrative 98.0% / instant 2.0%
-  newbie   narrative 69.0% / instant 31.0%
+node tools/critical-audit.js
+  critical-audit OK
+  warning: TIME_UP is dispatch-only and not listed in ending gallery
 
-node _workspace/codex/route-integrity-audit.js
-  targeted route checks passed
+resource zero regression smoke
+  normal choice zero: not tuned
+  normal reward zero: not tuned
+  CE-042/B exception: o/r floored to 3 only
 
-node _workspace/codex/session-deck-affinity-audit.js
-  weak packs 0
-  route deck leaks 0
+python tools/simulator_v3.py 20 all
+  comply   instant 100.0% / avg survival 9.1 days
+  rebel    instant 100.0% / avg survival 4.6 days
+  careful  narrative 100.0% / avg survival 28.8 days
+  explorer narrative 50.0% / instant 50.0% / avg survival 25.6 days
+  newbie   instant 100.0% / avg survival 17.1 days
 ```
 
 Browser QA also confirmed:
 
-- Session deck packs restore exactly from save snapshots.
-- Act 1 save normalization does not carry investigation-table unlocks from previous sessions.
-- Act 2+ snapshots preserve investigation-table unlocks correctly.
-- Active field mission specs remain capped at 2 in the checked runtime path.
-- New pack cards and pack-linked logs have English overlays.
-- Active session-pack evening chats and Act 3/4 follow-up cards now respect the same session-deck lineage assumptions.
+- Local `http://localhost:4173/index.html` loads at 1366x768 with no console errors.
+- English locale switch reaches the boot screen with no console errors.
+- `ending_C_cst` now maps to its dedicated ending image.
+- Issue #33 state/balance guards are covered by `tools/critical-audit.js`.
 
-## 7. Remaining Watch Items
+## 8. Remaining Watch Items
 
-- Resistance-route resource pressure remains high in automated simulations and needs human playtest tuning.
-- `check_buttons.py` still reports special transition cards with no direct stat effect.
-- Act 4 pressure endings, especially explorer/newbie automated profiles, should continue to be watched in human playtests.
+- Automated comply/rebel/newbie profiles now die much faster because hidden broad floors were removed. This is a correction to the failure model, but release balance still needs human playtest calibration.
+- `data-cards-resist-hint.js` has a local `t` reward concentration. It is not a global 5x imbalance, but the RH/HH/CB card group remains a future balance pass candidate.
+- Doyun critical-wound gating is now applied to the known direct field/action routes. Future new cards that physically deploy him must follow the same state rule.

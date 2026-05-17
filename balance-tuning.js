@@ -101,30 +101,6 @@
     var changed = false;
     var kind = '';
 
-    if (isResistanceChoice(card, choice, beforeGi || 0, nextGi || 0)) {
-      // Early resistance should hurt ORACLE evaluation, but not collapse the
-      // run before the player has seen the warning/evidence loop.
-      if (currentAct <= 3 && day <= 18) {
-        changed = liftBelow(after, 'c', 15) || changed;
-        changed = liftBelow(after, 'o', 15) || changed;
-        changed = liftBelow(after, 'r', 15) || changed;
-        changed = liftBelow(after, 't', 15) || changed;
-        kind = changed ? 'resistance-softener' : kind;
-      } else if (currentAct <= 3) {
-        changed = liftBelow(after, 'c', 10) || changed;
-        changed = liftBelow(after, 'o', 10) || changed;
-        changed = liftBelow(after, 'r', 10) || changed;
-        kind = changed ? 'resistance-late-floor' : kind;
-      }
-    }
-
-    if (currentAct <= 3 && (nextGi || 0) <= -35) {
-      changed = liftBelow(after, 'c', 10) || changed;
-      changed = liftBelow(after, 'o', 10) || changed;
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'resistance-route-floor' : kind;
-    }
-
     if (cardId === 'CE-005') {
       // The observer contact should feel dangerous, but a single hidden output
       // must not hard-delete an otherwise playable run through evaluation 0.
@@ -134,7 +110,7 @@
         kind = 'observer-spike-cap';
       }
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 5) || changed;
+        changed = liftBelow(after, 'o', 3) || changed;
         kind = changed ? 'observer-evaluation-floor' : kind;
       }
     }
@@ -143,60 +119,13 @@
       // Final-route commitment can still be costly, but the decision should
       // hand control back to the player instead of ending on a single click.
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 5) || changed;
+        changed = liftBelow(after, 'o', 3) || changed;
         kind = changed ? 'final-commitment-floor' : kind;
       }
       if (after.r <= 0) {
-        changed = liftBelow(after, 'r', 5) || changed;
+        changed = liftBelow(after, 'r', 3) || changed;
         kind = changed ? 'final-commitment-floor' : kind;
       }
-    }
-
-    if (currentAct <= 2 && day <= 10 && before.o > 0 && after.o <= 0) {
-      changed = liftBelow(after, 'o', 5) || changed;
-      kind = changed ? 'early-evaluation-floor' : kind;
-    }
-
-    if (currentAct <= 3 && isNeutralRoute(nextGi) && before.r > 0 && after.r <= 0) {
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'neutral-resource-floor' : kind;
-    }
-
-    if (currentAct === 4 && day <= 34 && isNeutralRoute(nextGi) && before.r > 0 && after.r <= 0) {
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'act4-neutral-resource-floor' : kind;
-    }
-
-    if (currentAct === 4 && day <= 30) {
-      ['c', 'r', 't', 'o'].forEach(function(key){
-        var floor = key === 'o' ? 5 : 10;
-        if (before[key] > 0 && after[key] <= 0) {
-          changed = liftBelow(after, key, floor) || changed;
-          kind = changed ? 'act4-entry-floor' : kind;
-        }
-      });
-    }
-
-    if (isLoyalChoice(card, choice, beforeGi || 0, nextGi || 0, before, after)) {
-      // Loyal ORACLE choices can still cost human trust/resources, but routine
-      // compliance should not force the one-time safeguard every run.
-      if (currentAct <= 3 && (nextGi || 0) >= 8) {
-        changed = liftBelow(after, 'r', 35) || changed;
-        changed = liftBelow(after, 't', 35) || changed;
-        changed = liftBelow(after, 'c', 32) || changed;
-        kind = changed ? 'loyalty-buffer' : kind;
-      }
-      if (currentAct >= 4 && (nextGi || 0) >= 40) {
-        changed = liftBelow(after, 'r', 30) || changed;
-        changed = liftBelow(after, 't', 30) || changed;
-        changed = liftBelow(after, 'c', 30) || changed;
-        kind = changed ? 'act4-loyalty-buffer' : kind;
-      }
-    }
-
-    if (currentAct === 1 && raisesStat(before, after, 'c') && after.c >= 100) {
-      changed = capAbove(after, 'c', 95) || changed;
-      kind = changed ? 'act1-overcontainment-buffer' : kind;
     }
 
     if (!changed) return null;
@@ -206,7 +135,6 @@
   window.applyRewardBalanceTuning = function(beforeStats, nextStats, gi, reward, act){
     var before = copyStats(beforeStats);
     var after = copyStats(nextStats);
-    var day = before.day || 1;
     var currentAct = act || 1;
     var changed = false;
     var kind = '';
@@ -214,33 +142,6 @@
     if (currentAct === 1 && before.c < 100 && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;
       kind = changed ? 'act1-reward-overcontainment-buffer' : kind;
-    }
-
-    if (currentAct <= 3 && (gi || 0) <= -35) {
-      changed = liftBelow(after, 'c', 10) || changed;
-      changed = liftBelow(after, 'o', 10) || changed;
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'resistance-reward-floor' : kind;
-    }
-
-    if (currentAct <= 3 && isNeutralRoute(gi) && before.r > 0 && after.r <= 0) {
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'neutral-reward-resource-floor' : kind;
-    }
-
-    if (currentAct === 4 && day <= 34 && isNeutralRoute(gi) && before.r > 0 && after.r <= 0) {
-      changed = liftBelow(after, 'r', 10) || changed;
-      kind = changed ? 'act4-neutral-reward-resource-floor' : kind;
-    }
-
-    if (currentAct === 4 && day <= 30) {
-      ['c', 'r', 't', 'o'].forEach(function(key){
-        var floor = key === 'o' ? 5 : 10;
-        if (before[key] > 0 && after[key] <= 0) {
-          changed = liftBelow(after, key, floor) || changed;
-          kind = changed ? 'act4-entry-reward-floor' : kind;
-        }
-      });
     }
 
     if (!changed) return null;

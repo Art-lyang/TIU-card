@@ -110,11 +110,6 @@ var CARDS_NEW_B = [
     left: { label: "인체 실험 승인", fx: { c: -1, r: -2, t: -1, o: 1 }, g: 2 },
     right: { label: "승인 불가 — 더 연구해라", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -1 } },
 
-  { id: "C-231", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], once: true, priority: "상", bg: "comms", img: "char_haeun_tense",
-    msg: "모든 증거가 모였습니다.\n\n서하은: \"ORACLE을 셧다운하면 봉쇄선 자동 관리, 통신, 보급 채널 전부 끊깁니다.\"\n\n임재혁: \"수동 전환은 가능합니다. 하지만 효율은 30% 이하로 떨어집니다.\"\n\n강도윤: \"ORACLE 없이도 버틸 수 있습니다. 우리가 직접 하면 됩니다.\"",
-    left: { label: "ORACLE 셧다운", fx: { c: -2, r: -1, t: 3, o: -4 }, g: -6 },
-    right: { label: "유지 — 아직은 필요하다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
-
   { id: "C-232", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "중", bg: "base",
     msg: "기지 최종 보고서를 작성해야 합니다.\n\n서하은: \"있는 그대로 기록하면... 상부가 어떻게 반응할지 모릅니다.\"\n\n\"하지만 은폐하면 다른 기지에서 같은 일이 반복될 수 있습니다.\"\n\n\"진실을 기록하시겠습니까, 지휘관님?\"",
     left: { label: "진실을 기록한다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -5 },
@@ -123,4 +118,6 @@ var CARDS_NEW_B = [
 ];
 
 // CARDS 배열에 합류
+// C-231 was an orphan shutdown prompt. ORACLE shutdown now belongs only to CH-008.
+CARDS_NEW_B = CARDS_NEW_B.filter(function(c){return c.id!=='C-231'});
 if(typeof CARDS !== 'undefined') CARDS = CARDS.concat(CARDS_NEW_B);

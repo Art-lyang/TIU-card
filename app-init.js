@@ -322,7 +322,7 @@ var Save={
     var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],pendingBonus:pb||null,sessionDeck:sessionDeck});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
+  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -370,6 +370,7 @@ var Save={
   listSnapshots:function(){return[1,2,3].map(function(n){return{slot:n,data:Save.get('ts_snap_'+n,null)}})},
   loadSnapshot:function(slot){
     var pack=Save.get('ts_snap_'+slot,null);if(!pack)return null;
+    Save.del('ts_activeMission');
     if(pack.game){
       var fixedGame=normalizeGameSave(pack.game);
       var normalized=!!(fixedGame&&fixedGame.__normalized===true);

@@ -39,7 +39,7 @@ var CARDS_RESOURCE = [
 
   // ═══ 일반 운영 카드 ═══
 
-  { id: "C-107", act: [2,3,4], priority: "하", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 },
+  { id: "C-107", act: [2,3,4], priority: "하", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 && logs.indexOf("LOG-074-DONE")<0 },
     msg: "야간 경비 교대 시간이 다가옵니다.\n\n현재 교대 주기: 8시간. 요원들의 피로도가 누적되고 있습니다.\n\n강도윤: \"6시간 교대로 바꾸면 피로는 줄지만 인원이 부족해집니다.\"",
     left: { label: "6시간 교대로 변경", fx: { c: -1, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "8시간 유지", fx: { c: 1, r: 0, t: -1, o: 0 }, g: 0 } },
@@ -54,7 +54,7 @@ var CARDS_RESOURCE = [
     left: { label: "간이 체력장 설치", fx: { c: 0, r: -1, t: 2, o: 0 }, g: 0 },
     right: { label: "자원 여유 생기면", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  { id: "C-110", act: [2,3,4], priority: "하", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 },
+  { id: "C-110", act: [2,3,4], priority: "하", req:function(s,g,logs){ return logs.indexOf("LOG-075")<0 && logs.indexOf("LOG-074-DONE")<0 },
     msg: "기지 근처에서 야생 사슴이 목격되었습니다.\n\n강도윤: \"EV-Σ 감염 징후는 없습니다. 그냥 사슴입니다.\"\n\n\"봉쇄 구역 내에 정상 생태계가 남아 있다는 뜻이기도 합니다.\"",
     left: { label: "관찰 기록만", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
     right: { label: "생태 모니터링 추가", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },

@@ -1112,7 +1112,7 @@ function RewardScreen(p){
       h('div',{ref:_scrollRef,style:{height:'100%',overflowY:'auto',padding:'0 2px'}},
       av.map(function(r,i){var pd=previewDelta(r);var fl=fxList(pd);var isSel=sel===i;var willEnd=p.stats.c+previewValue(pd,'c')>=100;var rLoc=(typeof tc==='function')?tc('rewards',r.id,null):null;var rTitle=(rLoc&&rLoc.title)||r.title;var rDesc=(rLoc&&rLoc.desc)||r.desc;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
-        h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
+        h('span',{className:'oracle-card__tag'},r.feId?'FACILITY COMPLETE':'OPTION 0'+(i+1)),
         h('div',{className:'oracle-card__title'},rTitle),
         h('div',{className:'oracle-card__desc'},rDesc),
         h('div',{className:'oracle-card__effects'},

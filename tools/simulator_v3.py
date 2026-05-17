@@ -241,65 +241,20 @@ def is_neutral_route(gi):
 def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice, act):
     ns = dict(after)
     ng = after_gi
-    day = before.get('day', 1)
     changed = False
     cid = str(card.get('id', '')) if card else ''
 
-    if is_resistance_choice(card, choice, before_gi, after_gi):
-        if act <= 3 and day <= 18:
-            changed = _lift_below(ns, 'c', 15) or changed
-            changed = _lift_below(ns, 'o', 15) or changed
-            changed = _lift_below(ns, 'r', 15) or changed
-            changed = _lift_below(ns, 't', 15) or changed
-        elif act <= 3:
-            changed = _lift_below(ns, 'c', 10) or changed
-            changed = _lift_below(ns, 'o', 10) or changed
-            changed = _lift_below(ns, 'r', 10) or changed
-
-    if act <= 3 and ng <= -35:
-        changed = _lift_below(ns, 'c', 10) or changed
-        changed = _lift_below(ns, 'o', 10) or changed
-        changed = _lift_below(ns, 'r', 10) or changed
-
     if cid == 'CE-005':
-        if ng < before_gi - 6:
-            ng = before_gi - 6
+        if ng < before_gi - 5:
+            ng = before_gi - 5
             changed = True
-        changed = _lift_below(ns, 'o', 5) or changed
+        changed = _lift_below(ns, 'o', 3) or changed
 
     if cid in ('CE-042', 'CE-042B'):
-        changed = _lift_below(ns, 'o', 5) or changed
-        changed = _lift_below(ns, 'r', 5) or changed
-
-    if act <= 2 and day <= 10 and before['o'] > 0 and ns['o'] <= 0:
-        changed = _lift_below(ns, 'o', 5) or changed
-
-    if act <= 3 and is_neutral_route(ng) and before['r'] > 0 and ns['r'] <= 0:
-        changed = _lift_below(ns, 'r', 10) or changed
-
-    if act == 4 and day <= 34 and is_neutral_route(ng) and before['r'] > 0 and ns['r'] <= 0:
-        changed = _lift_below(ns, 'r', 10) or changed
-
-    if act == 4 and day <= 30:
-        for key in 'crto':
-            floor = 5 if key == 'o' else 10
-            if before[key] > 0 and ns[key] <= 0:
-                changed = _lift_below(ns, key, floor) or changed
-
-    if is_loyal_choice(card, choice, before_gi, ng, before, ns):
-        if act <= 3 and ng >= 8:
-            changed = _lift_below(ns, 'r', 35) or changed
-            changed = _lift_below(ns, 't', 35) or changed
-            changed = _lift_below(ns, 'c', 32) or changed
-        if act >= 4 and ng >= 40:
-            changed = _lift_below(ns, 'r', 30) or changed
-            changed = _lift_below(ns, 't', 30) or changed
-            changed = _lift_below(ns, 'c', 30) or changed
+        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'r', 3) or changed
 
     if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
-        changed = _cap_above(ns, 'c', 95) or changed
-
-    if act == 4 and day <= 34 and _raises(before, ns, 'c') and ns['c'] >= 100:
         changed = _cap_above(ns, 'c', 95) or changed
 
     return ns, ng, changed
@@ -641,21 +596,6 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
         ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
     if act is not None and act <= 3 and s.get('c', 0) < 100 and ns['c'] >= 100:
         ns['c'] = 95
-    if act is not None and act <= 3 and gi <= -35:
-        ns['c'] = max(ns['c'], 10)
-        ns['o'] = max(ns['o'], 10)
-        ns['r'] = max(ns['r'], 10)
-    if act is not None and act <= 3 and is_neutral_route(gi) and s.get('r', 0) > 0 and ns['r'] <= 0:
-        ns['r'] = 10
-    if act == 4 and s.get('day', 1) <= 34 and is_neutral_route(gi) and s.get('r', 0) > 0 and ns['r'] <= 0:
-        ns['r'] = 10
-    if act == 4 and s.get('day', 1) <= 30:
-        for key in 'crto':
-            floor = 5 if key == 'o' else 10
-            if s.get(key, 0) > 0 and ns[key] <= 0:
-                ns[key] = max(ns[key], floor)
-    if act == 4 and s.get('day', 1) <= 34 and s.get('c', 0) < 100 and ns['c'] >= 100:
-        ns['c'] = 95
     return ns
 
 # ═══════════ 시뮬 본체 ═══════════
@@ -732,6 +672,10 @@ def simulate_one(profile):
                 for k, v in side['fx'].items():
                     s[k] = _clamp_stat(s[k] + v * 5)
                 gi += side['g']
+                floor = side.get('floor') or {}
+                for fk, fv in floor.items():
+                    if fk in s and s[fk] < fv and (not side.get('floorCriticalOnly') or s[fk] <= 20):
+                        s[fk] = fv
                 s, gi, _ = apply_choice_balance_tuning(before_s, before_gi, s, gi, c, side, act)
                 if side.get('mission'):
                     act_flags['mission_done'] = True

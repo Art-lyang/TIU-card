@@ -97,13 +97,13 @@ var CARDS_ACT4 = [
     right:{ label:"아직 때가 아니다", fx:{c:0,r:0,t:-1,o:0}, g:-1 } },
 
   { id:"CA4-R002", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
-    req:function(s,g,logs){ return (logs.indexOf('ONCE-CA4-R001')>=0||logs.indexOf('ONCE-CA4-R001B')>=0) && logs.indexOf('LOG-075')<0 },
+    req:function(s,g,logs){ return (logs.indexOf('ONCE-CA4-R001')>=0||logs.indexOf('ONCE-CA4-R001B')>=0) && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"강도윤이 봉쇄선 외곽 안전 경로를 확보했습니다.\n\n\"감시 공백 구간입니다. 새벽 3시에서 5시 사이.\"\n\"이 경로라면 ORACLE이 감지하기 전에 빠져나갈 수 있습니다.\"",
     left:{ label:"경로를 최종 검토한다", fx:{c:-1,r:0,t:2,o:-3}, g:-5 },
     right:{ label:"너무 위험하다", fx:{c:0,r:0,t:-1,o:0}, g:0 } },
 
   { id:"CA4-R002B", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
-    req:function(s,g,logs){ return (logs.indexOf('ONCE-CA4-R001')>=0||logs.indexOf('ONCE-CA4-R001B')>=0) && logs.indexOf('LOG-075')>=0 },
+    req:function(s,g,logs){ return (logs.indexOf('ONCE-CA4-R001')>=0||logs.indexOf('ONCE-CA4-R001B')>=0) && (logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-074-DONE')>=0) },
     msg:"강도윤의 마지막 순찰 기록을 다시 펼칩니다.\n\n그가 남긴 외곽 경로 표식. 감시 공백 구간. 새벽 3시에서 5시 사이.\n\n그는 지금 이 자리에 없지만, 지도 위의 선은 남아 있습니다.\n\n임재혁: \"기록이 충분합니다. 완벽하진 않아도, 길은 있습니다.\"",
     left:{ label:"남겨진 경로를 최종 검토한다", fx:{c:-1,r:0,t:1,o:-3}, g:-5 },
     right:{ label:"너무 위험하다", fx:{c:0,r:0,t:-1,o:0}, g:0 } },
@@ -121,14 +121,14 @@ var CARDS_ACT4 = [
     right:{ label:"되돌릴 수는 없나", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
 
   { id:"CA4-R005", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
-    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-050')<0 },
+    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 && logs.indexOf('LOG-050')<0 },
     endTrigger:"D",
     msg:"새벽 4시.\n\n기지 외곽. 어둠 속.\n\n서하은. 강도윤. 윤세진. 임재혁.\n네 사람이 당신 옆에 서 있습니다.\n\nORACLE은 6시간 후에야 당신들의 부재를 감지할 것입니다.\n하지만 그때는 이미 —",
     left:{ label:"걷기 시작한다", fx:{c:-1,r:0,t:3,o:-4}, g:-6 },
     right:{ label:"마지막으로 기지를 돌아본다", fx:{c:0,r:0,t:2,o:-2}, g:-4 } },
 
   { id:"CA4-R005B", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
-    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 && (logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-050')>=0) },
+    req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R004')>=0 && (logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-074-DONE')>=0||logs.indexOf('LOG-050')>=0) },
     endTrigger:"D",
     msg:"새벽 4시.\n\n기지 외곽. 어둠 속.\n\n남은 사람들, 남겨진 기록들, 끝내 회수하지 못한 이름들이 당신 옆에 섭니다.\n\n이 탈출은 완전한 해방이 아닙니다.\n하지만 ORACLE이 모든 결말을 대신 쓰게 두지 않는 선택입니다.\n\nORACLE은 6시간 후에야 부재를 감지할 것입니다.\n하지만 그때는 이미 —",
     left:{ label:"걷기 시작한다", fx:{c:-1,r:0,t:2,o:-4}, g:-6 },

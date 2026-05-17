@@ -99,10 +99,19 @@ var BGM = {
   stop: function() {
     this.target = null;
     this._transitioning = false;
+    this._dangerTs = 0;
+    this.currentAct = 1;
+    this.started = false;
     var self = this;
     Object.keys(this.tracks).forEach(function(k) {
-      self._fadeOut(self.tracks[k], 1200, true);
+      self._clearTimer(self.tracks[k]);
+      try {
+        self.tracks[k].volume = 0;
+        self.tracks[k].pause();
+        self.tracks[k].currentTime = 0;
+      } catch(e) {}
     });
+    this._stopBootTrack();
     this.current = null;
   },
 
@@ -173,8 +182,8 @@ var BGM = {
     var self = this;
     // 진행 중이든 아니든, 타겟 외 모든 트랙 정지
     Object.keys(this.tracks).forEach(function(k) {
-      if (k === toName) return;
       self._clearTimer(self.tracks[k]);
+      if (k === toName) return;
       try { self.tracks[k].pause(); self.tracks[k].volume = 0; } catch(e) {}
     });
     this._transitioning = true;

@@ -945,11 +945,6 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "leftLabel": "Approve human testing",
         "rightLabel": "Do not approve — continue research"
     },
-    "C-231": {
-        "msg": "All major evidence has been gathered.\n\nSeo Hae-eun: \"If we shut ORACLE down, automated containment control, communications, and supply routing all go dark.\"\n\nLim Jae-hyeok: \"Manual transfer is possible. But efficiency will drop below thirty percent.\"\n\nKang Do-yun: \"We can hold without ORACLE. If we have to, we do it ourselves.\"",
-        "leftLabel": "Shut ORACLE down",
-        "rightLabel": "Keep it running — for now"
-    },
     "C-232": {
         "msg": "The final branch report must be written.\n\nSeo Hae-eun: \"If we record this exactly as it happened... I don't know how command will respond.\"\n\n\"But if we hide it, another branch may walk into the same thing.\"\n\n\"Will you record the truth, Commander?\"",
         "leftLabel": "Record the truth",

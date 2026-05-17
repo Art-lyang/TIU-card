@@ -31,7 +31,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"대체 요법으로", fx:{c:0,r:1,t:-2,o:0}, g:1 } },
 
   { id:"CA4-FL-06", act:[4], tag:"endgame-daily", priority:"하",
-    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 },
+    cond:function(s,g,logs){ return logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"교대 순환표 조정 요청.\n\n강도윤: \"일부 요원은 열흘 이상 연속 근무 중입니다. 한계입니다.\"\n\n효율과 건강 사이.",
     left:{ label:"강제 휴무 지정", fx:{c:-1,r:0,t:2,o:-1}, g:-1 },
     right:{ label:"현행 유지 — 임무 우선", fx:{c:1,r:0,t:-2,o:1}, g:1 } },
@@ -61,7 +61,7 @@ var CARDS_ACT4_EXT = [
 
   // ─── 봉쇄 위기 (endgame-crisis) × 4 ───
   { id:"CA4-CR-01", act:[4], tag:"endgame-crisis", priority:"상",
-    req:function(s,g,logs){ return s.day >= 32 && logs.indexOf('LOG-075')<0 },
+    req:function(s,g,logs){ return s.day >= 32 && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"봉쇄선 남측 — 대규모 이변체 집단 이동 감지.\n\n강도윤: \"지금 방어선이 뚫리면 끝입니다. 병력 절반을 남측에 배치해야 합니다.\"\n\n북측과 동측이 얇아집니다.",
     left:{ label:"남측 증원", fx:{c:2,r:-1,t:0,o:0}, g:0 },
     right:{ label:"분산 유지 — ORACLE 원격 지원 요청", fx:{c:0,r:-1,t:-1,o:2}, g:3 } },
@@ -73,7 +73,7 @@ var CARDS_ACT4_EXT = [
     right:{ label:"ORACLE 자동 진단 위임", fx:{c:0,r:0,t:-1,o:2}, g:3 } },
 
   { id:"CA4-CR-03", act:[4], tag:"endgame-crisis", priority:"상",
-    req:function(s,g,logs){ return s.day >= 34 && logs.indexOf('LOG-075')<0 },
+    req:function(s,g,logs){ return s.day >= 34 && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"외곽 정찰조 2명 — 통신 두절.\n\n마지막 위치: 봉쇄선 북쪽 1.8km.\n\n강도윤: \"구조를 갑니다. 허가만 주십시오.\"",
     left:{ label:"구조 작전 승인", fx:{c:-1,r:-2,t:2,o:-1}, g:-2 },
     right:{ label:"위험 과다 — 철수 대기", fx:{c:1,r:0,t:-2,o:0}, g:0 } },

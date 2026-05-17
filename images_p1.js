@@ -14,6 +14,13 @@
     mission_m006: 'assets/images/missions/mission_m006_spore_phantom_hero.jpg',
     mission_m007: 'assets/images/missions/mission_m007_decisive_strike_hero.jpg',
     mission_m008: 'assets/images/missions/mission_m008_observation_stop_hero.jpg',
+    mission_m009: 'assets/images/missions/mission_m009_seed_spreader_hero.jpg',
+    mission_m010: 'assets/images/missions/mission_m010_brain_seeker_hero.jpg',
+    incident_mi01: 'assets/images/missions/incident_mi01_quarantine_seal_hero.jpg',
+    incident_mi02: 'assets/images/missions/incident_mi02_cctv_gap_hero.jpg',
+    incident_mi03: 'assets/images/missions/incident_mi03_sample_contamination_hero.jpg',
+    incident_mi04: 'assets/images/missions/incident_mi04_auth_trace_hero.jpg',
+    incident_mi05: 'assets/images/missions/incident_mi05_missing_route_hero.jpg',
     spec_001_mannequin: 'assets/images/specs/spec_001_mannequin_hq_v2.jpg',
     spec_003_brood: 'assets/images/specs/spec_003_brood_hq_v2.jpg',
     spec_004_seedspreader: 'assets/images/specs/spec_004_seedspreader_hq.jpg',
@@ -129,10 +136,23 @@
     'C-042': 'mission_m004',
     'C-044': 'mission_m005',
     'C-046': 'mission_m006',
+    'C-272': 'mission_m009',
+    'C-275': 'mission_m010',
     'C-050': 'card_story_shell_walker',
     'C-051': 'card_story_shelltalker_capture',
     'CA4-R005': 'card_story_base_escape',
     'CR-004': 'card_story_commander_subdued',
+
+    'CH-I01A-2': 'incident_mi01',
+    'CH-I01B-2': 'incident_mi01',
+    'CH-I02A-2': 'incident_mi02',
+    'CH-I02B-2': 'incident_mi02',
+    'CH-I03A-2': 'incident_mi03',
+    'CH-I03B-2': 'incident_mi03',
+    'CH-I04A-2': 'incident_mi04',
+    'CH-I04B-2': 'incident_mi04',
+    'CH-I05A-2': 'incident_mi05',
+    'CH-I05B-2': 'incident_mi05',
 
     'FP-FE-001': 'facility_fe001_cryo_storage',
     'FP-FE-002': 'facility_fe002_training_ground',
@@ -169,6 +189,13 @@
     });
   }
 
+  function patchChains(chains){
+    if (!chains) return;
+    Object.keys(chains).forEach(function(key){
+      patchList(chains[key] && chains[key].cards);
+    });
+  }
+
   if (typeof window !== 'undefined') {
     window.IMG = IMG;
     window.TIU_CHARACTER_IMAGE_UPGRADES = CHARACTER_IMAGE_UPGRADES;
@@ -176,5 +203,6 @@
     Object.keys(window).forEach(function(key){
       if (/^CARDS_/.test(key)) patchList(window[key]);
     });
+    if (typeof CHAINS !== 'undefined') patchChains(CHAINS);
   }
 })();
