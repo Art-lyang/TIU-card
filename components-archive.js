@@ -14,7 +14,14 @@ function ArchiveViewer(p) {
     '시설': 'Facilities',
     '과학': 'Science',
     '시스템': 'Systems',
-    '지역': 'Regions'
+    '지역': 'Regions',
+    '사건기록': 'Incident Records',
+    '인물심화': 'Personnel Dossiers',
+    '작전가이드': 'Operation Guides',
+    '시설기록': 'Facility Records',
+    '보안감사': 'Security Audits',
+    '프로토콜': 'Protocols',
+    '현장분석': 'Field Analysis'
   };
   var catLabel = function(cat){ return isKo ? cat : (catLabelMapEn[cat] || cat); };
   var entryView = function(entry){

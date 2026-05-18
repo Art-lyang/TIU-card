@@ -155,7 +155,8 @@ function MainMenu(p){
   }
   menuItems.push(
     {key:'archive',primary:false,icon:'archive',title:tt('menu.routes.archive.title',null,'[ 아카이브 접속 ]'),sub:tt('menu.routes.archive.sub',null,'ENTITY / INCIDENT / PERSONNEL DATA'),action:tt('menu.routes.archive.action',null,'ACCESS ARCHIVE'),onClick:p.onArchive},
-    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs}
+    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs},
+    {key:'miniguide',primary:false,icon:'command',title:tt('menu.routes.miniguide.title',null,'[ 미니게임 가이드 ]'),sub:tt('menu.routes.miniguide.sub',null,'FIELD MODULE PRACTICE'),action:tt('menu.routes.miniguide.action',null,'OPEN GUIDE'),onClick:p.onMiniGuide}
   );
   if(p.hasSessionHistory&&p.onEndings){
     menuItems.push({key:'endings',primary:false,icon:'archive',title:tt('menu.routes.endings.title',null,'[ 엔딩 ]'),sub:tt('menu.routes.endings.sub',null,'SESSION OUTCOME RECORDS'),action:tt('menu.routes.endings.action',null,'VIEW ENDINGS'),onClick:p.onEndings});
@@ -1117,7 +1118,7 @@ function RewardScreen(p){
       h('div',{ref:_scrollRef,style:{height:'100%',overflowY:'auto',padding:'0 2px'}},
       av.map(function(r,i){var pd=previewDelta(r);var fl=fxList(pd);var isSel=sel===i;var willEnd=p.stats.c+previewValue(pd,'c')>=100;var rLoc=(typeof tc==='function')?tc('rewards',r.id,null):null;var rTitle=(rLoc&&rLoc.title)||r.title;var rDesc=(rLoc&&rLoc.desc)||r.desc;return h('div',{key:r.id,className:'oracle-card'+(isSel?' is-selected':''),onClick:function(){setSel(i)}},
         h('div',{className:'oracle-card__glow'}),
-        h('span',{className:'oracle-card__tag'},'OPTION 0'+(i+1)),
+        h('span',{className:'oracle-card__tag'},r.feId?'FACILITY COMPLETE':'OPTION 0'+(i+1)),
         h('div',{className:'oracle-card__title'},rTitle),
         h('div',{className:'oracle-card__desc'},rDesc),
         h('div',{className:'oracle-card__effects'},

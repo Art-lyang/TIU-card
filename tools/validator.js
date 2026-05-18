@@ -46,6 +46,7 @@ const DATA_FILES = [
   'data-chains-branch.js',
   'data-archive.js',
   'data-minigame-rewards.js',
+  'data-archive-expansion.js',
   'data-minigame-expansion.js',
   'data-missions.js',
   'data-missions-2.js',

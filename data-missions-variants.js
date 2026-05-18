@@ -6,6 +6,7 @@
 MISSIONS['M-001'].nodes.start.choices.push({
   label: '▸ 강도윤과 합동 돌입 — 양동 작전',
   trustReq: { doyun: 60 },
+  blockLogs: ['LOG-DOYUN-MINOR-WOUND','LOG-074-DONE','LOG-075'],
   next: 'doyun_joint'
 });
 MISSIONS['M-001'].nodes['doyun_joint'] = {

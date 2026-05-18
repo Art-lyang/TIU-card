@@ -18,3 +18,12 @@ qa-minigame-ui.png
 advance_button.png
 -setup/MD/**/*.zip
 -setup/MD/**/PRIVATE/
+
+# Obsidian vault — 개인 상태 파일만 제외 (vault 설정·MOC는 git에 추적)
+-setup/MD/.obsidian/workspace
+-setup/MD/.obsidian/workspace.json
+-setup/MD/.obsidian/workspace-mobile.json
+-setup/MD/.obsidian/cache
+-setup/MD/.obsidian/plugins/*/data.json
+-setup/MD/.trash/
+-setup/MD/_attachments/

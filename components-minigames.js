@@ -1187,3 +1187,76 @@ function FieldMiniGameOverlay(p){
   if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:p.onDone});
   return null;
 }
+
+function MiniGameGuide(p){
+  var ids=Object.keys(FIELD_MINIGAME_LIBRARY||{});
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+  var isEn=locale==='en';
+  var _sel=useState(ids[0]||''),selected=_sel[0],setSelected=_sel[1];
+  var _active=useState(null),active=_active[0],setActive=_active[1];
+  var _last=useState(null),last=_last[0],setLast=_last[1];
+  var game=FIELD_MINIGAME_LIBRARY[selected]||FIELD_MINIGAME_LIBRARY[ids[0]];
+  var copy=game?getMiniLocaleCopy(game):null;
+  var labels=isEn?{
+    title:'FIELD MINIGAME GUIDE',
+    subtitle:'Practice all ten field-analysis modules without changing save data.',
+    list:'MODULE LIST',
+    objective:'OBJECTIVE',
+    practice:'START PRACTICE',
+    noReward:'Practice mode only. No mission reward, log, resource, or ending state is written.',
+    result:'LAST PRACTICE RESULT',
+    close:'Close'
+  }:{
+    title:'FIELD MINIGAME GUIDE',
+    subtitle:'현장임무를 기다리지 않고 10종 분석 모듈을 무보상으로 연습합니다.',
+    list:'모듈 목록',
+    objective:'목표',
+    practice:'연습 시작',
+    noReward:'연습 모드입니다. 임무 보상, LOG, 자원, 엔딩 상태는 저장되지 않습니다.',
+    result:'최근 연습 결과',
+    close:'닫기'
+  };
+  var resultName=function(rank){
+    if(!rank)return '';
+    var resultLabel=copy&&copy.resultLabel?copy.resultLabel:{};
+    return resultLabel[rank]||rank;
+  };
+
+  return h('div',{className:'screen',style:{position:'relative'}},
+    h('div',{style:{width:'100%',maxWidth:560,padding:'20px 12px',flex:1,overflowY:'auto'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},labels.title),
+      h('div',{style:{fontSize:12,color:'#888',textAlign:'center',lineHeight:1.6,marginBottom:18}},labels.subtitle),
+      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:12,alignItems:'start'}},
+        h('section',{style:{border:'1px solid rgba(var(--ui-rgb),.18)',borderRadius:4,background:'rgba(0,0,0,.22)',padding:10}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#f0a030',letterSpacing:1.5,marginBottom:8}},labels.list),
+          ids.map(function(id,idx){
+            var item=FIELD_MINIGAME_LIBRARY[id];
+            var itemCopy=getMiniLocaleCopy(item);
+            var on=id===selected;
+            return h('button',{key:id,type:'button',className:'btn',onClick:function(){setSelected(id);},style:{width:'100%',minHeight:44,margin:'0 0 7px',padding:'8px 10px',fontSize:11,textAlign:'left',borderRadius:4,color:on?'#07130d':'var(--ui)',background:on?'#7affc6':'rgba(5,18,11,.82)',border:'1px solid '+(on?'#7affc6':'rgba(var(--ui-rgb),.18)')}},
+              h('span',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:9,opacity:.72,marginBottom:2}},String(idx+1).padStart(2,'0')+' / '+item.kind),
+              h('span',null,itemCopy.title)
+            );
+          })
+        ),
+        game&&h('section',{style:{border:'1px solid rgba(var(--ui-rgb),.22)',borderRadius:4,background:'var(--ui-bg)',padding:14,minHeight:310}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#f0a030',letterSpacing:1.5,marginBottom:8}},game.kind),
+          h('h2',{style:{fontSize:20,lineHeight:1.25,color:'var(--ui)',margin:'0 0 12px'}},copy.title),
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',letterSpacing:1.5,marginBottom:6}},labels.objective),
+          h('p',{style:{fontSize:13,lineHeight:1.75,color:'#cfe6d8',margin:'0 0 14px'}},copy.intro),
+          h('div',{style:{fontSize:11,lineHeight:1.65,color:'#9d8f71',border:'1px solid rgba(240,160,48,.18)',background:'rgba(240,160,48,.06)',borderRadius:4,padding:'9px 10px',marginBottom:14}},labels.noReward),
+          last&&last.type===selected&&h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#7affc6',letterSpacing:1,marginBottom:12}},labels.result+': '+resultName(last.rank)),
+          h('div',{style:{display:'flex',gap:10,flexWrap:'wrap'}},
+            h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'9px 18px',marginTop:0},onClick:function(){setActive(selected);}},labels.practice),
+            h('button',{className:'btn',style:{fontSize:12,padding:'9px 18px',marginTop:0},onClick:p.onClose},labels.close)
+          )
+        )
+      )
+    ),
+    active&&h(FieldMiniGameOverlay,{game:{type:active},onDone:function(rank){setLast({type:active,rank:rank});setActive(null);}})
+  );
+}
+
+if(typeof window!=='undefined'){
+  window.MiniGameGuide = MiniGameGuide;
+}

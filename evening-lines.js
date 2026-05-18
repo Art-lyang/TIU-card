@@ -38,6 +38,13 @@ function getEveningLines(chat, trust, logs) {
     return DOYUN_INJURED_LINES.mid;
   }
 
+  if (charKey === 'doyun' && logs && logs.indexOf('LOG-DOYUN-MINOR-WOUND') >= 0 && logs.indexOf('LOG-075') < 0) {
+    var localizedMinor = localizedTrustLines('doyun_minor_wound', tier);
+    if (localizedMinor) return localizedMinor;
+    if (typeof DOYUN_MINOR_WOUND_LINES !== 'undefined' && DOYUN_MINOR_WOUND_LINES[tier]) return DOYUN_MINOR_WOUND_LINES[tier];
+    if (typeof DOYUN_MINOR_WOUND_LINES !== 'undefined') return DOYUN_MINOR_WOUND_LINES.mid;
+  }
+
   if (tier === 'mid') return chat.lines || [];
 
   var actNum = chat.act[0];

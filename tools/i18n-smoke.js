@@ -55,7 +55,9 @@ function boot(locale) {
   runFile(ctx, 'data-chains-incident2.js');
   runFile(ctx, 'data-result-text.js');
   runFile(ctx, 'data-result-story-1.js');
+  runFile(ctx, 'data-archive.js');
   runFile(ctx, 'data-minigame-rewards.js');
+  runFile(ctx, 'data-archive-expansion.js');
   runFile(ctx, 'data-achievements.js');
   runFile(ctx, 'data-facility.js');
   runFile(ctx, 'data-facility-2.js');
@@ -875,51 +877,7 @@ function checkAllChainCardOverlays(ctx, errors) {
 }
 
 function checkArchiveOverlays(ctx, errors) {
-  const ids = [
-    'ARC-SPEC-001',
-    'ARC-SPEC-003',
-    'ARC-SPEC-008',
-    'ARC-SPEC-011',
-    'ARC-SPEC-012',
-    'ARC-EVS',
-    'ARC-SPEC-002',
-    'ARC-SPEC-004',
-    'ARC-SPEC-005',
-    'ARC-SPEC-007',
-    'ARC-SPEC-009',
-    'ARC-SPEC-010',
-    'ARC-CHAR-DOYUN',
-    'ARC-CHAR-HAEUN',
-    'ARC-CHAR-SEJIN',
-    'ARC-CHAR-JAEHYUK',
-    'ARC-CHAR-NICK',
-    'ARC-CHAR-WEBER',
-    'ARC-CHAR-SOYOUNG',
-    'ARC-CHAR-KANG',
-    'ARC-ORG-ORACLE',
-    'ARC-ORG-PROM',
-    'ARC-ORG-BRANCH',
-    'ARC-ORG-WHITESHIELD',
-    'ARC-FAC-SEAL',
-    'ARC-FAC-TUNNEL',
-    'ARC-FAC-LAB',
-    'ARC-FAC-SENSOR',
-    'ARC-SCI-PHASE',
-    'ARC-SCI-PRION',
-    'ARC-SCI-SUPPRESS',
-    'ARC-SCI-EVOLVE',
-    'ARC-SCI-TEMP',
-    'ARC-SCI-4STAGE',
-    'ARC-SYS-PROXY',
-    'ARC-SYS-FINAL',
-    'ARC-SYS-COASTAL',
-    'ARC-SYS-GENESIS',
-    'ARC-LOC-PHILA',
-    'ARC-LOC-DPRK',
-    'ARC-LOC-KOREA',
-    'ARC-LOC-ASHFALL',
-    'ARC-LOC-SILENT'
-  ];
+  const ids = Array.from(new Set((ctx.ARCHIVE_ENTRIES || []).map((entry) => entry && entry.id).filter(Boolean)));
   ids.forEach((id) => {
     const view = ctx.tc('archiveEntries', id, null);
     if (!view) {

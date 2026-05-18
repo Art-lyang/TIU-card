@@ -299,7 +299,7 @@ function EveningChat2(p){
       h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),
       h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'You can speak with one senior officer.')),
-      !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',margin:'12px auto 16px',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,'다음 DAY 진행'):tt('evening.skip',null,'SKIP'))+' ]'),
+      !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',order:20,margin:'20px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,'다음 DAY 진행'):tt('evening.skip',null,'SKIP'))+' ]'),
       h(FactionRelationPanel,{logs:p.logs,gi:p.gi}),
       h('div',{className:'evening-select-grid'},
         available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=isEveningContactDisabled(c);return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},

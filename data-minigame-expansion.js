@@ -519,16 +519,16 @@
     if(!meta||!meta.trustAssist)return '';
     var ch=meta.trustAssist.char;
     var ko={
-      doyun:'강도윤이 신뢰 루트의 현장 우위를 후속 보상으로 전환한다.',
-      sejin:'윤세진이 신뢰 루트의 분석값을 후속 판단에 반영한다.',
-      jaehyuk:'임재혁이 신뢰 루트의 기술 데이터를 후속 조치에 연결한다.',
-      haeun:'서하은이 신뢰 루트에서 확보한 비공식 단서를 후속 판단에 정리한다.'
+      doyun:'강도윤이 현장 동선을 다시 짚어 다음 조치의 부담을 줄입니다.',
+      sejin:'윤세진이 현장 분석값을 재검토해 다음 판단의 오차를 줄입니다.',
+      jaehyuk:'임재혁이 현장 장비 로그를 정리해 후속 조치에 연결합니다.',
+      haeun:'서하은이 비공식 단서를 정리해 다음 보고의 빈틈을 줄입니다.'
     };
     var en={
-      doyun:'Do-yun converts the field trust route into cleaner follow-up rewards.',
-      sejin:'Se-jin carries the trust-route analysis into the follow-up decision.',
-      jaehyuk:'Jae-hyuk turns the trust-route technical data into a follow-up option.',
-      haeun:'Hae-eun organizes the unofficial trust-route clue for the follow-up call.'
+      doyun:'Do-yun reviews the field route and reduces the burden of the next move.',
+      sejin:'Se-jin checks the field analysis again and narrows the margin of error.',
+      jaehyuk:'Jae-hyuk organizes the equipment logs and links them to the follow-up action.',
+      haeun:'Hae-eun organizes the unofficial clue and closes a gap in the next report.'
     };
     return (locale==='en'?en:ko)[ch]||'';
   }

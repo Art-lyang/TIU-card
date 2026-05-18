@@ -74,7 +74,14 @@ function FieldMission(p){
       'M-005':IMG.mission_m005,
       'M-006':IMG.mission_m006,
       'M-007':IMG.mission_m007,
-      'M-008':IMG.mission_m008
+      'M-008':IMG.mission_m008,
+      'M-009':IMG.mission_m009,
+      'M-010':IMG.mission_m010,
+      'MI-01':IMG.incident_mi01,
+      'MI-02':IMG.incident_mi02,
+      'MI-03':IMG.incident_mi03,
+      'MI-04':IMG.incident_mi04,
+      'MI-05':IMG.incident_mi05
     };
     if(heroMap[mid])return heroMap[mid];
     return mid==='M-001'?IMG.spec_012_bloodpit:
@@ -169,7 +176,12 @@ function FieldMission(p){
     }
   }
 
+  var missionLogs=Array.isArray(p.logs)?p.logs:[];
   var visChoices=node.choices.filter(function(c){
+    if(c.blockLog&&missionLogs.indexOf(c.blockLog)>=0)return false;
+    if(Array.isArray(c.blockLogs)){
+      for(var bi=0;bi<c.blockLogs.length;bi++){if(missionLogs.indexOf(c.blockLogs[bi])>=0)return false;}
+    }
     if(!c.trustReq)return true;
     for(var k in c.trustReq){if((tr[k]||0)<c.trustReq[k])return false;}
     return true;

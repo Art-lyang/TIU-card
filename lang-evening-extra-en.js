@@ -203,6 +203,29 @@ window.TS_I18N.mergeContent('en', {
         "But my head still works. Operations, personnel placement, anything. Ask me.",
         "...I understand the decision you made that night to keep me alive. I will not forget it."
       ]
+    },
+    doyun_minor_wound: {
+      low: [
+        "...My left arm has been treated.",
+        "It would be better to reduce direct field deployment.",
+        "That is the report."
+      ],
+      mid: [
+        "The arm is wrapped. I can still move.",
+        "But another underwater entry like that is out of the question for a while.",
+        "If needed, I will revise the field assignments myself."
+      ],
+      high: [
+        "Commander. The arm injury is not severe.",
+        "But if I go in the same way again, my judgment may slip.",
+        "I will command outer operations, but direct entry should go to another team."
+      ],
+      bond: [
+        "Commander.",
+        "I want to say I am fine, but Se-jin is right this time.",
+        "Instead of going in myself, I will handle placement and extraction routes.",
+        "...I will not make you pull me out because I overdid it."
+      ]
     }
   }
 });

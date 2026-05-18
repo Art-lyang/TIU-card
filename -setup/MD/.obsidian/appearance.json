@@ -1,0 +1,11 @@
+{
+  "baseFontSize": 15,
+  "theme": "obsidian",
+  "interfaceFontFamily": "",
+  "textFontFamily": "",
+  "monospaceFontFamily": "",
+  "translucency": false,
+  "nativeMenus": false,
+  "showViewHeader": true,
+  "accentColor": "#7a5cff"
+}

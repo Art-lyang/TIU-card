@@ -82,6 +82,7 @@ window.TS_I18N.mergeUI('ko', {
       new:{title:'[ 새 세션 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
       archive:{title:'[ 아카이브 접속 ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      miniguide:{title:'[ 미니게임 가이드 ]',sub:'FIELD MODULE PRACTICE',action:'OPEN GUIDE'},
       endings:{title:'[ 엔딩 ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
       settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
@@ -269,8 +270,13 @@ window.TS_I18N.mergeUI('ko', {
     title:'SESSION ARCHIVE - 엔딩 갤러리',
     summary:'총 세션: {sessions}  |  엔딩 해금: {unlocked} / {total}',
     back:'← 갤러리',
-    locked:'[미발견]',
+    locked:'[미도달]',
     achieved:'달성 완료',
+    trophy:'TROPHY',
+    hint:'HINT',
+    trophyCard:'ENDING TROPHY',
+    hintCard:'ENDING HINT CARD',
+    hintCardShort:'HINT CARD',
     close:'닫기'
   },
   settings:{
@@ -318,7 +324,7 @@ window.TS_I18N.mergeUI('ko', {
       trust:{ low:'경계', mid:'일반', high:'협조', bond:'신뢰' },
       special:{
         haeunStay:'잔류', haeunRecover:'데이터 복구 중',
-        doyunAlive:'생존', doyunWounded:'부상', doyunMinorWound:'경상',
+        doyunAlive:'생존', doyunWounded:'중상', doyunMinorWound:'경상',
         sejinResearch:'연구 진행', sejinAnalysis:'분석 중',
         jaehyeokTech:'기술 분석', weberContact:'접촉 성립', fosterInfo:'정보 제공',
         soyoungExposed:'정체 노출', soyoungJoined:'합류'

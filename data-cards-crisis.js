@@ -32,7 +32,7 @@ var CARDS_CRISIS = [
   { id: "CR-005", act: [2,3,4], priority: "중",
     req: function(s){ return s.r < 30; },
     msg: "기지 정수 시설 필터 교체 시기가 지났으나 교체품이 없습니다.\n\n\"물에서 냄새가 납니다.\"\n\n사기가 눈에 띄게 떨어지고 있습니다.",
-    left: { label: "음용 제한과 임시 배급을 지시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
+    left: { label: "음용 제한과 임시 배급을 지시한다", fx: { c: 0, r: 0, t: -1, o: 0 }, g: 0 },
     right: { label: "비상 필터를 현장 물자로 재배정한다", fx: { c: -1, r: 1, t: 1, o: -1 }, g: -1 } },
 
   { id: "CR-006", act: [3,4], priority: "상",
@@ -64,8 +64,8 @@ var CARDS_CRISIS = [
   { id: "CA-SEED-04", act: [2], priority: "하", once: true,
     req: function(s){ return s.day >= 7 && s.day <= 13; },
     msg: "서하은이 일일 보고서를 제출하면서 한마디 덧붙입니다.\n\n\"데이터 정리하다 보니... ORACLE 로그 타임스탬프에 간헐적 불연속이 있어요.\"\n\"밀리초 단위라 운영엔 영향 없지만, 좀 신경 쓰이네요.\"",
-    left: { label: "참고하겠다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 },
-    right: { label: "공식 보고할 필요 없다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    left: { label: "참고하겠다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -1 },
+    right: { label: "공식 보고할 필요 없다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // ════════════════════════════════════════════════════
   //  스탯 위기 경고 카드 — 엔딩 임박 연쇄 (forceFlow)

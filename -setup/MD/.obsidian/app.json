@@ -1,0 +1,17 @@
+{
+  "promptDelete": true,
+  "newFileLocation": "current",
+  "attachmentFolderPath": "./_attachments",
+  "alwaysUpdateLinks": true,
+  "useMarkdownLinks": false,
+  "newLinkFormat": "shortest",
+  "showInlineTitle": true,
+  "useTab": true,
+  "showLineNumber": true,
+  "spellcheck": false,
+  "showFrontmatter": true,
+  "defaultViewMode": "source",
+  "livePreview": true,
+  "tabSize": 2,
+  "readableLineLength": true
+}

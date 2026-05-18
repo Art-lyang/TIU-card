@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" role="img" aria-label="Session timeout terminal ending">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071015"/>
+      <stop offset="0.52" stop-color="#101c1f"/>
+      <stop offset="1" stop-color="#030506"/>
+    </linearGradient>
+    <radialGradient id="pulse" cx="50%" cy="44%" r="55%">
+      <stop offset="0" stop-color="#f0a030" stop-opacity="0.3"/>
+      <stop offset="0.42" stop-color="#7affc6" stop-opacity="0.08"/>
+      <stop offset="1" stop-color="#000000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="1600" height="1000" fill="url(#bg)"/>
+  <rect width="1600" height="1000" fill="url(#pulse)"/>
+  <g opacity="0.16">
+    <path d="M0 170H1600M0 330H1600M0 500H1600M0 670H1600M0 830H1600" stroke="#7affc6" stroke-width="2"/>
+    <path d="M180 0V1000M420 0V1000M800 0V1000M1180 0V1000M1420 0V1000" stroke="#7affc6" stroke-width="2"/>
+  </g>
+  <g transform="translate(800 455)" fill="none" stroke="#f0a030" stroke-width="26" filter="url(#glow)">
+    <circle r="190"/>
+    <path d="M0 -118V18L92 80" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g font-family="Share Tech Mono, Consolas, monospace" text-anchor="middle">
+    <text x="800" y="720" fill="#f0a030" font-size="54" letter-spacing="8">SESSION EXPIRED</text>
+    <text x="800" y="782" fill="#7affc6" font-size="26" letter-spacing="5">GRANT TERMINATED // ARCHIVE TRANSFER COMPLETE</text>
+    <text x="800" y="850" fill="#3f6f64" font-size="20" letter-spacing="4">ORACLE KOREA BRANCH - TEMPORARY AUTHORITY CLOSED</text>
+  </g>
+  <g opacity="0.18" fill="#7affc6">
+    <rect x="146" y="118" width="260" height="10"/>
+    <rect x="1194" y="118" width="260" height="10"/>
+    <rect x="146" y="872" width="260" height="10"/>
+    <rect x="1194" y="872" width="260" height="10"/>
+  </g>
+</svg>

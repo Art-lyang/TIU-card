@@ -52,6 +52,7 @@ function bootI18n() {
     'lang-cards-ct-en.js',
     'lang-cards-cs-en.js',
     'lang-cards-side-en.js',
+    'lang-cards-flow-en.js',
     'lang-cards-c-en.js',
     'data-core.js',
     'data-facility.js',
@@ -142,7 +143,7 @@ function main() {
   }
   if (!cards11.includes('C-187 is intentionally unused')) fail(errors, 'C-187 intentional gap comment missing');
   if (!read('data-cards-15.js').includes('C-251 is intentionally unused')) fail(errors, 'C-251 intentional gap comment missing');
-  if (!read('images.js').includes('intentionally shares the base containment-success ending art')) fail(errors, 'ending_C_cst shared-art comment missing');
+  if (!read('images.js').includes('ending_C_cst: "assets/images/endings/ending_C_cst.png"')) fail(errors, 'ending_C_cst dedicated-art mapping missing');
 
   if (!block(cardsCrisis, 'CA-SEED-01').includes('o: 1') || !block(cardsCrisis, 'CA-SEED-01').includes('g: -2')) fail(errors, 'CA-SEED-01 should have visible differentiated fx');
   if (!block(cardsCrisis, 'CA-SEED-02').includes('r: -1') || !block(cardsCrisis, 'CA-SEED-02').includes('g: -3')) fail(errors, 'CA-SEED-02 should have visible differentiated fx');

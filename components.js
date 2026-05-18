@@ -19,7 +19,25 @@ function FieldMission(p){
     }
     return out;
   }
-  var node=localizeMissionNode(mission,mission.nodes[nodeId],nodeId);var mImg=p.missionId==='M-001'?IMG.spec_012_bloodpit:p.missionId==='M-002'?IMG.spec_011_shelltalker:p.missionId==='M-004'?IMG.spec_001_mannequin:p.missionId==='M-005'?IMG.spec_003_brood:p.missionId==='M-006'?IMG.spec_008_spore:p.missionId==='M-009'?IMG.spec_004_seedspreader:p.missionId==='M-010'?IMG.spec_015_brainseeker:null;
+  var node=localizeMissionNode(mission,mission.nodes[nodeId],nodeId);
+  var heroMap={
+    'M-001':IMG.mission_m001||IMG.spec_012_bloodpit,
+    'M-002':IMG.mission_m002||IMG.spec_011_shelltalker,
+    'M-003':IMG.mission_m003,
+    'M-004':IMG.mission_m004||IMG.spec_001_mannequin,
+    'M-005':IMG.mission_m005||IMG.spec_003_brood,
+    'M-006':IMG.mission_m006||IMG.spec_008_spore,
+    'M-007':IMG.mission_m007,
+    'M-008':IMG.mission_m008,
+    'M-009':IMG.mission_m009||IMG.spec_004_seedspreader,
+    'M-010':IMG.mission_m010||IMG.spec_015_brainseeker,
+    'MI-01':IMG.incident_mi01,
+    'MI-02':IMG.incident_mi02,
+    'MI-03':IMG.incident_mi03,
+    'MI-04':IMG.incident_mi04,
+    'MI-05':IMG.incident_mi05
+  };
+  var mImg=heroMap[p.missionId]||null;
   useEffect(function(){setTextShown('');setShowChoices(false);var i=0;var txt=node.text;var t=setInterval(function(){if(i<txt.length){i++;setTextShown(txt.substring(0,i))}else{clearInterval(t);setTimeout(function(){setShowChoices(true)},400)}},25);return function(){clearInterval(t)}},[nodeId]);
   var handleChoice=function(choice){if(choice.next==='end'){p.onComplete({result:choice.result||{},g:choice.g||0,log:choice.log||null})}else{setNodeId(choice.next)}};
   var visChoices=node.choices.filter(function(c){if(!c.trustReq)return true;for(var k in c.trustReq){if((tr[k]||0)<c.trustReq[k])return false}return true});

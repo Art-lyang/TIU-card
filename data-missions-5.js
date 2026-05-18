@@ -8,7 +8,7 @@
         choices: [
           { label: "▸ 배수 후 지상전 — 수로 배수 밸브 개방", next: "drain" },
           { label: "▸ 미끼 유인 — 수로 밖으로 끌어내기", next: "lure" },
-          { label: "▸ 수중 강습 — 직접 진입", next: "dive", trustReq: { doyun: 50 } }
+          { label: "▸ 수중 강습 — 직접 진입", next: "dive", trustReq: { doyun: 50 }, blockLogs: ["LOG-DOYUN-MINOR-WOUND","LOG-074-DONE","LOG-075"] }
         ]
       },
       drain: {
