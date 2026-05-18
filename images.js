@@ -50,6 +50,7 @@ const IMG = {
   ending_F: "assets/images/endings/ending_F.png",
   ending_G: "assets/images/endings/ending_G.png",
   ending_H: "assets/images/endings/ending_H.png",
+  ending_TIME_UP: "assets/images/endings/ending_TIME_UP.svg",
 };
 
 const CHAR_IMG = {

@@ -1,6 +1,6 @@
 # TERMINAL SESSION - Game Design Document v1.1.1
 
-> Current runtime snapshot for `BUILD_VER=203` / 2026-05-18.
+> Current runtime snapshot for `BUILD_VER=204` / 2026-05-18.
 > This document is a release-candidate delta on top of `TIU-GAME-GDD-v10.md`.
 
 ## 1. Current Scope
@@ -21,8 +21,10 @@ The current content registry contains:
 | Evidence entries | 38 |
 | Evidence combinations | 15 |
 | Endings | 16 |
-| Archive entries | 47 |
+| Archive entries | 110 |
 | Facility items | 16 |
+
+Archive density now targets roughly one unlockable archive item per five cards. The archive is allowed to lag slightly behind card count during small patches, but any large content pass should add archive entries in batches rather than leaving the lore/reference layer static.
 
 ## 2. Session Deck-Pack Model
 
@@ -95,7 +97,23 @@ Verified baseline:
 - Footer visible without vertical sliding.
 - No DLC route-selection surface in the current PC build.
 
-## 7. QA Baseline
+## 7. Meta-Progression And Practice Surfaces
+
+The record layer should make replay progress visible without spoiling undiscovered routes.
+
+- The ending record is a 16-slot trophy gallery.
+- Reached endings may show the ending image, summary, and narrative.
+- Unreached endings must show a hint card instead of the image or full ending text.
+- `TIME_UP` is a real saved ending state, not only a dispatch fallback.
+
+The minigame guide is a main-menu practice surface for the 10 field minigame types.
+
+- Practice runs do not grant rewards.
+- Practice runs do not write LOGs, resources, endings, or mission state.
+- Field missions remain the canonical way to encounter minigames in the campaign.
+- The guide exists to teach mechanics before or between field-mission appearances.
+
+## 8. QA Baseline
 
 Latest checks:
 
@@ -112,7 +130,7 @@ node tools/issue22_audit.js
 
 node tools/critical-audit.js
   critical-audit OK
-  warning: TIME_UP is dispatch-only and not listed in ending gallery
+  TIME_UP gallery/dispatch check OK
 
 resource zero regression smoke
   normal choice zero: not tuned
@@ -132,10 +150,14 @@ Browser QA also confirmed:
 - Local `http://localhost:4173/index.html` loads at 1366x768 with no console errors.
 - English locale switch reaches the boot screen with no console errors.
 - `ending_C_cst` now maps to its dedicated ending image.
+- Ending records show 16 gallery slots with locked hint cards and reached trophy cards.
+- Main menu minigame guide opens the 10-type practice selector without campaign side effects.
+- Mobile 390x844 main menu keeps the footer visible with both 6-row session-history and 7-row saved-session menu states.
 - Issue #33 state/balance guards are covered by `tools/critical-audit.js`.
 
-## 8. Remaining Watch Items
+## 9. Remaining Watch Items
 
 - Automated comply/rebel/newbie profiles now die much faster because hidden broad floors were removed. This is a correction to the failure model, but release balance still needs human playtest calibration.
 - `data-cards-resist-hint.js` has a local `t` reward concentration. It is not a global 5x imbalance, but the RH/HH/CB card group remains a future balance pass candidate.
 - Doyun critical-wound gating is now applied to the known direct field/action routes. Future new cards that physically deploy him must follow the same state rule.
+- Archive expansion is now proportional to the 558-card runtime. Future major card batches should reserve matching archive entries before release.

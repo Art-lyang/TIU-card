@@ -82,6 +82,7 @@ window.TS_I18N.mergeUI('ko', {
       new:{title:'[ 새 세션 시작 ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
       archive:{title:'[ 아카이브 접속 ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      miniguide:{title:'[ 미니게임 가이드 ]',sub:'FIELD MODULE PRACTICE',action:'OPEN GUIDE'},
       endings:{title:'[ 엔딩 ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
       settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
@@ -269,8 +270,13 @@ window.TS_I18N.mergeUI('ko', {
     title:'SESSION ARCHIVE - 엔딩 갤러리',
     summary:'총 세션: {sessions}  |  엔딩 해금: {unlocked} / {total}',
     back:'← 갤러리',
-    locked:'[미발견]',
+    locked:'[미도달]',
     achieved:'달성 완료',
+    trophy:'TROPHY',
+    hint:'HINT',
+    trophyCard:'ENDING TROPHY',
+    hintCard:'ENDING HINT CARD',
+    hintCardShort:'HINT CARD',
     close:'닫기'
   },
   settings:{

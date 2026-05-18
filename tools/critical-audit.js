@@ -175,10 +175,16 @@ function checkCacheBusting(errors) {
   const runtimeFiles = [
     'app.js',
     'app-init.js',
+    'components-archive.js',
+    'components-endings.js',
     'components-game.js',
+    'components-minigames.js',
+    'data-archive-expansion.js',
     'images.js',
     'images_p1.js',
-    'lang-content-en-all.js'
+    'lang-content-en-all.js',
+    'lang-ui-en.js',
+    'lang-ui-ko.js'
   ];
   const changedRuntime = runtimeFiles.filter((file) => changed.has(file));
   if (!changedRuntime.length) return;

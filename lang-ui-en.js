@@ -81,6 +81,7 @@ window.TS_I18N.mergeUI('en', {
       new:{title:'[ NEW SESSION ]',sub:'FIELD COMMAND SIMULATION',action:'NEW SESSION'},
       archive:{title:'[ ARCHIVE ACCESS ]',sub:'ENTITY / INCIDENT / PERSONNEL DATA',action:'ACCESS ARCHIVE'},
       logs:{title:'[ LOGS ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
+      miniguide:{title:'[ MINIGAME GUIDE ]',sub:'FIELD MODULE PRACTICE',action:'OPEN GUIDE'},
       endings:{title:'[ ENDINGS ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
       settings:{title:'[ SYSTEM SETTINGS ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
@@ -246,6 +247,11 @@ window.TS_I18N.mergeUI('en', {
     back:'← Gallery',
     locked:'[Locked]',
     achieved:'Achieved',
+    trophy:'TROPHY',
+    hint:'HINT',
+    trophyCard:'ENDING TROPHY',
+    hintCard:'ENDING HINT CARD',
+    hintCardShort:'HINT CARD',
     close:'Close'
   },
   settings:{

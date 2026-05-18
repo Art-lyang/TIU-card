@@ -1,9 +1,35 @@
 # TIU-CARD 작업 인수인계 (Handoff)
 
-> **작성일**: 2026-05-18 (Issue #33 P1~P3 출시 전 QA 기준 갱신)
+> **작성일**: 2026-05-18 (아카이브/엔딩 메타/미니게임 가이드 개선)
 > **작업 브랜치**: `polish/ui-mockup-integration`
-> **마지막 BUILD_VER**: `203`
-> **대응 체인지로그**: GitHub Issue #33 P1~P3 보완 및 2026-05-18 검증 스냅샷
+> **마지막 BUILD_VER**: `204`
+> **대응 체인지로그**: 아카이브 110종 확장, 엔딩 16종 메타 갤러리, 미니게임 10종 가이드 시퀀스
+
+---
+
+## 0-0. 2026-05-18 현재 기준 — 아카이브/엔딩 메타/미니게임 가이드 개선
+
+### 이번 세션 완료
+
+- P1: `data-archive-expansion.js`를 추가해 아카이브를 47종에서 110종으로 확장. 카드 558장 대비 약 1:5 비율의 잠금 해제 항목을 맞추고, 사건기록/인물심화/작전가이드/시설기록/보안감사/프로토콜/현장분석 카테고리를 추가.
+- P1: 엔딩 기록 화면을 16종 트로피 갤러리로 개편. 도달 엔딩은 이미지/서사를 표시하고, 미도달 엔딩은 스포일러를 숨긴 힌트 카드로 표시.
+- P1: `TIME_UP`을 실제 세션 만료 엔딩으로 저장/표시하도록 연결하고, 전용 갤러리 이미지 매핑을 추가.
+- P2: 메인 메뉴에 미니게임 가이드를 추가. 현장임무 발생 전에도 signal/sequence/breach/route/sample/scan/evidence/reconstruction/statement/screening 10종을 무보상으로 연습 가능.
+- P2/P3: 신규 아카이브와 엔딩/미니게임 UI가 영어 UI/i18n smoke/critical audit 로드 목록에 포함되도록 검증 도구와 캐시 버전을 갱신.
+
+### 검증 결과
+
+- `node tools/validator.js`: 카드 558 / 고유 ID 558 / 아카이브 110 / 이슈 0건.
+- `node tools/i18n-smoke.js`: 통과.
+- `node tools/critical-audit.js`: 통과. `TIME_UP` dispatch-only 경고 제거.
+- Playwright 스모크: desktop 1366x768에서 메인 메뉴 미니게임 가이드, 아카이브 110 카운트, 엔딩 갤러리 16종/`TIME_UP` 슬롯, 미니게임 연습 진입 확인.
+- Playwright 모바일 스모크: 390x844에서 세션 기록만 있는 6행 메뉴와 저장 슬롯이 있는 7행 메뉴 모두 footer 첫 화면 노출, 가로 오버플로 0건.
+
+### 남은 관찰 지점
+
+1. 아카이브는 카드/로그 기반 해금 비율을 맞춘 상태다. 이후 신규 카드가 25~30장 이상 늘어나면 5~6개 단위로 동반 확장하는 것이 좋다.
+2. 미니게임 가이드는 학습 접근성을 해결하되 보상/LOG/자원에는 영향을 주지 않는다. 실제 현장임무 튜토리얼 문구는 별도 UX 패스에서 더 다듬을 수 있다.
+3. 엔딩 힌트 카드는 스포일러를 억제한 상태로 구성했다. 힌트 강도는 플레이테스트에서 “너무 막연한지/너무 직접적인지”만 재평가하면 된다.
 
 ---
 
@@ -27,7 +53,7 @@
 - `node tools/validator.js`: 카드 558 / 고유 ID 558 / 이슈 0건.
 - `node tools/i18n-smoke.js`: 통과.
 - `node tools/issue22_audit.js`: 통과.
-- `node tools/critical-audit.js`: 통과. `TIME_UP` 갤러리 제외는 dispatch-only 경고로 유지.
+- `node tools/critical-audit.js`: 통과. 이후 `TIME_UP`은 실제 세션 만료 엔딩/갤러리 16번째 항목으로 연결됨.
 - 자원 0 회귀 스모크: 일반 선택/보상은 0 도달을 보정하지 않고, `CE-042/B` 예외만 `o/r=3`으로 작동.
 - `python tools/simulator_v3.py 20 all`: comply/rebel/newbie는 보정 제거 후 즉사율 100%, careful은 서사 100%, explorer는 서사 50%. 자동 전략 난도는 인간 플레이 기준 재측정 필요.
 - Playwright 스모크: `http://localhost:4173/index.html` desktop 1366x768, 영어 전환 후 부팅 화면 콘솔 오류 0건.
