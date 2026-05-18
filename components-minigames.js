@@ -221,6 +221,9 @@ function MiniPanel(p){
   }, h('div',{
       style:{
         width:'100%',maxWidth:720,
+        maxHeight:'calc(100vh - 36px)',
+        overflowY:'auto',
+        boxSizing:'border-box',
         border:'1px solid rgba(122,255,198,0.28)',
         borderRadius:'18px',
         background:'linear-gradient(180deg, rgba(6,20,12,0.98), rgba(3,10,7,0.98))',
@@ -321,6 +324,7 @@ function SequenceMiniGame(p){
   var finished=useRef(false);
   var buttons=['RED','AUX','LOCK','VENT','SEAL','PURGE'];
   var iconMap={RED:'warning',AUX:'aux_waveform',LOCK:'shield_lock',VENT:'vent_grille',SEAL:'seal_ring',PURGE:'purge_triangle'};
+  var buttonLabels={RED:'RED OFF',AUX:'AUX ON',LOCK:'MAIN LOCK',VENT:'VENT CLOSE',SEAL:'SEAL',PURGE:'PURGE HOLD'};
 
   useEffect(function(){
     if(finished.current)return;
@@ -388,9 +392,10 @@ function SequenceMiniGame(p){
           var isExpected=id===expected;
           var isUsed=proto.sequence.slice(0,step).indexOf(id)>=0;
           var cls='fm-seq-button'+(isExpected?' is-expected':'')+(isUsed?' is-used':'');
-          return h('button',{key:id,className:cls,onClick:function(){pressButton(id);}},
+          return h('button',{key:id,className:cls,'aria-label':buttonLabels[id]||id,onClick:function(){pressButton(id);}},
             h('img',{src:'assets/field-mission-ui/icons/'+iconMap[id]+'.png',alt:''}),
-            h('span',null,id));
+            h('span',{className:'fm-seq-button-code'},id),
+            h('strong',{className:'fm-seq-button-label'},buttonLabels[id]||id));
         })),
       h('div',{className:'fm-seq-footer'},
         h('span',null,'SEAL PROTOCOL'),
@@ -454,7 +459,7 @@ function BreachMiniGame(p){
   busy.current=false;
   var edgeSeen={};
   var edges=[];
-  var boardNode=function(node){return{x:Math.max(12,Math.min(88,node.x)),y:Math.max(12,Math.min(88,node.y))}};
+  var boardNode=function(node){return{x:Math.max(10,Math.min(92,node.x)),y:Math.max(10,Math.min(90,node.y))}};
 
   Object.keys(layout.nodes).forEach(function(id){
     var node=layout.nodes[id];
@@ -526,20 +531,11 @@ function BreachMiniGame(p){
       h('div',{style:{height:8,borderRadius:999,overflow:'hidden',background:'rgba(15,35,22,0.9)',marginBottom:16}},
         h('div',{style:{height:'100%',width:Math.min(100,exp/8*100)+'%',background:exp>=6?'#ff7a7a':'#78ffbe'}})),
       h('div',{key:'board-'+layoutIndex,style:{position:'relative',height:260,border:'1px solid rgba(122,255,198,0.16)',borderRadius:'18px',background:'radial-gradient(circle at 50% 50%, rgba(14,40,28,0.96), rgba(4,15,10,0.98))'}},
-        edges.map(function(edge){
-          var a=boardNode(layout.nodes[edge.from]),b=boardNode(layout.nodes[edge.to]);
-          var dx=b.x-a.x,dy=b.y-a.y;
-          var len=Math.sqrt(dx*dx+dy*dy);
-          var ang=Math.atan2(dy,dx)*180/Math.PI;
-          return h('div',{key:edge.from+'-'+edge.to,style:{
-            position:'absolute',
-            left:a.x+'%',top:a.y+'%',
-            width:len+'%',height:'2px',
-            transform:'translateY(-50%) rotate('+ang+'deg)',
-            transformOrigin:'0 50%',
-            background:'rgba(122,255,198,0.18)'
-          }});
-        }),
+        h('svg',{viewBox:'0 0 100 100',preserveAspectRatio:'none','aria-hidden':'true',style:{position:'absolute',inset:0,width:'100%',height:'100%',zIndex:1,pointerEvents:'none'}},
+          edges.map(function(edge){
+            var a=boardNode(layout.nodes[edge.from]),b=boardNode(layout.nodes[edge.to]);
+            return h('line',{key:edge.from+'-'+edge.to,x1:a.x,y1:a.y,x2:b.x,y2:b.y,stroke:'rgba(122,255,198,0.42)',strokeWidth:2,strokeLinecap:'round',vectorEffect:'non-scaling-stroke'});
+          })),
         Object.keys(layout.nodes).map(function(id){
           var node=layout.nodes[id];
           var pos=boardNode(node);
@@ -550,9 +546,9 @@ function BreachMiniGame(p){
           var border=id===current?'2px solid #7affc6':'1px solid '+baseColor;
           var opacity=(id===current||isAdj||id===layout.start)?1:(node.type==='exit'&&keys.length<2?0.45:0.72);
           return h('button',{key:id,onClick:function(){moveTo(id);},disabled:(id!==current&&!isAdj)||(node.type==='exit'&&!unlocked),style:{
-            position:'absolute',left:pos.x+'%',top:pos.y+'%',transform:'translate(-50%, -50%)',
-            width:54,height:54,borderRadius:'50%',border:border,background:bg,color:baseColor,
-            fontFamily:"'Share Tech Mono',monospace",fontSize:12,cursor:(id!==current&&isAdj)?'pointer':'default',
+            position:'absolute',left:pos.x+'%',top:pos.y+'%',transform:'translate(-50%, -50%)',zIndex:2,
+            width:'clamp(42px, 10vw, 54px)',height:'clamp(42px, 10vw, 54px)',borderRadius:'50%',border:border,background:bg,color:baseColor,
+            fontFamily:"'Share Tech Mono',monospace",fontSize:'clamp(9px, 2.6vw, 12px)',cursor:(id!==current&&isAdj)?'pointer':'default',
             opacity:opacity,boxShadow:id===current?'0 0 18px rgba(122,255,198,0.28)':'none'
           }},id===layout.start?'IN':id===layout.exit?'OUT':node.type==='key'?'KEY':node.type==='trap'?'ICE':'NODE');
         }))
@@ -863,7 +859,10 @@ function RouteMiniGame(p){
 function EvidenceMiniGame(p){
   var copy=p.copy;
   var cases=[
-    { leadKo:'벽면 좌표와 장비 흔적을 검토한다.', leadEn:'Review the wall coordinates and equipment traces.', correct:['coord','salt','boot'], items:[
+    { leadKo:'벽면 좌표와 장비 흔적을 검토한다.', leadEn:'Review the wall coordinates and equipment traces.', correct:['coord','salt','boot'],
+      hintKo:'판독 기준: 장소를 특정하는 좌표, 해안 접근 흔적, 비표준 이동 흔적처럼 “어디서 들어왔고 어떻게 움직였는지”를 증명하는 단서를 고르세요.',
+      hintEn:'Sorting rule: choose evidence that proves where the subject entered and how they moved, such as location marks, coastal residue, and non-standard tracks.',
+      items:[
       {id:'coord',ko:'해안 좌표 각인',en:'Coastline coordinates'},
       {id:'salt',ko:'염분 묻은 통신 케이블',en:'Salt-stained comm cable'},
       {id:'cup',ko:'뒤집힌 금속 컵',en:'Overturned metal cup'},
@@ -871,7 +870,10 @@ function EvidenceMiniGame(p){
       {id:'dust',ko:'먼지 낀 램프 파편',en:'Dusty lamp shard'},
       {id:'ash',ko:'식은 화로 재',en:'Cold brazier ash'}
     ]},
-    { leadKo:'CCTV 공백 구간과 내부 로그를 대조한다.', leadEn:'Compare the CCTV blackout against internal logs.', correct:['time','route','patch'], items:[
+    { leadKo:'CCTV 공백 구간과 내부 로그를 대조한다.', leadEn:'Compare the CCTV blackout against internal logs.', correct:['time','route','patch'],
+      hintKo:'판독 기준: 영상 공백을 만든 시간 반복, 층간 이동 패턴, 승인 없는 시스템 변경처럼 기록 조작과 직접 이어지는 단서를 고르세요.',
+      hintEn:'Sorting rule: choose traces directly tied to log manipulation: repeated time, cross-floor movement, and unauthorized system changes.',
+      items:[
       {id:'time',ko:'02:47 반복 타임코드',en:'02:47 repeating timestamp'},
       {id:'route',ko:'B1-B2 이동 흔적',en:'B1-B2 transit pattern'},
       {id:'food',ko:'식당 출입 기록',en:'Cafeteria access log'},
@@ -879,7 +881,10 @@ function EvidenceMiniGame(p){
       {id:'light',ko:'형광등 점멸 기록',en:'Fluorescent flicker log'},
       {id:'temp',ko:'서버실 온도 편차',en:'Server room heat drift'}
     ]},
-    { leadKo:'현장 샘플 보고와 오염 흔적을 추린다.', leadEn:'Sort the live sample report from contamination noise.', correct:['spike','resin','tag'], items:[
+    { leadKo:'현장 샘플 보고와 오염 흔적을 추린다.', leadEn:'Sort the live sample report from contamination noise.', correct:['spike','resin','tag'],
+      hintKo:'판독 기준: 검체 상태 변화, 응고/잔류 물질, 오염 표식 이상처럼 샘플 오염을 직접 설명하는 단서를 고르세요.',
+      hintEn:'Sorting rule: choose clues that directly explain sample contamination: specimen-state change, residue/coagulation, and broken contamination markings.',
+      items:[
       {id:'spike',ko:'급상승 포자 밀도',en:'Spore density spike'},
       {id:'resin',ko:'응고 수지 흔적',en:'Coagulated resin trace'},
       {id:'glass',ko:'깨진 슬라이드 파편',en:'Broken slide fragments'},
@@ -931,6 +936,9 @@ function EvidenceMiniGame(p){
       h('span',null,'PICKS: '+selected.length+'/3')),
     h('div',{style:{padding:'14px 16px',marginBottom:14,border:'1px solid rgba(245,188,64,0.35)',borderRadius:'16px',background:'rgba(32,24,8,0.35)',color:'#f3c35b',fontSize:14,lineHeight:1.6}},
       locale==='en'?active.leadEn:active.leadKo),
+    h('div',{style:{padding:'11px 14px',marginBottom:14,border:'1px solid rgba(122,255,198,0.22)',borderRadius:'14px',background:'rgba(5,18,11,0.74)',color:'rgba(210,235,220,0.84)',fontSize:13,lineHeight:1.65}},
+      h('b',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:10,letterSpacing:1.4,color:'#7affc6',marginBottom:4}},locale==='en'?'SORTING RULE':'판독 기준'),
+      locale==='en'?active.hintEn:active.hintKo),
     h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:12,marginBottom:16}},
       active.items.map(function(item){
         var isOn=selected.indexOf(item.id)>=0;
