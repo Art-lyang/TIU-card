@@ -1203,6 +1203,8 @@ function MiniGameGuide(p){
   var _sel=useState(ids[0]||''),selected=_sel[0],setSelected=_sel[1];
   var _active=useState(null),active=_active[0],setActive=_active[1];
   var _last=useState(null),last=_last[0],setLast=_last[1];
+  var guideScrollRef=useRef(null);
+  var guideActionRef=useRef(null);
   var game=FIELD_MINIGAME_LIBRARY[selected]||FIELD_MINIGAME_LIBRARY[ids[0]];
   var copy=game?getMiniLocaleCopy(game):null;
   var labels=isEn?{
@@ -1229,9 +1231,25 @@ function MiniGameGuide(p){
     var resultLabel=copy&&copy.resultLabel?copy.resultLabel:{};
     return resultLabel[rank]||rank;
   };
+  var jumpToPractice=function(){
+    if(typeof window==='undefined'||window.innerWidth>640)return;
+    setTimeout(function(){
+      var target=guideActionRef.current;
+      if(!target)return;
+      var scroller=guideScrollRef.current;
+      if(scroller&&typeof scroller.scrollTo==='function'){
+        var sr=scroller.getBoundingClientRect();
+        var tr=target.getBoundingClientRect();
+        var top=scroller.scrollTop+(tr.top-sr.top)-28;
+        scroller.scrollTo({top:Math.max(0,top),behavior:'smooth'});
+        return;
+      }
+      if(target.scrollIntoView)target.scrollIntoView({behavior:'smooth',block:'center'});
+    },60);
+  };
 
   return h('div',{className:'screen',style:{position:'relative'}},
-    h('div',{style:{width:'100%',maxWidth:560,padding:'20px 12px',flex:1,overflowY:'auto'}},
+    h('div',{ref:guideScrollRef,style:{width:'100%',maxWidth:560,padding:'20px 12px',flex:1,overflowY:'auto'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},labels.title),
       h('div',{style:{fontSize:12,color:'#888',textAlign:'center',lineHeight:1.6,marginBottom:18}},labels.subtitle),
       h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:12,alignItems:'start'}},
@@ -1241,7 +1259,7 @@ function MiniGameGuide(p){
             var item=FIELD_MINIGAME_LIBRARY[id];
             var itemCopy=getMiniLocaleCopy(item);
             var on=id===selected;
-            return h('button',{key:id,type:'button',className:'btn',onClick:function(){setSelected(id);},style:{width:'100%',minHeight:44,margin:'0 0 7px',padding:'8px 10px',fontSize:11,textAlign:'left',borderRadius:4,color:on?'#07130d':'var(--ui)',background:on?'#7affc6':'rgba(5,18,11,.82)',border:'1px solid '+(on?'#7affc6':'rgba(var(--ui-rgb),.18)')}},
+            return h('button',{key:id,type:'button',className:'btn',onClick:function(){setSelected(id);jumpToPractice();},style:{width:'100%',minHeight:44,margin:'0 0 7px',padding:'8px 10px',fontSize:11,textAlign:'left',borderRadius:4,color:on?'#07130d':'var(--ui)',background:on?'#7affc6':'rgba(5,18,11,.82)',border:'1px solid '+(on?'#7affc6':'rgba(var(--ui-rgb),.18)')}},
               h('span',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:9,opacity:.72,marginBottom:2}},String(idx+1).padStart(2,'0')+' / '+item.kind),
               h('span',null,itemCopy.title)
             );
@@ -1254,7 +1272,7 @@ function MiniGameGuide(p){
           h('p',{style:{fontSize:13,lineHeight:1.75,color:'#cfe6d8',margin:'0 0 14px'}},copy.intro),
           h('div',{style:{fontSize:11,lineHeight:1.65,color:'#9d8f71',border:'1px solid rgba(240,160,48,.18)',background:'rgba(240,160,48,.06)',borderRadius:4,padding:'9px 10px',marginBottom:14}},labels.noReward),
           last&&last.type===selected&&h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#7affc6',letterSpacing:1,marginBottom:12}},labels.result+': '+resultName(last.rank)),
-          h('div',{style:{display:'flex',gap:10,flexWrap:'wrap'}},
+          h('div',{ref:guideActionRef,style:{display:'flex',gap:10,flexWrap:'wrap'}},
             h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'9px 18px',marginTop:0},onClick:function(){setActive(selected);}},labels.practice),
             h('button',{className:'btn',style:{fontSize:12,padding:'9px 18px',marginTop:0},onClick:p.onClose},labels.close)
           )
