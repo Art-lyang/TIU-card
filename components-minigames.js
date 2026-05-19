@@ -53,13 +53,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SIGNAL ALIGNMENT',
     ko: {
       title: 'SPEC-011 음향 패턴 정렬',
-      intro: '초록 커서를 황색 안정 구간에 맞춰 신호를 고정한다. 오차가 크면 현장 분석값이 무너진다.',
+      intro: '이동하는 송출 신호가 안정 대역에 들어선 순간 멈춰 패턴을 고정한다. 대역을 놓치면 현장 분석값이 통째로 무너진다.',
       action: '판정 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'SPEC-011 Acoustic Pattern Alignment',
-      intro: 'Lock the signal by stopping the green cursor inside the amber stability band.',
+      intro: 'Stop the drifting signal the moment it enters the stability window. Slip past it and the field reading collapses.',
       action: 'Confirm',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -69,13 +69,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'QUARANTINE SEQUENCE',
     ko: {
       title: '격리 봉인 수동 시퀀스',
-      intro: '패널 지시문 순서대로 봉인 버튼을 눌러 자동 루틴의 빈틈을 메운다.',
+      intro: '패널에 표시되는 순서 그대로 봉인 단계를 입력해 자동 루틴의 빈틈을 직접 메운다. 순서를 놓치면 봉인선이 흔들린다.',
       action: '입력',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Manual Quarantine Seal Sequence',
-      intro: 'Press panel controls in protocol order to close the gap left by the automatic routine.',
+      intro: 'Drive the seal steps in the exact order the panel calls them and close the gap the auto-routine left behind. Slip the order and the seal line wavers.',
       action: 'Input',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -85,13 +85,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ORACLE TRACE',
     ko: {
       title: '권한 흔적 추적',
-      intro: '인접한 노드만 따라 움직이며 KEY 흔적을 모은 뒤 EXIT로 빠져나온다. 붉은 노드는 노출도를 올린다.',
+      intro: '이어진 권한 경로를 따라가 KEY 흔적을 모두 회수한 뒤 출구로 빠져나온다. 함정 지점을 지날 때마다 추적 노출도가 올라간다.',
       action: '노드 선택',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Authority Trace',
-      intro: 'Move only through adjacent nodes, collect KEY traces, then reach EXIT before exposure peaks.',
+      intro: 'Follow the connected authority path, gather every KEY trace, and reach the exit before exposure spikes. Each trap point raises the tracking trail.',
       action: 'Select Node',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -100,14 +100,14 @@ var FIELD_MINIGAME_LIBRARY = {
     id: 'route',
     kind: 'ROUTE EVADE',
     ko: {
-      title: '수로 추적 우회 경로',
-      intro: '제한 이동 횟수 안에 위험 타일을 피해 목표 지점까지 이동한다. 빨간 칸은 진입 즉시 실패다.',
+      title: '수로망 추적 회피 경로',
+      intro: '주어진 이동 횟수 안에 감시 구역을 우회해 표시된 합류 지점까지 빠진다. 적색 감지선에 발을 들이면 그 순간 작전이 끊긴다.',
       action: '이동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
-      title: 'Drainage Route Intercept',
-      intro: 'Reach the target within limited moves while avoiding danger tiles. Red tiles fail on contact.',
+      title: 'Drainage Network Evasion',
+      intro: 'Reach the marked junction within the move budget while skirting the surveillance grid. Stepping into a red detection line aborts the run on contact.',
       action: 'Move',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -117,13 +117,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SAMPLE RECOVERY',
     ko: {
       title: '활성 샘플 추적 회수',
-      intro: '회수 탐침을 조작해 이동하는 활성 샘플을 회수장 안에 붙잡고 회수율을 채운다.',
+      intro: '회수 탐침으로 도망치는 활성 표본을 추적해 회수장 안에 가둔다. 표본이 회수장 안에 머무는 동안에만 회수율이 차오른다.',
       action: '회수 장비 작동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Active Sample Tracking Recovery',
-      intro: 'Operate the extractor probe, keep the active specimen inside the recovery field, and fill recovery progress.',
+      intro: 'Chase the active specimen with the extractor probe and pin it inside the recovery field. Progress only rises while the specimen stays in the field.',
       action: 'Operate Extractor',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -133,13 +133,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SCAN SEARCH',
     ko: {
       title: '미등록 통로 생체 반응 스캔',
-      intro: '스캐너를 움직여 이상 반응 중심을 붙잡는다. 가짜 반응 위에 오래 머물면 스캔이 흔들린다.',
+      intro: '스캐너로 통로를 훑어 진짜 생체 반응의 중심을 잡아낸다. 미끼 신호 위에 오래 머물수록 잠금이 흔들린다.',
       action: '스캔 유지',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Unregistered Passage Bio-Signal Scan',
-      intro: 'Sweep the scanner across the sector and hold on the true anomaly. Decoys destabilize the lock.',
+      intro: 'Sweep the scanner across the passage and hold over the real bio-signal center. The longer it lingers on a decoy, the more the lock shakes.',
       action: 'Hold Scan',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -149,13 +149,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'EVIDENCE SORT',
     ko: {
       title: '현장 단서 분류',
-      intro: '제한된 판독 슬롯 안에 실제 단서만 골라 넣는다. 잡음 자료가 많을수록 다음 판단이 흐려진다.',
+      intro: '남은 판독 자리에 진짜 단서만 추려서 올린다. 잡음 자료가 끼어들수록 다음 추적 판단이 흐려진다.',
       action: '판독 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Evidence Triage',
-      intro: 'Fill the limited review slots with real clues only. Noise data will blur the next call.',
+      intro: 'Lift only the real clues into the remaining review slots. Each piece of noise blurs the next tracking call.',
       action: 'Lock Review',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -165,13 +165,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'LOG RECONSTRUCTION',
     ko: {
       title: '로그 복원 시퀀스',
-      intro: '깨진 기록 조각을 시간 순서대로 다시 이어 붙인다. 잘못 잇는 순간 추적선이 흐트러진다.',
+      intro: '흩어진 기록 조각을 시간 순서대로 다시 이어 붙인다. 한 번이라도 순서를 놓치면 추적선이 끊긴다.',
       action: '조각 선택',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Log Reconstruction Sequence',
-      intro: 'Restore broken record fragments in the right order before the trace collapses.',
+      intro: 'Reassemble the scattered record fragments in chronological order. A single misplaced fragment breaks the trace.',
       action: 'Select Fragment',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -181,13 +181,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'STATEMENT VERIFY',
     ko: {
       title: '진술 교차 검증',
-      intro: '증언과 기록을 대조해 모순되는 진술 하나를 가려낸다. 잘못 짚으면 조사선이 완전히 흔들린다.',
+      intro: '증언과 공식 기록을 나란히 놓고 어긋나는 진술 한 줄을 짚어낸다. 엉뚱한 곳을 짚으면 조사선이 통째로 흔들린다.',
       action: '모순 지정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Statement Cross-Check',
-      intro: 'Compare testimony against hard records and isolate the inconsistent line.',
+      intro: 'Lay the testimony beside the hard record and flag the single line that breaks. Pointing wrong shakes the entire interview line.',
       action: 'Flag Contradiction',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -197,13 +197,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'LATENT SCREEN',
     ko: {
       title: '잠복 반응 스크리닝',
-      intro: '대기 인원의 생체·신경 반응을 빠르게 훑어 잠복 노출자를 식별한다. 오판은 현장 불안을 키운다.',
+      intro: '대기 인원의 생체·신경 수치를 훑어 잠복 노출자 둘을 골라낸다. 오판은 작전실의 긴장만 키울 뿐이다.',
       action: '판독 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Latent Response Screening',
-      intro: 'Sweep waiting personnel and isolate hidden exposure signs before the room destabilizes.',
+      intro: 'Scan the vitals and neural readings of waiting personnel and isolate the two carrying latent exposure. A wrong call only sharpens the room\'s nerves.',
       action: 'Confirm Screening',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
