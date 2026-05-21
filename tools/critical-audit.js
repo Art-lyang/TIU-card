@@ -300,6 +300,7 @@ function checkSensitiveReleaseGuards(errors) {
   const koSide = read('data-cards-session-packs.js');
   const enSide = read('lang-cards-side-en.js');
   const evening = read('components-evening.js');
+  const rewardGame = read('components-game.js');
   const css = read('style.css');
   const sim = read('tools/simulator_v3.py');
 
@@ -358,6 +359,15 @@ function checkSensitiveReleaseGuards(errors) {
 
   if (/trust route|trust-route|신뢰 루트|follow-up rewards|후속 보상/.test(miniExpansion)) {
     errors.push('field mission follow-up text still exposes meta route/reward terms');
+  }
+  if ((evening.match(/reqIntro&&p\.logs\.indexOf\(reqIntro\)<0&&p\.act<2/g) || []).length < 2) {
+    errors.push('Act2+ evening core officers should not be hidden by missing intro logs');
+  }
+  if (!init.includes('ensureProgressLogsForGame') || !init.includes('act<maxAct') || !app.includes('ts_resumePhase')) {
+    errors.push('save/load should normalize act-boundary saves, required progress logs, and resume checkpoints');
+  }
+  if (!app.includes('ts_resumeRewards') || !rewardGame.includes('initialRewards') || !app.includes('rememberRewardId')) {
+    errors.push('reward resume should keep reward options stable and record recent reward choices');
   }
   ['setChainQueue([])', 'setPendingBonus(null)', 'setCurMission(null)', 'setCurDlg(null)'].forEach((needle) => {
     if (!app.includes(needle)) errors.push(`new campaign does not reset volatile session state: ${needle}`);

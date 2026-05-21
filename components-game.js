@@ -33,7 +33,12 @@ function pickRewardsUnique(pool,count){
   pool=Array.isArray(pool)?pool:[];
   var picked=[];
   var seen={};
-  var shuffled=pickN(pool,pool.length);
+  var recent=getRecentRewardIds();
+  var shuffled=pickN(pool,pool.length).sort(function(a,b){
+    var ar=recent.indexOf(rewardMemoryId(a))>=0;
+    var br=recent.indexOf(rewardMemoryId(b))>=0;
+    return ar===br?0:(ar?1:-1);
+  });
   for(var i=0;i<shuffled.length&&picked.length<count;i++){
     var id=rewardMemoryId(shuffled[i]);
     if(id&&seen[id])continue;
@@ -1055,7 +1060,7 @@ function RewardScreen(p){
   var _sc=useState({top:false,bottom:false}),scrollHint=_sc[0],setScrollHint=_sc[1];
   var checkScroll=function(){var el=_scrollRef.current;if(!el)return;var st=el.scrollTop>4;var sb=el.scrollTop+el.clientHeight<el.scrollHeight-4;setScrollHint({top:st,bottom:sb})};
   useEffect(function(){var el=_scrollRef.current;if(!el)return;var t=setTimeout(checkScroll,100);el.addEventListener('scroll',checkScroll);return function(){clearTimeout(t);el.removeEventListener('scroll',checkScroll)}},[]);
-  var s0=useState(function(){
+  var buildRewardPool=function(){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
     if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
@@ -1070,7 +1075,9 @@ function RewardScreen(p){
       if(feRewards.length>0){var keepBase=Math.max(0,count-Math.min(feRewards.length,count));pool=pool.slice(0,keepBase).concat(feRewards.slice(0,count))}
     }
     return pool;
-  }),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
+  };
+  var s0=useState(function(){return(Array.isArray(p.initialRewards)&&p.initialRewards.length>0)?p.initialRewards:buildRewardPool()}),av=s0[0];var s1=useState(-1),sel=s1[0],setSel=s1[1];
+  useEffect(function(){if(p.onRewardsReady)p.onRewardsReady(av)},[]);
   useEffect(function(){var onKey=function(e){
     var idx=-1;
     if(/^[1-9]$/.test(e.key))idx=parseInt(e.key,10)-1;
