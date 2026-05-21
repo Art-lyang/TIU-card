@@ -2363,8 +2363,8 @@ window.TS_I18N.mergeContent('en', {
       "content": "Republic of Korea containment success rate: 97.3%\nUnclassified external factor: 31%\nDetails: [INSUFFICIENT DATA — FURTHER COLLECTION REQUIRED]"
     },
     "LOG-012": {
-      "title": "Terminal UI Anomaly Report",
-      "content": "[Technical Report — Lim Jae-hyeok]\nAn unregistered UI element appeared at the bottom of the display.\nNon-reproducible. Assessment: cache fault.\n\n[ORACLE annotation: The referenced UI element is not registered in this system.]"
+      "title": "Terminal Interface Anomaly Report",
+      "content": "[Technical Report — Lim Jae-hyeok]\nAn unregistered interface element appeared at the bottom of the display.\nNon-reproducible. Assessment: cache fault.\n\n[ORACLE annotation: The referenced interface element is not registered in this system.]"
     },
     "LOG-013": {
       "title": "SPEC-001 Observation Record",
@@ -2408,7 +2408,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-EV-UNLOCK": {
       "title": "Evidence Analysis Module Activated",
-      "content": "[Technical Report — Lim Jae-hyeok]\n\nEvidence Analysis Framework v1.0 terminal deployment complete.\n\nFunction: Cross-analysis of collected data fragments\nAccess Authority: Branch Commander only\n\nScattered logs, observation records, and incident reports\ncan now be combined to derive hidden patterns.\n\nEvidence combinations are available during Evening Sessions.\nCollection status can be reviewed from the intelligence tab during play."
+      "content": "[Technical Report — Lim Jae-hyeok]\n\nEvidence Analysis Framework v1.0 terminal deployment complete.\n\nFunction: Cross-analysis of collected data fragments\nAccess Authority: Branch Commander only\n\nScattered logs, observation records, and incident reports\ncan now be combined to derive hidden patterns.\n\nEvidence combinations are available from the evening interview terminal.\nCollection status can be reviewed from the command terminal's intelligence index."
     },
     "LOG-RECON-P1": {
       "title": "Independent Surveillance Report: Comms Pattern",
@@ -3167,7 +3167,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-MD-REJECT": {
       title: "Meridian Entry Request — Refused",
-      content: "[Branch decision record]\n\nMatter: Meridian's request to deploy four temporary observation personnel inside the containment zone.\n\nDecision: refused outright.\nGrounds: organization already rejected at Korean review; no precedent for foreign PMC personnel inside the containment zone.\n\nSecondary effects:\n- Some Meridian goodwill remains (information channel preserved)\n- Opens space for DG's \"help block Meridian\" card\n\n— Approved by the commander after Kang Do-yun / Lim Jae-hyeok consultation"
+      content: "[Branch decision record]\n\nMatter: Meridian's request to deploy four temporary observation personnel inside the containment zone.\n\nDecision: refused outright.\nGrounds: organization already rejected at Korean review; no precedent for foreign PMC personnel inside the containment zone.\n\nSecondary effects:\n- Some Meridian goodwill remains (information channel preserved)\n- DG receives room to request cooperation against Meridian\n\n— Approved by the commander after Kang Do-yun / Lim Jae-hyeok consultation"
     },
     "LOG-MD-BACKCHANNEL": {
       title: "Meridian Hold Line Maintained",
@@ -3410,34 +3410,34 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-MG-011-AUDIO": {
       title: "SPEC-011 Voice Separation Record",
-      content: "[Field Minigame Result]\nPart of the Shell Talker's unique frequency band was isolated from the received audio pattern. The bait signal can now be distinguished from the original residual voice with greater confidence."
+      content: "[Field Signal Analysis]\nPart of the Shell Talker's unique frequency band was isolated from the received audio pattern. The bait signal can now be distinguished from the original residual voice with greater confidence."
     },
     "LOG-MG-INC-01-SEAL": {
       title: "Isolation Room Sealing Procedure Record",
-      content: "[Field Minigame Result]\nManual intervention during the B2 lower-level anomaly response confirmed a secondary lock sequence omitted by the automatic protocol. Differential pressure stabilized only after manual input."
+      content: "[Field Sealing Procedure]\nManual intervention during the B2 lower-level anomaly response confirmed a secondary lock sequence omitted by the automatic protocol. Differential pressure stabilized only after manual input."
     },
     "LOG-MG-INC-04-TRACE": {
       title: "Security Backdoor Trace Record",
-      content: "[Field Minigame Result]\nAn unregistered authority trace was followed during the security-zone authentication error. Part of the access-key route moved unlike an ORACLE standard update pattern."
+      content: "[Field Authority Trace]\nAn unregistered authority trace was followed during the security-zone authentication error. Part of the access-key route moved unlike an ORACLE standard update pattern."
     },
     "LOG-MG-DLG-SEJIN-SIGNAL": {
       title: "Yoon Se-jin Signal-Sort Follow-up",
-      content: "[Field Minigame Dialogue]\nFollow-up note from Yoon Se-jin after separating the Shell Talker's voice layers. The team can now reinforce rescue-call filtering with field data."
+      content: "[Field Analysis Follow-up]\nFollow-up note from Yoon Se-jin after separating the Shell Talker's voice layers. The team can now reinforce rescue-call filtering with field data."
     },
     "LOG-MG-DLG-JAEHYUK-SEAL": {
       title: "Lim Jae-hyeok Seal-Procedure Follow-up",
-      content: "[Field Minigame Dialogue]\nFollow-up note from Lim Jae-hyeok after analyzing the B2 lower-level seal panel. The omitted auxiliary lock sequence is preserved as a possible intentional simplification."
+      content: "[Field Analysis Follow-up]\nFollow-up note from Lim Jae-hyeok after analyzing the B2 lower-level seal panel. The omitted auxiliary lock sequence is preserved as a possible intentional simplification."
     },
     "LOG-MG-DLG-HAEUN-TRACE": {
       title: "Seo Hae-eun Authority-Trace Follow-up",
-      content: "[Field Minigame Dialogue]\nFollow-up note from Seo Hae-eun after tracing the security-zone authentication error. The concealment pattern was not deletion, but a thin layer hidden beneath normal traffic."
+      content: "[Field Analysis Follow-up]\nFollow-up note from Seo Hae-eun after tracing the security-zone authentication error. The concealment pattern was not deletion, but a thin layer hidden beneath normal traffic."
     }
   },
   archiveEntries: {
     "ARC-MG-011-AUDIO": {
       cat: "Field Analysis",
       title: "Shell Talker Voice Separation Memo",
-      content: "A memo compiled from field signal sorting.\n\nThe Shell Talker's lure voice was not a single waveform. It layered deliberate noise over the victim's residual voice.\nA reference point for separating real vocal residue from bait signals has been secured.\n\nEffect:\nFuture field analysis can filter false rescue calls more accurately."
+      content: "A memo compiled from field signal sorting.\n\nThe Shell Talker's lure voice was not a single waveform. It layered deliberate noise over the victim's residual voice.\nA reference point for separating real vocal residue from bait signals has been secured.\n\nFollow-up assessment:\nLater rescue-call recordings separate and preserve the same noise layer first."
     },
     "ARC-MG-INC-01-SEAL": {
       cat: "Facility Record",
@@ -3508,11 +3508,11 @@ window.TS_I18N.mergeContent('en', {
   oracleLogs: {
     "LOG-055": { title: "Seo Hae-eun USB Data", content: "Backup data Seo Hae-eun kept outside the official network. It includes ORACLE deletion logs, GRANT authority fragments, and time-offset analysis of Korea Branch directive patterns." },
     "LOG-080": { title: "Markus Weber Contact Record", content: "Unofficial contact record with Markus Weber, commander of the Prometheus Korea operations team. COASTAL MIRROR material indicates that an unclassified 31 percent of Korea containment success is linked to unofficial Prometheus technical support." },
-    "LOG-ACT1-SKIP": { title: "Act 1 Skip Record", content: "A repeat-session record showing that the initial briefing segment was skipped and the branch moved directly into active operations. It is a session-flow marker and does not directly affect ending conditions." },
-    "LOG-OBSERVER-APPROVED": { title: "OBSERVER Access Approved", content: "An unregistered OBSERVER protocol connection passed through by command approval. It remains outside ORACLE's official approval chain and is classified as key evidence for data-corruption endings." },
-    "LOG-C106-HERB": { title: "Herb Cultivation Experiment", content: "Record of an internal herb cultivation test at the branch. The basic growth conditions are stable, while later harvest and distribution choices are stored as a separate resource-management trace." },
+    "LOG-ACT1-SKIP": { title: "Act 1 Skip Record", content: "A repeat-access record showing that the initial briefing segment was skipped and the branch moved directly into active operations. It is an acclimation-shortening record and does not directly affect long-term closure judgment." },
+    "LOG-OBSERVER-APPROVED": { title: "OBSERVER Access Approved", content: "An unregistered OBSERVER protocol connection passed through by command approval. It remains outside ORACLE's official approval chain and is classified as key evidence for data-corruption closure records." },
+    "LOG-C106-HERB": { title: "Herb Cultivation Experiment", content: "Record of an internal herb cultivation test at the branch. The basic growth conditions are stable, while later harvest and distribution records remain in the branch resource ledger." },
     "LOG-C159-GYM": { title: "Temporary Fitness Space", content: "Record of reviewing whether limited base space should be converted into a physical training area. It preserves an early operations decision between morale and resource allocation." },
-    "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation depending on the selected response." },
+    "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation according to the field response record." },
     "LOG-041": { title: "BS-GANGWON-01 Tracking Operation Complete", content: "The response operation against the named SPEC-015 entity BS-GANGWON-01 has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
     "LOG-041-PARTIAL": { title: "BS-GANGWON-01 Retracking Required", content: "Injury confirmation record for the named SPEC-015 entity BS-GANGWON-01. The entity was damaged, but neither kill nor capture was confirmed. A more cautious ambush pattern is likely on the next contact." },
     "LOG-DOYUN-MINOR-WOUND": { title: "Kang Do-yun Minor Wound Record", content: "Tactical Commander Kang Do-yun sustained a minor wound during a direct underwater entry. It is separate from the severe night-raid injury record and is classified as treatable after emergency care." },
@@ -3529,34 +3529,34 @@ window.TS_I18N.mergeContent('en', {
     "LOG-022": { title: "SPEC-001 Proximity Reaction Follow-up", content: "Follow-up record for the infected mannequin-class contact incident. Noncontact observation and thermal verification were registered as standard response procedures." },
     "LOG-023": { title: "SPEC-003 Swarm Movement Follow-up", content: "Brood Drone swarm-movement analysis record. Possible superior command entities and changes in group tactics were reported." },
     "LOG-024": { title: "SPEC-008 Spore Density Follow-up", content: "Follow-up record for increased Spore Phantom concentration. Ventilation sealing, light maintenance, and respirator operation standards were updated." },
-    "LOG-027": { title: "Variant Response Report A", content: "Variant response report obtained during mid-stage containment operations. Depending on field choice, observation, containment, or elimination protocol was prioritized." },
+    "LOG-027": { title: "Variant Response Report A", content: "Variant response report obtained during mid-stage containment operations. The record prioritizes observation, containment, or elimination protocol according to the field response." },
     "LOG-028": { title: "Variant Response Report B", content: "Additional variant response record from mid-stage containment operations. Recurrence patterns and agent fatigue were recorded together." },
-    "LOG-030": { title: "Chain Incident Record 01", content: "First branch record in a linked incident sequence. The initial response method left effects on later card flow and field trust." },
+    "LOG-030": { title: "Linked Incident Record 01", content: "First branch record in a linked incident sequence. The initial response method left effects on later operation assignment and field trust." },
     "LOG-031": { title: "Chain Incident Record 02", content: "Second branch record in a linked incident sequence. Pressure began accumulating in supply, containment, or personnel deployment." },
     "LOG-032": { title: "Chain Incident Record 03", content: "Third branch record in a linked incident sequence. The gap between field judgment and ORACLE recommendation remained in the report." },
     "LOG-033": { title: "Chain Incident Record 04", content: "Fourth branch record in a linked incident sequence. Traces of an external force or unclassified variable were attached as supplementary material." },
     "LOG-034": { title: "Chain Incident Record 05", content: "Fifth branch record in a linked incident sequence. Long-term impact was reflected in containment procedure and internal trust." },
-    "LOG-035": { title: "Chain Incident Record 06", content: "Sixth branch record in a linked incident sequence. Field fatigue or ORACLE evaluation burden increased depending on the selected response." },
+    "LOG-035": { title: "Chain Incident Record 06", content: "Sixth branch record in a linked incident sequence. Field fatigue or ORACLE evaluation burden increased according to the recorded response." },
     "LOG-036": { title: "Chain Incident Record 07", content: "Seventh branch record in a linked incident sequence. Recurrence-prevention guidance and unconfirmed variables were preserved together." },
     "LOG-037": { title: "Chain Incident Record 08", content: "Eighth branch record in a linked incident sequence. The internal judgment line just before closure was recorded." },
     "LOG-038": { title: "Chain Incident Record 09", content: "Ninth branch record in a linked incident sequence. The disclosure range of the follow-up report was restricted." },
     "LOG-039": { title: "Chain Incident Record 10", content: "Tenth branch record in a linked incident sequence. A difference remained between ORACLE's automatic summary and the field original." },
-    "LOG-040": { title: "Chain Incident Closure Record", content: "Closure report for a linked incident sequence. The result of the selected response affects later risk levels and internal trust flow." },
+    "LOG-040": { title: "Chain Incident Closure Record", content: "Closure report for a linked incident sequence. The recorded outcome remains attached to later risk levels and internal trust flow." },
     "LOG-050": { title: "Seo Hae-eun Transfer Order", content: "Transfer-order record for Deputy Commander Seo Hae-eun. The official reason is organizational restructuring, but internally it is suspected to be linked to her pursuit of ORACLE data inconsistencies." },
     "LOG-051": { title: "Seo Hae-eun Transfer Deferred", content: "Record that personnel action involving Seo Hae-eun was deferred. The commander's judgment disturbed both the pace and justification of the transfer process." },
-    "LOG-053": { title: "Chain Choice Record CS-001", content: "First result record for a major chain choice. The field response principle continues into later chain events." },
-    "LOG-054": { title: "Chain Choice Record CS-002", content: "Second result record for a major chain choice. One burden among supply, personnel, and evaluation remained in the official log." },
-    "LOG-056": { title: "Chain Choice Record CS-010", content: "Late-stage choice record from a long incident line. The difference between the public report and private judgment was preserved." },
-    "LOG-057": { title: "Chain Choice Record CS-013", content: "Follow-up choice record from a long incident line. It shows whether the branch followed ORACLE advice or preserved field judgment." },
-    "LOG-058": { title: "Chain Choice Record CS-014", content: "Follow-up choice record from a long incident line. Inconsistency between witness statements and automatic summary was marked." },
-    "LOG-059": { title: "Chain Choice Record CS-015", content: "Pre-closure choice record from a long incident line. It affects later ending conditions and Evidence Table clues." },
-    "LOG-060": { title: "Special Investigation Record 060", content: "Special record obtained from a mid-stage investigation card. It is a condition flag connected to later variant follow-up cards." },
-    "LOG-061": { title: "Special Investigation Record 061", content: "Second special record obtained from a mid-stage investigation card. It connects to sample or voice-record branches in later sequences." },
+    "LOG-053": { title: "Linked Judgment Record CS-001", content: "First judgment result from a long incident line. The field response principle continues into later reports and operation procedure." },
+    "LOG-054": { title: "Linked Judgment Record CS-002", content: "Second judgment result from a long incident line. One burden among supply, personnel, and evaluation remained in the official log." },
+    "LOG-056": { title: "Linked Judgment Record CS-010", content: "Late-stage judgment record from a long incident line. The difference between the public report and private judgment was preserved." },
+    "LOG-057": { title: "Linked Judgment Record CS-013", content: "Follow-up judgment record from a long incident line. It shows whether the branch followed ORACLE advice or preserved field judgment." },
+    "LOG-058": { title: "Linked Judgment Record CS-014", content: "Follow-up judgment record from a long incident line. Inconsistency between witness statements and automatic summary was marked." },
+    "LOG-059": { title: "Linked Judgment Record CS-015", content: "Pre-closure judgment record from a long incident line. It affects later closure judgment and Evidence Table clues." },
+    "LOG-060": { title: "Special Investigation Record 060", content: "Special record obtained from mid-stage investigation. It is prerequisite material connected to later variant follow-up reports." },
+    "LOG-061": { title: "Special Investigation Record 061", content: "Second special record obtained from mid-stage investigation. It connects to sample or voice-record branches in later sequences." },
     "LOG-062": { title: "New Agent Deployment Record", content: "Result of the new-agent deployment decision. Immediate deployment or delay was preserved in the command evaluation." },
-    "LOG-063": { title: "Internal Incident Chain Started", content: "Record that an internal base incident chain has begun. The initial response direction is stored as a prerequisite for later incident cards." },
+    "LOG-063": { title: "Internal Linked Incident Started", content: "Record that an internal base incident line has begun. The initial response direction is stored as prerequisite material for later incident reports." },
     "LOG-063-DONE": { title: "Internal Incident 063 Closed", content: "Response to the internal incident 063 line has ended. Temporary recurrence-prevention guidance is now applied." },
     "LOG-064": { title: "Internal Incident Alternate Branch", content: "Alternate response record from the internal incident chain. A field judgment different from ORACLE recommendation remains." },
-    "LOG-065": { title: "Field Clash Chain Started", content: "A field-clash incident has begun. Agent injury and containment-line stability are tracked together." },
+    "LOG-065": { title: "Field Clash Linked Incident Started", content: "A field-clash incident has begun. Agent injury and containment-line stability are tracked together." },
     "LOG-065-ATK": { title: "Field Clash Engagement Record", content: "An engagement occurred during the field clash. Agent response and equipment consumption affect later judgment." },
     "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual. After treatment and rehabilitation, Kang Do-yun returned to the command structure; this record clears his temporary injury state." },
     "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
@@ -3569,14 +3569,14 @@ window.TS_I18N.mergeContent('en', {
     "LOG-071": { title: "Night Patrol Route Maintained", content: "Record that night patrol route revision was deferred and the existing route was maintained. ORACLE evaluation is stable, but outer blind spots remain." },
     "LOG-072": { title: "Large-scale Movement ORACLE Reliance Record", content: "Record that ORACLE support was requested for signs of large-scale movement near the containment-zone boundary. Immediate evaluation improves, but room for field judgment decreases." },
     "LOG-073": { title: "Emergency Tunnel Construction Record", content: "Record of constructing an emergency tunnel leading outside the branch. It consumes resources, but becomes a survival route in urgent situations such as night assaults." },
-    "LOG-074": { title: "Night Assault Initiated", content: "Record that a large-scale variant assault began after night patrol blind spots overlapped with accumulated risk. Later cards judge Kang Do-yun's survival and base damage." },
+    "LOG-074": { title: "Night Assault Initiated", content: "Record that a large-scale variant assault began after night patrol blind spots overlapped with accumulated risk. Later reports judge Kang Do-yun's survival and base damage." },
     "LOG-074-DONE": { title: "Night Assault Survival Record", content: "Personnel evacuated through the emergency tunnel. Kang Do-yun survived with severe injuries. Later ORACLE evaluation questions command infrastructure readiness." },
     "LOG-074-ORC": { title: "ORACLE Improvement Plan After Night Assault", content: "Record that ORACLE recommended patrol-route and command-infrastructure improvements after the night assault. Stability rises, but field autonomy decreases." },
-    "LOG-075": { title: "Kang Do-yun Missing Record", content: "Kang Do-yun went missing while holding the rear during evacuation with insufficient emergency routes. This state flag limits later Kang Do-yun appearance cards and some escape scenes." },
+    "LOG-075": { title: "Kang Do-yun Missing Record", content: "Kang Do-yun went missing while holding the rear during evacuation with insufficient emergency routes. The record classifies a field-command gap and restricts parts of later escape documentation." },
     "LOG-075-ORC": { title: "ORACLE Warning After Kang Do-yun Loss", content: "After Kang Do-yun's loss, ORACLE re-evaluated the commander's infrastructure management ability. Safety justification and strengthened control were recorded together." },
     "LOG-076": { title: "Anonymous Complaint Handling Record", content: "Record of handling an anonymous complaint against the commander. An open meeting or dismissal changes internal trust flow." },
     "LOG-077": { title: "ORACLE Update Record", content: "Response record for an ORACLE self-update. Whether the branch demanded disclosure or allowed it remained in system trust." },
-    "LOG-078": { title: "Mid-stage Operation Record 078", content: "Choice record from a mid-stage operation card. It affects later base-operation pressure and field trust." },
+    "LOG-078": { title: "Mid-stage Operation Record 078", content: "Judgment record from mid-stage operations. It affects later base-operation pressure and field trust." },
     "LOG-RH-NETWORK": { title: "Quiet Resistance Line", content: "Report format, outer patrol routes, and internal query maps have connected into a quiet circuit. It is not public rebellion, but the Korean branch now has a minimal structure for independent judgment." },
     "LOG-CB-SUSTAINED": { title: "Sustainable Loyalty", content: "ORACLE procedure was combined with briefings, retraining, and field appendices. This creates a buffer so loyalty does not only mean consuming personnel." },
     "LOG-079": { title: "B2 Expansion Proposal Review", content: "Record of reviewing ORACLE's proposal to excavate and expand B2. Whether approved or refused, it preserves the pressure to expand the branch and the commander's long-term operations judgment." },
@@ -3601,7 +3601,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-INC-04-REWRITE": { title: "ORACLE Record Rewrite", content: "Evidence was secured that entry records in the ORACLE observation room were being overwritten, rather than the authentication system itself failing." },
     "LOG-INC-05-PASSAGE": { title: "Unregistered Passage", content: "A narrow passage not shown on facility drawings was found behind a lounge locker. The missing staff member was found unconscious at its end." },
     "LOG-INC-05-B2": { title: "B2 Emergency Stair Found", content: "During a manual search, the missing staff member was found near the B2 emergency-stair entrance. ORACLE location records pointed to another zone until the end." },
-    "LOG-INC-01-DONE": { title: "Isolation Room Anomaly Response Complete", content: "Field response to the isolation-room anomaly has ended. Depending on the selected measure, symptom isolation, lower-zone sealing, or ORACLE judgment acceptance was recorded." },
+    "LOG-INC-01-DONE": { title: "Isolation Room Anomaly Response Complete", content: "Field response to the isolation-room anomaly has ended. The record preserves symptom isolation, lower-zone sealing, or ORACLE judgment acceptance as the final measure." },
     "LOG-INC-02-DONE": { title: "CCTV Blind Zone Response Complete", content: "The CCTV blind-zone incident response has ended. Independent surveillance, reverse tracing, or ORACLE maintenance remained as the field record." },
     "LOG-INC-03-DONE": { title: "Sample Contamination Response Complete", content: "Research Wing sample-contamination response has ended. Quarantine, research use, or full disinfection now affects later lab operation standards." },
     "LOG-INC-04-DONE": { title: "Security Authentication Error Response Complete", content: "Security-zone authentication error response has ended. Hardware removal, surveillance trap, or ORACLE patch remained in the security log." },

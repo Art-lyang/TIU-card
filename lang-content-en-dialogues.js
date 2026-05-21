@@ -89,7 +89,7 @@ window.TS_I18N.mergeContent('en', {
     "임재혁|지휘관님, 사소한 건데 보고드립니다.": {
       name: "Lim Jae-hyeok",
       role: "Intelligence / Technical Officer",
-      lines: ["Commander, this may be minor, but I should report it.","Something briefly appeared at the bottom of the terminal screen earlier, then vanished.","It was not a registered UI element. It lasted under 0.3 seconds, so I could not capture it.","It looks like a display-cache error. Reinstalling the firmware should fix it."],
+      lines: ["Commander, this may be minor, but I should report it.","Something briefly appeared at the bottom of the terminal screen earlier, then vanished.","It was not a registered interface element. It lasted under 0.3 seconds, so I could not capture it.","It looks like a display-cache error. Reinstalling the firmware should fix it."],
       choices: [
         { label: "Wait. Record that.", tag: "Analysis", reply: "What? Ah, yes. Understood. I will record it.", fx: {}, g: -4, trust: 10 },
         { label: "Understood. Proceed with the reinstall.", tag: "Cold", reply: "Understood. I will handle it immediately.", fx: {}, g: 2, trust: -5 }

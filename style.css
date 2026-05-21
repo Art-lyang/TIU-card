@@ -423,7 +423,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .main-terminal-frame::before{content:"";position:absolute;inset:10px;border:1px solid rgba(80,255,150,.22);pointer-events:none;clip-path:polygon(0 16px,16px 0,100% 0,100% calc(100% - 16px),calc(100% - 16px) 100%,0 100%)}
 .main-terminal-header,.main-terminal-feed,.main-terminal-log,.main-terminal-button,.main-terminal-footer{position:relative;border:1px solid var(--mt-line);background:var(--mt-panel)}
 .main-terminal-header{height:104px;flex:0 0 104px;padding:14px 20px 12px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em;display:flex;flex-direction:column;justify-content:space-between;gap:10px;background:linear-gradient(180deg,rgba(5,20,12,.86),rgba(0,7,4,.92));clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%)}
-.main-terminal-header::after{content:"";position:absolute;left:26px;right:26px;bottom:20px;height:2px;background:linear-gradient(90deg,transparent,rgba(108,255,170,.95),rgba(108,255,170,.95));box-shadow:0 0 10px rgba(108,255,170,.55);pointer-events:none}
+.main-terminal-header::after{content:"";position:absolute;left:26px;right:26px;bottom:0;height:1px;background:linear-gradient(90deg,transparent,rgba(108,255,170,.72),rgba(108,255,170,.72),transparent);box-shadow:0 0 8px rgba(108,255,170,.34);pointer-events:none}
 .main-terminal-header-main,.main-terminal-header-status{display:flex;align-items:center;justify-content:space-between;gap:20px}
 .main-terminal-header-title{font-size:30px;line-height:1;color:var(--mt-text);font-weight:900;letter-spacing:.08em;text-shadow:0 0 12px rgba(108,255,170,.3)}
 .main-terminal-header-tools{display:flex;align-items:center;justify-content:flex-end;gap:12px;min-width:0}
@@ -478,7 +478,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .main-terminal-button-copy small{display:block;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;opacity:.78;color:currentColor;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .main-terminal-button-action{justify-self:end;display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:.1em;color:currentColor;opacity:.78;white-space:nowrap}
 .main-terminal-button-action em{font-style:normal}
-.main-terminal-footer{height:34px;flex:0 0 34px;margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--mt-dim);overflow:hidden}
+.main-terminal-footer{height:34px;flex:0 0 34px;margin-top:0;display:flex;align-items:center;justify-content:space-between;padding:0 14px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.08em;color:var(--mt-dim);overflow:hidden}
 .main-terminal-save-overlay{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(0,0,0,.68);backdrop-filter:blur(2px)}
 .main-terminal-save-modal{width:min(100%,460px);max-height:min(82vh,560px);display:flex;flex-direction:column;gap:14px;padding:18px;border:1px solid rgba(80,255,150,.58);background:linear-gradient(180deg,rgba(1,14,8,.97),rgba(0,5,3,.98));box-shadow:0 0 30px rgba(0,0,0,.65),0 0 24px rgba(80,255,150,.18),inset 0 0 0 1px rgba(80,255,150,.08);clip-path:polygon(0 14px,14px 0,100% 0,100% calc(100% - 14px),calc(100% - 14px) 100%,0 100%);font-family:'Share Tech Mono','Noto Sans KR',monospace}
 .main-terminal-save-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;border-bottom:1px solid rgba(80,255,150,.2);color:var(--mt-text);letter-spacing:.12em}
@@ -594,7 +594,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-frame{width:100%;min-height:100svh;padding:8px;gap:6px;border-left:0;border-right:0}
   .main-terminal-frame::before{inset:8px}
   .main-terminal-header{height:92px;flex-basis:92px;padding:9px 10px 11px}
-  .main-terminal-header::after{left:12px;right:12px;bottom:6px;opacity:.68}
+  .main-terminal-header::after{left:12px;right:12px;bottom:0;opacity:.42}
   .main-terminal-header-main{align-items:stretch;flex-direction:column;gap:6px}
   .main-terminal-header-status{position:relative;z-index:1;align-items:center;flex-direction:row;justify-content:space-between;gap:8px;padding-right:2px;font-size:8px;letter-spacing:.05em}
   .main-terminal-header-status .main-terminal-status-left,.main-terminal-header-status .main-terminal-time{white-space:nowrap}
@@ -608,8 +608,8 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-log{height:44px;flex-basis:44px;padding:7px 11px}
   .main-terminal-log-copy{font-size:9px;line-height:1.25}
   .main-terminal-oracle{display:none}
-  .main-terminal-menu-list{gap:5px;flex:1 1 auto;min-height:0;justify-content:space-between;padding:8px 7px;overflow-y:auto}
-  .main-terminal-row{height:56px;min-height:56px;flex:0 0 56px}
+  .main-terminal-menu-list{gap:clamp(8px,1.1svh,14px);flex:1 1 auto;min-height:0;justify-content:stretch;padding:10px 7px;overflow-y:auto}
+  .main-terminal-row{height:auto;min-height:68px;max-height:104px;flex:1 1 0}
   .main-terminal-cursor{left:10px;font-size:16px}
   .main-terminal-button{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:0 10px 0 13px}
   .main-terminal-icon{width:26px;height:26px}
