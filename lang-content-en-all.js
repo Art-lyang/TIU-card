@@ -3419,6 +3419,18 @@ window.TS_I18N.mergeContent('en', {
     "LOG-MG-INC-04-TRACE": {
       title: "Security Backdoor Trace Record",
       content: "[Field Minigame Result]\nAn unregistered authority trace was followed during the security-zone authentication error. Part of the access-key route moved unlike an ORACLE standard update pattern."
+    },
+    "LOG-MG-DLG-SEJIN-SIGNAL": {
+      title: "Yoon Se-jin Signal-Sort Follow-up",
+      content: "[Field Minigame Dialogue]\nFollow-up note from Yoon Se-jin after separating the Shell Talker's voice layers. The team can now reinforce rescue-call filtering with field data."
+    },
+    "LOG-MG-DLG-JAEHYUK-SEAL": {
+      title: "Lim Jae-hyeok Seal-Procedure Follow-up",
+      content: "[Field Minigame Dialogue]\nFollow-up note from Lim Jae-hyeok after analyzing the B2 lower-level seal panel. The omitted auxiliary lock sequence is preserved as a possible intentional simplification."
+    },
+    "LOG-MG-DLG-HAEUN-TRACE": {
+      title: "Seo Hae-eun Authority-Trace Follow-up",
+      content: "[Field Minigame Dialogue]\nFollow-up note from Seo Hae-eun after tracing the security-zone authentication error. The concealment pattern was not deletion, but a thin layer hidden beneath normal traffic."
     }
   },
   archiveEntries: {
@@ -3501,8 +3513,8 @@ window.TS_I18N.mergeContent('en', {
     "LOG-C106-HERB": { title: "Herb Cultivation Experiment", content: "Record of an internal herb cultivation test at the branch. The basic growth conditions are stable, while later harvest and distribution choices are stored as a separate resource-management trace." },
     "LOG-C159-GYM": { title: "Temporary Fitness Space", content: "Record of reviewing whether limited base space should be converted into a physical training area. It preserves an early operations decision between morale and resource allocation." },
     "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation depending on the selected response." },
-    "LOG-041": { title: "SPEC-015 Tracking Operation Complete", content: "The BS-GANGWON-01 response operation has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
-    "LOG-041-PARTIAL": { title: "SPEC-015 Retracking Required", content: "BS-GANGWON-01 injury confirmation record. The entity was damaged, but neither kill nor capture was confirmed. A more cautious ambush pattern is likely on the next contact." },
+    "LOG-041": { title: "BS-GANGWON-01 Tracking Operation Complete", content: "The response operation against the named SPEC-015 entity BS-GANGWON-01 has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
+    "LOG-041-PARTIAL": { title: "BS-GANGWON-01 Retracking Required", content: "Injury confirmation record for the named SPEC-015 entity BS-GANGWON-01. The entity was damaged, but neither kill nor capture was confirmed. A more cautious ambush pattern is likely on the next contact." },
     "LOG-DOYUN-MINOR-WOUND": { title: "Kang Do-yun Minor Wound Record", content: "Tactical Commander Kang Do-yun sustained a minor wound during a direct underwater entry. It is separate from the severe night-raid injury record and is classified as treatable after emergency care." },
     "LOG-OBS-ZONE": { title: "Unauthorized Observation Zone Record", content: "A stationary zone southeast of the base did not match EV-Σ patterns. ORACLE ordered access blocked, but infrasonic readings, distorted time perception, and unauthorized authority traces were preserved for separate analysis." },
     "LOG-M003-COORD": { title: "Unclassified Trace Coordinates", content: "Coordinates secured during the SPEC-003 pursuit. They partially match Korean coastal barrier nodes and suggest an external defense or surveillance route rather than a simple infiltration trail." },

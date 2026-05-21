@@ -156,6 +156,10 @@ window.TS_I18N.mergeContent('en', {
       title: "Counter-Judgment Memo",
       content: "A memo preserving field judgment alongside ORACLE's self-diagnostic anomaly. It records both what ORACLE concluded and why branch command thought differently."
     },
+    "LOG-RH-QUIET-FREEDOM": {
+      title: "Quiet Freedom Preparation Record",
+      content: "[Unofficial evacuation order]\n\nThe branch has not rewritten the formal command structure, and it has not declared open escape.\n\nSeo Hae-eun divides the personnel list by hand, Kang Do-yun marks blank hours in patrol coverage, Yoon Se-jin pulls out patients who can move, and Lim Jae-hyeok prepares a report delay ORACLE can still read as ordinary procedure.\n\nThe goal is not victory. It is to make sure there is still a quiet path out before everyone disappears."
+    },
     "LOG-CB-STABILITY": {
       title: "Compliance Buffer Procedure",
       content: "A record of following ORACLE procedure while briefing personnel first to reduce field resistance. Even on a loyal route, this operating style can slow trust collapse."

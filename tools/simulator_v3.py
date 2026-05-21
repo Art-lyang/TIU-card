@@ -144,7 +144,7 @@ def transition_penalty(new_act, route):
         if route == 'A4_COMPLY': return 0
         return 5
     if new_act == 3:
-        return 5 if route in ('A', 'B', 'C') else 10
+        return 5 if route in ('A', 'B', 'C') else 8
     if new_act == 2:
         return 0 if route == 'A' else 5
     return 0
@@ -161,6 +161,7 @@ def apply_transition_penalty(s, new_act, route):
 def resistance_safeguard_eligible(s, gi, logs):
     if 'ONCE-RH-SAFE-01' in logs or 'LOG-RH-SAFEGUARD' in logs: return False
     if s.get('day', 1) < 8: return False
+    if s.get('c', 0) <= 0 or s.get('r', 0) <= 0 or s.get('t', 0) <= 0 or s.get('o', 0) <= 0 or s.get('c', 0) >= 100: return False
     resistance = gi <= -35 or any(str(x).startswith(('LOG-RH-', 'LOG-LJC-PROM-', 'LOG-UPRISING-')) for x in logs)
     if not resistance: return False
     return s['c'] <= 25 or s['r'] <= 25 or s['t'] <= 20 or s['o'] <= 20
@@ -176,7 +177,7 @@ def apply_resistance_safeguard(s, gi, logs):
 
 def oracle_safeguard_eligible(s, gi, logs):
     if 'ONCE-ORC-LOYAL-SAFE-01' in logs or 'LOG-ORACLE-SAFEGUARD' in logs: return False
-    if s.get('o', 0) <= 0: return False
+    if s.get('c', 0) <= 0 or s.get('r', 0) <= 0 or s.get('t', 0) <= 0 or s.get('o', 0) <= 0 or s.get('c', 0) >= 100: return False
     if gi < 10: return False
     return s['c'] <= 20 or s['r'] <= 20 or s['t'] <= 20
 
@@ -250,9 +251,23 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
             changed = True
         changed = _lift_below(ns, 'o', 3) or changed
 
-    if cid in ('CE-042', 'CE-042B'):
+    if cid == 'CE-015':
         changed = _lift_below(ns, 'o', 3) or changed
         changed = _lift_below(ns, 'r', 3) or changed
+
+    if cid in ('CE-042', 'CE-042B', 'CE-042C', 'CE-042D'):
+        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'r', 3) or changed
+
+    if cid == 'CA4-EX-02':
+        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'r', 3) or changed
+
+    if cid == 'CA4-OR-03':
+        changed = _lift_below(ns, 'o', 3) or changed
+
+    if act <= 2 and is_resistance_choice(card, choice, before_gi, ng) and before.get('o', 0) > 0 and ns.get('o', 0) <= 0:
+        changed = _lift_below(ns, 'o', 3) or changed
 
     if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
         changed = _cap_above(ns, 'c', 95) or changed
@@ -585,9 +600,23 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
     for k in 'crto':
         ns[k] += reward['fx'].get(k, 0) * 5
         ns[k] = max(0, min(100, ns[k]))
+    if act <= 2:
+        rid = reward.get('id')
+        if rid == 'R-06':
+            ns['r'] = max(0, min(100, s['r'] + 5))
+            ns['t'] = max(0, min(100, s['t'] + 10))
+            ns['o'] = max(0, min(100, s['o'] - 5))
+        elif rid == 'R-07':
+            ns['r'] = max(0, min(100, s['r'] - 5))
+            ns['t'] = max(0, min(100, s['t']))
+            ns['o'] = max(0, min(100, s['o'] + 10))
+        elif rid == 'R-08':
+            ns['c'] = max(0, min(100, s['c'] + 5))
+            ns['r'] = max(0, min(100, s['r'] - 5))
+            ns['t'] = max(0, min(100, s['t'] + 5))
     if act == 3:
         ns['c'] = max(0, ns['c'] - 5)
-        if gi < 35 and trans_route != 'A4_COMPLY':
+        if gi < 20 and trans_route != 'A4_COMPLY':
             ns['r'] = max(0, ns['r'] - 5)
     elif act == 4:
         loyal_relief = gi >= 40 or trans_route == 'A4_COMPLY'

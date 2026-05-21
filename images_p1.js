@@ -64,7 +64,6 @@
     facility_fe007_emergency_bunker: 'assets/images/facility/facility_fe007_emergency_bunker.jpg',
     facility_fe008_north_patrol: 'assets/images/facility/facility_fe008_north_patrol.jpg',
 
-    ending_escape_p1_hq: 'assets/images/endings/ending_escape_p1_hq.jpg',
     logo_oracle_hq: 'assets/images/logos/logo_oracle_hq_v1.png',
     logo_prometheus_hq: 'assets/images/logos/logo_prometheus_hq_v1.png',
     char_doyun_hq: 'assets/images/characters/char_doyun_hq_v3.jpg',

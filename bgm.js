@@ -45,7 +45,7 @@ var BGM = {
       a.loop = true;
       a.volume = 0;
       this.bootAudio = a;
-      a.play().catch(function(e) { console.warn('Boot SFX blocked:', e); });
+      a.play().catch(function(e) { if (console && console.debug) console.debug('Boot SFX blocked:', e); });
       this._fadeIn(a, 800, 0.2);
     } catch(e) {}
   },

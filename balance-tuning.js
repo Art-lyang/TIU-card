@@ -63,6 +63,19 @@
     return false;
   }
 
+  function setRewardDelta(before, after, deltas){
+    var changed = false;
+    ['c','r','t','o'].forEach(function(k){
+      if (typeof deltas[k] !== 'number') return;
+      var next = clamp100(before[k] + deltas[k]);
+      if (after[k] !== next) {
+        after[k] = next;
+        changed = true;
+      }
+    });
+    return changed;
+  }
+
   function isResistanceChoice(card, choice, beforeGi, afterGi){
     var id = String(card && card.id || '');
     var logText = asLogText(choice && choice.log);
@@ -115,7 +128,18 @@
       }
     }
 
-    if (cardId === 'CE-042' || cardId === 'CE-042B') {
+    if (cardId === 'CE-015') {
+      if (after.o <= 0) {
+        changed = liftBelow(after, 'o', 3) || changed;
+        kind = changed ? 'independence-declaration-floor' : kind;
+      }
+      if (after.r <= 0) {
+        changed = liftBelow(after, 'r', 3) || changed;
+        kind = changed ? 'independence-declaration-floor' : kind;
+      }
+    }
+
+    if (cardId === 'CE-042' || cardId === 'CE-042B' || cardId === 'CE-042C' || cardId === 'CE-042D') {
       // Final-route commitment can still be costly, but the decision should
       // hand control back to the player instead of ending on a single click.
       if (after.o <= 0) {
@@ -128,6 +152,27 @@
       }
     }
 
+    if (cardId === 'CA4-EX-02') {
+      if (after.o <= 0) {
+        changed = liftBelow(after, 'o', 3) || changed;
+        kind = changed ? 'external-signal-floor' : kind;
+      }
+      if (after.r <= 0) {
+        changed = liftBelow(after, 'r', 3) || changed;
+        kind = changed ? 'external-signal-floor' : kind;
+      }
+    }
+
+    if (cardId === 'CA4-OR-03' && after.o <= 0) {
+      changed = liftBelow(after, 'o', 3) || changed;
+      kind = changed ? 'oracle-handover-floor' : kind;
+    }
+
+    if (currentAct <= 2 && isResistanceChoice(card, choice, beforeGi || 0, nextGi || 0) && before.o > 0 && after.o <= 0) {
+      changed = liftBelow(after, 'o', 3) || changed;
+      kind = changed ? 'early-resistance-evaluation-floor' : kind;
+    }
+
     if (!changed) return null;
     return { stats: after, gi: nextGi, kind: kind };
   };
@@ -136,8 +181,22 @@
     var before = copyStats(beforeStats);
     var after = copyStats(nextStats);
     var currentAct = act || 1;
+    var rewardId = String(reward && reward.id || '');
     var changed = false;
     var kind = '';
+
+    if (currentAct <= 2) {
+      if (rewardId === 'R-06') {
+        changed = setRewardDelta(before, after, { r: 5, t: 10, o: -5 }) || changed;
+        kind = changed ? 'early-civil-coop-evaluation-buffer' : kind;
+      } else if (rewardId === 'R-07') {
+        changed = setRewardDelta(before, after, { r: -5, t: 0, o: 10 }) || changed;
+        kind = changed ? 'early-oracle-comms-trust-buffer' : kind;
+      } else if (rewardId === 'R-08') {
+        changed = setRewardDelta(before, after, { c: 5, r: -5, t: 5 }) || changed;
+        kind = changed ? 'early-drill-resource-buffer' : kind;
+      }
+    }
 
     if (currentAct === 1 && before.c < 100 && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;

@@ -11,6 +11,7 @@
       var endings=Save.getEndings();
       var logs=Save.getLogs();
       var logsTotal=typeof ORACLE_LOGS!=='undefined'?ORACLE_LOGS.length:0;
+      var endingsTotal=typeof ENDING_CATALOG!=='undefined'?ENDING_CATALOG.length:(typeof ENDING_DEFS!=='undefined'?Object.keys(ENDING_DEFS).length:10);
       var mono={fontFamily:"'Share Tech Mono',monospace",fontSize:13,color:'var(--ui)'};
       var cfmModal=function(){
         if(!cfm)return null;
@@ -45,7 +46,7 @@
       return h('div',null,
         _settingsRow(tr('settings.sessions','Sessions'),h('span',{style:mono},sessions)),
         _settingsRow(tr('settings.unlockedLogs','Unlocked Logs'),h('span',{style:mono},(logs?logs.length:0)+'/'+logsTotal)),
-        _settingsRow(tr('settings.endingsFound','Endings Found'),h('span',{style:mono},(endings?endings.length:0)+'/10')),
+        _settingsRow(tr('settings.endingsFound','Endings Found'),h('span',{style:mono},(endings?endings.length:0)+'/'+endingsTotal)),
         h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},tr('settings.snapshotSlots','SNAPSHOT SLOTS')),
           h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},tr('settings.snapshotHelp','Save at a desired day and reload later to compare different branching choices.')),

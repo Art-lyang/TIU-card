@@ -311,6 +311,12 @@ function scanReqString(src, where) {
     consumedLogs.get(m).push(where);
   }
 }
+function scanArchiveArrayRefs(src, where) {
+  if (!src) return;
+  const rx = /\b(?:any|all)\s*:\s*\[([\s\S]*?)\]/g;
+  let m;
+  while ((m = rx.exec(src))) scanReqString(m[1], where);
+}
 function scanTryUnlockProductions(src) {
   if (!src) return;
   const rx = /tryUnlock\s*\(\s*['"](LOG-[A-Z0-9_-]+|ONCE-[A-Z0-9_-]+)['"]\s*\)/g;
@@ -363,6 +369,15 @@ for (const file of ['app-logic.js', 'app.js']) {
     scanTryUnlockProductions(fs.readFileSync(path.join(ROOT, file), 'utf8'));
   } catch (e) {}
 }
+
+for (const entry of (sandbox.ARCHIVE_ENTRIES || [])) {
+  if (entry && typeof entry.unlock === 'function') {
+    scanReqString(entry.unlock.toString(), `archive ${entry.id || '(unknown)'}`);
+  }
+}
+try {
+  scanArchiveArrayRefs(fs.readFileSync(path.join(ROOT, 'data-archive-expansion.js'), 'utf8'), 'archive expansion array');
+} catch (e) {}
 
 // 생산되는 일반 LOG는 로그 탭/i18n에서 조회될 수 있으므로 정의가 필요하다.
 for (const log of producedLogs) {

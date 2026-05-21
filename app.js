@@ -204,7 +204,7 @@ function App(){
   };
   var getRewardPreviewDelta=function(r){
     var ns=applyFx(stats,(r&&r.fx)||{});ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
-    if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3LoyalRelief?0:5))}
+    if(act===3){var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
     if(act===4){var loyalRelief=gi>=40||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-10);ns.r=Math.max(0,ns.r-(loyalRelief?5:10));ns.t=Math.max(0,ns.t-(loyalRelief?0:5))}
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1},nextGi=gi;
     var rewardTuned=(typeof applyRewardBalanceTuning==='function')?applyRewardBalanceTuning(stats,next,nextGi,r,act):null;
@@ -217,7 +217,16 @@ function App(){
     setTimeout(function(){setPhase('go')},goDelay)};
   var tryDlg=function(logsOverride){
     var lg=Array.isArray(logsOverride)?logsOverride:logs;
-    var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(d.char==='\uc11c\ud558\uc740'&&lg.indexOf('LOG-050')>=0)return false;if(d.logReq&&lg.indexOf(d.logReq)<0)return false;if(d.actReq&&act<d.actReq)return false;if(d.trustReq&&!d.trustReq(trust))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&(!d2.trustReq||d2.trustReq(trust))&&(!d2.logReq||lg.indexOf(d2.logReq)>=0))earlier=true});return!earlier});
+    var dlgAvailable=function(d){
+      if(d.char==='\uc11c\ud558\uc740'&&lg.indexOf('LOG-050')>=0)return false;
+      if(d.logReq&&lg.indexOf(d.logReq)<0)return false;
+      if(d.blockLogs&&d.blockLogs.some(function(id){return lg.indexOf(id)>=0}))return false;
+      if(d.actReq&&act<d.actReq)return false;
+      if(d.trustReq&&!d.trustReq(trust))return false;
+      if(d.condFn){try{if(!d.condFn({logs:lg,trust:trust,act:act,stats:stats}))return false}catch(e){}}
+      return true;
+    };
+    var av=DIALOGUES.filter(function(d,i){if(usedDlg.indexOf(i)>=0)return false;if(!dlgAvailable(d))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDlg.indexOf(j)<0&&dlgAvailable(d2))earlier=true});return!earlier});
     if(!isIntrosDone(lg)){var introAv=av.filter(function(d){return isIntroDlgCheck(d,DIALOGUES.indexOf(d))});if(introAv.length>0){var d=pick(introAv);setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}return false}
     // 박소영 합류 후 첫 대화 보장
     if(lg.indexOf('LOG-082')>=0&&lg.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0){var d=syAv[0];setCurDlg(d);setUsedDlg(function(p){var n=p.concat([DIALOGUES.indexOf(d)]);Save.saveUsedDlg(n);return n});setPhase('dialogue');return true}}
@@ -244,7 +253,7 @@ function App(){
     if(newAct===4)tryUnlock('LOG-ACT4');
     var statPenalty=newAct===4
       ?(route==='A4_COMPLY'?0:5)
-      :(newAct===3?((route==='A'||route==='B'||route==='C')?5:10):(route==='A'?0:5));
+      :(newAct===3?((route==='A'||route==='B'||route==='C')?5:8):(route==='A'?0:5));
     if(statPenalty>0){var ns={c:clamp(s.c-statPenalty),r:clamp(s.r-statPenalty),t:clamp(s.t-statPenalty),o:clamp(s.o-statPenalty),day:s.day};setStats(ns)}
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(newAct);
     setPhase('briefing');
@@ -405,7 +414,7 @@ function App(){
   var hMission=function(o){if(o.gOnly){setGi(function(g){var ng0=g+(o.g||0);persistGame(stats,ng0,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng0});return}Save.del('ts_activeMission');SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return}nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   var hReward=function(r){SFX.play('reward');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
-    if(act===3){var act3LoyalRelief=gi>=35||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3LoyalRelief?0:5))}
+    if(act===3){var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
     if(act===4){
       var loyalRelief=gi>=40||transRoute==='A4_COMPLY';
       ns.c=Math.max(0,ns.c-10);

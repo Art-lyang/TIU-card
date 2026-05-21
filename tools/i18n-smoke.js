@@ -50,6 +50,7 @@ function boot(locale) {
   runFile(ctx, 'lang-cards-c-en.js');
   runFile(ctx, 'lang-cards-flow-en.js');
   runFile(ctx, 'data-core.js');
+  runFile(ctx, 'data-cards-resist-hint.js');
   runFile(ctx, 'data-chains.js');
   runFile(ctx, 'data-chains-incident.js');
   runFile(ctx, 'data-chains-incident2.js');
@@ -894,6 +895,27 @@ function checkArchiveOverlays(ctx, errors) {
   });
 }
 
+function checkAllOracleLogOverlays(ctx, errors) {
+  const ids = Array.from(new Set((ctx.ORACLE_LOGS || []).map((log) => log && log.id).filter(Boolean)));
+  ids.forEach((id) => {
+    const view = ctx.tc('oracleLogs', id, null);
+    if (!view) {
+      errors.push(`[en] missing oracle log overlay ${id}`);
+      return;
+    }
+    ['title', 'content'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing oracle log ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+}
+
 function main() {
   const errors = [];
   const warnings = [];
@@ -926,6 +948,7 @@ function main() {
   checkAllDialogueOverlays(en, errors);
   checkAllChainCardOverlays(en, errors);
   checkArchiveOverlays(en, errors);
+  checkAllOracleLogOverlays(en, errors);
 
   if (warnings.length) {
     console.log('i18n smoke warnings:');

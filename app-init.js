@@ -146,7 +146,7 @@ var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent,tRoute){
 var oracleSafeguardEligible=function(stats,gi,logs,tRoute){
   var s=stats||{},lg=logs||[];
   if(lg.indexOf('ONCE-ORC-LOYAL-SAFE-01')>=0)return false;
-  if(!s||s.o<=0)return false;
+  if(!s||s.c<=0||s.r<=0||s.t<=0||s.o<=0||s.c>=100)return false;
   var loyalty=(gi||0)>=10 || tRoute==='A4_COMPLY';
   if(!loyalty)return false;
   return s.c<=20||s.r<=20||s.t<=20;
@@ -160,6 +160,7 @@ var resistanceSafeguardEligible=function(stats,gi,logs,tRoute){
   var s=stats||{},lg=logs||[];
   if(lg.indexOf('ONCE-RH-SAFE-01')>=0||lg.indexOf('LOG-RH-SAFEGUARD')>=0)return false;
   if(!s||s.day<8)return false;
+  if(s.c<=0||s.r<=0||s.t<=0||s.o<=0||s.c>=100)return false;
   var resistance=(gi||0)<=-35||tRoute==='A4_RESIST'||tRoute==='A4_OBSERVER';
   if(!resistance){
     for(var i=0;i<lg.length;i++){
