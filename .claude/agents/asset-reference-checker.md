@@ -9,13 +9,21 @@ model: sonnet
 
 ## 검사 대상
 
-- 에셋 디렉토리: `assets/images/`, `audio/`, (필요 시) `assets/icons/`
+- 에셋 디렉토리:
+  - `assets/images/` (카드/캐릭터/배경/엔딩/specs/missions/facilities 등 하위 분리)
+  - `assets/field-mission-ui/` (현장 미션 UI 버튼/프레임/FX/아이콘)
+  - `assets/main-menu/` (메인 메뉴 자원)
+  - `audio/` (BGM .mp3, SFX .wav)
+  - `tiu_status_icons_symbol_only/` (상태 아이콘 SVG)
 - 참조 위치:
   - 카드/LOG/뉴스 데이터 파일(`data-*.js`)의 이미지 경로 필드
-  - BGM 트리거(`bgm*.js`)
+  - 이미지 매핑: `images.js`, `images_p1.js`(런타임 오버레이), `images_bg.js`
+  - BGM/SFX 트리거: `bgm_main.js`, `bgm_tension.js`, `bgm_boot.js`, `sfx-sources.js`
   - 컴포넌트(`components-*.js`)에서 직접 import/url 지정
-  - CSS의 `url(...)` (`style*.css`)
+  - CSS의 `url(...)` (`style*.css`, `field-mission-ui*.css` 등)
   - i18n 파일(`lang-*.js`)에서 텍스트와 함께 들어간 경로
+
+⚠ **로드 순서 주의**: `images.js`가 초기값(일부 구버전 spec 경로)을 선언한 뒤 `images_p1.js`가 hq 버전으로 덮어쓰는 구조. `index.html` 스크립트 순서가 정상이라는 전제 하에 작동하므로, 두 파일 간 키 중복 시 후자가 정본.
 
 ## 검사 절차
 
@@ -31,7 +39,9 @@ model: sonnet
 
 - **대소문자 차이**: Windows에선 통과해도 배포(linux/CDN)에서 깨짐 (`Card_01.png` vs `card_01.png`)
 - **확장자 오타**: `.jpeg` vs `.jpg`, `.mp3` vs `.MP3`
-- **캐릭터 일러스트 셋 완비**: SH/KD/YS/IJ/SY 각 표정/포즈 그룹에 빠진 변형 없는지 (있는 캐릭터의 셋에서 추정)
+- **캐릭터 일러스트 셋 완비**: 현재 활성 캐릭터(`char_haeun`, `char_jaehyuk`, `char_jungcheol`, `char_sejin`, `char_soyoung`, `char_doyun`, `char_kang`, `char_weber`, `char_foster`, `char_poster` 등 11인+) 각 기본/`_hq`/`_hq_v2`/`_hq_v3` 등 hq 변형이 `images.js`/`images_p1.js`에 일관되게 등록되어 있는지
+- **현장 미션 UI 셋 완비**: `assets/field-mission-ui/` 하위 버튼·프레임·FX·아이콘이 CSS `iconMap`(warning/aux_waveform/shield_lock/vent_grille/seal_ring/purge_triangle 등)과 일치하는지
+- **엔딩 이미지 완비**: `ending_A~H`, `ending_C_*`, `ending_E*`, `ending_TIME_UP` 등 분기별 엔딩 이미지 누락 여부
 - **확장자 미스매치**: 코드에서 `.webp` 참조하는데 파일은 `.png`만 존재
 
 ## 보고 형식 (한국어 브리핑)

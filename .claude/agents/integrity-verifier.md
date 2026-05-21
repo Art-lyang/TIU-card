@@ -10,9 +10,19 @@ model: sonnet
 ## 검증 항목
 
 ### 1. ID 무결성
-- 카드 ID 중복 (`C-/CH-/CS-/CT-/CA-/CE-`)
+- 카드 ID 중복 — 현재 활성 ID 계열(CLAUDE.md / `tools/validator.js` `CARD_ID_FORMAT_RULES` 기준):
+  - 기본/힌트: `C-XXX`, `C-FE###-A/B`, `C-HINT-*`
+  - 캐릭터/중립 Act: `CA-XXX`, `CA-XXXB`, `CA-OBS-PROTO`, `CA-SEED-##`
+  - Act 4 루트/필러/위험: `CA3-*`, `CA4-*`
+  - Act 2~4 흐름/지원: `A2-*`, `A3-*`, `A4-*`
+  - 이벤트: `CE-XXX`
+  - 사이드/인물 체인: `CS-XXX`, `CS-XXXB`
+  - 위기/크라이시스: `CT-XXX`, `CT-B##`, `CT-C##`, `CT-O##`, `CT-T##`
+  - 체인: `CH-...-N`
+  - 지역/조직 팩: `CB-*`, `CN-*`, `CR-*`, `DG-*`, `HH-*`, `KC-*`, `MD-*`, `MS-*`, `RH-*`
+  - 특수 팩: `FP-FE-*`, `GOV-ORC-*`, `LJC-PROM-*`, `OBS-HINT-*`, `ORC-LOYAL-SAFE-*`, `RH-SAFE-*`, `SUP-DM-*`
 - 형식 위반 (`C-1` vs `C-001` 혼재, 대소문자 일관성)
-- LOG ID 중복 / 형식(`LOG-001`, `LOG-INTRO-*`, `LOG-RECON-*`, `ONCE-CA-*`)
+- LOG ID 중복 / 형식: `LOG-XXX`(3자리), `LOG-INTRO-*`, `LOG-RECON-*`, `LOG-OBSERVER-*`, `LOG-GOV-HAEJIN-*`, `LOG-074-DONE` 류 상태 변형, `ONCE-CA-*`
 
 ### 2. 참조 무결성
 - 카드의 `mission: "M-XXX"` → 미션 정의 존재 여부
@@ -22,12 +32,16 @@ model: sonnet
 
 ### ⚠ 중요: 분산 정의 파일 전수 검색
 TIU_CARD는 같은 종류 데이터가 여러 파일에 분산되어 있습니다. 다음을 **반드시 Glob으로 전수 검색**해서 누락 false positive를 만들지 마세요:
-- 미션: `data-missions*.js` (data-missions.js, data-missions-2.js, data-missions-3.js, data-missions-4.js, data-missions-5.js, data-missions-incident.js, data-missions-variants.js 등)
-- 체인 카드: `data-chains*.js` (data-chains.js, data-chains-incident2.js 등)
-- 카드: `data-cards-*.js` 전부
-- LOG: `data-logs*.js` + `app-logic.js`의 인라인 정의
+- 카드: `data-cards-*.js` 전부 (현재 `data-cards-1.js` ~ `data-cards-16.js` + `data-cards-act4.js`, `data-cards-act4-ext.js`, `data-cards-act4-hazard.js`, `data-cards-act23-pressure.js`, `data-cards-crisis.js`, `data-cards-neutral.js`, `data-cards-prologue.js`, `data-cards-prologue-2.js`, `data-cards-korea-civilian.js`, `data-cards-session-packs.js`, `data-cards-resist-hint.js`, `data-cards-facility-propose.js`, `data-cards-dg-meridian.js`, `data-cards-prometheus-lee.js` 포함)
+- 시설/봉기: `data-facility.js`, `data-facility-2.js`, `data-facility-uprising-a.js`, `data-facility-uprising-b.js`
+- 미션: `data-missions*.js` (data-missions.js, data-missions-2.js, data-missions-3.js, data-missions-4.js, data-missions-5.js, data-missions-incident.js, data-missions-variants.js 포함)
+- LOG: `data-logs-integrity.js` + `data-core.js`(핵심 LOG) + 팩별 인라인(`data-cards-korea-civilian.js`, `data-cards-session-packs.js`, `data-cards-act23-pressure.js`, `data-facility-uprising-b.js` 등) + `app-logic.js`의 인라인 트리거
+- 아카이브 / 엔딩 / 증거: `data-archive.js`, `data-archive-expansion.js`, `data-endings.js`, `data-evidence.js`
+- 이브닝 챗: `data-evening-extra.js`, `data-evening-extra-2a~2d.js`, `data-evening-responses*.js`, `data-evening-trust-*.js`
 
 **절대 하지 말 것**: `data-missions.js` 한 파일만 읽고 "M-XXX 미정의" 결론 내리는 것. **반드시** `Glob "data-missions*.js"` → 모든 파일 Read → 합쳐서 ID 셋 구성한 뒤 비교.
+
+**검증 기준 권장**: `tools/validator.js`의 `CARD_ID_FORMAT_RULES`를 신뢰 소스로 참조하면 ID 형식 위반 판정이 정확해집니다.
 
 ### 3. 스키마 정합성
 - 모든 카드가 필수 필드(`id`, `act`, `msg`, `left`, `right`) 보유

@@ -9,11 +9,15 @@ model: sonnet
 
 ## 검사 대상
 
-- 카드 메시지(`data-cards-*.js`의 `msg`)
-- LOG 정의 및 트리거(`app-logic.js`, `data-logs*.js`)
-- 이브닝 챗(`data-dialogue*.js`, `lang-content-en-all.js`의 `dialogue:`)
-- 뉴스(`news:` 카테고리)
-- 미션/체인 카드(`data-chain*.js`)
+- 카드 메시지(`data-cards-*.js` 전 파일의 `msg`)
+- LOG 정의 및 트리거(`app-logic.js`, `data-logs-integrity.js`, `data-core.js` 핵심 LOG, 팩별 인라인 LOG)
+- 이브닝 챗: `data-core.js`의 EVENING_CHATS, `data-evening-extra.js`, `data-evening-extra-2a.js`~`2d.js`, `data-evening-responses*.js`, `data-evening-trust-*.js`, `lang-content-en-dialogues.js`, `lang-evening-extra-en.js`
+- DIALOGUES: `data-core.js`의 DIALOGUES 배열 (trust 단계별 친밀 대화)
+- 뉴스: `news:` 카테고리 (`data-core.js` NP 배열 등)
+- 증거/아카이브: `data-evidence.js`, `data-archive.js`, `data-archive-expansion.js`
+- 엔딩: `data-endings.js`
+- 시설/봉기 라인: `data-facility*.js`, `data-facility-uprising-*.js`
+- 카논 소스(GDD-v11, TIU-CANON-STORYLINE, TIU-CHARACTER-BIBLE)는 `-setup/` 하위에서 모순 판정 기준으로 참조
 
 ## 점검 차원
 
@@ -32,8 +36,12 @@ model: sonnet
 - 결과가 원인보다 먼저 노출되는 카드 순서
 
 ### 4. 관계·감정 일관성
-- 캐릭터(SH/KD/YS/IJ/SY)의 관계가 카드 사이에서 급변하는데 전환 카드 없음
+- 캐릭터 관계가 카드 사이에서 급변하는데 전환 카드 없음. 현재 활성 캐릭터:
+  - 핵심 부하: 서하은(SH/haeun), 강도윤(KD/doyun), 임재혁(IJ/jaehyuk), 윤세진(YS/sejin), 박소영(PS/soyoung)
+  - 상부/외부: 정철(jungcheol), 케이트 웨버(weber), 포스터(foster), 강 대령(kang)
+  - 추가 NPC: 임프로메테우스(LJC-PROM 라인) 등
 - trust 수치와 다이얼로그 톤이 어긋남 (낮은 trust인데 친밀 발화)
+- 캐릭터 상태 변화 LOG(`LOG-050` 서하은 전출, `LOG-075` 강도윤 행방불명, `LOG-074-DONE` 강도윤 중상 후송, `LOG-082` 박소영 합류 등) 이후의 이브닝 챗·DIALOGUES에 부재 조건이 누락되었는지 — GDD-v11 §5 규정: "state-specific variant 없이는 비호환 상태에서 노출되면 안 됨"
 - 캐릭터의 정체성·소속·직위 충돌
 
 ### 5. 분기 라우트별 정합성
@@ -42,6 +50,10 @@ model: sonnet
 
 ### 6. 한·영 서사 일치
 - 한국어와 영어가 사실관계에서 다르게 번역된 부분 (단순 톤 차이는 tone-style-reviewer 영역)
+
+### 7. 엔딩/아카이브 조건 정합
+- `data-endings.js`의 엔딩 조건이 실제 게임 플로우에서 도달 가능한지
+- `data-archive*.js`의 unlock 조건이 참조하는 LOG ID가 실제로 트리거되는 경로가 있는지 (예: LOG ID와 카드 ID 혼동으로 영구 잠금되는 항목)
 
 ## 작업 방식
 

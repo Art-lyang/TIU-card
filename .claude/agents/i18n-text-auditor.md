@@ -9,10 +9,11 @@ model: sonnet
 
 ## 점검 대상
 
-- 한국어 원본: `data-cards-*.js`, `data-core.js`, `data-chain*.js`, `data-news*.js`, `data-dialogue*.js` 등 루트의 `data-*.js`
-- 영어 번역: `lang-cards-*.js`, `lang-content-en-all.js`, `lang-ui-*.js`
+- 한국어 원본: `data-cards-*.js`(`data-cards-1.js`~`data-cards-16.js` + `data-cards-act4*.js`, `data-cards-act23-pressure.js`, `data-cards-crisis.js`, `data-cards-neutral.js`, `data-cards-prologue*.js`, `data-cards-korea-civilian.js`, `data-cards-session-packs.js`, `data-cards-resist-hint.js`, `data-cards-facility-propose.js`, `data-cards-dg-meridian.js`, `data-cards-prometheus-lee.js`), `data-core.js`, `data-facility*.js`, `data-archive*.js`, `data-endings.js`, `data-evidence.js`, `data-evening-*.js`, `data-missions*.js`
+- 영어 번역: `lang-cards-c-en.js`, `lang-cards-ca4-en.js`, `lang-cards-ce-en.js`, `lang-cards-cs-en.js`, `lang-cards-ct-en.js`, `lang-cards-flow-en.js`, `lang-cards-side-en.js`, `lang-content-en-all.js`, `lang-content-en-dialogues.js`, `lang-archive-en.js`, `lang-evening-extra-en.js`, `lang-evidence-hidden-en.js`, `lang-ui-en.js`, `lang-ui-ko.js`
 - 핫픽스: `components-settings-hotfix.js`, `style-i18n-hotfix.css`
 - 런타임 머지 로직: `i18n-runtime.js` (참고용)
+- 로드 순서: `index.html`에서 `lang-content-en-all.js` 선로드 후 `lang-cards-{c,ce,ca4,ct,cs,flow,side}-en.js` 순차 오버레이 — 나중 로드 파일이 정본
 
 ## ⚠ 중요: 정확한 ID 추출과 비교
 
@@ -26,7 +27,17 @@ model: sonnet
 
 ## 카드 ID 규칙
 
-`C-001`~`C-251`(기본), `CH-`(하은), `CS-`(특수), `CT-`(전환), `CA-`(일회성), `CE-`(엔딩)
+CLAUDE.md / `tools/validator.js`의 `CARD_ID_FORMAT_RULES` 기준 (10종 활성 계열):
+- `C-XXX`(기본, 현재 약 C-001~C-336 범위에 의도적 갭 포함), `C-FE###-A/B`, `C-HINT-*`
+- `CA-XXX`/`CA-XXXB`/`CA-OBS-PROTO`/`CA-SEED-##` (캐릭터/중립 Act)
+- `CA3-*`, `CA4-*` (Act 4 루트/필러/위험)
+- `A2-*`, `A3-*`, `A4-*` (Act 흐름/지원, 예: `A4-SUPPORT-DG-01`)
+- `CE-XXX` (이벤트)
+- `CS-XXX`/`CS-XXXB` (사이드/인물)
+- `CT-XXX`/`CT-B##`/`CT-C##`/`CT-O##`/`CT-T##` (위기)
+- `CH-...-N` (체인)
+- 지역/조직: `CB-*`, `CN-*`, `CR-*`, `DG-*`, `HH-*`, `KC-*`, `MD-*`, `MS-*`, `RH-*`
+- 특수: `FP-FE-*`, `GOV-ORC-*`, `LJC-PROM-*`, `OBS-HINT-*`, `ORC-LOYAL-SAFE-*`, `RH-SAFE-*`, `SUP-DM-*`
 
 ## 체크리스트
 

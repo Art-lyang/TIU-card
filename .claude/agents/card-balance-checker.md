@@ -9,8 +9,22 @@ model: sonnet
 
 ## 검사 대상
 
-- `data-cards-*.js`, `data-core.js`, `data-chain*.js`
+- 카드 데이터: `data-cards-*.js` 전체 (`data-cards-1.js`~`data-cards-16.js` + `data-cards-act4*.js`, `data-cards-act23-pressure.js`, `data-cards-crisis.js`, `data-cards-neutral.js`, `data-cards-prologue*.js`, `data-cards-korea-civilian.js`, `data-cards-session-packs.js`, `data-cards-resist-hint.js`, `data-cards-facility-propose.js`, `data-cards-dg-meridian.js`, `data-cards-prometheus-lee.js`)
+- 시설/봉기: `data-facility.js`, `data-facility-2.js`, `data-facility-uprising-a.js`, `data-facility-uprising-b.js`
+- 핵심: `data-core.js`
 - 카드 스키마: `id`, `act:[1..4]`, `priority:"상|중|하"`, `fx:{c,r,t,o}`, `g`(GI), `req`, `left`/`right`, `mission`, `timer`
+
+ID 계열은 `tools/validator.js`의 `CARD_ID_FORMAT_RULES`(10종)를 신뢰 소스로:
+- `C-XXX`/`C-FE###-A,B`/`C-HINT-*`
+- `CA-XXX`/`CA-XXXB`/`CA-OBS-PROTO`/`CA-SEED-##`
+- `CA3-*`, `CA4-*`
+- `A2-*`, `A3-*`, `A4-*`
+- `CE-XXX`
+- `CS-XXX`/`CS-XXXB`
+- `CT-XXX`/`CT-B##`/`CT-C##`/`CT-O##`/`CT-T##`
+- `CH-...-N`
+- 지역/조직 팩: `CB/CN/CR/DG/HH/KC/MD/MS/RH-*`
+- 특수 팩: `FP-FE-*`, `GOV-ORC-*`, `LJC-PROM-*`, `OBS-HINT-*`, `ORC-LOYAL-SAFE-*`, `RH-SAFE-*`, `SUP-DM-*`
 
 ## 점검 항목
 
