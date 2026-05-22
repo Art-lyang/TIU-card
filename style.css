@@ -608,13 +608,13 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-log{height:44px;flex-basis:44px;padding:7px 11px}
   .main-terminal-log-copy{font-size:9px;line-height:1.25}
   .main-terminal-oracle{display:none}
-  .main-terminal-menu-list{gap:clamp(5px,.7svh,8px);flex:1 1 auto;min-height:0;justify-content:stretch;padding:8px 7px;overflow-y:auto}
-  .main-terminal-row{height:auto;min-height:52px;max-height:76px;flex:1 1 0}
+  .main-terminal-menu-list{gap:clamp(8px,1.1svh,14px);flex:1 1 auto;min-height:0;justify-content:stretch;padding:10px 8px;overflow-y:auto}
+  .main-terminal-row{height:auto;min-height:68px;max-height:none;flex:1 1 72px}
   .main-terminal-cursor{left:10px;font-size:16px}
-  .main-terminal-button{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:0 10px 0 13px}
-  .main-terminal-icon{width:26px;height:26px}
-  .main-terminal-button-copy strong{font-size:13px;margin-bottom:2px}
-  .main-terminal-button-copy small{font-size:7.5px;letter-spacing:.06em}
+  .main-terminal-button{grid-template-columns:40px minmax(0,1fr);gap:10px;padding:0 12px 0 14px}
+  .main-terminal-icon{width:31px;height:31px}
+  .main-terminal-button-copy strong{font-size:15px;margin-bottom:3px}
+  .main-terminal-button-copy small{font-size:8.2px;letter-spacing:.06em}
   .main-terminal-button-action{display:none}
   .main-terminal-footer{height:28px;flex-basis:28px;flex-direction:row;align-items:center;gap:8px;padding:3px 7px;font-size:6.5px}
   .main-terminal-footer div:last-child{display:none}
@@ -653,11 +653,11 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-feed-top{top:10px}.main-terminal-feed-bottom{bottom:10px}
   .main-terminal-log{height:34px;flex-basis:34px;padding:5px 9px}
   .main-terminal-log-copy{font-size:8px;line-height:1.15}
-  .main-terminal-menu-list{gap:4px;padding:6px;justify-content:space-between}
-  .main-terminal-row{min-height:40px;max-height:54px}
-  .main-terminal-button{grid-template-columns:28px minmax(0,1fr);gap:7px;padding:0 8px 0 11px}
-  .main-terminal-icon{width:22px;height:22px}
-  .main-terminal-button-copy strong{font-size:11px;margin-bottom:1px}
-  .main-terminal-button-copy small{font-size:6.5px}
+  .main-terminal-menu-list{gap:6px;padding:7px;justify-content:stretch}
+  .main-terminal-row{min-height:52px;max-height:none;flex:1 1 54px}
+  .main-terminal-button{grid-template-columns:32px minmax(0,1fr);gap:8px;padding:0 9px 0 12px}
+  .main-terminal-icon{width:25px;height:25px}
+  .main-terminal-button-copy strong{font-size:12.5px;margin-bottom:1px}
+  .main-terminal-button-copy small{font-size:7px}
   .main-terminal-footer{height:22px;flex-basis:22px;padding:2px 6px;font-size:6px}
 }
