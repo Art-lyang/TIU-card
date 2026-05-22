@@ -50,6 +50,7 @@ function boot(locale) {
   runFile(ctx, 'lang-cards-c-en.js');
   runFile(ctx, 'lang-cards-flow-en.js');
   runFile(ctx, 'data-core.js');
+  runFile(ctx, 'data-cards-resist-hint.js');
   runFile(ctx, 'data-chains.js');
   runFile(ctx, 'data-chains-incident.js');
   runFile(ctx, 'data-chains-incident2.js');
@@ -216,13 +217,22 @@ function checkFacilityViews(ctx, errors) {
   if (!Array.isArray(ctx.CARDS_FACILITY_PROPOSALS) || !ctx.CARDS_FACILITY_PROPOSALS.length) {
     errors.push('[en] facility proposal cards are not available');
   } else {
-    const proposal = ctx.CARDS_FACILITY_PROPOSALS[0];
-    const msg = typeof proposal.msg === 'function' ? proposal.msg() : proposal.msg;
-    const left = proposal.left && (typeof proposal.left.label === 'function' ? proposal.left.label() : proposal.left.label);
-    const right = proposal.right && (typeof proposal.right.label === 'function' ? proposal.right.label() : proposal.right.label);
-    [msg, left, right].forEach((val, index) => {
-      if (!val) errors.push(`[en] missing facility proposal text index ${index}`);
-      if (typeof val === 'string' && HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in facility proposal: ${val.slice(0, 80)}`);
+    ctx.CARDS_FACILITY_PROPOSALS.forEach((proposal) => {
+      const overlay = ctx.tc('cards', proposal.id, null);
+      ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+        const val = overlay && overlay[prop];
+        if (!val) errors.push(`[en] missing facility proposal overlay ${proposal.id}.${prop}`);
+        if (typeof val === 'string' && HANGUL_RE.test(val)) {
+          errors.push(`[en] Hangul leaked in facility proposal overlay ${proposal.id}.${prop}: ${val.slice(0, 80)}`);
+        }
+      });
+      const msg = typeof proposal.msg === 'function' ? proposal.msg() : proposal.msg;
+      const left = proposal.left && (typeof proposal.left.label === 'function' ? proposal.left.label() : proposal.left.label);
+      const right = proposal.right && (typeof proposal.right.label === 'function' ? proposal.right.label() : proposal.right.label);
+      [msg, left, right].forEach((val, index) => {
+        if (!val) errors.push(`[en] missing facility proposal runtime text ${proposal.id} index ${index}`);
+        if (typeof val === 'string' && HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in facility proposal runtime text ${proposal.id}: ${val.slice(0, 80)}`);
+      });
     });
   }
   if (typeof ctx.getFacilityStatusLines === 'function') {
@@ -894,6 +904,27 @@ function checkArchiveOverlays(ctx, errors) {
   });
 }
 
+function checkAllOracleLogOverlays(ctx, errors) {
+  const ids = Array.from(new Set((ctx.ORACLE_LOGS || []).map((log) => log && log.id).filter(Boolean)));
+  ids.forEach((id) => {
+    const view = ctx.tc('oracleLogs', id, null);
+    if (!view) {
+      errors.push(`[en] missing oracle log overlay ${id}`);
+      return;
+    }
+    ['title', 'content'].forEach((prop) => {
+      const val = view[prop];
+      if (!val) errors.push(`[en] missing oracle log ${id}.${prop}`);
+      if (typeof val === 'string' && HANGUL_RE.test(val)) {
+        errors.push(`[en] Hangul leaked in oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+      if (typeof val === 'string' && MOJIBAKE_RE.test(val)) {
+        errors.push(`[en] mojibake leaked in oracle log ${id}.${prop}: ${val.slice(0, 80)}`);
+      }
+    });
+  });
+}
+
 function main() {
   const errors = [];
   const warnings = [];
@@ -926,6 +957,7 @@ function main() {
   checkAllDialogueOverlays(en, errors);
   checkAllChainCardOverlays(en, errors);
   checkArchiveOverlays(en, errors);
+  checkAllOracleLogOverlays(en, errors);
 
   if (warnings.length) {
     console.log('i18n smoke warnings:');

@@ -300,7 +300,9 @@ function checkSensitiveReleaseGuards(errors) {
   const koSide = read('data-cards-session-packs.js');
   const enSide = read('lang-cards-side-en.js');
   const evening = read('components-evening.js');
+  const rewardGame = read('components-game.js');
   const css = read('style.css');
+  const sim = read('tools/simulator_v3.py');
 
   if (!cards13.includes("CARDS_NEW_B.filter(function(c){return c.id!=='C-231'}")) {
     errors.push('C-231 orphan shutdown card is not filtered out of the runtime deck');
@@ -326,9 +328,27 @@ function checkSensitiveReleaseGuards(errors) {
   if (!/cardId === 'CE-005'[\s\S]*liftBelow\(after, 'o', 3\)/.test(balance)) {
     errors.push('CE-005 observer exception should floor o at 3 only');
   }
-  if (!/cardId === 'CE-042' \|\| cardId === 'CE-042B'[\s\S]*liftBelow\(after, 'o', 3\)[\s\S]*liftBelow\(after, 'r', 3\)/.test(balance)) {
-    errors.push('CE-042 final commitment exception should floor o/r at 3 only');
+  if (!/cardId === 'CE-042' \|\| cardId === 'CE-042B' \|\| cardId === 'CE-042C' \|\| cardId === 'CE-042D'[\s\S]*liftBelow\(after, 'o', 3\)[\s\S]*liftBelow\(after, 'r', 3\)/.test(balance)) {
+    errors.push('CE-042* final commitment exception should floor o/r at 3 only');
   }
+  [
+    { id: 'CE-015', stat: "'o', 3" },
+    { id: 'CE-015', stat: "'r', 3" },
+    { id: 'CA4-EX-02', stat: "'o', 3" },
+    { id: 'CA4-EX-02', stat: "'r', 3" },
+    { id: 'CA4-OR-03', stat: "'o', 3" },
+  ].forEach(({ id, stat }) => {
+    var rx = new RegExp("cardId === '" + id + "'[\\s\\S]*liftBelow\\(after, " + stat.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + "\\)");
+    if (!rx.test(balance)) errors.push(`${id} high-cost route guard missing ${stat}`);
+  });
+  [
+    "cid == 'CE-015'",
+    "cid in ('CE-042', 'CE-042B', 'CE-042C', 'CE-042D')",
+    "cid == 'CA4-EX-02'",
+    "cid == 'CA4-OR-03'",
+  ].forEach((needle) => {
+    if (!sim.includes(needle)) errors.push(`simulator missing high-cost guard mirror: ${needle}`);
+  });
 
   if (!app.includes('isPersistentSessionLog') || app.includes("id.indexOf('LOG-INTRO-')===0||id.indexOf('ONCE-')===0")) {
     errors.push('resetSessionLogs should use explicit persistent-log allowlist');
@@ -339,6 +359,15 @@ function checkSensitiveReleaseGuards(errors) {
 
   if (/trust route|trust-route|신뢰 루트|follow-up rewards|후속 보상/.test(miniExpansion)) {
     errors.push('field mission follow-up text still exposes meta route/reward terms');
+  }
+  if ((evening.match(/reqIntro&&p\.logs\.indexOf\(reqIntro\)<0&&p\.act<2/g) || []).length < 2) {
+    errors.push('Act2+ evening core officers should not be hidden by missing intro logs');
+  }
+  if (!init.includes('ensureProgressLogsForGame') || !init.includes('act<maxAct') || !app.includes('ts_resumePhase')) {
+    errors.push('save/load should normalize act-boundary saves, required progress logs, and resume checkpoints');
+  }
+  if (!app.includes('ts_resumeRewards') || !rewardGame.includes('initialRewards') || !app.includes('rememberRewardId')) {
+    errors.push('reward resume should keep reward options stable and record recent reward choices');
   }
   ['setChainQueue([])', 'setPendingBonus(null)', 'setCurMission(null)', 'setCurDlg(null)'].forEach((needle) => {
     if (!app.includes(needle)) errors.push(`new campaign does not reset volatile session state: ${needle}`);
@@ -384,6 +413,7 @@ function sourceBlock(rel, id) {
 
 function checkIssue33ReleaseGuards(errors) {
   const app = read('app.js');
+  const init = read('app-init.js');
   const balance = read('balance-tuning.js');
   const simulator = read('tools/simulator_v3.py');
 
@@ -444,6 +474,12 @@ function checkIssue33ReleaseGuards(errors) {
   if (/shouldUseResourceReserve|markResourceReserveUsed|reserveApplied/.test(app)) {
     errors.push('hidden resource reserve still prevents resource depletion');
   }
+  if (!/oracleSafeguardEligible[\s\S]*s\.c<=0\|\|s\.r<=0\|\|s\.t<=0\|\|s\.o<=0\|\|s\.c>=100/.test(init)) {
+    errors.push('ORACLE safeguard can still override terminal stat failure');
+  }
+  if (!/resistanceSafeguardEligible[\s\S]*s\.c<=0\|\|s\.r<=0\|\|s\.t<=0\|\|s\.o<=0\|\|s\.c>=100/.test(init)) {
+    errors.push('Resistance safeguard can still override terminal stat failure');
+  }
   [
     'resistance-reward-floor',
     'neutral-reward-resource-floor',
@@ -454,6 +490,10 @@ function checkIssue33ReleaseGuards(errors) {
   });
   if (/ng\s*>=\s*8[\s\S]*_lift_below\(ns, 'r', 35\)/.test(simulator) || /act\s*==\s*4[\s\S]*ns\[key\]\s*=\s*max\(ns\[key\], floor\)/.test(simulator)) {
     errors.push('simulator_v3 still has legacy broad resource floors');
+  }
+  if (!/def resistance_safeguard_eligible[\s\S]*s\.get\('r', 0\) <= 0/.test(simulator) ||
+      !/def oracle_safeguard_eligible[\s\S]*s\.get\('r', 0\) <= 0/.test(simulator)) {
+    errors.push('simulator_v3 safeguards can still override resource depletion');
   }
   if (!read('tools/issue22_audit.js').includes('ending_C_cst dedicated-art mapping missing')) {
     errors.push('issue22 audit still expects old ending_C_cst shared-art state');

@@ -146,7 +146,7 @@ var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent,tRoute){
 var oracleSafeguardEligible=function(stats,gi,logs,tRoute){
   var s=stats||{},lg=logs||[];
   if(lg.indexOf('ONCE-ORC-LOYAL-SAFE-01')>=0)return false;
-  if(!s||s.o<=0)return false;
+  if(!s||s.c<=0||s.r<=0||s.t<=0||s.o<=0||s.c>=100)return false;
   var loyalty=(gi||0)>=10 || tRoute==='A4_COMPLY';
   if(!loyalty)return false;
   return s.c<=20||s.r<=20||s.t<=20;
@@ -160,6 +160,7 @@ var resistanceSafeguardEligible=function(stats,gi,logs,tRoute){
   var s=stats||{},lg=logs||[];
   if(lg.indexOf('ONCE-RH-SAFE-01')>=0||lg.indexOf('LOG-RH-SAFEGUARD')>=0)return false;
   if(!s||s.day<8)return false;
+  if(s.c<=0||s.r<=0||s.t<=0||s.o<=0||s.c>=100)return false;
   var resistance=(gi||0)<=-35||tRoute==='A4_RESIST'||tRoute==='A4_OBSERVER';
   if(!resistance){
     for(var i=0;i<lg.length;i++){
@@ -233,9 +234,16 @@ function getMaxActForDay(day){
   if(day>=5)return 2;
   return 1;
 }
-// ts_game 페이로드의 현재 스키마 버전.
-// 향후 세이브 구조 변경 시 이 값을 올리고 normalizeGameSave에서 마이그레이션을 분기한다.
+// ts_game payload schema version.
 var TS_GAME_SCHEMA_VERSION=1;
+function getAct3RouteFromFlags(af){
+  af=af||{};
+  return af.prom_met&&af.mission_done?'A':af.prom_met?'B':af.mission_done?'C':'D';
+}
+function getAct4RouteFromState(game){
+  var g=(game&&typeof game.gi==='number')?game.gi:0;
+  return g>=10?'A4_COMPLY':g>=-15?'A4_GREY':g>=-30?'A4_RESIST':'A4_OBSERVER';
+}
 function normalizeGameSave(game){
   if(!game||!game.stats)return game;
   // schemaVersion 체크: 현재는 1만 지원. 미래 버전 세이브가 들어오면 로깅만 하고 그대로 진행.
@@ -261,6 +269,19 @@ function normalizeGameSave(game){
     }
   }
   var maxAct=getMaxActForDay(day);
+  if(act<maxAct){
+    var promoted={};
+    for(var pk in game)promoted[pk]=game[pk];
+    promoted.stats={c:game.stats.c,r:game.stats.r,t:game.stats.t,o:game.stats.o,day:day};
+    promoted.act=maxAct;
+    promoted.ct=0;
+    promoted.chainQueue=[];
+    if(maxAct===2)promoted.transRoute='A';
+    else if(maxAct===3)promoted.transRoute=getAct3RouteFromFlags(promoted.actFlags);
+    else if(maxAct===4)promoted.transRoute=getAct4RouteFromState(promoted);
+    promoted.__normalized='act-boundary';
+    return promoted;
+  }
   if(act<=maxAct)return game;
   var fixed={};
   for(var k in game)fixed[k]=game[k];
@@ -293,6 +314,24 @@ function sanitizeSnapshotLogsForGame(logs,game,normalized){
   if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
   return out;
 }
+function ensureProgressLogsForGame(logs,game){
+  var seen={},out=[];
+  (Array.isArray(logs)?logs:['LOG-001']).forEach(function(id){
+    if(id&&!seen[id]){seen[id]=true;out.push(id)}
+  });
+  var add=function(id){if(id&&!seen[id]){seen[id]=true;out.push(id)}};
+  var day=parseInt(game&&game.stats&&game.stats.day||1,10)||1;
+  var act=parseInt(game&&game.act||1,10)||1;
+  if(act>=2||day>=5){
+    add('LOG-ACT2');
+    ['LOG-INTRO-SH','LOG-INTRO-KD','LOG-INTRO-YS','LOG-INTRO-IJ'].forEach(add);
+  }
+  if(act>=3||day>=14)add('LOG-ACT3');
+  if(act>=4||day>=29)add('LOG-ACT4');
+  if(game&&game.actFlags&&game.actFlags.act1_skipped)add('LOG-ACT1-SKIP');
+  if(out.indexOf('LOG-001')<0)out.unshift('LOG-001');
+  return out;
+}
 function migrateOnceShownLogs(logs,onceShown){
   var out=Array.isArray(logs)?logs.slice():['LOG-001'];
   var seen={};
@@ -319,10 +358,18 @@ var preserveSnapshotSlots=function(fn){
   if(typeof fn==='function')fn();
   SAVE_SNAPSHOT_KEYS.forEach(function(k){try{if(saved[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,saved[k])}catch(e){}});
 };
+var clearLocalStoragePrefix=function(prefix){
+  try{
+    for(var i=localStorage.length-1;i>=0;i--){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(prefix)===0)localStorage.removeItem(k);
+    }
+  }catch(e){}
+};
 
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
-  get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){var hardNormalized=fixed.__normalized===true;fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed);if(hardNormalized)try{Save.saveLogs(sanitizeSnapshotLogsForGame(Save.get('ts_logs',['LOG-001']),fixed,true))}catch(e){}}return fixed}return parsed}catch(e){return def}},
+  get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){var hardNormalized=fixed.__normalized===true;fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed);try{var fixedLogs=sanitizeSnapshotLogsForGame(Save.get('ts_logs',['LOG-001']),fixed,hardNormalized);Save.saveLogs(ensureProgressLogsForGame(fixedLogs,fixed))}catch(e){}}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr,cd,rc,ct,cq,pb,cm,ph){
     var sessionDeck=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
@@ -330,7 +377,7 @@ var Save={
     var payload=normalizeGameSave({schemaVersion:TS_GAME_SCHEMA_VERSION,stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:serializedCq,pendingBonus:pb||null,sessionDeck:sessionDeck,curMission:cm||null,phase:ph||null});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
+  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');Save.del('ts_eveningLineState');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
@@ -378,7 +425,7 @@ var Save={
   listSnapshots:function(){return[1,2,3].map(function(n){return{slot:n,data:Save.get('ts_snap_'+n,null)}})},
   loadSnapshot:function(slot){
     var pack=Save.get('ts_snap_'+slot,null);if(!pack)return null;
-    Save.del('ts_activeMission');
+    Save.del('ts_activeMission');['ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex'].forEach(function(k){Save.del(k)});
     if(pack.game){
       var fixedGame=normalizeGameSave(pack.game);
       var normalized=!!(fixedGame&&fixedGame.__normalized===true);
@@ -393,7 +440,7 @@ var Save={
       }
       Save.set('ts_game',pack.game)
     }else Save.del('ts_game');
-    if(pack.logs){pack.logs=sanitizeSnapshotLogsForGame(pack.logs,pack.game,normalized);pack.logs=migrateOnceShownLogs(pack.logs,pack.onceShown||[]);Save.set('ts_logs',pack.logs)}
+    if(pack.logs){pack.logs=sanitizeSnapshotLogsForGame(pack.logs,pack.game,normalized);pack.logs=migrateOnceShownLogs(pack.logs,pack.onceShown||[]);pack.logs=ensureProgressLogsForGame(pack.logs,pack.game);Save.set('ts_logs',pack.logs)}
     if(pack.trust)Save.set('ts_trust',pack.trust);else Save.del('ts_trust');
     Save.set('ts_usedDlg',pack.usedDlg||[]);
     Save.set('ts_usedEvening',pack.usedEvening||[]);

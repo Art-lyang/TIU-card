@@ -63,7 +63,7 @@ function SettingsSaveTab(p) {
     _settingsRow('해금된 LOG',
       h('span', { style: mono }, (logs ? logs.length : 0) + '/' + ORACLE_LOGS.length)),
     _settingsRow('발견 엔딩',
-      h('span', { style: mono }, (endings ? endings.length : 0) + '/10')),
+      h('span', { style: mono }, (endings ? endings.length : 0) + '/' + (typeof ENDING_CATALOG !== 'undefined' ? ENDING_CATALOG.length : (typeof ENDING_DEFS !== 'undefined' ? Object.keys(ENDING_DEFS).length : 10)))),
     h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},'SNAPSHOT SLOTS'),
       h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},'원하는 DAY에 저장했다가 분기 선택 비교 용도로 다시 불러올 수 있습니다.'),

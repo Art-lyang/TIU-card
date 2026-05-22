@@ -11,6 +11,7 @@
       var endings=Save.getEndings();
       var logs=Save.getLogs();
       var logsTotal=typeof ORACLE_LOGS!=='undefined'?ORACLE_LOGS.length:0;
+      var endingsTotal=typeof ENDING_CATALOG!=='undefined'?ENDING_CATALOG.length:(typeof ENDING_DEFS!=='undefined'?Object.keys(ENDING_DEFS).length:10);
       var mono={fontFamily:"'Share Tech Mono',monospace",fontSize:13,color:'var(--ui)'};
       var cfmModal=function(){
         if(!cfm)return null;
@@ -45,7 +46,7 @@
       return h('div',null,
         _settingsRow(tr('settings.sessions','Sessions'),h('span',{style:mono},sessions)),
         _settingsRow(tr('settings.unlockedLogs','Unlocked Logs'),h('span',{style:mono},(logs?logs.length:0)+'/'+logsTotal)),
-        _settingsRow(tr('settings.endingsFound','Endings Found'),h('span',{style:mono},(endings?endings.length:0)+'/10')),
+        _settingsRow(tr('settings.endingsFound','Endings Found'),h('span',{style:mono},(endings?endings.length:0)+'/'+endingsTotal)),
         h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},tr('settings.snapshotSlots','SNAPSHOT SLOTS')),
           h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},tr('settings.snapshotHelp','Save at a desired day and reload later to compare different branching choices.')),
@@ -105,7 +106,7 @@
     if(tab==='display') content=h(SettingsDisplayTab,{onFxModeChange:p.onFxModeChange,currentLang:currentLang,pendingLang:pendingLang,onLanguageSelect:setPendingLang});
     if(tab==='info') content=h(SettingsInfoTab);
 
-    return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
+    return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center',padding:14,boxSizing:'border-box'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
       h('div',{style:{width:'100%',maxWidth:400,maxHeight:'80vh',background:'rgba(3,7,8,.96)',border:'1px solid rgba(var(--ui-rgb),0.25)',padding:'16px 20px',display:'flex',flexDirection:'column',overflow:'hidden',boxShadow:'0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,paddingBottom:8,borderBottom:'1px solid rgba(var(--ui-rgb),0.15)'}},
           h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:2}},tr('settings.title','SETTINGS')),

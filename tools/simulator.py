@@ -93,8 +93,16 @@ def parse_session_pack(body):
     m = re.search(r'\b(?:sessionPack|deckPack):\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
+def parse_priority(body):
+    m = re.search(r'\bpriority:\s*[\'"]([^\'"]+)[\'"]', body)
+    return m.group(1) if m else None
+
 def parse_trans_req(body):
     m = re.search(r'\btransReq:\s*[\'"]([^\'"]+)[\'"]', body)
+    return m.group(1) if m else None
+
+def parse_end_trigger(body):
+    m = re.search(r'\bendTrigger:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
 def parse_req_or_cond(body):
@@ -162,7 +170,9 @@ for f in CARD_FILES:
             'once': parse_once(body),
             'bg': parse_bg(body),
             'sessionPack': parse_session_pack(body),
+            'priority': parse_priority(body),
             'transReq': parse_trans_req(body),
+            'endTrigger': parse_end_trigger(body),
             'req': parse_req_or_cond(body),
             'left': left,
             'right': right,
@@ -192,7 +202,9 @@ def build_facility_proposal_cards():
             'once': False,
             'bg': None,
             'sessionPack': None,
+            'priority': '중',
             'transReq': None,
+            'endTrigger': None,
             'req': f's["day"] >= {min_day} and s["day"] <= 29',
             'left': {'fx': {'c': 0, 'r': 0, 't': 0, 'o': 0}, 'g': 0, 'logs': [], 'mission': None, 'trust': None},
             'right': {'fx': {'c': 0, 'r': 0, 't': 0, 'o': 0}, 'g': 0, 'logs': [], 'mission': None, 'trust': None},
@@ -246,7 +258,7 @@ def chk_game_over(s):
 
 def chk_special_ending(s, gi, act, trust, logs):
     """data-endings.js chkSpecialEnding 포팅."""
-    if act < 3: return None
+    if act < 4: return None
     def t(v): return 1 if v >= 65 else 0
     def m(v): return 1 if v >= 60 else 0
     any70 = sum(1 for v in trust.values() if v >= 70)
@@ -259,16 +271,16 @@ def chk_special_ending(s, gi, act, trust, logs):
     hApproved = 'LOG-OBSERVER-APPROVED' in logs
     hQuietFreedom = 'LOG-RH-QUIET-FREEDOM' in logs
     if act >= 4 and s['day'] >= 30 and gi >= 55 and s['c'] >= 70 and s['o'] >= 60: return 'A'
-    if hL12 and hObserver and hApproved and s['day'] >= 25 and gi <= 5: return 'F'
-    if hL12 and hObserver and hApproved and s['day'] >= 28 and gi <= 0: return 'F'
+    if hL12 and hObserver and hApproved and s['day'] >= 30 and gi <= 5: return 'F'
+    if hL12 and hObserver and hApproved and s['day'] >= 31 and gi <= 0: return 'F'
     if hL12 and hObserver and not hApproved and s['day'] >= 33 and gi <= -20 and high >= 2: return 'F'
-    if hQuietFreedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 25: return 'D'
-    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 28: return 'D'
-    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 30: return 'D'
-    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 25: return 'B'
-    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 28: return 'B'
-    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 28: return 'G'
-    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 31: return 'G'
+    if hQuietFreedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 30: return 'D'
+    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 31: return 'D'
+    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 32: return 'D'
+    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 30: return 'B'
+    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 31: return 'B'
+    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 30: return 'G'
+    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 32: return 'G'
     return None
 
 def chk_gi_ending(gi, act):

@@ -68,7 +68,7 @@ var CARDS_RESIST_HINT = [
       return s.day >= 22 && g <= 5 && logs.indexOf('LOG-OBSERVER-01') < 0 &&
         logs.indexOf('LOG-012') >= 0;
     },
-    msg: "임재혁이 LOG-012의 미등록 UI 요소를 다시 띄웁니다.\n\n\"캐시 오류가 아니었습니다.\"\n\"이 요소는 ORACLE 내부가 아니라, ORACLE 바깥에서 우리 화면을 보고 있습니다.\"\n\n그는 접근 경로를 하나 더 표시합니다.\n\n[UNREGISTERED OBSERVATION LAYER]\n[ORACLE: 인식 불가]",
+    msg: "임재혁이 LOG-012의 미등록 인터페이스 요소를 다시 띄웁니다.\n\n\"캐시 오류가 아니었습니다.\"\n\"이 요소는 ORACLE 내부가 아니라, ORACLE 바깥에서 우리 화면을 보고 있습니다.\"\n\n그는 접근 경로를 하나 더 표시합니다.\n\n[UNREGISTERED OBSERVATION LAYER]\n[ORACLE: 인식 불가]",
     left:  { label: "관측 레이어를 추적한다", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: "LOG-OBSERVER-01" },
     right: { label: "접근 기록을 닫는다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 

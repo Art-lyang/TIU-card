@@ -76,7 +76,7 @@ function main() {
     assert(/id:\s*"CA4-OR-02"[\s\S]*right:\s*\{[^}]*c:\s*1,\s*r:\s*0,\s*t:\s*-3,\s*o:\s*1/.test(read('data-cards-act4-ext.js')), 'CA4-OR-02 right branch should use softened non-dominant stats');
     assert(/id:\s*"C-188"[\s\S]*doyunUnavailable/.test(read('data-cards-11.js')), 'Kang Do-yun injury route guard is missing');
     assert(/if \(cardId === 'CE-005'\)/.test(read('balance-tuning.js')), 'CE-005 route cap is missing');
-    assert(/if \(cardId === 'CE-042' \|\| cardId === 'CE-042B'\)/.test(read('balance-tuning.js')), 'CE-042 extreme penalty guard is missing');
+    assert(/if \(cardId === 'CE-042' \|\| cardId === 'CE-042B' \|\| cardId === 'CE-042C' \|\| cardId === 'CE-042D'\)/.test(read('balance-tuning.js')), 'CE-042 extreme penalty guard is missing');
   });
 
   ok('P1/P2 i18n overlays are present', () => {

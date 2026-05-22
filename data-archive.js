@@ -26,7 +26,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (진화 가속 매개체)",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
-    content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n현재 열람 가능한 정보는 감염 단계와 현장 대응 기준으로 제한됩니다.\n\n단계별 진행:\n· Phase 0: 초기 감염. 치료 가능성이 남아 있는 유일한 단계.\n· Phase 1: 인간형 변이. 진행 억제·지연 연구는 가능하나 회복 단계로 보기는 어려움.\n· Phase 2+: 완전 변이. 인간 신체의 연속성이 크게 손상되며 통제 불가.\n\n추가 생물학 기록은 관련 분석 LOG 확인 후 열람됩니다." },
+    content: "생물학적 진화 가속 매개체. 단순 바이러스가 아님.\n\n현재 열람 가능한 정보는 감염 단계와 현장 대응 기준으로 제한됩니다.\n\n단계별 진행:\n· Phase 0: 초기 감염. 치료 가능성이 남아 있는 유일한 단계.\n· Phase 1: 인간형 변이. 진행 억제·지연 연구는 가능하나 회복 단계로 보기는 어려움.\n· Phase 2+: 완전 변이. 인간 신체의 연속성이 크게 손상되며 통제 불가.\n\n추가 생물학 기록은 분석실 승인 이후 순차 열람됩니다." },
 
   { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
@@ -67,11 +67,11 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-CHAR-SEJIN", cat: "인물", title: "윤세진 — KINDLE / 연구원·의료관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-YS")>=0 },
-    content: "직책: KR-INIT-001 연구원 / 의료관\n코드명: KINDLE\n\n검체 분석과 기지 의료 대응을 담당합니다.\n\nEV-Σ 관련 생물학적 분석 권한을 보유하고 있습니다.\n\n진행 중인 연구 세부 내용은 별도 로그 해금 전까지 열람할 수 없습니다." },
+    content: "직책: KR-INIT-001 연구원 / 의료관\n코드명: KINDLE\n\n검체 분석과 기지 의료 대응을 담당합니다.\n\nEV-Σ 관련 생물학적 분석 권한을 보유하고 있습니다.\n\n진행 중인 연구 세부 내용은 현재 지휘 단말 권한에서 제한됩니다." },
 
   { id: "ARC-CHAR-JAEHYUK", cat: "인물", title: "임재혁 — VOIDWALK / 정보분석관·기술관",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-IJ")>=0 },
-    content: "직책: KR-INIT-001 정보분석관 / 기술관\n코드명: VOIDWALK\n\nORACLE 연동, 보안 시스템, 통신 장비, 정보 수집·분석을 담당합니다.\n\n분석 모듈과 단말기 유지보수 권한을 보유하고 있습니다.\n\n비공개 분석 내용은 별도 로그 해금 전까지 열람할 수 없습니다." },
+    content: "직책: KR-INIT-001 정보분석관 / 기술관\n코드명: VOIDWALK\n\nORACLE 연동, 보안 시스템, 통신 장비, 정보 수집·분석을 담당합니다.\n\n분석 모듈과 단말기 유지보수 권한을 보유하고 있습니다.\n\n비공개 분석 내용은 현재 지휘 단말 권한에서 제한됩니다." },
 
   { id: "ARC-CHAR-NICK", cat: "인물", title: "닉 포스터 — 프로메테우스 요원",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
@@ -83,7 +83,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-CHAR-SOYOUNG", cat: "인물", title: "박소영 — 분석관",
     unlock: function(logs){ return logs.indexOf("LOG-082")>=0 },
-    content: "직책: 데이터 분석관\n\n지부 데이터 분석 업무 지원 인원.\n\nORACLE 데이터 스트림 검토와 보고 보조를 담당합니다.\n\n세부 합류 경위와 분석 결과는 별도 기록 해금 전까지 제한됩니다." },
+    content: "직책: 데이터 분석관\n\n지부 데이터 분석 업무 지원 인원.\n\nORACLE 데이터 스트림 검토와 보고 보조를 담당합니다.\n\n세부 합류 경위와 분석 결과는 현재 인사 색인에서 제한됩니다." },
 
   { id: "ARC-CHAR-KANG", cat: "인물", title: "미확인 관찰자",
     unlock: function(logs){ return logs.indexOf("LOG-ACT2")>=0 },
@@ -96,7 +96,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-ORG-PROM", cat: "조직", title: "프로메테우스",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 || logs.indexOf("LOG-018")>=0 },
-    content: "정체불명 조직. 한국 내 활동 흔적 확인.\n\n고도의 기술력 보유 가능성이 있으나, 장비 출처와 목적은 미확인입니다.\n\nORACLE은 적대적 조직으로 분류합니다.\n\n세부 연구 내용과 한국 봉쇄 체계와의 관계는 관련 LOG 확인 전까지 제한됩니다." },
+    content: "정체불명 조직. 한국 내 활동 흔적 확인.\n\n고도의 기술력 보유 가능성이 있으나, 장비 출처와 목적은 미확인입니다.\n\nORACLE은 적대적 조직으로 분류합니다.\n\n세부 연구 내용과 한국 봉쇄 체계와의 관계는 현재 외부세력 색인에서 제한됩니다." },
 
   { id: "ARC-ORG-BRANCH", cat: "조직", title: "한국지부 KR-INIT-001",
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 && logs.indexOf("LOG-INTRO-KD")>=0 },
@@ -104,7 +104,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-ORG-WHITESHIELD", cat: "조직", title: "White Shield (한국 군사대응)",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
-    content: "대한민국 군 EV-Σ 대응 체계.\n\n현재 공개 기록상 한국 봉쇄선의 주요 현장 대응 주체입니다.\n\n봉쇄 효율이 매우 높은 것으로 보고되지만, 비교 수치와 세부 성공 요인은 현재 접근 권한에서 열람할 수 없습니다.\n\n추가 평가는 관련 LOG 확인 후 갱신됩니다." },
+    content: "대한민국 군 EV-Σ 대응 체계.\n\n현재 공개 기록상 한국 봉쇄선의 주요 현장 대응 주체입니다.\n\n봉쇄 효율이 매우 높은 것으로 보고되지만, 비교 수치와 세부 성공 요인은 현재 접근 권한에서 열람할 수 없습니다.\n\n추가 평가는 상위 작전 기록 승인 이후 갱신됩니다." },
 
   // ═══ 카테고리: 시설/장비 ═══
   { id: "ARC-FAC-SEAL", cat: "시설", title: "봉쇄선",
@@ -134,11 +134,11 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SCI-SUPPRESS", cat: "과학", title: "EV-Σ 억제제",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
-    content: "윤세진이 개발 중인 대항 화합물.\n\nPhase 0 단계 감염자의 전환을 40% 지연시킴.\n\n동물 실험 성공. 인체 실험은 지휘관 승인 필요.\n\n성공 시 Phase 0 감염자 구호 가능. 실패 시 연구 자원 소실." },
+    content: "윤세진이 개발 중인 대항 화합물.\n\nPhase 0 단계 감염자의 전환을 40% 지연시킨 동물 실험 기록이 있습니다.\n\n인체 적용은 지휘관 결재와 의료 윤리 심의를 모두 요구합니다.\n\n연구실 문서에는 구호 가능성과 실패 시 격리 부담이 같은 장에 함께 적혀 있습니다." },
 
   { id: "ARC-SCI-EVOLVE", cat: "과학", title: "진화 분류 체계 (ORACLE 기준)",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 },
-    content: "ORACLE이 사용하는 EV-Σ 진화 상태 분류.\n\n현재 단말기에는 분류명 일부와 지역 매핑 일부만 표시됩니다.\n\nOVERDRIVE / CONTROLLED / DELAYED / STAGNANT / COMPLETE\n\n각 단계의 정확한 지역 배정과 한국지부가 예외값으로 분류되는 이유는 현재 접근 권한에서 열람할 수 없습니다.\n\n추가 분류 정보는 관련 LOG 확인 후 갱신됩니다." },
+    content: "ORACLE이 사용하는 EV-Σ 진화 상태 분류.\n\n현재 단말기에는 분류명 일부와 지역 매핑 일부만 표시됩니다.\n\nOVERDRIVE / CONTROLLED / DELAYED / STAGNANT / COMPLETE\n\n각 단계의 정확한 지역 배정과 한국지부가 예외값으로 분류되는 이유는 현재 접근 권한에서 열람할 수 없습니다.\n\n추가 분류 정보는 상위 분석 기록 승인 이후 갱신됩니다." },
 
   { id: "ARC-SCI-TEMP", cat: "과학", title: "EV-Σ 환경 반응 조건",
     unlock: function(logs){ return logs.indexOf("LOG-015")>=0 || logs.indexOf("LOG-017")>=0 },
@@ -159,7 +159,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SYS-COASTAL", cat: "시스템", title: "COASTAL MIRROR 작전",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
-    content: "프로메테우스 관련 작전 코드명.\n\n한국 해안방벽시스템과의 관계가 의심되지만, 현재 확인된 자료만으로는 세부 협력 여부를 확정할 수 없습니다.\n\n정량 기여도와 ORACLE 비공개 여부는 추가 LOG 확인 전까지 제한됩니다." },
+    content: "프로메테우스 관련 작전 코드명.\n\n한국 해안방벽시스템과의 관계가 의심되지만, 현재 확인된 자료만으로는 세부 협력 여부를 확정할 수 없습니다.\n\n정량 기여도와 ORACLE 비공개 여부는 추가 작전 기록 승인 전까지 제한됩니다." },
 
   { id: "ARC-SYS-GENESIS", cat: "시스템", title: "GENESIS BREAK (최초 발생)",
     unlock: function(logs){ return logs.indexOf("LOG-004")>=0 || logs.indexOf("LOG-005")>=0 },
@@ -176,7 +176,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-LOC-KOREA", cat: "지역", title: "Z-0 한국 구역",
     unlock: function(logs){ return logs.indexOf("LOG-001")>=0 && logs.indexOf("LOG-INTRO-KD")>=0 },
-    content: "ORACLE 구역 분류: Z-0.\n\n한국지부가 관찰·지원 중인 핵심 봉쇄 구역입니다.\n\n봉쇄 효율이 높다는 기본 평가는 공개되어 있으나, 내부 예외지수, 차기 파동 시뮬레이션, 외부 필드 반응 정보는 현재 접근 권한에서 열람할 수 없습니다.\n\n세부 수치는 관련 LOG 확인 후 갱신됩니다." },
+    content: "ORACLE 구역 분류: Z-0.\n\n한국지부가 관찰·지원 중인 핵심 봉쇄 구역입니다.\n\n봉쇄 효율이 높다는 기본 평가는 공개되어 있으나, 내부 예외지수, 차기 파동 시뮬레이션, 외부 필드 반응 정보는 현재 접근 권한에서 열람할 수 없습니다.\n\n세부 수치는 추가 분석 기록 승인 이후 갱신됩니다." },
 
   { id: "ARC-LOC-ASHFALL", cat: "지역", title: "Ashfall City (Z-3)",
     unlock: function(logs){ return logs.indexOf("LOG-014")>=0 },

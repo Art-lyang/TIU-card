@@ -1,4 +1,4 @@
-// TERMINAL SESSION — images.js
+// TERMINAL SESSION - base image registry. P1 patch mappings load later via images_p1.js.
 const IMG = {
   bg_seoul_a: "assets/images/backgrounds/bg_seoul_a.jpg",
   bg_seoul_b: "assets/images/backgrounds/bg_seoul_b.jpg",
