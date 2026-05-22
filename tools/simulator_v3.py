@@ -90,7 +90,7 @@ def parse_rewards():
 CHAR_KEYS = ['haeun', 'doyun', 'sejin', 'jaehyuk']
 
 def chk_special_ending(s, gi, act, trust, logs):
-    if act < 3: return None
+    if act < 4: return None
     def t(v): return 1 if v >= 65 else 0
     def m(v): return 1 if v >= 60 else 0
     high = t(trust['haeun']) + t(trust['doyun']) + t(trust['sejin']) + t(trust['jaehyuk'])
@@ -103,16 +103,16 @@ def chk_special_ending(s, gi, act, trust, logs):
     has_approved = 'LOG-OBSERVER-APPROVED' in logs
     has_quiet_freedom = 'LOG-RH-QUIET-FREEDOM' in logs
     if act >= 4 and s['day'] >= 30 and gi >= 55 and s['c'] >= 70 and s['o'] >= 60: return 'A'
-    if has_log_12 and has_observer and has_approved and s['day'] >= 25 and gi <= 5: return 'F'
-    if has_log_12 and has_observer and has_approved and s['day'] >= 28 and gi <= 0: return 'F'
+    if has_log_12 and has_observer and has_approved and s['day'] >= 30 and gi <= 5: return 'F'
+    if has_log_12 and has_observer and has_approved and s['day'] >= 31 and gi <= 0: return 'F'
     if has_log_12 and has_observer and not has_approved and s['day'] >= 33 and gi <= -20 and high >= 2: return 'F'
-    if has_quiet_freedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 25: return 'D'
-    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 28: return 'D'
-    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 30: return 'D'
-    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 25: return 'B'
-    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 28: return 'B'
-    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 28: return 'G'
-    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 31: return 'G'
+    if has_quiet_freedom and gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 30: return 'D'
+    if gi <= -30 and mid >= 3 and lc >= 8 and s['day'] >= 31: return 'D'
+    if gi <= -35 and s['r'] >= 35 and any70 >= 1 and lc >= 10 and s['day'] >= 32: return 'D'
+    if gi <= -15 and high >= 2 and lc >= 6 and s['day'] >= 30: return 'B'
+    if gi <= -25 and high <= 1 and lc >= 10 and s['day'] >= 31: return 'B'
+    if 0 <= gi <= 20 and any55 >= 1 and lc >= 7 and s['day'] >= 30: return 'G'
+    if -5 <= gi <= 25 and any55 >= 2 and lc >= 9 and s['day'] >= 32: return 'G'
     return None
 
 def resolve_time_up(s, gi, trust, logs):
@@ -678,6 +678,7 @@ def simulate_one(profile):
                 if c['id'] in ('ORC-LOYAL-SAFE-01', 'RH-SAFE-01'): continue
                 if c['id'] in recent: continue
                 if act not in c['act']: continue
+                if c.get('transReq') and c.get('transReq') != trans_route: continue
                 if c['tag'] and tag_cd.get(c['tag'], -99) >= s['day'] - 3: continue
                 if not c['tag']:
                     is_generic = c['act'] and len(c['act']) >= 3
@@ -760,6 +761,10 @@ def simulate_one(profile):
             else:
                 tag_cd[c['id']] = s['day']
             card_freq[c['id']] += 1
+
+            if c.get('endTrigger'):
+                ending = c['endTrigger']
+                break
 
             s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
             if safeguarded: note_hidden_logs(logs, hidden_logs_found)

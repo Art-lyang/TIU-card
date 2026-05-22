@@ -45,6 +45,13 @@ function englishEveningResponseFallback(resp){
   if(resp.b)out.b=Object.assign({},resp.b,{label:'Proceed carefully for now.',reply:'Understood. I will keep it contained until it is safe.'});
   return out;
 }
+function isEveningContactUnavailableByLogs(c,logs){
+  logs=logs||[];
+  if(!c)return true;
+  if(c.key==='haeun'&&logs.indexOf('LOG-050')>=0)return true;
+  if(c.key==='doyun'&&(logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-074-DONE')>=0))return true;
+  return false;
+}
 function EveningChat(p){
   var s1=useState(null),selChar=s1[0],setSelChar=s1[1];
   var s2=useState(0),li=s2[0],setLi=s2[1];
@@ -53,7 +60,7 @@ function EveningChat(p){
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
-  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -132,6 +139,7 @@ function EveningChat(p){
     else{var t3=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t3)}}}},[li,ci,chat,selChar]);
   var isEveningContactDisabled=function(c){
     if(!c)return true;
+    if(isEveningContactUnavailableByLogs(c,p.logs))return true;
     var completed=!!doneToday[c.name];
     var locked=Object.keys(doneToday).length>0&&!completed;
     return completed||locked;
@@ -235,7 +243,7 @@ function EveningChat2(p){
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
-  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -380,6 +388,7 @@ function EveningChat2(p){
   useEffect(function(){var el=textRef.current;if(el)el.scrollTop=el.scrollHeight},[li,ci,replyLine,done,choiceDone,selChar]);
   var isEveningContactDisabled=function(c){
     if(!c)return true;
+    if(isEveningContactUnavailableByLogs(c,p.logs))return true;
     var completed=!!doneToday[c.name];
     var locked=Object.keys(doneToday).length>0&&!completed;
     return completed||locked;

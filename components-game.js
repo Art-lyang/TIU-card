@@ -265,7 +265,7 @@ function Stats(p){
   var pv=p.preview||{};
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isKo=locale==='ko';
-  var showGiShadow=(p.sessions||0)>=4;
+  var showGiShadow=(p.sessions||0)>=2;
   var giFill=Math.max(0,Math.min(100,((p.gi||0)/60)*100));
   return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),

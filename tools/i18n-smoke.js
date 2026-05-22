@@ -217,13 +217,22 @@ function checkFacilityViews(ctx, errors) {
   if (!Array.isArray(ctx.CARDS_FACILITY_PROPOSALS) || !ctx.CARDS_FACILITY_PROPOSALS.length) {
     errors.push('[en] facility proposal cards are not available');
   } else {
-    const proposal = ctx.CARDS_FACILITY_PROPOSALS[0];
-    const msg = typeof proposal.msg === 'function' ? proposal.msg() : proposal.msg;
-    const left = proposal.left && (typeof proposal.left.label === 'function' ? proposal.left.label() : proposal.left.label);
-    const right = proposal.right && (typeof proposal.right.label === 'function' ? proposal.right.label() : proposal.right.label);
-    [msg, left, right].forEach((val, index) => {
-      if (!val) errors.push(`[en] missing facility proposal text index ${index}`);
-      if (typeof val === 'string' && HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in facility proposal: ${val.slice(0, 80)}`);
+    ctx.CARDS_FACILITY_PROPOSALS.forEach((proposal) => {
+      const overlay = ctx.tc('cards', proposal.id, null);
+      ['msg', 'leftLabel', 'rightLabel'].forEach((prop) => {
+        const val = overlay && overlay[prop];
+        if (!val) errors.push(`[en] missing facility proposal overlay ${proposal.id}.${prop}`);
+        if (typeof val === 'string' && HANGUL_RE.test(val)) {
+          errors.push(`[en] Hangul leaked in facility proposal overlay ${proposal.id}.${prop}: ${val.slice(0, 80)}`);
+        }
+      });
+      const msg = typeof proposal.msg === 'function' ? proposal.msg() : proposal.msg;
+      const left = proposal.left && (typeof proposal.left.label === 'function' ? proposal.left.label() : proposal.left.label);
+      const right = proposal.right && (typeof proposal.right.label === 'function' ? proposal.right.label() : proposal.right.label);
+      [msg, left, right].forEach((val, index) => {
+        if (!val) errors.push(`[en] missing facility proposal runtime text ${proposal.id} index ${index}`);
+        if (typeof val === 'string' && HANGUL_RE.test(val)) errors.push(`[en] Hangul leaked in facility proposal runtime text ${proposal.id}: ${val.slice(0, 80)}`);
+      });
     });
   }
   if (typeof ctx.getFacilityStatusLines === 'function') {

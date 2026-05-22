@@ -1,4 +1,4 @@
-// lang-content-en-all.js — 통합 영어 콘텐츠 오버레이
+// lang-content-en-all.js - consolidated English content overlays.
 (function(){
 if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
 
@@ -3363,6 +3363,86 @@ window.TS_I18N.mergeContent('en', {
       msg: "Kang Do-yun marks a new perimeter route.\n\n\"It is my first time taking this path, but my body knew the cover points first.\"\n\nHe tries to laugh it off, then stops. The marked cover points are absent from ORACLE's map, but all of them exist in the field photos.",
       leftLabel: "Record that instinct",
       rightLabel: "Report fatigue and order rest"
+    },
+    "FP-FE-001": {
+      msg: "Yoon Se-jin reports a shortage of storage space for anomaly samples.\n\n\"The current freezer cannot take in any new samples.\nWe need to expand low-temperature freezer capacity.\"",
+      leftLabel: "Defer",
+      rightLabel: "Approve expansion"
+    },
+    "FP-FE-002": {
+      msg: "Kang Do-yun reports declining physical condition among field agents and insufficient outdoor response training.\n\n\"Indoor fitness facilities are not enough.\nIf we install an outdoor training yard and support facility near the containment perimeter, combat readiness will improve.\"",
+      leftLabel: "Maintain current setup",
+      rightLabel: "Approve training yard"
+    },
+    "FP-FE-003": {
+      msg: "Technical Officer Lim Jae-hyeok submits a monitoring-system report.\n\n\"The current sensors do not have enough detection range.\nA next-generation sensor array would greatly improve containment efficiency.\"",
+      leftLabel: "Budget is too tight",
+      rightLabel: "Approve sensor installation"
+    },
+    "FP-FE-004": {
+      msg: "An emergency report comes up from the infirmary.\n\n\"We have no isolation space for injuries caused by anomaly contact.\nSuspected infection cases cannot be separated from ordinary patients.\"",
+      leftLabel: "Use a temporary isolation room",
+      rightLabel: "Approve infirmary expansion"
+    },
+    "FP-FE-005": {
+      msg: "Supply officer report:\n\n\"We currently depend on a single supply route.\nHeavy snow or hostile interference could isolate us.\nI recommend opening a mountain bypass route.\"",
+      leftLabel: "Maintain current route",
+      rightLabel: "Approve supply route"
+    },
+    "FP-FE-006": {
+      msg: "Technical Officer Lim Jae-hyeok submits the CCTV status report.\n\n\"Forty percent of the cameras are more than five years old. Night resolution is below standard.\nI recommend full replacement with a new AI-assisted analysis system.\"",
+      leftLabel: "Partial replacement only",
+      rightLabel: "Approve full replacement"
+    },
+    "FP-FE-007": {
+      msg: "Security officer report:\n\n\"If the branch comes under a large-scale attack, we have no evacuation space.\nA B3 emergency bunker could protect personnel in the worst case.\"",
+      leftLabel: "Low priority",
+      rightLabel: "Approve bunker construction"
+    },
+    "FP-FE-008": {
+      msg: "Kang Do-yun submits a patrol report.\n\n\"Our current patrol range is limited to a 1 km radius around the branch.\nIf we extend to the northern ridge, early warning becomes possible.\"",
+      leftLabel: "Maintain current range",
+      rightLabel: "Approve patrol expansion"
+    },
+    "FP-FE-009": {
+      msg: "Yoon Se-jin: \"Intermittent electromagnetic leakage is being detected from the isolation target.\nIf we install double shielding, we can block external influence on the containment subject.\"",
+      leftLabel: "Maintain current setup",
+      rightLabel: "Approve double shielding"
+    },
+    "FP-FE-010": {
+      msg: "Yoon Se-jin: \"If the ORACLE server fails, all research data could be lost.\nA local backup system would allow independent data preservation.\"",
+      leftLabel: "Depend on ORACLE",
+      rightLabel: "Approve backup room"
+    },
+    "FP-FE-011": {
+      msg: "Infirmary report:\n\n\"Headache and fatigue complaints among B3 personnel are increasing.\nThe ventilation system is aging, and air quality is below standard.\"",
+      leftLabel: "Shorten rotation cycles",
+      rightLabel: "Approve ventilation replacement"
+    },
+    "FP-FE-012": {
+      msg: "Lim Jae-hyeok: \"Right now, every piece of data passes through ORACLE servers.\nIf we build an independent server, the branch can operate even during an ORACLE failure.\"\n\nSeo Hae-eun: \"...And it creates a space ORACLE cannot see.\"",
+      leftLabel: "Unnecessary",
+      rightLabel: "Approve server room"
+    },
+    "FP-FE-013": {
+      msg: "Seo Hae-eun: \"Every external communication route currently passes through ORACLE.\nIf we install independent shortwave equipment, we can contact the outside without ORACLE.\"\n\n\"...Just in case.\"",
+      leftLabel: "ORACLE comms are enough",
+      rightLabel: "Approve independent comms"
+    },
+    "FP-FE-014": {
+      msg: "Lim Jae-hyeok: \"Branch power is linked to the ORACLE system.\nIf ORACLE cuts power, which is theoretically possible,\nthe entire branch goes down.\"\n\n\"With independent generators, we can self-sustain for at least 72 hours.\"",
+      leftLabel: "Overprepared",
+      rightLabel: "Approve generator expansion"
+    },
+    "FP-FE-015": {
+      msg: "Seo Hae-eun makes a quiet proposal.\n\n\"Every space inside the branch is monitored by ORACLE.\nWe need a shielded space for confidential personnel counseling or sensitive discussions.\"\n\n\"If we frame it as personnel management, approval should be possible.\"",
+      leftLabel: "Unnecessary",
+      rightLabel: "Approve shielded room"
+    },
+    "FP-FE-016": {
+      msg: "Kang Do-yun: \"The current armory only holds anomaly-response equipment.\nIf we add personnel-suppression gear, protective equipment, and nonlethal weapons,\nour emergency response capacity will improve.\"",
+      leftLabel: "Anomaly gear is enough",
+      rightLabel: "Approve armory expansion"
     }
   },
   rewards: {

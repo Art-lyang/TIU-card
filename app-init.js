@@ -352,6 +352,14 @@ var preserveSnapshotSlots=function(fn){
   if(typeof fn==='function')fn();
   SAVE_SNAPSHOT_KEYS.forEach(function(k){try{if(saved[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,saved[k])}catch(e){}});
 };
+var clearLocalStoragePrefix=function(prefix){
+  try{
+    for(var i=localStorage.length-1;i>=0;i--){
+      var k=localStorage.key(i);
+      if(k&&k.indexOf(prefix)===0)localStorage.removeItem(k);
+    }
+  }catch(e){}
+};
 
 var Save={
   set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}},
@@ -362,7 +370,7 @@ var Save={
     var payload=normalizeGameSave({stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:cq||[],pendingBonus:pb||null,sessionDeck:sessionDeck});
     Save.set('ts_game',cleanGameSaveMeta(payload))
   },
-  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
+  clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},

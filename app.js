@@ -223,6 +223,7 @@ function App(){
     var lg=Array.isArray(logsOverride)?logsOverride:logs;
     var dlgAvailable=function(d){
       if(d.char==='\uc11c\ud558\uc740'&&lg.indexOf('LOG-050')>=0)return false;
+      if(d.char==='\uac15\ub3c4\uc724'&&(lg.indexOf('LOG-075')>=0||lg.indexOf('LOG-074-DONE')>=0))return false;
       if(d.logReq&&lg.indexOf(d.logReq)<0)return false;
       if(d.blockLogs&&d.blockLogs.some(function(id){return lg.indexOf(id)>=0}))return false;
       if(d.actReq&&act<d.actReq)return false;
@@ -384,7 +385,7 @@ function App(){
     // CH-007-3: 낙오 판정 (trust 기반 roll → ACCOMP-* 로그 부여, 체인 흐름은 계속)
     if(curCard.id==='CH-007-3'&&typeof window.resolveAccomp==='function'){var _acc=window.resolveAccomp(trust);_acc.accomp.forEach(function(a){tryUnlock(a.log)});if(_acc.loss.length>0){setTimeout(function(){setToastType('');setToast(tt('app.companionsLost',{names:_acc.loss.map(function(l){return l.name}).join(', ')},'[이번 작전에 함께하지 못한 동료: '+_acc.loss.map(function(l){return l.name}).join(', ')+']'));clearToastAfter(3800)},800)}else{setTimeout(function(){setToastType('');setToast(tt('app.companionsAll',null,'[간부진 전원 동행 확정]'));clearToastAfter(2800)},800)}}
     // CH-007-5: 탈출 미니게임 진입 (iframe 연동) — 결과는 postMessage로 수신
-    if(curCard.id==='CH-007-5'){setPhase('escape_game');return}
+    if(curCard.id==='CH-007-5'){Save.set('ts_resumePhase','escape_game');persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,chainQueue,facilityForNext,pendingBonusForSave);setPhase('escape_game');return}
     // CA-001B right: 2회차+ ORACLE 적응기간 생략 — Act 2 직행
     if(curCard.id==='CA-001B'&&dir==='right'){
       tryUnlock('LOG-ACT1-SKIP');
@@ -463,7 +464,7 @@ function App(){
     var goR=chkGameOver(next);
     if(goR&&next.c>=100){SFX.play('gameover');doGO(goR,next,nextGi);return}
     var sg=(typeof getRouteSafeguardCard==='function')?getRouteSafeguardCard(next,nextGi,rewardLogs,transRoute):null;
-    if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}
+    if(sg){Save.set('ts_resumePhase','game');SFX.play('glitch');setCurCard(sg);setPhase('game');return}
     if(goR){SFX.play('gameover');doGO(goR,next,nextGi);return}
     setPhase('evening')};
   var hEvening=function(){clearResumeCheckpoint();var liveLogs=getLiveLogs(logs);var go=chkGameOver(stats);if(go&&stats.c>=100){SFX.play('gameover');doGO(go,stats,gi);return}var sg=(typeof getRouteSafeguardCard==='function')?getRouteSafeguardCard(stats,gi,liveLogs,transRoute):null;if(sg){SFX.play('glitch');setCurCard(sg);setPhase('game');return}if(go){SFX.play('gameover');doGO(go,stats,gi);return}
@@ -476,7 +477,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
@@ -519,6 +520,7 @@ function App(){
     }
     if(resumePhase==='reward'){setPhase('reward');return}
     if(resumePhase==='evening'){setPhase('evening');return}
+    if(resumePhase==='escape_game'){setPhase('escape_game');return}
     if(ct>=cpd){
       var dayNews=genNewsHeadlines(stats,gi,logs);
       setNh(dayNews);Save.set('ts_resumePhase','news');Save.set('ts_resumeHeadlines',dayNews);setPhase('news');return;

@@ -106,7 +106,7 @@
     if(tab==='display') content=h(SettingsDisplayTab,{onFxModeChange:p.onFxModeChange,currentLang:currentLang,pendingLang:pendingLang,onLanguageSelect:setPendingLang});
     if(tab==='info') content=h(SettingsInfoTab);
 
-    return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
+    return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center',padding:14,boxSizing:'border-box'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
       h('div',{style:{width:'100%',maxWidth:400,maxHeight:'80vh',background:'rgba(3,7,8,.96)',border:'1px solid rgba(var(--ui-rgb),0.25)',padding:'16px 20px',display:'flex',flexDirection:'column',overflow:'hidden',boxShadow:'0 0 40px rgba(0,0,0,0.5), 0 0 8px rgba(var(--ui-rgb),0.05)'}},
         h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,paddingBottom:8,borderBottom:'1px solid rgba(var(--ui-rgb),0.15)'}},
           h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'var(--ui)',letterSpacing:2}},tr('settings.title','SETTINGS')),
