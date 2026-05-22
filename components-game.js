@@ -238,7 +238,7 @@ function MainMenu(p){
         h('div',{className:'main-terminal-oracle','aria-label':'ORACLE Korea Branch'},
           h('span',{className:'main-terminal-oracle-mark','aria-hidden':true}),
           h('span',{className:'main-terminal-oracle-copy'},h('b',null,'ORACLE'),h('small',null,'KOREA BRANCH')))),
-      h('nav',{className:'main-terminal-menu-list','aria-label':'session route menu'},
+      h('nav',{className:'main-terminal-menu-list'+(menuItems.length>5?' is-dense':''),'data-count':menuItems.length,'aria-label':'session route menu'},
         menuItems.map(function(item,index){return h('div',{key:item.key,className:'main-terminal-row'+(item.primary?' is-primary':'')+(selectedIndex===index?' is-selected':''),onMouseMove:function(){setSelectedIndex(index)}},
           h('span',{className:'main-terminal-cursor','aria-hidden':true},'>'),
           h('button',{type:'button',className:'main-terminal-button'+(glitchKey===item.key?' is-glitching':''),'data-route':item.key,onFocus:function(){setSelectedIndex(index)},onClick:function(){activate(item)}},
