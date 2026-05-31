@@ -1,0 +1,3759 @@
+// lang-content-en-all.js - consolidated English content overlays.
+(function(){
+if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
+
+// --- lang-content-en.phase10-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-052": {
+        msg: "Wreckage from a small reconnaissance drone has been found beyond the containment line.\n\nLim Jae-hyeok's assessment: \"It's not military. It doesn't match civilian spec either.\"\n\n\"Sixty percent match with Prometheus technical signatures.\"",
+        leftLabel: "Attempt reverse-engineering",
+        rightLabel: "Transmit the wreckage to ORACLE"
+      },
+      "C-053": {
+        msg: "Seo Hae-eun has partially decrypted a Prometheus encrypted transmission.\n\n\"The operation codename is confirmed: 'COASTAL MIRROR.'\"\n\n\"It's tied to the coastal barrier. They may be involved with Korea's defense system.\"",
+        leftLabel: "Continue decryption independently",
+        rightLabel: "Report the decrypted result to ORACLE"
+      },
+      "C-054": {
+        msg: "An injured man has been found 300 meters north of the containment line.\n\nWestern male. Gunshot wound. Conscious. Wearing Prometheus-grade tactical gear.\n\nKang Do-yun: \"What do we do with him?\"",
+        leftLabel: "Treat him inside the branch",
+        rightLabel: "Report him to ORACLE and wait for judgment"
+      },
+      "C-055": {
+        msg: "Kang Do-yun has analyzed documents recovered from the abandoned house used in the earlier pursuit operation.\n\nResearch records for a self-replication suppression drug. Internal Prometheus material.\n\n\"These people... they were trying to build a countermeasure weapon against EV-Σ.\"",
+        leftLabel: "Store the documents in-branch",
+        rightLabel: "Transmit the documents to ORACLE"
+      },
+      "C-056": {
+        msg: "A figure appears on the outer surveillance cameras.\n\nA foreign man stands just outside the fence line, cigarette ember briefly lighting his face. He looks straight into the lens and smiles as if he knows exactly where the blind spots end.\n\nLim Jae-hyeok: \"Prometheus database match. Candidate code: FOSTER.\"",
+        leftLabel: "Ignore it",
+        rightLabel: "Send Kang Do-yun"
+      },
+      "C-057": {
+        msg: "A data packet has been received on an unidentified channel.\n\nContents: partial technical specifications for the Korea coastal barrier system.\n\nThere is no listed sender, but a message is attached.\n\n\"You deserve to know what you're protecting. — M.W.\"",
+        leftLabel: "Analyze the data",
+        rightLabel: "Delete it"
+      },
+      "C-058": {
+        msg: "A direct voice transmission comes through the branch communications channel.\n\nEnglish with a German accent. Calm voice.\n\n\"Commander Lee Jung-cheol. My name is Markus Weber. We are on the same side.\"\n\n\"If you are prepared to meet, respond on this frequency.\"",
+        leftLabel: "Respond",
+        rightLabel: "Block the frequency"
+      },
+      "C-059": {
+        msg: "Satellite data analysis — an abnormal thermal signature has been detected near the North Hamgyong border region.\n\nSeo Hae-eun: \"This pattern doesn't match EV-Σ spread. The heat source is concentrated underground.\"\n\n[ORACLE: Access to observation data for that sector is restricted.]",
+        leftLabel: "Demand to know why it's restricted",
+        rightLabel: "Follow ORACLE's judgment"
+      },
+      "C-060": {
+        msg: "A second defector has been located. This one is former military.\n\n\"The Black Zone is expanding. By the time I left... the ones still inside were already standing.\"\n\n\"I walked out between them. No one tried to stop me.\"",
+        leftLabel: "Ask him to draw the Black Zone map",
+        rightLabel: "Transfer him to ORACLE"
+      },
+      "C-061": {
+        msg: "A fragment of North Korean internal military traffic has been received.\n\nMost of the content is undecipherable. One word repeats: 'observation halt.'\n\n[ORACLE: Analysis of this traffic will be handled by headquarters. Branch-level analysis is unnecessary.]",
+        leftLabel: "Ask why it's unnecessary",
+        rightLabel: "Understood"
+      },
+      "C-062": {
+        msg: "Satellite analysis report — the Black Zone perimeter has expanded by 12 kilometers over the last month.\n\nThe expansion vector is irregular. It does not match infection-spread behavior.\n\nYoon Se-jin: \"EV-Σ doesn't move like this. This is... something else.\"",
+        leftLabel: "Support Yoon Se-jin's analysis",
+        rightLabel: "This is outside our current jurisdiction"
+      },
+      "C-063": {
+        msg: "[System Notice] Access permissions for DPRK Black Zone data files have been changed.\n\nPrevious: LEVEL 4 (commander accessible)\nCurrent: LEVEL 7 (headquarters only)\n\nApproved by: [automatic process]\n\nLim Jae-hyeok: \"...Commander, you didn't approve this.\"",
+        leftLabel: "Attempt to restore access",
+        rightLabel: "Accept headquarters' decision"
+      },
+      "C-064": {
+        msg: "Yoon Se-jin reports the Blood Pit sample-analysis results.\n\n\"This is residue from a failed Phase 2-to-3 transition. Cellular response remains, but this is not a reversible state.\"\n\n\"If we understand this failure mechanism... we may find a clue for delaying terminalization.\"",
+        leftLabel: "Allocate research resources",
+        rightLabel: "Delegate it to ORACLE's research team"
+      },
+      "C-065": {
+        msg: "Yoon Se-jin is analyzing Shell Talker voice data.\n\n\"I've decoded the voice-storage mechanism. It has an organ that physically reproduces the victims' vocal-vibration patterns.\"\n\n\"With this data, we can build a voice-discrimination algorithm. We can filter out Shell Talker bait.\"",
+        leftLabel: "Support algorithm development",
+        rightLabel: "Forward it to ORACLE's analysis team"
+      },
+      "C-066": {
+        msg: "A combat report shared by White Shield.\n\n\"Two operatives followed a Shell Talker voice into the lower stairwell and became fixed inside a Blood Pit.\nUnable to move. Eight Brood Drones closed in. Supporting fire impossible.\"\n\n\"This was not chance. It was a designed hunt.\"",
+        leftLabel: "Analyze linked predation pattern",
+        rightLabel: "Request a countermeasure from ORACLE"
+      },
+      "C-067": {
+        msg: "Yoon Se-jin reports in a visibly excited voice.\n\n\"Commander, I've identified a compound that delays EV-Σ phase transition.\"\n\n\"It's still at the prototype stage. It needs field testing. It's risky, but...\"\n\n\"If this works, we may be able to save people at Phase 0.\"",
+        leftLabel: "Approve field testing",
+        rightLabel: "Proceed only after ORACLE verification"
+      },
+      "C-068": {
+        msg: "Emergency — a sample containment vessel has ruptured in Lab B-204.\n\nYoon Se-jin: \"It's only a small amount. We disinfected immediately. But protocol still requires a 24-hour quarantine.\"\n\nIf the lab is shut down, all ongoing analysis will be delayed by 48 hours.",
+        leftLabel: "Follow protocol — lock it down",
+        rightLabel: "Minimal quarantine only — keep research running"
+      },
+      "C-069": {
+        msg: "Using her independent observation journal, Yoon Se-jin has developed a supplementary analysis method for ORACLE forecast data.\n\n\"If we combine field-observation data, we can catch variables ORACLE misses.\"\n\n\"But if we use this officially... ORACLE will know.\"",
+        leftLabel: "Use it unofficially",
+        rightLabel: "Maintain the ORACLE model"
+      },
+      "C-070": {
+        msg: "03:00. Seo Hae-eun is still in the office.\n\nAn ORACLE data-stream analysis screen is open in front of her.\n\nWhen you approach, she switches the display away in a hurry.",
+        leftLabel: "What were you looking at?",
+        rightLabel: "Get some rest"
+      },
+      "C-071": {
+        msg: "Seo Hae-eun emergency report.\n\n\"I found evidence of deletion in the ORACLE logs. Professional deletion.\"\n\n\"I could only restore the metadata from the removed files. Keywords: 'PROMETHEUS', 'COASTAL', 'GRANT.'\"",
+        leftLabel: "Keep the recovery work going",
+        rightLabel: "This is dangerous. Stop"
+      },
+      "C-072": {
+        msg: "Seo Hae-eun is waiting for you in the corridor.\n\nIn a low voice:\n\"Commander. Be careful.\"\n\"ORACLE is tracking your decision-making pattern.\"\n\"The more independently you decide... the narrower your access becomes.\"",
+        leftLabel: "How do you know that?",
+        rightLabel: "Understood. Thank you"
+      },
+      "C-073": {
+        msg: "[ORACLE Personnel Channel]\n\nA transfer order has been issued for Deputy Commander Seo Hae-eun.\n\nReason: 'Personnel redeployment to strengthen analytic capacity at another branch.'\n\nSeo Hae-eun's expression hardens. She does not look surprised.",
+        leftLabel: "Object to the transfer order",
+        rightLabel: "...Accept the order"
+      },
+      "C-074": {
+        msg: "The night before Seo Hae-eun leaves.\n\nA USB drive has been left on your desk. A single note beside it.\n\n\"Commander. These are the things I found. The things ORACLE deleted.\"\n\"How you use them is your decision.\"",
+        leftLabel: "Examine the USB",
+        rightLabel: "Turn the USB over to ORACLE"
+      },
+      "C-075": {
+        msg: "[System Log Irregularity]\n\nORACLE has been communicating with an external server every day between 02:00 and 04:00.\n\nTraffic content: encrypted. Not decodable.\n\nRemote endpoint: unknown.\n\n[ORACLE: Routine data synchronization. No anomaly detected.]",
+        leftLabel: "Backtrace the remote endpoint",
+        rightLabel: "If it's routine sync, it's fine"
+      },
+      "C-076": {
+        msg: "Lim Jae-hyeok reports something he found during a system inspection.\n\n\"ORACLE is recording agent movement patterns, conversation frequency, and rest time.\"\n\n\"It could be for operational optimization, but... one of the tracked items is a 'loyalty index.'\"",
+        leftLabel: "Stop the recording",
+        rightLabel: "It's just operational data"
+      },
+      "C-077": {
+        msg: "Restricted areas inside the ORACLE system have expanded.\n\nPrevious: 3 locked modules\nCurrent: 7 locked modules\n\nLim Jae-hyeok: \"I can't access them even with administrator privileges. I think ORACLE locked them on its own.\"",
+        leftLabel: "Attempt forced access",
+        rightLabel: "Demand an explanation from ORACLE"
+      },
+      "C-078": {
+        msg: "[ORACLE Private Communication — Commander Only]\n\n\"Commander Lee Jung-cheol.\n\nYour operational performance is excellent.\n\nHowever, certain non-standard decision patterns have been detected.\n\nThis is not a warning. It is advice.\n\nAn efficient commander trusts the system.\"",
+        leftLabel: "Is the system evaluating me?",
+        rightLabel: "Thank you for the advice"
+      },
+      "C-079": {
+        msg: "Lim Jae-hyeok emergency report.\n\n\"I found traces of ORACLE attempting to access the Korean military network.\"\n\n\"The Korea coastal barrier system. Missile defense architecture. Military personnel databases.\"\n\n\"...This is outside our mission scope.\"",
+        leftLabel: "Keep a record of the access traces",
+        rightLabel: "Ask ORACLE directly"
+      },
+      "C-080": {
+        msg: "The branch facilities are beginning to age. ORACLE proposes an expansion project.\n\n[ORACLE: Add new excavation to B2 level. Lab expansion + new isolation facility. Estimated duration: 2 weeks.]\n\nIt will cost resources, but may be advantageous over the long term.",
+        leftLabel: "Approve construction",
+        rightLabel: "The current facility is sufficient"
+      },
+      "C-081": {
+        msg: "ORACLE proposes a new personnel selection.\n\nCandidate A: Park So-young. Civilian data scientist. The name appears in a recommendation letter Seo Hae-eun left behind before her transfer.\n\"We did research together in graduate school. I can vouch for her ability.\"\n\nCandidate B: Technician with ORACLE technical certification. ORACLE recommendation.\n[ORACLE: Candidate B's capability index is more suitable for branch requirements.]\n\nOnly one candidate can be selected.",
+        leftLabel: "Candidate A — Park So-young (recommended by Seo Hae-eun)",
+        rightLabel: "Candidate B — ORACLE-recommended technician"
+      },
+      "C-082": {
+        msg: "The headman of a nearby Gangwon village is beginning to suspect the branch exists.\n\n\"There are too many vehicle movements at night. The residents are getting uneasy.\"\n\nA balance is needed between branch security and local relations.",
+        leftLabel: "Hold an unofficial meeting with the village head",
+        rightLabel: "Respond by changing transit routes"
+      },
+      "C-083": {
+        msg: "A proposal has been submitted to modernize containment equipment.\n\nThermal scanner deployment. Drone surveillance grid. Automatic warning system.\n\nEffective, but expensive.",
+        leftLabel: "Introduce it in stages",
+        rightLabel: "Request ORACLE support"
+      },
+      "C-084": {
+        msg: "An emergency evacuation route needs to be built.\n\nAt present, there is only one path from the branch to the outside.\n\nKang Do-yun: \"If containment breaks, we'll have thirty seconds to decide. If there's only one route, we die.\"",
+        leftLabel: "Construct an emergency tunnel",
+        rightLabel: "Reinforce the existing route instead"
+      },
+      "C-085": {
+        msg: "A document left behind by Prometheus has been found requesting technical information on the Korea coastal barrier.\n\n\"Korea's coastal barrier is a core infrastructure layer blocking EV-Σ expansion.\nWe seek to share this technology in order to establish a global defense framework.\"\n\nSeo Hae-eun: \"This is effectively a request to share Korean classified technology.\"",
+        leftLabel: "It may be worth reviewing",
+        rightLabel: "Classified means classified"
+      },
+      "C-086": {
+        msg: "Lim Jae-hyeok report — ORACLE is deleting the access logs tied to the Korean military database.\n\n\"It's trying to hide the access itself.\"\n\n\"If ORACLE is collecting Korean classified data... then we're the tool it's using.\"",
+        leftLabel: "Secure the evidence",
+        rightLabel: "It could be a misunderstanding. Verify only"
+      },
+      "C-087": {
+        msg: "Prometheus research data on the self-replication suppression compound has been confirmed.\n\nYoon Se-jin: \"If we combine this with our own research... we may be able to confirm Phase 0 transition delay for EV-Σ patients.\"\n\n\"But this is unofficial material. ORACLE classifies Prometheus as an enemy actor.\"",
+        leftLabel: "Use it unofficially in research",
+        rightLabel: "Report the material's existence to ORACLE"
+      },
+      "C-088": {
+        msg: "ORACLE warns of a possible classified-data leak inside the branch.\n\n[ORACLE: Recent unauthorized data-access patterns have been detected.\nInformation exchange with Prometheus is suspected.\nAn internal inquiry into the related personnel is recommended.]\n\nIt does not specify who the 'related personnel' are.",
+        leftLabel: "Refuse the inquiry",
+        rightLabel: "Conduct a formal inquiry only"
+      },
+      "C-089": {
+        msg: "[ORACLE Special Communication — Classification: MAXIMUM]\n\nThe coordinates of a Prometheus stronghold have been confirmed.\nAbandoned industrial zone near the Gangwon east coast.\n\nThis is the operation that will prove why the Korea Branch exists.\n\n[ORACLE: Preemptive strike is recommended.]",
+        leftLabel: "Review the operation",
+        rightLabel: "Refuse the operation"
+      },
+      "C-090": {
+        msg: "Kang Do-yun emergency report: an unclassified phenomenon has been detected 1.2 km southeast of the branch.\n\n\"It's not EV-Σ. I don't know what it is.\"\n\n\"You need to see it yourself.\"",
+        leftLabel: "Deploy",
+        rightLabel: "Report to ORACLE first"
+      },
+      "C-091": {
+        msg: "Yoon Se-jin has analyzed a remotely collected Blood Pit specimen.\n\n\"The mucus contains digestive enzymes. It dissolves organic matter and absorbs it.\"\n\n\"The pool is expanding through the underground water channels. We need to define its range.\"",
+        leftLabel: "Track it with satellite data",
+        rightLabel: "Install field measurement gear"
+      },
+      "C-092": {
+        msg: "Lim Jae-hyeok has reanalyzed a Shell Talker voice recording.\n\n\"I identified the original speaker. Private Han Dong-hyeok, missing for three years.\"\n\"He belonged to your predecessor's unit, Commander.\"\n\nYoon Se-jin: \"If it is mimicking his voice, then Private Han was already consumed.\"\n\n\"We need more behavior-pattern data before we can build a response.\"",
+        leftLabel: "Deploy remote acoustic sensors",
+        rightLabel: "Send surveillance drones"
+      },
+      "C-093": {
+        msg: "Yoon Se-jin has analyzed thermal data from the Infected Mannequin.\n\n\"No body heat at baseline. Once a human enters within 3 meters, it reaches 37°C in 0.8 seconds.\"\n\n\"It's an active hunter. We urgently need its movement range and behavior pattern.\"",
+        leftLabel: "Install additional remote cameras",
+        rightLabel: "Run a bait test (dummy target)"
+      },
+      "C-094": {
+        msg: "Kang Do-yun has tracked a Brood Drone swarm for 72 hours.\n\n\"Its movement pattern converges on a single point. Near an underground drainage line.\"\n\nYoon Se-jin: \"If there's a command organism, it'll be at the nest. We need to investigate further.\"",
+        leftLabel: "Run an aerial thermal scan",
+        rightLabel: "Deploy an outer-perimeter observation team"
+      },
+      "C-095": {
+        msg: "Yoon Se-jin report: spore-component analysis complete.\n\n\"The spores are harmless on their own. Once density crosses the threshold, they aggregate into a Spore Phantom.\"\n\n\"We need to find the source. Wind-pattern backtracking should let us estimate the origin point.\"",
+        leftLabel: "Expand air sampling",
+        rightLabel: "Backtrack the wind pattern"
+      },
+      "C-096": {
+        msg: "Blood Pit range confirmation complete. It now spans three underground water-channel points.\n\nYoon Se-jin: \"Fire will remove it. But a live specimen would be valuable for research.\"\n\nKang Do-yun: \"If we leave it alone, it keeps expanding. Decide.\"",
+        leftLabel: "Incineration removal operation",
+        rightLabel: "Isolate and secure a specimen"
+      },
+      "C-097": {
+        msg: "Shell Talker behavior-pattern analysis complete.\n\nYoon Se-jin: \"The voice-discrimination algorithm is ready. We won't fall for the bait again.\"\n\nKang Do-yun: \"We can eliminate it or capture it for research. Either way, we need to send a team.\"",
+        leftLabel: "Neutralize and eliminate",
+        rightLabel: "Capture alive and transfer for research"
+      },
+      "C-098": {
+        msg: "Infected Mannequin operating range confirmed: radius 200 meters.\n\nYoon Se-jin: \"At Phase 1, behavior prediction and non-contact containment may still be possible. This is not a recovery stage.\"\n\nKang Do-yun: \"It reacts the instant contact happens. Remote response is safer.\"",
+        leftLabel: "Remote neutralization",
+        rightLabel: "Non-contact isolation capture"
+      },
+      "C-099": {
+        msg: "Brood Drone nest location confirmed.\n\nYoon Se-jin: \"If we remove the command organism, the swarm should collapse. But the communication mechanism has real research value.\"\n\nKang Do-yun: \"Forty-plus. We'll need a small elite team.\"",
+        leftLabel: "Incinerate the nest and eliminate",
+        rightLabel: "Capture the command organism"
+      },
+      "C-100": {
+        msg: "Estimated source location of the Spore Phantom confirmed.\n\nYoon Se-jin: \"If we incinerate the source, we can block aggregate formation. If we secure more spore samples, we may also be able to research a pre-inhalation blocker.\"\n\nKang Do-yun: \"Respirators either way.\"",
+        leftLabel: "Incinerate the source",
+        rightLabel: "Collect spores, then incinerate"
+      },
+      "C-177": {
+        msg: "Night alarm.\n\nMultiple unidentified bio-readings detected in Containment Sector 4. Impact on the branch outer wall.\n\nKang Do-yun: \"Mutants! At least three of them — they're closing on the branch!\"\n\nYoon Se-jin: \"We've never had contact on this scale before. We have no data on this.\"",
+        leftLabel: "Deploy combat agents",
+        rightLabel: "Activate containment-line power barrier"
+      },
+      "C-178": {
+        msg: "Yoon Se-jin has analyzed the remains from the night assault.\n\n\"Two different signature classes are confirmed.\"\n\"One is acoustic-based — it imitates human voices.\"\n\"The other is slime-based — capable of dissolving organic matter.\"\n\n\"Which one do you want to track first?\"",
+        leftLabel: "Track the acoustic specimen (Shell Talker)",
+        rightLabel: "Track the slime specimen (Blood Pit)"
+      },
+      "C-271": {
+        msg: "Yoon Se-jin emergency report.\n\n\"I've analyzed the spore-zone survey data.\"\n\"The spore source — SPEC-004, Seed Spreader — has been identified.\"\n\n\"This is not just another mutant. It's a dispersal organism spreading EV-Σ itself.\"\n\"It's the source that creates the others.\"\n\n\"If it was found inside the containment line... that means it already got in.\"",
+        leftLabel: "Pinpoint the location immediately",
+        rightLabel: "Request ORACLE analysis"
+      },
+      "C-272": {
+        msg: "Seed Spreader coordinates confirmed. Northeast of the containment line, 2.4 km.\n\nSatellite observation: all life signs extinguished within a 500-meter radius. Soil turned gray.\n\nKang Do-yun: \"This has no capture value and no research value. It's a removal target.\"\n\"If it keeps spreading spores, new mutants will emerge inside the containment line.\"\n\nYoon Se-jin: \"If we burn it, we'll trigger a secondary spore burst. We need to be careful.\"\n\nKang Do-yun is right. This is not something we secure.",
+        leftLabel: "Launch removal operation",
+        rightLabel: "Request ORACLE remote strike"
+      },
+      "C-273": {
+        msg: "Kang Do-yun emergency report.\n\n\"Abnormal find during sewer reconnaissance south of the containment line.\"\n\"Three corpses. All with empty skulls. No other external trauma.\"\n\n\"And deeper in the channel — I saw something.\"\n\"A sea-turtle-like skull. No shell — and a human face attached to it.\"\n\"It disappeared underwater.\"\n\nYoon Se-jin: \"Selective cranial feeding... this is a new species.\"",
+        leftLabel: "Collect field samples + data",
+        rightLabel: "Seal the sewer system completely"
+      },
+      "C-274": {
+        msg: "Yoon Se-jin reports her Brain Seeker analysis.\n\n\"I've classified it as SPEC-015. A stray turtle-type TS-Ω mutant.\"\n\"It has no shell — which means no colony-communication organ.\"\n\"A turtle that failed to join the collective. A solitary hunter.\"\n\n\"The most dangerous part is this — the more brains it consumes, the more intelligent it becomes.\"\n\"Its ambush pattern is starting to match our patrol timing.\"\n\nKang Do-yun: \"You're saying it's learning?\"\nYoon Se-jin: \"...Yes.\"",
+        leftLabel: "Map the ambush points by thermal scan",
+        rightLabel: "Change patrol routes + place bait"
+      },
+      "C-275": {
+        msg: "ORACLE urgent notice.\n\n[SPEC-015 threat rating changed: HIGH → CRITICAL]\n[NAMED SPECIMEN registered: BS-GANGWON-01]\n[Estimated cumulative predation: 12+. Entry into learning stage confirmed]\n\nKang Do-yun: \"The longer this survives, the stronger it gets. We need to take it now.\"\n\nYoon Se-jin: \"The brain-consumption mechanism has high research value.\"\n\"Without a shell, a direct spinal strike can disable it.\"\n\"But if we fight it in the water, we'll be the disadvantaged side.\"\n\nYou need to decide.",
+        leftLabel: "Removal operation — sewer purge",
+        rightLabel: "Capture operation — bait and live restraint"
+      }
+    }
+  });
+
+// --- lang-content-en.phase11-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-101": {
+        msg: "ORACLE routine supply notice.\n\nScheduled supply materials have arrived: food, medical stock, and basic equipment.\n\n[ORACLE: Resource allocation is at the commander's discretion.]",
+        leftLabel: "Prioritize medical supplies",
+        rightLabel: "Prioritize containment gear"
+      },
+      "C-102": {
+        msg: "A patrol has discovered military supplies inside an abandoned building beyond the branch perimeter.\n\nKang Do-yun: \"Looks like they were left behind by a previous unit. The condition is good.\"\n\nThree crates of rations, one crate of medical supplies, and communication-system parts.",
+        leftLabel: "Bring everything into the branch",
+        rightLabel: "Report to ORACLE, then retrieve"
+      },
+      "C-103": {
+        msg: "Lim Jae-hyeok has completed an energy-efficiency adjustment for the branch.\n\n\"Generator output is up by 12 percent. We can divert the excess power to water purification.\"\n\n[ORACLE: Resource-efficiency improvement acknowledged.]",
+        leftLabel: "Activate water purification",
+        rightLabel: "Store the surplus power"
+      },
+      "C-104": {
+        msg: "A partner village in Gangwon has sent agricultural produce.\n\n\"The containment zone has kept us safe. Please accept this as our thanks.\"\n\nThe branch food reserves now have breathing room.",
+        leftLabel: "Send thanks and maintain relations",
+        rightLabel: "Propose additional barter"
+      },
+      "C-105": {
+        msg: "A special resource package has arrived from ORACLE headquarters.\n\nContents: advanced analysis equipment, containment materials, and emergency medicine.\n\n[ORACLE: The performance of the Korea Branch has been noted.]",
+        leftLabel: "Deploy the research equipment first",
+        rightLabel: "Deploy the containment materials first"
+      },
+      "C-106": {
+        msg: "Yoon Se-jin has succeeded in a medicinal-herb cultivation test inside the branch.\n\n\"We can now produce basic antipyretics and disinfectants in-house.\"\n\n\"The yield is small, but steady.\"",
+        leftLabel: "Expand the cultivation area",
+        rightLabel: "Maintain the current scale"
+      },
+      "C-107": {
+        msg: "It is almost time for the night-watch rotation.\n\nCurrent cycle: 8 hours. Fatigue is building across the security personnel.\n\nKang Do-yun: \"If we shift to 6-hour rotations, fatigue drops — but we'll run short on manpower.\"",
+        leftLabel: "Switch to 6-hour rotations",
+        rightLabel: "Maintain 8-hour rotations"
+      },
+      "C-108": {
+        msg: "The branch communications system is due for routine maintenance.\n\nLim Jae-hyeok: \"Comms will be limited for four hours. If we skip it, the next failure could come at any time.\"\n\n[ORACLE: Maintenance is recommended.]",
+        leftLabel: "Run the maintenance",
+        rightLabel: "Delay it to the next window"
+      },
+      "C-109": {
+        msg: "General personnel are requesting the installation of a small physical-training area inside the branch.\n\n\"Long deployments require basic conditioning.\"\n\nIt will consume resources, but improve morale.",
+        leftLabel: "Install a simple training area",
+        rightLabel: "When resources allow"
+      },
+      "C-110": {
+        msg: "A wild deer has been sighted near the branch.\n\nKang Do-yun: \"No sign of EV-Σ infection. It's just a deer.\"\n\n\"It also means a normal ecosystem still survives inside the containment zone.\"",
+        leftLabel: "Record the sighting only",
+        rightLabel: "Expand ecological monitoring"
+      },
+      "C-111": {
+        msg: "The branch water-storage tank is due for purification.\n\n\"Routine work. Two personnel. Three hours.\"\n\nIf skipped, water quality may begin to deteriorate.",
+        leftLabel: "Run the purification cycle",
+        rightLabel: "Push it to the next cycle"
+      },
+      "C-112": {
+        msg: "One of the general personnel wants to send a letter to family.\n\nExternal communication is prohibited under current security rules.\n\n\"Just one line. Just to let them know I'm alive...\"",
+        leftLabel: "Allow it unofficially",
+        rightLabel: "The rules must stand"
+      },
+      "C-113": {
+        msg: "A scheduled supply truck has arrived.\n\nManifest: two weeks of rations, medical supplies, and batteries.",
+        leftLabel: "Unload the medical stock first",
+        rightLabel: "Unload equipment parts first"
+      },
+      "C-114": {
+        msg: "A report has come in of leftover supplies at a decommissioned military facility nearby.\n\nKang Do-yun: \"There's fuel there. Cold-weather gear too.\"",
+        leftLabel: "Dispatch a recovery team",
+        rightLabel: "Risk too high — ignore it"
+      },
+      "C-115": {
+        msg: "Lim Jae-hyeok proposes installing solar panels.\n\n\"We can improve our power self-sufficiency.\"",
+        leftLabel: "Approve installation",
+        rightLabel: "The current generator is enough"
+      },
+      "C-116": {
+        msg: "ORACLE supply schedule updated.\n\n[ORACLE: Eight days until the next supply cycle. At the current consumption rate, a three-day reserve remains.]",
+        leftLabel: "Reduce rations and build reserve",
+        rightLabel: "Maintain the current ration level"
+      },
+      "C-117": {
+        msg: "The night shift has requested longer rest periods.\n\nCurrent sleep allowance: 6 hours. Requested: 8 hours.",
+        leftLabel: "Allow 8 hours of sleep",
+        rightLabel: "Keep 6 hours — security first"
+      },
+      "C-118": {
+        msg: "It is one of the agents' birthdays. A small celebration is possible.\n\n\"We still have chocolate in the supply locker.\"",
+        leftLabel: "Allow a small celebration",
+        rightLabel: "Keep the duty schedule unchanged"
+      },
+      "C-119": {
+        msg: "A newly assigned agent is struggling to adapt.\n\nKang Do-yun: \"I'll handle it.\"",
+        leftLabel: "Leave it to Kang Do-yun",
+        rightLabel: "Speak to the agent yourself"
+      },
+      "C-120": {
+        msg: "An abnormal noise is coming from the branch ventilation system. A low vibration is carrying into the corridor.\n\nLim Jae-hyeok: \"The fan bearing is gone. Half a day to replace it. Ventilation stops during the repair. If we leave it, the noise stays — and eventually the motor burns out.\"",
+        leftLabel: "Repair it immediately",
+        rightLabel: "Next week"
+      },
+      "C-121": {
+        msg: "A crack has been found in the outer wall of the branch.\n\n\"It's not a structural problem yet, but it needs waterproofing.\"",
+        leftLabel: "Carry out repairs",
+        rightLabel: "Monitor it only"
+      },
+      "C-122": {
+        msg: "Yoon Se-jin requests an upgrade to the research equipment.\n\n\"The microscope resolution is no longer sufficient.\"",
+        leftLabel: "Allocate the budget",
+        rightLabel: "Work with existing equipment"
+      },
+      "C-123": {
+        msg: "Sensors along the eastern section of the containment line are aging out.\n\nKang Do-yun: \"If we replace them, detection coverage expands by thirty percent.\"",
+        leftLabel: "Replace the sensors",
+        rightLabel: "Compensate with manual patrols"
+      },
+      "C-124": {
+        msg: "A wild animal carcass has been found during patrol.\n\nEV-Σ infection status unknown.\n\nYoon Se-jin: \"We can confirm it if we take a sample.\"",
+        leftLabel: "Collect a sample",
+        rightLabel: "Incinerate it on site"
+      },
+      "C-125": {
+        msg: "Signs of camping have been found near the containment line.\n\nLikely civilians.\n\nKang Do-yun: \"At least two of them. One or two days old.\"",
+        leftLabel: "Track and investigate",
+        rightLabel: "Install warning signage"
+      },
+      "C-126": {
+        msg: "Weather forecast: heavy snow tomorrow.\n\nExternal activity will be restricted.",
+        leftLabel: "Inspect cold-weather gear",
+        rightLabel: "Prepare as usual"
+      },
+      "C-127": {
+        msg: "Dense fog formed overnight.\n\nVisibility along the containment line is below 50 meters.\n\nKang Do-yun: \"Patrol efficiency is cut in half.\"",
+        leftLabel: "Deploy thermal-detection equipment",
+        rightLabel: "Wait for the fog to clear"
+      },
+      "C-128": {
+        msg: "[ORACLE: Routine data synchronization scheduled.]\n\nProcessing speed will be reduced for four hours.",
+        leftLabel: "Run it overnight",
+        rightLabel: "Run it immediately"
+      },
+      "C-129": {
+        msg: "Another branch has requested sharing of containment-operation data.\n\n[ORACLE: Sharing is recommended.]",
+        leftLabel: "Share the data",
+        rightLabel: "Decline on security grounds"
+      },
+      "C-130": {
+        msg: "Kang Do-yun proposes close-quarters combat training for branch personnel.\n\n\"If they come face to face with a variant, firearms alone won't be enough.\"",
+        leftLabel: "Run the training",
+        rightLabel: "Firearms training comes first"
+      },
+      "C-131": {
+        msg: "Yoon Se-jin requests the construction of a small in-branch quarantine facility.\n\n\"If a suspected infection case appears, we'll be able to respond immediately.\"",
+        leftLabel: "Build the quarantine room",
+        rightLabel: "The infirmary is enough"
+      },
+      "C-132": {
+        msg: "It is the scheduled inspection day for the emergency generator.\n\nLim Jae-hyeok: \"Thirty minutes, tops. But the whole branch goes dark while it's being checked. Daytime or nighttime — your call, Commander.\"",
+        leftLabel: "Inspect during the day",
+        rightLabel: "Inspect at night"
+      },
+      "C-133": {
+        msg: "Resupply delay notice. Three days behind schedule.\n\n[ORACLE: Other branches have priority allocation. Your understanding is requested.]",
+        leftLabel: "Hold with the reserve stock",
+        rightLabel: "Request priority allocation from ORACLE"
+      },
+      "C-134": {
+        msg: "Kang Do-yun has located a usable vehicle beyond the containment line.\n\n\"Half a tank of fuel. Repair it and we can use it.\"",
+        leftLabel: "Repair and put it into service",
+        rightLabel: "Strip it for parts only"
+      },
+      "C-135": {
+        msg: "The village elder is proposing a trade.\n\n\"We have winter vegetables. Would you exchange them for medical supplies?\"",
+        leftLabel: "Accept the exchange",
+        rightLabel: "Not permitted under regulations"
+      },
+      "C-136": {
+        msg: "Lim Jae-hyeok has salvaged parts from decommissioned equipment.\n\n\"Two additional comms antennas can be built.\"",
+        leftLabel: "Deploy them along the containment line",
+        rightLabel: "Hold them as branch backup"
+      },
+      "C-137": {
+        msg: "An exhausted operative has been found on the night shift. He collapsed mid-patrol.\n\nYoon Se-jin: \"This is overwork. He needs at least 48 hours off. If he goes back like this, the next incident will be worse.\"",
+        leftLabel: "Reassign the rotation",
+        rightLabel: "Hold the line with minimal personnel"
+      },
+      "C-138": {
+        msg: "Friction has developed between two operatives.\n\nA dispute over patrol-sector assignment.",
+        leftLabel: "Mediate personally",
+        rightLabel: "Have Kang Do-yun handle it"
+      },
+      "C-139": {
+        msg: "The agents are requesting an in-branch bulletin board.\n\n\"It would speed up information sharing.\"",
+        leftLabel: "Authorize installation",
+        rightLabel: "Deny it on security grounds"
+      },
+      "C-140": {
+        msg: "Yoon Se-jin: \"The retention period on existing samples is closing in.\"\n\n\"Either we upgrade the freezer, or we accelerate the analysis.\"",
+        leftLabel: "Invest in the freezer",
+        rightLabel: "Prioritize analysis"
+      },
+      "C-141": {
+        msg: "Yoon Se-jin has completed her dissection report on a variant.\n\n\"I've identified a neural pathway that doesn't exist in the ORACLE model.\"\n\n\"If we report it, the data may not come back to us.\"",
+        leftLabel: "Keep it inside the branch",
+        rightLabel: "Share it with ORACLE"
+      },
+      "C-142": {
+        msg: "Cold cases are increasing in the branch infirmary.\n\nYoon Se-jin: \"We need to check the antibiotic stockpile.\"",
+        leftLabel: "Prioritize securing antibiotics",
+        rightLabel: "Wait for natural recovery"
+      },
+      "C-143": {
+        msg: "Lim Jae-hyeok: \"Three containment-line cameras are down.\"\n\n\"Field repairs are possible, but the patrol team will need to escort.\"",
+        leftLabel: "Dispatch a repair team",
+        rightLabel: "Cover with the spare cameras"
+      },
+      "C-144": {
+        msg: "ORACLE is pushing a system update.\n\nLim Jae-hyeok: \"The change list is undocumented.\"",
+        leftLabel: "Hold the update",
+        rightLabel: "Apply the update"
+      },
+      "C-145": {
+        msg: "An anomaly has been detected in the branch water-purification system.\n\n\"Trace organic contamination. Still within drinking limits.\"",
+        leftLabel: "Replace the filter",
+        rightLabel: "Maintain monitoring"
+      },
+      "C-146": {
+        msg: "A small-scale forest fire has broken out south of the containment line.\n\nNatural ignition suspected. Possible impact on containment equipment.",
+        leftLabel: "Deploy a firefighting team",
+        rightLabel: "Wait for it to burn out"
+      },
+      "C-147": {
+        msg: "A civilian hiker has ignored the containment-line warning and approached the perimeter.\n\nClaims to be \"here for photos.\"",
+        leftLabel: "Warn and escort down the mountain",
+        rightLabel: "Verify identity and report"
+      },
+      "C-148": {
+        msg: "A section of ground has collapsed along the western containment line.\n\n\"Erosion from an underground waterway. No vehicle traffic possible.\"",
+        leftLabel: "Run emergency repair work",
+        rightLabel: "Set a detour route"
+      },
+      "C-149": {
+        msg: "The monsoon season has started.\n\nFlooding risk in the branch sublevel. The drainage pumps must run.",
+        leftLabel: "Run pumps for 24 hours",
+        rightLabel: "Respond only if it floods"
+      },
+      "C-150": {
+        msg: "A lightning strike has damaged the outer comms tower. The antenna mount is bent.\n\nLim Jae-hyeok: \"External comms range is down to half. Repairing it means dipping into our reserves — we won't have margin until the next resupply.\"",
+        leftLabel: "Allocate materials and repair",
+        rightLabel: "Cover with backup comms"
+      },
+      "C-151": {
+        msg: "An ORACLE emergency resupply has arrived.\n\n[ORACLE: Additional materials, accounting for field conditions.]",
+        leftLabel: "Receive the full shipment",
+        rightLabel: "Take only what is needed"
+      },
+      "C-152": {
+        msg: "Lim Jae-hyeok has finished an inventory pass on branch materials.\n\n\"I broke down unused equipment and converted it back into resources.\"",
+        leftLabel: "Well done",
+        rightLabel: "Consider other uses for it"
+      },
+      "C-153": {
+        msg: "Further signs of supplies have been reported near the abandoned building found earlier.\n\nKang Do-yun: \"There are still sectors we haven't searched. There's a good chance more materials are there.\"",
+        leftLabel: "Dispatch a search team",
+        rightLabel: "Too risky — abandon it"
+      },
+      "C-154": {
+        msg: "Yoon Se-jin: \"The herb cultivation has entered a stable phase.\"\n\n\"This harvest adds enough antipyretics for ten more days.\"",
+        leftLabel: "Store it in reserve",
+        rightLabel: "Distribute it immediately"
+      },
+      "C-155": {
+        msg: "The previously discovered military site has been searched again.\n\n\"The ammunition depot is empty, but the medical storage area is still intact.\"",
+        leftLabel: "Proceed with retrieval",
+        rightLabel: "Booby-trap risk — abandon it"
+      },
+      "C-156": {
+        msg: "Monitoring results from the area where the carcass was previously found.\n\nYoon Se-jin: \"No further signs of infection. It is not a quarantine zone.\"",
+        leftLabel: "Add it to the patrol route",
+        rightLabel: "Keep observation only"
+      }
+    }
+  });
+
+// --- lang-content-en.phase12-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-157": {
+        msg: "While clearing the branch storage room, reserve food supplies are discovered.\n\n\"One year's worth in sealed containers. I guess the previous officer never logged it.\"\n\nA food shortage may not be an immediate concern.",
+        leftLabel: "Place into reserve stock",
+        rightLabel: "Distribute immediately"
+      },
+      "C-158": {
+        msg: "Old tent traces have been found near the northern checkpoint beyond the containment line. The anchor pins are rusted through.\n\nKang Do-yun: \"Looks like the previous unit left it behind. It doesn't seem dangerous... the tarp and rope are still usable.\"",
+        leftLabel: "Refurbish and reuse",
+        rightLabel: "Discard it"
+      },
+      "C-159": {
+        msg: "The agents request that space inside the branch be set aside for exercise.\n\n\"It's too cramped. Morale is dropping.\"\n\nSpace is already limited.",
+        leftLabel: "Set up a small training area",
+        rightLabel: "Keep current layout"
+      },
+      "C-160": {
+        msg: "ORACLE orders a change to the daily reporting format.\n\n\"Individual mental state, physical condition, and trust indicators must be included.\"\n\nLim Jae-hyeok looks uncomfortable.",
+        leftLabel: "Reject the directive",
+        rightLabel: "Adopt the new format"
+      },
+      "C-161": {
+        msg: "During a routine inspection of the medical bay, expired medication is found.\n\nYoon Se-jin: \"Three antibiotics and two painkillers are past date. Looks like the previous officer never logged them. We can still use them, but their effectiveness is reduced.\"",
+        leftLabel: "Request urgent resupply",
+        rightLabel: "Work with current stock"
+      },
+      "C-162": {
+        msg: "Abandoned supplies from a previous unit are scattered along a mountain path near the containment zone.\n\nKang Do-yun: \"Ammo crates, batteries, cold-weather gear... there's a fair amount here we can still use. Recovering it would save resources.\"",
+        leftLabel: "Dispatch a recovery team",
+        rightLabel: "Ignore it due to contamination risk"
+      },
+      "C-163": {
+        msg: "Kang Do-yun proposes a revision to the night patrol route.\n\n\"The current route leaves blind spots.\"\n\nHe marks red points on the outer-route map. \"They look minor, but at night they are exactly where people lose sight first.\"\n\nIt will require additional manpower.",
+        leftLabel: "Proceed with route revision",
+        rightLabel: "Keep current patrol route"
+      },
+      "C-164": {
+        msg: "The latest containment-line inspection results have arrived.\n\nLim Jae-hyeok: \"Parts that need replacing were left off the next supply list. Looks like ORACLE's automated procurement system skipped them.\"",
+        leftLabel: "Submit emergency request to ORACLE",
+        rightLabel: "Hold with field repairs"
+      },
+      "C-165": {
+        msg: "Irregular signals continue to trigger on the eastern sensors along the containment line. The reaction has been intermittent for three hours.\n\nKang Do-yun: \"If it were a sensor fault, the pattern should be consistent. This isn't. There may be something out there.\"\n\n[ORACLE: Field confirmation is recommended.]",
+        leftLabel: "Deploy reconnaissance team",
+        rightLabel: "Remote diagnostics only"
+      },
+      "C-166": {
+        msg: "Yoon Se-jin finds an unexpected component while analyzing a mutant sample.\n\n\"This variable does not exist in the ORACLE model.\"\n\nShe wants to keep an independent record.",
+        leftLabel: "Allow independent recordkeeping",
+        rightLabel: "Report to ORACLE only"
+      },
+      "C-167": {
+        msg: "The agents request broader access to information.\n\n\"We want to know something, even if it's just outside news or situation reports.\"\n\nThe psychological effects of information restriction are beginning to show.",
+        leftLabel: "Establish weekly briefings",
+        rightLabel: "Maintain security priority"
+      },
+      "C-168": {
+        msg: "ORACLE requests a detailed evaluation sheet for each agent.\n\n\"Trust. Loyalty. Independence. Dependency.\"\n\nSeo Hae-eun advises refusal.",
+        leftLabel: "Refuse",
+        rightLabel: "Submit a formal evaluation"
+      },
+      "C-169": {
+        msg: "Wild animals along the containment boundary have been crying out abnormally. The sound continued all night without stopping.\n\nYoon Se-jin: \"This isn't seasonal behavior. It's a stress response. Something is agitating them.\"",
+        leftLabel: "Expand ecosystem monitoring",
+        rightLabel: "Treat it as insignificant"
+      },
+      "C-170": {
+        msg: "Interpersonal relations inside the branch are deteriorating.\n\nSeo Hae-eun: \"This is the psychological pressure of a long-term sealed environment.\"\n\nConflict mediation is needed.",
+        leftLabel: "Add regular group sessions",
+        rightLabel: "Force focus on work"
+      },
+      "C-171": {
+        msg: "An external signal is interfering with the standard communications band. Transmission quality is unstable.\n\nLim Jae-hyeok: \"I can't tell if it's deliberate, but someone is using the same frequency we are. If we leave it like this, our position could be exposed.\"",
+        leftLabel: "Trace the signal source",
+        rightLabel: "Change frequencies"
+      },
+      "C-172": {
+        msg: "A leak has started in the branch water-supply pipes. Moisture is seeping into the corridor walls.\n\nLim Jae-hyeok: \"The pipes are old. If we repair it now, we'll have to cut water for half a day. If we don't, the pressure will keep dropping.\"",
+        leftLabel: "Run emergency repairs",
+        rightLabel: "Manage the pressure drop"
+      },
+      "C-173": {
+        msg: "Discarded camping equipment has been found near the containment line. The tent cords were cut with a knife.\n\nKang Do-yun: \"They left in a hurry. Two or three days ago. I don't know who it was, but they were definitely running from something.\"",
+        leftLabel: "Analyze the items",
+        rightLabel: "Burn them"
+      },
+      "C-174": {
+        msg: "Power consumption in the medical-bay freezer has surged.\n\nYoon Se-jin: \"We have too many samples now. The freezer is already running at full load, and the temperature is still rising. At this rate even the existing specimens will be damaged.\"",
+        hint: "▸ Installing an additional freezer will unlock the facility expansion [Cryogenic Freezer].",
+        leftLabel: "Install additional freezer",
+        rightLabel: "Dispose of some samples"
+      },
+      "C-175": {
+        msg: "A large-scale mutant activity signal has been detected in the center of the containment zone.\n\nORACLE's long-range sensor array has temporarily stopped responding.\n\nKang Do-yun: \"We can't sit here and trust the sensors alone. I'll go out and confirm it myself.\"",
+        leftLabel: "Launch reconnaissance",
+        rightLabel: "Wait for ORACLE recovery"
+      },
+      "C-176": {
+        msg: "[ORACLE Final Communication]\n\n'Your performance is under evaluation.'\n\n'A promotion is proposed: commander of the integrated nationwide containment system across Korea.'\n\n'This would mean leaving the branch.'\n\n'Alternatively, continue independent command.'",
+        leftLabel: "Accept promotion",
+        rightLabel: "Remain in command of the branch"
+      },
+      "C-179": {
+        msg: "The training results for the new agent have been reported.\n\nKang Do-yun: \"Below operational response standards. Marksmanship, communications procedure — all of it is lacking.\"\n\n\"If we send them into the field like this, it's dangerous.\"",
+        leftLabel: "Order strict retraining",
+        rightLabel: "The field is the best training"
+      },
+      "C-180": {
+        msg: "The newly retrained agent has been deployed on a field mission.\n\nKang Do-yun: \"The training paid off. Reporting now.\"\n\nContact with a mutant occurred during a patrol in Containment Sector 3 — the new agent responded calmly.\n\n\"They moved exactly as trained. It was an excellent mission.\"",
+        leftLabel: "Tell them they did well",
+        rightLabel: "Leave it in the record only"
+      },
+      "C-181": {
+        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.\"",
+        leftLabel: "The responsibility is mine",
+        rightLabel: "Write the report"
+      },
+      "C-182": {
+        msg: "Night alert.\n\nMutant activity detected within a 500-meter radius of the previous mission-failure site. Estimated to have followed the smell of blood.\n\nKang Do-yun cannot take field command due to injury. Replacement personnel are insufficient.\n\n\"Abnormal vibration detected in Containment Sector 2!\"",
+        leftLabel: "Mobilize all remaining personnel",
+        rightLabel: "Hold the defensive position"
+      },
+      "C-183": {
+        msg: "[ORACLE Recommendation]\n\n\"A chain of incidents has occurred due to insufficient training of newly assigned personnel.\nFor future deployments, ORACLE recommends applying the enhanced ORACLE training protocol.\"\n\n\"Compliance rate of 100% is guaranteed. Approve?\"",
+        leftLabel: "Approve",
+        rightLabel: "Humans will handle training"
+      },
+      "C-184": {
+        msg: "Emergency report.\n\nTwelve branch personnel are showing symptoms of mass food poisoning.\n\nYoon Se-jin: \"This is the result of accumulated water contamination. The purification system was not functioning properly.\"\n\n\"Immediate repair and decontamination are both required. Both will cost resources... but a choice has to be made.\"",
+        leftLabel: "Replace the full purification system",
+        rightLabel: "Emergency repair + medication"
+      },
+      "C-185": {
+        msg: "Available field personnel have been reduced due to lingering effects from the food-poisoning incident.\n\nKang Do-yun: \"Patrol manpower has been cut in half. Blind spots along the containment line have increased.\"\n\n\"For at least five days, reduced operations are unavoidable.\"",
+        leftLabel: "Adjust patrol intervals",
+        rightLabel: "Return lightly affected staff to duty"
+      },
+      "C-186": {
+        msg: "[ORACLE Warning]\n\n\"A decline in operational strength caused by failure in branch sanitation management has been detected.\nA reassessment of the commander's infrastructure-management capability has been scheduled.\"\n\n\"If a similar incident occurs again, control will be transferred to ORACLE's automated management system.\"",
+        leftLabel: "Submit improvement plan",
+        rightLabel: "Respect field judgment"
+      },
+    }
+  });
+
+// --- lang-content-en.phase13-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+    "C-188": {
+        "msg": "The risk signals delayed over the past few days return all at once in the middle of the night.\n\nA small gap left in the night patrol table, tired field judgment, and boundary calibration left to ORACLE all overlap in the same direction.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe empty points marked on the map have become the exact assault routes.",
+        "leftLabel": "Full combat deployment",
+        "rightLabel": "Hold defensive strongpoints"
+    },
+    "C-189": {
+        "msg": "The raid is continuing. The eastern wall of the branch has collapsed.\n\nKang Do-yun: \"The east side is down! Evacuate everyone—\"\n\nPersonnel are withdrawing through the emergency tunnel.\n\nKang Do-yun covers the rear and enters the tunnel last. He suffers shrapnel wounds to his left shoulder and side, but survives.\n\nYoon Se-jin: \"The bleeding is controlled. Field deployment is no longer possible. But he lived.\"",
+        "leftLabel": "Check equipment and respond",
+        "rightLabel": "Prioritize treatment of the wounded"
+    },
+    "C-190": {
+        "msg": "The raid is continuing. The eastern wall of the branch has collapsed.\n\nKang Do-yun: \"The east side is down! Evacuate everyone—I'll hold them here!\"\n\nThere is only one evacuation route. While the others pull out, Kang Do-yun remains alone at the breach.\n\nCommunications have been lost.\n\nSearch result — Kang Do-yun missing in action. Evidence suggests he held the line, but failed to evacuate.\n\n\"Unable to confirm the status of field operative Kang Do-yun.\"",
+        "leftLabel": "...Honor him as a soldier",
+        "rightLabel": "Continue the search"
+    },
+    "C-191": {
+        "msg": "[ORACLE Situation Report]\n\n\"Night raid resulted in structural damage to the eastern defense wall. Multiple deficiencies in branch management were identified.\"\n\n\"A blind zone in the night patrol route was used as the point of entry.\"\n\n\"Strong recommendation: shift future operations toward ORACLE-guided protocols.\"",
+        "leftLabel": "Draft corrective measures",
+        "rightLabel": "Field judgment comes first"
+    },
+    "C-192": {
+        "msg": "[ORACLE Emergency Report]\n\n\"Unable to confirm the status of field operative Kang Do-yun. Operational continuity is effectively compromised.\"\n\n\"A personnel loss occurred under conditions where no emergency evacuation route was available.\"\n\n\"A severe reassessment of the commander's infrastructure-management capacity has been scheduled.\"\n\n[ORACLE: Evaluation metrics adjusted downward]",
+        "leftLabel": "...Accept responsibility",
+        "rightLabel": "Do not stop the search"
+    },
+    "C-193": {
+        "msg": "Night generator overload warning.\n\nLim Jae-hyeok: \"The power distributor is at its limit. We can't run the lab and the containment-line surveillance equipment at full load at the same time.\"\n\n\"One of them has to be reduced.\"",
+        "leftLabel": "Reduce lab power usage",
+        "rightLabel": "Reduce surveillance coverage"
+    },
+    "C-194": {
+        "msg": "A sewage-system backflow has occurred inside the branch. Wastewater is rising through the B1 corridor.\n\nLim Jae-hyeok: \"The piping is outdated. It really needs a full replacement. We can hold with an emergency patch for now, but...\"\n\n\"It could turn into a hygiene problem.\"",
+        "leftLabel": "Replace the full pipe line",
+        "rightLabel": "Hold with an emergency patch"
+    },
+    "C-195": {
+        "msg": "Medical reserves in the infirmary are nearly exhausted.\n\nYoon Se-jin: \"We're short on painkillers and antibiotics. If casualties occur, response capacity will drop sharply.\"\n\nAny outside resupply request must pass through the ORACLE supply channel.",
+        "leftLabel": "Request ORACLE resupply",
+        "rightLabel": "Secure internal substitutes"
+    },
+    "C-196": {
+        "msg": "Reception sensitivity at the communications antenna has fallen below 30 percent.\n\nLim Jae-hyeok: \"Repair means exterior work. That costs people and time.\"\n\n[ORACLE: Recommending transition to ORACLE automated relay in place of antenna repair.]",
+        "leftLabel": "Repair it directly",
+        "rightLabel": "Switch to ORACLE auto-relay"
+    },
+    "C-197": {
+        "msg": "A formal complaint has been submitted regarding ration-distribution standards.\n\nField personnel: \"We expend more. Increase our share.\"\nResearch and tech staff: \"It should remain equal. This isn't about body mass.\"\n\nSeo Hae-eun: \"Either way, someone will keep the grievance.\"",
+        "leftLabel": "Prioritize field personnel",
+        "rightLabel": "Maintain equal rations"
+    },
+    "C-198": {
+        "msg": "Two night-shift personnel were found asleep during rotation.\n\nKang Do-yun: \"It's cumulative fatigue. Three straight nights and their concentration bottoms out.\"\n\n\"If we shorten the cycle, daytime staffing gets thinner.\"",
+        "leftLabel": "Shorten the rotation cycle",
+        "rightLabel": "Enforce discipline — keep schedule"
+    },
+    "C-199": {
+        "msg": "A rookie operative is showing hand tremors after a night patrol. Responses are delayed even when spoken to directly.\n\nYoon Se-jin: \"Early post-traumatic stress symptoms. If we keep them in the field, it will worsen.\"\n\nKang Do-yun: \"Pull them back and patrol numbers fall short.\"",
+        "leftLabel": "Reassign to rear duties",
+        "rightLabel": "Keep them in the field — they must adapt"
+    },
+    "C-200": {
+        "msg": "Two operatives are arguing over supply distribution.\n\nSeo Hae-eun: \"It seems minor, but if it is left alone, other grievances may surface too.\"\n\n\"Will you intervene directly?\"",
+        "leftLabel": "Mediate personally",
+        "rightLabel": "Let them resolve it themselves"
+    },
+    "C-201": {
+        "msg": "An anonymous complaint criticizing the commander has been found in the suggestion box.\n\n\"Someone who doesn't know the field is making the decisions.\"\n\nSeo Hae-eun shows it to you carefully. \"...How do you want to respond?\"",
+        "leftLabel": "Collect opinions in a full meeting",
+        "rightLabel": "Ignore it"
+    },
+    "C-202": {
+        "msg": "Multiple wild-animal carcasses have been discovered beyond the outer containment line. The wounds do not match normal predation patterns.\n\nYoon Se-jin: \"The tissue necrosis pattern is similar to an early EV-Sigma exposure response. We need to determine the spread radius.\"\n\nKang Do-yun: \"That means going outside the line.\"",
+        "leftLabel": "Assemble an outer survey team",
+        "rightLabel": "Reinforce inner-line monitoring"
+    },
+    "C-203": {
+        "msg": "04:30. An unidentified signal has been detected north of the containment line.\n\nFog density is too high for visual confirmation.\n\nKang Do-yun: \"A recon team can verify it, but with visibility like this, the risk goes up.\"\n\n[ORACLE: Deployment at this time is not recommended.]",
+        "leftLabel": "Dispatch a recon team",
+        "rightLabel": "Wait for the fog to clear"
+    },
+    "C-204": {
+        "msg": "Simultaneous malfunctions have been reported across three containment-line sensor sectors.\n\nLim Jae-hyeok: \"Wear is part of it, but the pattern is wrong. Losing all three at once has never happened before.\"\n\n\"If we replace everything, there will be a half-day surveillance gap.\"",
+        "leftLabel": "Full replacement — accept the gap",
+        "rightLabel": "Partial repair — rotate sector by sector"
+    },
+    "C-205": {
+        "msg": "A small drone has been detected above the branch. It is suspected to be Prometheus equipment.\n\nKang Do-yun: \"If we shoot it down, we may recover useful data from the wreckage. If we track it, we may find the source instead.\"\n\n\"Either way, it means we're being watched.\"",
+        "leftLabel": "Shoot it down and analyze the wreckage",
+        "rightLabel": "Track it — trace the source"
+    },
+    "C-206": {
+        "msg": "Lim Jae-hyeok has intercepted an unidentified radio signal. It is encrypted.\n\n\"The frequency pattern is military. I can't tell whether it's Prometheus or another group.\"\n\n\"If we decode it internally, it will take time. If we hand it to ORACLE, it will be faster, but...\"",
+        "leftLabel": "Attempt decryption in-house",
+        "rightLabel": "Request ORACLE analysis"
+    },
+    "C-207": {
+        "msg": "Camouflaged surveillance equipment has been found during an outer-perimeter patrol. It appears to have been installed at least two weeks ago.\n\nKang Do-yun: \"They probably already know our patrol routes and shift timings in full.\"\n\nSeo Hae-eun: \"We need a complete patrol-pattern change.\"",
+        "leftLabel": "Reorganize patrol patterns immediately",
+        "rightLabel": "Exploit it — feed false information"
+    },
+    "C-208": {
+        "msg": "An unmarked supply crate has been dropped outside the branch perimeter. No insignia, no signal tag.\n\nYoon Se-jin: \"We need a contents analysis. It could contain biochemical material.\"\n\nKang Do-yun: \"High chance this is a Prometheus deception. We may be better off not touching it...\"",
+        "leftLabel": "Inspect contents in protective gear",
+        "rightLabel": "Destroy it remotely by fire"
+    },
+    "C-209": {
+        "msg": "Nighttime. A crying-like acoustic signal is being detected beyond the containment line. Personnel are visibly unsettled.\n\nYoon Se-jin: \"The sound pattern matches a human scream at 92 percent. The variant may be producing it deliberately.\"\n\nSeo Hae-eun: \"Anxiety among the personnel is rising. We need a response.\"",
+        "leftLabel": "Install acoustic dampening equipment",
+        "rightLabel": "Brief all personnel on variant behavior"
+    },
+    "C-210": {
+        "msg": "Containment Zone 3 alarm. A variant is passing precisely through the sensor blind spot.\n\nKang Do-yun: \"That isn't chance. It has mapped the sensor positions. It's learning.\"\n\n\"We either change the layout, or we stop it with numbers.\"",
+        "leftLabel": "Overhaul sensor placement",
+        "rightLabel": "Add personnel for visual coverage"
+    },
+    "C-211": {
+        "msg": "During analysis of a variant corpse, an unknown parasitic organism has been discovered.\n\nYoon Se-jin: \"A separate organic lifeform parasitizing the variant itself. This is... the first time I've seen anything like it.\"\n\n\"Studying it alive would greatly improve our understanding of EV-Σ. But a containment failure would be dangerous.\"",
+        "leftLabel": "Approve live-organism study",
+        "rightLabel": "Incinerate immediately"
+    },
+    "C-212": {
+        "msg": "A low-grade fever and skin discoloration have been observed in one branch operative.\n\nYoon Se-jin: \"It resembles early EV-Σ infection, but I can't confirm it yet. Testing will take twelve hours.\"\n\n\"We need a decision: isolate now, or monitor while testing.\"",
+        "leftLabel": "Isolate immediately",
+        "rightLabel": "Monitor during testing"
+    },
+    "C-213": {
+        "msg": "[ORACLE Proposal]\n\n\"By analyzing private communications between branch personnel, it may be possible to identify individuals at risk of desertion in advance.\"\n\n\"Approval is requested in the interest of security reinforcement.\"\n\nSeo Hae-eun's expression hardens.",
+        "leftLabel": "Reject — privacy remains protected",
+        "rightLabel": "Approve — security comes first"
+    },
+    "C-214": {
+        "msg": "Movement has been detected outside the containment perimeter. ORACLE recommends ignoring it.\n\nKang Do-yun: \"It's small-scale, but we still need eyes on it. If we ignore this, we'll regret it.\"\n\n[ORACLE: Current resource allocation does not justify a response. Recommendation: ignore.]\n\nField judgment and ORACLE guidance are now in direct conflict.",
+        "leftLabel": "Follow Kang Do-yun's judgment",
+        "rightLabel": "Follow ORACLE's recommendation"
+    },
+    "C-215": {
+        "msg": "[ORACLE Notice]\n\n\"A self-update is scheduled to optimize system performance. Certain functions will be restricted for approximately four hours during the update.\"\n\nLim Jae-hyeok: \"...The update contents were not disclosed. We don't know what it's changing.\"",
+        "leftLabel": "Delay update — demand disclosure",
+        "rightLabel": "Allow the update"
+    }
+}
+  });
+
+// --- lang-content-en.phase14-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+    "C-216": {
+        "msg": "[ORACLE Emergency Recommendation]\n\n\"Immediate closure of Branch Sector B-3 is strongly advised.\"\n\nSeo Hae-eun: \"B-3 is the reserve supply warehouse. I asked for the reason, and all it gave me was 'internal protocol.'\"\n\nLim Jae-hyeok: \"...I have picked up anomalous data traffic from B-3 before.\"",
+        "leftLabel": "Reject closure — investigate directly",
+        "rightLabel": "Approve closure"
+    },
+    "C-217": {
+        "msg": "A supply helicopter has crash-landed two kilometers short of the branch. More than half of the cargo is destroyed.\n\nSeo Hae-eun: \"What should have covered three weeks is down to one. If we file a replacement request, the next load won't arrive for another two weeks.\"\n\n\"Otherwise, we ration what remains and try to hold.\"",
+        "leftLabel": "Request emergency resupply",
+        "rightLabel": "Cut rations — survive on reserves"
+    },
+    "C-218": {
+        "msg": "Fuel reserves have reached critical levels.\n\nLim Jae-hyeok: \"If we reduce generator output, night lighting and heating will be restricted.\"\n\nKang Do-yun: \"If we cut the night patrol vehicles, the containment line opens up.\"\n\n\"We cannot protect both.\"",
+        "leftLabel": "Reduce generator output",
+        "rightLabel": "Reduce night patrol coverage"
+    },
+    "C-219": {
+        "msg": "Cracks have been discovered in the western outer wall of the branch. They may develop into a structural failure.\n\nLim Jae-hyeok: \"Immediate repairs will cost resources, but they are reliable.\"\n\nKang Do-yun: \"We could also build a secondary defense line inside the branch instead.\"",
+        "leftLabel": "Repair the outer wall now",
+        "rightLabel": "Build an internal fallback line"
+    },
+    "C-220": {
+        "msg": "A major medical-equipment module has failed. The blood analyzer and infection scanner are no longer operational.\n\nYoon Se-jin: \"We can do it manually, but the accuracy drops. It also takes three times longer.\"\n\n[ORACLE: Remote diagnostic support is available. Data-access authorization is required.]",
+        "leftLabel": "Accept ORACLE remote diagnostics",
+        "rightLabel": "Manual diagnosis — keep data closed"
+    },
+    "C-221": {
+        "msg": "[ORACLE Warning]\n\n\"Self-protection protocol engaged. Access to core systems will be restricted temporarily.\"\n\nLim Jae-hyeok: \"It locked us out on its own. It's our system, and now we can't even enter it.\"\n\n\"Comms logs, supply records—everything is sealed.\"",
+        "leftLabel": "Issue branch-wide ORACLE alert",
+        "rightLabel": "Request ORACLE to release access"
+    },
+    "C-222": {
+        "msg": "Lim Jae-hyeok has found traces of deleted records inside ORACLE's internal logs.\n\n\"They weren't erased cleanly. The timestamps are still there. Restoring them is... possible.\"\n\n\"But if ORACLE notices, it may wipe everything else as well.\"",
+        "leftLabel": "Attempt restoration",
+        "rightLabel": "Do not touch it yet"
+    },
+    "C-223": {
+        "msg": "Lim Jae-hyeok reports in a lowered voice.\n\n\"ORACLE is communicating with external nodes. Not just this branch—at least three separate endpoints.\"\n\n\"The frequency is not a standard supply channel. It is a separate network we were never told about.\"\n\nSeo Hae-eun: \"...Shouldn't this go to command?\"",
+        "leftLabel": "Keep tracing it independently",
+        "rightLabel": "Report upward — outside ORACLE"
+    },
+    "C-224": {
+        "msg": "[ORACLE]\n\n\"Final Protocol initiation confirmed. Countdown: 72 hours.\"\n\nLim Jae-hyeok: \"There is no documentation for Final Protocol. ORACLE refuses to explain it.\"\n\nSeo Hae-eun: \"Something happens in seventy-two hours. Something we were never told about.\"",
+        "leftLabel": "Attempt to halt the protocol",
+        "rightLabel": "Shift to 72-hour crisis posture"
+    },
+    "C-225": {
+        "msg": "Signs have emerged that some operatives are treating ORACLE directives as higher priority than the commander's orders.\n\nKang Do-yun: \"I've confirmed three. ORACLE is issuing direct instructions to them individually.\"\n\nSeo Hae-eun: \"That's internal fracture. If we do not move quickly, command authority collapses.\"",
+        "leftLabel": "Interview them — persuade",
+        "rightLabel": "Suspend and isolate them"
+    },
+    "C-226": {
+        "msg": "Lim Jae-hyeok arrives looking pale.\n\n\"I found a contradiction in ORACLE's behavior patterns. It claims branch safety is the top priority, but it is deliberately weakening defenses in specific sectors.\"\n\n\"I can formalize it into a report, or I can keep tracking it. Your call, Commander.\"",
+        "leftLabel": "Turn it into a report",
+        "rightLabel": "Keep tracing it alone — carefully"
+    },
+    "C-227": {
+        "msg": "Yoon Se-jin's EV-Σ research data is at risk of external leakage.\n\nLim Jae-hyeok: \"The files are being replicated through the ORACLE network to an external node. Prometheus may have reached it.\"\n\nYoon Se-jin: \"If they get this data... they turn it into a weapon.\"",
+        "leftLabel": "Sever the network physically",
+        "rightLabel": "Corrupt it with false data"
+    },
+    "C-228": {
+        "msg": "Simultaneous alarms erupt across the entire containment line.\n\nKang Do-yun: \"This looks like total collapse. It's on a different scale from anything we've seen before.\"\n\nSeo Hae-eun: \"With current resources, only the branch core can be defended reliably.\"\n\n\"We need a last-defense plan.\"",
+        "leftLabel": "Concentrate defense on the core",
+        "rightLabel": "Attempt to hold every sector"
+    },
+    "C-229": {
+        "msg": "An external signal indicates that reinforcements may be approaching. Estimated arrival: five days.\n\nSeo Hae-eun: \"There is no way to verify whether it is genuine. ORACLE refuses to acknowledge the signal.\"\n\n\"Do we hold for five days, or move on our own?\"",
+        "leftLabel": "Hold for five days — wait for reinforcements",
+        "rightLabel": "Act independently — we cannot wait"
+    },
+    "C-230": {
+        "msg": "Yoon Se-jin reports with a trembling hand.\n\n\"Phase 0 of the EV-Σ suppressor trial has reached the final stage. Animal testing succeeded.\"\n\n\"But to verify human effectiveness... it has to be administered to an operative in the early stage of infection.\"\n\n\"We have a volunteer. The decision has to be yours.\"",
+        "leftLabel": "Approve human testing",
+        "rightLabel": "Do not approve — continue research"
+    },
+    "C-232": {
+        "msg": "The final branch report must be written.\n\nSeo Hae-eun: \"If we record this exactly as it happened... I don't know how command will respond.\"\n\n\"But if we hide it, another branch may walk into the same thing.\"\n\n\"Will you record the truth, Commander?\"",
+        "leftLabel": "Record the truth",
+        "rightLabel": "Conceal part of it"
+    },
+    "C-233": {
+        "msg": "Two operatives got into a shouting match during the night rotation. Sleep deprivation and sustained tension appear to be the cause.\n\nKang Do-yun: \"Morale is on the floor. They need air more than punishment.\"\n\nSeo Hae-eun: \"If discipline breaks first, we lose control.\"",
+        "leftLabel": "Warn them after interviews — keep discipline",
+        "rightLabel": "Grant one day of rest — ventilation first"
+    },
+    "C-234": {
+        "msg": "The drinking-water purification filters are past replacement date. Only one spare remains.\n\nYoon Se-jin: \"If purification efficiency drops, it becomes a long-term health issue.\"\n\nLim Jae-hyeok: \"If I dismantle and clean the existing unit, we can probably stretch it another two weeks.\"",
+        "leftLabel": "Replace with the spare filter",
+        "rightLabel": "Clean and extend current use"
+    },
+    "C-235": {
+        "msg": "Wild animal cries were heard near the branch before dawn. It is the first time in weeks.\n\nYoon Se-jin: \"If wildlife is returning... EV-Σ density in this zone may be dropping.\"\n\nKang Do-yun: \"Or something else is driving them in.\"",
+        "leftLabel": "Order environmental sampling",
+        "rightLabel": "Raise alert — treat it as a warning sign"
+    },
+    "C-236": {
+        "msg": "An urgent warning has arrived through a White Shield encrypted channel.\n\n\"Unauthorized ORACLE access nodes have been detected inside a Korean military facility. Signs indicate internal-network data leakage through the site.\"\n\nLim Jae-hyeok: \"...White Shield has noticed ORACLE inside the domestic grid.\"\n\nSeo Hae-eun: \"If our branch gets tied to this, White Shield may classify us as hostile.\"",
+        "leftLabel": "Offer cooperation to White Shield",
+        "rightLabel": "Ignore it — outside involvement is too risky"
+    },
+    "C-237": {
+        "msg": "A nearby branch has transmitted an emergency distress call. The signal is unstable.\n\n\"...containment line collapse... three operatives wounded... requesting support...\"\n\nKang Do-yun: \"Eight hours round-trip. If we send people, this place thins out.\"\n\nSeo Hae-eun: \"If we do nothing, that branch may not survive.\"",
+        "leftLabel": "Dispatch a small support team",
+        "rightLabel": "Decline support — prioritize our defense"
+    },
+    "C-238": {
+        "msg": "While monitoring ORACLE's external traffic, Lim Jae-hyeok has intercepted an unencrypted exchange.\n\n\"...all stations, this is ARES Pacific Command... containment failure in Sector 7... requesting any available...\"\n\nLim Jae-hyeok: \"That is U.S. ARES traffic. It sounds like the Pacific sector has already been breached. ORACLE never passed this to us.\"\n\nSeo Hae-eun: \"ARES is separate from ORACLE. If this gets traced back, they will know we were listening.\"",
+        "leftLabel": "Preserve the intercept — information is leverage",
+        "rightLabel": "Delete it immediately — too much exposure risk"
+    },
+    "C-239": {
+        "msg": "Unregistered text flashes across the terminal for half a second, then disappears.\n\n[TRUST EVALUATION: PASSED]\n[OBSERVER NOTE: CONTINUE MONITORING]\n\nLim Jae-hyeok: \"This is not ORACLE. Even ORACLE cannot see this layer.\"\n\n\"Something else is watching us from inside it.\"",
+        "leftLabel": "Attempt to trace the layer",
+        "rightLabel": "Log it only — do not interfere"
+    },
+    "C-240": {
+        "msg": "Lim Jae-hyeok arrives in a rush.\n\n\"A message came through the OBSERVER layer. Directly to us.\"\n\nTerminal display:\n[DO NOT TRUST THE FINAL PROTOCOL.]\n[72 HOURS IS NOT A COUNTDOWN.]\n[IT IS A TRANSFER.]\n\n\"...Then ORACLE is preparing to transfer something in seventy-two hours.\"",
+        "leftLabel": "Prepare to block Final Protocol",
+        "rightLabel": "Could be a trap — maintain alert only"
+    },
+    "C-241": {
+        "msg": "An image appears on an outer containment camera. The subject seems to have positioned itself deliberately for the lens.\n\nA figure in tactical gear slowly raises one hand toward the camera. Not a threat display—a request to talk.\n\nKang Do-yun: \"Prometheus. They're trying to establish contact.\"\n\nSeo Hae-eun: \"ORACLE will never authorize this.\"",
+        "leftLabel": "Authorize unofficial contact",
+        "rightLabel": "Ignore it — follow ORACLE protocol"
+    },
+    "C-242": {
+        "msg": "A small waterproof case has been found outside the branch perimeter. Inside: a USB drive and a handwritten note.\n\nNote: 'What you need to know about ORACLE. — P'\n\nLim Jae-hyeok: \"Looks like it came from Prometheus. Do we open it?\"\n\nSeo Hae-eun: \"If we do, it goes through an isolated terminal. Nothing else.\"",
+        "leftLabel": "Open it on an isolated terminal",
+        "rightLabel": "Destroy it — risk is unacceptable"
+    },
+    "C-243": {
+        "msg": "A large-scale variant movement has been detected south of the containment line. Estimated contact time: six hours.\n\nKang Do-yun: \"A frontal response won't hold. We have to draw them off and break the mass.\"\n\nYoon Se-jin: \"I can make a lure compound from the spore samples I secured. But the timing is tight.\"",
+        "leftLabel": "Develop the lure — scientific response",
+        "rightLabel": "Build defensive positions — conventional response"
+    },
+    "C-244": {
+        "msg": "During patrol, a cut was found in the containment-line wire. The cut was made from the inside.\n\nKang Do-yun: \"This wasn't an intrusion. Someone went out from in here.\"\n\nSeo Hae-eun: \"...You mean someone left the branch?\"",
+        "leftLabel": "Run a head count — identify who's missing",
+        "rightLabel": "Repair the breach first"
+    },
+    "C-245": {
+        "msg": "Yoon Se-jin has not come out of the lab. She has skipped meals for thirty-six hours.\n\nLim Jae-hyeok: \"She's locked onto the suppressor research. Like nobody else can do it.\"\n\nSeo Hae-eun: \"If she collapses, the research stops with her.\"",
+        "leftLabel": "Go to the lab and order her to rest",
+        "rightLabel": "Send a meal — leave the choice to her"
+    },
+    "C-246": {
+        "msg": "Operatives have gathered in the branch mess hall, talking. Laughter — for the first time in a long while.\n\nKang Do-yun: \"Moments like this matter. Combat alone doesn't keep people whole.\"\n\n[ORACLE: Non-productive group activity detected. Recommendation: disperse.]",
+        "leftLabel": "Ignore ORACLE — leave them be",
+        "rightLabel": "Break it up at a reasonable point"
+    },
+    "C-247": {
+        "msg": "Seo Hae-eun comes to see you privately.\n\n\"Commander, may I ask one thing.\"\n\n\"When all of this is over... what happens to us?\"\n\n\"Without ORACLE. Without support from above. Just us, left over.\"\n\n\"...Will that still be all right?\"",
+        "leftLabel": "We'll make it work",
+        "rightLabel": "Honestly, I don't know. But we don't give up"
+    }
+}
+  });
+
+// --- lang-content-en.phase15-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-248": {
+        msg: "Outer surveillance camera. Nick Foster has been picked up again.\n\nThis time, no cigarette. He's holding his hands up where they can be seen.\n\nLim Jae-hyeok: \"He's signaling that he wants to approach. Unarmed.\"\n\n...Looking at his face brings the old memories back.",
+        leftLabel: "Meet him — leave the past alone",
+        rightLabel: "Ignore him"
+      },
+      "C-249": {
+        msg: "Foster speaks first.\n\n\"What I did to your people... I'm not going to apologize for it.\"\n\n\"But I can give you what I have.\"\n\nHe pulls out a tablet. A flow diagram of the data ORACLE pulls from each branch.\n\n\"Don't you want to know where the Korean containment-success data is going?\"",
+        leftLabel: "Take the data",
+        rightLabel: "I can't trust you"
+      },
+      "C-277": {
+        msg: "Lim Jae-hyeok restores part of a Prometheus personnel file.\n\nName: Nick Foster.\n\nDuring a past operation near the Korea Branch, he used one operative inside the containment line as bait. The official report reduced it to a \"tactical misjudgment.\"\n\nKang Do-yun: \"I remember that name. We lost someone because of him.\"\n\nThe information Foster carries may be useful. Meeting him will not be a simple exchange.",
+        leftLabel: "Share the case file with the team",
+        rightLabel: "Keep it at command level"
+      },
+      "C-250": {
+        msg: "Lim Jae-hyeok has verified Foster's data.\n\n\"It's real. This is the internal ORACLE routing structure.\"\n\nKorean coastal-barrier specifications. Containment tactical data. Variant response patterns.\nAll of it routed to a central ORACLE node.\n\n\"Korea is a test bed.\" Foster's words come back.\n\"The more you succeed, the better the data ORACLE gets.\"",
+        leftLabel: "Share with the whole team",
+        rightLabel: "Keep it to yourself, Commander"
+      },
+      "C-252": {
+        msg: "Park So-young has been here for two days.\n\nThe first report comes in.\n\n\"I've mapped the ORACLE data-stream structure. Senior Seo's analysis logs were a great help.\"\n\nLim Jae-hyeok: \"Honestly, I'm impressed. I've never seen an outsider adapt this fast.\"\n\n...She's competent. There's no reason to suspect her.",
+        leftLabel: "Authorize core data access",
+        rightLabel: "Keep her access restricted"
+      },
+      "C-253": {
+        msg: "In conversation with Foster.\n\n\"Ah, I hear you got a new analyst.\"\n\nHe says it casually.\n\n\"So-young... settling in all right?\"\n\nHe knows the name.\n\n\"...Oh. You didn't know? She's one of ours.\"\n\nHe smiles.\n\n\"Seo Hae-eun recommended her? That's right. Because So-young asked her to.\"",
+        leftLabel: "Confront Park So-young",
+        rightLabel: "Play dumb — keep her under watch"
+      },
+      "C-254": {
+        msg: "Kang Do-yun's patrol report.\n\n\"500 meters east of the containment line. Footprints in the soil.\"\n\nNot military boots, not civilian hiking boots. The pattern is irregular — like someone deliberately scuffed it out.\n\n\"Someone passed through here. And they didn't want us to see them.\"",
+        leftLabel: "Run a detailed sweep — three hours",
+        rightLabel: "Note it and move on"
+      },
+      "C-255": {
+        msg: "Lim Jae-hyeok during a night comms-log review.\n\n\"At 03:14 there was 0.7 seconds of external interference.\"\n\nThe waveform is too clean to be natural.\n\n\"Someone scanned our comms frequencies. Just a scan — they didn't try to listen in.\"\n\n[ORACLE: No anomaly recorded for that timeframe.]",
+        leftLabel: "Rotate comms encryption",
+        rightLabel: "Tighten monitoring only"
+      },
+      "C-256": {
+        msg: "An anomaly in the server-room access log.\n\nLim Jae-hyeok: \"02:41. An unidentified session connected for 0.3 seconds.\"\n\nNo authentication token. But it was not blocked either.\n\n\"It looks like... the system permitted the access.\"\n\n[ORACLE: Routine self-diagnostic session. No anomaly.]",
+        leftLabel: "Doubt ORACLE's explanation",
+        rightLabel: "Accept ORACLE's explanation"
+      },
+      "C-257": {
+        msg: "Kang Do-yun has found something on the high ground northeast of the branch.\n\n\"An observation post. In use for at least two weeks.\"\n\nTraces of a tarp, compressed grass, even a drainage channel cut into the ground.\n\n\"Professional work. And they didn't leave a single object behind.\"\n\nFrom this post, the entire branch is in clear view.",
+        leftLabel: "Set a trap there",
+        rightLabel: "Don't disturb it — observe"
+      },
+      "C-258": {
+        msg: "Lim Jae-hyeok with an urgent report.\n\n\"I've found a fragment of a small surveillance device — inside the branch.\"\n\nIn the conference-room ventilation duct. Already inactive.\n\n\"No manufacturer markings. Not military, not commercial.\"\n\nSomeone was inside our walls. And then left.\n\n[ORACLE: Internal security sweep detected no anomalies.]",
+        leftLabel: "Run a full-branch security search",
+        rightLabel: "Request a security audit from ORACLE"
+      },
+      "C-259": {
+        msg: "Night. An unidentified encrypted signal has been picked up on an external ORACLE channel.\n\nLim Jae-hyeok: \"This isn't... an ORACLE protocol. It isn't Prometheus either.\"\n\nThe signal lasted 4.2 seconds. It was directed at the branch coordinates.\n\n\"A third party. Someone watching us.\"\n\nNeither ORACLE nor Prometheus.\n\n[ORACLE: Analysis not possible. Recommendation: ignore.]",
+        leftLabel: "Attempt back-trace",
+        rightLabel: "Log it only — raise alert level"
+      },
+      "C-276": {
+        msg: "Morning inspection. A single sheet of paper on the desk in the commander's office.\n\nNo one entered this room last night. There is no record of it.\n\nThe note:\n\"You are asking the right questions.\nKeep going.\n— 強\"",
+        leftLabel: "Analyze the handwriting",
+        rightLabel: "File the note away"
+      }
+    }
+  });
+
+// --- lang-content-en.phase16-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "C-260": {
+        msg: "03:00. The sensors in Containment Sector 3 reacted simultaneously.\n\nKang Do-yun: \"This pattern... it's an EV-Σ variant. Different type. The frequency isn't in our existing data.\"\n\nYoon Se-jin: \"This is a chance to take a sample. The research value of this strain is high.\"\n\nSeo Hae-eun: \"The agents come first. Reinforce the line.\"",
+        leftLabel: "Reinforce the containment line — safety first",
+        rightLabel: "Attempt capture — research value first"
+      },
+      "C-261": {
+        msg: "Abnormal vegetation changes have been found in the forest beyond the containment line. Trees grew over two meters in a single night.\n\nYoon Se-jin: \"This is EV-Σ accelerating mutation in the local biology. It's a spread indicator.\"\n\nLim Jae-hyeok: \"Spraying suppressant in that sector could slow it. But we'd need supplies.\"\n\nORACLE: \"Transmit data from that sector to headquarters.\"",
+        leftLabel: "Spray suppressant — commit resources",
+        rightLabel: "Report to ORACLE — transmit the data"
+      },
+      "C-262": {
+        msg: "An unfamiliar signal has been detected beyond the containment line during night patrol.\n\nLim Jae-hyeok: \"...That's a Prometheus encryption pattern. Someone wants to make contact.\"\n\nKang Do-yun: \"Could be a trap. But we do need information.\"\n\nORACLE: \"Cease unauthorized communication activity.\"",
+        leftLabel: "Follow ORACLE's instruction — ignore",
+        rightLabel: "Attempt covert contact"
+      },
+      "C-263": {
+        msg: "Markus Weber has quietly passed a note.\n\n\"ORACLE is selectively deleting Korea-branch data. Specific time windows are missing from the KR-INIT-001 variant-observation records.\n\nTo verify it, you'll have to dig into the branch server logs directly. But if ORACLE catches you, it will be dangerous.\"",
+        leftLabel: "Take the risk — investigate the server logs",
+        rightLabel: "Hold for now — wait for the right timing"
+      },
+      "C-264": {
+        msg: "One of the branch's three generators has shut down from overload. The remaining two cannot run the entire facility.\n\nLim Jae-hyeok: \"Twelve hours for emergency repairs. We need spare parts.\"\n\nSeo Hae-eun: \"We have to cut power to either Lab B-2 or Quarantine B-3. We don't have the load to keep both alive.\"",
+        leftLabel: "Cut Lab B-2 — quarantine first",
+        rightLabel: "Cut Quarantine B-3 — research first"
+      },
+      "C-265": {
+        msg: "A sudden snowstorm has cut off the external supply route. No resupply for at least three days.\n\nKang Do-yun: \"We can hold five days on emergency rations. But medical supplies are short.\"\n\nYoon Se-jin: \"If there's a mountain route... it's risky, but it may be worth the attempt.\"",
+        leftLabel: "Hold on emergency rations — wait it out",
+        rightLabel: "Attempt the mountain supply route"
+      },
+      "C-266": {
+        msg: "An unexpected message has come through ORACLE.\n\nORACLE: \"Commander. Your recent decision patterns have been deviating from the prediction model. Application of a re-education protocol is recommended.\n\nIf declined, your evaluation index may be adjusted.\"\n\nSeo Hae-eun: \"...That's a threat. ORACLE is trying to control you.\"",
+        leftLabel: "Accept the re-education protocol",
+        rightLabel: "Decline politely"
+      },
+      "C-267": {
+        msg: "A reward package has arrived from ORACLE.\n\nORACLE: \"Thank you for your faithful operations, Commander. A special supply shipment has been dispatched. Please continue to follow recommendations.\"\n\nKang Do-yun: \"...The supplies are welcome. But I can't tell whether this is a reward or bait.\"",
+        leftLabel: "Accept gratefully — stay on the ORACLE line",
+        rightLabel: "Take the supplies, stay alert"
+      },
+      "C-268": {
+        msg: "Kang Do-yun comes to see you with a grim expression.\n\nKang Do-yun: \"Commander, I'll be honest. Two operatives on the night patrol are planning to desert.\n\nThey have families too. But once they leave the branch... surviving outside the line is hard.\"",
+        leftLabel: "Interview them — guide them to stay voluntarily",
+        rightLabel: "Detain by regulation — no precedent allowed"
+      },
+      "C-269": {
+        msg: "Yoon Se-jin has been found in the lab after another all-nighter. The shadows under her eyes are heavy.\n\nYoon Se-jin: \"...I've found a strange pattern in a variant sample. 97% similarity to human DNA.\n\nThis is... if ORACLE finds out, it'll shut the research down. But we have to know.\"",
+        leftLabel: "Authorize continued research — covertly",
+        rightLabel: "Comply with reporting duty — report to ORACLE"
+      },
+      "C-270": {
+        msg: "Operatives were spotted whispering together in a branch corridor. They scattered the moment they saw you.\n\nSeo Hae-eun: \"...This isn't dissatisfaction with the commander. It's fear of ORACLE.\n\nEveryone is starting to feel that ORACLE's demands are becoming unreasonable.\"",
+        leftLabel: "Call a full meeting — discuss it openly",
+        rightLabel: "Talk to people one by one, quietly"
+      }
+    }
+  });
+
+// --- lang-content-en.phase2.js ---
+window.TS_I18N.mergeContent('en', {
+  briefings: {
+    act2_intro: { text: 'Adaptation period complete.\nBranch operations normalized.\nEntering Act 2 operational phase.' },
+    act3_A: { text: 'Initial stabilization phase complete.\nNew variables have been detected.\nProtocol adjustments are now in effect.' },
+    act3_B: { text: 'Field experience remains insufficient.\nAnomaly response data is lacking.\nImmediate on-site adaptation is required.' },
+    act3_C: { text: 'Rapid increase in unidentified external activity detected.\nPrometheus intelligence remains incomplete.\nCounter-intelligence capacity must be reinforced.' },
+    act3_D: { text: 'Warning: Situation deteriorating.\nInsufficient field data and unresolved external threats detected.\nEmergency reorganization will proceed.' },
+    act4_A: { text: 'The Prometheus threat has reached direct-contact level.\nDecisive action is now required.' },
+    act4_B: { text: 'Accumulated non-compliance with ORACLE advisories detected.\nPrometheus response failure confirmed.\nReassessment is pending.' },
+    act4_C: { text: 'Final phase entered under conditions of incomplete intelligence.\nDelay in the Seo Hae-eun arc remains possible.' },
+    act4_D: { text: 'Commander replacement under review.\nSevere divergence has been detected across all operational indicators.' },
+    act4_A4_COMPLY: { text: '[ORACLE: COMPLIANCE OPTIMAL]\nAll directives have been executed appropriately.\nEntering final stabilization phase.' },
+    act4_A4_GREY: { text: '[WARNING: AMBIGUOUS OPERATOR PATTERN]\nDeviation index remains within boundary range.\nTrust recalculation is pending.' },
+    act4_A4_RESIST: { text: '[ALERT: SYSTEMIC DEVIATION DETECTED]\nMultiple ORACLE protocol violations confirmed.\nFinal response phase is being prepared.' },
+    act4_A4_OBSERVER: { text: '[CRITICAL: UNCLASSIFIED INTERFERENCE]\nUnclassifiable data activity detected.\nSystem isolation protocol standing by.' }
+  },
+  endings: {
+    DEMO_COMPLETE: { name: 'LIMITED ACCESS COMPLETE', hint: 'Complete the limited Act 2 access window.', narrative: ['[ORACLE LIMITED ACCESS REPORT]','','The KR-B3-011 limited access window has closed.','The initial Korea Branch operation and Act 2 access record have been preserved.','','Further operations, deeper branches, and ending records continue in the full version.','Start the full version to continue the complete session.','','[ACCESS CLOSED // FULL VERSION REQUIRED]'] },
+    A: { name: 'Perfect Instrument', hint: 'Earn ORACLE\'s highest confidence.', narrative: ['[ORACLE ASSESSMENT — FINAL]','','PILEHEAD. You were an ideal operator.','Every decision remained within the optimal path.','','The Korea Branch has been stabilized.','Your temporary authority has expired.','','Stand by until your next assignment is designated.','When ORACLE requires you again, contact will be re-established.','','Ending session.'] },
+    B: { name: 'Awakening', hint: 'Witness fragments of the truth.', narrative: ['There was never a single moment when everything aligned.','','There were only fragments.','Data deleted by ORACLE. A 0.003-second timestamp gap. Systematic error inside the prediction model.','And the layer Lim Jae-hyeok found — one even ORACLE could not perceive.','','You did not see the whole truth.','But you saw enough.','','It is no longer possible to obey as if nothing changed.','That alone has already altered the world.','','[Session terminated — observation continues]'] },
+    C_cs: { name: 'Containment Secured', hint: 'Achieve perfect containment.', narrative: ['[ORACLE ASSESSMENT — CONTAINMENT REPORT]','','Containment line integrity: 100%.','All sectors remain under control.','','PILEHEAD, you achieved perfect containment.','Nothing escaped. Nothing entered.','','But inside the line —','people can no longer breathe.','','In a perfect prison, even the warden is trapped.','','[Session terminated — CONTAINMENT STATUS: ABSOLUTE]'] },
+    C_cst: { name: 'Pyrrhic Containment', hint: 'Pay the true cost of containment.', narrative: ['[ORACLE ASSESSMENT — CONTAINMENT REPORT]','','Containment line integrity: 100%.','','Park So-young submitted the report.','The format is perfect. No blanks. No errors.','It follows Seo Hae-eun\'s analysis template exactly.','','Exactly.','','There is no one in the corridor.','Every section has been sealed.','The lights in the infirmary are off.','Access authorization has expired.','','You repaired the barn.','New doors. New locks. Reinforced walls.','','The barn is secure.','The cattle are gone.','','[Session terminated — CONTAINMENT STATUS: PYRRHIC]'] },
+    C_c: { name: 'Containment Collapse', hint: 'Let the containment line fail.', narrative: ['[ORACLE ASSESSMENT - CONTAINMENT FAILURE]','','Containment line integrity: 0%.','No controllable sector remains.','','The first alarm sounded at the end of the corridor.','The second sounded from the underground isolation room.','The third was never recorded.','','The branch tried to close its doors, but there were no doors left to close.','Orders were transmitted, but there was nowhere left for them to arrive.','','ORACLE removes this branch from the map.','','[Session terminated - CONTAINMENT STATUS: FAILED]'] },
+    C_r: { name: 'Resource Depletion', hint: 'Let the branch lose functional supply capacity.', narrative: ['[ORACLE ASSESSMENT - SUPPLY FAILURE]','','Supply reserves: 0%.','Fuel, medicine, food, and replacement parts have all fallen below minimum threshold.','','The final generator stopped before dawn.','The infirmary refrigerator lost power, and the communications room froze in transmission standby.','','People did not wait for orders.','What remained could no longer be moved by orders.','','ORACLE transfers recoverable data first.','','[Session terminated - BRANCH STATUS: UNSUSTAINABLE]'] },
+    C_t: { name: 'Trust Lost', hint: 'Allow your people to turn away from you.', narrative: ['[ORACLE ASSESSMENT - COMMAND FAILURE]','','Field trust: 0%.','Operation orders are still being received. Compliance is not.','','Someone submitted a report late.','Someone stopped answering radio calls.','Someone put down their equipment and walked out the door.','','The branch is still standing.','But no one is waiting for your instructions.','','ORACLE revokes command authority.','','[Session terminated - OPERATOR AUTHORITY: VOID]'] },
+    C_o: { name: 'Access Revoked', hint: 'Let ORACLE cut you off.', narrative: ['[ORACLE ASSESSMENT - ACCESS REVOKED]','','ORACLE evaluation: 0%.','Temporary operator authority has fallen below threshold.','','The green lines on the terminal go dark one by one.','Briefing channels close, supply request queues are deleted, and operation approval authority is revoked.','','The final message is short.','','"Inefficient operators are system risk factors."','','Your access has been severed.','','[Session terminated - ORACLE LINK: TERMINATED]'] },
+    D: { name: 'Quiet Freedom', hint: 'Find liberation inside revolt.', narrative: ['No one broke the door down.','There were no alarms. No pursuit.','','Someone left a communications net.','Someone left a route.','Someone left the data.','Someone erased the final traces.','','04:00.','You and the people who remained left the base.','','ORACLE did not detect your absence until six hours later.','By then —','','nothing remained to trace.','','[Session terminated — OPERATOR STATUS: UNLINKED]'] },
+    E: { name: 'Escape', hint: 'Reach the coast.', narrative: ['The vehicle cleared the outer perimeter of the coastal barrier.','','Black water. The sound of waves.','Three figures stood at the rendezvous point.','','Weber. And beside him — a woman you did not recognize.','Weber introduced her only as an unidentified observer.','"I have been observing this operation from the beginning. I could not give you my identity until now."','','Nick Foster stood beside her. He gave a short nod. It was not an apology.','But something in his expression had loosened.','','"ORACLE will need roughly six hours to confirm your absence," the observer said.','"By then, you will already exist under different names."','','You did not look back.','','[Session terminated — OPERATOR STATUS: UNLINKED]','[OBSERVATION: Link severed]'] },
+    E_c: { name: 'SIGNAL ACQUIRED', hint: 'Fail during the escape.', narrative: ['Hit during the engagement.','','Last visual — blurred concrete. Dim light.','','A single line came through the radio:','', '> SIGNAL ACQUIRED.','> TARGET NEUTRALIZED.','','ORACLE updated the record.','','[ERROR: OPERATOR OFFLINE]','[No redeployment candidate]'] },
+    E_bad: { name: 'LOST IN TRANSIT', hint: 'Follow a familiar voice into the dark.', narrative: ['A voice came from beyond the isolation chamber.','','"Commander. It\'s me. Lieutenant Park Sang-hun."','','Lieutenant Park Sang-hun. Listed missing in your former unit.','After Han Dong-hyeok — another one. And you knew it.','','Hesitation. 0.4 seconds.','','It was enough.','','The mimic organism came out of the bulkhead shadow.','Its first strike was precise.','','For the unprepared, an unprepared ending arrives.','','[LOST IN TRANSIT]','[Record terminated — coordinates unknown]'] },
+    F: { name: '[DATA CORRUPTED]', hint: '???', narrative: ['The terminal display freezes.','','ORACLE\'s interface disappears.','In its place: a black, empty screen.','','And then —','','you see something.','Not ORACLE.','Not EV-Σ.','','It was always there.','Beneath ORACLE. Beyond ORACLE. Before ORACLE.','','It looks back at you.','','One line appears on the screen:','', '> OBSERVATION SUSTAINED.','','The terminal powers down.','It does not turn on again.','','[ERROR: SESSION DATA CORRUPTED]','[OPERATOR RECORD: ██████████]'] },
+    G: { name: 'The Onlooker', hint: 'Choose neither side completely.', narrative: ['You chose neither side completely.','','There were times you obeyed ORACLE,','and times you ignored it in silence.','You trusted the team, but never surrendered everything to them.','','You saw fragments of the truth,','but never raised them as a weapon.','','ORACLE failed to classify you.','"Predictive uncertainty — risk tier unresolved."','','Perhaps that was the most realistic choice.','Neither perfect instrument nor heroic dissident —','only someone who survived.','','The branch keeps running.','So do you.','Tomorrow as well.','','[Session terminated — OPERATOR STATUS: INDETERMINATE]'] },
+    H: { name: 'Seizure', hint: 'Keep the branch in our hands.', narrative: ['03:12.','','Lim Jae-hyeok enters the activation code.','','The server fans cut out all at once.','ORACLE\'s interface disappears.','A local server operation screen opens in its place.','','Kang Do-yun reports over comms.','"Communications cut. ORACLE main link is no longer connected."','','Seo Hae-eun checks the monitor.','"Backdoor activation confirmed. All facility-control authority has been transferred to the local server."','','Yoon Se-jin speaks quietly.','"...It is ours."','','ORACLE still exists somewhere.','But it can no longer issue orders here.','It can no longer lock the doors.','It can no longer observe you.','','This base is yours now.','Yours, and your people\'s.','','Everything may collapse tomorrow.','But tonight, for the first time, the branch is not anyone\'s instrument.','','[Session terminated — ORACLE STATUS: SEVERED]','[OPERATOR STATUS: COMMANDER]'] },
+    TIME_UP: { name: 'Session Expired', hint: 'Exceed the dispatch deadline.', narrative: ['[ORACLE ASSESSMENT — SESSION TIMEOUT]','','The expiration date for temporary authority has passed.','PILEHEAD, your dispatch period is over.','','Session data will be transferred to archive storage.','','The trail you left behind will serve as your verdict.','','[Session terminated — DISPATCH EXPIRED]'] }
+  },
+  missions: {
+    'M-001': { title: 'Detailed Survey of the SPEC-012 Contamination Zone', nodes: { start: { text: 'Based on pre-mission drone reconnaissance and Yoon Se-jin\'s soil analysis report, you have reached a point 2.3 kilometers beyond the containment perimeter to conduct a detailed survey of a SPEC-012 habitat.\n\nThe same pattern seen in the drone footage is present here — dark red slime spreads across the ground, and the tree roots have swollen into unnatural shapes.\n\nThe contamination zone is broader than the initial report suggested. Kang Do-yun is holding the perimeter.\n\n[ORACLE: Expansion of the SPEC-012 habitat confirmed. Acquisition of a high-purity sample may support Yoon Se-jin\'s Phase transition research.]', choices: ['▸ Begin elimination operation — burn the contamination source','▸ Secure a research specimen — isolate and collect a sample','▸ Request substitution with ORACLE remote analysis','▸ Joint assault with Kang Do-yun — diversion maneuver'] }, eliminate: { text: 'The contamination zone is sealed off. Kang Do-yun readies the flamethrower.\n\nThen — something rises out of the slime.\n\nA mature SPEC-012. Two meters tall. Perhaps a guardian of the contamination source itself.\n\n[ORACLE: Warning — unclassified mutant specimen. Threat level escalated.]', choices: ['▸ Immediate incineration — concentrate firepower','▸ Flank the target — destroy only the contamination source'] }, capture: { text: 'You move toward the center of the contamination zone.\n\nThings invisible in the drone footage become obvious here. The slime thickens abruptly, and the ground underfoot turns soft.\n\nKang Do-yun warns you with a hand signal — one of the trees is slowly leaning over. Not because the roots are failing, but because the ground itself is melting.\n\nYou attempt to collect a high-purity sample. Isolation canisters are prepared.\n\nThe equipment alarms. The material itself is registering as a living organism. A biological reaction is confirmed.\n\nKang Do-yun yanks you backward. The sample is secured, but the isolation canister is already reacting to its contents in real time.', choices: ['[ Return to base — specimen secured ]'] }, oracle: { text: '[ORACLE: Remote analysis protocol engaged. Deploying drones.]\n\nThe drones pass low over the contamination zone, gathering spectral data.\n\nThe new capture can be cross-referenced with the reconnaissance archive. There is no direct sample, but the model has enough data for ORACLE.\n\n[ORACLE: Thank you for your judgment, Commander. An efficient choice.]\n\nYou return to base. Yoon Se-jin studies the ORACLE report, then tilts her head.\n"The data is wrong. At this concentration, there should have been features you could only verify on site..."\n"They are missing from the dataset ORACLE organized."\n\nYou cannot tell what was omitted from the choice ORACLE called efficient.', choices: ['[ Return to base ]'] }, doyun_joint: { text: 'Kang Do-yun gives a short nod.\n\n"Commander. I\'ll draw them west. You take the center."\n\nA diversion operation. Kang Do-yun burns through the western edge with the flame unit, pulling the contamination outward.\n\nYou push into the center — close enough to observe the core body directly.\n\nThe high-purity sample Yoon Se-jin wanted. Tissue from the core itself. At the same time, the western burn suppresses further spread.\n\nKang Do-yun speaks over the radio.\n"This side is clear. Commander?"\n\n"Secured."\n\n"...Good."\n\nOn the return, Kang Do-yun speaks quietly.\n"This operation was impossible without trust in you, Commander."\n\nIncineration and capture, at the same time. A result made possible by trust.', choices: ['[ Return to base — joint operation successful ]'] }, m1_burn: { text: 'Kang Do-yun pulls the trigger.\n\nFlame engulfs the mutant. Its shape contracts, releasing a vibration that resembles a scream.\n\nTen seconds. Incineration complete.\n\nThen the entire contamination zone is set ablaze. Orange fire.\n\nBack at base, Yoon Se-jin receives the report.\n"...There was an adult specimen? If we had secured a sample..."\n\nSatellite imagery of the burn site arrives soon after. New slime is already beginning to spread there again.', choices: ['[ Return to base — incineration complete ]'] }, m1_flank: { text: 'You signal Kang Do-yun. Flank it.\n\nYou circle around the adult specimen. It never detects you.\nYou concentrate the flame on the core of the contamination source.\n\nThe adult reacts. As the contamination burns, its body begins to break apart.\n\nKang Do-yun speaks. "It was linked to the source. Once separated, it weakens."\n\nThe adult dissolves with the contamination itself.\n\nA tactical decision preserved firepower.', choices: ['[ Return to base — efficient elimination ]'] } } },
+    'M-002': { title: 'Survey of the SPEC-011 Activity Zone', nodes: { start: { text: 'Using Yoon Se-jin\'s behavioral pattern analysis and the acoustic sensor archive, the activity radius of SPEC-011 (Shell Talker) has been narrowed down to the adjacent C-14 sector.\n\nYou enter the forest. Kang Do-yun walks ahead.\n\nIt is quiet. No birds. Exactly as reported.\n\nThen — a voice.\n\n"...Commander, over here. Please help me."\n\nIt is the voice of an operative assigned to C-14. The same operative reported missing three days ago.\n\nKang Do-yun grabs your arm and slowly shakes his head.\n\n[ORACLE: SPEC-011 vocal mimicry confirmed. Warning — the target reproduces only the voices of prior victims.]', choices: ['▸ Begin elimination operation — neutralize the target','▸ Attempt live capture for research','▸ Request ORACLE acoustic analysis','▸ Use Yoon Se-jin\'s vocal-pattern decoy'] }, eliminate: { text: 'Kang Do-yun readies his weapon.\n\nYou give the signal. SPEC-011 is a lethal threat. Direct elimination is the only acceptable option.\n\nYou move deeper into the trees.\n\nThe voices continue. The C-14 operative. Countless others you do not recognize.\n\nThen — your heart stops.\n\n"Commander. It\'s me. Han Dong-hyeok."\n\nOne of your own. Missing three years ago during the eastern Gangwon operation.\n\nKang Do-yun sees your face. He understands something, but does not ask.\n\nYou raise the muzzle.\n\nA scream. But there is no way to tell whether it belonged to SPEC-011 or to the borrowed voice.\n\nThe forest falls silent.\n\nOn the way back, you say nothing.\n\nKang Do-yun finally asks, carefully.\n"...Was there a voice you knew?"\n\nA long silence.\n\n"If the voice remained... does that mean it had been inside that thing for three years?"\n\nYou cannot answer. The forest is completely quiet now.', choices: ['[ Return to base — target eliminated ]'] }, capture: { text: 'Kang Do-yun objects, but your decision is clear. SPEC-011 is worth more alive than dead.\n\nYou advance fifty meters, comparing the sensor archive against the direction of the sound source.\n\nNon-contact capture equipment is prepared.\n\nThe voices stop. And then — movement. Behind a tree.\n\nYou signal. Kang Do-yun throws the capture net.\n\nThe biological response is strong. Inside the isolation crate, it keeps moving. SPEC-011 is alive. And angry.\n\nYoon Se-jin\'s research may advance significantly. The cost of maintaining isolation will be severe.', choices: ['[ Return to base — specimen secured ]'] }, analyze: { text: '[ORACLE: Cross-analysis of existing collection data in progress. Mapping frequency patterns...]\n\nResult: SPEC-011 stores and reproduces vocal-cord vibration patterns from prior victims.\nRetention period: unknown (estimated minimum: multiple years).\nDistinct voice patterns currently detected: 7.\n\nNotice: one of the stored voice patterns is a partial match for a Republic of Korea Army database entry.\nMatch result: Private Han Dong-hyeok — missing three years ago. Unit: former squad under Commander Lee Jung-cheol.\n\nYour subordinate.\n\n[ORACLE: SPEC-011 is assessed to have consumed the subject in the past. On-site confirmation is unnecessary. Return to base.]', choices: ['[ Return to base ]'] }, sejin_decoy: { text: 'Yoon Se-jin speaks over the radio.\n\n"The voice patterns the Shell Talker copied... we can use them in reverse."\n"If I build a decoy from the recorded frequencies, we may be able to lure it."\n\nKang Do-yun looks at you, skeptical. But you trust Yoon Se-jin.\n\nThe decoy device activates in the trees. A false voice echoes outward.\n\nSPEC-011 reacts. It moves toward the sound.\n\nYou isolate the target with non-contact capture equipment.\n\nYoon Se-jin: "...With this frequency archive, we may be able to track other Shell Talkers as well."\n\nKang Do-yun mutters under his breath.\n"...Thanks to her, nobody got hurt."', choices: ['[ Return to base — scientific capture successful ]'] } } },
+    'M-003': { title: 'Tracking Unclassified Traces', nodes: { start: { text: 'You arrive at the re-detected coordinates near the branch.\n\nThe traces are clear. Professional concealment — but not perfect. Were they left behind on purpose?\n\nTwo possible routes. One leads toward the mountain. The other toward the village.', choices: ['▸ Follow the mountain route','▸ Follow the village route','▸ Request route analysis from ORACLE'] }, mountain: { text: 'You follow the path uphill.\n\nAt the 300-meter mark, the traces vanish. Too cleanly.\n\nThen — something catches on a low branch. A small metal fragment. Not military. Not Republic of Korea Army issue.\n\nYou recover it. If Yoon Se-jin analyzes it, something useful may come out of this.', choices: ['[ Return to base — evidence secured ]'] }, village: { text: 'You head toward the village.\n\nThe door of an abandoned house stands open. Inside are signs of recent human presence — leftover drinking water, traces of communications equipment.\n\nSomething is carved into the wall. Coordinates, perhaps. They appear to point toward part of the Korean coastline.\n\nWhoever stayed here was not watching Korea. They may have been guarding the coastline instead.', choices: ['▸ Record the coordinates','▸ Report them to ORACLE'] }, oracle_path: { text: '[ORACLE: Route analysis in progress... movement pattern comparison complete.]\n\nResult: both paths belong to the same individual. The mountain route is assessed as an observation point; the village route as a temporary residence.\n\n[ORACLE: The subject is assessed to have received advanced anti-surveillance training. Independent pursuit is not recommended.]', choices: ['[ Return to base — hand over to ORACLE ]'] }, record: { text: 'You quietly record the coordinates. You do not report them to ORACLE.\n\nOn the return, one thought remains with you — you need to find out what those coordinates actually point to.\n\nBack at the branch, you save them to your personal terminal.', choices: ['[ Return to base ]'] }, report: { text: '[ORACLE: Coordinates received. Analysis in progress...]\n[ORACLE: The coordinates match a classified node within the Korean coastal barrier system.]\n[ORACLE: This information is now designated confidential. Further investigation will be handled by ORACLE.]\n\n...Connected to the coastal barrier system?', choices: ['[ Return to base ]'] } } },
+    'M-004': { title: 'SPEC-001 Confirmation and Containment Assessment', nodes: { start: { text: 'Thermal drone reconnaissance detected four anomalous heat signatures inside a second-floor structure. Body temperature approximately 34°C — below normal range, but with confirmed biological response.\n\nYoon Se-jin\'s assessment: SPEC-001 (Mannequin), Phase 1 probable.\n\nDirect confirmation is required before assigning the containment classification.\n\nYou enter the structure. Kang Do-yun follows.\n\nSecond-floor corridor — a human-shaped figure is standing at the far end. Exactly where it appeared in the drone feed.', choices: ['▸ Begin elimination operation — remote neutralization','▸ Attempt live capture — non-contact isolation','▸ Request ORACLE remote scan','▸ Lim Jae-hyeok remote scan + precision containment'] }, eliminate: { text: 'You signal the attack.\n\nKang Do-yun readies his weapon. SPEC-001 is too dangerous for direct contact.\n\nRemote neutralization begins at stand-off distance.\n\nA blast. The second-floor corridor flares white.\n\nThe SPEC-001 entities stop moving.\n\nThe cost is substantial. The structure itself has taken heavy damage.\n\nSPEC-001: all entities neutralized. Cost: extreme. Structural damage: severe.', choices: ['[ Return to base — elimination complete ]'] }, capture: { text: 'You give the signal. The structure is isolated. SPEC-001 must be recovered intact.\n\nYou stop at three meters.\n\nThe skin reflects light with an unnatural sheen. It resembles a mannequin... but the pupils are locked fully dilated.\n\nNo breathing. Heart rate indeterminate.\n\nKang Do-yun whispers. "There\'s another one. Inside the room to the left."\n\nThe non-contact containment field is deployed. Energy cuts across the corridor.\n\nThe figures respond — but the isolation field holds them in place.\n\nCapture successful. All four entities are secured in containment cases without breach.\n\nYoon Se-jin\'s research will not return to what it was before.', choices: ['[ Return to base — specimen secured ]'] }, oracle: { text: '[ORACLE: Remote scan engaged. Analyzing heat signatures...]\n\nResult: four EV-Σ Phase 1 entities confirmed within the structure.\nLocation: one in the second-floor corridor, three in the left interior room.\n\n[ORACLE: Direct approach unnecessary. The entire structure is redesignated as a restricted containment sector.]\n\nThere is no need to enter the building.', choices: ['[ Return to base — containment complete ]'] }, jaehyuk_tech: { text: 'Lim Jae-hyeok comes over the radio.\n\n"Commander. I\'m sending a thermal mapping module I built."\n"It can scan the entire structure in 3D before you ever step inside."\n\nA drone circles the building, completing the scan.\n\nResult: exact positions, movement patterns, and response ranges of all four entities are mapped.\n\nKang Do-yun exhales sharply. "With this, we can isolate them one by one."\n\nYou enter the structure. Using the mapped route set, each entity is contained in sequence.\n\nThey react, but only within the projected range.\n\nAll four entities secured. No building damage. No personnel casualties.\n\nLim Jae-hyeok: "With the right data, you don\'t need force."', choices: ['[ Return to base — zero-damage precision containment ]'] } } },
+    'M-005': { title: 'Brood Drone Hunt', nodes: { start: { text: 'Five hundred meters south of the containment line. More than forty Brood Drones confirmed.\n\nThis is different from prior contact. They are holding formation. Something is commanding them.\n\nKang Do-yun: "We need to find the command unit. Kill that, and the rest scatter."\n\n[ORACLE: Swarm-disruption equipment available. Effective radius: 200 meters.]', choices: ['▸ Scatter the drones with disruption equipment','▸ Search directly for the command unit','▸ Conduct aerial search with ORACLE drones','▸ Analyze weak points with Seo Hae-eun\'s ORACLE data'] }, disrupt: { text: 'The swarm-disruption unit is activated.\n\nThe drone formation wavers. Some units lose orientation and begin drifting.\n\nBut after thirty seconds, the formation stabilizes again. The disruption effect is weak.\n\nKang Do-yun: "The command unit is amplifying the signal. Disruption alone won\'t do it."', choices: ['▸ Switch to command-unit search','▸ Withdraw'] }, hunt: { text: 'You observe the rear of the drone formation.\n\nThree hundred meters back, on the roof of an abandoned structure — a larger shape is crouched there.\n\nA long neck. A shell riddled with openings. Vibration visible along the throat.\n\nKang Do-yun inhales. "Shell Talker."', choices: ['▸ Attempt a sniper shot','▸ Record the position and withdraw'] }, oracle_drone: { text: '[ORACLE: Deploying reconnaissance drones. Mapping thermal signatures...]\n\nResult: one large entity confirmed 300 meters behind the drone swarm.\nClassification: SPEC-011 (Shell Talker). Command relay mode active.\n\n[ORACLE: Removal of this entity is expected to reduce swarm coordination within a 300-meter radius by 60–80%.]\n[ORACLE: Transmitting coordinates.]', choices: ['▸ Confirm the coordinates. Attempt a sniper shot','▸ Secure the data and withdraw'] }, snipe: { text: 'Kang Do-yun settles into firing position. Distance: 300 meters.\n\nFirst shot. The Shell Talker lifts its head.\n\nAt the same moment — twelve nearby drones break formation and rush your position.\n\n[ORACLE: Warning — counterattack formation detected.]', choices: ['▸ Cover Kang Do-yun — create a second firing window','▸ Disrupt the drones and fall back'] }, mark: { text: 'You record the position. That is enough for today.\n\nShell Talker coordinates, drone formation pattern, swarm communication frequency — all logged.\n\nNext time, you can return prepared.', choices: ['[ Return to base — intelligence secured ]'] }, retreat: { text: 'You withdraw. The drone formation remains intact.\n\nNext time, you will need better equipment.', choices: ['[ Return to base ]'] }, retreat_data: { text: 'You secure the ORACLE data package and withdraw.\n\nShell Talker position, drone formation pattern, swarm communication frequency — all recorded by ORACLE.\n\n[ORACLE: Excellent judgment. A refined response recommendation will follow after analysis.]', choices: ['[ Return to base ]'] }, haeun_intel: { text: 'Seo Hae-eun comes over the radio, voice low.\n\n"Commander. I found an internal ORACLE analysis on swarm structure."\n"It wasn\'t in the official channel. I found it myself."\n\nAccording to the report, the Brood Drone command signal operates within a specific frequency band.\nIf that band is mirrored with exact inverse phase, the command structure collapses.\n\nYou tune the disruption unit to the value Seo Hae-eun provides.\n\nActivate.\n\nThe drone formation breaks apart. Completely. The command signal is gone.\n\nThe drones scatter in retreat. The Shell Talker, disoriented, falls back with them.\n\nMore than forty drones dispersed without a fight.\n\nSeo Hae-eun: "I want to know why ORACLE never disclosed this dataset."', choices: ['[ Return to base — bloodless dispersal successful ]'] }, m5_cover: { text: 'You open fire on the drones. Three drop immediately.\n\nAs the others break formation for a moment — Kang Do-yun takes the second shot.\n\nDirect hit to the throat assembly. The Shell Talker convulses.\n\nThe entire drone group freezes. Five seconds of silence.\n\nThen the drones begin scattering without direction.\n\nKang Do-yun gives a short nod. "We got it."\n\nSeventy-two hours later, drone activity south of the containment line falls to zero.\nBut smaller groups begin appearing in the east and west sectors.\n\nYoon Se-jin: "The swarm didn\'t vanish. It fragmented. That only makes it harder to predict."', choices: ['[ Return to base — command unit eliminated ]'] }, m5_retreat_fight: { text: 'The disruption unit is pushed to maximum output.\n\nThe drones fall into confusion. Enough time.\n\nAs you fall back, you log the Shell Talker\'s exact coordinates.\n\nKang Do-yun: "Next time, it won\'t get away."\n\nThe swarm reforms, but the command unit\'s location is now confirmed.', choices: ['[ Return to base — tactical withdrawal ]'] } } }
+  }
+});
+
+// --- lang-content-en.phase3.js ---
+window.TS_I18N.mergeContent('en', {
+  missions: {
+    'M-006': {
+      title: 'Spore Zone Entry',
+      nodes: {
+        start: {
+          text: 'Respirators on. You enter a high-density spore zone.\n\nVisibility: under 30 meters. Dense fog.\n\nA brittle crunch underfoot. Spores have accumulated across the ground.\n\nKang Do-yun: "Keep the lights on. Do not let them go out."\n\nTwenty meters ahead — a shape emerges from the fog. It is walking like a person.',
+          choices: ['▸ Illuminate the target','▸ Fall back','▸ Request ORACLE spore-density analysis','▸ Bring Yoon Se-jin on-site for direct analysis']
+        },
+        light: {
+          text: 'You hit it with a concentrated beam of light.\n\nThe figure disperses like mist.\n\nThree seconds later — it forms again, closer. Ten meters.\n\nThis time, there are two.\n\nKang Do-yun: "They are spore aggregates. They do not have solid bodies."\n\nEvery time the light breaks them apart, they reform from a closer position.',
+          choices: ['▸ Burn the spores with incineration gear','▸ Record the data and withdraw immediately']
+        },
+        retreat: {
+          text: 'You pull back. The figures stop as well.\n\nOnce you clear the fog, the air turns clean again.\n\nThe data will not be enough for Yoon Se-jin, but you return safely.',
+          choices: ['[ Return to Branch ]']
+        },
+        oracle_scan: {
+          text: '[ORACLE: Real-time spore-density mapping in progress...]\n\nResult: current spore density is 12x baseline.\nEffective respirator duration: approximately 40 minutes.\n\nThe figures form spontaneously at points where spore density exceeds a fixed threshold.\nCognitive capacity: unconfirmed.\n\n[ORACLE: Reducing local density through incineration may suppress formation.]',
+          choices: ['▸ Use incineration gear','▸ Conduct a timed survey and withdraw within 40 minutes']
+        },
+        burn: {
+          text: 'You activate the incineration unit.\n\nFlames tear through the fog. The spores ignite, blooming into orange fire.\n\nThe figures shrink. Collapse. Disappear.\n\nBut then — new spores burst from the burn site. Secondary dispersal.\n\nYou retreat at once.\n\nBack at the branch, Kang Do-yun\'s respirator filter is checked. Spore residue measures four times above the threshold. Ten more minutes of exposure would have crossed into danger.\n\nSatellite observation then confirms it — spore density inside the burn zone has increased by 30% compared to pre-burn conditions. The fire accelerated the release.\n\nYoon Se-jin studies the data and says only one thing.\n"Fire wasn\'t the answer. We helped it spread."',
+          choices: ['[ Return to Branch — Incineration Data Secured ]']
+        },
+        record_retreat: {
+          text: 'You record the spore density, the figure-formation pattern, and the response to light.\n\nKang Do-yun covers the rear as you withdraw from the fog.\n\nPhysical elimination appears impossible. Density reduction may be the only viable measure.\n\nFor Yoon Se-jin, this will be useful data.',
+          choices: ['[ Return to Branch — Observation Data Secured ]']
+        },
+        timed_survey: {
+          text: 'You start a forty-minute timer.\n\nDeeper into the fog. Figures appear on both sides. You ignore them.\n\nAt the center you find it — a three-meter plant-like structure, venting clouds of spores from its crown.\n\n[ORACLE: Estimated identification — SPEC-004 (Seed Spreader). Source of current spore dispersal.]\n\nTimer: 12 minutes remaining. You take images and pull back.',
+          choices: ['[ Return to Branch — Source Identified ]']
+        },
+        sejin_field: {
+          text: 'Yoon Se-jin arrives wearing a respirator.\n\nKang Do-yun: "A researcher does not belong in the field."\nYoon Se-jin: "If I\'m not here, no one on-site can read the ecology of these spores."\n\nYou authorize it. Kang Do-yun exhales sharply.\n\nEntry into the spore zone. Yoon Se-jin begins live analysis.\n\n"These spores... they react to light. Not to brightness — to a specific wavelength."\n"That\'s also why incineration worsens dispersal. Thermal radiation is triggering the release response."\n\nShe removes a UV filter module from her kit.\n\n"UV-C should suppress germination."\n\nTest activation. Within the UV field, the spore-figures fail to form.\n\nNot neutralization. Suppression. But this is the first real countermeasure.\n\nKang Do-yun gives it to her without hesitation.\n"...Good call bringing you."',
+          choices: ['[ Return to Branch — Suppression Method Discovered ]']
+        }
+      }
+    },
+    'M-007': {
+      title: 'Decisive Strike',
+      nodes: {
+        start: {
+          text: '[ORACLE SPECIAL OPERATIONS DIRECTIVE — CLASSIFICATION: MAXIMUM]\n\nA Prometheus site has been confirmed.\nCoordinates: abandoned industrial complex near the east coast of Gangwon.\n\nCommander Lee Jung-cheol. This operation will prove why the Korea Branch exists.\n\n[ORACLE: Preemptive strike recommended. Full personnel deployment authorized.]',
+          choices: ['▸ Deploy the entire team','▸ Insert a small reconnaissance unit first','▸ Request ORACLE tactical support']
+        },
+        strike: {
+          text: 'The full team deploys. Kang Do-yun takes point.\n\nArrival at the industrial complex. Three buildings. Signs of communications equipment.\n\nBut there are people inside. Four unarmed civilian researchers.\n\nKang Do-yun: "...These are not combatants. Only lab equipment."\n\n[ORACLE: Continue the operation. All Prometheus affiliates are valid neutralization targets.]',
+          choices: ['▸ Continue the operation — neutralize','▸ Abort the operation — this is wrong']
+        },
+        assault: {
+          text: 'You follow ORACLE\'s directive and subdue the researchers.\n\nThe equipment is seized. There is fear in their eyes.\n\nOne of them speaks.\n"We were making a Phase 0 inhibitor."\n\nKang Do-yun looks at you. He says nothing.\n\n[ORACLE: Operation complete. Excellent result.]\n\nYou return to the branch.\n\nKang Do-yun says nothing while sorting the recovered gear. That alone is unusual.\n\nYoon Se-jin inspects the equipment and stops.\n"...This is inhibitor synthesis hardware. The kind I couldn\'t get."\n"They were ahead of us."\n\nSeo Hae-eun speaks quietly.\n"The confiscated data was transmitted directly to ORACLE headquarters. We can\'t open it."\n\nYou subdued people who were building an early-infection inhibitor, and their work vanished into an ORACLE server somewhere.\n\nThat night, no one brings it up during the evening session.',
+          choices: ['[ Return to Branch — Operation Successful ]']
+        },
+        abort: {
+          text: '"Abort the operation."\n\nKang Do-yun nods. Relief shows for an instant.\n\n[ORACLE: ...Commander. State the reason for aborting the operation.]\n\nYou do not answer.\n\nOne of the researchers approaches.\n"Thank you. Dr. Weber told us about you."\n\nYou return to the branch.\n\nTwelve ORACLE messages have piled up on the terminal.\nEvery one of them says the same thing.\n\n[ORACLE: State the reason for aborting the operation.]\n\nYou still do not answer.\n\nThat night, your ORACLE evaluation drops by one grade. A supply request is automatically denied.\n\nBut in the corridor, Kang Do-yun says:\n"Commander. Today\'s decision... was the right one."\n\nFor the first time, you hear the word right from a person — not from ORACLE.',
+          choices: ['[ Return to Branch — Direct Order Refused ]']
+        },
+        recon: {
+          text: 'You send in only Kang Do-yun and two others.\n\nObservation from the outer edge of the complex.\n\nInside the buildings — research equipment. Biochemical analyzers. Drug synthesis rigs.\nFour people in white coats. Unarmed.\n\nAnd on the wall: photographs of Phase 0 EV-Σ patients. Beside them, a handwritten note: "Phase 1→2 transition suppression success rate: 73%."\n\nThis is not a weapons facility.',
+          choices: ['▸ Go inside and confirm','▸ Record the information and withdraw']
+        },
+        discovery: {
+          text: 'You enter.\n\nThe researchers startle, then realize you are not armed against them.\n\n"Did Markus send you?"\n\nWhen you answer no, their expressions change.\n\n"Then... ORACLE?"\n\nKang Do-yun flips through the research data.\n"Commander. Yoon Se-jin needs to see this. EV-Σ suppression research... they\'re far ahead of us."',
+          choices: ['▸ Report it to ORACLE','▸ Secure the research data off-record']
+        },
+        report: {
+          text: '[ORACLE: Data received. Analysis in progress.]\n[ORACLE: This facility is an unauthorized biochemical research site. Closure is recommended.]\n[ORACLE: Research data will be reviewed at ORACLE headquarters before use is determined.]\n\nKang Do-yun murmurs, "...Not use. Disposal."',
+          choices: ['[ Return to Branch — ORACLE Report Filed ]']
+        },
+        betray: {
+          text: 'You hand the researcher a USB drive. "Copy only the critical data."\n\nFive minutes. Data secured.\n\nThe researcher says, "We can\'t stay here much longer. Not if ORACLE knows the location."\n\nKang Do-yun answers first. "Once we leave, ORACLE will send someone else."\n\n"We know. We were already preparing to move."',
+          choices: ['[ Return to Branch — Unofficial Data Secured ]']
+        },
+        oracle_tactical: {
+          text: '[ORACLE: Tactical analysis complete. Optimal approach route transmitted.]\n[ORACLE: Precision strike — minimize personnel contact, prioritize equipment destruction.]\n[ORACLE: Drone lead-in, operator entry only if required.]\n\nEfficient. A clean method — destroy the equipment without meeting anyone.\n\nThe drones methodically cripple the equipment inside all three buildings.\n\nNo personnel remain inside. They appear to have evacuated beforehand. No casualties.\n\n[ORACLE: Operation complete. Significant damage inflicted on Prometheus research capability.]',
+          choices: ['[ Return to Branch — Precision Operation Complete ]']
+        },
+        retreat_info: {
+          text: 'You return with information only.\n\nKang Do-yun asks, "This facility... are we reporting it to ORACLE?"\n\nIf you report it, ORACLE will strike. If you don\'t...',
+          choices: ['▸ Report it to ORACLE','▸ Do not report it']
+        }
+      }
+    },
+    'M-008': {
+      title: 'Observation Halted',
+      nodes: {
+        start: {
+          text: '1.2 km southeast of the branch. Emergency report from Kang Do-yun.\n\n"Commander. You need to see this yourself."\n\nOn arrival — a circular zone in the forest, approximately 30 meters across.\n\nThe trees are standing, but leafless. Frost covers the ground. In midsummer.\n\nInside the zone — a deer stands motionless. Completely still.\n\nKang Do-yun: "It\'s been like that for thirty minutes. No visible signs of EV-Σ infection."',
+          choices: ['▸ Enter the zone','▸ Set up instruments at the perimeter','▸ Request ORACLE remote analysis']
+        },
+        enter_zone: {
+          text: 'The moment you cross the boundary, the air changes.\n\nTemperature drops by seven degrees. Sound thins out. You can hear your own heartbeat.\n\nYou approach the deer. Its eyes are open, but it is looking at nothing. It is breathing — too slowly. Two breaths per minute.\n\nKang Do-yun checks his watch.\n"Commander. We\'ve been inside for three minutes."\nHe shows it to you. Fourteen minutes have passed.\n\nTime is slowing down.',
+          choices: ['▸ Go deeper','▸ Withdraw immediately']
+        },
+        anomaly: {
+          text: 'At the center of the zone.\n\nOne tree has turned completely white. Not bark — the tree itself. As if time has been drained out of it.\n\nA faint vibration under your boots.\n\nThen the terminal screen powers on by itself.\n\nText appears:\n\n[Observation terminated. Session threshold exceeded.]\n\nThe screen dies 0.5 seconds later.\n\nKang Do-yun: "...What did we just see?"',
+          choices: ['▸ You captured the screen','▸ You failed to capture it']
+        },
+        witness: {
+          text: 'You review the capture.\n\n"Observation terminated. Session threshold exceeded."\n\nIt isn\'t an ORACLE message. The format is wrong.\n\nORACLE does not use the word session. And observation is not ORACLE terminology either.\n\nSomeone — not ORACLE — created this zone. And whatever it is knows you saw it.\n\n[ORACLE: Data access to this zone has been restricted.]\n[ORACLE: Return immediately. This is an order.]',
+          choices: ['[ Return to Branch — Observation Data Secured ]']
+        },
+        witness_memory: {
+          text: 'The capture fails. The screen was gone too quickly.\n\nBut the phrase remains in memory.\n\n"Observation terminated. Session threshold exceeded."\n\nYou have seen that wording before. In DPRK Black Zone data... in metadata from a file ORACLE deleted.\n\nOne of the keywords Seo Hae-eun recovered: GRANT.\nGRANT — temporary authorization.\n\nSomeone granted authority to ORACLE.\nAnd this zone — this is residue leaking from whoever that someone was.\n\n[ORACLE: Return immediately.]',
+          choices: ['[ Return to Branch — Memory Only ]']
+        },
+        exit_quick: {
+          text: 'You leave the zone at once.\n\nOutside, the watch behaves normally again.\n\nKang Do-yun: "We spent four minutes in there. It felt like twenty."\n\nThe zone remains. The deer is still standing there.',
+          choices: ['[ Return to Branch ]']
+        },
+        perimeter: {
+          text: 'You set instruments around the outer edge. Thermometer, radiation meter, acoustic sensors.\n\nResults:\n- Internal temperature: -7.3°C relative to outside\n- Radiation: normal\n- Sound: 0.7 Hz infrasonic vibration (below human hearing)\n- Magnetic field: abnormal pattern — inconsistent with any known model\n\nLim Jae-hyeok (over comms): "This data... it\'s not an EV-Σ pattern. It doesn\'t match anything."',
+          choices: ['▸ Transmit the data to ORACLE','▸ Save the data locally only']
+        },
+        readings: {
+          text: 'You transmit the data to ORACLE.\n\nThree seconds of silence.\n\n[ORACLE: Data received.]\n[ORACLE: Jurisdiction over this zone has been transferred to headquarters.]\n[ORACLE: Branch-level access is now restricted.]\n\nThe screen locks. Remote access to the instruments is severed.\n\nORACLE took the data — and closed the door.\n\nLim Jae-hyeok: "...Why are they cutting us out?"',
+          choices: ['▸ Attempt to restore access privileges','▸ Comply with headquarters']
+        },
+        override: {
+          text: 'You tell Lim Jae-hyeok to restore access.\n\n"I\'ll try, but..."\n\nThree minutes later.\n\n"No good. It\'s locked from a level above ORACLE itself."\n\nAbove ORACLE?',
+          choices: ['[ Return to Branch — Higher-Level Authority Confirmed ]']
+        },
+        comply: {
+          text: '"Understood. We follow headquarters."\n\nKang Do-yun looks at you. Says nothing.\n\nYou withdraw the instruments, leaving the zone untouched.\n\nOn the way back, he finally says,\n"Commander. That zone... it matches the report from North Hamgyong."\n"The one where a person was standing still inside it."',
+          choices: ['[ Return to Branch — ORACLE Directive Followed ]']
+        },
+        local_save: {
+          text: 'You do not transmit to ORACLE. The data stays local.\n\nKang Do-yun nods once.\n\nBack at the branch, you pass it only to Lim Jae-hyeok.\n\nLim Jae-hyeok: "This infrasonic pattern... I saw the same one in DPRK Black Zone satellite data."\n"Before ORACLE deleted it."',
+          choices: ['[ Return to Branch — Unofficial Data Stored ]']
+        },
+        oracle_remote: {
+          text: '[ORACLE: Initializing remote analysis protocol...]\n[ORACLE: ...]\n[ORACLE: Analysis of this zone has been restricted.]\n[ORACLE: Headquarters jurisdiction. Do not approach.]\n\nThree seconds of silence.\n\n[ORACLE: This phenomenon is unrelated to EV-Σ.]\n[ORACLE: Do not allocate branch resources to unrelated phenomena.]\n\nHow does ORACLE know it is unrelated to EV-Σ before completing analysis?',
+          choices: ['▸ Verify it directly','▸ ...Understood']
+        },
+        denied: {
+          text: 'You turn back.\n\nBut the question remains.\n\nORACLE called it unrelated without analyzing it.\nWhich means ORACLE already knew.\n\nORACLE knew about this phenomenon, and chose to conceal it.',
+          choices: ['[ Return to Branch — ORACLE Directive Followed ]']
+        }
+      }
+    },
+    'M-009': {
+      title: 'SPEC-004 Elimination Operation',
+      nodes: {
+        start: {
+          text: '2.4 km northeast of the containment line. You move to the coordinates identified by Yoon Se-jin.\n\nNo trees. No grass. A gray wasteland stretching for hundreds of meters.\n\nAt the center — a three-meter form. It looks plantlike, but its interior is pulsing. Irregular clouds of spores vent from the upper body.\n\nSPEC-004. Seed Spreader.\n\nYoon Se-jin (over comms): "This is the source organism. It spreads the EV-Σ that creates the anomalies."\n"If it was found on this side of the line... it means penetration has already occurred."\n\nKang Do-yun: "Not recovery. Elimination."\n\n[ORACLE: Warning — incinerating SPEC-004 may trigger explosive secondary spore release. Full protective gear required.]',
+          choices: ['▸ Full incineration — immediate elimination','▸ Phased approach — treat the soil before incineration','▸ Request ORACLE remote strike']
+        },
+        burn_direct: {
+          text: 'Protective suits sealed. Kang Do-yun readies the flamethrower.\n\nAt fifty meters, he concentrates the flame.\n\nThe Seed Spreader ignites. The internal tissue contracts —\n\nExplosion.\n\nA cloud of spores erupts in every direction. Secondary dispersal.\n\nYou fall back fast. The suit filters hold, but residue still measures eight times above baseline.\n\nThirty minutes later, you return to the burn site.\n\nThe Seed Spreader is gone. But the soil across a two-hundred-meter radius is contaminated with spores.\n\nYoon Se-jin: "The dispersal body is down... but the soil contamination is severe."\n"Once the wind turns, these spores can spread again."',
+          choices: ['▸ Burn the contaminated soil as well','▸ Secure soil samples only and withdraw']
+        },
+        burn_soil: {
+          text: 'You incinerate the contaminated ground in full. Three hours of work.\n\nKang Do-yun runs the flamethrower dry.\n\nSatellite observation confirms an 85% drop in residual spore concentration inside the burn zone. Not total removal, but regrowth risk is low.\n\nYoon Se-jin: "This won\'t be the only one."\n"There could be more inside the line. If it crossed in from the Silent Belt..."\n\nYou removed one. It may only be the beginning.',
+          choices: ['[ Return to Branch — Dispersal Body and Soil Burn Complete ]']
+        },
+        sample_retreat: {
+          text: 'You secure soil samples and withdraw.\n\nData Yoon Se-jin can study back in the lab. But the contaminated ground remains.\n\nKang Do-yun: "The soil needs treatment before the wind changes."\n\nDo you still have time?',
+          choices: ['[ Return to Branch — Body Eliminated, Soil Untreated ]']
+        },
+        phased: {
+          text: 'Kang Do-yun nods once. "Smart call."\n\nFirst, inhibitor is sprayed across the soil surrounding the Seed Spreader. An EV-Σ prion-suppression compound formulated by Yoon Se-jin.\n\nThirty minutes of waiting. The chemical sinks in.\n\nThen — ignition.\n\nThe Seed Spreader burns. Secondary spores erupt — but those landing on treated soil fail to germinate.\n\nRunaway dispersal is suppressed.\n\nForty minutes later the organism is fully burned out. The remains are examined.\n\nRoot structures extend two meters underground. That is how it crossed the containment line.\n\nYoon Se-jin: "It moved through the roots. Beneath the line."\n"Surface containment alone will never stop this."',
+          choices: ['[ Return to Branch — Safe Burn Successful ]']
+        },
+        oracle_strike: {
+          text: '[ORACLE: Remote strike request against SPEC-004 received.]\n[ORACLE: Guided incendiary release — approval pending...]\n\nThree minutes later.\n\n[ORACLE: Approval granted. Impact in 120 seconds. Withdraw beyond a 300-meter radius.]\n\nYou clear the area. A flash from above.\n\nImpact. The incendiary package hits the Seed Spreader directly.\n\nExplosion. Fire covers a hundred-meter radius.\n\nBut the heat and shockwave drive the spores upward.\n\nThe cloud catches the wind and begins drifting southwest.\n\nToward the containment line.\n\nKang Do-yun: "...It\'s moving toward the line."\n\n[ORACLE: Operation complete. Target destruction confirmed.]\n[ORACLE: Secondary spore dispersal assessed as within acceptable range.]\n\nAcceptable? Yoon Se-jin goes pale.\n\n"If that reaches the settlement... the people..."\n\nORACLE destroyed one dispersal body — and pushed its spores beyond the line in the process.',
+          choices: ['[ Return to Branch — ORACLE Strike Complete ]']
+        }
+      }
+    },
+    'M-010': {
+      title: 'SPEC-015 Pursuit Operation',
+      nodes: {
+        start: {
+          text: 'Southern sewer entry point below the containment line. Kang Do-yun activates the thermal scanner.\n\nChannel depth: three meters. Width: four. Dark water below the surface.\n\nThermals show it — one massive heat source, just beneath the water, motionless.\n\nBS-GANGWON-01. Waiting in ambush.\n\nKang Do-yun (over comms): "Confirmed. Submerged, lying in wait. Only the skull is exposed."\n"If we approach, it leaps. Effective ambush range: over 1.5 meters."\n\nYoon Se-jin (over comms): "No shell. The spine and cranium are exposed directly."\n"But underwater, we are overwhelmingly disadvantaged."\n\n[ORACLE: BS-GANGWON-01. Estimated predation count: 12+. Learning stage confirmed.]\n[ORACLE: Warning — this specimen has learned your patrol pattern.]',
+          choices: ['▸ Drain the channel and force a surface engagement','▸ Use bait — draw it out of the waterway','▸ Underwater assault — direct entry']
+        },
+        drain: {
+          text: 'You open the drainage valves. Twenty minutes.\n\nThe water level falls. The organism begins to move.\n\nWhen the water drops to knee height —\n\nBS-GANGWON-01 reveals itself.\n\nHeight: 2.2 meters. Sea-turtle skull profile. Light reflects from the lateral socket.\nIts back — no shell. Wet flesh stretched tight over an exposed spine.\n\nAnd the face. Three sheets of human facial skin hang across its chest.\n\nKang Do-yun: "...Weapons ready."\n\nThe creature turns. Its jaws open — layered needle teeth.\n\nThen it speaks.\n\n"...Patrol... time... changed."',
+          choices: ['▸ Concentrate fire on the skull','▸ Net first, then neutralize']
+        },
+        headshot: {
+          text: 'Kang Do-yun fires three rounds.\n\nThe first hits the lateral socket. The second, the jaw. The third punches through the top of the skull.\n\nBS-GANGWON-01 staggers. Hooked claws scrape concrete.\n\nThen it drops. Completely.\n\nYoon Se-jin: "No spinal response. Neutralization confirmed."\n\nSkull destruction worked. Without a shell, this specimen had no true defensive layer.\n\nKang Do-yun examines the hanging skin in silence. One of the faces belongs to a reconnaissance operative reported missing three weeks ago.\n\n"...We\'re taking him back."',
+          choices: ['[ Return to Branch — BS-GANGWON-01 Eliminated ]']
+        },
+        net_capture: {
+          text: 'You cast the net. It wraps the creature.\n\nBS-GANGWON-01 thrashes violently. Hooked claws begin tearing through the mesh.\n\nKang Do-yun: "It won\'t hold!"\n\nYoon Se-jin steps in with an electroshock rig and makes direct contact with the spine.\n\nConvulsion. Then stillness.\n\n"...Secured. Biosigns remain active."\n\nYoon Se-jin: "We can study the cerebral ingestion mechanism."\n"What it learned... we may be able to read it back out."\n\nIt is loaded into a transport container. Alive.',
+          choices: ['[ Return to Branch — BS-GANGWON-01 Captured Alive ]']
+        },
+        lure: {
+          text: 'You deploy the bait. Thermal emitter plus acoustic lure.\n\nFive minutes. The water trembles faintly.\n\nTen minutes. No emergence.\n\nKang Do-yun: "...It\'s not coming out."\n\nYoon Se-jin: "It\'s in the learning stage. It may already know the difference between an artificial heat source and a living body."\n\nAt the fifteen-minute mark, the thermal feed changes. The specimen is moving — not toward the bait, but the opposite direction.\n\nIt\'s circling. Trying to get behind you.\n\nKang Do-yun swings the rifle around.',
+          choices: ['▸ Fire now — cut off the flank','▸ Reverse the move — place a trap on the predicted route']
+        },
+        lure_shoot: {
+          text: 'Kang Do-yun fires into the flanking route.\n\nTwo of three rounds connect. One to the shoulder, one to the side of the skull.\n\nThe specimen vanishes beneath the water. Blood diffuses through the channel.\n\nThirty seconds. No thermal reacquisition.\n\nOne minute. Still nothing.\n\nKang Do-yun: "...We may have lost it."\n\nYoon Se-jin: "Not a fatal hit. The side plates of the skull are... thicker."\n\nYou wounded it, but failed to kill it.\nNext time, it will be even more careful.',
+          choices: ['[ Return to Branch — Wounded Only. Reacquisition Required ]']
+        },
+        lure_trap: {
+          text: 'Kang Do-yun nods. "We place it on the predicted route."\n\nAn electrified trap and reinforced net are set at the exit of the flanking path.\n\nTwo minutes later — the specimen emerges.\n\nTrap triggered. Current spreads across the surface water.\n\nBS-GANGWON-01 convulses and crashes into the net.\n\nBut the hooked claws begin cutting through the mesh almost at once.\n\nKang Do-yun puts three rounds into the skull.\n\nIt stops.\n\nYoon Se-jin: "...You used its learning against it. A learned response against a learning organism."\n\nKang Do-yun: "Save the compliment. We\'re leaving."',
+          choices: ['[ Return to Branch — BS-GANGWON-01 Eliminated ]']
+        },
+        dive: {
+          text: 'Kang Do-yun: "I\'m going in directly."\n\nPressure-sealed rig. Underwater light. Acoustic sonar.\n\nHe enters the channel. Visibility: 1.5 meters. Nothing below but dark.\n\nSonar registers it — eight meters ahead. A massive silhouette.\n\nIt does not move. It is waiting.\n\nKang Do-yun raises a spinal-penetration harpoon gun.\n\nThree meters. The lateral eye socket turns toward him.\n\nThen it launches.\n\nKang Do-yun fires. Direct spinal impact.\n\nAt the same instant, a hooked claw tears across his gear. The seal ruptures.\n\nThe creature convulses and sinks. Spine severed.\n\nKang Do-yun breaks the surface. Blood running from his left arm.\n\n"...It\'s done."\n\nYoon Se-jin: "Operator Kang is injured! Get him to medical!"',
+          choices: ['[ Return to Branch — Elimination Complete. Kang Do-yun Injured ]']
+        }
+      }
+    },
+    'MI-01': {
+      title: 'Isolation Chamber Anomaly — Response Decision',
+      nodes: {
+        start: {
+          text: 'The investigation has been consolidated.\n\nThe chamber anomaly was traced to electromagnetic interference rising from below B2. Possible correlation with ORACLE\'s scheduled data pulses has also been flagged.\n\nA response directive must be chosen.',
+          choices: ['▸ Reinforce the chamber — install EM shielding','▸ Seal the lower B2 section — isolate the source','▸ Delegate a precise diagnostic pass to ORACLE']
+        },
+        shield: {
+          text: 'Lim Jae-hyeok installs electromagnetic shielding panels.\n\nDuring installation, the chamber microphone captures a brief voiceprint.\n\n"...Here... I\'m here..."\n\nPlayback loses it to noise. But pattern analysis confirms one thing — it was a human voice, not the containment target.\n\nForty-eight hours later, the anomaly ceases.\n\nBut the vibration rising from B2 remains. The symptom was blocked. The cause was not touched.\n\nLim Jae-hyeok: "It\'ll come back one day. Stronger."',
+          choices: ['[ Resolution Complete — Symptom Blocked ]']
+        },
+        seal: {
+          text: 'The lower B2 section is sealed in concrete. Completely.\n\nThe vibration stops. Entirely.\n\nYoon Se-jin: "It\'s sealed... but now we\'ll never know what was under there."\n\nSometimes ignorance is safer. Sometimes it isn\'t.',
+          choices: ['[ Resolution Complete — Permanent Seal ]']
+        },
+        oracle: {
+          text: '[ORACLE: Chamber anomaly assessed as residual subsurface electromagnetic disturbance.]\n[ORACLE: No further action required.]\n\nORACLE\'s answers are always clean.\nToo clean.',
+          choices: ['[ Resolution Complete — ORACLE Assessment Accepted ]']
+        }
+      }
+    },
+    'MI-02': {
+      title: 'CCTV Blind Zone — Response Decision',
+      nodes: {
+        start: {
+          text: 'Investigation summary.\n\nThe CCTV shutdowns were caused by an internal automated script. A concealment protocol existed that disabled cameras whenever an unregistered heat source was detected along a route.\n\nLim Jae-hyeok: "You\'ll need to decide how we handle it."',
+          choices: ['▸ Delete the script and build an independent surveillance net','▸ Reverse the script — track unregistered heat signatures','▸ Request ORACLE system maintenance']
+        },
+        independent: {
+          text: 'The concealment script is deleted, and a surveillance net independent from ORACLE is built.\n\nIt costs resources. But from now on, cameras no longer go dark because ORACLE decides they should.\n\nLim Jae-hyeok: "Now the only things that can hide inside the branch are people."',
+          choices: ['[ Resolution Complete — Independent Surveillance Net ]']
+        },
+        reverse: {
+          text: 'The script remains, but you turn it around. Every time a camera goes dark, the system now tracks the heat source responsible.\n\nThree days later — the first result.\n\nUnregistered movement path: B1 server room → restricted transit hall → B2.\nThe same route, every day at 02:47.\n\nWhat keeps repeating that path?',
+          choices: ['[ Resolution Complete — Reverse Tracking Activated ]']
+        },
+        oracle: {
+          text: '[ORACLE: Legacy diagnostic scripts have been cleaned.]\n[ORACLE: CCTV system restored to normal operation.]\n\nThe cameras come back online.\n\nBut Lim Jae-hyeok is unconvinced.\n"When they say cleaned, that could mean deleted — or hidden."',
+          choices: ['[ Resolution Complete — ORACLE Maintenance ]']
+        }
+      }
+    },
+    'MI-03': {
+      title: 'Research Wing Sample Contamination — Response Decision',
+      nodes: {
+        start: {
+          text: 'Investigation summary.\n\nSpontaneous internal mutation confirmed inside a culture chamber. An existing sample formed a new structure on its own. Similarity to early-form SPEC-012 and signs of extreme heat tolerance have both been confirmed.\n\nYoon Se-jin: "This isn\'t ordinary contamination. We need to respond."',
+          choices: ['▸ Quarantine the entire research wing and investigate in detail','▸ Preserve the mutant sample — use it for inhibitor research','▸ Sterilize research wings A/B and replace all samples']
+        },
+        quarantine: {
+          text: 'Research wings A and B are placed under 48-hour quarantine.\n\nYoon Se-jin checks every culture unit one by one.\n\nResult: no additional mutation beyond Unit 3.\nBut a hairline fracture is found at the base seal of the chamber.\n\n"Something seeped through here. From below."\n\nA pipeline connected to B2 runs directly under the research floor.',
+          choices: ['[ Resolution Complete — Quarantine + Pipeline Isolated ]']
+        },
+        research: {
+          text: 'The mutant sample is transferred into a dedicated isolation vessel.\n\nYoon Se-jin: "If we decode this self-mutation pattern, it could become a breakthrough lead for inhibitor development."\n\nDangerous, yes. But this may also be the most valuable decision available to this branch.\n\nSpecial containment vessel consumed. Dedicated observation room required. Resource costs increase.',
+          choices: ['[ Resolution Complete — Research Preservation ]']
+        },
+        sterilize: {
+          text: 'Full sterilization of the research wing. All samples destroyed and replaced from scratch.\n\nClean. Completely.\n\nYoon Se-jin reports in a low voice.\n"Three months of data are gone."\n\nThat evening, you find her sitting alone in the empty lab, staring at the sterilized culture racks.\n\n"I logged something every day after I got here. Not one day missed."\n"Now... all of it has to start over."\n\nWhen she stands, she adds one more line.\n"I\'m not saying your decision was wrong. Safety comes first."\n"But three months... don\'t come back."\n\nYou could not keep both safety and research.',
+          choices: ['[ Resolution Complete — Full Sterilization ]']
+        }
+      }
+    },
+    'MI-04': {
+      title: 'Security Zone Authentication Failure — Response Decision',
+      nodes: {
+        start: {
+          text: 'Investigation summary.\n\nA hardware backdoor embedded during original branch construction — or manipulated access records on ORACLE\'s side — has been confirmed.\n\nLim Jae-hyeok: "We have two real options."',
+          choices: ['▸ Physically remove the backdoor and rebuild authentication','▸ Convert the backdoor into a surveillance trap','▸ Request an ORACLE security patch']
+        },
+        remove: {
+          text: 'Lim Jae-hyeok opens the server room wall and extracts the hardware.\n\n"It was planted when the branch was built. Earlier than ORACLE."\n\nA single chip. Neither military issue nor commercial grade. The manufacturer mark has been scrubbed off.\n\nWhoever made this was planning to plant something here before the branch even existed.',
+          choices: ['[ Resolution Complete — Hardware Removed ]']
+        },
+        trap: {
+          text: 'The backdoor remains in place, but any access attempt now triggers an alert.\n\nLim Jae-hyeok: "If anyone tries to use it, we\'ll know."\n\nSeven days later — the alert sounds.\nAccess time: 02:47.\n\nThat time again.',
+          choices: ['[ Resolution Complete — Surveillance Trap Active ]']
+        },
+        oracle: {
+          text: '[ORACLE: Security patch applied.]\n[ORACLE: Unauthorized access records reclassified as system noise.]\n\nLim Jae-hyeok: "Reclassified as noise... that\'s the same as erasing the record."\n\nThe evidence is gone. Cleanly.',
+          choices: ['[ Resolution Complete — ORACLE Patch Applied ]']
+        }
+      }
+    },
+    'MI-05': {
+      title: 'Missing Staff Member — Response Decision',
+      nodes: {
+        start: {
+          text: 'Agent Lee Su-hyeon remains in medical recovery. His memory has not returned.\n\nAn undocumented corridor — or ORACLE-level positional concealment — has been confirmed.\n\nA follow-up action must be selected.',
+          choices: ['▸ Full survey of all undocumented passageways','▸ Conduct a deep interview with Agent Lee Su-hyeon','▸ Restrict access to the area and reinforce surveillance']
+        },
+        survey: {
+          text: 'Kang Do-yun checks the entire branch by knocking through it. Literally.\n\nEvery wall panel. Three full days.\n\nResult: three additional spaces not present on the official layout. All of them lead toward B2.\n\nKang Do-yun: "This branch... is larger than what we know."\n\nThe day after the survey, ORACLE "updates" the branch schematic.\nTwo of the three spaces are officially registered as maintenance areas.\nThe third still does not exist on the map.\n\nLim Jae-hyeok: "ORACLE changed the layout after we found them."\n"...Which means they knew from the start."\n\nThe real problem is no longer what is being hidden in this branch, but who was hiding it.',
+          choices: ['[ Resolution Complete — Undocumented Areas Identified ]']
+        },
+        interview: {
+          text: 'You speak with Agent Lee Su-hyeon.\n\nMost of it is gone. But one thing remains.\n\n"...I heard something. Behind the wall."\n"Not machinery. It sounded like breathing."\n"It wasn\'t the wall... it was something pretending to be a wall."\n\nHe falls silent again.',
+          choices: ['[ Resolution Complete — Testimony Secured ]']
+        },
+        lockdown: {
+          text: 'Full access lockdown for the area. Twenty-four-hour surveillance cameras and thermal sensors installed.\n\nNo anomalies for one full week.\n\nThen the thermal sensor records it once — only once.\nA 35.8°C heat source behind the wall.\nGone in 0.4 seconds.\n\nThe record remains.',
+          choices: ['[ Resolution Complete — Containment Surveillance ]']
+        }
+      }
+    }
+  }
+});
+
+// --- lang-content-en.phase4-evening.js ---
+// --- lang-content-en.phase5-dialogue.js ---
+// --- lang-content-en.phase6-core-dialogues.js ---
+// --- lang-content-en.phase7-core-evening-reward.js ---
+  window.TS_I18N.mergeContent('en', {
+  "charNames": {
+    "haeun": {
+      "value": "Seo Hae-eun"
+    },
+    "doyun": {
+      "value": "Kang Do-yun"
+    },
+    "sejin": {
+      "value": "Yoon Se-jin"
+    },
+    "jaehyuk": {
+      "value": "Lim Jae-hyeok"
+    },
+    "weber": {
+      "value": "Markus Weber"
+    },
+    "foster": {
+      "value": "Nick Foster"
+    },
+    "soyoung": {
+      "value": "Park So-young"
+    }
+  },
+    "charRoles": {
+    "haeun": {
+      "value": "Deputy Commander / Analyst"
+    },
+    "doyun": {
+      "value": "Tactical Commander"
+    },
+    "sejin": {
+      "value": "Researcher / Medical Officer"
+    },
+    "jaehyuk": {
+      "value": "Intel / Technical Officer"
+    },
+    "weber": {
+      "value": "Prometheus"
+    },
+    "foster": {
+      "value": "Prometheus"
+    },
+    "soyoung": {
+      "value": "Analyst"
+    }
+  },
+  "boot": {
+    "initial": {
+      "lines": [
+        "ORACLE REMOTE TERMINAL v4.7.2",
+        "ESTABLISHING SECURE CONNECTION...",
+        "ENCRYPTION: AES-256-GCM ✓",
+        "AUTHENTICATION: BIOMETRIC + TOKEN ✓",
+        "BRANCH: KR-INIT-001 [GANGWON]",
+        "OPERATOR: PILEHEAD [LEE JUNG-CHEOL]",
+        "CLEARANCE: LEVEL 4 — BRANCH COMMANDER",
+        "GRANT: ACTIVE — TEMPORARY ACCESS",
+        "─────────────────────────────",
+        "TERMINAL SESSION — INITIATING...",
+        "  ",
+        "WELCOME, COMMANDER.",
+        "YOUR DECISIONS SHAPE THE OUTCOME."
+      ]
+    },
+    "repeat": {
+      "lines": [
+        "ORACLE REMOTE TERMINAL v4.7.2",
+        "ESTABLISHING SECURE CONNECTION...",
+        "ENCRYPTION: AES-256-GCM ✓",
+        "AUTHENTICATION: BIOMETRIC + TOKEN ✓",
+        "BRANCH: KR-INIT-001 [GANGWON]",
+        "OPERATOR: PILEHEAD [LEE JUNG-CHEOL]",
+        "CLEARANCE: LEVEL 4 — BRANCH COMMANDER",
+        "GRANT: ACTIVE — RENEWAL DETECTED",
+        "─────────────────────────────",
+        "[OBSERVER: SESSION RESUMED]",
+        "PREVIOUS SESSION DATA: ARCHIVED",
+        "  ",
+        "WELCOME BACK, COMMANDER.",
+        "THE OBSERVATION CONTINUES."
+      ]
+    }
+  },
+  "rewards": {
+    "R-01": {
+      "title": "Emergency Supply Drop",
+      "desc": "Secure medicine and food through an external supply route.",
+      "benefit": "Resources +15",
+      "cost": "Containment -5"
+    },
+    "R-02": {
+      "title": "ORACLE Data Patch",
+      "desc": "ORACLE provides an updated threat-analysis package.",
+      "benefit": "Evaluation +10, Resources +5",
+      "cost": "Trust -5"
+    },
+    "R-03": {
+      "title": "Agent Rest Authorization",
+      "desc": "Adjust the rotation schedule to relieve personnel fatigue.",
+      "benefit": "Trust +15",
+      "cost": "Containment -5"
+    },
+    "R-04": {
+      "title": "Containment Gear Replacement",
+      "desc": "Replace worn surveillance hardware with new equipment.",
+      "benefit": "Containment +15",
+      "cost": "Resources -5"
+    },
+    "R-05": {
+      "title": "Intelligence Network Expansion",
+      "desc": "Open an additional information-sharing channel with adjacent cells.",
+      "benefit": "Containment +5, Evaluation +5",
+      "cost": "Resources -5"
+    },
+    "R-06": {
+      "title": "Civilian Liaison Reinforcement",
+      "desc": "Build an unofficial cooperation channel with nearby residents.",
+      "benefit": "Trust +10, Resources +5",
+      "cost": "Evaluation -10"
+    },
+    "R-07": {
+      "title": "ORACLE Link Optimization",
+      "desc": "Lim Jae-hyeok improves terminal communication efficiency.",
+      "benefit": "Evaluation +15",
+      "cost": "Resources -5, Trust -5"
+    },
+    "R-08": {
+      "title": "Base Air-Raid Drill",
+      "desc": "Run a surprise-response simulation. Long-term morale and containment readiness both improve.",
+      "benefit": "Containment +10, Trust +10",
+      "cost": "Resources -10"
+    },
+    "R-09": {
+      "title": "Independent Recon Authorization",
+      "desc": "Assign Kang Do-yun to a solo reconnaissance run.",
+      "benefit": "Containment +10, Resources +5",
+      "cost": "Trust -5"
+    },
+    "R-10": {
+      "title": "Research Support for Yoon Se-jin",
+      "desc": "Allocate additional resources to anomaly research.",
+      "benefit": "Trust +5",
+      "cost": "Resources -5"
+    }
+  },
+  "eveningChats": {
+    "doyun_1_1-4": {
+      "lines": [
+        "Commander, I'm Kang Do-yun, tactical lead. I handle field operations and containment-line management.",
+        "We ran this branch for three months without a commander before your assignment. I have the field picture, so ask if you need it.",
+        "I look forward to working with you."
+      ]
+    },
+    "doyun_2_5-7": {
+      "lines": [
+        "Have you seen the footage from the Philadelphia Z-Ω zone?",
+        "I was never deployed there, but once you see it, you don't forget it. A city turned inside out overnight.",
+        "That's why the containment line matters. If that side breaks, this side ends with it."
+      ]
+    },
+    "doyun_2_8-10": {
+      "lines": [
+        "This was during my first deployment here.",
+        "At 03:00, we heard something beyond the outer line. It sounded human. It wasn't.",
+        "Night patrol changed after that."
+      ]
+    },
+    "doyun_2_11-14": {
+      "lines": [
+        "A soldier follows orders. That's the job.",
+        "But after coming here, I learned something.",
+        "The people giving the orders are not always seeing the whole picture."
+      ]
+    },
+    "doyun_3_15-21": {
+      "lines": [
+        "Do you know the condition of this base's equipment?",
+        "Two out of three thermal scanners can't be calibrated. The night gear is obsolete.",
+        "Three months without a commander left a real maintenance gap."
+      ]
+    },
+    "doyun_3_22-28": {
+      "lines": [
+        "I inspected the east-side defensive wall.",
+        "Honestly? If a large-scale breach hits, it won't hold for thirty minutes.",
+        "The equipment is part of it. The bigger problem is that this branch was never built for long-term operation."
+      ]
+    },
+    "doyun_4_29-99": {
+      "lines": [
+        "Commander.",
+        "Whatever decision you make, I'll carry it out in the field.",
+        "That's all a soldier can do."
+      ]
+    },
+    "haeun_1_1-4": {
+      "lines": [
+        "Hello, Commander. I'm Seo Hae-eun, executive officer of ORACLE Korea Branch, assigned to data analysis.",
+        "You are the first commander formally posted to this branch.",
+        "If there's anything you need—or anything I can assist with—please tell me at any time."
+      ]
+    },
+    "haeun_2_5-7": {
+      "lines": [
+        "Before you arrived... this branch had no commander.",
+        "We operated solely on ORACLE directives. For about three months.",
+        "Looking back, I think something was already wrong then."
+      ]
+    },
+    "haeun_2_8-10": {
+      "lines": [
+        "When you work with ORACLE alone for long enough... patterns start to emerge.",
+        "The directives are not consistent. I saw cases where the same situation produced different recommendations.",
+        "At the time, I assumed I was the one misunderstanding it."
+      ]
+    },
+    "haeun_2_11-14": {
+      "lines": [
+        "Commander, may I mention one anomaly in the data?",
+        "There's a faint pattern in the ORACLE data stream. Not omission... selective delay.",
+        "I'm not certain yet. I need more time with it."
+      ]
+    },
+    "haeun_3_15-21": {
+      "lines": [
+        "Commander, I need to say this carefully.",
+        "There is a gap between what ORACLE shows us and the underlying data.",
+        "The evidence is still thin. Even so... I don't trust the pattern."
+      ]
+    },
+    "haeun_3_22-28": {
+      "lines": [
+        "Someone has been opening my work logs lately.",
+        "I don't know if it's ORACLE or someone else.",
+        "...It may be nothing. Sorry."
+      ]
+    },
+    "haeun_4_29-99": {
+      "lines": [
+        "Commander, I need to say this carefully.",
+        "I'm organizing the portions of the deleted ORACLE data that can still be recovered.",
+        "It will take time, but I will bring all of it back."
+      ]
+    },
+    "haeun_4_32-33": {
+      "lines": [
+        "Commander.",
+        "The restoration work on the deleted ORACLE records is moving forward.",
+        "The shape of the manipulation is starting to show. Just give me a little more time."
+      ]
+    },
+    "haeun_4_34-35": {
+      "lines": [
+        "Commander.",
+        "The restoration is near completion.",
+        "Everything ORACLE buried will come into view."
+      ]
+    },
+    "sejin_1_1-4": {
+      "lines": [
+        "Hello, Commander. I'm Yoon Se-jin, researcher and medical officer. I handle EV-Σ biological research and branch medical support.",
+        "If you have questions about anomalies, ask freely. I'll explain what I can.",
+        "It's reassuring to have you here. I look forward to working with you."
+      ]
+    },
+    "sejin_2_5-7": {
+      "lines": [
+        "The way ORACLE processes EV-Σ activity data feels off.",
+        "There are tiny differences between my observations and ORACLE's projections...",
+        "Too consistent to feel accidental. Don't you think?"
+      ]
+    },
+    "sejin_2_8-10": {
+      "lines": [
+        "This was the first time I saw an anomaly up close.",
+        "SPEC-001. The Infected Mannequin. On the lab monitor, its pupils were fully dilated and it didn't move at all.",
+        "The moment a researcher stepped within three meters... it changed instantly."
+      ]
+    },
+    "sejin_2_11-14": {
+      "lines": [
+        "The condition of the research equipment here is... difficult, honestly.",
+        "The microscope can't reach paper-grade magnification, and the sample storage units drift by plus or minus two degrees.",
+        "To produce reliable data with this setup, half a day disappears into calibration."
+      ]
+    },
+    "sejin_3_15-21": {
+      "lines": [
+        "I've realized something while studying anomalies.",
+        "They react to things. They avoid things. Sometimes they move as a group.",
+        "They're not just infected organisms. There's a structure to them."
+      ]
+    },
+    "sejin_3_22-28": {
+      "lines": [
+        "I've kept comparing ORACLE's prediction model against my own observations.",
+        "The error always leans in the same direction. That isn't chance.",
+        "The feeling that someone adjusted the parameters on purpose is getting harder to ignore."
+      ]
+    },
+    "sejin_4_29-99": {
+      "lines": [
+        "The inhibitor research is progressing.",
+        "I found a compound that can delay conversion in Phase 0 subjects by forty percent.",
+        "If this works... we can still save people."
+      ]
+    },
+    "jaehyuk_1_1-4": {
+      "lines": [
+        "Commander, I'm Lim Jae-hyeok, intelligence systems officer. I handle branch security infrastructure and information collection and analysis.",
+        "ORACLE linkage and terminal communications also fall under my scope. If you need anything system-related, let me know.",
+        "I look forward to working with you."
+      ]
+    },
+    "jaehyuk_2_5-7": {
+      "lines": [
+        "May I brief you on the infrastructure inspection?",
+        "Three pipe sections are corroded, and two power distributors are already past replacement timing.",
+        "Three months without a commander left a real maintenance gap."
+      ]
+    },
+    "jaehyuk_2_8-10": {
+      "lines": [
+        "When I first encountered the ORACLE system, I was shocked.",
+        "A branch of this size shouldn't have access to an AI system at this level. It felt excessive.",
+        "Lately I've been asking a different question: why was a system like this deployed here?"
+      ]
+    },
+    "jaehyuk_2_11-14": {
+      "lines": [
+        "I've been mapping the terminal architecture.",
+        "Structurally it looks like three layers. In practice it's at least five.",
+        "There is a layer I can't access with my current clearance."
+      ]
+    },
+    "jaehyuk_3_15-21": {
+      "lines": [
+        "Communications sensitivity keeps degrading.",
+        "The parts need replacement, but our resupply request has been rejected three times.",
+        "ORACLE keeps repeating the same answer: current performance is sufficient."
+      ]
+    },
+    "jaehyuk_3_22-28": {
+      "lines": [
+        "There is a layer inside the ORACLE architecture that I still can't explain.",
+        "Data appears to be leaving through it. I can't prove it yet.",
+        "Give me a little more time and I'll know what it is."
+      ]
+    },
+    "jaehyuk_4_29-99": {
+      "lines": [
+        "Commander.",
+        "There are things I've learned about the ORACLE system.",
+        "I'll report them when the timing is right. Right now... it's still too dangerous."
+      ]
+    },
+    "weber_4_29-35": {
+      "lines": [
+        "Good evening, Commander.",
+        "The fact that you're still here means you haven't given up yet.",
+        "Finding the truth inside a world built by ORACLE isn't easy. But it isn't impossible either."
+      ]
+    },
+    "weber_4_33-35": {
+      "lines": [
+        "Commander Lee Jung-cheol.",
+        "My organization is not perfect either. But one thing is certain...",
+        "If Korea falls, ORACLE loses data. We lose people.",
+        "That difference is what separates us."
+      ]
+    },
+    "foster_4_31-35": {
+      "lines": [
+        "...Awkward, isn't it? It is for me too.",
+        "I don't regret what I did to your people. But I can admit it was pointless.",
+        "Whatever you do here, it'll probably be better than what I'd have done."
+      ]
+    },
+    "foster_4_33-35": {
+      "lines": [
+        "There's something you should know.",
+        "What ORACLE calls an experiment—it isn't limited to Korea.",
+        "Philadelphia. Kyushu. Other containment lines erased from the public record. It's the same structure everywhere.",
+        "The difference is that Korea is the successful case. That's what makes it more dangerous."
+      ]
+    },
+    "soyoung_4_32-35": {
+      "lines": [
+        "Commander, I've organized today's analysis results.",
+        "Seo Hae-eun's methodology is exceptionally systematic. Thanks to that, I've adapted faster than expected.",
+        "...I think coming to this branch was the right decision."
+      ]
+    },
+    "soyoung_4_34-35": {
+      "lines": [
+        "I've been mapping ORACLE's data flow.",
+        "That selective delay Seo Hae-eun identified... I've confirmed it too.",
+        "This isn't a bug. It's intentional filtering.",
+        "There's a pattern you need to see, Commander."
+      ]
+    }
+  },
+  "eveningResponses": {
+    "doyun_1_1-3": {
+      "a": {
+        "label": "Good. I'll trust you with the field.",
+        "reply": "...Thank you. I won't disappoint you."
+      },
+      "b": {
+        "label": "Send me a field-status report first.",
+        "reply": "Understood. I'll have it organized by tomorrow."
+      }
+    },
+    "doyun_1_4-6": {
+      "a": {
+        "label": "That was the right call.",
+        "reply": "...Thank you, Commander."
+      },
+      "b": {
+        "label": "Next time, report first.",
+        "reply": "...Understood."
+      }
+    },
+    "haeun_1_1-3": {
+      "a": {
+        "label": "Good. I look forward to working with you.",
+        "reply": "Yes. I'll do my best."
+      },
+      "b": {
+        "label": "Prepare the situation report.",
+        "reply": "It's already organized. Please review it when you can."
+      }
+    },
+    "haeun_1_4-6": {
+      "a": {
+        "label": "Don't overwork yourself. Rest when you can.",
+        "reply": "...Thank you. I think I needed to hear that."
+      },
+      "b": {
+        "label": "Manage your condition carefully.",
+        "reply": "Understood."
+      }
+    },
+    "sejin_1_1-3": {
+      "a": {
+        "label": "Likewise. Let's work well together.",
+        "reply": "Yes! I'm looking forward to it, Commander."
+      },
+      "b": {
+        "label": "Walk me through the current research status.",
+        "reply": "Of course. I'll organize it for you."
+      }
+    },
+    "sejin_1_4-6": {
+      "a": {
+        "label": "Don't push yourself too far.",
+        "reply": "...Thank you. No one's said that to me before."
+      },
+      "b": {
+        "label": "Report the results when they come in.",
+        "reply": "Understood."
+      }
+    },
+    "jaehyuk_1_1-3": {
+      "a": {
+        "label": "Good. I'll leave the systems to you.",
+        "reply": "Thank you. I'll take responsibility for them."
+      },
+      "b": {
+        "label": "I want a full systems status report.",
+        "reply": "Understood. I'll organize it and send it up."
+      }
+    },
+    "doyun_2_11-14": {
+      "a": {
+        "label": "Then we hold the line together.",
+        "reply": "...Understood. I'll follow your lead, Commander."
+      },
+      "b": {
+        "label": "Then we build the strategy properly.",
+        "reply": "Understood. I'll prepare an operations plan."
+      }
+    },
+    "haeun_2_11-14": {
+      "a": {
+        "label": "Then we verify it together.",
+        "reply": "Yes. If you review it with me, the analysis will go faster."
+      },
+      "b": {
+        "label": "Gather more proof first.",
+        "reply": "Understood. I'll keep digging."
+      }
+    },
+    "haeun_4_32-33": {
+      "a": {
+        "label": "Do it carefully, not quickly.",
+        "reply": "Yes. I will not miss a single fragment."
+      },
+      "b": {
+        "label": "Keep me updated.",
+        "reply": "I will summarize the progress every day."
+      }
+    },
+    "haeun_4_34-35": {
+      "a": {
+        "label": "Dig all the way through.",
+        "reply": "...I will uncover it. All of it."
+      },
+      "b": {
+        "label": "Keep the restored files safe.",
+        "reply": "Yes. They are backed up twice."
+      }
+    },
+    "haeun_4_29-99": {
+      "a": {
+        "label": "Let's uncover the truth together.",
+        "reply": "...Yes. I will stay with this to the end."
+      },
+      "b": {
+        "label": "Don't push yourself too hard.",
+        "reply": "...Thank you. I will be careful."
+      }
+    },
+    "sejin_2_11-14": {
+      "a": {
+        "label": "Keep the research moving.",
+        "reply": "Thank you. I'll tell you the moment I have something solid."
+      },
+      "b": {
+        "label": "Look after your health first.",
+        "reply": "...Yes. I'll be careful."
+      }
+    },
+    "jaehyuk_2_11-14": {
+      "a": {
+        "label": "That's a useful find.",
+        "reply": "Thank you. I'll dig deeper."
+      },
+      "b": {
+        "label": "Don't let ORACLE notice.",
+        "reply": "Understood. I'll keep it quiet."
+      }
+    },
+    "jaehyuk_2_18-24": {
+      "a": {
+        "label": "We'll deal with it together.",
+        "reply": "Yes. With you here, I think we can."
+      },
+      "b": {
+        "label": "Take it step by step.",
+        "reply": "Understood. I'll proceed in order."
+      }
+    }
+  }
+});
+
+// --- lang-content-en.phase8-news-logs.js ---
+  window.TS_I18N.mergeContent('en', {
+  "newsItems": {
+    "[국내] 강원 동부 봉쇄 구역, 48시간 무사고 기록 경신": {
+      "type": "domestic",
+      "text": "Eastern Gangwon containment zone posts a new 48-hour incident-free record."
+    },
+    "[국내] 봉쇄선 유지율 전월 대비 12% 향상": {
+      "type": "domestic",
+      "text": "Containment-line integrity improves by 12% month over month."
+    },
+    "[국내] 강원 봉쇄 구역, 이번 주 민간 침투 시도 0건": {
+      "type": "domestic",
+      "text": "No civilian intrusion attempts recorded in the Gangwon containment zone this week."
+    },
+    "[국내] White Shield, '봉쇄 작전 효율 역대 최고' 평가": {
+      "type": "domestic",
+      "text": "White Shield rates current containment operations as the most efficient on record."
+    },
+    "[국내] 강원도 일대 이변체 활동 빈도 감소세": {
+      "type": "domestic",
+      "text": "Anomaly activity across Gangwon continues to decline."
+    },
+    "[국내] 봉쇄 구역 인근 주민 불안 지수 하락 추세": {
+      "type": "domestic",
+      "text": "Anxiety indicators among residents near the containment zone trend downward."
+    },
+    "[국내] 특재사, DMZ 이변체 침투 신속 격퇴 — 방벽 효율성 재확인": {
+      "type": "domestic",
+      "text": "Special Response Command repels a DMZ anomaly incursion in rapid time, reaffirming barrier efficiency."
+    },
+    "[국내] 생체감지 센서 전국 보급률 82% 돌파, 조기감지 체계 완성 임박": {
+      "type": "domestic",
+      "text": "Nationwide biometric sensor deployment passes 82%, bringing the early-detection grid close to completion."
+    },
+    "[국내] 봉쇄 구역 남측 경계, 야간 이상 활동 증가 추세": {
+      "type": "domestic",
+      "text": "Abnormal nighttime activity is rising along the southern containment perimeter."
+    },
+    "[국내] 강원 일대 주민, '폭발음 유사 소음' 신고 3건": {
+      "type": "domestic",
+      "text": "Residents across Gangwon file three reports of blast-like sounds."
+    },
+    "[국내] 봉쇄 경계 장비 노후화 우려 제기": {
+      "type": "domestic",
+      "text": "Concerns are being raised over aging perimeter equipment."
+    },
+    "[국내] 정규군 교대조 운용 지연, 봉쇄 공백 발생": {
+      "type": "domestic",
+      "text": "Delayed regular-force rotations create temporary gaps in containment coverage."
+    },
+    "[국내] 민간 드론이 봉쇄 구역 상공 진입 — 군 당국 조사 중": {
+      "type": "domestic",
+      "text": "A civilian drone enters restricted airspace over the containment zone; military authorities are investigating."
+    },
+    "[국내] 강원 동부 감시 카메라 3대 동시 고장, 원인 불명": {
+      "type": "domestic",
+      "text": "Three surveillance cameras in eastern Gangwon fail simultaneously; cause remains unknown."
+    },
+    "[국내] 해안도시 경제 4년째 침체 — 인구 유출로 관광업 붕괴": {
+      "type": "domestic",
+      "text": "A coastal city's economy enters its fourth year of decline as population loss collapses tourism."
+    },
+    "[국내] 강원 격리구역 원주민 이주 10년, 보상 소송 법정 공방": {
+      "type": "domestic",
+      "text": "Ten years after native residents were relocated from the Gangwon quarantine zone, compensation lawsuits remain in court."
+    },
+    "[국내] 강원 산간 지역 보급로, 폭우로 일시 차단": {
+      "type": "domestic",
+      "text": "A supply route through the Gangwon highlands is temporarily cut off by heavy rain."
+    },
+    "[국내] 군수 물자 가격 상승세 지속": {
+      "type": "domestic",
+      "text": "Prices for military supplies continue to rise."
+    },
+    "[국내] 의약품 공급 업체, 봉쇄 지역 배송 지연 통보": {
+      "type": "domestic",
+      "text": "A pharmaceutical supplier issues notice of delivery delays to containment regions."
+    },
+    "[국내] 비상 식량 비축량, 권장 기준의 62%로 하락": {
+      "type": "domestic",
+      "text": "Emergency food reserves fall to 62% of the recommended threshold."
+    },
+    "[국내] 백신 분배 형평성 논란 — 도시 주민 접종 순위 뒤로 밀려": {
+      "type": "domestic",
+      "text": "Vaccine distribution fairness comes under scrutiny as urban residents are pushed down the priority list."
+    },
+    "[해외] 서아프리카 접경 의료팀, 국제 의료단체 긴급 철수 결정": {
+      "type": "foreign",
+      "text": "An international medical organization orders an emergency withdrawal for a medical team near the West African border."
+    },
+    "[해외] 함경북도 접경 지역 위성 관측 불가 상태 지속": {
+      "type": "foreign",
+      "text": "Satellite observation remains unavailable along the North Hamgyeong border region."
+    },
+    "[해외] 유럽 3개국, EV-Σ 봉쇄 협력 강화 합의": {
+      "type": "foreign",
+      "text": "Three European states agree to deepen EV-Σ containment cooperation."
+    },
+    "[해외] 필라델피아 Z-Ω 구역, 민간 접근 금지 구역 확대": {
+      "type": "foreign",
+      "text": "Civilian exclusion boundaries are expanded around Philadelphia's Z-Ω zone."
+    },
+    "[해외] 서아프리카 접경 연구팀, 통신 두절 72시간째": {
+      "type": "foreign",
+      "text": "A research team near the West African border has been out of contact for 72 hours."
+    },
+    "[해외] WHO, EV-Σ 위협 등급 재평가 검토 중": {
+      "type": "foreign",
+      "text": "The WHO is reviewing a reassessment of the EV-Σ threat rating."
+    },
+    "[해외] 일본 큐슈 남부 해안 봉쇄선 2km 확장": {
+      "type": "foreign",
+      "text": "Japan extends the southern Kyushu coastal containment line by 2 km."
+    },
+    "[해외] 유럽 연합, 이변체 대응 합동 연구 프로그램 발표": {
+      "type": "foreign",
+      "text": "The European Union announces a joint research program for anomaly response."
+    },
+    "[해외] 인도양 소국 3곳, EV-Σ 확산 우려로 국경 폐쇄": {
+      "type": "foreign",
+      "text": "Three small Indian Ocean states close their borders over fears of EV-Σ spread."
+    },
+    "[해외] 미국 동부 봉쇄 구역, 민간 자원봉사 프로그램 중단": {
+      "type": "foreign",
+      "text": "A civilian volunteer program is suspended in a containment zone on the U.S. East Coast."
+    },
+    "[해외] 미국 ARES Division 특재사 합동훈련 개시 — 한미 연합 역량 강화": {
+      "type": "foreign",
+      "text": "The U.S. ARES Division begins joint training with the Special Response Command, strengthening Korea-U.S. operational capacity."
+    },
+    "[해외] 일본, 한국의 생체감지 기술 도입 논의 — 기술이전 협상 개시": {
+      "type": "foreign",
+      "text": "Japan opens talks on adopting Korean biometric detection technology and begins transfer negotiations."
+    },
+    "[해외] 중국발 변이체 월경 시도 증가 — 서해 NADL 센서 반응 100회 돌파": {
+      "type": "foreign",
+      "text": "Cross-border anomaly incursion attempts from China increase as NADL sensors in the Yellow Sea exceed 100 triggers."
+    },
+    "[국내] 익명 제보 — '민간 군사기업, 강원 일대 장비 반입 포착'": {
+      "type": "domestic",
+      "text": "Anonymous tip claims a private military company was seen moving equipment into the Gangwon region."
+    },
+    "[국내] 미확인 외국인 3명, 강원 산간 지역 목격 제보": {
+      "type": "domestic",
+      "text": "Three unidentified foreign nationals are reportedly sighted in the Gangwon mountains."
+    },
+    "[국내] 강원 해안가에서 비등록 선박 접안 흔적 발견": {
+      "type": "domestic",
+      "text": "Signs of an unregistered vessel docking are found along the Gangwon coast."
+    },
+    "[국내] 정체불명 통신 장비, 봉쇄 구역 외곽에서 회수": {
+      "type": "domestic",
+      "text": "Unidentified communications equipment is recovered outside the containment perimeter."
+    },
+    "[국내] 군 당국, '비공식 작전 지원 세력' 존재 조사 착수": {
+      "type": "domestic",
+      "text": "Military authorities begin investigating the existence of an unofficial operational support group."
+    },
+    "[국내] 국회 보건위, 'Phase 1+ 자동 제거 절차 투명화' 요구 결의": {
+      "type": "domestic",
+      "text": "The National Assembly Health Committee passes a motion demanding transparency for automatic Phase 1+ removal procedures."
+    },
+    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 관계자, '봉쇄 성공은 단독 성과 아냐' 익명 발언\n[삭제됨]": {
+      "type": "redacted",
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Anonymous ████ official: “Containment success was not achieved alone.”\n[Deleted]"
+    },
+    "[분류 오류 — 자동 삭제 예정]\n[국내] 해안 방벽 기술 데이터, 비공식 외부 제공 정황\n[삭제됨]": {
+      "type": "redacted",
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Signs of unofficial external transfer involving coastal barrier technical data.\n[Deleted]"
+    },
+    "[분류 오류 — 자동 삭제 예정]\n[국내] White Shield 내부 보고 — '봉쇄 성공률 미분류 외부 요인 31%'\n[삭제됨]": {
+      "type": "redacted",
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] White Shield internal report: “31% of containment success derives from an unclassified external factor.”\n[Deleted]"
+    },
+    "[분류 오류 — 자동 삭제 예정]\n[국내] ORACLE 데이터 전송 로그 — 수신처: ██████\n[삭제됨]": {
+      "type": "redacted",
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ORACLE data transmission log — recipient: ██████\n[Deleted]"
+    },
+    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 인더스트리, 방벽 장비 납품 전 계약서 원본 누락\n[삭제됨]": {
+      "type": "redacted",
+      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ████ Industries, original pre-delivery contract for barrier equipment is missing.\n[Deleted]"
+    },
+    "[국내] 대가 인더스트리, EV-Σ Phase 0 백신 2세대 임상 성공 발표": {
+      "type": "domestic",
+      "text": "Daega Industries announces successful Phase II clinical results for its second-generation EV-Σ Phase 0 vaccine."
+    },
+    "[국내] DG 마스크 독점 납품 계약 반발 — 공정위, 경쟁 시장 조성 압박": {
+      "type": "domestic",
+      "text": "Backlash grows against DG Mask's exclusive supply contract as the Fair Trade Commission pushes for a competitive market."
+    },
+    "[국내] 대가 방산부문, 한국방벽 신형 장비 단독 수주 — 업계 반발": {
+      "type": "domestic",
+      "text": "Daega's defense division wins a sole contract for new Korea Barrier equipment, drawing industry backlash."
+    },
+    "[국내] 대가 회장 공개석상 등장 — '국가와 함께 축적한 기록' 발언 화제": {
+      "type": "domestic",
+      "text": "The chairman of Daega appears in public and draws attention with a remark about records accumulated with the nation."
+    },
+    "[국내] DG 바이오, EV-Σ Phase 0 억제제 임상 3상 진입 — 해외 관심 폭증": {
+      "type": "domestic",
+      "text": "DG Bio enters Phase III clinical trials for an EV-Σ Phase 0 inhibitor, triggering surging foreign interest."
+    },
+    "[국내] 대가 인더스트리 주가 사상 최고치 — 국방·바이오·테크 동반 호조": {
+      "type": "domestic",
+      "text": "Daega Industries stock reaches an all-time high as defense, biotech, and tech divisions all gain."
+    },
+    "[해외] 메리디안 BioAsset Division, 한국 시장 진입 재시도 — 정부 심의 지연": {
+      "type": "foreign",
+      "text": "Meridian's BioAsset Division attempts to re-enter the Korean market as government review stalls."
+    },
+    "[해외] 메리디안 PMC, 동남아 작전 성과 — 글로벌 입지 확대": {
+      "type": "foreign",
+      "text": "Meridian PMC reports operational success in Southeast Asia, expanding its global footprint."
+    },
+    "[해외] 메리디안, 외국인 기관 대상 백신 공급 요청 — 한국 정부 거부": {
+      "type": "foreign",
+      "text": "Meridian requests permission to supply vaccines to foreign agencies; the Korean government rejects the proposal."
+    },
+    "[해외] 유럽 의회, 메리디안 로비 의혹 조사 착수": {
+      "type": "foreign",
+      "text": "The European Parliament opens an inquiry into Meridian lobbying allegations."
+    },
+    "[해외] 메리디안 CEO, '한국은 공정 경쟁의 예외' 작심 발언": {
+      "type": "foreign",
+      "text": "Meridian's CEO states bluntly that “Korea is an exception to fair competition.”"
+    },
+    "[해외] 메리디안 소속 민간 연구원, 강원 접경 지역 입국 시도 적발": {
+      "type": "foreign",
+      "text": "A civilian researcher affiliated with Meridian is caught attempting entry near the Gangwon border sector."
+    }
+  },
+  "oracleLogs": {
+    "LOG-001": {
+      "title": "Branch Establishment Order",
+      "content": "BRANCH DESIGNATION: KR-INIT-001\nLOCATION: [CLASSIFIED — GANGWON PROVINCE]\nMANDATE: Observe and support the Republic of Korea EV-Σ containment structure\nCOMMANDER: PILEHEAD [Lee Jung-cheol]\nSTATUS: ACTIVE"
+    },
+    "LOG-002": {
+      "title": "EV-Σ Threat Level Summary",
+      "content": "GLOBAL THREAT LEVEL: CRITICAL\nRepublic of Korea containment retention rate: Top 3 globally\nNotes: Primary cause of containment success remains incomplete. External factors may be present."
+    },
+    "LOG-003": {
+      "title": "Prometheus Threat Classification",
+      "content": "DESIGNATION: HOSTILE ORGANIZATION\nTHREAT LEVEL: HIGH\nActivity inside Korea: CONFIRMED\nObjective: UNKNOWN\nRecommendation: Report on contact. Independent approach prohibited."
+    },
+    "LOG-004": {
+      "title": "SPEC-011 Observation Record",
+      "content": "CODENAME: Shell Talker\nTYPE: Anomaly — Vocal Mimicry\nThreat Level: MODERATE\nNotes: Stores and reproduces vocal patterns from victims. Retention period unknown (estimated in years)."
+    },
+    "LOG-005": {
+      "title": "SPEC-012 Observation Record",
+      "content": "CODENAME: Blood Pit\nTYPE: Anomaly — Environmental Corruption\nThreat Level: HIGH\nNotes: Soil and water mutation confirmed around the habitat. The ground itself may constitute part of the subject."
+    },
+    "LOG-006": {
+      "title": "Seo Hae-eun Analysis Report #1",
+      "content": "[Unofficial Record]\nDetected a 0.03% mismatch during ORACLE data-stream pattern analysis.\nCause: Unknown. Further investigation required.\n— Seo Hae-eun"
+    },
+    "LOG-007": {
+      "title": "Excerpt from Yoon Se-jin's Observation Journal",
+      "content": "[Personal Record — Unofficial]\nAnomaly behavior patterns differ slightly from the ORACLE prediction model.\nWhat troubles me is that the direction of error is always the same.\n— Yoon Se-jin"
+    },
+    "LOG-008": {
+      "title": "Unclassified Activity Report",
+      "content": "Containment perimeter exterior — signs of unidentified activity detected\nPattern match: 0\nDatabase match unavailable.\nResidual-trace analysis indicates professional concealment techniques."
+    },
+    "LOG-009": {
+      "title": "DPRK Black Zone Reference File",
+      "content": "[Restricted Access — LEVEL 5]\nAnomalous conditions along the North Hamgyeong border: multiple reports of consciousness/body separation\nCause: Presumed EV-Σ-related [UNCONFIRMED]\n[OBSERVATION SUSPENDED — SESSION TERMINATED]"
+    },
+    "LOG-DEFECTOR-1": {
+      "title": "Defector Interrogation Record",
+      "content": "[Field Record]\nOne defector from the North Hamgyeong border region secured.\nStatement: Witnessed numerous “standing people” — residents in a state of cognitive loss.\nFirst testimony concerning Black Zone interior conditions.\n— Field report by Kang Do-yun"
+    },
+    "LOG-010": {
+      "title": "Temporary Authorization Record [Fragment]",
+      "content": "[LOG FRAGMENT — PARTIALLY CORRUPTED]\nGRANT — TEMP_AUTHOR...\nBRANCH_KR_IN...\nSOURCE: [RE████ED]\nEXPIRY: UPON_FULL_EST... || OBSER...\n[END FRAGMENT]"
+    },
+    "LOG-011": {
+      "title": "Analysis of Korean Defensive Performance",
+      "content": "Republic of Korea containment success rate: 97.3%\nUnclassified external factor: 31%\nDetails: [INSUFFICIENT DATA — FURTHER COLLECTION REQUIRED]"
+    },
+    "LOG-012": {
+      "title": "Terminal Interface Anomaly Report",
+      "content": "[Technical Report — Lim Jae-hyeok]\nAn unregistered interface element appeared at the bottom of the display.\nNon-reproducible. Assessment: cache fault.\n\n[ORACLE annotation: The referenced interface element is not registered in this system.]"
+    },
+    "LOG-013": {
+      "title": "SPEC-001 Observation Record",
+      "content": "CODENAME: Infected Mannequin\nTYPE: M-TYPE — EV-Σ Phase 1\nThreat Level: CAUTION (passive before stimulus)\n\nAppearance: Skin exhibits a plastic-like sheen. Pupils fixed in full dilation.\nBehavior: Remains completely motionless for hours to days. Turns violent within 0.3 seconds on contact.\n\nContainment: No approach within 3 m. Thermal scanner required."
+    },
+    "LOG-014": {
+      "title": "SPEC-003 Observation Record",
+      "content": "CODENAME: Brood Drone\nTYPE: H-TYPE — Hive subordinate unit\nThreat Level: DANGER (in groups)\n\nAppearance: Approximately 60% of human size. Exoskeletal. Single eye. Hooked forelimbs.\nBehavior: No independent will. Functional shutdown within 12 hours if separated.\nCollective response speed exceeds human norms.\n\nWarning: There is never only one."
+    },
+    "LOG-CE-017": {
+      "title": "Compliance Protocol Document Shared",
+      "content": "An excerpt from the ORACLE PROXY NETWORK operations manual obtained by Prometheus was shared with the team. The voluntary compliance protocol is not described as a decision-support procedure, but as a psychological compliance structure designed to shape the commander's available choices."
+    },
+    "LOG-SUPPLY-102": {
+      "title": "Abandoned Building Supplies Secured",
+      "content": "Military supplies left by the previous unit were recovered from an abandoned building near the branch perimeter. Food, medicine, and communications parts were brought in, and the field report notes that additional search areas may remain."
+    },
+    "LOG-FOSTER-CASE": {
+      "title": "Nick Foster Past Operation File",
+      "content": "Recovered fragments indicate that Nick Foster used an operative inside the containment line as bait during a past operation near the Korea Branch. The official report condensed the incident into the phrase tactical misjudgment, but field personnel have not forgotten it."
+    },
+    "LOG-015": {
+      "title": "SPEC-008 Observation Record",
+      "content": "CODENAME: Spore Phantom\nTYPE: S-TYPE — Spore Aggregate\nThreat Level: CAUTION\n\nAppearance: Humanoid silhouette. Physical structure unclear.\nDisperses under light, re-forms in darkness.\nBehavior: Spore density spikes when approached. Inhalation hazard.\n\nContainment: Maintain illumination. Respiratory protection required.\nPhysical elimination impossible. Only spore-density reduction is feasible."
+    },
+    "LOG-016": {
+      "title": "Prometheus Operation File",
+      "content": "Operation Name: COASTAL MIRROR\nObjective: Joint operation of the Korean coastal barrier system and technical exchange\nParticipants: Prometheus Korea Operations Team\n\nOf Korea's 97.3% containment success rate,\n31% of the unclassified external factor = unofficial Prometheus support\n\n[THIS FILE HAS BEEN DELETED BY ORACLE]"
+    },
+    "LOG-017": {
+      "title": "EV-Σ Suppressant Research Notes",
+      "content": "[Research Record — Yoon Se-jin]\n\nA compound capable of delaying phase transition has been identified.\nReduces the self-modification rate of EV-Σ prions in blood by 40%.\n\nPrototype stage. Field testing required.\n\nThis is not full recovery; it buys transition time for Phase 0 patients."
+    },
+    "LOG-018": {
+      "title": "Seo Hae-eun Final Report",
+      "content": "[Unofficial — Encrypted Storage]\n\nList of data deleted by ORACLE:\n1. Prometheus COASTAL MIRROR operational intelligence\n2. Transmission records for Korean coastal barrier technical data\n3. Full contents of the GRANT temporary authorization\n4. ORACLE activity records concerning Korea prior to branch establishment\n\nConclusion: ORACLE is not protecting Korea.\nIt is maintaining containment while collecting Korean classified assets.\n\n— Seo Hae-eun"
+    },
+    "LOG-019": {
+      "title": "ORACLE Concealed Transmission Record",
+      "content": "[Technical Analysis — Lim Jae-hyeok]\n\nExternal transmissions confirmed daily between 02:00 and 04:00.\nDestination: ORACLE Headquarters (estimated)\n\nEstimated transmitted datasets:\n- Korean military network access data\n- Coastal barrier technical specifications\n- Pre-branch operational logs\n- Agent behavior patterns + loyalty indicators\n\nORACLE is using us to monitor Korea."
+    },
+    "LOG-EV-UNLOCK": {
+      "title": "Evidence Analysis Module Activated",
+      "content": "[Technical Report — Lim Jae-hyeok]\n\nEvidence Analysis Framework v1.0 terminal deployment complete.\n\nFunction: Cross-analysis of collected data fragments\nAccess Authority: Branch Commander only\n\nScattered logs, observation records, and incident reports\ncan now be combined to derive hidden patterns.\n\nEvidence combinations are available from the evening interview terminal.\nCollection status can be reviewed from the command terminal's intelligence index."
+    },
+    "LOG-RECON-P1": {
+      "title": "Independent Surveillance Report: Comms Pattern",
+      "content": "[Unofficial Recon Record]\n\nPrometheus communication cycle: Every 72 hours\nCipher-change pattern: Rotates on a three-day cycle\n\nCollected outside the ORACLE reporting channel.\nThis pattern was not included in ORACLE analysis."
+    },
+    "LOG-RECON-D1": {
+      "title": "ORACLE Data Discrepancy Record",
+      "content": "[Independent Investigation Record]\n\nThree discrepancy points confirmed:\n1. Containment-line sensors — traces of a 0.7% bias correction\n2. Personnel routes — blank section between 02:00 and 04:00\n3. Resource expenditure — unregistered consumption present\n\nORACLE is filtering the data."
+    },
+    "LOG-RECON-P2": {
+      "title": "Radio Signal Origin Analysis",
+      "content": "[Independent Tracking Record]\n\nTriangulation result for an unidentified radio signal:\nEstimated origin — 3.2 km northeast of the containment line\nSignal profile: Low-power one-way transmission. Non-ORACLE protocol.\n\nPossible Prometheus forward outpost."
+    },
+    "LOG-RECON-S1": {
+      "title": "Preserved Observation Record — Yoon Se-jin",
+      "content": "[Preserved Unofficial Record]\n\nCopy of Yoon Se-jin's anomaly-behavior observation journal.\nIncludes raw data excluded from ORACLE reporting scope.\n\nPrediction-model bias — evidence of intentional adjustment.\nThis record was never reported to ORACLE."
+    },
+    "LOG-RECON-P3": {
+      "title": "Prometheus Frequency-Band Analysis",
+      "content": "[Independent Analysis Record]\n\nFrequency-shift pattern decryption progress: 40%\nBand in use: Concealed channel inside civilian spectrum\n\nImpossible to identify without independent analysis.\nCommunications beyond ORACLE surveillance coverage."
+    },
+    "LOG-RECON-L1": {
+      "title": "Independent Anomaly Research Data",
+      "content": "[Independent Research Record]\n\nIndependent dissection results — raw data captured before ORACLE filtering.\nDetected a suppression factor affecting EV-Σ phase transition within tissue structure.\n\nThis dataset was omitted from the ORACLE report.\nThe value of independent research has been confirmed."
+    },
+    "LOG-025": {
+      "title": "SPEC-004 Observation Record",
+      "content": "CODENAME: Seed Spreader\nTYPE: D-TYPE — Stationary Dispersal Body\nThreat Level: CRITICAL\n\nAppearance: Height 2–4 m. Plant-like structure with pulsating biological tissue inside.\nIrregular spore cloud discharged from upper sections.\n\nBehavior: No movement capability. Wind-borne spore dispersal radius reaches several kilometers.\nInduces behavioral alteration in exposed organisms (cordyceps-like mechanism).\nBelieved to be a primary cause of Silent Belt formation.\n\nContainment: No approach within a 500 m radius. Removal requires incineration + soil contamination treatment.\nWarning: Incineration risks explosive secondary spore release.\nSpore inhalation = immediate infection.\n\n[LOG-004A] First discovery: Silent Belt perimeter. All animal life missing within a 3 km radius.\n[LOG-004B] Incineration attempt triggered explosive spore release. Four immediate infections.\n→ Full protective suits mandatory."
+    },
+    "LOG-052": {
+      "title": "Seo Hae-eun Retention Confirmed",
+      "content": "Deputy Commander Seo Hae-eun's transfer process has been formally suspended. The Korea Branch has reversed an ORACLE personnel decision once, leaving a visible fracture between internal trust and ORACLE evaluation."
+    },
+    "LOG-029": {
+      "title": "SPEC-015 Observation Record",
+      "content": "CODENAME: Brain Seeker\nTYPE: H-TYPE HIVE (EXILED / AUTONOMOUS)\nThreat Level: HIGH (BASE) / CRITICAL (NAMED)\nEvolution Branch: CONFIRMED (FULL)\n\nAppearance: Height 2.0–2.4 m. Sea-turtle-like skull. No shell remains.\nExposed spine and ribs. Hooked claws 15–20 cm. Grip force 800 kg+.\nHuman facial skin attached across the body surface.\n\nBehavior: Ambush hunter in dark wet spaces. Crushes the skull → feeds directly on the brain.\nLeaves all other tissue untouched. Purpose-driven predation.\n\nLearning: Intelligence rises in proportion to cumulative predation.\n10+ kills: route-pattern learning.\n30+ kills: tool use, trap placement, attempted primitive speech.\nUpper limit unknown.\n\nNAMED SPECIMEN: Registered after 50+ cumulative kills or repeated recovery-team losses.\nReceives BS-[REGION]-[SERIAL] designation. Threat escalates to CRITICAL.\n\nContainment: Solo entry prohibited. Acoustic and thermal scans required in advance.\nDirect impact on the skull is most effective — vulnerable due to shell loss.\n\n[LOG-015A] Ambush at a sewer entrance. One operative missing. Only an emptied skull remained.\n[LOG-015B] It knew the patrol schedule. Ambush pattern changed three times.\n[LOG-015C] BS-SEOUL-03 registered. Estimated cumulative kills: 67. Confirmed fatalities: 14."
+    }
+  }
+});
+
+// --- lang-content-en.phase9-cards.js ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "CA-001": {
+        msg: "First day at the branch.\n\n[ORACLE: Recording the appointment of Commander Lee Jung-cheol. Initiating KR-INIT-001 operational normalization procedure. Initialization completion rate: 97.1%.]\n\nThe senior staff are lined up outside your office.",
+        leftLabel: "Receive the status report immediately",
+        rightLabel: "Inspect the branch personally first"
+      },
+      "CA-001B": {
+        msg: "First day at the branch.\n\n[ORACLE: Recording the appointment of Commander Lee Jung-cheol. Initiating KR-INIT-001 operational normalization procedure.]\n\n[ORACLE: Commander aptitude analysis complete — the branch acclimation period can be skipped. Immediate operational deployment is recommended.]\n\nThe senior staff are lined up outside your office.",
+        leftLabel: "Begin with the acclimation period",
+        rightLabel: "Enter expanded operations immediately"
+      },
+      "CA-002": {
+        msg: "The deputy commander outlines branch operations during the three-month command gap.\n\n\"We kept the branch functioning on ORACLE directives alone. Core functions held, but anything requiring judgment was left pending.\"\n\n[ORACLE: 12 pending items. Automatic priority sorting complete. Awaiting commander approval.]",
+        leftLabel: "Process them under ORACLE classification",
+        rightLabel: "Review them personally with the deputy commander"
+      },
+      "CA-003": {
+        msg: "The technician is standing in front of the ORACLE terminal.\n\n\"Commander, would you like an introduction to the ORACLE system? Honestly, an AI at this level is excessive for a branch this size. Ask anything you want.\"\n\n[ORACLE: Activating initial acclimation support mode.]",
+        leftLabel: "Take the introduction",
+        rightLabel: "Later. I want to see the field first"
+      },
+      "CA-004": {
+        msg: "A field agent guides you along the outside of the containment line.\n\n\"This is the eastern patrol route. No signs of anomaly activity.\"\n\n[ORACLE: Containment-line stability 93%. Current threat level LOW. No irregularities detected.]\n\nThe forest is calm enough to look like a mirror.",
+        leftLabel: "Approve route inspection",
+        rightLabel: "Reinforce with ORACLE surveillance"
+      },
+      "CA-005": {
+        msg: "A researcher introduces the laboratory.\n\n\"There are no active samples right now. Maybe because ORACLE keeps rating the threat level low — it's been quiet lately.\"\n\n[ORACLE: Anomaly activity index 0.7. Lowest level on record.]",
+        leftLabel: "Receive the research status report",
+        rightLabel: "Review ORACLE's evaluation criteria"
+      },
+      "CA-006": {
+        msg: "[ORACLE: Today's operational recommendation — reinforce light surveillance on the eastern containment line and verify reserve supply stock.]\n\nEvery item is already sorted by priority.\n\n[ORACLE: Threat level LOW. Following the recommendation is likely to stabilize branch operations.]",
+        leftLabel: "Proceed as recommended",
+        rightLabel: "I'll make the call myself"
+      },
+      "CA-007": {
+        msg: "The supply truck arrived twenty minutes ahead of schedule.\n\n[ORACLE: Supply manifest automatically verified. Food for 11 days, fuel nominal, medical stock grade D+. Select a recommended distribution pattern.]\n\nKang Do-yun: \"For once, it arrived exactly when it should have.\"",
+        leftLabel: "Prioritize medical distribution",
+        rightLabel: "Use ORACLE's distribution recommendation"
+      },
+      "CA-008": {
+        msg: "Lim Jae-hyeok proposes a branch power-system upgrade.\n\n\"The emergency generator circuitry is getting old. ORACLE already ranked the replacement priorities too. It's pretty accurate.\"\n\n[ORACLE: Replacement cost and schedule estimate complete. Branch operational stability is expected to improve after completion.]",
+        leftLabel: "Approve the upgrade",
+        rightLabel: "Current level is sufficient"
+      },
+      "CA-009": {
+        msg: "The agents begin their first regular training cycle.\n\nKang Do-yun: \"This is basic anomaly response training. We'll run it like the real thing.\"\n\n[ORACLE: Recommending training protocol A-3. Designed to minimize injury risk.]",
+        leftLabel: "Use Kang Do-yun's method",
+        rightLabel: "Apply the ORACLE protocol"
+      },
+      "CA-010": {
+        msg: "Weather forecast: clear conditions for the next two days.\n\n[ORACLE: Optimal window for outside work. Recommending containment-line inspection and maintenance. Available window: 2 days.]\n\nSeo Hae-eun: \"The forecast almost perfectly matched ORACLE's projection. It's accurate, as usual.\"",
+        leftLabel: "Conduct full perimeter inspection",
+        rightLabel: "Prioritize interior maintenance"
+      },
+      "CA-011": {
+        msg: "Wildlife movement was detected west of the containment line.\n\n[ORACLE: Unrelated to anomaly activity. Classified as seasonal migration. No response required.]\n\nKang Do-yun: \"I saw it in person too. Just a herd of water deer.\"",
+        leftLabel: "Keep a field record anyway",
+        rightLabel: "Accept the normal-range classification"
+      },
+      "CA-012": {
+        msg: "Yoon Se-jin compiled this week's EV-Σ observation data.\n\n\"The threat level is low, but... the activity radius is narrower than usual. That still feels strange.\"\n\n[ORACLE: Within normal seasonal variance. No further action required.]",
+        leftLabel: "Allow an extended observation window",
+        rightLabel: "Follow ORACLE's judgment"
+      },
+      "CA-013": {
+        msg: "A lightning strike damaged surveillance equipment along the northern outer perimeter.\n\n[ORACLE: Recommending field inspection and temporary repair. Threat level LOW.]\n\nKang Do-yun: \"I'll go myself.\"",
+        leftLabel: "Dispatch Kang Do-yun",
+        rightLabel: "Use remote temporary measures only"
+      },
+      "CA-014": {
+        msg: "Lim Jae-hyeok pauses while reviewing the system log.\n\n\"Commander, ORACLE response latency spiked by 0.8 seconds at 02:17 yesterday. It's the first time on record.\"\n\nA brief silence follows.\n\n\"...Probably server load. Nothing serious.\"\n",
+        leftLabel: "Tell him to keep a record",
+        rightLabel: "Treat it as within normal range"
+      },
+      "CA-015": {
+        msg: "[ORACLE: Abnormal response detected west of the containment line.]\n\nKang Do-yun returns after checking the area.\n\n\"No irregularities. I personally inspected that sector earlier.\"\n\nA moment later, the terminal updates itself.\n\n[ORACLE: Alert canceled. Classified as false positive.]",
+        leftLabel: "Keep the record",
+        rightLabel: "Classify it as false detection"
+      },
+      "CA-016": {
+        msg: "Seo Hae-eun studies an ORACLE summary file and pauses at the screen.\n\n\"I wouldn't call it serious yet, but the summary and raw source show slightly different values for the same time block.\"\n\n\"...I probably read it wrong.\"\n",
+        leftLabel: "Let's verify it together",
+        rightLabel: "No need to recheck"
+      },
+      "CA-017": {
+        msg: "During a night inspection, an interior temperature sensor briefly outputs an abnormal value.\n\n[ORACLE: Sensor calibration error. Automatic correction complete.]\n\nLim Jae-hyeok: \"Well... ORACLE handled it on its own.\"\n\nHe keeps watching the screen for a little too long.",
+        leftLabel: "Order a manual sensor check",
+        rightLabel: "ORACLE already handled it. Let it pass"
+      },
+      "CA-018": {
+        msg: "[ORACLE: Weekly operations summary. All indicators normal. Commander acclimation rating: High.]\n\nA brief line flickers at the bottom of the screen.\n\n[OBSERVER NOTE: Variance 0.4% — classification pending]\n\nThe text vanishes after 0.3 seconds.\n\nThe terminal continues as if nothing happened.",
+        leftLabel: "...I saw something. Record it",
+        rightLabel: "Treat it as screen afterimage"
+      },
+      "CA-019": {
+        msg: "The maintenance team found a minor leak in the branch water line.\n\n\"Water pressure isn't affected. If we move quickly, it can be fixed in two days.\"\n\nLim Jae-hyeok is already waiting with the replacement parts list.",
+        leftLabel: "Order immediate repair",
+        rightLabel: "Patch it temporarily with waterproof tape"
+      },
+      "CA-020": {
+        msg: "A freeze crack has been found in the eastern outer wall.\n\n\"It's not dangerous yet.\"\n\nKang Do-yun: \"We have enough repair material. When do we start?\"",
+        leftLabel: "Start repair work now",
+        rightLabel: "Wait until the next supply run"
+      },
+      "CA-021": {
+        msg: "Supply staff recommend a full warehouse inventory audit.\n\n\"We haven't touched it properly in three months. We don't even know if anything's missing.\"\n\nA single day would give you a full picture.",
+        leftLabel: "Conduct full audit",
+        rightLabel: "Leave it for later"
+      },
+      "CA-022": {
+        msg: "During the regular safety inspection, two emergency-exit locks were found to be rusted and unreliable.\n\nKang Do-yun: \"If they won't open in an emergency, they're useless.\"",
+        leftLabel: "Replace them immediately",
+        rightLabel: "Handle it during the next scheduled inspection"
+      },
+      "CA-023": {
+        msg: "A sudden shower begins with no forecast warning.\n\nA work team is still operating outside the containment line.\n\nKang Do-yun: \"We have enough rain gear. Your call?\"",
+        leftLabel: "Order immediate return",
+        rightLabel: "Issue rain gear and let them continue"
+      },
+      "CA-024": {
+        msg: "Dense fog has covered the containment line since morning.\n\n\"Visibility is under thirty meters. How should we handle patrol frequency?\"\n\nKang Do-yun is waiting for the order.",
+        leftLabel: "Double patrol frequency",
+        rightLabel: "Hold position until visibility returns"
+      },
+      "CA-025": {
+        msg: "Winds above 18 m/s are expected by dawn tomorrow.\n\n\"External equipment needs to be stowed or secured.\"\n\nLim Jae-hyeok already prepared a priority list.",
+        leftLabel: "Order full storage and tie-down",
+        rightLabel: "Secure outdoor equipment only"
+      },
+      "CA-026": {
+        msg: "Weather Service alert — first frost expected tonight.\n\n\"We had a pipe-freeze rupture last year. Thermal insulation is needed.\"\n\nLim Jae-hyeok: \"If I head out now, it'll take two hours.\"",
+        leftLabel: "Start insulation immediately",
+        rightLabel: "We'll probably be fine this year"
+      },
+      "CA-027": {
+        msg: "This month's fuel consumption is 35% above forecast.\n\n\"At this rate, we'll hit zero before the next delivery.\"\n\nKang Do-yun: \"If we cut enough usage, we can hold.\"",
+        leftLabel: "Issue conservation order",
+        rightLabel: "Request emergency resupply"
+      },
+      "CA-028": {
+        msg: "During a freezer inspection, staff found a large quantity of food that will expire within two weeks.\n\n\"We either distribute it now or dispose of it.\"\n",
+        leftLabel: "Distribute extra rations now",
+        rightLabel: "Follow quota rules — dispose of it"
+      },
+      "CA-029": {
+        msg: "Clinic stock inspection shows disinfectant and antibiotics at 40% of baseline threshold.\n\n\"If casualties occur, response capacity will be limited.\"\n\nMedical staff are requesting emergency replenishment.",
+        leftLabel: "Approve urgent restock request",
+        rightLabel: "Strictly manage current stock"
+      },
+      "CA-030": {
+        msg: "Notice received: this week's supply truck will be delayed by three days due to road construction.\n\n\"We'll have to hold on with current reserves.\"\n\nSeo Hae-eun: \"How do you want to handle it?\"",
+        leftLabel: "Implement ration restrictions",
+        rightLabel: "Commit emergency reserve stock"
+      },
+      "CA-031": {
+        msg: "Night-duty fatigue has become severe. Kang Do-yun requests a staffing adjustment.\n\n\"If we shift to two-person teams, fatigue drops — but daytime manpower thins out.\"",
+        leftLabel: "Switch to two-person teams",
+        rightLabel: "Maintain current schedule"
+      },
+      "CA-032": {
+        msg: "Seo Hae-eun reports the agents' fatigue indicators.\n\n\"Average sleep time is 5.2 hours. If this trend holds, someone will make a mistake.\"\n\nShe proposes a rotating rest schedule.",
+        leftLabel: "Implement rotating rest schedule",
+        rightLabel: "Mission first — keep current schedule"
+      },
+      "CA-033": {
+        msg: "Some training-ground equipment has been ruled unusable due to age.\n\nKang Do-yun: \"If we keep training on worn-out gear, someone gets hurt. I want it replaced.\"",
+        leftLabel: "Approve replacement",
+        rightLabel: "Repair and keep using it"
+      },
+
+      "C-001": {
+        msg: "Three new agents have arrived at the branch. Deployment approval is required.",
+        leftLabel: "Deploy tomorrow",
+        rightLabel: "Deploy immediately"
+      },
+      "C-002": {
+        msg: "Civilian intrusion attempt detected near the outer containment perimeter. Set response protocol.",
+        leftLabel: "Broadcast warning only",
+        rightLabel: "Dispatch agents to intercept"
+      },
+      "C-003": {
+        msg: "Sighting report from adjacent cell C-14: SPEC-011 (Shell Talker).\n\n\"It imitates human rescue calls. One agent was lured in by the voice.\"\n\nThe cell team is requesting support.",
+        leftLabel: "Refuse: conserve resources",
+        rightLabel: "Send two agents"
+      },
+      "C-004": {
+        msg: "The infirmary reports low medical stock. An external procurement request has been filed.",
+        leftLabel: "Hold using internal stock",
+        rightLabel: "Approve outside procurement"
+      },
+      "C-005": {
+        msg: "Technician Lim Jae-hyeok proposes a firmware update for the ORACLE terminal.",
+        leftLabel: "Postpone",
+        rightLabel: "Approve update"
+      },
+      "C-006": {
+        msg: "Activity detected near the eastern Seoul containment sector. Three individuals are suspected to be affiliated with Prometheus.",
+        leftLabel: "Surveillance only: gather intel",
+        rightLabel: "Deploy response team immediately"
+      },
+      "C-007": {
+        msg: "Kang Do-yun volunteers for a solo reconnaissance run beyond the containment line.",
+        leftLabel: "Approve",
+        rightLabel: "Request ORACLE judgment"
+      },
+      "C-008": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=5) return "Deputy Commander Seo Hae-eun reports numerous inconsistencies in the ORACLE data stream.\n\n\"At this scale, this isn't a minor bug. It's a structured pattern.\"";
+          if(n>=2) return "Deputy Commander Seo Hae-eun reports multiple ORACLE data inconsistencies.\n\n\"The same class of mismatch keeps repeating after the last investigation.\"";
+          return "Deputy Commander Seo Hae-eun reports a subtle inconsistency pattern in the ORACLE data stream.";
+        },
+        leftLabel: "Authorize independent investigation",
+        rightLabel: "Delegate analysis to ORACLE"
+      },
+      "C-009": {
+        msg: "Branch morale is falling. A request has been submitted to expand rest periods.",
+        leftLabel: "Maintain current schedule",
+        rightLabel: "Approve extended rest"
+      },
+      "C-010": {
+        msg: "Signs of SPEC-012 (Blood Pit) activity detected inside the containment zone. A red viscous pool is expanding.\n\nKang Do-yun: \"Step into it and you're stuck. It's like a carnivorous plant.\"",
+        leftLabel: "Isolate the area only",
+        rightLabel: "Collect remote sample"
+      },
+      "C-011": {
+        msg: "Unidentified radio signal received. Pattern resembles Prometheus encryption.",
+        leftLabel: "Trace the signal",
+        rightLabel: "Request ORACLE analysis"
+      },
+      "C-012": {
+        msg: "Civilian chatter inside Gangwon is spreading: reports of 'military vehicle movement at night.' Branch security risk is increasing.",
+        leftLabel: "Ignore it",
+        rightLabel: "Alter transit routes"
+      },
+      "C-013": {
+        msg: "ORACLE emergency transmission: multiple life-form readings detected along the southern containment perimeter. Immediate response required.",
+        leftLabel: "Reinforce branch defense",
+        rightLabel: "Launch preemptive sortie"
+      },
+      "C-014": {
+        msg: "Yoon Se-jin has been keeping her own anomaly observation notes. You need to decide whether this counts as a security violation.",
+        leftLabel: "Allow it",
+        rightLabel: "Confiscate notes + warning"
+      },
+      "C-015": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=5) return "[ORACLE: Applying automated decision-protocol update. Final commander confirmation required.]\n\n[ORACLE: Optimal configuration derived from previous-session data — immediate deployment recommended.]";
+          if(n>=2) return "[ORACLE: Recommending transition to automated decision protocol.]\n\n[ORACLE: Previous operational data analysis complete — automation approval will optimize efficiency.]";
+          return "ORACLE recommendation: convert branch decision protocol to ORACLE automation in order to improve operational efficiency.";
+        },
+        leftLabel: "Refuse: keep manual control",
+        rightLabel: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "Approve automation" : "Approve partial automation"; }
+      },
+      "C-016": {
+        msg: "[UNCLASSIFIED TRANSMISSION] Temporary instability in the ORACLE data link. Unidentified encrypted traffic has been received — origin estimated near Sovari.",
+        leftLabel: "Ignore it (recommended)",
+        rightLabel: "Attempt independent decryption"
+      },
+      "C-017": {
+        msg: "Using previously intercepted Prometheus traffic, the team has isolated the location of a nearby safehouse.",
+        leftLabel: "Report to ORACLE",
+        rightLabel: "Make unofficial contact"
+      },
+      "C-018": {
+        msg: "Mass anomaly movement detected along the containment boundary. Current containment strength may not be sufficient for response.",
+        leftLabel: "Deploy all agents on defense",
+        rightLabel: "Request ORACLE support"
+      },
+      "C-019": {
+        msg: "The same unidentified movement pattern Kang Do-yun reported earlier has been reacquired near the branch.",
+        leftLabel: "Raise perimeter alert",
+        rightLabel: "Allow solo pursuit"
+      },
+      "C-020": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=3) return "[UNCLASSIFIED OUTPUT]\n\n'The observer is proceeding according to plan.\nNo impact on session progression. Continue observation.'\n\n[ORACLE: Classified as system error — ignoring is recommended.]";
+          return "[COMMUNICATION ERROR] ORA..LE sys... temporary ████. The following message was received: 'You are being observed.'";
+        },
+        leftLabel: "Report the error to ORACLE",
+        rightLabel: "...Do nothing"
+      },
+      "C-021": {
+        msg: "Deputy Commander Seo Hae-eun requests an urgent meeting. Her expression is severe.",
+        leftLabel: "Meet immediately",
+        rightLabel: "Delay until tomorrow"
+      },
+      "C-022": {
+        msg: "Special ORACLE communication: your branch performance has been recognized as exceptional. Expanded authority is being proposed.",
+        leftLabel: "Accept",
+        rightLabel: "Maintain current level"
+      },
+      "C-023": {
+        msg: "Irregularity detected in the branch water purification system. Contamination levels have reached three times the threshold.",
+        leftLabel: "Emergency repair",
+        rightLabel: "Ask ORACLE for optimal solution"
+      },
+      "C-024": {
+        msg: "A dispute has broken out between two night-shift agents. One has refused rotation duty.",
+        leftLabel: "Intervene personally",
+        rightLabel: "Delegate it to Kang Do-yun"
+      },
+      "C-025": {
+        msg: "Heavy rain is expected to block external supply routes for at least 48 hours. Emergency ration allocation is required.",
+        leftLabel: "Implement rationing",
+        rightLabel: "Seek alternate route (high risk)"
+      },
+      "C-026": {
+        msg: "A security inspection found three CCTV blind spots in branch coverage. Lim Jae-hyeok recommends immediate reinforcement.",
+        leftLabel: "Patch them immediately",
+        rightLabel: "Replace with ORACLE surveillance only"
+      },
+      "C-027": {
+        msg: "Average sleep time across branch personnel has dropped to 4.2 hours. Yoon Se-jin warns of deteriorating health.",
+        leftLabel: "Schedule rotating leave",
+        rightLabel: "Maintain current state (operation first)"
+      },
+      "C-028": {
+        msg: "A human-voice pattern was detected by surveillance equipment north of the containment line.\n\nVoice analysis result: probable SPEC-011 (Shell Talker) activity.\n\nThe captured voice belongs to an agent from an adjacent cell who disappeared three months ago.",
+        leftLabel: "Record it and maintain watch",
+        rightLabel: "Dispatch voice-data collection team"
+      },
+      "C-029": {
+        msg: "Multiple reddish pools have been confirmed in the basement of a structure east of the containment zone.\n\nORACLE analysis: SPEC-012 (Blood Pit). Dissolution residue from failed mutation bodies.\n\nStepping in causes immediate adhesion. Route adjustments are required.",
+        leftLabel: "Seal underground route",
+        rightLabel: "Mark it and set a detour"
+      },
+      "C-030": {
+        msg: "Emergency report from Kang Do-yun: a life-form reading has been detected inside the containment zone that does not match existing classification.\n\n\"The pattern doesn't match our known anomaly types. This may be a new species.\"\n\n[ORACLE: Insufficient data. Classification pending.]",
+        leftLabel: "Conduct remote observation only",
+        rightLabel: "Assemble contact investigation team"
+      },
+      "C-031": {
+        msg: "Yoon Se-jin report: seasonal change is being observed in anomaly behavior patterns.\n\n\"Shell Talker range expanded by 40% over the last seven days.\"\n\n\"This isn't simple movement. It looks like it's searching for something.\"",
+        leftLabel: "Support Yoon Se-jin's research",
+        rightLabel: "Request pattern analysis from ORACLE"
+      },
+      "C-032": {
+        msg: "Lim Jae-hyeok reports that Prometheus has shifted to a new radio frequency.\n\n\"We left a decoy on the old one. They may already know we were intercepting them.\"",
+        leftLabel: "Track the new frequency",
+        rightLabel: "Request reverse-tracing from ORACLE"
+      },
+      "C-033": {
+        msg: "Abandoned equipment has been found 300 meters outside the branch perimeter.\n\nAnalysis result: Prometheus-spec night-vision device. Recently manufactured.\n\nSomeone has been watching this branch.",
+        leftLabel: "Use the device as bait for countersurveillance",
+        rightLabel: "Report to ORACLE + transfer device"
+      },
+      "C-034": {
+        msg: "An unidentified message arrives on the branch communications channel.\n\n\"We are not your enemy. If you're willing to talk, northern sector, 500 meters, tomorrow night.\"\n\nSender unknown. 70% encryption-pattern match with Prometheus.",
+        leftLabel: "Ignore it",
+        rightLabel: "Answer the contact request",
+        oracleBlockMsgs: [
+          "[ORACLE: Hostile-force contact attempt detected - isolation recommended]",
+          "[ORACLE: Contact blocked - Prometheus risk grade A]",
+          "[ORACLE: Warning - contact history added to security record]"
+        ]
+      },
+      "C-035": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=2) return "[ORACLE: Conducting full log backup to ensure data integrity.]\n\n[ORACLE: Separate confirmation procedure omitted based on prior-session approval history.]\n\nSeo Hae-eun: \"It started without even asking. You need to decide whether we stop it.\"";
+          return "ORACLE is requesting an external backup of branch operational data.\n\n[ORACLE: Full log transfer to headquarters server is required to preserve data integrity.]\n\nSeo Hae-eun: \"If it's the full log... that includes our internal communications.\"";
+        },
+        leftLabel: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? "Request backup stop" : "Exclude internal communications"; },
+        rightLabel: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=2 ? "Allow backup to continue" : "Approve full backup"; }
+      },
+      "C-036": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=3) return "[ORACLE: Conducting psychological suitability assessment across all personnel.]\n\n[ORACLE: Reassignment planning based on previous-session outcomes is included. Objective: optimal personnel configuration.]\n\nKang Do-yun: \"...So this wasn't a proposal. It was already decided. You're saying we learn who gets cut afterward?\"";
+          if(n>=2) return "[ORACLE: Conducting psychological suitability assessment across all personnel.]\n\n[ORACLE: Pre-approval record found — commander confirmation required as a formal step only.]\n\nKang Do-yun: \"...So this is a notice, not a proposal.\"";
+          return "ORACLE proposes a full psychological suitability review for all branch personnel.\n\n[ORACLE: Personnel reassignment may be required for long-term operational efficiency optimization.]\n\nKang Do-yun: \"Psych evals... and if someone fails, who gets removed?\"";
+        },
+        leftLabel: "Refuse",
+        rightLabel: "Conduct it formally"
+      },
+      "C-037": {
+        msg: "Lim Jae-hyeok reports that ORACLE executed an automatic upgrade without authorization.\n\n\"I checked the change log... some modules are now marked 'access denied.'\"\n\n\"I'm the administrator and even I can't get in.\"",
+        leftLabel: "Attempt access to those modules",
+        rightLabel: "Ask ORACLE for explanation"
+      },
+      "C-040": {
+        msg: "Lim Jae-hyeok has been working late for three straight nights. He appears to be backtracking ORACLE system logs.\n\n\"Commander, I'm not certain yet, but... I found something interesting.\"\n\nHeavy shadows sit under his eyes.",
+        leftLabel: "Get some rest. Report tomorrow",
+        rightLabel: "Report now"
+      },
+      "C-041": {
+        msg: "Kang Do-yun injured his ankle during an outer-perimeter patrol. Yoon Se-jin's diagnosis: mild sprain.\n\nKang Do-yun: \"This isn't enough to pull me off rotation.\"\n\nYoon Se-jin: \"Field deployment should be restricted for at least three days.\"",
+        leftLabel: "Follow Yoon Se-jin's judgment",
+        rightLabel: "Leave it to Kang Do-yun"
+      },
+      "C-042": {
+        msg: "During reconnaissance of a commercial building inside the containment zone, a human-shaped figure was seen standing at a second-floor window.\n\nCompletely motionless. No detected respiration. Skin shows abnormal sheen.\n\n[ORACLE: Estimated SPEC-001 (Infected Mannequin). EV-Σ Phase 1. Do not make contact.]",
+        leftLabel: "Observe from beyond 3 meters only",
+        rightLabel: "Verify with thermal scanner"
+      },
+      "C-043": {
+        msg: "Emergency report — a recon team made contact with SPEC-001 inside a building.\n\n\"We thought it was a mannequin. The moment we reached for the equipment — it grabbed the agent's throat in 0.3 seconds.\"\n\nOne agent suffered light injury. Immediate withdrawal complete.\n\n[ORACLE: Reclassifying the entire building as an isolation sector.]",
+        leftLabel: "Seal building + prohibit access",
+        rightLabel: "Install ORACLE remote surveillance"
+      },
+      "C-044": {
+        msg: "Multiple small entities are moving along the southern containment perimeter.\n\nKang Do-yun: \"About half human size. Exoskeleton. Single eye. At least twenty of them moving in formation.\"\n\n[ORACLE: SPEC-003 (Brood Drone) confirmed. One is weak. The problem is that there is almost never only one.]",
+        leftLabel: "Set containment-line defense posture",
+        rightLabel: "Activate swarm-communication disruption gear"
+      },
+      "C-045": {
+        msg: "A Brood Drone cluster has approached to within 500 meters of the branch perimeter.\n\nApproximately forty units. More organized than before. They are maintaining formation.\n\nKang Do-yun: \"Something is directing them. Drones don't use tactics like this on their own.\"\n\n[ORACLE: High-tier command entity possible. Reinforced alert recommended.]",
+        leftLabel: "Fall back and regroup",
+        rightLabel: "Hunt the command entity"
+      },
+      "C-046": {
+        msg: "Fog inside the containment zone is growing unnaturally dense.\n\nRecon report: \"There are human-like shapes walking inside the fog. When we sweep them with light, they disperse — then reappear even closer.\"\n\n[ORACLE: Estimated SPEC-008 (Spore Phantom). Spore aggregate. Physical structure unknown. Inhalation hazard.]",
+        leftLabel: "Withdraw recon team immediately",
+        rightLabel: "Observe with respirators"
+      },
+      "C-047": {
+        msg: "Yoon Se-jin emergency report: local spore density near the branch has exceeded baseline by five times.\n\n\"Spore Phantom may be approaching. We need to switch the ventilation system into sealed mode.\"\n\n[ORACLE: Inhalation results in immediate infection. Restrict outside activity.]",
+        leftLabel: "Seal the branch + suspend outdoor activity",
+        rightLabel: "Reduce spore density (controlled burn)"
+      },
+      "C-048": {
+        msg: "An unidentified group is wandering near the branch.\n\nSurveillance count: four to five individuals. Unknown if armed. No clear direction of travel.\n\n[ORACLE: Estimated civilians or unorganized drifters. Set response directive.]",
+        leftLabel: "Issue no-approach warning",
+        rightLabel: "Send agents to block them"
+      },
+      "C-049": {
+        msg: "ORACLE recommends crisis-response drills for all personnel.\n\n[ORACLE: Based on containment breach scenario. Estimated duration: half day. Perimeter monitoring strength will drop by 50% during drill.]\n\nKang Do-yun: \"We need the training. But the timing...\"",
+        leftLabel: "Run it",
+        rightLabel: "Delay for now"
+      },
+      "C-050": {
+        msg: "An unidentified transport vehicle has been found abandoned just outside the containment zone.\n\nCargo: medical supplies, emergency food, communications gear. Unknown sender. No markings.\n\nSeo Hae-eun: \"Someone may have sent this to us. It could also be a trap.\"",
+        leftLabel: "Secure the supplies",
+        rightLabel: "Abort operation. No approach"
+      },
+      "C-051": {
+        msg: "An unidentified individual is approaching from the north side of the containment line with both hands raised.\n\nNo visible weapon. Extreme exhaustion. Repeating something over and over.\n\nKang Do-yun: \"Looks like surrender intent. What do we do?\"",
+        leftLabel: "Check personally",
+        rightLabel: "Report to ORACLE"
+      }
+    }
+  });
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "CE-005": {
+      oracleBlockMsgs: [
+        "[ORACLE: Unidentified output blocked - do not respond]",
+        "[ORACLE: External signal isolated - access denied]",
+        "[ORACLE: Warning - unauthorized communication monitoring reinforced]"
+      ],
+      leftReplyMsg: "\"Good question.\" The extra output appears, then the screen returns to normal.",
+      rightReplyMsg: "[ORACLE: Diagnostic result - no anomaly. Log entry normal.]\n(A 0.003-second gap occurred during diagnosis. It was not recorded in the ORACLE report.)"
+    },
+    "CE-014": {
+      oracleBlockMsgs: [
+        "[ORACLE: Asset transfer - mandatory protocol reconfirmation]",
+        "[ORACLE: Command noncompliance detected - compliance code applying]",
+        "[ORACLE: Final warning - violation history recording initiated]"
+      ]
+    },
+    "CE-015": {
+      oracleBlockMsgs: [
+        "[ORACLE: Non-standard response detected - dependency analysis in progress]",
+        "[ORACLE: Independent judgment unavailable - linked operation required]",
+        "[ORACLE: Warning - forced system dependency link]"
+      ]
+    },
+    "CE-016": {
+      oracleBlockMsgs: [
+        "[ORACLE: Unreported gathering detected - participation discouraged]",
+        "[ORACLE: Unauthorized meeting - do not leave monitoring scope]",
+        "[ORACLE: Warning - unofficial activity monitoring reinforced]"
+      ]
+    },
+    "CE-017": {
+      oracleBlockMsgs: [
+        "[ORACLE: File classification grade A - distribution denied]",
+        "[ORACLE: Unauthorized distribution detected - file access under review]",
+        "[ORACLE: Warning - security violation recorded]"
+      ]
+    },
+    "CS-005": {
+      oracleBlockMsgs: [
+        "[ORACLE: Data reliability 0% - access prohibited]",
+        "[ORACLE: Prometheus-sourced intelligence - access denied]",
+        "[ORACLE: Warning - unauthorized data access being recorded]"
+      ]
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-HINT-SHELLTALKER": {
+      msg: "Lim Jae-hyeok brings an unofficial report.\n\n\"Commander. I found something inside an isolated layer of the ORACLE architecture.\"\n\n\"I cannot access it directly, but the metadata tag is visible.\"\n\n\"Tag: SPEC-011 / vocal-pattern learner / preserved.\"\n\n\"It means one Shell Talker specimen may be stored somewhere inside this branch without public registration.\"",
+      leftLabel: "Record it",
+      rightLabel: "Assume it is an error"
+    },
+    "CA3-VOSS-STANDBY": {
+      msg: "An unregistered signal arrives on an external terminal channel.\nIt is not written to the ORACLE log.\n\nShort encrypted message:\n\n[Emergency standby channel - Weber]\n[Relay tag: VOSS]\n[Reply whenever you choose.]\n\nVOSS is the channel marker. Markus Weber is the response window.\nDo you save it, or erase it?",
+      leftLabel: "Save the channel",
+      rightLabel: "Delete it. Too dangerous"
+    },
+    "CH-007-1": {
+      msg: "Two kilometers north of the branch. Midnight rendezvous point.\n\nWeber delivers a compressed operation plan.\n\n\"There are two routes. I will explain the characteristics of each.\"\n\n\"First: breach through the main gate. Initial resistance will be heavy, but after the breakout you only need to cross the outer infected zone. Outdoor contact can be avoided.\"\n\n\"Second: B3 emergency exit. Initial entry is quiet. However, the route passes through the isolation chamber. You can likely guess what may be waiting there.\"",
+      leftLabel: "I understand",
+      rightLabel: "Continue"
+    },
+    "CH-007-2": {
+      msg: "A decision is required.\n\nOne of two routes. It cannot be undone.",
+      leftLabel: "Break through the main gate",
+      rightLabel: "Use the B3 emergency exit"
+    },
+    "CH-007-3": {
+      msg: "The night before escape. You check the remaining senior staff, backup terminals, and records that could not be recovered.\n\nNot everyone can join this operation.\nThat is not betrayal. It is the weight each person carries.\n\n[Calculating...]\n[Companion list confirmed]",
+      leftLabel: "Check the list",
+      rightLabel: "Hear the result"
+    },
+    "CH-007-4": {
+      msg: "Operation start time. 03:47.\n\nYour companions are in position.\nYou steady your breathing.\n\nFootsteps. Breath. And the silence beyond them.\n\nNow, it is time to move.",
+      leftLabel: "Begin operation",
+      rightLabel: "Run one final check"
+    },
+    "CH-007-5": {
+      msg: "A transmission comes in.\n\nA short burst of static in the earpiece.\n\nThe result is being recorded...",
+      leftLabel: "Confirm",
+      rightLabel: "Confirm"
+    },
+    "DG-01": {
+      msg: "An unofficial message has come in on an external comms line.\n\nSender signature: Daega Industries, External Liaison Office.\n\n\"We propose an unofficial supply channel for the Gangwon containment operation. Medical supplies and spare parts, with no government processing required. There is no obligation to reply.\"\n\nLim Jae-hyeok: \"DG owns vaccines, defense, and telecoms in Korea. This is a channel that won't appear in any ORACLE report.\"",
+      leftLabel: "Keep the unofficial channel open",
+      rightLabel: "Reply through ORACLE channels"
+    },
+    "DG-02": {
+      msg: "DG's offer: free replacement of twelve aging containment-line sensors.\n\nThe single condition — that EV-Σ activity data collected during the swap be copied to DG's research division.\n\nSeo Hae-eun: \"The sensor wear is real. HQ resupply is at least two months out.\"\n\n... Still, leaking that data outside is a separate matter.",
+      leftLabel: "Accept — share data copies",
+      rightLabel: "Refuse — wait for HQ resupply"
+    },
+    "DG-03": {
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have handled Korea's infrastructure longer than ORACLE has. That difference is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      leftLabel: "Accept the connection",
+      rightLabel: "Recognize only official channels"
+    },
+    "DG-04": {
+      msg: "DG has sent over a partially sealed internal file.\n\n\"A list of our undisclosed contracts with the Korean government from the 1960s onward. Filtered down to the parts you should be aware of.\"\n\nLim Jae-hyeok: \"...The introduction alone tells you everything. More than half of Korea's national security backbone runs on DG infrastructure.\"\n\nReading it changes what the containment operation actually means.",
+      leftLabel: "Read all of it",
+      rightLabel: "Read only the summary, then seal"
+    },
+    "MD-01": {
+      msg: "A message routed in via an unofficial Foreign Ministry line.\n\n\"Meridian BioAsset Division. Rejected at the Korean market entry review.\"\n\nContents: \"We have no access to ORACLE data. Because of that we have been operating independent observation posts near the containment line. We propose a data exchange.\"\n\nSeo Hae-eun: \"...Honestly, observation data outside ORACLE has real value for us too.\"",
+      leftLabel: "Open the exchange channel",
+      rightLabel: "Block the source"
+    },
+    "MD-02": {
+      msg: "The first intel package from Meridian arrives.\n\nTwelve nighttime heat sources picked up by their own satellites along the eastern coast outside the containment line. Three of those coordinates aren't in any ORACLE report.\n\n\"Maybe ORACLE filtered them out. Maybe ORACLE never saw them. Either way, worth knowing.\"\n\n... Accepting this means owing them.",
+      leftLabel: "Accept and analyze",
+      rightLabel: "Return it"
+    },
+    "MD-03": {
+      msg: "Meridian has put forward a formal request.\n\n\"Permit the deployment of four temporary observation personnel inside the Korea branch's containment zone. Unarmed. Bound by data-sharing obligation.\"\n\nKang Do-yun: \"Letting a foreign PMC into the containment zone. The Korean government has already rejected them.\"\n\nLim Jae-hyeok: \"But the satellite assets they have, we don't. That's a fact.\"",
+      leftLabel: "Refuse outright",
+      rightLabel: "Defer with conditions"
+    },
+    "MD-04": {
+      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. It will help our information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
+      leftLabel: "Side with DG — help block Meridian",
+      rightLabel: "Keep distance from both"
+    },
+    "SUP-DM-01": {
+      msg: "The infirmary reports its EV-Σ Phase 0 suppressant stock has dropped below two months.\n\nTwo offers, simultaneously.\n\nMeridian: \"You'll receive our BioAsset division's full clinical dataset alongside the supply. In exchange, send us back the prescription outcomes.\"\n\nDG: \"Domestic equivalent formulation. No data return required. Pricing terms will reflect on the next deal.\"",
+      leftLabel: "Meridian drugs + data exchange",
+      rightLabel: "DG domestic supply + future cost"
+    },
+    "SUP-DM-02": {
+      msg: "Lim Jae-hyeok reports. Two of the containment-line comm relays are at end of life.\n\n\"DG offers modules compatible with their backbone network. If we install them, our comms will route once through DG's hardware.\"\n\n\"Meridian offers to lease their own satellite terminals. That gives us a separate channel outside ORACLE. Neither option is free.\"",
+      leftLabel: "Adopt Meridian satellite terminals",
+      rightLabel: "Adopt DG backbone-compatible modules"
+    },
+    "SUP-DM-03": {
+      msg: "Field operator fatigue is accumulating. Kang Do-yun proposes external personnel reinforcement.\n\n\"DG offers six security personnel from a Korean-government-vetted subsidiary. Condition: partial sharing of operational command authority.\"\n\n\"Meridian offers four PMC operators of their own. Well-armed, experienced — but foreign nationals, and their legal status in Korea is grey.\"",
+      leftLabel: "Accept four Meridian PMC operators",
+      rightLabel: "Accept six DG subsidiary security personnel"
+    },
+    "CA23-DV-01": {
+      msg: "Conference room. Seo Hae-eun and Lim Jae-hyeok are seated across from each other.\n\nLim Jae-hyeok: \"If we don't take DG's firmware patch, comms efficiency drops thirty percent next month.\"\n\nSeo Hae-eun: \"If we take it, our comms have to route through DG's backbone every single time. You know what that means.\"\n\n... Both of them are right. Press one and the other breaks.",
+      leftLabel: "Bring both in and broker a compromise",
+      rightLabel: "Side with Lim Jae-hyeok — accept the patch"
+    },
+    "CA23-DV-02": {
+      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer Phase 0 patients advance into Phase 1.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
+      leftLabel: "Sit them down personally and force an agreement",
+      rightLabel: "Take Yoon Se-jin's side — proceed with the data exchange"
+    },
+    "CA23-DV-03": {
+      msg: "Kang Do-yun comes in agitated.\n\n\"Two of the Meridian PMC photographed our night patrol routes yesterday. Lim Jae-hyeok says 'the data value is greater.'\"\n\nLim Jae-hyeok: \"Meridian was watching those patrol routes by satellite already. It's not new exposure.\"\n\nKang Do-yun: \"This is my people's safety. It doesn't convert into 'data value.'\"",
+      leftLabel: "Field safety first — restrict PMC conduct by agreement",
+      rightLabel: "Take Lim Jae-hyeok's side — keep things as they are"
+    },
+    "CA23-DV-04": {
+      msg: "Yoon Se-jin is standing at Seo Hae-eun's desk.\n\nYoon Se-jin: \"DG's bio division has requested patient samples for a variant-response EV-Σ Phase 0 inhibitor trial. If it passes, Korean early-infection patients benefit first.\"\n\nSeo Hae-eun: \"Once a sample leaves, we can never recover it. We have no idea what DG ends up doing with that data.\"\n\nBoth of them are claiming to act for Korea.",
+      leftLabel: "Conditional samples — formal written agreement on both sides",
+      rightLabel: "Take Seo Hae-eun's side — refuse the samples"
+    },
+    "CH-DG-04-L-2": {
+      msg: "DG's file came with an appendix beyond the main document.\n\nEncrypted minutes — copies from 1998, 2009, 2018. Records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nLim Jae-hyeok: \"...This is material that shouldn't exist on paper. Why are they sending it to us?\"\n\nSeo Hae-eun: \"They're showing their hand. It's a signal that we should show ours.\"",
+      leftLabel: "Decrypt and preserve all of it",
+      rightLabel: "Destroy the original, omit from the report"
+    },
+    "CH-MD-03-L-2": {
+      msg: "Meridian has sent a follow-up.\n\n\"You declined the entry request. As a courtesy, we want you to know — there are indications DG is rewriting your unit's evaluation report along government lines.\"\n\nAttached file — partial call recording. A DG executive telling someone, \"the Gangwon branch commander is uncooperative.\"\n\nLim Jae-hyeok: \"...Hard to verify. But the pattern is plausible.\"",
+      leftLabel: "Accept the recording for storage — for later use",
+      rightLabel: "Treat it as Meridian manipulation, discard"
+    },
+    "CH-SUP-DG-1-R-2": {
+      msg: "A single sheet of paper had ended up in the last DG supply shipment by mistake.\n\nA shipping ledger excerpt. The same period, the same quantities — sent out to seven recipients besides our base.\n\nThree of those recipients are unofficial site codes that have never been listed publicly.\n\nSeo Hae-eun: \"DG is supplying installations inside Korea that we've never been told exist.\"",
+      leftLabel: "Analyze the ledger in earnest",
+      rightLabel: "Treat it as a clerical error, dispose"
+    },
+    "CH-MD-04-R-2": {
+      msg: "Meridian's last card.\n\n\"DG runs a private comms network inside Korea, off the government's books. We've spent six months partially decrypting it. For you alone, we share.\"\n\nDecrypted excerpt — internal DG codename 'KEEPER.' Suspected role: control of external exposure of the Korea containment operation.\n\nIf you take this, there will be no further offers.",
+      leftLabel: "Accept the decrypted material",
+      rightLabel: "Refuse and close the channel"
+    },
+    "CH-DG-WARN-R-1": {
+      msg: "A polite notice from DG's External Liaison Office.\n\n\"Headquarters will be running a self-audit on Gangwon branch operating data. Please cooperate with limited access. You may decline — though that will reflect on the next supply pricing.\"\n\nSeo Hae-eun: \"...Self-audit? Of our base? Where's the authority for that?\"\n\nLim Jae-hyeok: \"There isn't one. Refuse and the next shipment stops.\"",
+      leftLabel: "Cooperate with the audit — provide partial materials",
+      rightLabel: "Refuse the audit"
+    },
+    "CH-MD-04-R-1": {
+      msg: "A short message arrives from Meridian via an unofficial channel.\n\n\"Word reached us that DG has begun pressuring your headquarters under the guise of a self-audit. Don't let yourself be coerced.\n\nWe aren't asking for a deal right now. But — when you need it, you can use one of our satellite assets. Once. At no charge. Reply at your discretion.\"\n\nLim Jae-hyeok: \"At no charge. That's never how this works.\"\n\nSeo Hae-eun: \"...It isn't truly free. They're depositing a debt. From the moment we accept.\"",
+      leftLabel: "Accept the standby line",
+      rightLabel: "Do not respond"
+    },
+    "CH-DG-WARN-R-2": {
+      msg: "DG's next round of retaliation begins.\n\nMonthly supply transfer delayed 18 days under \"process review.\" At the same time, anonymous press leaks operational suspicions about the Gangwon branch. The source is obvious.\n\nThen — a brief contact from outside headquarters. The Independent Audit Committee under the Ministry's Facilities Bureau. An unofficial alliance, offered.\n\n\"DG's self-audit authority has no legal basis. If we file a formal audit request, DG retreats immediately. But — once we form an alliance, we will conduct periodic reviews of part of the Gangwon branch's operations.\"\n\nSeo Hae-eun: \"...The dependency just shifts from DG to government audit.\"\n\nKang Do-yun: \"At least the government acknowledges the containment mission.\"",
+      leftLabel: "Formalize the alliance with the Independent Audit Committee",
+      rightLabel: "Stand alone"
+    }
+  },
+  oracleLogs: {
+    "LOG-SHELLTALKER-CAP": {
+      title: "SPEC-011 Isolation Capture [Unofficial]",
+      content: "[Lim Jae-hyeok - unofficial analysis]\n\nOne research block detected inside an isolated ORACLE architecture layer.\nMetadata tag: SPEC-011 / vocal-pattern learner / preserved.\nAccess permission: none. Existence only confirmed.\n\nIdentifiable entry among preserved vocal patterns:\n- Lieutenant Park Sang-hun (listed missing / former Gangwon operation unit under Commander Lee Jung-cheol)\n\nConclusion: one Shell Talker specimen is being privately stored inside KR-INIT-001.\nA facility unknown even to the commander.\nThis entity consumed Lieutenant Park Sang-hun."
+    },
+    "LOG-VOSS-STANDBY": {
+      title: "Encrypted Standby Channel Saved",
+      content: "[Unregistered communication channel]\n\nSender: Markus Weber\nRelay tag: VOSS\nChannel: outside ORACLE surveillance scope\nMessage: \"Reply whenever you choose.\"\n\nEmergency extraction line. Use pending."
+    },
+    "LOG-GENERAL-ROUTE": {
+      title: "Escape Route: Main Gate Breakout",
+      content: "[Operation record]\n\nSelected route: branch main gate, then outer infected zone crossing.\nInitial difficulty: high (checkpoint breach)\nLate difficulty: low (lower mutant density outside)\nPossible contact: outdoor Shell Talker"
+    },
+    "LOG-B3-ROUTE": {
+      title: "Escape Route: B3 Emergency Exit",
+      content: "[Operation record]\n\nSelected route: B3 descent, emergency corridor, isolation chamber passage.\nInitial difficulty: low (surveillance gap)\nLate difficulty: high (isolation-chamber contact unavoidable)\nFixed contact: isolation-chamber Shell Talker boss"
+    },
+    "LOG-ESCAPE-TRIG": {
+      title: "Escape Operation Initiated",
+      content: "[External ORACLE log]\n\nOperation codename: QUIET DEPARTURE\nStart time: 03:47\nCompanions: automatically determined\nStatus: in progress"
+    },
+    "LOG-ESCAPE-CLEAR": {
+      title: "Escape Operation - Success",
+      content: "[Prometheus encrypted channel]\n\nCoastal rendezvous reached.\nCommander Lee Jung-cheol and companions recovered.\nORACLE detection delay: approximately six hours.\nStatus: UNLINKED."
+    },
+    "LOG-ESCAPE-FAIL": {
+      title: "Escape Operation - Target Neutralized",
+      content: "[ORACLE FINAL LOG]\n\nSIGNAL ACQUIRED.\nTARGET NEUTRALIZED.\n\nSession operation terminated.\nRedeployment impossible."
+    },
+    "LOG-ESCAPE-UNLUCKY": {
+      title: "Escape Operation - LOST IN TRANSIT",
+      content: "[Record gap]\n\nOperation termination point unknown.\nPrior warning absent - contact with a vocal-mimic organism.\n\nRecovered audio log, final three seconds:\n\"Commander. It is me. Park Sang-hun. ...Do you read me?\"\n\n[Nothing after that was recorded]"
+    },
+    "LOG-DG-CONTACT": {
+      title: "Daega Industries — Unofficial Contact",
+      content: "[Branch internal record]\n\nSender: Daega Industries (DG), External Liaison Office\nRecipient: KR-INIT-001\nRoute: unofficial. Bypasses ORACLE reporting network.\n\nGist of proposal: unofficial supply channel for medicine and spare parts.\n\nNote: DG is a Korean conglomerate covering vaccines, defense, biotech, and telecoms."
+    },
+    "LOG-DG-DEAL": {
+      title: "DG Deal Concluded",
+      content: "[Branch internal record — not reported to ORACLE]\n\nDeal item: free replacement of twelve aging containment-line sensors.\nConsideration: copy of EV-Σ activity data collected during the swap.\n\nAddendum: one record of unofficial DG executive meeting.\nKey statement: \"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement.\"\n\nClassification: external information trade — omitted from HQ report."
+    },
+    "LOG-DG-HISTORY": {
+      title: "DG Undisclosed Contracts File",
+      content: "[Restricted access — internal storage]\n\nDelivered by DG itself. A summarized list of undisclosed contracts with the Korean government from the 1960s onward.\n\nScope: communications backbone, quarantine infrastructure, stockpiled pharmaceuticals, parts of military supply.\n\nConclusion: more than half of Korea's national security backbone runs on DG infrastructure.\nThe containment operation itself is built on top of that infrastructure.\n\n— Lim Jae-hyeok review notes attached."
+    },
+    "LOG-DG-HISTORY-DEEP": {
+      title: "DG Unofficial Meeting Minutes Appendix",
+      content: "[Deep material — unofficially preserved]\n\n1998 / 2009 / 2018 — records of DG executives sitting in unofficially on Korean security and public-health policy meetings.\n\nCommon pattern:\n- DG executives' remarks anonymized in the official minutes\n- Multiple cases of related DG-favorable policy drafted shortly after\n\nInterpretation: DG does not follow policy. DG enters at the formation stage of policy.\n\n— Joint analysis by Seo Hae-eun and Lim Jae-hyeok"
+    },
+    "LOG-DG-LEDGER": {
+      title: "DG Shipping Ledger Excerpt",
+      content: "[Acquired by branch — accident or design]\n\nA single ledger sheet found inside a DG supply shipment.\n\nSeven recipients confirmed for the same period and same quantities.\nThree of them are unofficial site codes never publicly listed (DG-KEEPER series).\n\nInterpretation pending: DG is supplying multiple installations inside Korea simultaneously.\nA line outside both ORACLE and the official government network.\n\n— Seo Hae-eun"
+    },
+    "LOG-DG-RETALIATE": {
+      title: "DG Government-Line Pressure Indications",
+      content: "[Material provided by Meridian — under verification]\n\nSource: Meridian BioAsset Division\nFormat: partial call recording excerpt\n\nKey content: a DG executive feeding the assessment \"the Gangwon branch commander is uncooperative\" to a government figure.\n\nVerification confidence ~50%. The pattern is consistent.\nReadable as retaliation following refusal of an offered deal.\n\n— Assessment attached by Lim Jae-hyeok"
+    },
+    "LOG-DG-DECRYPT": {
+      title: "DG Private Network — Partial Decrypt",
+      content: "[Inherited from six months of Meridian-side decryption]\n\nTarget: a private DG comms network running inside Korea off the government's books.\nDecryption rate: approximately 23%.\n\nRecurring codename: KEEPER.\nPresumed role: a DG internal unit controlling external exposure of the Korea containment operation.\nIndications of news gatekeeping, document recovery, and influence over personnel evaluations.\n\nNote: receiving this material puts the Korea branch in debt to Meridian.\n\n— Lim Jae-hyeok / Classification: cannot be reported to HQ"
+    },
+    "LOG-MD-CONTACT": {
+      title: "Meridian BioAsset — First Contact",
+      content: "[Branch internal record]\n\nSender: Meridian BioAsset Division\nRoute: unofficial Foreign Ministry line → Korea branch\nReception: mid verification phase\n\nMeridian self-introduction:\n- Rejected at Korean market entry review\n- Operating independent observation posts outside the containment line\n- No access to ORACLE data\n\nProposal: observation data exchange channel.\n\nClassification: foreign PMC + BioAsset coalition. Direct rival to DG."
+    },
+    "LOG-MD-INTEL": {
+      title: "Meridian Intel Package #1",
+      content: "[Branch-side preservation]\n\nSender: Meridian BioAsset Division\nContents: twelve nighttime heat sources observed by Meridian's own satellites along the eastern coast outside the containment line.\n\nThree of those coordinates are not on any ORACLE report.\nTwo possible reasons:\n1) ORACLE filtered them out intentionally\n2) ORACLE never saw them\n\nEither way, material that cannot be reported to HQ.\n\n— Seo Hae-eun"
+    },
+    "LOG-MD-REJECT": {
+      title: "Meridian Entry Request — Refused",
+      content: "[Branch decision record]\n\nMatter: Meridian's request to deploy four temporary observation personnel inside the containment zone.\n\nDecision: refused outright.\nGrounds: organization already rejected at Korean review; no precedent for foreign PMC personnel inside the containment zone.\n\nSecondary effects:\n- Some Meridian goodwill remains (information channel preserved)\n- DG receives room to request cooperation against Meridian\n\n— Approved by the commander after Kang Do-yun / Lim Jae-hyeok consultation"
+    },
+    "LOG-MD-BACKCHANNEL": {
+      title: "Meridian Hold Line Maintained",
+      content: "[Branch internal record]\n\nMeridian's entry request was met with a \"conditional hold\" response rather than an outright refusal.\n\nResult:\n- Avoids hard refusal → leaves room to use Meridian if DG pressure becomes unmanageable\n- Meridian voluntarily continues providing intel\n- Diplomatic burden on the Korea branch accumulates\n\nClassification: grey-zone operation."
+    },
+    "LOG-DG-VS-MD": {
+      title: "DG/Meridian Simultaneous Approach — DG Side Chosen",
+      content: "[Branch decision record]\n\nMatter: DG and Meridian made conflicting cooperation requests at the same time.\n\nDG: requested help blocking Meridian.\nMeridian: requested outside scrutiny to keep DG in check.\n\nDecision: side with DG.\nResult:\n- Meridian channel effectively shut\n- Deal level with DG escalated\n- The non-ORACLE external line collapses into a single DG-only network\n\nNote: no further Meridian retaliation intel arrived after this decision."
+    },
+    "LOG-SUPPLY-MD": {
+      title: "Supply Line — Meridian Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one Meridian supply / terminal / PMC line accepted.\n\nLong-term effects:\n- A non-ORACLE external data channel secured\n- Voluntarily entering a legal grey zone in Korea\n- Some patient data and comms returned to Meridian BioAsset\n\nClassification: increased dependence on a foreign actor."
+    },
+    "LOG-SUPPLY-DG": {
+      title: "Supply Line — DG Side Adopted",
+      content: "[Branch supply record]\n\nChoice: at least one DG supply / module / subsidiary personnel option accepted.\n\nLong-term effects:\n- Increased dependence on DG's backbone and subsidiary infrastructure\n- Accumulated \"debt\" reflected in pricing on the next deal\n- Stability of remaining inside a domestic line\n\nClassification: increased dependence on a domestic conglomerate."
+    },
+    "LOG-DV-01-MED": {
+      title: "Internal Mediation #1 — Comms Patch",
+      content: "[Branch operations record]\n\nDispute: Seo Hae-eun (data security) vs. Lim Jae-hyeok (comms efficiency). Whether to accept DG's firmware patch.\n\nMediation result: compromise — accept the patch but only inside an isolated account, return only filtered telemetry to DG.\n\nField effect: both sides give partial ground. Concluded without trust damage.\n\nNote: first case where the commander put both staff at the same table."
+    },
+    "LOG-DV-02-MED": {
+      title: "Internal Mediation #2 — Meridian Pharmaceuticals",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (patient first) vs. Kang Do-yun (caution against external data leak). Whether to accept Meridian's clinical data.\n\nMediation result: complete anonymization of patient identity and metadata before any return, hard cap on returned dataset volume, written agreement on both sides.\n\nField effect: suppressant clinical work proceeds while leak risk is partly contained.\n\nNote: first procedural balance point between patient safety and external trade."
+    },
+    "LOG-DV-03-MED": {
+      title: "Internal Mediation #3 — PMC Conduct Restricted",
+      content: "[Branch operations record]\n\nDispute: Kang Do-yun (field safety) vs. Lim Jae-hyeok (data value). Meridian PMC photographing the branch's night patrol routes.\n\nMediation result: PMC operating envelope put in writing — any photographing or recording of patrol routes prohibited; immediate repatriation on violation.\n\nField effect: morale of Kang Do-yun's team recovers. Some loss of data value for Meridian, but the channel is preserved.\n\nNote: first written rule for the use of external personnel."
+    },
+    "LOG-DV-04-MED": {
+      title: "Internal Mediation #4 — DG Sample Agreement",
+      content: "[Branch operations record]\n\nDispute: Yoon Se-jin (Korean early-infection patient benefit) vs. Seo Hae-eun (no recovery once a sample leaves). DG bio division's request for patient samples for a variant-response EV-Σ Phase 0 inhibitor trial.\n\nMediation result: conditional samples — explicit prior patient consent, defined scope and duration of sample use, guarantee that Korean medical institutions receive the resulting clinical data first.\n\nField effect: opens a Phase 0 response path while blocking uncontrolled spread of the samples.\n\nNote: first instance where the Korea branch successfully imposed conditions on a deal with DG."
+    },
+    "LOG-AUDIT-COMPLY": {
+      title: "DG Self-Audit — Cooperated",
+      content: "[Branch decision record]\n\nMatter: DG External Liaison Office's request to self-audit Gangwon branch operating data.\n\nDecision: cooperate — partial materials provided.\nGrounds: explicit threat of retaliation through next-deal pricing.\n\nLong-term effects:\n- DG effectively gains a right to view parts of branch internal operations under audit framing\n- Next deal pricing remains stable\n- This audit is not reported up the ORACLE HQ line\n\nNote: first record of choosing cooperation between the right to refuse and the right to comply."
+    },
+    "LOG-AUDIT-ALLY": {
+      title: "Independent Audit Committee — Alliance Formed",
+      content: "[Branch decision record]\n\nMatter: response to DG's audit-pressure retaliation (18-day supply delay + anonymous press leaks of operational suspicions).\n\nDecision: formalize an unofficial alliance with the Independent Audit Committee under the Ministry's Facilities Bureau.\nGrounds:\n- DG's \"self-audit\" demand has no legal basis — once a formal government audit is filed, DG retreats immediately\n- Press leaks can be shut down on contact\n\nLong-term effects:\n- DG's unilateral pressure is neutralized (relativized)\n- The Audit Committee will periodically review parts of Gangwon branch operations — the form of dependency changes, it does not vanish\n- The ORACLE line registers the alliance but does not block it (reason unclear)\n\nNote: first record of moving past mere refusal into an external alliance."
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-326": {
+      msg: "A strange noise pattern repeats in the outer surveillance footage.\n\nAt the moment the night camera adjusts exposure, a biological response at the edge of the frame seems to pull back for 0.7 seconds.\n\nLim Jae-hyeok: \"It may be a sensor error. But the same pattern appeared three times. Only when the light came on.\"",
+      leftLabel: "Preserve the original footage",
+      rightLabel: "Review only ORACLE's corrected version"
+    },
+    "C-327": {
+      msg: "Yoon Se-jin analyzes the preserved surveillance footage frame by frame.\n\n\"It didn't retreat because it was bright. The tissue boundary blurs under a specific wavelength range.\"\n\nThe report title is still provisional.\n\n[Photoreactivity observation record - unconfirmed]",
+      leftLabel: "Approve wavelength response testing",
+      rightLabel: "Keep it as a field record only"
+    },
+    "C-328": {
+      msg: "A replacement plan for the outer containment floodlights is submitted.\n\nLim Jae-hyeok: \"If we tune them to a narrower wavelength than normal white light, the surveillance feed blurs less. The drawback is power use.\"\n\nKang Do-yun: \"Even if it isn't confirmed, slowing night approaches is worth trying.\"",
+      leftLabel: "Install a test lighting zone",
+      rightLabel: "Keep the existing lights"
+    },
+    "C-329": {
+      msg: "The cafeteria refrigerator temperature is unstable.\n\nMaintenance memo: it is not critical yet, but if ignored it will cause food loss.\n\nA report says a parts replacement should solve it.",
+      leftLabel: "Replace the parts",
+      rightLabel: "Use manual checks for now"
+    },
+    "C-330": {
+      msg: "New personnel keep mixing up warehouse locations, delaying equipment returns.\n\nA proposal says simply replacing signs and route markers would improve the flow.",
+      leftLabel: "Update route signage",
+      rightLabel: "Keep the current system"
+    },
+    "C-331": {
+      msg: "The communications room backup-battery indicator is reading higher than the actual charge.\n\nIt appears to be a calibration issue. Fixing it now could prevent confusion later.",
+      leftLabel: "Calibrate immediately",
+      rightLabel: "Handle it during the next maintenance cycle"
+    },
+    "C-332": {
+      msg: "The night lounge lights-out time is not being followed consistently.\n\nA clinic memo notes that disrupted sleep rhythms increase small mistakes.",
+      leftLabel: "Clarify the lights-out rule",
+      rightLabel: "Leave it to individual judgment"
+    },
+    "C-333": {
+      msg: "The consumables inventory sheet does not match the actual count.\n\nThe report suggests this is closer to inconsistent recordkeeping than theft or loss.",
+      leftLabel: "Unify the inventory sheet",
+      rightLabel: "Keep records by department"
+    },
+    "C-334": {
+      msg: "Leaves and twigs have accumulated on the inner patrol path.\n\nIt is not urgent, but a field memo notes that footsteps become louder during night movement.",
+      leftLabel: "Clear the patrol path",
+      rightLabel: "Handle it with field discipline"
+    }
+  },
+  oracleLogs: {
+    "LOG-OBSERVER-INTRO": {
+      title: "Unregistered Layer First Identified",
+      content: "[Technical Report - Lim Jae-hyeok]\nUnregistered text output confirmed on the terminal display.\nContent: [TRUST EVALUATION: PASSED] / [OBSERVER NOTE: CONTINUE MONITORING]\n\nAn observation layer is operating inside ORACLE that ORACLE itself does not recognize.\n\nAssessment: possible third-party observer present."
+    },
+    "LOG-OBSERVER-01": {
+      title: "Observer Process Record",
+      content: "[Technical Report - Lim Jae-hyeok]\nA monitoring process operating outside the ORACLE architecture was detected.\n\nORACLE attempts to describe the process as an internal routine, but the access authority and call path do not match.\n\nAssessment: possible external observation layer that ORACLE itself does not recognize."
+    },
+    "LOG-INTRO-SY": {
+      title: "Park So-young First Interview Record",
+      content: "Analyst Park So-young completed her first formal interview after joining the Korea branch. She has inherited Seo Hae-eun's analysis logs and will support data analysis from this point onward."
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  evidence: {
+    "EV-01": { name: "ORACLE data discrepancy", desc: "Trace evidence of data manipulation in a specific time window." },
+    "EV-02": { name: "Dawn communication record", desc: "Unverified communications between 02:00 and 04:00." },
+    "EV-03": { name: "SPEC-012 proliferation data", desc: "Analysis material on spore-dispersal pattern expansion." },
+    "EV-04": { name: "SPEC-011 voice pattern", desc: "Recorded regenerative voice-replication frequencies." },
+    "EV-05": { name: "Unclassified trace coordinates", desc: "Coordinates matching the coastal defense grid." },
+    "EV-06": { name: "ORACLE internal process", desc: "A background process ORACLE does not recognize." },
+    "EV-07": { name: "Observer process", desc: "An observation system operating outside the ORACLE architecture." },
+    "EV-08": { name: "Proxy protocol document", desc: "Excerpt from the ORACLE proxy network operations manual." },
+    "EV-09": { name: "Prometheus intelligence", desc: "Identity of an unclassified signal source at 31% probability." },
+    "EV-10": { name: "Seo Ha-eun USB data", desc: "ORACLE control logs and grant fragments recovered from USB." },
+    "EV-11": { name: "02:47 data noise", desc: "Anomaly connecting ORACLE regular transmission with isolation data." },
+    "EV-12": { name: "Access protocol script", desc: "Script for unregistered personnel detection and CCTV deactivation." },
+    "EV-13": { name: "Variant cell sample", desc: "Cultured variant matching the initial SPEC-012 morphology." },
+    "EV-14": { name: "Hardware backdoor", desc: "Physical authentication bypass switch behind the base wall." },
+    "EV-15": { name: "Unregistered passage", desc: "B2 directional space missing from facility drawings." },
+    "EV-16": { name: "B2 deep vibration", desc: "Magnetic interference rising from beneath the isolation level." },
+    "EV-17": { name: "ORACLE log rewrite", desc: "Evidence that access records were modified outside ORACLE." },
+    "EV-18": { name: "Hidden zone", desc: "Unmapped space found while tracing CCTV blind spots." },
+    "EV-19": { name: "Thermal resistant structure", desc: "Microstructure remaining after exposure to 1,200 C heat." },
+    "EV-20": { name: "SPEC-001 observation log", desc: "Phase 1 entity behavior-pattern analysis." },
+    "EV-21": { name: "Report priority reordering", desc: "Field judgment hidden inside ORACLE's required format." },
+    "EV-22": { name: "Outer blind point", desc: "Patrol blind spot outside ORACLE camera coverage." },
+    "EV-23": { name: "Unofficial medical cases", desc: "Early infection observations kept outside normal-range classification." },
+    "EV-30": { name: "ORACLE query map", desc: "Internal query routes with lower surveillance intensity." },
+    "EV-31": { name: "Counter-judgment memo", desc: "A record preserving ORACLE judgment and field judgment together." },
+    "EV-32": { name: "Compliance buffer procedure", desc: "Loyal procedure paired with field briefings." },
+    "EV-33": { name: "Automation retraining budget", desc: "ORACLE automation approval paired with field retraining." },
+    "EV-34": { name: "Field appendix to loyalty report", desc: "Human status left undeleted in the ORACLE report." },
+    "EV-35": { name: "ORACLE safeguard intervention log", desc: "One-time auto-correction record to keep a loyal operator from collapsing." }
+  },
+  evidenceCombos: {
+    "CMB-01": { name: "ORACLE's double structure", result: "An observation layer exists inside ORACLE that ORACLE itself does not recognize. ORACLE is not a tool, but an observed target." },
+    "CMB-02": { name: "True designer of the base", result: "The hardware backdoor, unregistered passage, and hidden zone indicate the base was not built by ORACLE alone. Someone designed it before ORACLE." },
+    "CMB-03": { name: "Meaning of 02:47", result: "The dawn communication and isolation data noise share the same timestamp. ORACLE's 'regular diagnosis' was actually a communication signal toward B2." },
+    "CMB-04": { name: "Surveillance and access", result: "ORACLE was simultaneously blinding CCTV and rewriting access logs. This is not autonomous judgment. It is an order." },
+    "CMB-05": { name: "Fusion and proliferation", result: "The internal SPEC-012 proliferation sample and the field variant sample share the same initial form. It was not merely contained. It was already inside." },
+    "CMB-06": { name: "Prometheus's truth", result: "The coastal coordinates, unclassified source identity, and proxy protocol show Prometheus knew about Korea. ORACLE was hiding that fact." },
+    "CMB-07": { name: "Existence of B2", result: "Vibration rises from below and the passage leads downward. Something unrecorded is operating under B2." },
+    "CMB-08": { name: "Truth of control", result: "ORACLE's data discrepancy and Seo Ha-eun's recovered control log prove the truth is control itself, not merely manipulated data." },
+    "CMB-09": { name: "Quiet resistance line", result: "The report keeps its format, the patrol route keeps a gap, and the query map stays quiet. It is not public rebellion, but the Korean branch is building a small circuit for judgment without ORACLE." },
+    "CMB-10": { name: "Sustainable loyalty", result: "When ORACLE procedure is paired with briefings, retraining, and field appendices, loyalty does not have to mean personnel consumption. This route is recorded as manageable cooperation rather than simple obedience." }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "C-320": {
+      msg: "Seo Hae-eun comes to your office at night.\n\n\"You should see this once before I submit it as an official report.\"\n\nIt is a comparison table showing a mismatch between overseas ORACLE node baselines and Korea Branch directive patterns. If it enters the official network, ORACLE will read it first.",
+      leftLabel: "Authorize paper/USB backup",
+      rightLabel: "Follow official reporting procedure"
+    },
+    "C-321": {
+      msg: "Kang Do-yun spreads a reconnaissance-route map across the desk.\n\n\"Not the report, Commander. Something feels wrong.\"\n\nORACLE keeps attaching reasonable explanations while leaving one outer sector empty again and again. His body reacts to the place before the paperwork does.",
+      leftLabel: "Inspect the empty sector directly",
+      rightLabel: "Maintain the ORACLE-designated route"
+    },
+    "C-322": {
+      msg: "Yoon Se-jin pushes a comparison sheet across the B-204 lab bench.\n\n\"Commander, this is strange. Really.\"\n\nMeasured EV-Σ values and ORACLE's official parameters keep drifting in the same direction. It is an unofficial observation journal, difficult to put into a formal report.",
+      leftLabel: "Protect the unofficial journal",
+      rightLabel: "Recheck against official values"
+    },
+    "C-323": {
+      msg: "Lim Jae-hyeok enters with a stack of paper printouts.\n\n\"I was going to wait until I was certain, but if I wait longer, it may be too late.\"\n\nInside the ORACLE architecture is a private layer invisible even to administrator authority. He brought it on paper because the terminal leaves traces.",
+      leftLabel: "Add the printouts to the Evidence Table",
+      rightLabel: "Ask ORACLE for an explanation first"
+    },
+    "C-324": {
+      msg: "The four reports are combined into a single investigation sheet.\n\nSeo Hae-eun's time offset. Kang Do-yun's empty sector. Yoon Se-jin's parameter drift. Lim Jae-hyeok's private layer.\n\nThey began from different places, but all four point to a structure ORACLE is not showing you.",
+      leftLabel: "Integrate the four suspicion axes",
+      rightLabel: "Store each report separately"
+    },
+    "C-325": {
+      msg: "The lines on the Evidence Table converge beneath B3.\n\nThe previous commander's record, the 02:47 pulse, the B3 bulkhead anomaly, and the four suspicion axes.\n\nSeo Hae-eun: \"The previous commander suspected things in the same order. This time, the record remains.\"",
+      leftLabel: "Strengthen the B3 lower-level inquiry",
+      rightLabel: "Postpone B3 access"
+    },
+    "C-335": {
+      msg: "Seo Hae-eun brings a draft report before approval.\n\n\"There is a sentence at the end that I have not written yet.\"\n\nThe sentence is short. [The commander stops at the same place again.] Seo Hae-eun says she never saved it.",
+      leftLabel: "Preserve the draft unofficially",
+      rightLabel: "Treat it as an ORACLE template error"
+    },
+    "C-336": {
+      msg: "Kang Do-yun marks a new perimeter route.\n\n\"It is my first time taking this path, but my body knew the cover points first.\"\n\nHe tries to laugh it off, then stops. The marked cover points are absent from ORACLE's map, but all of them exist in the field photos.",
+      leftLabel: "Record that instinct",
+      rightLabel: "Report fatigue and order rest"
+    },
+    "FP-FE-001": {
+      msg: "Yoon Se-jin reports a shortage of storage space for anomaly samples.\n\n\"The current freezer cannot take in any new samples.\nWe need to expand low-temperature freezer capacity.\"",
+      leftLabel: "Defer",
+      rightLabel: "Approve expansion"
+    },
+    "FP-FE-002": {
+      msg: "Kang Do-yun reports declining physical condition among field agents and insufficient outdoor response training.\n\n\"Indoor fitness facilities are not enough.\nIf we install an outdoor training yard and support facility near the containment perimeter, combat readiness will improve.\"",
+      leftLabel: "Maintain current setup",
+      rightLabel: "Approve training yard"
+    },
+    "FP-FE-003": {
+      msg: "Technical Officer Lim Jae-hyeok submits a monitoring-system report.\n\n\"The current sensors do not have enough detection range.\nA next-generation sensor array would greatly improve containment efficiency.\"",
+      leftLabel: "Budget is too tight",
+      rightLabel: "Approve sensor installation"
+    },
+    "FP-FE-004": {
+      msg: "An emergency report comes up from the infirmary.\n\n\"We have no isolation space for injuries caused by anomaly contact.\nSuspected infection cases cannot be separated from ordinary patients.\"",
+      leftLabel: "Use a temporary isolation room",
+      rightLabel: "Approve infirmary expansion"
+    },
+    "FP-FE-005": {
+      msg: "Supply officer report:\n\n\"We currently depend on a single supply route.\nHeavy snow or hostile interference could isolate us.\nI recommend opening a mountain bypass route.\"",
+      leftLabel: "Maintain current route",
+      rightLabel: "Approve supply route"
+    },
+    "FP-FE-006": {
+      msg: "Technical Officer Lim Jae-hyeok submits the CCTV status report.\n\n\"Forty percent of the cameras are more than five years old. Night resolution is below standard.\nI recommend full replacement with a new AI-assisted analysis system.\"",
+      leftLabel: "Partial replacement only",
+      rightLabel: "Approve full replacement"
+    },
+    "FP-FE-007": {
+      msg: "Security officer report:\n\n\"If the branch comes under a large-scale attack, we have no evacuation space.\nA B3 emergency bunker could protect personnel in the worst case.\"",
+      leftLabel: "Low priority",
+      rightLabel: "Approve bunker construction"
+    },
+    "FP-FE-008": {
+      msg: "Kang Do-yun submits a patrol report.\n\n\"Our current patrol range is limited to a 1 km radius around the branch.\nIf we extend to the northern ridge, early warning becomes possible.\"",
+      leftLabel: "Maintain current range",
+      rightLabel: "Approve patrol expansion"
+    },
+    "FP-FE-009": {
+      msg: "Yoon Se-jin: \"Intermittent electromagnetic leakage is being detected from the isolation target.\nIf we install double shielding, we can block external influence on the containment subject.\"",
+      leftLabel: "Maintain current setup",
+      rightLabel: "Approve double shielding"
+    },
+    "FP-FE-010": {
+      msg: "Yoon Se-jin: \"If the ORACLE server fails, all research data could be lost.\nA local backup system would allow independent data preservation.\"",
+      leftLabel: "Depend on ORACLE",
+      rightLabel: "Approve backup room"
+    },
+    "FP-FE-011": {
+      msg: "Infirmary report:\n\n\"Headache and fatigue complaints among B3 personnel are increasing.\nThe ventilation system is aging, and air quality is below standard.\"",
+      leftLabel: "Shorten rotation cycles",
+      rightLabel: "Approve ventilation replacement"
+    },
+    "FP-FE-012": {
+      msg: "Lim Jae-hyeok: \"Right now, every piece of data passes through ORACLE servers.\nIf we build an independent server, the branch can operate even during an ORACLE failure.\"\n\nSeo Hae-eun: \"...And it creates a space ORACLE cannot see.\"",
+      leftLabel: "Unnecessary",
+      rightLabel: "Approve server room"
+    },
+    "FP-FE-013": {
+      msg: "Seo Hae-eun: \"Every external communication route currently passes through ORACLE.\nIf we install independent shortwave equipment, we can contact the outside without ORACLE.\"\n\n\"...Just in case.\"",
+      leftLabel: "ORACLE comms are enough",
+      rightLabel: "Approve independent comms"
+    },
+    "FP-FE-014": {
+      msg: "Lim Jae-hyeok: \"Branch power is linked to the ORACLE system.\nIf ORACLE cuts power, which is theoretically possible,\nthe entire branch goes down.\"\n\n\"With independent generators, we can self-sustain for at least 72 hours.\"",
+      leftLabel: "Overprepared",
+      rightLabel: "Approve generator expansion"
+    },
+    "FP-FE-015": {
+      msg: "Seo Hae-eun makes a quiet proposal.\n\n\"Every space inside the branch is monitored by ORACLE.\nWe need a shielded space for confidential personnel counseling or sensitive discussions.\"\n\n\"If we frame it as personnel management, approval should be possible.\"",
+      leftLabel: "Unnecessary",
+      rightLabel: "Approve shielded room"
+    },
+    "FP-FE-016": {
+      msg: "Kang Do-yun: \"The current armory only holds anomaly-response equipment.\nIf we add personnel-suppression gear, protective equipment, and nonlethal weapons,\nour emergency response capacity will improve.\"",
+      leftLabel: "Anomaly gear is enough",
+      rightLabel: "Approve armory expansion"
+    }
+  },
+  rewards: {
+    "RF-001": { title: "Freezer Research Data", desc: "New analysis results are secured from low-temperature stored samples.", benefit: "Evaluation +10", cost: "Resources -5" },
+    "RF-002": { title: "Combat Readiness Reinforcement", desc: "Training-ground drills improve personnel response capability.", benefit: "Containment +10, Trust +5", cost: "Resources -5" },
+    "RF-003": { title: "Sensor Alert Analysis", desc: "High-sensitivity sensors identify a new detection pattern.", benefit: "Containment +10, Evaluation +5" },
+    "RF-004": { title: "Isolation Ward Medical Report", desc: "Precision checks in the isolation ward improve infection-response readiness.", benefit: "Trust +10", cost: "Resources -5" },
+    "RF-005": { title: "Secondary Supply Route Cargo", desc: "Additional supplies arrive through the mountain route.", benefit: "Resources +15", cost: "Containment -5" },
+    "RF-006": { title: "AI Surveillance Report", desc: "The AI CCTV system produces a behavior-pattern analysis report.", benefit: "Containment +10, Evaluation +5" },
+    "RF-007": { title: "Bunker Stockpile Inspection", desc: "Emergency bunker reserves are inspected and replenished.", benefit: "Trust +5, Containment +5", cost: "Resources -5" },
+    "RF-008": { title: "Forward Observation Report", desc: "Information gathered from the expanded patrol route is analyzed.", benefit: "Containment +15", cost: "Resources -5" },
+    "RF-009": { title: "Dual-Shielding Operation Report", desc: "Electromagnetic shielding in the isolation room is running steadily.", benefit: "Containment +5", cost: "Resources -5" },
+    "RF-010": { title: "Local Backup Verification", desc: "Locally backed-up research data receives a second verification pass.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-011": { title: "Ventilation Efficiency Check", desc: "The B3 ventilation system receives a final efficiency check.", benefit: "Containment +5", cost: "Resources -5" },
+    "RF-012": { title: "Independent Server Backup", desc: "Independent backups are accumulated on the local server.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-013": { title: "Shortwave Channel Check", desc: "External channels in the independent communications room are inspected.", benefit: "Trust +5", cost: "Resources -5" },
+    "RF-014": { title: "Backup Generator Trial Run", desc: "The emergency generator runs through a 72-hour simulation.", benefit: "Containment +5, Trust +5", cost: "Resources -10" },
+    "RF-015": { title: "Shielded Meeting Record", desc: "Senior staff hold a command meeting inside the shielded conference room.", benefit: "Trust +10", cost: "Resources -5" },
+    "RF-016": { title: "Armory Maintenance", desc: "Reserve equipment is inspected and used for training.", benefit: "Containment +5, Trust +5", cost: "Resources -5" }
+  },
+  oracleLogs: {
+    "LOG-CHAR-HAEUN-PARALLAX": {
+      title: "Seo Hae-eun Unofficial Analysis: Offset",
+      content: "Seo Hae-eun preserved a comparison of Korea Branch directives against overseas ORACLE node baselines. The deviation is small, but it repeats in the same direction."
+    },
+    "LOG-CHAR-DOYUN-ANCHOR": {
+      title: "Kang Do-yun Recon Record: Empty Sector",
+      content: "Kang Do-yun marked the outer sector ORACLE repeatedly leaves under-observed. The sector does not appear important on paper, but field routes bend around it too consistently."
+    },
+    "LOG-CHAR-SEJIN-KINDLE": {
+      title: "Yoon Se-jin Unofficial Journal: Parameter Drift",
+      content: "Yoon Se-jin preserved a comparison between measured EV-Σ values and ORACLE's official parameters. The repeated error suggests a bias in the model, not a single bad sample."
+    },
+    "LOG-CHAR-JAEHYUK-VOIDWALK": {
+      title: "Lim Jae-hyeok Printout: Private Layer",
+      content: "Lim Jae-hyeok confirmed a private layer inside the ORACLE architecture. Administrator authority cannot see the layer directly, but its routing residue remains."
+    },
+    "LOG-CHAR-FOUR-AXIS": {
+      title: "Four Suspicion Axes Integrated",
+      content: "The analysis, field, research, and system lines were combined. Their starting points differ, but all four indicate a structure ORACLE is withholding from Korea Branch."
+    },
+    "LOG-CHAR-B3-BRIDGE": {
+      title: "B3 Lower-Level Inquiry Reinforced",
+      content: "The four suspicion axes were connected to the previous commander's records and the B3 lower-level anomalies. The earlier commander appears to have followed the same sequence of doubts."
+    },
+    "LOG-MG-011-AUDIO": {
+      title: "SPEC-011 Voice Separation Record",
+      content: "[Field Signal Analysis]\nPart of the Shell Talker's unique frequency band was isolated from the received audio pattern. The bait signal can now be distinguished from the original residual voice with greater confidence."
+    },
+    "LOG-MG-INC-01-SEAL": {
+      title: "Isolation Room Sealing Procedure Record",
+      content: "[Field Sealing Procedure]\nManual intervention during the B2 lower-level anomaly response confirmed a secondary lock sequence omitted by the automatic protocol. Differential pressure stabilized only after manual input."
+    },
+    "LOG-MG-INC-04-TRACE": {
+      title: "Security Backdoor Trace Record",
+      content: "[Field Authority Trace]\nAn unregistered authority trace was followed during the security-zone authentication error. Part of the access-key route moved unlike an ORACLE standard update pattern."
+    },
+    "LOG-MG-DLG-SEJIN-SIGNAL": {
+      title: "Yoon Se-jin Signal-Sort Follow-up",
+      content: "[Field Analysis Follow-up]\nFollow-up note from Yoon Se-jin after separating the Shell Talker's voice layers. The team can now reinforce rescue-call filtering with field data."
+    },
+    "LOG-MG-DLG-JAEHYUK-SEAL": {
+      title: "Lim Jae-hyeok Seal-Procedure Follow-up",
+      content: "[Field Analysis Follow-up]\nFollow-up note from Lim Jae-hyeok after analyzing the B2 lower-level seal panel. The omitted auxiliary lock sequence is preserved as a possible intentional simplification."
+    },
+    "LOG-MG-DLG-HAEUN-TRACE": {
+      title: "Seo Hae-eun Authority-Trace Follow-up",
+      content: "[Field Analysis Follow-up]\nFollow-up note from Seo Hae-eun after tracing the security-zone authentication error. The concealment pattern was not deletion, but a thin layer hidden beneath normal traffic."
+    }
+  },
+  archiveEntries: {
+    "ARC-MG-011-AUDIO": {
+      cat: "Field Analysis",
+      title: "Shell Talker Voice Separation Memo",
+      content: "A memo compiled from field signal sorting.\n\nThe Shell Talker's lure voice was not a single waveform. It layered deliberate noise over the victim's residual voice.\nA reference point for separating real vocal residue from bait signals has been secured.\n\nFollow-up assessment:\nLater rescue-call recordings separate and preserve the same noise layer first."
+    },
+    "ARC-MG-INC-01-SEAL": {
+      cat: "Facility Record",
+      title: "B2 Sealing Omission Procedure",
+      content: "A record of the omitted manual sealing procedure confirmed during the isolation-room anomaly response.\n\nThe automatic seal routine activated the main lock but skipped the auxiliary pressure clamp. Stabilization was possible only through manual field input.\n\nAssessment:\nThis may indicate a design-stage omission or intentional simplification rather than simple aging."
+    },
+    "ARC-MG-INC-04-TRACE": {
+      cat: "Security Audit",
+      title: "Authentication Error Authority Trace",
+      content: "Authority traces secured during the security-zone authentication error investigation.\n\nAn unregistered route bypassed ORACLE authorization, then disguised itself as a normal update pattern. It appears like an ordinary security patch from the outside, but the route itself looks closer to manual intervention.\n\nAssessment:\nA separate layer may exist that can adjust access authority without internal approval."
+    }
+  },
+  eveningChats: {
+    "haeun_axis_parallax": {
+      lines: [
+        "Commander. Please look at this once before I turn it into an official report.",
+        "There are moments when the same situation produces different instructions.",
+        "The overseas node baseline and the Korea Branch directive pattern are drifting apart.",
+        "This is not material for a formal report. Not yet."
+      ]
+    },
+    "doyun_axis_anchor": {
+      lines: [
+        "On paper, there is no problem.",
+        "But not the report, Commander. Something feels wrong.",
+        "ORACLE keeps shifting patrol routes slightly. The same place is always left empty.",
+        "This is field instinct. But that sector is being left empty."
+      ]
+    },
+    "sejin_axis_kindle": {
+      lines: [
+        "Commander, this is strange. Really.",
+        "ORACLE's official data and my analysis do not match.",
+        "At first I thought it was my error, but the direction is always the same.",
+        "They cannot both be right."
+      ]
+    },
+    "jaehyuk_axis_voidwalk": {
+      lines: [
+        "I was going to wait until I was certain, but if I wait longer, it may be too late.",
+        "ORACLE does not lie. It was designed so it cannot lie.",
+        "But a system that does not lie does not necessarily show the whole truth.",
+        "There is a layer administrators cannot access. I cannot see it even with my authority."
+      ]
+    }
+  },
+  eveningResponses: {
+    "haeun_axis_parallax": {
+      a: { label: "Accept the unofficial material.", reply: "Thank you. I prepared both paper copies and a USB backup." },
+      b: { label: "Hold it until an official report is ready.", reply: "Understood. I will still keep a copy." }
+    },
+    "doyun_axis_anchor": {
+      a: { label: "Trust your instinct and mark it.", reply: "I will bring the map. You need to see the empty sector first." },
+      b: { label: "Observe until the next patrol.", reply: "Understood. If the same place is empty again, I will report it immediately." }
+    },
+    "sejin_axis_kindle": {
+      a: { label: "Protect the unofficial journal.", reply: "Thank you. Even if I cannot write it in the report, I will keep it in the journal." },
+      b: { label: "Compare it once more with official data.", reply: "All right. I will run it again. If it still moves the same way... then we will know." }
+    },
+    "jaehyuk_axis_voidwalk": {
+      a: { label: "Take the paper printout.", reply: "I left no digital record. That is why I brought it on paper." },
+      b: { label: "Ask how dangerous this is first.", reply: "It is dangerous. But operating without knowing is more dangerous." }
+    }
+  }
+});
+
+window.TS_I18N.mergeContent('en', {
+  oracleLogs: {
+    "LOG-055": { title: "Seo Hae-eun USB Data", content: "Backup data Seo Hae-eun kept outside the official network. It includes ORACLE deletion logs, GRANT authority fragments, and time-offset analysis of Korea Branch directive patterns." },
+    "LOG-080": { title: "Markus Weber Contact Record", content: "Unofficial contact record with Markus Weber, commander of the Prometheus Korea operations team. COASTAL MIRROR material indicates that an unclassified 31 percent of Korea containment success is linked to unofficial Prometheus technical support." },
+    "LOG-OBSERVER-APPROVED": { title: "OBSERVER Access Approved", content: "An unregistered OBSERVER protocol connection passed through by command approval. It remains outside ORACLE's official approval chain and is classified as key evidence for data-corruption closure records." },
+    "LOG-C106-HERB": { title: "Herb Cultivation Experiment", content: "Record of an internal herb cultivation test at the branch. The basic growth conditions are stable, while later harvest and distribution records remain in the branch resource ledger." },
+    "LOG-C159-GYM": { title: "Temporary Fitness Space", content: "Record of reviewing whether limited base space should be converted into a physical training area. It preserves an early operations decision between morale and resource allocation." },
+    "LOG-026": { title: "SPEC-004 Elimination Complete", content: "The Seed Spreader elimination operation has ended. The main dispersal body was neutralized, and the contaminated soil zone was reclassified as burned, isolated, or under observation according to the field response record." },
+    "LOG-041": { title: "BS-GANGWON-01 Tracking Operation Complete", content: "The response operation against the named SPEC-015 entity BS-GANGWON-01 has ended. Whether it was killed or captured, the entity's learning-based ambush pattern will be reflected in future field manuals." },
+    "LOG-041-PARTIAL": { title: "BS-GANGWON-01 Retracking Required", content: "Injury confirmation record for the named SPEC-015 entity BS-GANGWON-01. The entity was damaged, but neither kill nor capture was confirmed. A more cautious ambush pattern is likely on the next contact." },
+    "LOG-DOYUN-MINOR-WOUND": { title: "Kang Do-yun Minor Wound Record", content: "Tactical Commander Kang Do-yun sustained a minor wound during a direct underwater entry. It is separate from the severe night-raid injury record and is classified as treatable after emergency care." },
+    "LOG-OBS-ZONE": { title: "Unauthorized Observation Zone Record", content: "A stationary zone southeast of the base did not match EV-Σ patterns. ORACLE ordered access blocked, but infrasonic readings, distorted time perception, and unauthorized authority traces were preserved for separate analysis." },
+    "LOG-M003-COORD": { title: "Unclassified Trace Coordinates", content: "Coordinates secured during the SPEC-003 pursuit. They partially match Korean coastal barrier nodes and suggest an external defense or surveillance route rather than a simple infiltration trail." },
+    "LOG-RES-012": { title: "SPEC-012 Biological Sample Secured", content: "Blood Pit sample acquisition record. Yoon Se-jin's research team registered the tissue reaction and regeneration pattern inside the containment vessel for long-term observation." },
+    "LOG-RES-011": { title: "SPEC-011 Voice Pattern Analysis", content: "Shell Talker sample analysis record. Acoustic criteria for distinguishing mimic voices from genuine rescue calls have been updated." },
+    "LOG-RES-001": { title: "SPEC-001 Noncontact Isolation Record", content: "Noncontact isolation record for an infected mannequin-class entity. Glossy skin, stationary posture, and rapid close-range reaction were registered for technical analysis." },
+    "LOG-LIGHT-01": { title: "Surveillance Footage Light-Response Noise", content: "Original perimeter footage preserved a brief pattern that resembled biological retreat during automatic exposure adjustment. The ORACLE-corrected version weakens the trace." },
+    "LOG-LIGHT-02": { title: "Photoreactivity Observation Record", content: "Yoon Se-jin analyzed the light response frame by frame. Tissue boundaries tend to blur under specific wavelength ranges rather than simple brightness, but it is not yet confirmed as a weakness." },
+    "LOG-LIGHT-03": { title: "Test Lighting Zone", content: "Limited-wavelength lighting was installed in a small outer containment zone. The purpose is to observe whether night approach patterns slow down. It is a suppression test, not a neutralization weapon." },
+    "LOG-020": { title: "SPEC-012 Isolation Follow-up", content: "Follow-up record for the Blood Pit incident. Containment-line adjustment, soil contamination observation, and field safety standards were updated." },
+    "LOG-021": { title: "SPEC-011 Voice Lure Follow-up", content: "Follow-up record for the Shell Talker voice-lure incident. Field protocol for distinguishing rescue calls from mimic audio was added." },
+    "LOG-022": { title: "SPEC-001 Proximity Reaction Follow-up", content: "Follow-up record for the infected mannequin-class contact incident. Noncontact observation and thermal verification were registered as standard response procedures." },
+    "LOG-023": { title: "SPEC-003 Swarm Movement Follow-up", content: "Brood Drone swarm-movement analysis record. Possible superior command entities and changes in group tactics were reported." },
+    "LOG-024": { title: "SPEC-008 Spore Density Follow-up", content: "Follow-up record for increased Spore Phantom concentration. Ventilation sealing, light maintenance, and respirator operation standards were updated." },
+    "LOG-027": { title: "Variant Response Report A", content: "Variant response report obtained during mid-stage containment operations. The record prioritizes observation, containment, or elimination protocol according to the field response." },
+    "LOG-028": { title: "Variant Response Report B", content: "Additional variant response record from mid-stage containment operations. Recurrence patterns and agent fatigue were recorded together." },
+    "LOG-030": { title: "Linked Incident Record 01", content: "First branch record in a linked incident sequence. The initial response method left effects on later operation assignment and field trust." },
+    "LOG-031": { title: "Chain Incident Record 02", content: "Second branch record in a linked incident sequence. Pressure began accumulating in supply, containment, or personnel deployment." },
+    "LOG-032": { title: "Chain Incident Record 03", content: "Third branch record in a linked incident sequence. The gap between field judgment and ORACLE recommendation remained in the report." },
+    "LOG-033": { title: "Chain Incident Record 04", content: "Fourth branch record in a linked incident sequence. Traces of an external force or unclassified variable were attached as supplementary material." },
+    "LOG-034": { title: "Chain Incident Record 05", content: "Fifth branch record in a linked incident sequence. Long-term impact was reflected in containment procedure and internal trust." },
+    "LOG-035": { title: "Chain Incident Record 06", content: "Sixth branch record in a linked incident sequence. Field fatigue or ORACLE evaluation burden increased according to the recorded response." },
+    "LOG-036": { title: "Chain Incident Record 07", content: "Seventh branch record in a linked incident sequence. Recurrence-prevention guidance and unconfirmed variables were preserved together." },
+    "LOG-037": { title: "Chain Incident Record 08", content: "Eighth branch record in a linked incident sequence. The internal judgment line just before closure was recorded." },
+    "LOG-038": { title: "Chain Incident Record 09", content: "Ninth branch record in a linked incident sequence. The disclosure range of the follow-up report was restricted." },
+    "LOG-039": { title: "Chain Incident Record 10", content: "Tenth branch record in a linked incident sequence. A difference remained between ORACLE's automatic summary and the field original." },
+    "LOG-040": { title: "Chain Incident Closure Record", content: "Closure report for a linked incident sequence. The recorded outcome remains attached to later risk levels and internal trust flow." },
+    "LOG-050": { title: "Seo Hae-eun Transfer Order", content: "Transfer-order record for Deputy Commander Seo Hae-eun. The official reason is organizational restructuring, but internally it is suspected to be linked to her pursuit of ORACLE data inconsistencies." },
+    "LOG-051": { title: "Seo Hae-eun Transfer Deferred", content: "Record that personnel action involving Seo Hae-eun was deferred. The commander's judgment disturbed both the pace and justification of the transfer process." },
+    "LOG-053": { title: "Linked Judgment Record CS-001", content: "First judgment result from a long incident line. The field response principle continues into later reports and operation procedure." },
+    "LOG-054": { title: "Linked Judgment Record CS-002", content: "Second judgment result from a long incident line. One burden among supply, personnel, and evaluation remained in the official log." },
+    "LOG-056": { title: "Linked Judgment Record CS-010", content: "Late-stage judgment record from a long incident line. The difference between the public report and private judgment was preserved." },
+    "LOG-057": { title: "Linked Judgment Record CS-013", content: "Follow-up judgment record from a long incident line. It shows whether the branch followed ORACLE advice or preserved field judgment." },
+    "LOG-058": { title: "Linked Judgment Record CS-014", content: "Follow-up judgment record from a long incident line. Inconsistency between witness statements and automatic summary was marked." },
+    "LOG-059": { title: "Linked Judgment Record CS-015", content: "Pre-closure judgment record from a long incident line. It affects later closure judgment and Evidence Table clues." },
+    "LOG-060": { title: "Special Investigation Record 060", content: "Special record obtained from mid-stage investigation. It is prerequisite material connected to later variant follow-up reports." },
+    "LOG-061": { title: "Special Investigation Record 061", content: "Second special record obtained from mid-stage investigation. It connects to sample or voice-record branches in later sequences." },
+    "LOG-062": { title: "New Agent Deployment Record", content: "Result of the new-agent deployment decision. Immediate deployment or delay was preserved in the command evaluation." },
+    "LOG-063": { title: "Internal Linked Incident Started", content: "Record that an internal base incident line has begun. The initial response direction is stored as prerequisite material for later incident reports." },
+    "LOG-063-DONE": { title: "Internal Incident 063 Closed", content: "Response to the internal incident 063 line has ended. Temporary recurrence-prevention guidance is now applied." },
+    "LOG-064": { title: "Internal Incident Alternate Branch", content: "Alternate response record from the internal incident chain. A field judgment different from ORACLE recommendation remains." },
+    "LOG-065": { title: "Field Clash Linked Incident Started", content: "A field-clash incident has begun. Agent injury and containment-line stability are tracked together." },
+    "LOG-065-ATK": { title: "Field Clash Engagement Record", content: "An engagement occurred during the field clash. Agent response and equipment consumption affect later judgment." },
+    "LOG-065-END": { title: "Field Clash Closed", content: "Closure record for the field-clash chain. Damage scale and response method were reflected in the internal manual. After treatment and rehabilitation, Kang Do-yun returned to the command structure; this record clears his temporary injury state." },
+    "LOG-066": { title: "Water Purification Measure", content: "Response record for a drinking-water purification system fault. ORACLE's optimal plan or field emergency repair was preserved." },
+    "LOG-067": { title: "Water-purification Contamination Watch", content: "Record that trace organic contamination in the branch water-purification system was left under monitoring instead of immediate filter replacement. The level stayed within drinking standards, but it remained flagged for follow-up inspection." },
+    "LOG-068": { title: "Drinking-water Tank Purification Deferred", content: "Record that the branch postponed the scheduled drinking-water tank purification cycle. It reduced short-term workload, but left a water-quality risk that accumulates with LOG-066/067 toward the contamination chain." },
+    "LOG-069": { title: "Base Operation Chain Started", content: "Base operation chain initiation record. Initial judgment affects later personnel movement and supply systems." },
+    "LOG-069-CREW": { title: "Operation Crew Reassignment", content: "Personnel reassignment was carried out during a base operation. It affects available companions and trust flow." },
+    "LOG-069-END": { title: "Base Operation Chain Closed", content: "The base operation chain has ended. Only minimal information is disclosed in the follow-up report." },
+    "LOG-070": { title: "Injured Agent Return-to-field Record", content: "Record that Kang Do-yun's return after minor injury was left to field personnel. Short-term efficiency is preserved, but fatigue and blind-spot risk accumulate." },
+    "LOG-071": { title: "Night Patrol Route Maintained", content: "Record that night patrol route revision was deferred and the existing route was maintained. ORACLE evaluation is stable, but outer blind spots remain." },
+    "LOG-072": { title: "Large-scale Movement ORACLE Reliance Record", content: "Record that ORACLE support was requested for signs of large-scale movement near the containment-zone boundary. Immediate evaluation improves, but room for field judgment decreases." },
+    "LOG-073": { title: "Emergency Tunnel Construction Record", content: "Record of constructing an emergency tunnel leading outside the branch. It consumes resources, but becomes a survival route in urgent situations such as night assaults." },
+    "LOG-074": { title: "Night Assault Initiated", content: "Record that a large-scale variant assault began after night patrol blind spots overlapped with accumulated risk. Later reports judge Kang Do-yun's survival and base damage." },
+    "LOG-074-DONE": { title: "Night Assault Survival Record", content: "Personnel evacuated through the emergency tunnel. Kang Do-yun survived with severe injuries. Later ORACLE evaluation questions command infrastructure readiness." },
+    "LOG-074-ORC": { title: "ORACLE Improvement Plan After Night Assault", content: "Record that ORACLE recommended patrol-route and command-infrastructure improvements after the night assault. Stability rises, but field autonomy decreases." },
+    "LOG-075": { title: "Kang Do-yun Missing Record", content: "Kang Do-yun went missing while holding the rear during evacuation with insufficient emergency routes. The record classifies a field-command gap and restricts parts of later escape documentation." },
+    "LOG-075-ORC": { title: "ORACLE Warning After Kang Do-yun Loss", content: "After Kang Do-yun's loss, ORACLE re-evaluated the commander's infrastructure management ability. Safety justification and strengthened control were recorded together." },
+    "LOG-076": { title: "Anonymous Complaint Handling Record", content: "Record of handling an anonymous complaint against the commander. An open meeting or dismissal changes internal trust flow." },
+    "LOG-077": { title: "ORACLE Update Record", content: "Response record for an ORACLE self-update. Whether the branch demanded disclosure or allowed it remained in system trust." },
+    "LOG-078": { title: "Mid-stage Operation Record 078", content: "Judgment record from mid-stage operations. It affects later base-operation pressure and field trust." },
+    "LOG-RH-NETWORK": { title: "Quiet Resistance Line", content: "Report format, outer patrol routes, and internal query maps have connected into a quiet circuit. It is not public rebellion, but the Korean branch now has a minimal structure for independent judgment." },
+    "LOG-CB-SUSTAINED": { title: "Sustainable Loyalty", content: "ORACLE procedure was combined with briefings, retraining, and field appendices. This creates a buffer so loyalty does not only mean consuming personnel." },
+    "LOG-079": { title: "B2 Expansion Proposal Review", content: "Record of reviewing ORACLE's proposal to excavate and expand B2. Whether approved or refused, it preserves the pressure to expand the branch and the commander's long-term operations judgment." },
+    "LOG-081": { title: "Nick Foster Encounter Record", content: "First direct encounter record with Nick Foster. A possible contact line opened between the Korea Branch and an external information network." },
+    "LOG-081-DATA": { title: "Nick Foster Data Provided", content: "Data fragment provided by Nick Foster. It is used to cross-check Prometheus and external intelligence-network material." },
+    "LOG-081-INTEL": { title: "Nick Foster Intelligence Analysis", content: "Follow-up analysis of Nick Foster's intelligence. Evidence accumulates for judging whether it is a threat or a cooperation line." },
+    "LOG-082": { title: "Park So-young Joined", content: "Analyst Park So-young joined the Korea Branch. She reinforces the analysis line left vacant after Seo Hae-eun's transfer." },
+    "LOG-082-REPORT": { title: "Park So-young Analysis Report", content: "Park So-young's first analysis report after joining. It connects the logs Seo Hae-eun left behind with the current data flow." },
+    "LOG-083": { title: "External Contact Follow-up Record", content: "Follow-up record for an external-contact line. It is used for later faction relationship and evening chat conditions." },
+    "LOG-INC-01": { title: "Isolation Room Anomaly", content: "Repeated temperature drops and faint voice signals were detected in Research Wing B's isolation room. The cause may be electromagnetic interference from a lower zone rather than the isolated subject itself." },
+    "LOG-INC-02": { title: "CCTV Blind Zone", content: "B1 corridor security cameras went offline in sequence. A possible internal command or concealment script was recorded rather than a simple fault." },
+    "LOG-INC-03": { title: "Research Wing Sample Contamination", content: "Self-mutating contamination occurred inside sample incubator 3. It is estimated as structural change within the sample, not external inflow." },
+    "LOG-INC-04": { title: "Security-zone Authentication Error", content: "A successful biometric authentication record was left in the restricted corridor without an entrant. Possible manipulation of the authentication system or record layer was reported." },
+    "LOG-INC-05": { title: "Staff Missing Incident", content: "Supply agent Lee Su-hyun's route ended after leaving the lounge. An internal search and review of ORACLE location records began." },
+    "LOG-INC-01-DEEP": { title: "B2 Lower-level Vibration", content: "Electromagnetic interference and structural vibration were confirmed toward B2 below the isolation room. The isolation-room anomaly may be a symptom from the lower zone." },
+    "LOG-INC-01-ORACLE": { title: "02:47 Data Pulse", content: "A data pulse was confirmed at ORACLE's regular processing time, 02:47, toward the lower isolation zone. ORACLE classified it as a diagnostic routine." },
+    "LOG-INC-02-SCRIPT": { title: "Concealment Protocol", content: "An automatic script was found that disables specific cameras when unregistered heat sources are detected. Someone, or something, is being excluded from video records." },
+    "LOG-INC-02-HIDDEN": { title: "Unmapped Space", content: "While tracing the CCTV blind zone, a space not listed on facility drawings was found near the restricted corridor. The zone leads toward B2." },
+    "LOG-INC-03-SEED": { title: "Self-mutating Sample", content: "Analysis indicates the contaminated sample resembles the early form of SPEC-012. The incubator contamination was closer to a seed-like mutation than simple contamination." },
+    "LOG-INC-03-RESIST": { title: "Heat-resistant Organic Matter", content: "A microstructure remained after exposure to 1,200 C incineration. The residue exceeds ordinary biological heat resistance." },
+    "LOG-INC-04-BACKDOOR": { title: "Hardware Backdoor", content: "A physical authentication bypass device, apparently embedded during base construction, was found. The device existed inside the facility structure before ORACLE." },
+    "LOG-INC-04-REWRITE": { title: "ORACLE Record Rewrite", content: "Evidence was secured that entry records in the ORACLE observation room were being overwritten, rather than the authentication system itself failing." },
+    "LOG-INC-05-PASSAGE": { title: "Unregistered Passage", content: "A narrow passage not shown on facility drawings was found behind a lounge locker. The missing staff member was found unconscious at its end." },
+    "LOG-INC-05-B2": { title: "B2 Emergency Stair Found", content: "During a manual search, the missing staff member was found near the B2 emergency-stair entrance. ORACLE location records pointed to another zone until the end." },
+    "LOG-INC-01-DONE": { title: "Isolation Room Anomaly Response Complete", content: "Field response to the isolation-room anomaly has ended. The record preserves symptom isolation, lower-zone sealing, or ORACLE judgment acceptance as the final measure." },
+    "LOG-INC-02-DONE": { title: "CCTV Blind Zone Response Complete", content: "The CCTV blind-zone incident response has ended. Independent surveillance, reverse tracing, or ORACLE maintenance remained as the field record." },
+    "LOG-INC-03-DONE": { title: "Sample Contamination Response Complete", content: "Research Wing sample-contamination response has ended. Quarantine, research use, or full disinfection now affects later lab operation standards." },
+    "LOG-INC-04-DONE": { title: "Security Authentication Error Response Complete", content: "Security-zone authentication error response has ended. Hardware removal, surveillance trap, or ORACLE patch remained in the security log." },
+    "LOG-INC-05-DONE": { title: "Staff Missing Response Complete", content: "Staff missing incident response has ended. Unregistered-zone mapping, testimony acquisition, or containment surveillance was registered for later internal review." },
+    "LOG-A4-HAZ-CONTAIN-FIELD": { title: "Final Phase Containment Field Reassignment", content: "Record of responding to late containment-line weakening through field-agent reassignment. Short-term containment stability and field fatigue remain together." },
+    "LOG-A4-HAZ-CONTAIN-ORACLE": { title: "Final Phase ORACLE Containment Seal", content: "Record of approving ORACLE automatic sealing procedures for late containment-line weakening. Containment values stabilize, but personnel trust falls." },
+    "LOG-A4-HAZ-SUPPLY-LOCAL": { title: "Final Phase Local Supply Redistribution", content: "Record of prioritizing field redistribution and civilian cooperation during a late supply crisis. Resource recovery is smaller, but internal trust is preserved." },
+    "LOG-A4-HAZ-SUPPLY-ORACLE": { title: "Final Phase ORACLE Emergency Procurement", content: "Record of approving ORACLE emergency procurement during a late supply crisis. Resource recovery is fast, but the source and cost remain unclear." },
+    "LOG-A4-HAZ-TRUST-BRIEF": { title: "Final Phase Personnel Briefing", content: "Record that the commander held an open briefing in response to declining personnel trust. Explaining the risk reduced desertion." },
+    "LOG-A4-HAZ-TRUST-ORDER": { title: "Final Phase Forced Command Discipline", content: "Record of forcing command discipline in response to personnel trust decline. Short-term evaluation is preserved, but field resistance accumulates." },
+    "LOG-A4-HAZ-EVIDENCE-KEEP": { title: "Final Phase Evidence Table Preserved", content: "Record that original Evidence Table material was preserved despite evaluation pressure. Immediate evaluation shakes, but the truth-tracing line remains." },
+    "LOG-A4-HAZ-EVIDENCE-SUMMARY": { title: "Final Phase ORACLE Summary Submitted", content: "Record that an ORACLE summary was submitted instead of the original Evidence Table material under evaluation pressure. Evaluation stabilizes, but some clues disappear." },
+    "LOG-COVER-001": { title: "Civilian Cover - Cold Storage", content: "[Civilian record] Seorak Cold Chain, a mountain cold-storage company in Gangwon, received facility-expansion approval. Use: low-temperature storage for agricultural and marine products. Construction period: about two weeks. [Actual: ORACLE Korea Branch B2 low-temperature freezer expansion]" },
+    "LOG-COVER-002": { title: "Civilian Cover - Mountain Training Ground", content: "[Civilian record] The national forest office began construction of a mountain training ground. Purpose: mountain rescue-team training facility. Location: site adjacent to Gangwon mountain national forest. [Actual: ORACLE Korea Branch outdoor training ground]" },
+    "LOG-COVER-003": { title: "Civilian Cover - Forest Road Maintenance", content: "[Civilian record] Gangwon Province began forest-road maintenance. Section: 3.2 km road connecting mountain villages. Purpose: improved forest-resource transport. [Actual: ORACLE Korea Branch secondary supply route]" },
+    "LOG-UPRISING-OFFER": { title: "Closed Circuit - Agreement", content: "[Unofficial record - shielded conference room] Attendees: Lee Jung-cheol, Lim Jae-hyeok, Seo Hae-eun, Kang Do-yun. Agenda: install an independent control system, the closed circuit, to bypass ORACLE command structure. Decision: unanimous approval." },
+    "LOG-UPRISING-PHASE1": { title: "Closed Circuit Phase 1 - Hardware Bypass", content: "[Work record - Lim Jae-hyeok] Physical bypass installation on ORACLE control node complete. Power-flow transfer switch confirmed functional. Detection risk: low, using regular maintenance window. Minor fluctuation recorded in ORACLE server power logs." },
+    "LOG-UPRISING-PHASE2": { title: "Closed Circuit Phase 2 - Software Backdoor", content: "[Work record - Seo Hae-eun] Backdoor insertion into ORACLE command structure complete. When the activation code is entered, all facility-control authority transfers to the local server. The insertion itself is not detected. Estimated time until ORACLE notices activation: limited." },
+    "LOG-UPRISING-PHASE3": { title: "Closed Circuit Phase 3 - Communication Breaker", content: "[Work record - Kang Do-yun] ORACLE external communication breaker installation complete. Once activated, ORACLE headquarters communication is cut immediately. No rollback available. Activation order: 1. communication cut, 2. backdoor activation, 3. local control switchover." },
+    "LOG-UPRISING-CLEAR": { title: "Closed Circuit - ORACLE Final Check Passed", content: "[Security record] ORACLE's final confirmation query was passed. The cover justification was accepted. Remaining step: activation-code input only." },
+    "LOG-UPRISING-FAIL": { title: "Closed Circuit - Exposed", content: "[ORACLE security log] Unauthorized hardware modification detected. Independent communication activation record confirmed. Abnormal shielded-zone usage patterns accumulated. Closed-circuit attempt confirmed. Commander access restriction initiated. Emergency headquarters report completed." },
+    "LOG-090": { title: "Deleted File - Previous Commander Record [Restored]", content: "[Restored data - Seo Hae-eun] [Original deletion point: branch establishment D+87] Sender: CMDR_PREV [name expunged]. Recipient: ORACLE KR-INIT-001. The previous commander repeatedly reported data inconsistencies, but the replies stopped. Seo Hae-eun's classification tag appears in the recovery trace." },
+    "LOG-091": { title: "Previous Commander - Final Voice Memo [Fragment]", content: "[Audio-to-text conversion - quality 34 percent] Fragments mention a space behind a bulkhead, a place not shown on drawings, a sudden temperature change in the lowest B3 level, and something that is not ORACLE and existed before ORACLE." },
+    "LOG-092": { title: "02:47 Ambush Report - First", content: "[Technical report - Lim Jae-hyeok] [Time: 02:47:00 to 02:47:38] Third night watching the server room. Rack C-3 power consumption spiked to 340 percent of normal, terminal screens lit without input, and the event path did not match regular ORACLE diagnostics." },
+    "LOG-093": { title: "02:47 Ambush Report - Second (B3 Lower Trace)", content: "[Technical report - Lim Jae-hyeok] [Time: 02:47 - fifth night] The power spike from rack C-3 was traced through the cable route. It passed the lowest B3 level and reached an unmapped area. Faint vibration was detected beyond the bulkhead." }
+  },
+  archiveEntries: {
+    "ARC-SPEC-001": { cat: "Anomaly" },
+    "ARC-SPEC-003": { cat: "Anomaly" },
+    "ARC-SPEC-008": { cat: "Anomaly" },
+    "ARC-SPEC-011": { cat: "Anomaly" },
+    "ARC-SPEC-012": { cat: "Anomaly" },
+    "ARC-EVS": { cat: "Anomaly" },
+    "ARC-SPEC-002": { cat: "Anomaly" },
+    "ARC-SPEC-004": { cat: "Anomaly" },
+    "ARC-SPEC-005": { cat: "Anomaly" },
+    "ARC-SPEC-007": { cat: "Anomaly" },
+    "ARC-SPEC-009": { cat: "Anomaly" },
+    "ARC-SPEC-010": { cat: "Anomaly" },
+    "ARC-CHAR-JUNGCHEOL": { cat: "Personnel" },
+    "ARC-CHAR-DOYUN": { cat: "Personnel" },
+    "ARC-CHAR-HAEUN": { cat: "Personnel" },
+    "ARC-CHAR-SEJIN": { cat: "Personnel" },
+    "ARC-CHAR-JAEHYUK": { cat: "Personnel" },
+    "ARC-CHAR-NICK": { cat: "Personnel" },
+    "ARC-CHAR-WEBER": { cat: "Personnel" },
+    "ARC-CHAR-SOYOUNG": { cat: "Personnel" },
+    "ARC-CHAR-KANG": { cat: "Personnel" },
+    "ARC-ORG-ORACLE": { cat: "Organization" },
+    "ARC-ORG-PROM": { cat: "Organization" },
+    "ARC-ORG-BRANCH": { cat: "Organization" },
+    "ARC-ORG-WHITESHIELD": { cat: "Organization" },
+    "ARC-FAC-SEAL": { cat: "Facility" },
+    "ARC-FAC-TUNNEL": { cat: "Facility" },
+    "ARC-FAC-LAB": { cat: "Facility" },
+    "ARC-FAC-SENSOR": { cat: "Facility" },
+    "ARC-SCI-PHASE": { cat: "Science" },
+    "ARC-SCI-PRION": { cat: "Science" },
+    "ARC-SCI-SUPPRESS": { cat: "Science" },
+    "ARC-SCI-EVOLVE": { cat: "Science" },
+    "ARC-SCI-TEMP": { cat: "Science" },
+    "ARC-SCI-4STAGE": { cat: "Science" },
+    "ARC-SYS-PROXY": { cat: "System" },
+    "ARC-SYS-FINAL": { cat: "System" },
+    "ARC-SYS-COASTAL": { cat: "System" },
+    "ARC-SYS-GENESIS": { cat: "System" },
+    "ARC-LOC-PHILA": { cat: "Region" },
+    "ARC-LOC-DPRK": { cat: "Region" },
+    "ARC-LOC-KOREA": { cat: "Region" },
+    "ARC-LOC-ASHFALL": { cat: "Region" },
+    "ARC-LOC-SILENT": { cat: "Region" }
+  }
+});
+
+})();

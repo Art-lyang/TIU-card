@@ -1,0 +1,11 @@
+/* style-escape.css — lightweight fallback for escape mode */
+.escape-text-wrap{max-width:420px;margin:0 auto;padding:16px 12px 28px;display:flex;flex-direction:column;gap:12px;font-family:'Share Tech Mono',monospace;color:var(--ui);min-height:100vh;box-sizing:border-box}
+.escape-hud{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;color:rgba(var(--ui-rgb),.75);border:1px solid rgba(var(--ui-rgb),.22);padding:8px 10px;background:rgba(8,12,8,.65)}
+.escape-hud-stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}.escape-hud-timer.warn,.hud-det.warn,.escape-dec-timer.warn{color:#ff6644}.hud-hp{color:#f0a030}.hud-ammo{color:#9ad}.hud-det{color:#9fb}
+.escape-title{font-size:14px;letter-spacing:1px;border-left:2px solid rgba(var(--ui-rgb),.45);padding-left:10px}
+.escape-body,.escape-resolve{display:flex;flex-direction:column;gap:8px;border:1px solid rgba(var(--ui-rgb),.16);padding:12px;background:rgba(10,18,10,.55);min-height:220px;white-space:pre-wrap;line-height:1.8;font-size:12px}
+.escape-line.resolve{color:#f0a030}.escape-choices{display:flex;flex-direction:column;gap:8px}.escape-dec-timer{font-size:11px;text-align:right;color:rgba(var(--ui-rgb),.72)}
+.escape-choice-btn{width:100%;text-align:left;background:rgba(10,18,10,.72);border:1px solid rgba(var(--ui-rgb),.28);color:var(--ui);padding:12px 10px;border-radius:4px;font-family:inherit}
+.choice-label{font-size:13px}.choice-hint{font-size:10px;color:rgba(var(--ui-rgb),.6);margin-top:4px}
+.escape-companions{display:flex;flex-wrap:wrap;gap:6px}.comp-chip{border:1px solid rgba(var(--ui-rgb),.22);padding:4px 8px;font-size:10px;background:rgba(10,18,10,.6)}.comp-chip.risk{border-color:rgba(255,102,68,.5);color:#ff6644}
+.escape-roll-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);display:flex;align-items:center;justify-content:center;z-index:80}.escape-roll-card{width:min(340px,88vw);padding:18px 16px;border:1px solid rgba(var(--ui-rgb),.28);background:#091009;text-align:center;font-family:'Share Tech Mono',monospace}.escape-roll-score{font-size:28px;margin:10px 0;color:#f0a030}.escape-roll-result{font-size:13px;letter-spacing:1px}.escape-roll-hint{font-size:11px;color:rgba(var(--ui-rgb),.64);margin-top:8px}

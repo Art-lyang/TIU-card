@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>TERMINAL SESSION</title>
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css?v=70">
+  <link rel="stylesheet" href="style-glitch.css?v=4">
+  <link rel="stylesheet" href="style-escape.css?v=1">
+  <link rel="stylesheet" href="style-i18n-hotfix.css?v=1">
+  <link rel="stylesheet" href="style-i18n-locale-hotfix.css?v=1">
+</head>
+<body>
+  <div id="root"></div>
+  <div class="screen-overlay"></div>
+  <div class="scanline"></div>
+  <!-- BUILD_VER: 수동 ?v= 대신 이 값을 올리면 모든 스크립트 캐시가 갱신됩니다 -->
+<script>var BUILD_VER=240;</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="demo-mode.js?v=2"></script>
+
+  <!-- i18n Runtime -->
+  <script src="i18n-runtime.js?v=3"></script>
+  <script src="lang-ui-ko.js?v=32"></script>
+  <script src="lang-ui-en.js?v=36"></script>
+  <script src="lang-content-en-all.js?v=34"></script>
+  <script src="lang-evidence-hidden-en.js?v=1"></script>
+  <script src="lang-archive-en.js?v=6"></script>
+  <script src="lang-content-en-dialogues.js?v=6"></script>
+  <script src="lang-evening-extra-en.js?v=8"></script>
+  <script src="lang-cards-ce-en.js?v=4"></script>
+  <script src="lang-cards-ca4-en.js?v=6"></script>
+  <script src="lang-cards-ct-en.js?v=1"></script>
+  <script src="lang-cards-cs-en.js?v=2"></script>
+  <script src="lang-cards-side-en.js?v=19"></script>
+  <script src="lang-cards-c-en.js?v=5"></script>
+  <script src="lang-cards-flow-en.js?v=4"></script>
+
+  <!-- Data: Core & Tags -->
+  <script src="data-core.js?v=21"></script>
+  <script src="data-status-tags.js?v=13"></script>
+  <!-- Act2/Act3 카드 중간 간부진 대화 확장 (DIALOGUES push, data-core.js 뒤 로드) -->
+  <script src="data-dialogues-extra.js?v=3"></script>
+
+  <!-- Data: Cards -->
+  <script src="data-cards-prologue.js?v=17"></script>
+  <script src="data-cards-prologue-2.js?v=1"></script>
+  <script src="data-cards-1.js?v=23"></script>
+  <script src="data-cards-2.js?v=16"></script>
+  <script src="data-cards-3.js?v=16"></script>
+  <script src="data-cards-4.js?v=13"></script>
+  <script src="data-cards-5.js?v=16"></script>
+  <script src="data-cards-6.js?v=10"></script>
+  <script src="data-cards-7.js?v=12"></script>
+  <script src="data-cards-8.js?v=10"></script>
+  <script src="data-cards-9.js?v=14"></script>
+  <script src="data-cards-10.js?v=12"></script>
+  <script src="data-cards-11.js?v=16"></script>
+  <script src="data-cards-12.js?v=15"></script>
+  <script src="data-cards-13.js?v=15"></script>
+  <script src="data-cards-14.js?v=10"></script>
+  <script src="data-cards-15.js?v=15"></script>
+  <script src="data-cards-16.js?v=13"></script>
+  <script src="data-cards-prometheus-lee.js?v=2"></script>
+  <script src="data-cards-act4.js?v=10"></script>
+  <script src="data-cards-act4-ext.js?v=7"></script>
+  <script src="data-cards-act23-pressure.js?v=6"></script>
+  <script src="data-cards-resist-hint.js?v=9"></script>
+  <script src="data-cards-crisis.js?v=5"></script>
+  <script src="data-cards-neutral.js?v=4"></script>
+  <script src="data-cards-korea-civilian.js?v=6"></script>
+  <script src="data-cards-dg-meridian.js?v=10"></script>
+  <script src="data-cards-session-packs.js?v=5"></script>
+
+  <!-- Data: Rewards (감시→정보해금, ORACLE거절→간접보상) -->
+  <script src="data-rewards.js?v=11"></script>
+
+  <!-- Data: Chains, Archive, Missions, Endings -->
+  <script src="data-chains.js?v=11"></script>
+  <script src="data-chains-incident.js?v=10"></script>
+  <script src="data-chains-incident2.js?v=10"></script>
+  <script src="data-chains-branch.js?v=2"></script>
+  <script src="data-archive.js?v=15"></script>
+  <script src="data-minigame-rewards.js?v=6"></script>
+  <script src="data-archive-expansion.js?v=5"></script>
+  <script src="data-minigame-expansion.js?v=3"></script>
+  <script src="data-missions.js?v=10"></script>
+  <script src="data-missions-2.js?v=10"></script>
+  <script src="data-missions-3.js?v=10"></script>
+  <script src="data-missions-incident.js?v=10"></script>
+  <script src="data-missions-4.js?v=1"></script>
+  <script src="data-missions-5.js?v=3"></script>
+  <script src="data-missions-variants.js?v=4"></script>
+  <script src="data-logs-integrity.js?v=18"></script>
+  <script src="data-cards-act4-hazard.js?v=2"></script>
+  <script src="data-endings.js?v=16"></script>
+  <script src="data-act4-escape.js?v=6"></script>
+  <script src="logic-act4-escape.js?v=2"></script>
+
+  <!-- B안 탈출 모드 (텍스트 어드벤처 + d100 롤) -->
+  <script src="data-escape-nodes.js?v=1"></script>
+  <script src="data-escape-nodes-2.js?v=1"></script>
+  <script src="logic-escape-roll.js?v=1"></script>
+
+  <!-- Data: Achievements (Steam prep) -->
+  <script src="data-achievements.js?v=3"></script>
+
+  <!-- Data: Evidence, Facility, Hidden -->
+  <script src="data-evidence.js?v=18"></script>
+  <script src="data-facility.js?v=16"></script>
+  <script src="data-facility-2.js?v=12"></script>
+  <script src="data-facility-uprising-a.js?v=2"></script>
+  <script src="data-facility-uprising-b.js?v=1"></script>
+  <!-- 시설 제안 카드 자동 생성 (FACILITY_EXPANSIONS 로드 후) -->
+  <script src="data-cards-facility-propose.js?v=3"></script>
+  <script src="data-session-decks.js?v=4"></script>
+
+  <!-- Data: Evening & Trust -->
+  <script src="data-evening-trust-1.js?v=11"></script>
+  <script src="data-evening-trust-1b.js?v=10"></script>
+  <script src="data-evening-trust-2.js?v=10"></script>
+  <script src="data-evening-trust-3.js?v=12"></script>
+  <script src="data-evening-responses.js?v=14"></script>
+  <script src="data-evening-extra.js?v=13"></script>
+  <script src="data-evening-extra-2a.js?v=9"></script>
+  <script src="data-evening-extra-2b.js?v=2"></script>
+  <script src="data-evening-extra-2c.js?v=4"></script>
+  <script src="data-evening-extra-2d.js?v=2"></script>
+  <script src="data-evening-responses-2.js?v=5"></script>
+  <script src="data-evening-responses-3.js?v=3"></script>
+  <script src="data-hidden-story.js?v=13"></script>
+  <script src="data-character-arcs.js?v=4"></script>
+  <script src="evening-lines.js?v=12"></script>
+
+  <!-- Images -->
+  <!-- Image load order matters: images.js defines IMG, images_bg/images_cards extend it, images_p1.js applies late P1 patches. -->
+  <script src="images.js?v=18"></script>
+  <script src="images_bg.js?v=10"></script>
+  <script src="images_cards.js?v=10"></script>
+  <script src="images_p1.js?v=8"></script>
+
+  <!-- BGM -->
+  <script src="sfx-sources.js?v=3"></script>
+  <script src="bgm_main.js?v=11"></script>
+  <script src="bgm_tension.js?v=11"></script>
+  <script src="bgm_boot.js?v=11"></script>
+  <script src="bgm.js?v=13"></script>
+  <script src="bgm-fade.js?v=10"></script>
+  <script src="bgm-act.js?v=2"></script>
+
+  <!-- Data: Result Text (서사 결과) -->
+  <script src="data-result-text.js?v=16"></script>
+  <script src="data-result-story-1.js?v=10"></script>
+  <script src="data-result-story-2.js?v=11"></script>
+  <script src="data-result-story-3.js?v=11"></script>
+
+  <!-- Utils & Logic -->
+  <script src="app-utils.js?v=13"></script>
+  <script src="app-bgm.js?v=10"></script>
+  <script src="app-logic.js?v=28"></script>
+  <script src="logic-session-pack-news.js?v=4"></script>
+  <script src="balance-tuning.js?v=9"></script>
+  <script src="logic-act-flow-balance.js?v=4"></script>
+
+  <!-- Components -->
+  <script src="components.js?v=18"></script>
+  <script src="components-archive.js?v=13"></script>
+  <script src="components-dialogue.js?v=26"></script>
+  <script src="components-endings.js?v=3"></script>
+  <script src="components-evening.js?v=51"></script>
+  <script src="components-briefing.js?v=17"></script>
+  <script src="components-evidence.js?v=19"></script>
+  <script src="components-facility.js?v=14"></script>
+  <script src="components-game.js?v=76"></script>
+  <script src="components-oracle-link.js?v=1"></script>
+  <script src="components-minigames.js?v=8"></script>
+  <script src="components-settings.js?v=13"></script>
+<script src="components-settings-2.js?v=18"></script>
+  <script src="components-settings-hotfix.js?v=6"></script>
+  <script src="components-glitch.js?v=2"></script>
+  <script src="components-escape-roll.js?v=1"></script>
+  <script src="components-escape.js?v=5"></script>
+  <script src="components-fieldmission-minigame-patch.js?v=7"></script>
+
+  <!-- App -->
+  <script src="app-init.js?v=45"></script>
+  <script src="app.js?v=82"></script>
+</body>
+</html>

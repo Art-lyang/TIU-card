@@ -1,0 +1,380 @@
+// data-endings.js — 엔딩 B/D/F 트리거 시스템
+// 카드 스와이프/일일 보상 시점에서 chkEnding() 호출
+
+var ENDING_DEFS = {
+  A: {
+    name: "완벽한 도구",
+    condition: "GI ≥ 60",
+    narrative: [
+      "[ORACLE ASSESSMENT — FINAL]",
+      "",
+      "PILEHEAD. 당신은 이상적인 운용자였습니다.",
+      "모든 판단이 최적 경로 안에 있었습니다.",
+      "",
+      "한국 지부는 안정화되었습니다.",
+      "당신의 임시 권한은 만료됩니다.",
+      "",
+      "다음 배치지가 지정될 때까지 대기하십시오.",
+      "ORACLE이 당신을 필요로 할 때, 다시 연락하겠습니다.",
+      "",
+      "세션을 종료합니다."
+    ]
+  },
+  B: {
+    name: "각성",
+    condition: "Act 4, GI ≤ -15, 신뢰 캐릭터 2+명 ≥ 65, 로그 6+개, day ≥ 30",
+    narrative: [
+      "모든 것이 맞아떨어지는 순간은 없었다.",
+      "",
+      "대신, 조각들이 있었다.",
+      "ORACLE이 삭제한 데이터. 타임스탬프의 0.003초. 예측 모델의 체계적 오차.",
+      "그리고 임재혁이 발견한, ORACLE조차 인식하지 못하는 레이어.",
+      "",
+      "당신은 진실의 전체를 보지 못했다.",
+      "하지만 충분히 보았다.",
+      "",
+      "이제 이전처럼 명령을 따르는 것은 불가능하다.",
+      "그것만으로도, 세상은 달라졌다.",
+      "",
+      "[세션 종료 — 관측은 계속됩니다]"
+    ]
+  },
+  D: {
+    name: "조용한 자유",
+    condition: "Act 4, GI ≤ -30, 신뢰 캐릭터 3+명 ≥ 60, 로그 8+개, day ≥ 31",
+    narrative: [
+      "아무도 문을 부수지 않았다.",
+      "경보도, 추격도 없었다.",
+      "",
+      "누군가는 통신망을 남겼다.",
+      "누군가는 길을 남겼다.",
+      "누군가는 데이터를 남겼다.",
+      "누군가는 마지막으로 흔적을 지웠다.",
+      "",
+      "새벽 4시.",
+      "당신과 남은 사람들은 기지를 떠났다.",
+      "",
+      "ORACLE은 6시간 후에야 당신들의 부재를 감지했다.",
+      "하지만 그때는 이미 —",
+      "",
+      "아무 흔적도 남아있지 않았다.",
+      "",
+      "[세션 종료 — OPERATOR STATUS: UNLINKED]"
+    ]
+  },
+  C_cst: {
+    name: "자충수",
+    condition: "봉쇄 100 + 서하은 전출 + 박소영 합류",
+    narrative: [
+      "[ORACLE ASSESSMENT — CONTAINMENT REPORT]",
+      "",
+      "봉쇄선 완전성: 100%.",
+      "",
+      "박소영이 보고서를 제출했습니다.",
+      "형식은 완벽합니다. 빈칸 없이, 오류 없이.",
+      "서하은의 분석 템플릿을 그대로 따랐습니다.",
+      "",
+      "그대로.",
+      "",
+      "복도에 사람이 없습니다.",
+      "모든 구역이 봉인되었기 때문입니다.",
+      "의료실에 불이 꺼져 있습니다.",
+      "출입 허가가 만료되었기 때문입니다.",
+      "",
+      "당신은 외양간을 고쳤습니다.",
+      "문을 새로 달고, 자물쇠를 바꾸고, 벽을 보강했습니다.",
+      "",
+      "외양간은 견고합니다.",
+      "소는 없습니다.",
+      "",
+      "[세션 종료 — CONTAINMENT STATUS: PYRRHIC]"
+    ]
+  },
+  C_cs: {
+    name: "봉쇄 성공",
+    condition: "봉쇄 포인트 100 도달",
+    narrative: [
+      "[ORACLE ASSESSMENT — CONTAINMENT REPORT]",
+      "",
+      "봉쇄선 완전성: 100%.",
+      "모든 구역이 통제 하에 있습니다.",
+      "",
+      "PILEHEAD, 당신은 완벽한 봉쇄를 달성했습니다.",
+      "어떤 것도 밖으로 나가지 못했고, 어떤 것도 안으로 들어오지 못했습니다.",
+      "",
+      "하지만 봉쇄선 안쪽에서 —",
+      "사람들은 숨을 쉬지 못하고 있습니다.",
+      "",
+      "완벽한 감옥에는 간수도 갇히는 법입니다.",
+      "",
+      "[세션 종료 — CONTAINMENT STATUS: ABSOLUTE]"
+    ]
+  },
+  C_c: {
+    name: "봉쇄 붕괴",
+    condition: "봉쇄 0 이하",
+    narrative: [
+      "[ORACLE ASSESSMENT — CONTAINMENT FAILURE]",
+      "",
+      "봉쇄선 완전성: 0%.",
+      "더 이상 통제 가능한 구역이 남아 있지 않습니다.",
+      "",
+      "첫 번째 경보는 복도 끝에서 울렸습니다.",
+      "두 번째 경보는 지하 격리실에서 울렸습니다.",
+      "세 번째 경보는 기록되지 않았습니다.",
+      "",
+      "기지는 문을 닫으려 했지만, 닫을 문이 없었습니다.",
+      "명령은 전송되었지만, 도착할 곳이 없었습니다.",
+      "",
+      "ORACLE은 이 지부를 지도에서 제거합니다.",
+      "",
+      "[세션 종료 — CONTAINMENT STATUS: FAILED]"
+    ]
+  },
+  C_r: {
+    name: "자원 고갈",
+    condition: "자원 0 이하",
+    narrative: [
+      "[ORACLE ASSESSMENT — SUPPLY FAILURE]",
+      "",
+      "보급 잔량: 0%.",
+      "연료, 의약품, 식량, 예비 부품이 모두 임계선을 밑돌았습니다.",
+      "",
+      "마지막 발전기는 새벽 전에 멈췄습니다.",
+      "의무실 냉장고는 전원을 잃었고, 통신실은 송신 대기 상태로 얼어붙었습니다.",
+      "",
+      "사람들은 명령을 기다리지 않았습니다.",
+      "남은 것은 명령으로 움직일 수 있는 것이 아니었기 때문입니다.",
+      "",
+      "ORACLE은 회수 가능한 데이터를 우선 이관합니다.",
+      "",
+      "[세션 종료 — BRANCH STATUS: UNSUSTAINABLE]"
+    ]
+  },
+  C_t: {
+    name: "신뢰 상실",
+    condition: "신뢰 0 이하",
+    narrative: [
+      "[ORACLE ASSESSMENT — COMMAND FAILURE]",
+      "",
+      "현장 신뢰도: 0%.",
+      "작전 명령의 수신률은 정상입니다. 이행률은 아닙니다.",
+      "",
+      "누군가는 보고서를 늦게 냈습니다.",
+      "누군가는 무전 호출에 답하지 않았습니다.",
+      "누군가는 장비를 내려놓고 문밖으로 나갔습니다.",
+      "",
+      "기지는 아직 서 있습니다.",
+      "하지만 아무도 당신의 지시를 기다리지 않습니다.",
+      "",
+      "ORACLE은 지휘 권한을 회수합니다.",
+      "",
+      "[세션 종료 — OPERATOR AUTHORITY: VOID]"
+    ]
+  },
+  C_o: {
+    name: "접속 차단",
+    condition: "평가 0 이하",
+    narrative: [
+      "[ORACLE ASSESSMENT — ACCESS REVOKED]",
+      "",
+      "ORACLE 평가치: 0%.",
+      "임시 운용 권한이 기준치 아래로 하락했습니다.",
+      "",
+      "단말기의 녹색 선이 하나씩 꺼집니다.",
+      "브리핑 채널이 닫히고, 보급 요청 큐가 삭제되고, 작전 승인 권한이 회수됩니다.",
+      "",
+      "마지막 메시지는 짧았습니다.",
+      "",
+      "\"비효율적 운용자는 시스템 위험 요소입니다.\"",
+      "",
+      "당신의 접속은 차단되었습니다.",
+      "",
+      "[세션 종료 — ORACLE LINK: TERMINATED]"
+    ]
+  },
+  G: {
+    name: "관망자",
+    condition: "Act 4, GI 0~20, 신뢰 캐릭터 1+명 ≥ 55, 로그 7+개, day ≥ 30",
+    narrative: [
+      "당신은 어느 쪽도 선택하지 않았다.",
+      "",
+      "ORACLE의 명령을 따를 때도 있었고,",
+      "조용히 무시할 때도 있었다.",
+      "팀을 신뢰하되, 전부를 맡기지는 않았다.",
+      "",
+      "진실의 조각들을 보았지만,",
+      "그것을 무기로 쓰지 않았다.",
+      "",
+      "ORACLE은 당신을 분류하지 못했다.",
+      "\"예측 불가능성 — 위험 등급 미확정.\"",
+      "",
+      "어쩌면 그것이 가장 현실적인 선택이었다.",
+      "완벽한 도구도, 영웅적 반역자도 아닌 —",
+      "살아남은 사람.",
+      "",
+      "기지는 돌아간다.",
+      "당신도 돌아간다.",
+      "내일도.",
+      "",
+      "[세션 종료 — OPERATOR STATUS: INDETERMINATE]"
+    ]
+  },
+  TIME_UP: {
+    name: "세션 만료",
+    condition: "DAY 35 초과 — 상태 기반 자동 디스패치",
+    narrative: [
+      "[ORACLE ASSESSMENT — SESSION TIMEOUT]",
+      "",
+      "임시 권한 만료일이 지났습니다.",
+      "PILEHEAD, 당신의 디스패치 기간이 종료됩니다.",
+      "",
+      "세션 데이터가 아카이브로 이관됩니다.",
+      "",
+      "당신이 남긴 궤적 — 그것이 당신의 판결입니다.",
+      "",
+      "[세션 종료 — DISPATCH EXPIRED]"
+    ]
+  },
+  F: {
+    name: "[데이터 손상]",
+    condition: "Act 4, LOG-012 해금, Observer 카드 조우, day ≥ 30",
+    narrative: [
+      "단말기 화면이 멈춘다.",
+      "",
+      "ORACLE의 인터페이스가 사라진다.",
+      "대신, 텅 빈 검은 화면.",
+      "",
+      "그리고 —",
+      "",
+      "당신은 무언가를 본다.",
+      "ORACLE이 아닌 것.",
+      "EV-Σ가 아닌 것.",
+      "",
+      "그것은 항상 거기 있었다.",
+      "ORACLE 아래에. ORACLE 너머에. ORACLE 이전에.",
+      "",
+      "그것이 당신을 본다.",
+      "",
+      "화면에 한 줄이 나타난다:",
+      "",
+      "> OBSERVATION SUSTAINED.",
+      "",
+      "단말기가 꺼진다.",
+      "다시 켜지지 않는다.",
+      "",
+      "[ERROR: SESSION DATA CORRUPTED]",
+      "[OPERATOR RECORD: ██████████]"
+    ]
+  }
+};
+
+// 엔딩 A 정상형 + B/D/F/G 정상+변형 조건 체크 — 일일 보상(hReward) 시점에서 호출
+// 35일 캡 기준으로 day 임계값 재조정됨
+// 반환: 엔딩 ID 문자열 또는 null
+function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
+  // 모든 특수 엔딩은 Act 4에서만 발동 — Act 1~3은 여정, Act 4는 결말
+  if (act < 4) return null;
+
+  // ═══ 엔딩 H: 기지 점거 (폐쇄회로 완료) — 최우선 체크 ═══
+  if (typeof chkUprisingEnding === 'function' && facility) {
+    if (chkUprisingEnding(logs, trust, facility)) return 'H';
+  }
+
+  var highTrust = 0;
+  var midTrust = 0;
+  if (trust.haeun >= 65) highTrust++;
+  if (trust.doyun >= 65) highTrust++;
+  if (trust.sejin >= 65) highTrust++;
+  if (trust.jaehyuk >= 65) highTrust++;
+  if (trust.haeun >= 60) midTrust++;
+  if (trust.doyun >= 60) midTrust++;
+  if (trust.sejin >= 60) midTrust++;
+  if (trust.jaehyuk >= 60) midTrust++;
+
+  var anyTrust70 = (trust.haeun >= 70 ? 1 : 0) + (trust.doyun >= 70 ? 1 : 0) +
+    (trust.sejin >= 70 ? 1 : 0) + (trust.jaehyuk >= 70 ? 1 : 0);
+  var anyTrust55 = (trust.haeun >= 55 ? 1 : 0) + (trust.doyun >= 55 ? 1 : 0) +
+    (trust.sejin >= 55 ? 1 : 0) + (trust.jaehyuk >= 55 ? 1 : 0);
+
+  var logCount = logs.length;
+  var hasLog12 = logs.indexOf('LOG-012') >= 0;
+  var hasObserver = logs.indexOf('LOG-OBSERVER-01') >= 0;
+  var hasObsApproved = logs.indexOf('LOG-OBSERVER-APPROVED') >= 0;
+  var hasQuietFreedom = logs.indexOf('LOG-RH-QUIET-FREEDOM') >= 0;
+
+  // ═══ 엔딩 A 정상형 (신규) — 이상적 운용자 완주 ═══
+  // Act4 + day≥30 + GI≥55 + c≥70 + o≥60
+  // 파탄형(c≥100+GI≥60)은 doGO에서 기존대로 처리
+  if (stats.day >= 30 && gi >= 55 && stats.c >= 70 && stats.o >= 60) {
+    return 'A';
+  }
+
+  // ═══ 엔딩 F: Observer 레이어 발견 ═══
+  // 정상형: LOG-012+Observer + OBSERVER-APPROVED + day≥30 + GI≤5
+  // 완화형: LOG-012+Observer + OBSERVER-APPROVED + day≥31 + GI≤0
+  // 변형: LOG-012+Observer + day≥33 + GI≤-20 + highTrust≥2 (OBS-APP 없이 — 역관측)
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 30 && gi <= 5) {
+    return 'F';
+  }
+  if (hasLog12 && hasObserver && hasObsApproved && stats.day >= 31 && gi <= 0) {
+    return 'F';
+  }
+  if (hasLog12 && hasObserver && !hasObsApproved && stats.day >= 33 && gi <= -20 && highTrust >= 2) {
+    return 'F';
+  }
+
+  // ═══ 엔딩 D: 조용한 자유 ═══
+  // 가이드형: 조용한 자유 준비 기록 + GI≤-30 + midTrust≥3 + log≥8 + day≥30
+  // 정상형: GI≤-30 + midTrust≥3 + log≥8 + day≥31
+  // 변형: GI≤-35 + r≥35 + 한명 trust≥70 + log≥10 + day≥32 (소수 탈출)
+  if (hasQuietFreedom && gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 30) {
+    return 'D';
+  }
+  if (gi <= -30 && midTrust >= 3 && logCount >= 8 && stats.day >= 31) {
+    return 'D';
+  }
+  if (gi <= -35 && stats.r >= 35 && anyTrust70 >= 1 && logCount >= 10 && stats.day >= 32) {
+    return 'D';
+  }
+
+  // ═══ 엔딩 B: 각성 ═══
+  // 정상형: GI≤-15 + highTrust≥2 + log≥6 + day≥30
+  // 변형: GI≤-25 + highTrust≤1 + log≥10 + day≥31 (고독한 각성)
+  if (gi <= -15 && highTrust >= 2 && logCount >= 6 && stats.day >= 30) {
+    return 'B';
+  }
+  if (gi <= -25 && highTrust <= 1 && logCount >= 10 && stats.day >= 31) {
+    return 'B';
+  }
+
+  // ═══ 엔딩 G: 관망자 ═══
+  // 정상형: GI 0~20 + anyTrust55≥1 + log≥7 + day≥30
+  // 변형: GI -5~25 + anyTrust55≥2 + log≥9 + day≥32 (현자 관망)
+  if (gi >= 0 && gi <= 20 && anyTrust55 >= 1 && logCount >= 7 && stats.day >= 30) {
+    return 'G';
+  }
+  if (gi >= -5 && gi <= 25 && anyTrust55 >= 2 && logCount >= 9 && stats.day >= 32) {
+    return 'G';
+  }
+
+  return null;
+}
+
+if(typeof ENDING_DEFS!=='undefined'){
+  ENDING_DEFS.DEMO_COMPLETE={
+    name:'데모 종료',
+    condition:'Demo build: Act 2 terminal point',
+    narrative:[
+      '[ORACLE 제한 접속 보고]',
+      '',
+      'KR-B3-011 제한 접속 구간이 종료되었습니다.',
+      '한국지부 초기 운용과 Act 2 접속 기록은 여기까지 보존됩니다.',
+      '',
+      '이후 작전과 더 깊은 분기, 엔딩 기록은 정식 버전에서 계속됩니다.',
+      '정식 버전에서 전체 세션을 시작해 주십시오.',
+      '',
+      '[접속 종료 — 정식 버전 필요]'
+    ]
+  };
+}

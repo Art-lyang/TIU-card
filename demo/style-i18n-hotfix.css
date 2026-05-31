@@ -1,0 +1,17 @@
+/* style-i18n-hotfix.css */
+.gauge-row{gap:8px}
+.gauge-label{width:92px;min-width:92px;max-width:92px;display:block;text-align:left}
+@media(max-width:430px){
+  .gauge-row{gap:5px}
+  .gauge-label{width:82px;min-width:82px;max-width:82px;font-size:10px}
+  .card-panel button{
+    font-size:11px !important;
+    line-height:1.2 !important;
+    padding:8px 10px !important;
+    min-height:38px !important;
+    white-space:nowrap !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    justify-content:center !important;
+  }
+}

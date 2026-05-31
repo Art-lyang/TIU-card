@@ -1,0 +1,140 @@
+// data-cards-resist-hint.js
+// Phase 4 — 저항 루트(B/D/F) 밸런싱 카드
+//   목적: 시뮬레이터 resist 전략 실행 시 C_o(ORACLE 차단) 100% → GI↓과 o↓의 과도한 결합 완화
+//   설계: "GI는 낮추되 o 스탯은 유지/상승"하는 선택지 제공 (지휘 능숙 + 정보 장악)
+// Phase 5 — 엔딩 H "점거" 디스커버러빌리티 힌트 2장
+//   목적: 플레이어가 자연스럽게 uprising 경로를 알 수 있게 Act 2 중반 임재혁 힌트
+
+if (typeof ORACLE_LOGS !== 'undefined' && !ORACLE_LOGS.some(function(x){ return x.id === 'LOG-RH-QUIET-FREEDOM'; })) {
+  ORACLE_LOGS.push({
+    id: 'LOG-RH-QUIET-FREEDOM',
+    title: '조용한 자유 준비 기록',
+    content: '[비공식 대피 순서]\n\n공식 명령 체계를 뒤집지 않는다. 공개적인 탈주 선언도 하지 않는다.\n\n서하은은 인원 명단을 둘로 나누고, 강도윤은 봉쇄선의 빈 시간을 표시했다. 윤세진은 이동 가능한 환자를 추렸고, 임재혁은 ORACLE이 늦게 읽는 보고 큐를 만들었다.\n\n목표는 승리가 아니다. 모두가 사라지기 전에, 조용히 빠져나갈 수 있는 틈을 만드는 것이다.'
+  });
+}
+
+var CARDS_RESIST_HINT = [
+
+  // ════════════════════════════════
+  //  Phase 4 — 저항 루트 밸런싱 5장
+  // ════════════════════════════════
+
+  // RH-01: ORACLE 데이터 요약 (o 유지 + GI 약간 감소)
+  { id: "RH-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "resist-balance",
+    req: function(s,g,logs){ return s.day >= 8 },
+    msg: "서하은이 일일 브리핑 중 덧붙입니다.\n\n\"ORACLE에 올리는 보고서를 제가 먼저 검수할 수 있습니다.\n형식은 완벽하게 유지하면서 — 일부 정보의 우선순위를 낮출 수 있어요.\"\n\n\"ORACLE은 형식만 보면 아무 문제도 못 느낍니다.\"",
+    left:  { label: "공식 형식만 유지하라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-RH-SUMMARY" },
+    right: { label: "본부 보고대로 올려라", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
+  // RH-02: 강도윤 비공식 파견 (GI 감소 + t·o 동시 유지)
+  { id: "RH-02", act: [2,3], priority: "중", tag: "resist-balance",
+    req: function(s,g,logs){ return s.day >= 10 },
+    msg: "강도윤이 비공식 루트로 보고합니다.\n\n\"외곽 순찰 중에 — ORACLE 카메라가 닿지 않는 구역을 발견했습니다.\n보고서에는 정상 코스로 넣겠습니다.\"\n\n\"그렇게 해두면, 필요할 때 블라인드 포인트로 쓸 수 있습니다.\"",
+    left:  { label: "그렇게 기록해 둬라", fx: { c: 1, r: 0, t: 1, o: 0 }, g: -3, log: "LOG-RH-BLINDSPOT" },
+    right: { label: "ORACLE 지침대로 전체 기록", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
+
+  // RH-03: 윤세진 의료 기록 이중화 (t 상승 + o 유지)
+  { id: "RH-03", act: [2,3], priority: "중", tag: "resist-balance",
+    req: function(s,g,logs){ return s.day >= 9 },
+    msg: "윤세진이 진료 기록을 정리하며 말합니다.\n\n\"공식 기록 외에 — 제가 개인적으로 보관하는 케이스가 있어요.\n ORACLE은 '정상 범위'라고 분류했지만, 저는 패턴이 보입니다.\"\n\n\"정식 보고와 별개로 남겨둘까요?\"",
+    left:  { label: "보관해라. 형식은 정식대로", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -2, log: "LOG-RH-MEDICAL" },
+    right: { label: "ORACLE 분류를 따른다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
+  // RH-04: 임재혁 시스템 모니터링 (o 상승 + GI 감소 — 지식형 저항)
+  { id: "RH-04", act: [2,3], priority: "중", tag: "resist-balance",
+    req: function(s,g,logs){ return s.day >= 12 },
+    msg: "임재혁이 콘솔에서 고개를 듭니다.\n\n\"ORACLE 쿼리 패턴을 역분석해두고 있습니다.\n\n당국에 걸릴 걸 최소화하면서 — 시스템 내부를 더 볼 수 있어요.\"\n\n\"이건 운영자로서 해야 할 일이기도 합니다.\"",
+    left:  { label: "분석 계속", fx: { c: 0, r: 0, t: 1, o: 1 }, g: -3, log: "LOG-RH-QUERYMAP" },
+    right: { label: "정식 승인 후에 해라", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
+
+  // RH-05: ORACLE 자체 오류 보고 (o 대폭 상승 + GI 감소)
+  { id: "RH-05", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", tag: "resist-balance",
+    req: function(s,g,logs){ return s.day >= 15 },
+    msg: "[ORACLE: 자체 진단 결과 통보]\n\n\"PILEHEAD. 분석 모듈에 일시적 이상이 감지되었습니다. 재동기화가 필요합니다.\"\n\n서하은이 조용히 말합니다.\n\"...지금이 우리 판단 기록을 남길 기회입니다.\n ORACLE이 어떻게 판단했는지 기록하면서, 우리가 왜 다르게 생각하는지도 남길 수 있어요.\"",
+    left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4, log: "LOG-RH-COUNTERMEMO" },
+    right: { label: "ORACLE 판단만 통과", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
+
+  // RH-06: 엔딩 D(조용한 자유) 도달 가이드. B 엔딩보다 앞서 분기 의도를 고정한다.
+  { id: "RH-06", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", tag: "quiet-freedom-guide", once: true, forceFlow: true,
+    req: function(s,g,logs){ return s.day >= 18 && g <= -20 && logs.indexOf('LOG-RH-QUIET-FREEDOM') < 0; },
+    msg: "서하은이 문서철을 덮고 말합니다.\n\n\"공개적으로 저항하면 ORACLE이 먼저 압박합니다.\"\n\"하지만 모두가 같은 날 같은 방향으로 움직이지 않아도 됩니다.\"\n\n강도윤은 봉쇄선 교대 시간표를, 윤세진은 이동 가능한 환자 명단을, 임재혁은 늦게 읽히는 보고 큐를 올립니다.\n\n이건 승리 선언이 아닙니다. 조용히 사라질 준비입니다.",
+    left:  { label: "비공식 대피 순서를 만든다", fx: { c: 0, r: 1, t: 2, o: -1 }, g: -3, log: "LOG-RH-QUIET-FREEDOM" },
+    right: { label: "각자 기록만 분산 보관한다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1 } },
+
+  // OBS-HINT-01: 엔딩 F(Observer) 도달 가이드. LOG-012 이후 관측 로그를 명시적으로 연결한다.
+  // req에 LOG-012 명시 요구 — 단일 LOG unlock으로 정규화 (배열 형식 제거).
+  { id: "OBS-HINT-01", act: [3,4], priority: "상", tag: "observer-route-guide", once: true, glitch: 2, forceFlow: true,
+    req: function(s,g,logs){
+      return s.day >= 22 && g <= 5 && logs.indexOf('LOG-OBSERVER-01') < 0 &&
+        logs.indexOf('LOG-012') >= 0;
+    },
+    msg: "임재혁이 LOG-012의 미등록 인터페이스 요소를 다시 띄웁니다.\n\n\"캐시 오류가 아니었습니다.\"\n\"이 요소는 ORACLE 내부가 아니라, ORACLE 바깥에서 우리 화면을 보고 있습니다.\"\n\n그는 접근 경로를 하나 더 표시합니다.\n\n[UNREGISTERED OBSERVATION LAYER]\n[ORACLE: 인식 불가]",
+    left:  { label: "관측 레이어를 추적한다", fx: { c: 0, r: -1, t: 1, o: -2 }, g: -3, log: "LOG-OBSERVER-01" },
+    right: { label: "접근 기록을 닫는다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
+
+  // ════════════════════════════════
+  //  Phase 6 — 충성 루트 완충 3장
+  // ════════════════════════════════
+
+  { id: "CB-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 7 && g >= 4 },
+    msg: "ORACLE이 일일 운영 지표를 재산정합니다.\n\n[ORACLE: 지휘관 순응 패턴 안정. 현장 마찰을 줄이기 위한 완충 절차를 제안합니다.]\n\n서하은이 덧붙입니다.\n\"본부 보고는 그대로 올리되, 요원 설명회를 먼저 열면 반발은 줄일 수 있습니다.\"",
+    left:  { label: "설명회 후 ORACLE 절차 적용", fx: { c: 1, r: 0, t: 1, o: 1 }, g: 2, log: "LOG-CB-STABILITY" },
+    right: { label: "즉시 절차 적용", fx: { c: 1, r: 0, t: -1, o: 2 }, g: 3, log: "LOG-CB-STABILITY" } },
+
+  { id: "CB-02", act: [2,3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 9 && g >= 6 },
+    msg: "봉쇄선 자동화 프로토콜이 갱신되었습니다.\n\n[ORACLE: 자동화 승인 시 봉쇄 효율 상승 예상. 단, 현장 재교육 필요.]\n\n강도윤: \"현장 인원이 왜 바뀌는지 알면 따라갑니다. 모르면 버팁니다.\"",
+    left:  { label: "재교육 예산을 붙여 승인", fx: { c: 2, r: -1, t: 1, o: 1 }, g: 2, log: "LOG-CB-CONTAINMENT" },
+    right: { label: "예산 없이 즉시 승인", fx: { c: 2, r: 0, t: -2, o: 2 }, g: 3, log: "LOG-CB-CONTAINMENT" } },
+
+  { id: "CB-03", act: [3], priority: "중", tag: "comply-buffer",
+    req: function(s,g,logs){ return s.day >= 15 && g >= 10 },
+    msg: "[ORACLE: 충성도 지표 상승 확인]\n\n본부 보고서가 자동 작성됩니다. 문장은 완벽합니다. 현장의 불안은 반영되어 있지 않습니다.\n\n윤세진이 낮게 말합니다.\n\"충성 보고서에도 사람의 상태는 들어가야 합니다. 그래야 오래 버팁니다.\"",
+    left:  { label: "현장 상태 부록을 첨부", fx: { c: 0, r: 0, t: 1, o: 2 }, g: 2, log: "LOG-CB-HUMANAPPENDIX" },
+    right: { label: "ORACLE 원문 그대로 제출", fx: { c: 1, r: 0, t: -1, o: 3 }, g: 4, log: "LOG-CB-HUMANAPPENDIX" } },
+
+  // 오라클 충성 루트 1회성 안전장치.
+  // 조건과 강제 노출은 app-init.js / app.js에서 보장한다.
+  { id: "ORC-LOYAL-SAFE-01", act: [2,3,4], priority: "상", tag: "oracle-loyalty-safeguard", once: true, bg: "oracle", glitch: true, forceFlow: true,
+    req: function(s,g,logs){
+      return typeof oracleSafeguardEligible === 'function'
+        ? oracleSafeguardEligible(s,g,logs)
+        : !!(s && g >= 10 && (s.c <= 20 || s.r <= 20 || s.t <= 20) && logs.indexOf('ONCE-ORC-LOYAL-SAFE-01') < 0);
+    },
+    msg: "[ORACLE: 충성 운영자 보호 프로토콜 발동]\n\n평가 지표는 안정적입니다. 그러나 봉쇄, 자원, 신뢰 중 하나 이상이 임계 위험 범위에 진입했습니다.\n\n[ORACLE: 본부 긴급 보급 승인]\n[ORACLE: 봉쇄선 자동 보정 패치 적용]\n[ORACLE: 현장 신뢰 회복을 위해 일부 불리한 명령 철회]\n\n이 개입은 현 작전 중 한 번만 허용됩니다.",
+    left:  { label: "ORACLE 긴급개입 승인", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 3, log: "LOG-ORACLE-SAFEGUARD" },
+    right: { label: "개입 로그까지 보존", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 40, r: 40, t: 40 }, floorCriticalOnly: true, g: 2, log: "LOG-ORACLE-SAFEGUARD" } },
+
+  // ════════════════════════════════
+  //  Phase 5 — 엔딩 H 디스커버러빌리티 힌트
+  // ════════════════════════════════
+
+  // HH-01: 임재혁 초기 암시 (Act 2~3, day 12+) — "독립 인프라"라는 단어 노출
+  // v1.1: Act2가 5-12로 축소됨에 따라 act:[2,3]으로 확장 (day 12 한정 Act2, 13+ Act3)
+  { id: "HH-01", act: [2,3], priority: "중", tag: "uprising-hint", once: true,
+    req: function(s,g,logs){ return s.day >= 12 },
+    msg: "임재혁이 혼잣말처럼 말합니다.\n\n\"지휘관님. 이상한 생각인데 —\n이 기지의 전원, 통신, 서버. 전부 ORACLE 제어입니다.\"\n\"만약 ORACLE이 — 하루만 꺼진다면, 우리는 아무것도 못 합니다.\"\n\n\"언젠가 **독립 인프라**를 하나씩 갖춰두면 좋을 것 같습니다.\"",
+    left:  { label: "검토해둬라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -1, trust: 3 },
+    right: { label: "그건 본부 방침에 어긋난다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
+
+  // HH-02: 서하은 동조 (Act 2 후반 / Act 3 초반) — uprising 시설 이름 노출
+  { id: "HH-02", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "uprising-hint", once: true,
+    req: function(s,g,logs){ return s.day >= 16 && logs.indexOf('ONCE-HH-01') >= 0 },
+    msg: "서하은이 임재혁의 제안서를 건넵니다.\n\n\"임재혁 기술관이 정리한 — 독립 인프라 후보 목록입니다.\n자체 서버룸, 독립 통신실, 비상 발전기, 차폐 회의실, 무기고.\"\n\n\"5개가 있으면, ORACLE 없이도 이 기지가 자립할 수 있어요.\"\n\"비상 대피 벙커까지 합치면 — 완성입니다.\"",
+    left:  { label: "검토 명단에 올려둬라", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2, trust: 5 },
+    right: { label: "아직 단계가 아니다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 2, trust: -3 } },
+
+  { id: "RH-SAFE-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3,4], priority: "상", tag: "resist-safeguard", once: true, bg: "supply", forceFlow: true,
+    req: function(s,g,logs){
+      return typeof resistanceSafeguardEligible === 'function'
+        ? resistanceSafeguardEligible(s,g,logs)
+        : !!(s && g <= -35 && s.day >= 8 && (s.c <= 25 || s.r <= 25 || s.t <= 20 || s.o <= 20) && logs.indexOf('ONCE-RH-SAFE-01') < 0);
+    },
+    msg: "[현장 비상망: 수동 동기화]\n\nORACLE 권고를 계속 우회하면서 공식 보급 순서와 현장 판단 사이의 간격이 벌어졌습니다.\n\n서하은이 비공식 협조 명단을 올립니다.\n\"본부 명령을 뒤집자는 뜻이 아닙니다. 살아남을 수 있는 최소 순서를 다시 짜자는 뜻입니다.\"\n\n임재혁이 짧게 덧붙입니다.\n\"기록은 남기겠습니다. 나중에 누가 보더라도, 우리가 왜 이 선택을 했는지 알 수 있게요.\"\n\n이 비상망은 이번 작전 중 한 번만 가동할 수 있습니다.",
+    left:  { label: "비공식 보급망을 가동한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 45, t: 35, o: 25 }, floorCriticalOnly: true, g: -3, log: "LOG-RH-SAFEGUARD" },
+    right: { label: "증거 묶음으로 본부를 설득한다", fx: { c: 0, r: 0, t: 0, o: 0 }, floor: { c: 35, r: 40, t: 35, o: 35 }, floorCriticalOnly: true, g: -1, log: "LOG-RH-SAFEGUARD" } }
+];
+
+// CARDS 배열에 주입
+if (typeof CARDS !== 'undefined') CARDS = CARDS.concat(CARDS_RESIST_HINT);

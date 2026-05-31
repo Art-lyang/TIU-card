@@ -1,0 +1,72 @@
+{
+  "collapse-filter": false,
+  "search": "",
+  "showTags": true,
+  "showAttachments": false,
+  "hideUnresolved": false,
+  "showOrphans": true,
+  "collapse-color-groups": false,
+  "colorGroups": [
+    {
+      "query": "path:ABERRANT",
+      "color": {
+        "a": 1,
+        "rgb": 14515200
+      }
+    },
+    {
+      "query": "path:TIU-KOREA",
+      "color": {
+        "a": 1,
+        "rgb": 4474111
+      }
+    },
+    {
+      "query": "path:TIU-WORLD-COMPLETE",
+      "color": {
+        "a": 1,
+        "rgb": 16744256
+      }
+    },
+    {
+      "query": "path:storyline",
+      "color": {
+        "a": 1,
+        "rgb": 16776960
+      }
+    },
+    {
+      "query": "path:WORLDBUILDING or path:SOVARI",
+      "color": {
+        "a": 1,
+        "rgb": 8388736
+      }
+    },
+    {
+      "query": "path:act-structure or path:card-design",
+      "color": {
+        "a": 1,
+        "rgb": 16711680
+      }
+    },
+    {
+      "query": "file:_",
+      "color": {
+        "a": 1,
+        "rgb": 16777215
+      }
+    }
+  ],
+  "collapse-display": false,
+  "showArrow": true,
+  "textFadeMultiplier": 0,
+  "nodeSizeMultiplier": 1.2,
+  "lineSizeMultiplier": 1,
+  "collapse-forces": false,
+  "centerStrength": 0.5,
+  "repelStrength": 10,
+  "linkStrength": 1,
+  "linkDistance": 250,
+  "scale": 0.3628873693012113,
+  "close": true
+}
