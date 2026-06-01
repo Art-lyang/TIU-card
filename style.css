@@ -608,7 +608,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-log-copy{font-size:9px;line-height:1.25}
   .main-terminal-oracle{display:none}
   .main-terminal-menu-list{gap:clamp(8px,1svh,12px);flex:1 1 auto;min-height:0;justify-content:space-evenly;padding:8px 7px;overflow-y:auto}
-  .main-terminal-row{height:auto;min-height:72px;max-height:none;flex:0 0 auto}
+  .main-terminal-row{height:auto;min-height:64px;max-height:104px;flex:1 1 0}
   .main-terminal-cursor{left:10px;font-size:16px}
   .main-terminal-button{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:0 10px 0 13px}
   .main-terminal-icon{width:clamp(32px,4.6svh,42px);height:clamp(32px,4.6svh,42px)}
