@@ -607,15 +607,15 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-log{height:44px;flex-basis:44px;padding:7px 11px}
   .main-terminal-log-copy{font-size:9px;line-height:1.25}
   .main-terminal-oracle{display:none}
-  .main-terminal-menu-list{gap:clamp(8px,1svh,12px);flex:1 1 auto;min-height:0;justify-content:flex-start;padding:8px 7px;overflow-y:auto}
-  .main-terminal-row{height:auto;min-height:70px;max-height:none;flex:1 1 0}
+  .main-terminal-menu-list{gap:clamp(8px,1svh,12px);flex:1 1 auto;min-height:0;justify-content:space-evenly;padding:8px 7px;overflow-y:auto}
+  .main-terminal-row{height:auto;min-height:64px;max-height:none;flex:0 0 auto}
   .main-terminal-cursor{left:10px;font-size:16px}
   .main-terminal-button{grid-template-columns:34px minmax(0,1fr);gap:8px;padding:0 10px 0 13px}
   .main-terminal-icon{width:clamp(28px,4svh,36px);height:clamp(28px,4svh,36px)}
   .main-terminal-button-copy strong{font-size:clamp(14px,1.9svh,18px);margin-bottom:2px}
   .main-terminal-button-copy small{font-size:clamp(8px,1.05svh,10px);letter-spacing:.06em}
   .main-terminal-button-action{display:none}
-  .main-terminal-footer{height:28px;flex-basis:28px;flex-direction:row;align-items:center;gap:8px;padding:3px 7px;font-size:6.5px}
+  .main-terminal-footer{height:28px;flex-basis:28px;flex-direction:row;align-items:center;gap:8px;padding:3px 7px;font-size:6.5px;margin-top:auto}
   .main-terminal-footer div:last-child{display:none}
   .main-terminal-save-overlay{padding:14px}
   .main-terminal-save-modal{max-height:86vh;padding:14px;gap:11px}
@@ -652,8 +652,8 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
   .main-terminal-feed-top{top:10px}.main-terminal-feed-bottom{bottom:10px}
   .main-terminal-log{height:34px;flex-basis:34px;padding:5px 9px}
   .main-terminal-log-copy{font-size:8px;line-height:1.15}
-  .main-terminal-menu-list{gap:6px;padding:6px;justify-content:flex-start}
-  .main-terminal-row{height:auto;min-height:44px;max-height:none;flex:1 1 0}
+  .main-terminal-menu-list{gap:6px;padding:6px;justify-content:space-evenly}
+  .main-terminal-row{height:auto;min-height:44px;max-height:none;flex:0 0 auto}
   .main-terminal-button{grid-template-columns:28px minmax(0,1fr);gap:7px;padding:0 8px 0 11px}
   .main-terminal-icon{width:22px;height:22px}
   .main-terminal-button-copy strong{font-size:11px;margin-bottom:1px}
