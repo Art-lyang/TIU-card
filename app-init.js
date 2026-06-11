@@ -89,6 +89,22 @@ var cardFlowOk=function(c,stats,gi,logs,currentAct,recent){
   return true;
 };
 var cardWeight=function(c){var w=1;if(!c)return w;if(c.priority==='상')w+=5;else if(c.priority==='중')w+=2;else if(c.priority==='event')w+=6;if(c.once)w+=2;if(c.transReq)w+=4;if(c.glitch)w+=1;return w};
+// 위기 구조 가중치: 위험대 스탯을 회복할 수 있는 카드가 더 자주 등장하도록
+// 덱 자체를 회복 쪽으로 기울인다. 무작위에 가까운 첫 회차 플레이도 살아날
+// 길이 자연스럽게 열리고, 안정 운영 중에는 발동하지 않아 긴장은 유지된다.
+var rescueFlowWeight=function(c,stats){
+  if(!stats||!c)return 1;
+  var mult=1;
+  ['c','r','t','o'].forEach(function(k){
+    var v=stats[k];
+    if(typeof v!=='number'||v>35)return;
+    var heals=(c.left&&c.left.fx&&(c.left.fx[k]||0)>0)||(c.right&&c.right.fx&&(c.right.fx[k]||0)>0);
+    if(!heals)return;
+    var m=v<=20?4:(v<=30?3:2);
+    if(m>mult)mult=m;
+  });
+  return mult;
+};
 var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent,tRoute){
   var w=cardWeight(c),type=cardFlowType(c,stats,gi,logs),day=(stats&&stats.day)||1,act=currentAct||1,phase=actFlowPhase(day,act);
   var critical=stats&&(stats.c<=35||stats.r<=25||stats.t<=25||stats.o<=25);
@@ -133,6 +149,7 @@ var cardFlowWeight=function(c,stats,gi,logs,currentAct,recent,tRoute){
   if(typeof sessionDeckLineageWeight==='function'){
     try{w*=sessionDeckLineageWeight(c,stats,gi,logs,act,tRoute||'')}catch(e){}
   }
+  w*=rescueFlowWeight(c,stats);
   return Math.max(0.2,w);
 };
 var pickWeightedFlow=function(a,stats,gi,logs,currentAct,recent,tRoute){
@@ -246,6 +263,22 @@ function getAct4RouteFromState(game){
 }
 function normalizeGameSave(game){
   if(!game||!game.stats)return game;
+  // 구버전/외부 세이브 호환: actFlags 누락 시 기본값 주입.
+  // (없으면 Act3 경계 승격이 undefined를 받아 이후 필드 추가 때마다 깨진다)
+  var af=game.actFlags&&typeof game.actFlags==='object'?game.actFlags:{};
+  game.actFlags={
+    prom_met:!!af.prom_met,
+    mission_done:!!af.mission_done,
+    chain_done:!!af.chain_done,
+    prom_mission:!!af.prom_mission
+  };
+  if(af.act1_skipped)game.actFlags.act1_skipped=true;
+  // 로드/클라우드 복원 입력 방어: 스탯·GI를 유효 범위로 클램프.
+  // (외부 편집·전송 손상 값이 그대로 들어오면 Day 1 즉시 게임오버 등 비정상 시작)
+  var st=game.stats;
+  var cl=function(v,def){v=parseInt(v,10);if(isNaN(v))v=def;return Math.max(0,Math.min(100,v))};
+  game.stats={c:cl(st.c,50),r:cl(st.r,65),t:cl(st.t,50),o:cl(st.o,40),day:parseInt(st.day||1,10)||1};
+  if(typeof game.gi!=='undefined'){var giV=parseInt(game.gi,10);if(isNaN(giV))giV=0;game.gi=Math.max(-100,Math.min(100,giV))}
   // schemaVersion 체크: 현재는 1만 지원. 미래 버전 세이브가 들어오면 로깅만 하고 그대로 진행.
   if(typeof game.schemaVersion==='number'&&game.schemaVersion>TS_GAME_SCHEMA_VERSION){
     try{if(typeof console!=='undefined'&&console.warn)console.warn('[ts_game] unknown schemaVersion',game.schemaVersion,'> supported',TS_GAME_SCHEMA_VERSION)}catch(e){}

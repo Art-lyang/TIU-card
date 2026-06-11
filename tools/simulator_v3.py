@@ -17,7 +17,7 @@
 #  6. 위험 구간 분석 — 어떤 day/act에서 즉사가 집중되는지
 #  7. JSON 리포트 출력 — _workspace/sim-results/에 저장
 
-import os, re, sys, random, collections, json, time
+import os, re, sys, random, collections, json, time, math
 
 try: sys.stdout.reconfigure(encoding='utf-8')
 except Exception: pass
@@ -239,11 +239,31 @@ def is_loyal_choice(card, choice, before_gi, after_gi, before, after):
 def is_neutral_route(gi):
     return gi > -35 and gi < 8
 
+CRITICAL_BAND = 25
+
+def dampen_critical_band_loss(before, after):
+    """balance-tuning.js dampenCriticalBandLoss 미러.
+    위험대(<=25) 안에서의 추가 손실을 절반(올림)으로 완화. 진입 타격은 그대로."""
+    hit = False
+    for k in 'crto':
+        b = before.get(k, 0)
+        a = after.get(k, 0)
+        if b <= CRITICAL_BAND and a < b:
+            loss = b - a
+            soft = math.ceil(loss / 2)
+            if soft < loss:
+                after[k] = max(0, min(100, b - soft))
+                hit = True
+    return hit
+
 def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice, act):
     ns = dict(after)
     ng = after_gi
     changed = False
     cid = str(card.get('id', '')) if card else ''
+
+    if dampen_critical_band_loss(before, ns):
+        changed = True
 
     if cid == 'CE-005':
         if ng < before_gi - 5:
@@ -455,12 +475,36 @@ def card_base_weight(card):
         w += 1
     return w
 
-def weighted_card_choice(pool, logs, act, session_deck):
-    total = sum(card_base_weight(c) * session_deck_lineage_weight(c, logs, act, session_deck) for c in pool)
+def rescue_flow_weight(card, s):
+    """app-init.js rescueFlowWeight 미러: 위험대 스탯 회복 카드 가중치 부스트."""
+    if not s or not card:
+        return 1
+    mult = 1
+    for k in 'crto':
+        v = s.get(k, 100)
+        if not isinstance(v, (int, float)) or v > 35:
+            continue
+        heals = False
+        for side_key in ('left', 'right'):
+            side = card.get(side_key)
+            if side and side.get('fx', {}).get(k, 0) > 0:
+                heals = True
+                break
+        if not heals:
+            continue
+        m = 4 if v <= 20 else (3 if v <= 30 else 2)
+        if m > mult:
+            mult = m
+    return mult
+
+def weighted_card_choice(pool, logs, act, session_deck, s=None):
+    def wgt(c):
+        return card_base_weight(c) * session_deck_lineage_weight(c, logs, act, session_deck) * rescue_flow_weight(c, s)
+    total = sum(wgt(c) for c in pool)
     if total <= 0: return random.choice(pool)
     roll = random.random() * total
     for c in pool:
-        roll -= card_base_weight(c) * session_deck_lineage_weight(c, logs, act, session_deck)
+        roll -= wgt(c)
         if roll <= 0:
             return c
     return pool[-1]
@@ -625,6 +669,9 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
         ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
     if act is not None and act <= 3 and s.get('c', 0) < 100 and ns['c'] >= 100:
         ns['c'] = 95
+    # balance-tuning.js applyRewardBalanceTuning 말미의 위험대 완충 미러
+    # (보상 fx + act 3/4 일일 압박이 합산된 ns에 마지막으로 적용)
+    dampen_critical_band_loss(s, ns)
     return ns
 
 # ═══════════ 시뮬 본체 ═══════════
@@ -693,7 +740,7 @@ def simulate_one(profile):
             if not pool:
                 break
 
-            c = weighted_card_choice(pool, logs, act, session_deck)
+            c = weighted_card_choice(pool, logs, act, session_deck, s)
             dir_choice = choose_side_profile(c, s, gi, profile, logs)
             side = c[dir_choice]
             before_s = dict(s)

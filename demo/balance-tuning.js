@@ -105,6 +105,26 @@
     return gi > -35 && gi < 8;
   }
 
+  // Critical-band drain dampener: once a stat already sits in the danger band,
+  // further losses are halved (rounded up) so a first-run player bleeds out
+  // slowly enough to read the warning and find recovery cards. Entering the
+  // band keeps full impact, so the initial shock and tension stay intact.
+  var CRITICAL_BAND = 25;
+  function dampenCriticalBandLoss(before, after){
+    var hit = false;
+    ['c','r','t','o'].forEach(function(k){
+      if (before[k] <= CRITICAL_BAND && after[k] < before[k]) {
+        var loss = before[k] - after[k];
+        var soft = Math.ceil(loss / 2);
+        if (soft < loss) {
+          after[k] = clamp100(before[k] - soft);
+          hit = true;
+        }
+      }
+    });
+    return hit;
+  }
+
   window.applyChoiceBalanceTuning = function(beforeStats, beforeGi, nextStats, nextGi, card, choice, logs, act){
     var before = copyStats(beforeStats);
     var after = copyStats(nextStats);
@@ -113,6 +133,11 @@
     var cardId = String(card && card.id || '');
     var changed = false;
     var kind = '';
+
+    if (dampenCriticalBandLoss(before, after)) {
+      changed = true;
+      kind = 'critical-band-drain-damp';
+    }
 
     if (cardId === 'CE-005') {
       // The observer contact should feel dangerous, but a single hidden output
@@ -201,6 +226,13 @@
     if (currentAct === 1 && before.c < 100 && after.c >= 100) {
       changed = capAbove(after, 'c', 95) || changed;
       kind = changed ? 'act1-reward-overcontainment-buffer' : kind;
+    }
+
+    // Runs last so it also covers the R-06/07/08 rewrites above and the
+    // act 3/4 daily pressure already merged into nextStats by the caller.
+    if (dampenCriticalBandLoss(before, after)) {
+      changed = true;
+      kind = kind || 'critical-band-drain-damp';
     }
 
     if (!changed) return null;

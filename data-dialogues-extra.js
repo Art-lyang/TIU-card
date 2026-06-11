@@ -50,6 +50,7 @@
 
   if (typeof DIALOGUES !== "undefined") {
     DIALOGUES.push({
+      id: "dlg_haeun_04",
       char: "서하은",
       role: "부지휘관",
       actReq: 2,

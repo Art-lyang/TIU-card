@@ -1,0 +1,20 @@
+rules_version = '2';
+// TIU-CARD Firestore 보안 규칙 (cloud-save.js 데이터 모델 기준)
+//
+// 적용 방법: Firebase Console → Firestore Database → 규칙 탭에 붙여넣고 게시,
+// 또는 `firebase deploy --only firestore:rules` (firebase.json 필요).
+//
+// 웹 apiKey는 식별자라 공개되어도 무방하지만, 그 전제는 아래 규칙이
+// 콘솔에 실제로 게시되어 있다는 것입니다. 이 파일은 repo 측 기준 사본입니다.
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // users/{uid}/saves/* , users/{uid}/meta/* — 본인 UID만 읽기/쓰기
+    match /users/{userId}/{document=**} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    // 그 외 전부 차단
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

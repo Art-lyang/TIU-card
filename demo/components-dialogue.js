@@ -3,6 +3,8 @@
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 var getDialogueOverlay=function(d){
   if(!d||!window.TS_I18N||window.TS_I18N.getLocale()!=='en'||typeof tc!=='function')return null;
+  // id 우선(한국어 첫 줄을 고쳐도 번역이 안 끊김), 구 합성키는 폴백으로 유지
+  if(d.id){var byId=tc('dialogues',d.id,null);if(byId)return byId;}
   var key=(d.char||'')+'|'+((d.lines&&d.lines[0])||'');
   return tc('dialogues',key,null);
 };
@@ -17,7 +19,7 @@ var getDialogueName=function(d,overlay){
 var getDialogueRole=function(d,overlay){
   if(overlay&&overlay.role)return overlay.role;
   if(window.TS_I18N&&window.TS_I18N.getLocale()==='en'){
-    var roleMap={'부지휘관':'Deputy Commander','현장요원':'Field Operative','연구원':'Researcher','기술관':'Technical Officer','분석관':'Analyst'};
+    var roleMap={'부지휘관':'Deputy Commander','현장요원':'Field Operative','연구원':'Researcher','기술관':'Technical Officer','분석관':'Analyst','전술지휘관':'Tactical Commander','연구원 / 의료관':'Researcher / Medical Officer','정보분석관 / 기술관':'Intelligence / Technical Officer','부지휘관 / 데이터분석관':'Deputy Commander / Data Analyst'};
     return roleMap[d.role]||d.role;
   }
   return d.role;
@@ -38,7 +40,18 @@ function CharacterCommPanel(p){
 function Dialogue(p){
   var d=p.dialogue,overlay=getDialogueOverlay(d);
   var lines=(overlay&&overlay.lines)||d.lines;
-  var choices=(overlay&&overlay.choices)||d.choices;
+  var choices=d.choices;
+  if(overlay&&Array.isArray(overlay.choices)){
+    choices=d.choices.map(function(base,i){
+      var en=overlay.choices[i]||{};
+      // KO base wins for fx/log/g/trust; EN overlay supplies label/reply/tag only.
+      return Object.assign({},base,{
+        label:en.label||base.label,
+        reply:en.reply||base.reply,
+        tag:en.tag||base.tag
+      });
+    });
+  }
   var charName=getDialogueName(d,overlay);
   var charRole=getDialogueRole(d,overlay);
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
@@ -81,8 +94,7 @@ function LogViewer(p){
   var isEn=locale==='en';
   var s1=useState(null),sel=s1[0],setSel=s1[1];
   var s2=useState(0),page=s2[0],setPage=s2[1];
-  var visibleLogDefs=ORACLE_LOGS.filter(function(l){return !(typeof INTERNAL_PROGRESS_LOGS!=='undefined'&&l&&INTERNAL_PROGRESS_LOGS[l.id])});
-  var ul=visibleLogDefs.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=visibleLogDefs.length-ul.length;
+  var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ul.length;
   var pageSize=12,totalPages=Math.max(1,Math.ceil(ul.length/pageSize));
   var safePage=Math.max(0,Math.min(page,totalPages-1));
   var pageLogs=ul.slice(safePage*pageSize,safePage*pageSize+pageSize);
@@ -99,7 +111,7 @@ function LogViewer(p){
     return {title:(overlay&&overlay.title)||log.title,content:(overlay&&overlay.content)||log.content};
   };
   if(sel){
-    var log=visibleLogDefs.filter(function(l){return l.id===sel})[0];
+    var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];
     var text=getLogText(log);
     return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:16}},'ORACLE DATABASE - RECORD VIEW'),
@@ -113,7 +125,7 @@ function LogViewer(p){
   }
   return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
-    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},tt('logs.unlocked',{current:ul.length,total:visibleLogDefs.length},isEn?(ul.length+'/'+visibleLogDefs.length+' records unlocked'):(ul.length+'/'+visibleLogDefs.length+' 기록 해금'))),
+    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},tt('logs.unlocked',{current:ul.length,total:ORACLE_LOGS.length},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'))),
     pager(),
     pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between',gap:12,alignItems:'center'}},h('span',{style:{fontSize:13,color:'var(--ui)',minWidth:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',flexShrink:0}},l.id)))}),
     pager(),

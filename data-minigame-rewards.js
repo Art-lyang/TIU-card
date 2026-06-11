@@ -316,6 +316,7 @@
   if (typeof DIALOGUES !== "undefined") {
     DIALOGUES.push(
       {
+        id: "dlg_sejin_04",
         char: "윤세진",
         role: "연구원",
         logReq: "LOG-MG-DLG-SEJIN-SIGNAL",
@@ -331,6 +332,7 @@
         ]
       },
       {
+        id: "dlg_jaehyuk_04",
         char: "임재혁",
         role: "기술관",
         logReq: "LOG-MG-DLG-JAEHYUK-SEAL",
@@ -346,6 +348,7 @@
         ]
       },
       {
+        id: "dlg_haeun_05",
         char: "서하은",
         role: "부지휘관",
         logReq: "LOG-MG-DLG-HAEUN-TRACE",

@@ -2084,234 +2084,63 @@ window.TS_I18N.mergeContent('en', {
 // --- lang-content-en.phase8-news-logs.js ---
   window.TS_I18N.mergeContent('en', {
   "newsItems": {
-    "[국내] 강원 동부 봉쇄 구역, 48시간 무사고 기록 경신": {
-      "type": "domestic",
-      "text": "Eastern Gangwon containment zone posts a new 48-hour incident-free record."
-    },
-    "[국내] 봉쇄선 유지율 전월 대비 12% 향상": {
-      "type": "domestic",
-      "text": "Containment-line integrity improves by 12% month over month."
-    },
-    "[국내] 강원 봉쇄 구역, 이번 주 민간 침투 시도 0건": {
-      "type": "domestic",
-      "text": "No civilian intrusion attempts recorded in the Gangwon containment zone this week."
-    },
-    "[국내] White Shield, '봉쇄 작전 효율 역대 최고' 평가": {
-      "type": "domestic",
-      "text": "White Shield rates current containment operations as the most efficient on record."
-    },
-    "[국내] 강원도 일대 이변체 활동 빈도 감소세": {
-      "type": "domestic",
-      "text": "Anomaly activity across Gangwon continues to decline."
-    },
-    "[국내] 봉쇄 구역 인근 주민 불안 지수 하락 추세": {
-      "type": "domestic",
-      "text": "Anxiety indicators among residents near the containment zone trend downward."
-    },
-    "[국내] 특재사, DMZ 이변체 침투 신속 격퇴 — 방벽 효율성 재확인": {
-      "type": "domestic",
-      "text": "Special Response Command repels a DMZ anomaly incursion in rapid time, reaffirming barrier efficiency."
-    },
-    "[국내] 생체감지 센서 전국 보급률 82% 돌파, 조기감지 체계 완성 임박": {
-      "type": "domestic",
-      "text": "Nationwide biometric sensor deployment passes 82%, bringing the early-detection grid close to completion."
-    },
-    "[국내] 봉쇄 구역 남측 경계, 야간 이상 활동 증가 추세": {
-      "type": "domestic",
-      "text": "Abnormal nighttime activity is rising along the southern containment perimeter."
-    },
-    "[국내] 강원 일대 주민, '폭발음 유사 소음' 신고 3건": {
-      "type": "domestic",
-      "text": "Residents across Gangwon file three reports of blast-like sounds."
-    },
-    "[국내] 봉쇄 경계 장비 노후화 우려 제기": {
-      "type": "domestic",
-      "text": "Concerns are being raised over aging perimeter equipment."
-    },
-    "[국내] 정규군 교대조 운용 지연, 봉쇄 공백 발생": {
-      "type": "domestic",
-      "text": "Delayed regular-force rotations create temporary gaps in containment coverage."
-    },
-    "[국내] 민간 드론이 봉쇄 구역 상공 진입 — 군 당국 조사 중": {
-      "type": "domestic",
-      "text": "A civilian drone enters restricted airspace over the containment zone; military authorities are investigating."
-    },
-    "[국내] 강원 동부 감시 카메라 3대 동시 고장, 원인 불명": {
-      "type": "domestic",
-      "text": "Three surveillance cameras in eastern Gangwon fail simultaneously; cause remains unknown."
-    },
-    "[국내] 해안도시 경제 4년째 침체 — 인구 유출로 관광업 붕괴": {
-      "type": "domestic",
-      "text": "A coastal city's economy enters its fourth year of decline as population loss collapses tourism."
-    },
-    "[국내] 강원 격리구역 원주민 이주 10년, 보상 소송 법정 공방": {
-      "type": "domestic",
-      "text": "Ten years after native residents were relocated from the Gangwon quarantine zone, compensation lawsuits remain in court."
-    },
-    "[국내] 강원 산간 지역 보급로, 폭우로 일시 차단": {
-      "type": "domestic",
-      "text": "A supply route through the Gangwon highlands is temporarily cut off by heavy rain."
-    },
-    "[국내] 군수 물자 가격 상승세 지속": {
-      "type": "domestic",
-      "text": "Prices for military supplies continue to rise."
-    },
-    "[국내] 의약품 공급 업체, 봉쇄 지역 배송 지연 통보": {
-      "type": "domestic",
-      "text": "A pharmaceutical supplier issues notice of delivery delays to containment regions."
-    },
-    "[국내] 비상 식량 비축량, 권장 기준의 62%로 하락": {
-      "type": "domestic",
-      "text": "Emergency food reserves fall to 62% of the recommended threshold."
-    },
-    "[국내] 백신 분배 형평성 논란 — 도시 주민 접종 순위 뒤로 밀려": {
-      "type": "domestic",
-      "text": "Vaccine distribution fairness comes under scrutiny as urban residents are pushed down the priority list."
-    },
-    "[해외] 서아프리카 접경 의료팀, 국제 의료단체 긴급 철수 결정": {
-      "type": "foreign",
-      "text": "An international medical organization orders an emergency withdrawal for a medical team near the West African border."
-    },
-    "[해외] 함경북도 접경 지역 위성 관측 불가 상태 지속": {
-      "type": "foreign",
-      "text": "Satellite observation remains unavailable along the North Hamgyeong border region."
-    },
-    "[해외] 유럽 3개국, EV-Σ 봉쇄 협력 강화 합의": {
-      "type": "foreign",
-      "text": "Three European states agree to deepen EV-Σ containment cooperation."
-    },
-    "[해외] 필라델피아 Z-Ω 구역, 민간 접근 금지 구역 확대": {
-      "type": "foreign",
-      "text": "Civilian exclusion boundaries are expanded around Philadelphia's Z-Ω zone."
-    },
-    "[해외] 서아프리카 접경 연구팀, 통신 두절 72시간째": {
-      "type": "foreign",
-      "text": "A research team near the West African border has been out of contact for 72 hours."
-    },
-    "[해외] WHO, EV-Σ 위협 등급 재평가 검토 중": {
-      "type": "foreign",
-      "text": "The WHO is reviewing a reassessment of the EV-Σ threat rating."
-    },
-    "[해외] 일본 큐슈 남부 해안 봉쇄선 2km 확장": {
-      "type": "foreign",
-      "text": "Japan extends the southern Kyushu coastal containment line by 2 km."
-    },
-    "[해외] 유럽 연합, 이변체 대응 합동 연구 프로그램 발표": {
-      "type": "foreign",
-      "text": "The European Union announces a joint research program for anomaly response."
-    },
-    "[해외] 인도양 소국 3곳, EV-Σ 확산 우려로 국경 폐쇄": {
-      "type": "foreign",
-      "text": "Three small Indian Ocean states close their borders over fears of EV-Σ spread."
-    },
-    "[해외] 미국 동부 봉쇄 구역, 민간 자원봉사 프로그램 중단": {
-      "type": "foreign",
-      "text": "A civilian volunteer program is suspended in a containment zone on the U.S. East Coast."
-    },
-    "[해외] 미국 ARES Division 특재사 합동훈련 개시 — 한미 연합 역량 강화": {
-      "type": "foreign",
-      "text": "The U.S. ARES Division begins joint training with the Special Response Command, strengthening Korea-U.S. operational capacity."
-    },
-    "[해외] 일본, 한국의 생체감지 기술 도입 논의 — 기술이전 협상 개시": {
-      "type": "foreign",
-      "text": "Japan opens talks on adopting Korean biometric detection technology and begins transfer negotiations."
-    },
-    "[해외] 중국발 변이체 월경 시도 증가 — 서해 NADL 센서 반응 100회 돌파": {
-      "type": "foreign",
-      "text": "Cross-border anomaly incursion attempts from China increase as NADL sensors in the Yellow Sea exceed 100 triggers."
-    },
-    "[국내] 익명 제보 — '민간 군사기업, 강원 일대 장비 반입 포착'": {
-      "type": "domestic",
-      "text": "Anonymous tip claims a private military company was seen moving equipment into the Gangwon region."
-    },
-    "[국내] 미확인 외국인 3명, 강원 산간 지역 목격 제보": {
-      "type": "domestic",
-      "text": "Three unidentified foreign nationals are reportedly sighted in the Gangwon mountains."
-    },
-    "[국내] 강원 해안가에서 비등록 선박 접안 흔적 발견": {
-      "type": "domestic",
-      "text": "Signs of an unregistered vessel docking are found along the Gangwon coast."
-    },
-    "[국내] 정체불명 통신 장비, 봉쇄 구역 외곽에서 회수": {
-      "type": "domestic",
-      "text": "Unidentified communications equipment is recovered outside the containment perimeter."
-    },
-    "[국내] 군 당국, '비공식 작전 지원 세력' 존재 조사 착수": {
-      "type": "domestic",
-      "text": "Military authorities begin investigating the existence of an unofficial operational support group."
-    },
-    "[국내] 국회 보건위, 'Phase 1+ 자동 제거 절차 투명화' 요구 결의": {
-      "type": "domestic",
-      "text": "The National Assembly Health Committee passes a motion demanding transparency for automatic Phase 1+ removal procedures."
-    },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 관계자, '봉쇄 성공은 단독 성과 아냐' 익명 발언\n[삭제됨]": {
-      "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Anonymous ████ official: “Containment success was not achieved alone.”\n[Deleted]"
-    },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] 해안 방벽 기술 데이터, 비공식 외부 제공 정황\n[삭제됨]": {
-      "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Signs of unofficial external transfer involving coastal barrier technical data.\n[Deleted]"
-    },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] White Shield 내부 보고 — '봉쇄 성공률 미분류 외부 요인 31%'\n[삭제됨]": {
-      "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] White Shield internal report: “31% of containment success derives from an unclassified external factor.”\n[Deleted]"
-    },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] ORACLE 데이터 전송 로그 — 수신처: ██████\n[삭제됨]": {
-      "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ORACLE data transmission log — recipient: ██████\n[Deleted]"
-    },
-    "[분류 오류 — 자동 삭제 예정]\n[국내] ████ 인더스트리, 방벽 장비 납품 전 계약서 원본 누락\n[삭제됨]": {
-      "type": "redacted",
-      "text": "[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ████ Industries, original pre-delivery contract for barrier equipment is missing.\n[Deleted]"
-    },
-    "[국내] 대가 인더스트리, EV-Σ Phase 0 백신 2세대 임상 성공 발표": {
-      "type": "domestic",
-      "text": "Daega Industries announces successful Phase II clinical results for its second-generation EV-Σ Phase 0 vaccine."
-    },
-    "[국내] DG 마스크 독점 납품 계약 반발 — 공정위, 경쟁 시장 조성 압박": {
-      "type": "domestic",
-      "text": "Backlash grows against DG Mask's exclusive supply contract as the Fair Trade Commission pushes for a competitive market."
-    },
-    "[국내] 대가 방산부문, 한국방벽 신형 장비 단독 수주 — 업계 반발": {
-      "type": "domestic",
-      "text": "Daega's defense division wins a sole contract for new Korea Barrier equipment, drawing industry backlash."
-    },
-    "[국내] 대가 회장 공개석상 등장 — '국가와 함께 축적한 기록' 발언 화제": {
-      "type": "domestic",
-      "text": "The chairman of Daega appears in public and draws attention with a remark about records accumulated with the nation."
-    },
-    "[국내] DG 바이오, EV-Σ Phase 0 억제제 임상 3상 진입 — 해외 관심 폭증": {
-      "type": "domestic",
-      "text": "DG Bio enters Phase III clinical trials for an EV-Σ Phase 0 inhibitor, triggering surging foreign interest."
-    },
-    "[국내] 대가 인더스트리 주가 사상 최고치 — 국방·바이오·테크 동반 호조": {
-      "type": "domestic",
-      "text": "Daega Industries stock reaches an all-time high as defense, biotech, and tech divisions all gain."
-    },
-    "[해외] 메리디안 BioAsset Division, 한국 시장 진입 재시도 — 정부 심의 지연": {
-      "type": "foreign",
-      "text": "Meridian's BioAsset Division attempts to re-enter the Korean market as government review stalls."
-    },
-    "[해외] 메리디안 PMC, 동남아 작전 성과 — 글로벌 입지 확대": {
-      "type": "foreign",
-      "text": "Meridian PMC reports operational success in Southeast Asia, expanding its global footprint."
-    },
-    "[해외] 메리디안, 외국인 기관 대상 백신 공급 요청 — 한국 정부 거부": {
-      "type": "foreign",
-      "text": "Meridian requests permission to supply vaccines to foreign agencies; the Korean government rejects the proposal."
-    },
-    "[해외] 유럽 의회, 메리디안 로비 의혹 조사 착수": {
-      "type": "foreign",
-      "text": "The European Parliament opens an inquiry into Meridian lobbying allegations."
-    },
-    "[해외] 메리디안 CEO, '한국은 공정 경쟁의 예외' 작심 발언": {
-      "type": "foreign",
-      "text": "Meridian's CEO states bluntly that “Korea is an exception to fair competition.”"
-    },
-    "[해외] 메리디안 소속 민간 연구원, 강원 접경 지역 입국 시도 적발": {
-      "type": "foreign",
-      "text": "A civilian researcher affiliated with Meridian is caught attempting entry near the Gangwon border sector."
-    }
+    "news_gc_01": {"type":"domestic","text":"Eastern Gangwon containment zone posts a new 48-hour incident-free record."},
+    "news_gc_02": {"type":"domestic","text":"Containment-line integrity improves by 12% month over month."},
+    "news_gc_03": {"type":"domestic","text":"No civilian intrusion attempts recorded in the Gangwon containment zone this week."},
+    "news_gc_04": {"type":"domestic","text":"White Shield rates current containment operations as the most efficient on record."},
+    "news_gc_05": {"type":"domestic","text":"Anomaly activity across Gangwon continues to decline."},
+    "news_gc_06": {"type":"domestic","text":"Anxiety indicators among residents near the containment zone trend downward."},
+    "news_gc_07": {"type":"domestic","text":"Special Response Command repels a DMZ anomaly incursion in rapid time, reaffirming barrier efficiency."},
+    "news_gc_08": {"type":"domestic","text":"Nationwide biometric sensor deployment passes 82%, bringing the early-detection grid close to completion."},
+    "news_bc_01": {"type":"domestic","text":"Abnormal nighttime activity is rising along the southern containment perimeter."},
+    "news_bc_02": {"type":"domestic","text":"Residents across Gangwon file three reports of blast-like sounds."},
+    "news_bc_03": {"type":"domestic","text":"Concerns are being raised over aging perimeter equipment."},
+    "news_bc_04": {"type":"domestic","text":"Delayed regular-force rotations create temporary gaps in containment coverage."},
+    "news_bc_05": {"type":"domestic","text":"A civilian drone enters restricted airspace over the containment zone; military authorities are investigating."},
+    "news_bc_06": {"type":"domestic","text":"Three surveillance cameras in eastern Gangwon fail simultaneously; cause remains unknown."},
+    "news_bc_07": {"type":"domestic","text":"A coastal city's economy enters its fourth year of decline as population loss collapses tourism."},
+    "news_bc_08": {"type":"domestic","text":"Ten years after native residents were relocated from the Gangwon quarantine zone, compensation lawsuits remain in court."},
+    "news_br_01": {"type":"domestic","text":"A supply route through the Gangwon highlands is temporarily cut off by heavy rain."},
+    "news_br_02": {"type":"domestic","text":"Prices for military supplies continue to rise."},
+    "news_br_03": {"type":"domestic","text":"A pharmaceutical supplier issues notice of delivery delays to containment regions."},
+    "news_br_04": {"type":"domestic","text":"Emergency food reserves fall to 62% of the recommended threshold."},
+    "news_br_05": {"type":"domestic","text":"Vaccine distribution fairness comes under scrutiny as urban residents are pushed down the priority list."},
+    "news_w_01": {"type":"foreign","text":"An international medical organization orders an emergency withdrawal for a medical team near the West African border."},
+    "news_w_02": {"type":"foreign","text":"Satellite observation remains unavailable along the North Hamgyeong border region."},
+    "news_w_03": {"type":"foreign","text":"Three European states agree to deepen EV-Σ containment cooperation."},
+    "news_w_04": {"type":"foreign","text":"Civilian exclusion boundaries are expanded around Philadelphia's Z-Ω zone."},
+    "news_w_05": {"type":"foreign","text":"A research team near the West African border has been out of contact for 72 hours."},
+    "news_w_06": {"type":"foreign","text":"The WHO is reviewing a reassessment of the EV-Σ threat rating."},
+    "news_w_07": {"type":"foreign","text":"Japan extends the southern Kyushu coastal containment line by 2 km."},
+    "news_w_08": {"type":"foreign","text":"The European Union announces a joint research program for anomaly response."},
+    "news_w_09": {"type":"foreign","text":"Three small Indian Ocean states close their borders over fears of EV-Σ spread."},
+    "news_w_10": {"type":"foreign","text":"A civilian volunteer program is suspended in a containment zone on the U.S. East Coast."},
+    "news_w_11": {"type":"foreign","text":"The U.S. ARES Division begins joint training with the Special Response Command, strengthening Korea-U.S. operational capacity."},
+    "news_w_12": {"type":"foreign","text":"Japan opens talks on adopting Korean biometric detection technology and begins transfer negotiations."},
+    "news_w_13": {"type":"foreign","text":"Cross-border anomaly incursion attempts from China increase as NADL sensors in the Yellow Sea exceed 100 triggers."},
+    "news_p_01": {"type":"domestic","text":"Anonymous tip claims a private military company was seen moving equipment into the Gangwon region."},
+    "news_p_02": {"type":"domestic","text":"Three unidentified foreign nationals are reportedly sighted in the Gangwon mountains."},
+    "news_p_03": {"type":"domestic","text":"Signs of an unregistered vessel docking are found along the Gangwon coast."},
+    "news_p_04": {"type":"domestic","text":"Unidentified communications equipment is recovered outside the containment perimeter."},
+    "news_p_05": {"type":"domestic","text":"Military authorities begin investigating the existence of an unofficial operational support group."},
+    "news_p_06": {"type":"domestic","text":"The National Assembly Health Committee passes a motion demanding transparency for automatic Phase 1+ removal procedures."},
+    "news_gl_01": {"type":"redacted","text":"[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Anonymous ████ official: “Containment success was not achieved alone.”\n[Deleted]"},
+    "news_gl_02": {"type":"redacted","text":"[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] Signs of unofficial external transfer involving coastal barrier technical data.\n[Deleted]"},
+    "news_gl_03": {"type":"redacted","text":"[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] White Shield internal report: “31% of containment success derives from an unclassified external factor.”\n[Deleted]"},
+    "news_gl_04": {"type":"redacted","text":"[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ORACLE data transmission log — recipient: ██████\n[Deleted]"},
+    "news_gl_05": {"type":"redacted","text":"[Classification Error — Scheduled for Auto-Deletion]\n[Domestic] ████ Industries, original pre-delivery contract for barrier equipment is missing.\n[Deleted]"},
+    "news_dg_01": {"type":"domestic","text":"Daega Industries announces successful Phase II clinical results for its second-generation EV-Σ Phase 0 vaccine."},
+    "news_dg_02": {"type":"domestic","text":"Backlash grows against DG Mask's exclusive supply contract as the Fair Trade Commission pushes for a competitive market."},
+    "news_dg_03": {"type":"domestic","text":"Daega's defense division wins a sole contract for new Korea Barrier equipment, drawing industry backlash."},
+    "news_dg_04": {"type":"domestic","text":"The chairman of Daega appears in public and draws attention with a remark about records accumulated with the nation."},
+    "news_dg_05": {"type":"domestic","text":"DG Bio enters Phase III clinical trials for an EV-Σ Phase 0 inhibitor, triggering surging foreign interest."},
+    "news_dg_06": {"type":"domestic","text":"Daega Industries stock reaches an all-time high as defense, biotech, and tech divisions all gain."},
+    "news_md_01": {"type":"foreign","text":"Meridian's BioAsset Division attempts to re-enter the Korean market as government review stalls."},
+    "news_md_02": {"type":"foreign","text":"Meridian PMC reports operational success in Southeast Asia, expanding its global footprint."},
+    "news_md_03": {"type":"foreign","text":"Meridian requests permission to supply vaccines to foreign agencies; the Korean government rejects the proposal."},
+    "news_md_04": {"type":"foreign","text":"The European Parliament opens an inquiry into Meridian lobbying allegations."},
+    "news_md_05": {"type":"foreign","text":"Meridian's CEO states bluntly that “Korea is an exception to fair competition.”"},
+    "news_md_06": {"type":"foreign","text":"A civilian researcher affiliated with Meridian is caught attempting entry near the Gangwon border sector."}
   },
   "oracleLogs": {
     "LOG-001": {

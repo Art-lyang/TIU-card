@@ -810,16 +810,16 @@ function RouteMiniGame(p){
   }
 
   return h(MiniPanel,null,
-    h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'#7affc6',letterSpacing:1.5,marginBottom:12}},
+    h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'#7affc6',letterSpacing:1.5,marginBottom:8}},
       h('span',null,'M-010'),
       h('span',null,'ROUTE EVADE')),
-    h('div',{style:{fontSize:32,fontWeight:'700',color:'#ecfff4',marginBottom:10}},copy.title),
-    h('div',{style:{fontSize:15,lineHeight:1.7,color:'rgba(210,235,220,0.82)',marginBottom:16}},copy.intro),
+    h('div',{style:{fontSize:22,fontWeight:'700',color:'#ecfff4',marginBottom:6}},copy.title),
+    h('div',{style:{fontSize:13,lineHeight:1.55,color:'rgba(210,235,220,0.82)',marginBottom:10}},copy.intro),
     h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'rgba(210,235,220,0.62)',marginBottom:8}},
       h('span',null,'MOVES: '+moves),
       h('span',null,'RED=FAIL / AMBER=-2')),
-    h('div',{style:{padding:'16px',border:'1px solid rgba(122,255,198,0.22)',borderRadius:'22px',background:'rgba(5,18,11,0.76)'}},
-      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5, minmax(0, 1fr))',gap:10}},
+    h('div',{style:{padding:'12px',border:'1px solid rgba(122,255,198,0.22)',borderRadius:'14px',background:'rgba(5,18,11,0.76)',width:'100%',maxWidth:'min(100%, calc(100dvh - 310px))',margin:'0 auto'}},
+      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5, minmax(0, 1fr))',gap:8}},
         Array.from({length:25}).map(function(_,idx){
           var isPlayer=idx===pos;
           var isGoal=idx===sheet.goal;
@@ -828,11 +828,11 @@ function RouteMiniGame(p){
           var isJammer=sheet.jammer.indexOf(idx)>=0;
           var bg='rgba(6,18,11,0.96)';
           var border='1px solid rgba(122,255,198,0.16)';
-          if(isDanger){ bg='rgba(80,12,12,0.95)'; border='1px solid rgba(255,122,122,0.6)'; }
-          if(isBlock){ bg='rgba(42,42,42,0.92)'; border='1px solid rgba(180,180,180,0.25)'; }
-          if(isJammer){ bg='rgba(64,40,10,0.95)'; border='1px solid rgba(245,188,64,0.5)'; }
-          if(isGoal){ bg='rgba(10,40,52,0.95)'; border='1px solid rgba(138,215,255,0.55)'; }
-          if(isPlayer){ bg='rgba(18,64,38,0.96)'; border='2px solid rgba(120,255,190,0.95)'; }
+          if(isDanger){ bg='rgba(165,22,22,0.96)'; border='1px solid rgba(255,120,120,0.9)'; }
+          if(isBlock){ bg='rgba(55,55,60,0.95)'; border='1px solid rgba(195,195,200,0.45)'; }
+          if(isJammer){ bg='rgba(135,86,16,0.96)'; border='1px solid rgba(252,200,88,0.85)'; }
+          if(isGoal){ bg='rgba(14,76,100,0.96)'; border='1px solid rgba(146,224,255,0.9)'; }
+          if(isPlayer){ bg='rgba(18,86,48,0.97)'; border='2px solid rgba(130,255,196,1)'; }
           return h('button',{
             key:idx,
             className:'btn',
@@ -840,13 +840,15 @@ function RouteMiniGame(p){
             onClick:function(){moveTo(idx);},
             style:{
               aspectRatio:'1 / 1',
-              borderRadius:'12px',
+              borderRadius:'8px',
               padding:0,
               background:bg,
               border:border,
-              color:isGoal?'#8ad7ff':isDanger?'#ff8f8f':isJammer?'#f3c35b':isBlock?'rgba(200,200,200,0.38)':isPlayer?'#78ffbe':'rgba(210,235,220,0.55)',
+              boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',
+              color:isGoal?'#b9e9ff':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',
               fontFamily:"'Share Tech Mono',monospace",
-              fontSize:13,
+              fontSize:15,
+              fontWeight:700,
               cursor:isBlock?'default':'pointer'
             }
           },isPlayer?'IN':isGoal?'OUT':isDanger?'X':isBlock?'■':isJammer?'~':'·');

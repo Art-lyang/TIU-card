@@ -510,7 +510,8 @@ function checkNewsPoolOverlays(ctx, errors) {
   Object.keys(pools).forEach((poolKey) => {
     const items = Array.isArray(pools[poolKey]) ? pools[poolKey] : [];
     items.forEach((headline, index) => {
-      const val = ctx.tc('newsItems', headline, null);
+      const nid = ctx.NEWS_ID_BY_TEXT && ctx.NEWS_ID_BY_TEXT[headline];
+      const val = (nid ? ctx.tc('newsItems', nid, null) : null) || ctx.tc('newsItems', headline, null);
       if (!val) {
         errors.push(`[en] missing newsItems overlay NP.${poolKey}[${index}]`);
         return;
@@ -846,7 +847,7 @@ function checkAllEveningOverlays(ctx, errors) {
 function checkAllDialogueOverlays(ctx, errors) {
   (ctx.DIALOGUES || []).forEach((dialogue, index) => {
     const key = `${dialogue.char || ''}|${(dialogue.lines && dialogue.lines[0]) || ''}`;
-    const overlay = ctx.tc('dialogues', key, null);
+    const overlay = (dialogue.id ? ctx.tc('dialogues', dialogue.id, null) : null) || ctx.tc('dialogues', key, null);
     if (!overlay) {
       errors.push(`[en] missing dialogue overlay at index ${index}`);
       return;

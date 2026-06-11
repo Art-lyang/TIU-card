@@ -67,7 +67,8 @@ function checkTranslations(errors) {
   const ctx = bootI18n();
   Object.keys(ctx.NP || {}).forEach((poolKey) => {
     (ctx.NP[poolKey] || []).forEach((headline, index) => {
-      const translated = ctx.tc('newsItems', headline, null);
+      const nid = ctx.NEWS_ID_BY_TEXT && ctx.NEWS_ID_BY_TEXT[headline];
+      const translated = (nid ? ctx.tc('newsItems', nid, null) : null) || ctx.tc('newsItems', headline, null);
       if (!translated) fail(errors, `missing newsItems overlay for NP.${poolKey}[${index}]`);
       if (translated && HANGUL_RE.test(translated)) fail(errors, `Hangul leaked in newsItems NP.${poolKey}[${index}]`);
     });

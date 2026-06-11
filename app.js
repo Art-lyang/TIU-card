@@ -203,8 +203,8 @@ function App(){
         if(ch&&ch.triggerLog===id&&Array.isArray(ch.cards)&&ch.cards.length>0){
           var cq=ch.cards.slice();
           setChainQueue(cq);
-          // pendingBonus 인수를 누락하면 직전 거절 보너스가 세이브에서 사라진다.
-          Save.saveGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,cq,pendingBonus);
+          // pendingBonus/curMission/phase 인수를 누락하면 해당 상태가 세이브에서 사라진다.
+          Save.saveGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,cq,pendingBonus,curMission,phase);
         }
       });
     }

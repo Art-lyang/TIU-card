@@ -3,6 +3,8 @@
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 var getDialogueOverlay=function(d){
   if(!d||!window.TS_I18N||window.TS_I18N.getLocale()!=='en'||typeof tc!=='function')return null;
+  // id 우선(한국어 첫 줄을 고쳐도 번역이 안 끊김), 구 합성키는 폴백으로 유지
+  if(d.id){var byId=tc('dialogues',d.id,null);if(byId)return byId;}
   var key=(d.char||'')+'|'+((d.lines&&d.lines[0])||'');
   return tc('dialogues',key,null);
 };

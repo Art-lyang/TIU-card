@@ -687,7 +687,7 @@ function NewsReport(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
-    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
@@ -795,7 +795,7 @@ function NewsReport2(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
-    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
@@ -902,6 +902,10 @@ function NewsReport3(p){
     if(locale!=='en')return null;
     var s=String(raw||'');
     if(typeof tc==='function'){
+      if(typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]){
+        var byId=tc('newsItems',NEWS_ID_BY_TEXT[s],null);
+        if(byId&&byId.text)return byId;
+      }
       var direct=tc('newsItems',s,null);
       if(direct&&direct.text)return direct;
     }

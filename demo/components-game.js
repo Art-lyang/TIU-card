@@ -176,6 +176,9 @@ function MainMenu(p){
   };
   useEffect(function(){
     var onKey=function(e){
+      // 서브 뷰(설정 등)가 열려 있으면 메인메뉴 1-9/방향키 입력을 모두 무시.
+      // SettingsPanel 등 하위 컴포넌트가 자체 키 처리를 한다.
+      if(sub)return;
       if(showSnapshotSelect){
         if(e.key==='Escape'){e.preventDefault();setShowSnapshotSelect(false);return}
         if(/^[1-3]$/.test(e.key)){
@@ -195,7 +198,7 @@ function MainMenu(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[selectedIndex,menuItems.length,p.hasSave,showSnapshotSelect,manualSnapshotSlots.length]);
+  },[selectedIndex,menuItems.length,p.hasSave,showSnapshotSelect,manualSnapshotSlots.length,sub]);
   // 설정 서브뷰
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
@@ -235,7 +238,7 @@ function MainMenu(p){
         h('div',{className:'main-terminal-oracle','aria-label':'ORACLE Korea Branch'},
           h('span',{className:'main-terminal-oracle-mark','aria-hidden':true}),
           h('span',{className:'main-terminal-oracle-copy'},h('b',null,'ORACLE'),h('small',null,'KOREA BRANCH')))),
-      h('nav',{className:'main-terminal-menu-list','aria-label':'session route menu'},
+      h('nav',{className:'main-terminal-menu-list'+(menuItems.length>5?' is-dense':''),'data-count':menuItems.length,'aria-label':'session route menu'},
         menuItems.map(function(item,index){return h('div',{key:item.key,className:'main-terminal-row'+(item.primary?' is-primary':'')+(selectedIndex===index?' is-selected':''),onMouseMove:function(){setSelectedIndex(index)}},
           h('span',{className:'main-terminal-cursor','aria-hidden':true},'>'),
           h('button',{type:'button',className:'main-terminal-button'+(glitchKey===item.key?' is-glitching':''),'data-route':item.key,onFocus:function(){setSelectedIndex(index)},onClick:function(){activate(item)}},
@@ -488,7 +491,7 @@ function CardC(p){
     setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null);setChoiceCue(null)},replyMsg?1500:300);
   };
   var requestChoice=function(kdir){
-    if(chosen||shaking)return;
+    if(p.disabled||chosen||shaking)return;
     clearHoldPreview();
     if(p.onPreview)p.onPreview(null);
     var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
@@ -505,13 +508,16 @@ function CardC(p){
   };
   // 타이머 카운트다운
   useEffect(function(){
-    if(!timerTotal||chosen||shaking)return;
+    if(!timerTotal||p.disabled||chosen||shaking)return;
     if(remaining<=0){performSwipe('right');return}
     var t=setTimeout(function(){setRemaining(function(r){return Math.max(0,r-0.1)})},100);
     return function(){clearTimeout(t)};
-  },[remaining,card.id,chosen,shaking]);
+  },[remaining,card.id,p.disabled,chosen,shaking]);
   useEffect(function(){
     var onKey=function(e){
+      // 설정/시설/증거 등 오버레이 모달이 떠 있을 때는 카드 키 입력을 무시한다.
+      if(p.modalActive)return;
+      if(p.disabled)return;
       if(chosen||shaking)return;
       var kdir=null;
       if(e.key==='ArrowLeft'||e.key==='1'||e.code==='Numpad1')kdir='left';
@@ -523,14 +529,16 @@ function CardC(p){
     };
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
-  },[card,chosen,shaking,blockCount]);
+  },[card,chosen,shaking,blockCount,p.modalActive,p.disabled]);
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){
+    if(p.disabled)return;
     sxRef.current=x;setSx(x);setDragging(true);dragActiveRef.current=true;holdPreviewDir.current=choiceDirFromX(x);clearHoldPreview();
     holdPreviewTimer.current=setTimeout(function(){if(dragActiveRef.current&&Math.abs(dx)<8)previewChoice(holdPreviewDir.current)},180);
   };
   var hM=function(x){
+    if(p.disabled)return;
     if(dragging||dragActiveRef.current){
       var nd=x-sxRef.current;setDx(nd);
       if(p.onPreview){
@@ -540,7 +548,7 @@ function CardC(p){
       }
     }
   };
-  var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(dir){requestChoice(dir)}else{setDx(0);setChoiceCue(null)}};
+  var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(p.disabled){setDx(0);setChoiceCue(null);return}if(dir){requestChoice(dir)}else{setDx(0);setChoiceCue(null)}};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
   if(card.glitch)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
@@ -578,7 +586,7 @@ function CardC(p){
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
-    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)',animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.3s ease, opacity 0.18s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none'},
+    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)'+(chosen?' scale(0.85)':''),animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.35s ease, opacity 0.25s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       h('span',{className:'card-corner-node card-corner-node--tl','aria-hidden':true}),
@@ -679,7 +687,7 @@ function NewsReport(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
-    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
@@ -787,7 +795,7 @@ function NewsReport2(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
-    var view=(locale==='en'&&typeof tc==='function')?tc('newsItems',s,null):null;
+    var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
@@ -894,6 +902,10 @@ function NewsReport3(p){
     if(locale!=='en')return null;
     var s=String(raw||'');
     if(typeof tc==='function'){
+      if(typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]){
+        var byId=tc('newsItems',NEWS_ID_BY_TEXT[s],null);
+        if(byId&&byId.text)return byId;
+      }
       var direct=tc('newsItems',s,null);
       if(direct&&direct.text)return direct;
     }
@@ -1013,11 +1025,6 @@ function NewsReport3(p){
 function GameOver(p){
   useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
   var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
-  var isDemoEnd=p.endId==='DEMO_COMPLETE';
-  var goFullVersion=function(){
-    var href=(typeof window!=='undefined'&&window.TIU_DEMO&&window.TIU_DEMO.fullVersionHref)||'../index.html';
-    window.location.href=href;
-  };
   var narr=p.endNarr;
   if(p.endId&&typeof tc==='function'){
     var endView=tc('endings',p.endId,null);
@@ -1027,7 +1034,6 @@ function GameOver(p){
   var resultDay=(p.resultDay||(p.stats&&p.stats.day)||'?');
   var resultDayNode=h('div',{className:'go-stat'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay));
   var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
-    isDemoEnd&&h('button',{className:'btn btn-amber',onClick:goFullVersion},tt('gameOver.fullVersion',null,'[ 정식 버전 플레이 ]')),
     h('button',{className:'btn btn-amber',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
     h('div',{style:{display:'flex',gap:10}},h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
   if(narr&&narr.narrative){var eImg=p.endId?IMG['ending_'+p.endId]:null;return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:8,flexShrink:0}},'ENDING: '+narr.name),resultDayNode,h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
