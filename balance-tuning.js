@@ -105,31 +105,15 @@
     return gi > -35 && gi < 8;
   }
 
-  // Critical-band drain dampener: once a stat already sits in the danger band,
-  // further losses are halved so a first-run player bleeds out slowly enough
-  // to read the warning and find recovery cards. Entering the band keeps full
-  // impact, so the initial shock and tension stay intact.
-  // The softened loss is snapped UP to the 5-unit stat grid (applyFx m=5):
-  // every visible delta must stay a multiple of 5, so -5 stays -5,
-  // -10 -> -5, -15 -> -10, -20 -> -10.
+  // Critical-band drain dampener — CHOICE cards only. Once a stat already
+  // sits in the danger band, a multi-step choice loss is halved and snapped
+  // UP to the 5-unit stat grid (applyFx m=5): -5 stays -5, -10 -> -5,
+  // -15 -> -10, -20 -> -10. Single-step losses keep their full bite.
+  // Reward cards and act 3/4 daily decay are NOT dampened: their penalties
+  // apply at face value — running out of resources and losing the run is
+  // part of the narrative, not a failure state to tune away.
   var CRITICAL_BAND = 25;
   var STAT_STEP = 5;
-  // Single-step residual: the dampener cannot halve a single-step (-5) loss
-  // without leaving the 5-unit grid, so the smallest in-band losses are
-  // held every other day instead (even days hold, odd days bleed). The
-  // average matches the old half-rate while every applied delta stays ±5.
-  // Applies to both the choice path and the reward/decay path.
-  function holdSingleStepBandLoss(before, after){
-    if (((before.day || 1) % 2) !== 0) return false;
-    var hit = false;
-    ['c','r','t','o'].forEach(function(k){
-      if (before[k] <= CRITICAL_BAND && before[k] - after[k] === STAT_STEP) {
-        after[k] = before[k];
-        hit = true;
-      }
-    });
-    return hit;
-  }
   function dampenCriticalBandLoss(before, after){
     var hit = false;
     ['c','r','t','o'].forEach(function(k){
@@ -154,13 +138,9 @@
     var changed = false;
     var kind = '';
 
-    if (holdSingleStepBandLoss(before, after)) {
-      changed = true;
-      kind = 'critical-band-drain-hold';
-    }
     if (dampenCriticalBandLoss(before, after)) {
       changed = true;
-      kind = kind || 'critical-band-drain-damp';
+      kind = 'critical-band-drain-damp';
     }
 
     if (cardId === 'CE-005') {
@@ -252,16 +232,8 @@
       kind = changed ? 'act1-reward-overcontainment-buffer' : kind;
     }
 
-    // Runs last so it also covers the R-06/07/08 rewrites above and the
-    // act 3/4 daily pressure already merged into nextStats by the caller.
-    if (holdSingleStepBandLoss(before, after)) {
-      changed = true;
-      kind = kind || 'critical-band-drain-hold';
-    }
-    if (dampenCriticalBandLoss(before, after)) {
-      changed = true;
-      kind = kind || 'critical-band-drain-damp';
-    }
+    // Reward penalties and act 3/4 daily pressure apply at face value —
+    // no critical-band softening here. Game over is part of the narrative.
 
     if (!changed) return null;
     return { stats: after, gi: gi, kind: kind };

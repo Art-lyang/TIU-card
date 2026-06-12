@@ -242,25 +242,11 @@ def is_neutral_route(gi):
 CRITICAL_BAND = 25
 STAT_STEP = 5
 
-def hold_single_step_band_loss(before, after):
-    """balance-tuning.js holdSingleStepBandLoss 미러.
-    위험대에서 정확히 한 스텝(-5)짜리 일일 드레인은 짝수 day에 보류.
-    평균은 기존 절반율과 같고 적용 델타는 항상 ±5 그리드."""
-    if (before.get('day', 1) % 2) != 0:
-        return False
-    hit = False
-    for k in 'crto':
-        b = before.get(k, 0)
-        a = after.get(k, 0)
-        if b <= CRITICAL_BAND and b - a == STAT_STEP:
-            after[k] = b
-            hit = True
-    return hit
-
 def dampen_critical_band_loss(before, after):
-    """balance-tuning.js dampenCriticalBandLoss 미러.
+    """balance-tuning.js dampenCriticalBandLoss 미러 — 선택 카드 전용.
     위험대(<=25) 안에서의 추가 손실을 절반으로 완화하되 5단위 그리드로 올림 스냅.
-    (-5 유지 / -10→-5 / -15→-10 / -20→-10) 진입 타격은 그대로."""
+    (-5 유지 / -10→-5 / -15→-10 / -20→-10) 진입 타격은 그대로.
+    보상/일일 감쇠 경로는 액면 그대로 — 게임오버도 서사의 일부."""
     hit = False
     for k in 'crto':
         b = before.get(k, 0)
@@ -279,8 +265,6 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
     changed = False
     cid = str(card.get('id', '')) if card else ''
 
-    if hold_single_step_band_loss(before, ns):
-        changed = True
     if dampen_critical_band_loss(before, ns):
         changed = True
 
@@ -511,7 +495,7 @@ def rescue_flow_weight(card, s):
                 break
         if not heals:
             continue
-        m = 5 if v <= 20 else (4 if v <= 30 else 3)
+        m = 4 if v <= 20 else (3 if v <= 30 else 2)
         if m > mult:
             mult = m
     return mult
@@ -688,10 +672,8 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
         ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
     if act is not None and act <= 3 and s.get('c', 0) < 100 and ns['c'] >= 100:
         ns['c'] = 95
-    # balance-tuning.js applyRewardBalanceTuning 말미의 위험대 완충 미러
-    # (보상 fx + act 3/4 일일 압박이 합산된 ns에 마지막으로 적용)
-    hold_single_step_band_loss(s, ns)
-    dampen_critical_band_loss(s, ns)
+    # 보상 패널티와 act 3/4 일일 압박은 액면 그대로 적용 — 위험대 완충 없음.
+    # 게임오버도 서사의 일부.
     return ns
 
 # ═══════════ 시뮬 본체 ═══════════
