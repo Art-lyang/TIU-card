@@ -115,6 +115,33 @@ function SettingsDataTab(p) {
         onClick: function () { if (p.onArchive) p.onArchive(); } }, 'ARCHIVE 열람')));
 }
 
+function SettingsProtocolTab() {
+  var sec = { fontFamily: "'Share Tech Mono',monospace", fontSize: 11, color: 'rgba(var(--ui-rgb),.75)', letterSpacing: 2, margin: '14px 0 6px' };
+  var line = { fontSize: 12.5, lineHeight: 1.75, color: 'var(--ui-text)' };
+  var dim = { fontSize: 12.5, lineHeight: 1.75, color: 'rgba(var(--ui-rgb),.8)' };
+  var L = function (key, fallback, style) { return h('div', { style: style || line }, tt(key, null, fallback)); };
+  return h('div', { style: { paddingBottom: 8 } },
+    h('div', { style: Object.assign({}, sec, { marginTop: 2 }) }, tt('guideProtocol.s1', null, '[ 핵심 지표 ]')),
+    L('guideProtocol.c', '봉쇄 — 봉쇄선 유지도. 위협 대응·통제 판단으로 오르고, 방치하면 내려갑니다.'),
+    L('guideProtocol.r', '자원 — 식량·의약품·장비. 대부분의 작전이 자원을 소모합니다.'),
+    L('guideProtocol.t', '신뢰 — 기지 인원의 신뢰. 야간 통신과 인간적인 판단으로 오릅니다.'),
+    L('guideProtocol.o', '평가 — ORACLE의 당신에 대한 평가. 지시 이행 여부에 반응합니다.'),
+    h('div', { style: sec }, tt('guideProtocol.s2', null, '[ 종료 조건 ]')),
+    L('guideProtocol.end1', '어느 지표든 0 — 임무 종료.', dim),
+    L('guideProtocol.end2', '봉쇄 100 — 과잉 통제 역시 임무 종료로 기록됩니다.', dim),
+    h('div', { style: sec }, tt('guideProtocol.s3', null, '[ 하루 구조 ]')),
+    L('guideProtocol.day', '판단 카드 → 일일 보상 선택 → 야간 통신(간부 1인과 대화).'),
+    h('div', { style: sec }, tt('guideProtocol.s4', null, '[ 조작 ]')),
+    L('guideProtocol.op1', '카드 좌/우로 끝까지 밀기 — 선택 확정.'),
+    L('guideProtocol.op2', '카드를 살짝 기울이기 — 지표 변동 예측 미리보기.'),
+    L('guideProtocol.op3', '숫자 1~9 / Enter — 메뉴·대화 빠른 선택.'),
+    h('div', { style: sec }, tt('guideProtocol.s5', null, '[ 부속 체계 ]')),
+    L('guideProtocol.sub1', '조사테이블 — 야간에 해금. 증거를 조합해 숨은 기록을 복원합니다.'),
+    L('guideProtocol.sub2', '시설 확장 — 제안 카드를 승인하면 기지가 영구적으로 보강됩니다.'),
+    L('guideProtocol.sub3', '아카이브 — 메인메뉴에서 해금된 기록 열람.'),
+    L('guideProtocol.sub4', '수동 스냅샷 — 설정 ▸ SAVE에서 3개 슬롯에 진행을 보존합니다.'));
+}
+
 function SettingsPanel(p) {
   var _tab = useState('sound'), tab = _tab[0], setTab = _tab[1];
   var _muted = useState(typeof BGM !== 'undefined' ? BGM.muted : false), muted = _muted[0], setMuted = _muted[1];
@@ -167,6 +194,7 @@ function SettingsPanel(p) {
   if (tab === 'sound') content = h(SettingsSoundTab, { muted: muted, vol: vol, sfxVol: sfxVol, onToggleMute: toggleMute, onVolChange: changeVol, onSfxVolChange: changeSfxVol });
   if (tab === 'save') content = h(SettingsSaveTab, { onReset: p.onReset, onFullReset: p.onFullReset, onClose: closePanel, onSaveSnap: p.onSaveSnap, onLoadSnap: p.onLoadSnap });
   if (tab === 'display') content = h(SettingsDisplayTab, { onFxModeChange: p.onFxModeChange, currentLang: (window.TS_I18N && window.TS_I18N.getLocale && window.TS_I18N.getLocale()) || 'ko', pendingLang: pendingLang, onLanguageSelect: setPendingLang });
+  if (tab === 'guide') content = h(SettingsProtocolTab);
   if (tab === 'info') content = h(SettingsInfoTab);
 
   return h('div', {
@@ -183,6 +211,7 @@ function SettingsPanel(p) {
         _settingsTabBtn('sound', 'SOUND', tab, setTab),
         _settingsTabBtn('save', 'SAVE', tab, setTab),
         _settingsTabBtn('display', 'DISPLAY', tab, setTab),
+        _settingsTabBtn('guide', 'PROTOCOL', tab, setTab),
         _settingsTabBtn('info', 'INFO', tab, setTab)),
       h('div', { style: { flex: 1, overflowY: 'auto', minHeight: 0 } }, content)));
 }

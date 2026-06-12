@@ -167,6 +167,7 @@
     if(tab==='sound') content=h(SettingsSoundTab,{muted:muted,vol:vol,sfxVol:sfxVol,onToggleMute:toggleMute,onVolChange:changeVol,onSfxVolChange:changeSfxVol});
     if(tab==='save') content=h(SettingsSaveTab,{onReset:p.onReset,onFullReset:p.onFullReset,onClose:closePanel,onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap});
     if(tab==='display') content=h(SettingsDisplayTab,{onFxModeChange:p.onFxModeChange,currentLang:currentLang,pendingLang:pendingLang,onLanguageSelect:setPendingLang});
+    if(tab==='guide') content=h(SettingsProtocolTab);
     if(tab==='info') content=h(SettingsInfoTab);
 
     return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center',padding:14,boxSizing:'border-box'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
@@ -180,6 +181,7 @@
           _settingsTabBtn('sound',tr('settings.tabs.sound','SOUND'),tab,setTab),
           _settingsTabBtn('save',tr('settings.tabs.save','SAVE'),tab,setTab),
           _settingsTabBtn('display',tr('settings.tabs.display','DISPLAY'),tab,setTab),
+          _settingsTabBtn('guide',tr('settings.tabs.guide','PROTOCOL'),tab,setTab),
           _settingsTabBtn('info',tr('settings.tabs.info','INFO'),tab,setTab)),
         h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},content))
     );

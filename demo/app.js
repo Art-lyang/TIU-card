@@ -32,6 +32,14 @@ function App(){
   var toastDuration=function(ms){return Math.round((ms||2400)*1.35)};
   var _toastTimer=useRef(null);
   var clearToastAfter=function(ms){if(_toastTimer.current)clearTimeout(_toastTimer.current);var dur=toastDuration(ms);_toastTimer.current=setTimeout(function(){try{var el=document.querySelector('[data-toast-bar]');if(el){el.style.transition='opacity 0.3s ease';el.style.opacity='0'}}catch(e){}setTimeout(function(){setToast('');_toastTimer.current=null},320)},dur);return _toastTimer.current};
+  // 첫 회차 모멘트 가이드 힌트 — sessions==0 한정, 키당 1회, 어디에도 저장하지 않는다
+  var _guideHints=useRef({});
+  var fireGuideHint=function(key,msg){
+    if(sessions>0)return;
+    if(_guideHints.current[key])return;
+    _guideHints.current[key]=true;
+    setToastType('oracle');setToast(msg);clearToastAfter(4500);
+  };
   var _act=useState(1),act=_act[0],setAct=_act[1];
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
   var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
@@ -172,6 +180,25 @@ function App(){
     else{setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}))}
   },[]);
   useEffect(function(){ if(typeof window!=='undefined')window.__ts_liveLogs=(logs||['LOG-001']).slice(); },[logs]);
+  // 가이드 힌트 — phase 진입형 (첫 카드 / 첫 야간통신 / 첫 현장임무)
+  useEffect(function(){
+    if(phase==='game')fireGuideHint('h1',tt('guide.h1',null,'[ORACLE: 카드를 기울이면 판단 결과 예측치가 표시됩니다]'));
+    else if(phase==='evening')fireGuideHint('h3',tt('guide.h3',null,'[야간 통신 개방: 하루 한 명과의 대화가 신뢰를 만듭니다]'));
+    else if(phase==='mission')fireGuideHint('h4',tt('guide.h4',null,'[현장 모듈은 메인메뉴 ▸ 미니게임 가이드에서 무보상 연습이 가능합니다]'));
+  },[phase]);
+  // 가이드 힌트 — 지표형 (첫 위험대 진입 / 과잉 봉쇄 접근)
+  useEffect(function(){
+    if(!stats)return;
+    if(stats.c>=85)fireGuideHint('h5',tt('guide.h5',null,'[경고: 봉쇄 100 도달 시 임무 종료 — 과잉 통제 역시 실패로 기록됩니다]'));
+    var ks=['c','r','t','o'];
+    for(var i=0;i<ks.length;i++){
+      if(stats[ks[i]]<=25){
+        var nm=tt('stats.'+ks[i],null,({c:'봉쇄',r:'자원',t:'신뢰',o:'평가'})[ks[i]]);
+        fireGuideHint('h2',tt('guide.h2',{stat:nm},'[ORACLE: '+nm+' 지표 임계 접근 — 회복 판단을 권고합니다]'));
+        break;
+      }
+    }
+  },[stats]);
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];
   var _showFacility=useState(false),showFacility=_showFacility[0],setShowFacility=_showFacility[1];
@@ -656,9 +683,14 @@ function App(){
     SFX.play('gameover');doGO(ENDING_DEFS[eid].name,stats,gi,eid);
   };
   // ═══ 렌더링 (phase 라우팅) ═══
+  // 토스트는 전 phase 공통 채널 — withOracleLink를 거치는 모든 화면에서 보인다 (가이드 힌트 h3/h4 포함)
+  var renderToastBar=function(){
+    if(!toast)return null;
+    return h('div',{'data-toast-bar':true,key:'toastbar',style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';var isAch=toastType==='achievement';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isAch?'rgba(40,32,8,.94)':isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isAch?'rgba(255,200,60,0.5)':isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:isAch?'10px 20px':'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:isAch?12:11,color:isAch?'#ffc83c':isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line',boxShadow:isAch?'0 0 20px rgba(255,200,60,0.15)':'none'}})()},toast.replace(/\. /g,'.\n'));
+  };
   var withOracleLink=function(node){
-    if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return node;
-    return h(React.Fragment,null,node,h(OracleLinkBar,{day:stats.day,phase:phase}));
+    if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return h(React.Fragment,null,node,renderToastBar());
+    return h(React.Fragment,null,node,h(OracleLinkBar,{day:stats.day,phase:phase}),renderToastBar());
   };
   var hasSave=!!Save.get('ts_game',null);
   var hasSessionHistory=sessions>0||endings.length>0;
@@ -690,7 +722,6 @@ function App(){
       logs.indexOf('LOG-EV-UNLOCK')>=0&&(function(){var col=typeof getActiveEvidence==='function'?getActiveEvidence(logs).length:(typeof getCollectedEvidence==='function'?getCollectedEvidence(logs).length:0);return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowEvidence(true)}},tt('scenario.evidence',{count:col},getLocale()==='en'?('EVIDENCE '+col):('증거 '+col)))})(),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{key:curCard.id+'_'+stats.day+'_'+ct,card:curCard,onSwipe:swipe,onPreview:setPreview,getPreviewDelta:getChoicePreviewDelta,gi:gi,day:stats.day,modalActive:!!(showSettings||showFacility||showEvidence),disabled:cardInputLocked,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);clearToastAfter(2600)},onReply:function(msg){setToastType('');setToast(msg);clearToastAfter(1500)}}),
-    toast&&h('div',{'data-toast-bar':true,style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';var isAch=toastType==='achievement';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isAch?'rgba(40,32,8,.94)':isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isAch?'rgba(255,200,60,0.5)':isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:isAch?'10px 20px':'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:isAch?12:11,color:isAch?'#ffc83c':isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line',boxShadow:isAch?'0 0 20px rgba(255,200,60,0.15)':'none'}})()},toast.replace(/\. /g,'.\n')),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),

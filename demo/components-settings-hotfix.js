@@ -7,6 +7,7 @@
     SettingsSaveTab=function(p){
       var _cf=useState(null),cfm=_cf[0],setCfm=_cf[1];
       var _ci=useState(''),cfmInput=_ci[0],setCfmInput=_ci[1];
+      var _cl=useState(function(){return(typeof CloudSave!=='undefined'&&CloudSave&&CloudSave.getState)?CloudSave.getState():{status:'unavailable',isConfigured:false}}),cloud=_cl[0],setCloud=_cl[1];
       var sessions=Save.getSessions();
       var endings=Save.getEndings();
       var logs=Save.getLogs();
@@ -29,6 +30,67 @@
       };
       var _snaps=useState(function(){return Save.listSnapshots()}),snaps=_snaps[0],setSnaps=_snaps[1];
       var fmtTime=function(ts){if(!ts)return '';var d=new Date(ts);return(d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+      useEffect(function(){
+        if(typeof CloudSave==='undefined'||!CloudSave||!CloudSave.subscribe)return;
+        return CloudSave.subscribe(function(state){setCloud(state)});
+      },[]);
+      var cloudBusy=cloud&&/loading|checking|syncing|restoring|pending/.test(cloud.status||'');
+      var cloudAction=function(fn){return function(){try{var r=fn();if(r&&r.catch)r.catch(function(){})}catch(e){}}};
+      var cloudButton=function(label,onClick,variant,disabled){
+        return h('button',{className:'btn '+(variant==='amber'?'btn-amber':''),disabled:!!disabled,style:{fontSize:10,padding:'7px 10px',marginTop:0,flex:'1 1 120px',opacity:disabled?0.35:1,cursor:disabled?'not-allowed':'pointer'},onClick:onClick},label);
+      };
+      var cloudStatusText=function(){
+        if(!cloud||!cloud.isConfigured)return tr('settings.cloudUnavailable','Google cloud save is not enabled yet. Local save remains active.');
+        if(cloud.status==='error')return tr('settings.cloudError','Cloud save error')+(cloud.lastError?': '+cloud.lastError:'');
+        if(cloud.status==='pending')return tr('settings.cloudPending','Sync pending...');
+        if(cloud.status==='checking')return tr('settings.cloudChecking','Checking cloud save...');
+        if(cloud.status==='conflict')return tr('settings.cloudConflict','Save conflict');
+        if(cloud.status==='syncing')return tr('settings.cloudSyncing','Syncing...');
+        if(cloud.status==='restoring')return tr('settings.cloudRestoring','Restoring cloud save...');
+        if(cloud.user)return tr('settings.cloudConnected','Connected');
+        return tr('settings.cloudDisconnected','Not connected');
+      };
+      var summaryLine=function(label,s){
+        if(!s||!s.hasData)return label+': '+tr('settings.cloudNoRecord','No saved record');
+        var day=s.day?('DAY '+s.day):tr('settings.cloudMetaOnly','Meta only');
+        var act=s.hasGame?('ACT '+s.act):'';
+        var rev=s.revision?('REV '+s.revision):'';
+        var when=s.timestampLabel||'';
+        return label+': '+[act,day,rev,when].filter(Boolean).join(' / ');
+      };
+      var conflictPanel=function(conflict){
+        if(!conflict||!conflict.requiresChoice)return null;
+        return h('div',{style:{margin:'10px 0',padding:'10px 12px',background:'rgba(255,167,38,.08)',border:'1px solid rgba(255,167,38,.35)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#ffa726',letterSpacing:1,marginBottom:6}},tr('settings.cloudConflictTitle','SAVE CONFLICT DETECTED')),
+          h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.6,marginBottom:8}},tr('settings.cloudConflictBody','Cloud save and this device save are different. Choose which record to keep.')),
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.7)',lineHeight:1.6,marginBottom:8}},
+            h('div',null,summaryLine(tr('settings.cloudLocalRecord','This device'),conflict.local)),
+            h('div',null,summaryLine(tr('settings.cloudRemoteRecord','Cloud'),conflict.cloud))),
+          h('div',{style:{display:'flex',gap:6,flexWrap:'wrap'}},
+            cloudButton(tr('settings.cloudUseLocal','Use This Device'),cloudAction(function(){return CloudSave.resolveConflict('local')}),'amber',cloudBusy),
+            cloudButton(tr('settings.cloudUseCloud','Use Cloud Save'),cloudAction(function(){return CloudSave.resolveConflict('cloud')}),'',cloudBusy)));
+      };
+      var cloudSection=function(){
+        var configured=!!(cloud&&cloud.isConfigured);
+        var user=cloud&&cloud.user;
+        return h('div',{style:{marginTop:16,paddingTop:12,borderTop:'1px solid rgba(var(--ui-rgb),.15)'}},
+          h('div',{style:{display:'flex',justifyContent:'space-between',gap:8,alignItems:'center',marginBottom:8}},
+            h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2}},tr('settings.cloudTitle','GOOGLE CLOUD SAVE')),
+            h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:cloud&&cloud.status==='error'?'#ff6644':'var(--ui)'}},cloudStatusText())),
+          h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.45)',lineHeight:1.6,marginBottom:10}},tr('settings.cloudLocalFirst','Local save stays primary. When connected, current progress, logs, archive unlocks, endings, and snapshot slots can be synced.')),
+          user&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.6,marginBottom:10,fontFamily:"'Share Tech Mono',monospace"}},
+            tr('settings.cloudAccount','Account')+': '+(user.email||user.displayName||user.uid),
+            cloud.lastSyncLabel?' | '+tr('settings.cloudLastSync','Last sync')+': '+cloud.lastSyncLabel:''),
+          conflictPanel(cloud&&cloud.conflict),
+          h('div',{style:{display:'flex',gap:6,flexWrap:'wrap'}},
+            configured&&!user&&cloudButton(tr('settings.cloudSignIn','Connect Google'),cloudAction(function(){return CloudSave.signIn()}),'amber',cloudBusy),
+            configured&&user&&cloudButton(tr('settings.cloudCheck','Check Cloud Save'),cloudAction(function(){return CloudSave.checkConflict({autoUploadEmpty:false})}),'',cloudBusy),
+            configured&&user&&cloudButton(tr('settings.cloudUpload','Upload Local Save'),cloudAction(function(){return CloudSave.uploadCurrent()}),'amber',cloudBusy),
+            configured&&user&&cloudButton(tr('settings.cloudRestore','Restore Cloud Save'),function(){setCfm({msg:tr('settings.cloudRestoreConfirm','Cloud save will overwrite local progress and reload the session.'),action:cloudAction(function(){return CloudSave.restoreCloud({reload:true})})})},'',cloudBusy),
+            configured&&user&&cloudButton(tr('settings.cloudSignOut','Sign Out'),cloudAction(function(){return CloudSave.signOut()}),'',cloudBusy),
+            configured&&user&&cloudButton(tr('settings.cloudDelete','Delete Cloud Data'),function(){setCfm({msg:tr('settings.cloudDeleteConfirm','Delete cloud save data for this Google account? Local save will remain on this device.'),inputKey:tr('settings.deleteKey','DELETE'),action:cloudAction(function(){return CloudSave.deleteCloudData()})})},'',cloudBusy)),
+          !configured&&h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.35)',lineHeight:1.6,marginTop:8,fontFamily:"'Share Tech Mono',monospace"}},tr('settings.cloudConfigHint','Cloud sync will become available after account sync is enabled for this build.')));
+      };
       var slotRow=function(s){
         var data=s.data;
         var label=data?data.label:tr('settings.slotEmpty','Empty Slot');
@@ -51,9 +113,10 @@
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.6)',letterSpacing:2,marginBottom:8}},tr('settings.snapshotSlots','SNAPSHOT SLOTS')),
           h('div',{style:{fontSize:10,color:'rgba(var(--ui-rgb),.4)',marginBottom:10,lineHeight:1.6}},tr('settings.snapshotHelp','Save at a desired day and reload later to compare different branching choices.')),
           snaps.map(slotRow)),
+        cloudSection(),
         h('div',{style:{marginTop:16,display:'flex',flexDirection:'column',gap:8}},
           h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,width:'100%'},onClick:function(){setCfm({msg:tr('settings.resetConfirm','This resets the current active session.\\nLogs and endings will be preserved.'),action:function(){if(p.onReset)p.onReset();p.onClose()}})}},tr('settings.resetCurrent','Reset Current Session')),
-          h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,width:'100%',color:'#ff4444'},onClick:function(){setCfm({msg:tr('settings.wipeConfirm','This deletes all data.\\nLogs, endings, and session records will be lost.\\nThis cannot be undone.'),inputKey:tr('settings.deleteKey','DELETE'),action:function(){if(p.onFullReset)p.onFullReset();p.onClose()}})}},tr('settings.wipeAll','Delete All Data'))),
+          h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0,width:'100%',color:'#ff4444'},onClick:function(){var wipeMsg=tr('settings.wipeConfirm','This deletes all data.\\nLogs, endings, and session records will be lost.\\nThis cannot be undone.');if(cloud&&cloud.user)wipeMsg+='\\n\\n'+tr('settings.cloudWipeLocalOnly','Cloud save is not deleted here. Use Delete Cloud Data first if you also want to clear the cloud record.');setCfm({msg:wipeMsg,inputKey:tr('settings.deleteKey','DELETE'),action:function(){if(p.onFullReset)p.onFullReset();p.onClose()}})}},tr('settings.wipeAll','Delete All Data'))),
         cfmModal());
     };
   }
@@ -104,6 +167,7 @@
     if(tab==='sound') content=h(SettingsSoundTab,{muted:muted,vol:vol,sfxVol:sfxVol,onToggleMute:toggleMute,onVolChange:changeVol,onSfxVolChange:changeSfxVol});
     if(tab==='save') content=h(SettingsSaveTab,{onReset:p.onReset,onFullReset:p.onFullReset,onClose:closePanel,onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap});
     if(tab==='display') content=h(SettingsDisplayTab,{onFxModeChange:p.onFxModeChange,currentLang:currentLang,pendingLang:pendingLang,onLanguageSelect:setPendingLang});
+    if(tab==='guide') content=h(SettingsProtocolTab);
     if(tab==='info') content=h(SettingsInfoTab);
 
     return h('div',{style:{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',zIndex:300,display:'flex',alignItems:'center',justifyContent:'center',padding:14,boxSizing:'border-box'},onClick:function(e){if(e.target===e.currentTarget)closePanel()}},
@@ -117,6 +181,7 @@
           _settingsTabBtn('sound',tr('settings.tabs.sound','SOUND'),tab,setTab),
           _settingsTabBtn('save',tr('settings.tabs.save','SAVE'),tab,setTab),
           _settingsTabBtn('display',tr('settings.tabs.display','DISPLAY'),tab,setTab),
+          _settingsTabBtn('guide',tr('settings.tabs.guide','PROTOCOL'),tab,setTab),
           _settingsTabBtn('info',tr('settings.tabs.info','INFO'),tab,setTab)),
         h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},content))
     );
