@@ -21,13 +21,7 @@
     incident_mi03: 'assets/images/missions/incident_mi03_sample_contamination_hero.jpg',
     incident_mi04: 'assets/images/missions/incident_mi04_auth_trace_hero.jpg',
     incident_mi05: 'assets/images/missions/incident_mi05_missing_route_hero.jpg',
-    spec_001_mannequin: 'assets/images/specs/spec_001_mannequin_hq_v2.jpg',
-    spec_003_brood: 'assets/images/specs/spec_003_brood_hq_v2.jpg',
-    spec_004_seedspreader: 'assets/images/specs/spec_004_seedspreader_hq.jpg',
-    spec_008_spore: 'assets/images/specs/spec_008_spore_hq.jpg',
-    spec_011_shelltalker: 'assets/images/specs/spec_011_shelltalker_hq.jpg',
-    spec_012_bloodpit: 'assets/images/specs/spec_012_bloodpit_hq.jpg',
-    spec_015_brainseeker: 'assets/images/specs/spec_015_brainseeker_hq.jpg',
+    // spec_* 키는 images.js가 최종(_hq) 경로를 직접 가리킨다 — 패치 불필요
 
     card_core_jaehyuk_overnight_data: 'assets/images/cards/core/card_core_jaehyuk_overnight_data.jpg',
     card_core_haeun_usb: 'assets/images/cards/core/card_core_haeun_usb.jpg',
