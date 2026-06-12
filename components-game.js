@@ -266,7 +266,10 @@ function Stats(p){
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isKo=locale==='ko';
   var showGiShadow=(p.sessions||0)>=2;
-  var giFill=Math.max(0,Math.min(100,((p.gi||0)/60)*100));
+  // 양방향 섀도 게이지 — 중앙(0) 기준 우측=충성(+), 좌측=저항(-). 표시 범위 ±60 (Act4 분기 임계 -30/-15/+10 가독 우선)
+  var giV=Math.max(-60,Math.min(60,p.gi||0));
+  var giMag=Math.abs(giV)/60*50;
+  var giPos=giV>=0;
   return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
     h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
     sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=pv.__delta?(pv[s.k]||0):((pv[s.k]||0)*5);var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
@@ -280,7 +283,8 @@ function Stats(p){
       h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))}),
     showGiShadow&&h('div',{className:'gi-shadow-row','aria-hidden':'true'},
       h('div',{className:'gi-shadow-track'},
-        h('div',{className:'gi-shadow-fill',style:{width:giFill+'%'}})))
+        h('div',{className:'gi-shadow-center'}),
+        h('div',{className:'gi-shadow-fill'+(giPos?'':' gi-neg'),style:giPos?{left:'50%',width:giMag+'%'}:{right:'50%',width:giMag+'%'}})))
   );
 }
 function DayObjectiveLegacy(p){
