@@ -240,17 +240,34 @@ def is_neutral_route(gi):
     return gi > -35 and gi < 8
 
 CRITICAL_BAND = 25
+STAT_STEP = 5
+
+def hold_single_step_band_loss(before, after):
+    """balance-tuning.js holdSingleStepBandLoss 미러.
+    위험대에서 정확히 한 스텝(-5)짜리 일일 드레인은 짝수 day에 보류.
+    평균은 기존 절반율과 같고 적용 델타는 항상 ±5 그리드."""
+    if (before.get('day', 1) % 2) != 0:
+        return False
+    hit = False
+    for k in 'crto':
+        b = before.get(k, 0)
+        a = after.get(k, 0)
+        if b <= CRITICAL_BAND and b - a == STAT_STEP:
+            after[k] = b
+            hit = True
+    return hit
 
 def dampen_critical_band_loss(before, after):
     """balance-tuning.js dampenCriticalBandLoss 미러.
-    위험대(<=25) 안에서의 추가 손실을 절반(올림)으로 완화. 진입 타격은 그대로."""
+    위험대(<=25) 안에서의 추가 손실을 절반으로 완화하되 5단위 그리드로 올림 스냅.
+    (-5 유지 / -10→-5 / -15→-10 / -20→-10) 진입 타격은 그대로."""
     hit = False
     for k in 'crto':
         b = before.get(k, 0)
         a = after.get(k, 0)
         if b <= CRITICAL_BAND and a < b:
             loss = b - a
-            soft = math.ceil(loss / 2)
+            soft = math.ceil(loss / 2 / STAT_STEP) * STAT_STEP
             if soft < loss:
                 after[k] = max(0, min(100, b - soft))
                 hit = True
@@ -262,6 +279,8 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
     changed = False
     cid = str(card.get('id', '')) if card else ''
 
+    if hold_single_step_band_loss(before, ns):
+        changed = True
     if dampen_critical_band_loss(before, ns):
         changed = True
 
@@ -269,25 +288,25 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
         if ng < before_gi - 5:
             ng = before_gi - 5
             changed = True
-        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
 
     if cid == 'CE-015':
-        changed = _lift_below(ns, 'o', 3) or changed
-        changed = _lift_below(ns, 'r', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
+        changed = _lift_below(ns, 'r', 5) or changed
 
     if cid in ('CE-042', 'CE-042B', 'CE-042C', 'CE-042D'):
-        changed = _lift_below(ns, 'o', 3) or changed
-        changed = _lift_below(ns, 'r', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
+        changed = _lift_below(ns, 'r', 5) or changed
 
     if cid == 'CA4-EX-02':
-        changed = _lift_below(ns, 'o', 3) or changed
-        changed = _lift_below(ns, 'r', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
+        changed = _lift_below(ns, 'r', 5) or changed
 
     if cid == 'CA4-OR-03':
-        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
 
     if act <= 2 and is_resistance_choice(card, choice, before_gi, ng) and before.get('o', 0) > 0 and ns.get('o', 0) <= 0:
-        changed = _lift_below(ns, 'o', 3) or changed
+        changed = _lift_below(ns, 'o', 5) or changed
 
     if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
         changed = _cap_above(ns, 'c', 95) or changed
@@ -492,7 +511,7 @@ def rescue_flow_weight(card, s):
                 break
         if not heals:
             continue
-        m = 4 if v <= 20 else (3 if v <= 30 else 2)
+        m = 5 if v <= 20 else (4 if v <= 30 else 3)
         if m > mult:
             mult = m
     return mult
@@ -671,6 +690,7 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
         ns['c'] = 95
     # balance-tuning.js applyRewardBalanceTuning 말미의 위험대 완충 미러
     # (보상 fx + act 3/4 일일 압박이 합산된 ns에 마지막으로 적용)
+    hold_single_step_band_loss(s, ns)
     dampen_critical_band_loss(s, ns)
     return ns
 

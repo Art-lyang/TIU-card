@@ -106,16 +106,36 @@
   }
 
   // Critical-band drain dampener: once a stat already sits in the danger band,
-  // further losses are halved (rounded up) so a first-run player bleeds out
-  // slowly enough to read the warning and find recovery cards. Entering the
-  // band keeps full impact, so the initial shock and tension stay intact.
+  // further losses are halved so a first-run player bleeds out slowly enough
+  // to read the warning and find recovery cards. Entering the band keeps full
+  // impact, so the initial shock and tension stay intact.
+  // The softened loss is snapped UP to the 5-unit stat grid (applyFx m=5):
+  // every visible delta must stay a multiple of 5, so -5 stays -5,
+  // -10 -> -5, -15 -> -10, -20 -> -10.
   var CRITICAL_BAND = 25;
+  var STAT_STEP = 5;
+  // Single-step residual: the dampener cannot halve a single-step (-5) loss
+  // without leaving the 5-unit grid, so the smallest in-band losses are
+  // held every other day instead (even days hold, odd days bleed). The
+  // average matches the old half-rate while every applied delta stays ±5.
+  // Applies to both the choice path and the reward/decay path.
+  function holdSingleStepBandLoss(before, after){
+    if (((before.day || 1) % 2) !== 0) return false;
+    var hit = false;
+    ['c','r','t','o'].forEach(function(k){
+      if (before[k] <= CRITICAL_BAND && before[k] - after[k] === STAT_STEP) {
+        after[k] = before[k];
+        hit = true;
+      }
+    });
+    return hit;
+  }
   function dampenCriticalBandLoss(before, after){
     var hit = false;
     ['c','r','t','o'].forEach(function(k){
       if (before[k] <= CRITICAL_BAND && after[k] < before[k]) {
         var loss = before[k] - after[k];
-        var soft = Math.ceil(loss / 2);
+        var soft = Math.ceil(loss / 2 / STAT_STEP) * STAT_STEP;
         if (soft < loss) {
           after[k] = clamp100(before[k] - soft);
           hit = true;
@@ -134,9 +154,13 @@
     var changed = false;
     var kind = '';
 
+    if (holdSingleStepBandLoss(before, after)) {
+      changed = true;
+      kind = 'critical-band-drain-hold';
+    }
     if (dampenCriticalBandLoss(before, after)) {
       changed = true;
-      kind = 'critical-band-drain-damp';
+      kind = kind || 'critical-band-drain-damp';
     }
 
     if (cardId === 'CE-005') {
@@ -148,18 +172,18 @@
         kind = 'observer-spike-cap';
       }
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 3) || changed;
+        changed = liftBelow(after, 'o', 5) || changed;
         kind = changed ? 'observer-evaluation-floor' : kind;
       }
     }
 
     if (cardId === 'CE-015') {
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 3) || changed;
+        changed = liftBelow(after, 'o', 5) || changed;
         kind = changed ? 'independence-declaration-floor' : kind;
       }
       if (after.r <= 0) {
-        changed = liftBelow(after, 'r', 3) || changed;
+        changed = liftBelow(after, 'r', 5) || changed;
         kind = changed ? 'independence-declaration-floor' : kind;
       }
     }
@@ -168,33 +192,33 @@
       // Final-route commitment can still be costly, but the decision should
       // hand control back to the player instead of ending on a single click.
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 3) || changed;
+        changed = liftBelow(after, 'o', 5) || changed;
         kind = changed ? 'final-commitment-floor' : kind;
       }
       if (after.r <= 0) {
-        changed = liftBelow(after, 'r', 3) || changed;
+        changed = liftBelow(after, 'r', 5) || changed;
         kind = changed ? 'final-commitment-floor' : kind;
       }
     }
 
     if (cardId === 'CA4-EX-02') {
       if (after.o <= 0) {
-        changed = liftBelow(after, 'o', 3) || changed;
+        changed = liftBelow(after, 'o', 5) || changed;
         kind = changed ? 'external-signal-floor' : kind;
       }
       if (after.r <= 0) {
-        changed = liftBelow(after, 'r', 3) || changed;
+        changed = liftBelow(after, 'r', 5) || changed;
         kind = changed ? 'external-signal-floor' : kind;
       }
     }
 
     if (cardId === 'CA4-OR-03' && after.o <= 0) {
-      changed = liftBelow(after, 'o', 3) || changed;
+      changed = liftBelow(after, 'o', 5) || changed;
       kind = changed ? 'oracle-handover-floor' : kind;
     }
 
     if (currentAct <= 2 && isResistanceChoice(card, choice, beforeGi || 0, nextGi || 0) && before.o > 0 && after.o <= 0) {
-      changed = liftBelow(after, 'o', 3) || changed;
+      changed = liftBelow(after, 'o', 5) || changed;
       kind = changed ? 'early-resistance-evaluation-floor' : kind;
     }
 
@@ -230,6 +254,10 @@
 
     // Runs last so it also covers the R-06/07/08 rewrites above and the
     // act 3/4 daily pressure already merged into nextStats by the caller.
+    if (holdSingleStepBandLoss(before, after)) {
+      changed = true;
+      kind = kind || 'critical-band-drain-hold';
+    }
     if (dampenCriticalBandLoss(before, after)) {
       changed = true;
       kind = kind || 'critical-band-drain-damp';

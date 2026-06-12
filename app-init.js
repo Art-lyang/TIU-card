@@ -100,7 +100,7 @@ var rescueFlowWeight=function(c,stats){
     if(typeof v!=='number'||v>35)return;
     var heals=(c.left&&c.left.fx&&(c.left.fx[k]||0)>0)||(c.right&&c.right.fx&&(c.right.fx[k]||0)>0);
     if(!heals)return;
-    var m=v<=20?4:(v<=30?3:2);
+    var m=v<=20?5:(v<=30?4:3);
     if(m>mult)mult=m;
   });
   return mult;
