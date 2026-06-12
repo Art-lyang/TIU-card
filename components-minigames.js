@@ -41,6 +41,26 @@ function getFieldMiniGameReward(missionId,rank){
   return table[missionId][rank]||null;
 }
 
+// 본편 현장임무에서 마주친 미니게임 타입 기록 — 메인메뉴 연습 가이드 해금에 사용.
+// 세션 간 유지(메타 진행), fullReset에서만 초기화.
+var SEEN_MINIGAMES_KEY='ts_minigamesSeen';
+function getSeenMinigames(){
+  try{
+    var raw=localStorage.getItem(SEEN_MINIGAMES_KEY);
+    var arr=raw?JSON.parse(raw):[];
+    return Array.isArray(arr)?arr.filter(function(t){return typeof t==='string'}):[];
+  }catch(e){return []}
+}
+function markMinigameSeen(type){
+  if(!type)return;
+  try{
+    var seen=getSeenMinigames();
+    if(seen.indexOf(type)>=0)return;
+    seen.push(type);
+    localStorage.setItem(SEEN_MINIGAMES_KEY,JSON.stringify(seen));
+  }catch(e){}
+}
+
 function getFieldMiniGameNarrative(missionId,nodeId,rank){
   var table=window.FIELD_MINIGAME_NARRATIVES||{};
   if(!table[missionId]||!table[missionId][nodeId])return null;
@@ -1198,7 +1218,9 @@ function FieldMiniGameOverlay(p){
 }
 
 function MiniGameGuide(p){
-  var ids=Object.keys(FIELD_MINIGAME_LIBRARY||{});
+  var allIds=Object.keys(FIELD_MINIGAME_LIBRARY||{});
+  var seenList=(typeof getSeenMinigames==='function')?getSeenMinigames():allIds;
+  var ids=allIds.filter(function(id){return seenList.indexOf(id)>=0});
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
   var isEn=locale==='en';
   var _sel=useState(ids[0]||''),selected=_sel[0],setSelected=_sel[1];
@@ -1210,8 +1232,10 @@ function MiniGameGuide(p){
   var copy=game?getMiniLocaleCopy(game):null;
   var labels=isEn?{
     title:'FIELD MINIGAME GUIDE',
-    subtitle:'Practice all ten field-analysis modules without changing save data.',
+    subtitle:'Modules encountered on field missions unlock here for reward-free practice.',
     list:'MODULE LIST',
+    locked:'[ UNIDENTIFIED MODULE ]',
+    lockedSub:'FIELD ENCOUNTER REQUIRED',
     objective:'OBJECTIVE',
     practice:'START PRACTICE',
     noReward:'Practice mode only. No mission reward, log, resource, or ending state is written.',
@@ -1219,8 +1243,10 @@ function MiniGameGuide(p){
     close:'Close'
   }:{
     title:'FIELD MINIGAME GUIDE',
-    subtitle:'현장임무를 기다리지 않고 10종 분석 모듈을 무보상으로 연습합니다.',
+    subtitle:'본편 현장임무에서 마주친 모듈이 이곳에 해금됩니다. 무보상 연습 전용.',
     list:'모듈 목록',
+    locked:'[ 미확인 모듈 ]',
+    lockedSub:'현장 조우 시 해금',
     objective:'목표',
     practice:'연습 시작',
     noReward:'연습 모드입니다. 임무 보상, LOG, 자원, 엔딩 상태는 저장되지 않습니다.',
@@ -1252,12 +1278,19 @@ function MiniGameGuide(p){
   return h('div',{className:'screen',style:{position:'relative'}},
     h('div',{ref:guideScrollRef,style:{width:'100%',maxWidth:560,padding:'20px 12px',flex:1,overflowY:'auto'}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},labels.title),
-      h('div',{style:{fontSize:12,color:'#888',textAlign:'center',lineHeight:1.6,marginBottom:18}},labels.subtitle),
+      h('div',{style:{fontSize:12,color:'#888',textAlign:'center',lineHeight:1.6,marginBottom:18}},labels.subtitle+' ('+ids.length+'/'+allIds.length+')'),
       h('div',{style:{display:'grid',gridTemplateColumns:'repeat(auto-fit, minmax(220px, 1fr))',gap:12,alignItems:'start'}},
         h('section',{style:{border:'1px solid rgba(var(--ui-rgb),.18)',borderRadius:4,background:'rgba(0,0,0,.22)',padding:10}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#f0a030',letterSpacing:1.5,marginBottom:8}},labels.list),
-          ids.map(function(id,idx){
+          allIds.map(function(id,idx){
             var item=FIELD_MINIGAME_LIBRARY[id];
+            var unlocked=ids.indexOf(id)>=0;
+            if(!unlocked){
+              return h('div',{key:id,'data-locked-module':true,style:{width:'100%',minHeight:44,margin:'0 0 7px',padding:'8px 10px',fontSize:11,textAlign:'left',borderRadius:4,color:'rgba(var(--ui-rgb),.34)',background:'rgba(0,0,0,.3)',border:'1px dashed rgba(var(--ui-rgb),.14)',boxSizing:'border-box'}},
+                h('span',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:9,opacity:.6,marginBottom:2}},String(idx+1).padStart(2,'0')+' / '+labels.lockedSub),
+                h('span',{style:{letterSpacing:1}},labels.locked)
+              );
+            }
             var itemCopy=getMiniLocaleCopy(item);
             var on=id===selected;
             return h('button',{key:id,type:'button',className:'btn',onClick:function(){setSelected(id);jumpToPractice();},style:{width:'100%',minHeight:44,margin:'0 0 7px',padding:'8px 10px',fontSize:11,textAlign:'left',borderRadius:4,color:on?'#07130d':'var(--ui)',background:on?'#7affc6':'rgba(5,18,11,.82)',border:'1px solid '+(on?'#7affc6':'rgba(var(--ui-rgb),.18)')}},

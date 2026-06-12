@@ -154,9 +154,12 @@ function MainMenu(p){
   }
   menuItems.push(
     {key:'archive',primary:false,icon:'archive',title:tt('menu.routes.archive.title',null,'[ 아카이브 접속 ]'),sub:tt('menu.routes.archive.sub',null,'ENTITY / INCIDENT / PERSONNEL DATA'),action:tt('menu.routes.archive.action',null,'ACCESS ARCHIVE'),onClick:p.onArchive},
-    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs},
-    {key:'miniguide',primary:false,icon:'command',title:tt('menu.routes.miniguide.title',null,'[ 미니게임 가이드 ]'),sub:tt('menu.routes.miniguide.sub',null,'FIELD MODULE PRACTICE'),action:tt('menu.routes.miniguide.action',null,'OPEN GUIDE'),onClick:p.onMiniGuide}
+    {key:'logs',primary:false,icon:'log',title:tt('menu.routes.logs.title',null,'[ 기록 ]'),sub:tt('menu.routes.logs.sub',null,'PREVIOUS SESSION LOGS'),action:tt('menu.routes.logs.action',null,'VIEW LOGS'),onClick:p.onLogs}
   );
+  // 미니게임 가이드 — 본편에서 모듈을 하나라도 마주친 뒤에만 노출 (헬퍼 부재 시 기존 동작 유지)
+  if(typeof getSeenMinigames!=='function'||getSeenMinigames().length>0){
+    menuItems.push({key:'miniguide',primary:false,icon:'command',title:tt('menu.routes.miniguide.title',null,'[ 미니게임 가이드 ]'),sub:tt('menu.routes.miniguide.sub',null,'FIELD MODULE PRACTICE'),action:tt('menu.routes.miniguide.action',null,'OPEN GUIDE'),onClick:p.onMiniGuide});
+  }
   if(p.hasSessionHistory&&p.onEndings){
     menuItems.push({key:'endings',primary:false,icon:'archive',title:tt('menu.routes.endings.title',null,'[ 엔딩 ]'),sub:tt('menu.routes.endings.sub',null,'SESSION OUTCOME RECORDS'),action:tt('menu.routes.endings.action',null,'VIEW ENDINGS'),onClick:p.onEndings});
   }

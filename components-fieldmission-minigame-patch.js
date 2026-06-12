@@ -131,6 +131,7 @@ function FieldMission(p){
     var miniConfig=getFieldMiniGameConfig(mission.id||p.missionId,nodeId,choice.next);
     if(miniConfig&&!missionBonus){
       setPendingChoice(choice);
+      if(typeof markMinigameSeen==='function')markMinigameSeen(miniConfig.type);
       setActiveMiniGame(miniConfig);
       return;
     }

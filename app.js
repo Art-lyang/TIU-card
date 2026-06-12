@@ -184,7 +184,7 @@ function App(){
   useEffect(function(){
     if(phase==='game')fireGuideHint('h1',tt('guide.h1',null,'[ORACLE: 카드를 기울이면 판단 결과 예측치가 표시됩니다]'));
     else if(phase==='evening')fireGuideHint('h3',tt('guide.h3',null,'[야간 통신 개방: 하루 한 명과의 대화가 신뢰를 만듭니다]'));
-    else if(phase==='mission')fireGuideHint('h4',tt('guide.h4',null,'[현장 모듈은 메인메뉴 ▸ 미니게임 가이드에서 무보상 연습이 가능합니다]'));
+    else if(phase==='mission'&&typeof getSeenMinigames==='function'&&getSeenMinigames().length>0)fireGuideHint('h4',tt('guide.h4',null,'[현장 모듈은 메인메뉴 ▸ 미니게임 가이드에서 무보상 연습이 가능합니다]'));
   },[phase]);
   // 가이드 힌트 — 지표형 (과잉 봉쇄 접근). 저지표 회복 안내(h2)는 기존 경고와 중복이라 제거
   useEffect(function(){
@@ -523,7 +523,7 @@ function App(){
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
