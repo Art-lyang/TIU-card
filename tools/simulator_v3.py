@@ -292,6 +292,11 @@ def apply_choice_balance_tuning(before, before_gi, after, after_gi, card, choice
     if act <= 2 and is_resistance_choice(card, choice, before_gi, ng) and before.get('o', 0) > 0 and ns.get('o', 0) <= 0:
         changed = _lift_below(ns, 'o', 5) or changed
 
+    # 주의: JS와 1:1 미러가 아니라 시뮬 캘리브레이션 캡이다.
+    # 본편 스와이프 경로는 applyFx가 전 Act 0~100 클램프(95캡은 다이얼로그/미션 경로에만 존재)지만,
+    # 시뮬 프로필의 카드 추첨 편향이 실플레이보다 c를 과도하게 끌어올려 act<=1로 좁히면
+    # Act2 초입 C_cs가 80%+로 폭증(실관측과 불일치). 출하 밸런스 기준선(BUILD 242~247)이
+    # 모두 이 캡으로 측정되었으므로 변경 시 전 기준선 재측정이 필요하다.
     if act <= 3 and _raises(before, ns, 'c') and ns['c'] >= 100:
         changed = _cap_above(ns, 'c', 95) or changed
 
@@ -670,6 +675,7 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
         ns['c'] = max(0, ns['c'] - 10)
         ns['r'] = max(0, ns['r'] - (5 if loyal_relief else 10))
         ns['t'] = max(0, ns['t'] - (0 if loyal_relief else 5))
+    # 시뮬 캘리브레이션 캡 (위 apply_choice 주석 참조 — JS 1:1 아님, 기준선 보존용)
     if act is not None and act <= 3 and s.get('c', 0) < 100 and ns['c'] >= 100:
         ns['c'] = 95
     # 보상 패널티와 act 3/4 일일 압박은 액면 그대로 적용 — 위험대 완충 없음.

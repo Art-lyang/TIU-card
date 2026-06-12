@@ -283,6 +283,9 @@ function normalizeGameSave(game){
   if(typeof game.schemaVersion==='number'&&game.schemaVersion>TS_GAME_SCHEMA_VERSION){
     try{if(typeof console!=='undefined'&&console.warn)console.warn('[ts_game] unknown schemaVersion',game.schemaVersion,'> supported',TS_GAME_SCHEMA_VERSION)}catch(e){}
   }
+  // 버전 필드 없는 구버전 세이브는 현행 버전을 부여 — 다음 saveGame에서 그대로 영속되어
+  // 이후 스키마 변경 시 구/신 판별이 가능해진다.
+  if(typeof game.schemaVersion!=='number')game.schemaVersion=TS_GAME_SCHEMA_VERSION;
   var day=parseInt(game.stats.day||1,10)||1;
   var act=parseInt(game.act||1,10)||1;
   if(act===2&&day<5){
