@@ -65,6 +65,7 @@ var CARDS_RESIST_HINT = [
   // req에 LOG-012 명시 요구 — 단일 LOG unlock으로 정규화 (배열 형식 제거).
   { id: "OBS-HINT-01", act: [3,4], priority: "상", tag: "observer-route-guide", once: true, glitch: 2, forceFlow: true,
     req: function(s,g,logs){
+      try{ if(((typeof Save !== 'undefined' && Save.getSessions) ? Save.getSessions() : 0) < 1) return false }catch(e){ return false } // 글리치 카드 — 2회차부터 노출
       return s.day >= 22 && g <= 5 && logs.indexOf('LOG-OBSERVER-01') < 0 &&
         logs.indexOf('LOG-012') >= 0;
     },

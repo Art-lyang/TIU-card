@@ -389,8 +389,8 @@ function App(){
     SFX.play('swipe');setToast('');
     try{if(navigator.vibrate)navigator.vibrate(15)}catch(e){}
     var pendingBonusForSave=pendingBonus||null;
-    // 카드 글리치 트리거 — 스와이프 시작 시점에 발동
-    if(curCard&&curCard.glitch)triggerGlitch(curCard.glitch);
+    // 카드 글리치 트리거 — 스와이프 시작 시점에 발동 (글리치 연출은 2회차부터)
+    if(curCard&&curCard.glitch&&sessions>0)triggerGlitch(curCard.glitch);
     if(curCard.isFacilityProposal){
       var feId=curCard.feId;
       var fpChoice=dir==='left'?curCard.left:curCard.right;

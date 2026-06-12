@@ -112,7 +112,10 @@ var CARDS_PROLOGUE = [
     right: { label: "ORACLE이 처리했으니 넘어가자", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "CA-018", act: [1,2], priority: "상", bg: "comms", once: true, glitch: 2,
-    req: function(s){ return s.day >= 7 },
+    req: function(s){
+      try{ if(((typeof Save !== 'undefined' && Save.getSessions) ? Save.getSessions() : 0) < 1) return false }catch(e){ return false } // 글리치 카드 — 2회차부터 노출
+      return s.day >= 7
+    },
     msg: "[ORACLE: 주간 운영 요약. 모든 지표 정상. 지휘관 적응도 평가: 상.]\n\n화면 하단에 짧은 문구가 깜박입니다.\n\n[OBSERVER NOTE: 편차 0.4% — 분류 보류]\n\n0.3초 후 문구가 사라졌습니다.\n\n단말기가 평소처럼 돌아갑니다.",
     left: { label: "...지금 뭔가 봤다. 기록한다", fx: { c: 0, r: 0, t: 0, o: -3 }, g: -5 },
     right: { label: "화면 잔상으로 처리한다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } }

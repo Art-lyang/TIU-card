@@ -41,12 +41,13 @@ var CARDS_NEUTRAL = [
     glitch: true,
     req: function(s,g,logs){
       try{ if(localStorage.getItem('ts_observer_proto')) return false }catch(e){}
-      var key = 'ts_observer_proto_roll_' + (s && s.day ? s.day : 0);
+      var sessions = 0;
+      try{ sessions = (typeof Save !== 'undefined' && Save.getSessions) ? Save.getSessions() : 0; }catch(e){}
+      if(sessions < 1) return false; // 글리치 카드 — 2회차부터 노출
+      var key = 'ts_observer_proto_roll_' + sessions + '_' + (s && s.day ? s.day : 0);
       var roll = null;
       try{ roll = localStorage.getItem(key); }catch(e){}
       if(roll === null || roll === undefined){
-        var sessions = 0;
-        try{ sessions = (typeof Save !== 'undefined' && Save.getSessions) ? Save.getSessions() : 0; }catch(e){}
         var seed = String([sessions, s&&s.day, s&&s.c, s&&s.r, s&&s.t, s&&s.o, g].join('|'));
         var hash = 0;
         for(var i=0;i<seed.length;i++) hash = ((hash * 31) + seed.charCodeAt(i)) >>> 0;

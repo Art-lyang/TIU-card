@@ -544,7 +544,9 @@ function CardC(p){
   };
   var hE=function(){clearHoldPreview();setDragging(false);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);if(p.disabled){setDx(0);setChoiceCue(null);return}if(dir){requestChoice(dir)}else{setDx(0);setChoiceCue(null)}};
   var pcClass=card.priority==='상'?' card-p-high':card.priority==='중'?' card-p-mid':' card-p-low';
-  if(card.glitch)pcClass+=' card-glitch';
+  var glitchOn=!!card.glitch;
+  try{if(glitchOn&&((typeof Save!=='undefined'&&Save.getSessions)?Save.getSessions():0)<1)glitchOn=false}catch(e){} // 글리치 연출은 2회차부터
+  if(glitchOn)pcClass+=' card-glitch';
   var plbl=card.priority==='상'?tt('card.priorityShort.high',null,'상 ■'):card.priority==='중'?tt('card.priorityShort.mid',null,'중 ■'):tt('card.priorityShort.low',null,'하');
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-004':IMG.spec_004_seedspreader,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit,'spec-015':IMG.spec_015_brainseeker};
   var bgImgMap={base:IMG.bg_base,default:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,research:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather,command:IMG.bg_command,corridor:IMG.bg_corridor,seoul:IMG.bg_seoul_a,seoul_a:IMG.bg_seoul_a,seoul_b:IMG.bg_seoul_b,bg_command:IMG.bg_command,bg_seoul_a:IMG.bg_seoul_a,bg_seoul_b:IMG.bg_seoul_b};
@@ -588,8 +590,8 @@ function CardC(p){
       h('span',{className:'card-corner-node card-corner-node--bl','aria-hidden':true}),
       h('span',{className:'card-corner-node card-corner-node--br','aria-hidden':true}),
       specBg&&h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}),
-      card.glitch&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
-      h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},card.glitch?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},card.glitch?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
+      glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
+      h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
       timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
