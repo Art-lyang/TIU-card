@@ -4,7 +4,7 @@
 var ENDING_DEFS = {
   A: {
     name: "완벽한 도구",
-    condition: "GI ≥ 60",
+    condition: "GI ≥ 55",
     narrative: [
       "[ORACLE ASSESSMENT — FINAL]",
       "",

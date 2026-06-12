@@ -149,7 +149,8 @@ function App(){
     var sl=Save.getLogs();if(sl){setLogs(sl);if(typeof window!=='undefined')window.__ts_liveLogs=sl.slice();}
     var se=Save.getEndings();if(se)setEndings(se);
     setSessions(Save.getSessions());
-    var st=Save.get('ts_trust',null);if(st)setTrust(st);
+    // 구버전(4~5인) trust 세이브는 신규 인물 초기값 위에 병합해 0 시작을 방지
+    var st=Save.get('ts_trust',null);if(st)setTrust(Object.assign({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40},st));
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
     var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
@@ -306,7 +307,7 @@ function App(){
     if(newAct===4)tryUnlock('LOG-ACT4');
     var statPenalty=newAct===4
       ?(route==='A4_COMPLY'?0:5)
-      :(newAct===3?((route==='A'||route==='B'||route==='C')?5:8):(route==='A'?0:5));
+      :(newAct===3?((route==='A'||route==='B'||route==='C')?5:10):(route==='A'?0:5));
     var bs=s;
     if(statPenalty>0){bs={c:clamp(s.c-statPenalty),r:clamp(s.r-statPenalty),t:clamp(s.t-statPenalty),o:clamp(s.o-statPenalty),day:s.day};setStats(bs)}
     Save.set('ts_resumePhase','briefing');Save.set('ts_pendingBriefing',{act:newAct,route:route});

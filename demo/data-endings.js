@@ -4,7 +4,7 @@
 var ENDING_DEFS = {
   A: {
     name: "완벽한 도구",
-    condition: "GI ≥ 60",
+    condition: "GI ≥ 55",
     narrative: [
       "[ORACLE ASSESSMENT — FINAL]",
       "",
@@ -359,22 +359,4 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   }
 
   return null;
-}
-
-if(typeof ENDING_DEFS!=='undefined'){
-  ENDING_DEFS.DEMO_COMPLETE={
-    name:'데모 종료',
-    condition:'Demo build: Act 2 terminal point',
-    narrative:[
-      '[ORACLE 제한 접속 보고]',
-      '',
-      'KR-B3-011 제한 접속 구간이 종료되었습니다.',
-      '한국지부 초기 운용과 Act 2 접속 기록은 여기까지 보존됩니다.',
-      '',
-      '이후 작전과 더 깊은 분기, 엔딩 기록은 정식 버전에서 계속됩니다.',
-      '정식 버전에서 전체 세션을 시작해 주십시오.',
-      '',
-      '[접속 종료 — 정식 버전 필요]'
-    ]
-  };
 }

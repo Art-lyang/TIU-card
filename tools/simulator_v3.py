@@ -144,7 +144,7 @@ def transition_penalty(new_act, route):
         if route == 'A4_COMPLY': return 0
         return 5
     if new_act == 3:
-        return 5 if route in ('A', 'B', 'C') else 8
+        return 5 if route in ('A', 'B', 'C') else 10
     if new_act == 2:
         return 0 if route == 'A' else 5
     return 0

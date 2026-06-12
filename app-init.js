@@ -406,7 +406,12 @@ var Save={
   del:function(k){try{localStorage.removeItem(k);if(typeof CloudSave!=='undefined'&&CloudSave&&typeof CloudSave.markDirty==='function')CloudSave.markDirty(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr,cd,rc,ct,cq,pb,cm,ph){
     var sessionDeck=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
-    var serializedCq=(cq||[]).map(function(c){return typeof c==='string'?c:(c&&c.id)}).filter(Boolean);
+    // 정적 카드는 id 문자열로, 런타임 생성 카드(FMF 후속 등 CARD_BY_ID에 없는 순수 데이터)는 객체 그대로 직렬화해 복원 유실을 막는다
+    var serializedCq=(cq||[]).map(function(c){
+      if(typeof c==='string')return c;
+      if(!c||!c.id)return null;
+      return (typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[c.id])?c.id:c;
+    }).filter(Boolean);
     var payload=normalizeGameSave({schemaVersion:TS_GAME_SCHEMA_VERSION,stats:s,gi:g,act:a||1,actFlags:af||{},transRoute:tr||'',cooldowns:cd||{},recentCards:rc||[],ct:ct||0,chainQueue:serializedCq,pendingBonus:pb||null,sessionDeck:sessionDeck,curMission:cm||null,phase:ph||null});
     var prev=Save.get('ts_game',null)||{};
     payload.timestamp=Date.now();
@@ -461,7 +466,7 @@ var Save={
   listSnapshots:function(){return[1,2,3].map(function(n){return{slot:n,data:Save.get('ts_snap_'+n,null)}})},
   loadSnapshot:function(slot){
     var pack=Save.get('ts_snap_'+slot,null);if(!pack)return null;
-    Save.del('ts_activeMission');['ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex'].forEach(function(k){Save.del(k)});
+    Save.del('ts_activeMission');['ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState'].forEach(function(k){Save.del(k)});
     if(pack.game){
       var fixedGame=normalizeGameSave(pack.game);
       var normalized=!!(fixedGame&&fixedGame.__normalized===true);
