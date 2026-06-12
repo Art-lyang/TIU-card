@@ -135,7 +135,6 @@ window.TS_I18N.mergeUI('en', {
   },
   guide:{
     h1:'[ORACLE: Tilt the card to preview the projected outcome]',
-    h2:'[ORACLE: {stat} approaching critical — recovery decisions advised]',
     h3:'[Night comms open: one conversation a day builds trust]',
     h4:'[Field modules can be practiced risk-free in Main Menu ▸ Minigame Guide]',
     h5:'[Warning: Containment 100 terminates the operation — overcontrol is also failure]'

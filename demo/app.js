@@ -186,18 +186,10 @@ function App(){
     else if(phase==='evening')fireGuideHint('h3',tt('guide.h3',null,'[야간 통신 개방: 하루 한 명과의 대화가 신뢰를 만듭니다]'));
     else if(phase==='mission')fireGuideHint('h4',tt('guide.h4',null,'[현장 모듈은 메인메뉴 ▸ 미니게임 가이드에서 무보상 연습이 가능합니다]'));
   },[phase]);
-  // 가이드 힌트 — 지표형 (첫 위험대 진입 / 과잉 봉쇄 접근)
+  // 가이드 힌트 — 지표형 (과잉 봉쇄 접근). 저지표 회복 안내(h2)는 기존 경고와 중복이라 제거
   useEffect(function(){
     if(!stats)return;
     if(stats.c>=85)fireGuideHint('h5',tt('guide.h5',null,'[경고: 봉쇄 100 도달 시 임무 종료 — 과잉 통제 역시 실패로 기록됩니다]'));
-    var ks=['c','r','t','o'];
-    for(var i=0;i<ks.length;i++){
-      if(stats[ks[i]]<=25){
-        var nm=tt('stats.'+ks[i],null,({c:'봉쇄',r:'자원',t:'신뢰',o:'평가'})[ks[i]]);
-        fireGuideHint('h2',tt('guide.h2',{stat:nm},'[ORACLE: '+nm+' 지표 임계 접근 — 회복 판단을 권고합니다]'));
-        break;
-      }
-    }
   },[stats]);
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];
@@ -686,7 +678,7 @@ function App(){
   // 토스트는 전 phase 공통 채널 — withOracleLink를 거치는 모든 화면에서 보인다 (가이드 힌트 h3/h4 포함)
   var renderToastBar=function(){
     if(!toast)return null;
-    return h('div',{'data-toast-bar':true,key:'toastbar',style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';var isAch=toastType==='achievement';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isAch?'rgba(40,32,8,.94)':isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isAch?'rgba(255,200,60,0.5)':isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:isAch?'10px 20px':'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:isAch?12:11,color:isAch?'#ffc83c':isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line',boxShadow:isAch?'0 0 20px rgba(255,200,60,0.15)':'none'}})()},toast.replace(/\. /g,'.\n'));
+    return h('div',{'data-toast-bar':true,key:'toastbar',style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';var isAch=toastType==='achievement';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isAch?'rgba(3,7,8,.94)':isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isAch?'rgba(var(--ui-rgb),.5)':isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:isAch?'10px 20px':'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:isAch?12:11,color:isAch?'rgba(var(--ui-rgb),.95)':isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line',boxShadow:isAch?'0 0 20px rgba(var(--ui-rgb),.15)':'none'}})()},toast.replace(/\. /g,'.\n'));
   };
   var withOracleLink=function(node){
     if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return h(React.Fragment,null,node,renderToastBar());
