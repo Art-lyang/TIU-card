@@ -46,6 +46,7 @@ const IMG = {
   ending_C_t: "assets/images/endings/ending_C_t.webp",
   ending_D: "assets/images/endings/ending_D.webp",
   ending_E: "assets/images/endings/ending_E.webp",
+  ending_E_all: "assets/images/endings/ending_E_all.webp",
   ending_E_bad: "assets/images/endings/ending_E_bad.webp",
   ending_E_c: "assets/images/endings/ending_E_c.webp",
   ending_F: "assets/images/endings/ending_F.webp",
