@@ -3,6 +3,13 @@
 // 듀얼 타이머: 글로벌 06:00 카운트다운 + 노드별 결정 타이머 15~40s.
 // app.js onEscapeResult 스키마 호환 유지.
 
+// 노드 관측 프레임 — 비주얼이 준비된 노드만 등록 (IMG 키 + 피드 태그)
+// B3 격리실 시퀀스: 보관된 SPEC-011과 돌파 조우 컷
+var ESCAPE_NODE_IMG = {
+  b3_quarantine: { img: 'card_story_shelltalker_lab_containment', tag: 'CAM B3-ISO — FEED' },
+  b3_final: { img: 'card_story_shelltalker_breach_escape', tag: 'CAM B3-EXIT — SIGNAL LOST' }
+};
+
 function EscapeGameScreen(p){
   var stats=p.stats, gi=p.gi, logs=p.logs, trust=p.trust, onResult=p.onResult;
   var resultSent = useRef(false);
@@ -214,6 +221,15 @@ function EscapeGameScreen(p){
     ),
     // 타이틀
     h('div',{className:'escape-title'}, node.title),
+    // 노드 관측 프레임 (보유 노드만)
+    (function(){
+      var vis=ESCAPE_NODE_IMG[state.nodeId];
+      var src=vis&&typeof IMG!=='undefined'?IMG[vis.img]:null;
+      if(!src)return null;
+      return h('div',{className:'escape-node-visual'},
+        h('img',{src:src,alt:'',className:'escape-node-visual-img'}),
+        h('div',{className:'escape-node-visual-tag'},vis.tag||'● CAM FEED'));
+    })(),
     // 본문
     h('div',{className:'escape-body'},
       (node.body||[]).slice(0, typedLines).map(function(line,i){
