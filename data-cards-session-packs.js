@@ -49,7 +49,7 @@ var CARDS_SESSION_PACKS = [
   {
     id: "GOV-ORC-03", act: [3, 4], priority: "상", once: true, tag: "gov-oracle-suspicion", sessionPack: "GOV_ORACLE_SUSPICION", bg: "base",
     req: function(s,g,logs){ return s.day >= 20 && (logs.includes("LOG-GOV-AUDIT-RAW") || logs.includes("LOG-GOV-AUDIT-ORACLE")) },
-    msg: "정부 연락관이 외곽 검문소에 도착했습니다.\n\n공식 방문 명목: 기지 주변 마을 습격 후속 점검.\n비공식 질문: 한국지부는 한국 정부 비상시설인가, ORACLE의 현장 노드인가.\n\n서하은: \"둘 다라고 답하면 아무도 믿지 않을 겁니다.\"\n\n임재혁: \"그리고 ORACLE은 이 질문 자체를 좋아하지 않을 겁니다.\"",
+    msg: "정부 연락관이 외곽 검문소에 도착했습니다.\n\n공식 방문 명목: 기지 주변 마을 습격 후속 점검.\n비공식 질문: 한국지부는 한국 정부 비상시설인가, 외부 지휘체계의 현장 노드인가.\n\n서하은: \"둘 다라고 답하면 아무도 믿지 않을 겁니다.\"\n\n임재혁: \"그리고 ORACLE은 이 질문 자체를 좋아하지 않을 겁니다.\"",
     left: { label: "한국 비상시설 권한을 명확히 한다", fx: { c: 1, r: 0, t: 1, o: -2 }, g: -2, log: "LOG-GOV-BRANCH-LOCAL" },
     right: { label: "ORACLE 지휘체계로 답변 통일", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2, log: "LOG-GOV-BRANCH-ORACLE" }
   },
@@ -70,7 +70,7 @@ var CARDS_SESSION_PACKS = [
   {
     id: "GOV-ORC-06", act: [3, 4], priority: "상", once: true, tag: "gov-oracle-suspicion", sessionPack: "GOV_ORACLE_SUSPICION", bg: "base",
     req: function(s,g,logs){ return s.day >= 22 && (logs.includes("LOG-GOV-SHELTER-RAW") || logs.includes("LOG-GOV-SHELTER-ORACLE") || logs.includes("LOG-GOV-AUDIT-RAW") || logs.includes("LOG-GOV-AUDIT-ORACLE")) },
-    msg: "합동 점검반의 방문 예고가 도착했습니다.\n\n공식 사유는 주변 마을 습격 이후 방벽 인근 대피 체계 점검입니다. 비공식 요청은 더 직접적입니다.\n\n'한국지부의 현장 판단 기록과 ORACLE 자동 분류 기록을 같은 자리에서 대조하겠다.'\n\n윤세진: \"기록을 보여주면 신뢰는 생길 수 있습니다. 하지만 환자 기록과 격리 기록까지 열릴 수 있습니다.\"\n\n임재혁은 화면을 보며 낮게 말합니다.\n\"ORACLE은 이 방문을 현장 간섭으로 볼 겁니다.\"",
+    msg: "합동 점검반의 방문 예고가 도착했습니다.\n\n공식 사유는 주변 마을 습격 이후 방벽 인근 대피 체계 점검입니다. 비공식 요청은 더 직접적입니다.\n\n'한국지부의 현장 판단 기록과 중앙 자동 분류 기록을 같은 자리에서 대조하겠다.'\n\n윤세진: \"기록을 보여주면 신뢰는 생길 수 있습니다. 하지만 환자 기록과 격리 기록까지 열릴 수 있습니다.\"\n\n임재혁은 화면을 보며 낮게 말합니다.\n\"ORACLE은 이 방문을 현장 간섭으로 볼 겁니다.\"",
     left: { label: "제한 구역을 나눠 현장 점검 허용", fx: { c: 1, r: -1, t: 2, o: -2 }, g: -2, log: "LOG-GOV-INSPECT-LIMITED" },
     right: { label: "원격 자료 열람으로 대체", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2, log: "LOG-GOV-INSPECT-REMOTE" }
   }
