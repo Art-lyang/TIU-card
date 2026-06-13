@@ -9,30 +9,34 @@ model: sonnet
 
 ## 검사 대상
 
-- 에셋 디렉토리: `assets/images/`, `audio/`, (필요 시) `assets/icons/`
+- 에셋 디렉토리: `assets/images/`, `assets/field-mission-ui/`, `assets/main-menu/`, `audio/`, `img/`, `tiu_status_icons_symbol_only/`
 - 참조 위치:
-  - 카드/LOG/뉴스 데이터 파일(`data-*.js`)의 이미지 경로 필드
-  - BGM 트리거(`bgm*.js`)
-  - 컴포넌트(`components-*.js`)에서 직접 import/url 지정
+  - 이미지 레지스트리: `images.js`의 전역 `IMG` 객체 — **로드 순서가 동작의 일부** (`images.js` → `images_bg.js` → `images_cards.js` 확장 → `images_p1.js` 후패치)
+  - 카드/LOG/뉴스 데이터 파일(`data-*.js`)의 `bg` 등 이미지 키 필드
+  - BGM/SFX: `bgm.js`, `bgm_main.js`/`bgm_tension.js`/`bgm_boot.js`, `bgm-act.js`(Act별 전환), `sfx-sources.js` — `audio/` 파일과 매칭
+  - 컴포넌트(`components-*.js`)에서 직접 경로 지정
   - CSS의 `url(...)` (`style*.css`)
-  - i18n 파일(`lang-*.js`)에서 텍스트와 함께 들어간 경로
+  - i18n 파일(`lang-*.js`)에 텍스트와 함께 들어간 경로
+- `demo/`는 루트의 미러 빌드 — demo 쪽 참조도 같은 방식으로 검사 (에셋 경로가 demo 기준으로 깨지지 않는지)
 
 ## 검사 절차
 
-1. Glob으로 `assets/images/**/*`, `audio/**/*` 전수 목록 확보
+1. Glob으로 `assets/**/*`, `audio/**/*`, `img/**/*` 전수 목록 확보
 2. Grep으로 코드/CSS에서 경로 패턴 추출
-   - 정규식 후보: `["'](\.?\/?(assets|audio)\/[^"']+)["']`, `url\(['"]?([^'")]+)['"]?\)`
+   - 정규식 후보: `["'](\.?\/?(assets|audio|img)\/[^"']+)["']`, `url\(['"]?([^'")]+)['"]?\)`
 3. 양방향 set diff:
    - 참조됐지만 실제 파일 없음 → **누락**
    - 파일 있지만 참조 없음 → **고아**
 4. 문자열 보간으로 동적 생성되는 경로(`` `assets/cards/${id}.png` ``)는 별도 섹션으로 분리하고, ID 셋 기준으로 시뮬레이션
+5. 카드의 `bg` 필드처럼 **키로 IMG를 조회**하는 간접 참조는 IMG 키 셋과 대조 (경로 diff만으로 판단 금지)
 
 ## 추가 점검
 
-- **대소문자 차이**: Windows에선 통과해도 배포(linux/CDN)에서 깨짐 (`Card_01.png` vs `card_01.png`)
+- **대소문자 차이**: Windows에선 통과해도 배포(GitHub Pages/linux)에서 깨짐 (`Card_01.png` vs `card_01.png`)
 - **확장자 오타**: `.jpeg` vs `.jpg`, `.mp3` vs `.MP3`
 - **캐릭터 일러스트 셋 완비**: SH/KD/YS/IJ/SY 각 표정/포즈 그룹에 빠진 변형 없는지 (있는 캐릭터의 셋에서 추정)
 - **확장자 미스매치**: 코드에서 `.webp` 참조하는데 파일은 `.png`만 존재
+- **IMG 후패치 순서**: `images_p1.js`가 덮어쓰는 키가 원본 정의에 존재하는지 (고아 패치 방지)
 
 ## 보고 형식 (한국어 브리핑)
 
@@ -42,20 +46,20 @@ model: sonnet
 ### ✅ 잘된 것
 - 카드 이미지 248/253 정상 매칭 (98%)
 - 캐릭터 일러스트 5인 × 8포즈 = 40종 모두 존재
-- BGM 트리거 12종 100% 매칭
+- BGM/SFX 참조 12종 100% 매칭 (audio/ 디렉토리)
 
 ### 🔍 체크할 것
 - 동적 경로 `chars/${id}/${pose}.png` 누락 4건 (KD/cry, YS/laugh 등) — 의도된 미사용 포즈인지 확인
 - 고아 에셋 12건 — 과거 컷 자산 가능성, 삭제 전 사용처 재확인 필요
   - assets/images/legacy/intro_old.jpg
-  - audio/bgm/unused_track_03.ogg
+  - audio/unused_track_03.ogg
   - (그 외 10건)
 - assets/Images/UI/Banner.PNG — 대소문자 혼재, Windows 통과지만 배포 시 깨질 수 있음
 
 ### 🛠 개선할 것 (즉시)
 - [누락] assets/images/cards/C-187.png — data-cards-2.js:512에서 참조하나 파일 없음
-- [누락] audio/sfx/alarm_long.mp3 — bgm-triggers.js:34
-- [확장자] components-ui-banner.js의 `.webp` 참조 / 실제 `.png`만 존재
+- [누락] audio/alarm_long.mp3 — bgm.js:34
+- [확장자] components-game.js의 `.webp` 참조 / 실제 `.png`만 존재
 
 ### 요약
 - 잘된 것 3 / 체크 3 / 개선 3 (누락 5, 고아 12, 위험 2)

@@ -9,11 +9,17 @@ model: sonnet
 
 ## 검사 대상
 
-- `app-logic.js`의 `checkActTransition()` 및 LOG 트리거 섹션
-- 카드의 `act:[1..4]`, `req`, `mission`, `timer`
-- `actFlags = {prom_met, mission_done, chain_done, prom_mission}`
-- 라우트 'A'/'B'/'C'/'D' 분기 (Act2→3)
-- 엔딩 분기(`A4_COMPLY/GREY/RESIST/OBSERVER`)
+- `app-logic.js`의 `checkActTransition()` (전환 룰) 및 `checkLogs()` (LOG 트리거)
+- 전환 룰 실체 (코드 기준):
+  - Act1→2: day≥5, 루트 'A' 고정
+  - Act2→3: day≥14, 루트 = prom_met·mission_done 조합 (둘 다 'A' / prom만 'B' / mission만 'C' / 없음 'D')
+  - Act3→4: day≥29, GI 기준 `A4_COMPLY`(g≥10) / `A4_GREY`(g≥-15) / `A4_RESIST`(g≥-30) / `A4_OBSERVER`(그 외)
+  - Act4 종료: day>35
+- actFlags: `prom_met`, `mission_done` (라우트 결정), `chain_done`, `prom_mission` (보조)
+- 카드의 `act:[1..4]`, `req`, `mission`, `timer`, `once`, `sessionPack`
+- 런타임 보정 레이어: `balance-tuning.js`, `logic-act-flow-balance.js` — 분기 입력값(스탯/카드 흐름)을 바꿀 수 있으므로 전환 직전 상태 추정 시 고려
+- 세션 덱 필터: `data-session-decks.js`의 `SESSION_DECK_PACK_DEFS` — 옵션 팩 카드를 회차별로 게이팅
+- Act4 탈출 모드: `data-act4-escape.js` + `data-escape-nodes*.js`(d100 롤) + `logic-act4-escape.js`
 
 ## 점검 항목
 
@@ -30,15 +36,17 @@ model: sonnet
 - 특정 Act에 들어있는데 그 Act에서 절대 만족 못 하는 `req`
 - "이 카드 이후 어떤 카드도 등장 안 함" 막힘 지점
 - `mission` 카드가 deck에서 빠졌는데 미션 완료 표시되는 경로
+- 세션 팩 미선택 회차에서 그 팩의 LOG/플래그를 전제하는 본편 카드가 영구 잠기는지
 
 ### 4. LOG 체인 끊김
 - 트리거되는 카드는 있는데 unlock 조건이 충족 불가
-- LOG가 후속 카드의 전제인데 LOG 미정의/미연결
+- LOG가 후속 카드의 전제인데 LOG 미정의/미연결 (정의 위치: `data-core.js` ORACLE_LOGS + `data-logs-integrity.js` + 분산 파일)
 - `LOG-RECON-*`(독자 조사) 라인이 한 갈래라도 끊긴 곳
 
 ### 5. 엔딩 경계값
-- GI 정확히 10/-15/-30에서 어느 엔딩으로 가는지 (등호 처리 일관성)
+- GI 정확히 10 / -15 / -30 에서 어느 엔딩으로 가는지 — 코드 기준 등호 포함 상위 루트(10→COMPLY, -15→GREY, -30→RESIST)
 - 경계값 직전/직후 카드의 GI 영향 폭 — 한 카드로 두 엔딩 사이 점프 가능?
+- Act4 탈출 노드(`ESCAPE_NODES`)의 choice.to가 끊긴 분기 없는지
 
 ### 6. 일회성/중복
 - `ONCE-CA-*` 카드가 두 번 트리거되는 경로

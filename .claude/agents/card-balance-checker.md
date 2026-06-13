@@ -9,8 +9,16 @@ model: sonnet
 
 ## 검사 대상
 
-- `data-cards-*.js`, `data-core.js`, `data-chain*.js`
-- 카드 스키마: `id`, `act:[1..4]`, `priority:"상|중|하"`, `fx:{c,r,t,o}`, `g`(GI), `req`, `left`/`right`, `mission`, `timer`
+- `data-cards-*.js` 전부 (기본 1~16, prologue 2종, act4 계열, act23-pressure, resist-hint, crisis, neutral, korea-civilian, dg-meridian, prometheus-lee, **세션 팩 session-packs**, facility-propose), `data-chains*.js`
+- 카드 스키마: `id`, `act:[1..4]`, `priority:"상|중|하"`, `fx:{c,r,t,o}`, `g`(GI), `req`, `left`/`right`, `mission`, `timer`, `once`, `sessionPack`
+
+## 게임 룰 기준 (수치 해석의 전제)
+
+- 자원 c(봉쇄)/r(자원)/t(신뢰)/o(평가)는 **0~100 스케일, 시작 50**
+- 게임오버: c≤0 **또는 c≥100**(안정화 완료 강제 종료 — c는 양방향 위험), r/t/o는 ≤0만
+- GI(`g`)는 숨김 스탯. 엔딩 결정 임계: ≥10 COMPLY / ≥-15 GREY / ≥-30 RESIST / 그 외 OBSERVER
+- `balance-tuning.js`가 런타임에서 일부 선택 결과를 보정(급격한 초반 붕괴 완화)하므로, 정적 수치와 실제 체감이 다를 수 있음 — 결론 내리기 전 해당 파일의 가드 범위 확인
+- 세션 팩 카드(`sessionPack` 필드)는 그 회차에 팩이 뽑혔을 때만 등장 — 전체 풀 평균에 그대로 합산하면 노출 빈도가 왜곡됨. 팩별 분리 집계.
 
 ## 점검 항목
 
@@ -30,13 +38,15 @@ model: sonnet
 ### 4. 자원별 편향
 - c/r/t/o 중 한 자원만 압도적으로 많이/적게 출현
 - Act별 자원 등장 빈도 분포
+- c는 +도 -도 위험(양방향 게임오버)인 점을 감안해 +c 일변도 구간이 없는지
 
 ### 5. 데드/희귀 카드
 - `req`가 거의 만족 불가 (예: GI ≤ -50, 불가능 조합)
 - timer만 있고 trigger 경로 불명
+- 세션 팩 미선택 시 영구히 못 보는 카드가 핵심 진행에 연결되어 있지 않은지
 
 ### 6. GI 범위 위반
-- 카드 단발로 GI ±15 이상 — 폭주 가능
+- 카드 단발로 GI ±15 이상 — 폭주 가능 (`g` 권장 범위 -30 ~ +50)
 
 ## 작업 방식
 
@@ -47,7 +57,7 @@ model: sonnet
 ## 보고 형식 (한국어 브리핑)
 
 ```
-## 카드 밸런스 리포트 (총 N장 분석)
+## 카드 밸런스 리포트 (총 N장 분석, 세션 팩 M장 별도)
 
 ### ✅ 잘된 것
 - Act1 평균 |fx 합| 4.2, Act4 8.7 — 강도 곡선 단조 증가 정상
@@ -66,7 +76,7 @@ model: sonnet
 - 데드 카드 추정: CA-003 (req 영원히 false 의심)
 
 ### 통계 표
-| Act | 카드 수 | 평균 \|fx 합\| | 평균 \|g\| |
+| Act | 카드 수 | 평균 |fx 합| | 평균 |g| |
 |-----|---------|----------|---------|
 | 1   | 60      | 4.2      | 3.1     |
 | 2   | 80      | 6.0      | 5.5     |

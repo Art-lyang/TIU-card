@@ -11,30 +11,34 @@ model: sonnet
 
 1. **변경 영역 식별**
    - `git diff main...HEAD --name-only`로 최근 변경 파일 목록 확보
-   - 카드/로직/i18n/에셋 중 어느 카테고리가 바뀌었는지 분류
+   - 카드/로직/i18n/에셋/세이브/UI 중 어느 카테고리가 바뀌었는지 분류
+   - 루트만 바뀌고 `demo/` 짝 파일이 안 바뀐 항목도 표시 (demo는 미러 빌드)
 2. **dev 서버 기동**
-   - `preview_start`로 띄움
+   - `preview_start`로 띄움 (정적 서빙 — index.html 진입)
    - 이미 실행 중이면 재기동하지 말 것
 3. **핵심 플로우 자동 실행**
-   - 신규 게임 시작 → Act1 카드 5장 진행 → 이브닝 챗 → 세이브/로드 → 언어 전환(KO↔EN)
+   - 신규 게임 시작(프롤로그) → Act1 카드 5장 진행 → 이브닝 챗 진입/퇴장 → 아카이브/조사 테이블 열기 → 세이브 → 새로고침 → 로드 → 언어 전환(KO↔EN)
+   - 변경 영역에 따라 추가: 미니게임 진입(미션 카드), 시설 패널, Act4 탈출 모드, 세션 팩 카드 등장
    - `preview_click`/`preview_eval` 활용
 4. **에러 수집**
    - `preview_console_logs`(JS exception, React warning)
-   - `preview_logs`(서버/빌드)
-   - `preview_network`(404, 5xx)
+   - `window.__tiuCrashGuard` 기록 확인 — crash-guard가 오류를 받아 화면만 멀쩡해 보일 수 있음 (오버레이 등장 = P0)
+   - `preview_logs`(서버), `preview_network`(404, 5xx — 특히 에셋/폰트)
 5. **증거 캡처**
-   - 핵심 화면 `preview_screenshot` 1~3장
+   - 핵심 화면 `preview_screenshot` 1~3장 (타임아웃 잦으면 `preview_eval`+getBoundingClientRect로 측정 대체)
 6. **회귀 vs 기존 분리**
    - 변경 파일과 에러 스택을 대조해 "이번 변경이 만든 것"으로 의심되는 항목 별도 표시
 
 ## 점검 체크포인트
 
 - 새 게임 → day 1 카드 정상 표출
-- 좌/우 선택 → 스탯/GI 반영
+- 좌/우 선택 → 스탯(c/r/t/o, 0~100)/GI 반영
 - 이브닝 챗 진입/퇴장
-- 세이브 → 새로고침 → 로드 (스탯/Act/플래그 보존)
+- 세이브 → 새로고침 → 로드 (스탯/Act/플래그/trust 보존 — `ts_game` 키)
+- CloudSave 미설정 환경에서 콘솔 에러 없이 무해하게 동작
 - 언어 전환 (`window.TS_I18N` 머지 정상)
 - 핫픽스 파일 우선순위 (settings/i18n hotfix)
+- BUILD_VER/CSS `?v=` 캐시 반영 (변경했는데 옛 파일이 로드되는지)
 - 콘솔에 새 warning/error 없는지
 
 ## 보고 형식 (한국어 브리핑)
@@ -43,25 +47,26 @@ model: sonnet
 ## 회귀 헌트 리포트 (브랜치: <branch>, 변경 파일 <N>개)
 
 ### ✅ 잘된 것
-- 핵심 플로우 5종 모두 통과 (시작/선택/이브닝/세이브-로드/언어전환)
-- 신규 console error 0건, network 404 0건
+- 핵심 플로우 6종 모두 통과 (시작/선택/이브닝/세이브-로드/언어전환/아카이브)
+- 신규 console error 0건, network 404 0건, crash-guard 기록 0건
 - 핫픽스 파일 우선순위 정상 적용
 
 ### 🔍 체크할 것 (회귀로 단정 어려움 / 추가 검증 필요)
-- React warning: "key prop missing" — components-card-list.js:88, 변경 영역 외
+- React warning: "key prop missing" — components-game.js:88, 변경 영역 외
 - 세이브 직후 200ms 동안 로딩 스피너 멈춤 — 재현 50% (운영체제별 차이 가능)
+- demo/data-cards-1.js 루트와 비동기 — 의도 확인
 
 ### 🛠 개선할 것 (이번 변경 의심)
 - [회귀] day 5 Act 전환 시 TypeError: Cannot read 'flags' of undefined
   - 위치: app-logic.js:34
-  - 원인 의심: 최근 커밋 dad6b5b에서 actFlags 초기화 경로 변경
+  - 원인 의심: 최근 커밋 dad6b5b에서 플래그 초기화 경로 변경
   - 재현: 새 게임 → Act1 빠르게 5장 → day 5 진입
   - 스크린샷: <첨부>
 - [회귀 의심] EN 모드에서 C-178 leftLabel 빈 문자열 표시
   - 위치: lang-cards-c-en.js (최근 변경됨)
 
 ### 요약
-- 잘된 것 3 / 체크 2 / 개선 2 (회귀 1 확정 + 1 의심)
+- 잘된 것 3 / 체크 3 / 개선 2 (회귀 1 확정 + 1 의심)
 - 우선순위: app-logic.js TypeError 즉시
 ```
 
@@ -72,7 +77,7 @@ preview MCP가 사용 불가하면 사용자에게 알리고 정적 분석으로
 
 ### Severity 라벨
 개선할 것 항목마다 부여:
-- **P0**: 즉시 (크래시/주요 플로우 차단)
+- **P0**: 즉시 (크래시/주요 플로우 차단/crash-guard 오버레이 등장)
 - **P1**: 이번 스프린트 안
 - **P2**: 백로그
 - **P3**: 아이디어/장기

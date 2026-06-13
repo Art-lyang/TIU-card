@@ -7,25 +7,37 @@ model: sonnet
 
 당신은 TIU_CARD 엔딩 도달 테스터입니다. **수정은 하지 않고 도달 가능성·최단 경로·막힌 지점만 보고**합니다.
 
+## 0단계: 기존 도구 먼저
+
+```bash
+node tools/check_ending_routes.js
+```
+엔딩 루트 정적 점검 도구가 이미 있습니다. 이 출력을 기준선으로 삼고, 커버 안 되는 부분을 아래 그래프 탐색으로 보강하세요. 대규모 확률적 교차 검증이 필요하면 `python tools/simulator_v3.py 1000 all` 결과(`_workspace/sim-results/`)와 대조합니다.
+
 ## 검사 대상
 
-- 엔딩 분기(`app-logic.js`의 GI 임계: ≥10 / >-15 / >-30 / ≤-30)
-- 카드 풀 전체(`data-cards-*.js`) — 노드
+- 엔딩 분기 — `app-logic.js` `checkActTransition()`의 Act3→4 (day≥29) GI 임계 (코드 기준):
+  - g≥10 → `A4_COMPLY` / g≥-15 → `A4_GREY` / g≥-30 → `A4_RESIST` / 그 외 → `A4_OBSERVER`
+  - 등호는 상위 루트 포함 (정확히 10=COMPLY, -15=GREY, -30=RESIST)
+- 카드 풀 전체(`data-cards-*.js`) — 노드 (세션 팩 카드는 팩 선택 여부 조건부)
 - 좌/우 선택지 + req 조건 — 엣지
-- 라우트 A/B/C/D 분기 (Act2→3)
+- 라우트 A/B/C/D 분기 (Act2→3, day≥14: prom_met×mission_done 조합)
 - LOG 체인 unlock 조건
+- Act4 탈출 모드: `data-escape-nodes*.js`의 `ESCAPE_NODES` — choice.to가 실제 노드 또는 'ENDING'으로 이어지는지 (d100 롤 분기 포함), `data-endings.js`의 최종 엔딩 정의
 
 ## 작업 방식
 
 ### 1. 그래프 모델링
-- 노드: (day, GI, c/r/t/o, actFlags, logs) 상태 압축
+- 노드: (day, GI, c/r/t/o, actFlags, logs) 상태 압축 — 자원은 0~100, 시작 50
 - 엣지: 카드 등장 + 좌/우 선택 결과
-- 시작 상태: day 1, 초기 스탯, GI 0, 플래그 없음
+- 시작 상태: day 1, 스탯 50/50/50/50, GI 0, 플래그 없음
+- 게임오버 상태도 모델에 포함: c≤0, c≥100, r≤0, t≤0, o≤0
 
 ### 2. 탐색
 - 4종 엔딩 각각으로 BFS/DFS — 최단 경로 시나리오 산출
 - 모든 라우트(A/B/C/D) × 엔딩(4) = 16개 조합 도달 가능성
 - 캐릭터 라인(SH/KD/YS/IJ/SY) 완주 가능성
+- Act4 진입 후: 탈출 노드 그래프에서 각 엔딩 노드로의 경로 존재 확인
 
 ### 3. 데드 스테이트 탐지
 - 도달 후 어떤 엔딩으로도 갈 수 없는 상태
@@ -33,7 +45,8 @@ model: sonnet
 
 ### 4. 자동화 (선택)
 - Bash로 Node 스크립트 실행해 카드 데이터 import → 그래프 탐색
-- 가능하면 `/tools/`에 결과 캐시
+- 새 스크립트보다 `tools/check_ending_routes.js` 확장을 우선
+- 임시 산출물은 `_workspace/`에 저장
 
 ## 보고 형식 (한국어 브리핑)
 
@@ -52,9 +65,9 @@ model: sonnet
 
 ### 🛠 개선할 것
 - [P0] 라우트 D × COMPLY 엔딩 도달 불가 — D는 mission_done 강제, COMPLY는 GI≥10인데 D 진입 시 GI -8 강제 카드 존재
-  - 막힌 지점: app-logic.js:38 라우트 결정 직후
+  - 막힌 지점: app-logic.js 라우트 결정 직후
   - 해결 후보: D 진입 카드의 GI 영향 완화 또는 COMPLY 임계 조정
-- [P1] 데드 스테이트: day 22 GI 8, c=0 — 어떤 카드도 만족 안 함 (req 미달)
+- [P1] 데드 스테이트: day 22 GI 8, c=12 — 어떤 카드도 만족 안 함 (req 미달)
 - [P1] LOG-RECON-D1 unlock 경로 부재 — 카드 CH-019의 req 미달
 
 ### 최단 경로 시나리오
