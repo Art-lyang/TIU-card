@@ -200,7 +200,7 @@ function FieldMission(p){
     return function(){window.removeEventListener('keydown',onKey);};
   },[showChoices,visChoices,activeMiniGame,missionBonus]);
 
-  return h('div',{className:'screen',style:{overflow:'hidden'}},
+  return h('div',{className:'screen fm-mission-screen',style:{overflow:'hidden'}},
     IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.08}}),
     h('div',{style:{width:'100%',maxWidth:420,padding:'6px 0',flexShrink:0}},
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2,textAlign:'center'}},tt('fieldMission.title',null,'FIELD MISSION')),

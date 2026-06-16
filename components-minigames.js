@@ -232,11 +232,13 @@ var FIELD_MINIGAME_LIBRARY = {
 
 function MiniPanel(p){
   return h('div',{
+    className:'fm-minipanel',
     style:{
       position:'absolute',inset:0,zIndex:40,
       background:'rgba(2,8,4,0.96)',
       display:'flex',alignItems:'center',justifyContent:'center',
-      padding:'18px'
+      padding:'18px',
+      userSelect:'none',WebkitUserSelect:'none',WebkitTouchCallout:'none'
     }
   }, h('div',{
       style:{
