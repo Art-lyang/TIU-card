@@ -65,6 +65,8 @@ function Boot(p){
   var switchLocale=function(next){if(next===locale)return;tryBootAudio();if(window.TS_I18N&&window.TS_I18N.setLocale)window.TS_I18N.setLocale(next);setLocale(next)};
   useEffect(function(){idx.current=0;bootStarted.current=false;setLines([]);setDone(false);var t=setInterval(function(){if(idx.current<BL.length){if(!bootStarted.current){bootStarted.current=true;tryBootAudio()}setLines(function(p){return p.concat([BL[idx.current]])});idx.current++}else{clearInterval(t);setTimeout(function(){setDone(true)},800)}},280);return function(){clearInterval(t)}},[locale,p.sessions]);
   useEffect(function(){var handler=function(e){if(!done)return;if(e.key==='Enter'||e.key===' '||e.code==='Space'){e.preventDefault();startTerminal()}};window.addEventListener('keydown',handler);return function(){window.removeEventListener('keydown',handler)}},[done]);
+  // 부트 스킵 — 개발/QA 편의 (?skipboot)
+  useEffect(function(){try{if(/[?&]skipboot/.test(location.search)){if(p.onBoot)p.onBoot();if(p.onDone)p.onDone();}}catch(e){}},[]);
   var progress=Math.min(100,Math.round((lines.length/Math.max(1,BL.length))*100));
   var lineNodes=lines.map(function(l,i){
     var text=String(l||'');
@@ -208,20 +210,21 @@ function MainMenu(p){
   return h('div',{className:'main-terminal-menu'},
     h('div',{className:'main-terminal-crt', 'aria-hidden':true}),
     h('main',{className:'main-terminal-frame','aria-label':'ORACLE Korea Branch terminal main menu'},
+      h('div',{className:'main-terminal-prompt main-terminal-prompt--top','aria-hidden':true},'user@oracle:~$'),
       h('header',{className:'main-terminal-header'},
         h('div',{className:'main-terminal-header-main'},
-          h('span',{className:'main-terminal-header-title'},
-            IMG.logo_oracle_mark?h('img',{key:'lg',className:'main-terminal-header-logo',src:IMG.logo_oracle_mark,alt:'','aria-hidden':true}):null,
-            h('span',{key:'tx',className:'main-terminal-header-titletext'},'ORACLE //')),
+          h('span',{className:'main-terminal-header-title'},'ORACLE //'),
           h('div',{className:'main-terminal-header-tools'},
-            h('div',{className:'terminal-boot-locale main-terminal-locale','aria-label':tt('boot.language',null,'Language')},
-              ['ko','en'].map(function(l){
-                return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase());
-              })))),
+            h('span',{className:'main-terminal-header-live'},h('span',{className:'main-terminal-header-live-dot','aria-hidden':true}),'LIVE'),
+            h('span',{className:'main-terminal-header-time'},nowText))),
         h('div',{className:'main-terminal-header-status'},
+          h('div',{className:'terminal-boot-locale main-terminal-locale main-terminal-locale--status','aria-label':tt('boot.language',null,'Language')},
+            ['ko','en'].map(function(l){
+              return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase());
+            })),
           h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
-          h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011'),h('span',{className:'main-terminal-signal','aria-label':'signal strength','aria-hidden':true},h('i'),h('i'),h('i'),h('i'))),
-          h('span',{className:'main-terminal-time'},tt('menu.timeLabel',{time:nowText},'TIME: '+nowText)))),
+          h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011')),
+          h('span',{className:'main-terminal-signal','aria-label':'signal strength','aria-hidden':true},h('i'),h('i'),h('i'),h('i')))),
       h('section',{className:'main-terminal-feed','aria-label':'terminal session surveillance feed'},
         IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
         h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
@@ -232,25 +235,24 @@ function MainMenu(p){
           h('span',{className:'main-terminal-live'},h('span',{className:'main-terminal-live-dot','aria-hidden':true}),tt('menu.feedLive',null,'FEED: LIVE')),
           h('span',{className:'main-terminal-version'},tt('menu.feedVersion',null,'TERMINAL SESSION v1.11'),h('span',{className:'main-terminal-barcode','aria-hidden':true})))),
       h('section',{className:'main-terminal-log','aria-label':'system log'},
+        h('span',{className:'main-terminal-log-icon','aria-hidden':true},'>_'),
         h('div',{className:'main-terminal-log-copy'},
           h('p',null,tt('menu.systemRestored',null,'SYSTEM RESTORED')),
           h('p',null,tt('menu.operatorAuth',null,'OPERATOR AUTHENTICATION REQUIRED')),
-          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION COMMAND'))),
-        h('div',{className:'main-terminal-oracle','aria-label':'ORACLE Korea Branch'},
-          IMG.logo_oracle_mark
-            ? h('img',{className:'main-terminal-oracle-mark main-terminal-oracle-mark--img',src:IMG.logo_oracle_mark,alt:'','aria-hidden':true})
-            : h('span',{className:'main-terminal-oracle-mark','aria-hidden':true}),
-          h('span',{className:'main-terminal-oracle-copy'},h('b',null,'ORACLE'),h('small',null,'KOREA BRANCH')))),
+          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION COMMAND')))),
       h('nav',{className:'main-terminal-menu-list'+(menuItems.length>5?' is-dense':''),'data-count':menuItems.length,'aria-label':'session route menu'},
         menuItems.map(function(item,index){return h('div',{key:item.key,className:'main-terminal-row'+(item.primary?' is-primary':'')+(selectedIndex===index?' is-selected':''),onMouseMove:function(){setSelectedIndex(index)}},
           h('span',{className:'main-terminal-cursor','aria-hidden':true},'>'),
           h('button',{type:'button',className:'main-terminal-button'+(glitchKey===item.key?' is-glitching':''),'data-route':item.key,onFocus:function(){setSelectedIndex(index)},onClick:function(){activate(item)}},
             h('span',{className:'main-terminal-icon main-terminal-icon--'+item.icon,'aria-hidden':true}),
-            h('span',{className:'main-terminal-button-copy'},h('strong',null,item.title),h('small',null,item.sub)),
-            h('span',{className:'main-terminal-button-action'},'>> ',h('em',null,item.action))))})),
+            h('span',{className:'main-terminal-button-copy'},
+              h('strong',null,h('span',{className:'main-terminal-button-num'},'[ '+String(index+1).padStart(2,'0')+' ] '),String(item.title||'').replace(/^\[\s*|\s*\]$/g,'')),
+              h('small',null,item.sub)),
+            h('span',{className:'main-terminal-button-action','aria-hidden':true},'>_')))})),
       h('footer',{className:'main-terminal-footer'},
         h('div',null,tt('menu.footerAuth',null,'AUTH: GUEST'),' | ',tt('menu.footerVersion',null,'VER: 1.11.7'),' | ',tt('menu.footerBuild',{build:(typeof BUILD_VER!=='undefined')?BUILD_VER:'?'},'BUILD: '+((typeof BUILD_VER!=='undefined')?BUILD_VER:'?'))),
         h('div',null,h('span',{className:'main-terminal-footer-bar','aria-hidden':true}),tt('menu.footerInternal',null,'ORACLE KOREA BRANCH - INTERNAL'))),
+      h('div',{className:'main-terminal-prompt main-terminal-prompt--bottom','aria-hidden':true},'user@oracle:~$ ',h('span',{className:'mt-prompt-cursor'},'█')),
       showSnapshotSelect&&h('div',{className:'main-terminal-save-overlay',onClick:function(){setShowSnapshotSelect(false)}},
         h('section',{className:'main-terminal-save-modal','aria-label':tt('menu.savePicker.title',null,'SAVE SLOT SELECT'),onClick:function(e){e.stopPropagation()}},
           h('header',{className:'main-terminal-save-head'},
