@@ -8,13 +8,23 @@ var MISSIONS_INCIDENT = {
   // ══════════════════════════════════════════
   "MI-01": {
     id: "MI-01", title: "격리실 이상 반응 — 대응 결정",
+    codename: "QUARANTINE SEAL", threat: "HIGH",
+    intel: { grid: "37.7510 N, 128.8760 E", depth: "-21.0 m (B2)", env: "EM ANOMALY" },
+    report: [
+      { label: "이상 반응원", value: "B2 하부 — 전자기 간섭", level: "danger" },
+      { label: "ORACLE 펄스 연관성", value: "SUSPECTED — 정기 데이터 펄스 동기", level: "warn" },
+      { label: "격리실 음성 포착", value: "사람의 목소리 — 격리 대상 아님", level: "danger" },
+      { label: "지반 진동", value: "PERSISTENT — 차폐 후에도 지속", level: "warn" },
+      { label: "재발 시점", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "증상 차단보다 원인 규명 우선", level: "info" }
+    ],
     nodes: {
       start: {
         text: "조사 결과가 정리되었습니다.\n\n격리실 이상 반응의 원인은 B2 하부에서 올라오는 전자기 간섭으로 확인.\nORACLE의 정기 데이터 펄스와의 연관성도 의심됩니다.\n\n대응 방침을 결정해야 합니다.",
         choices: [
-          { label: "▸ 격리실 강화 — 전자기 차폐 설치", next: "shield" },
-          { label: "▸ B2 하부 봉인 — 원인 격리", next: "seal" },
-          { label: "▸ ORACLE에 정밀 진단 위임", next: "oracle", g: 2 }
+          { label: "▸ 격리실 강화 — 전자기 차폐 설치", next: "shield", sub: "전자기 차폐 설치", risk: "MEDIUM", icon: "fire" },
+          { label: "▸ B2 하부 봉인 — 원인 격리", next: "seal", sub: "B2 하부 영구 봉인", risk: "HIGH", icon: "fire" },
+          { label: "▸ ORACLE에 정밀 진단 위임", next: "oracle", g: 2, sub: "정밀 진단 위임", risk: "MEDIUM", icon: "dish" }
         ]
       },
       shield: {
@@ -37,13 +47,23 @@ var MISSIONS_INCIDENT = {
   // ══════════════════════════════════════════
   "MI-02": {
     id: "MI-02", title: "CCTV 사각지대 — 대응 결정",
+    codename: "CCTV GAP", threat: "HIGH",
+    intel: { grid: "37.5125 N, 127.1025 E", depth: "B2 / -7.8 m", env: "BLIND CORRIDOR" },
+    report: [
+      { label: "은폐 프로토콜", value: "CONFIRMED — 자동 스크립트", level: "danger" },
+      { label: "미등록 열원", value: "DETECTED — 02:47 정기 이동", level: "warn" },
+      { label: "감시 사각 범위", value: "B1 서버실 → 제한 홀 → B2", level: "warn" },
+      { label: "열원 정체", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "ORACLE 개입 흔적", value: "은폐 vs 삭제 식별 불가", level: "danger" },
+      { label: "권장 접근 방식", value: "독립 감시망 구축 권장", level: "info" }
+    ],
     nodes: {
       start: {
         text: "조사 결과 정리.\n\nCCTV 비활성화는 내부 자동 스크립트에 의한 것으로 확인.\n미등록 열원 감지 시 해당 경로 카메라를 끄는 은폐 프로토콜이 존재했습니다.\n\n임재혁: \"이걸 어떻게 처리할지 결정해주십시오.\"",
         choices: [
-          { label: "▸ 스크립트 삭제 + 독립 감시망 구축", next: "independent" },
-          { label: "▸ 스크립트를 역이용 — 미등록 열원 추적", next: "reverse" },
-          { label: "▸ ORACLE에 시스템 정비 요청", next: "oracle", g: 2 }
+          { label: "▸ 스크립트 삭제 + 독립 감시망 구축", next: "independent", sub: "독립 감시망 구축", risk: "HIGH", icon: "dish" },
+          { label: "▸ 스크립트를 역이용 — 미등록 열원 추적", next: "reverse", sub: "미등록 열원 추적", risk: "VERY HIGH", icon: "crosshair" },
+          { label: "▸ ORACLE에 시스템 정비 요청", next: "oracle", g: 2, sub: "ORACLE 정비 위임", risk: "MEDIUM", icon: "dish" }
         ]
       },
       independent: {
@@ -66,13 +86,23 @@ var MISSIONS_INCIDENT = {
   // ══════════════════════════════════════════
   "MI-03": {
     id: "MI-03", title: "연구동 샘플 오염 — 대응 결정",
+    codename: "SAMPLE CONTAMINATION", spec: "SPEC-012", threat: "HIGH",
+    intel: { grid: "37.5512 N, 126.9882 E", depth: "-6.8 m", env: "LAB CONTAINMENT" },
+    report: [
+      { label: "변이 진행", value: "SELF-RESTRUCTURING", level: "danger" },
+      { label: "SPEC-012 유사도", value: "CONFIRMED", level: "warn" },
+      { label: "내열성", value: "극한 — 소각 무력화 우려", level: "danger" },
+      { label: "확산 속도", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "배양기 봉쇄 후 단계적 판단", level: "info" },
+      { label: "오염 경로", value: "배양기 접합부 균열 의심", level: "info" }
+    ],
     nodes: {
       start: {
         text: "조사 결과 정리.\n\n배양기 내부 자체 변이 확인. 기존 샘플이 스스로 새로운 구조를 형성.\nSPEC-012 초기 형태와의 유사성 또는 극한 내열성이 확인되었습니다.\n\n윤세진: \"이건 단순 오염이 아닙니다. 대응이 필요해요.\"",
         choices: [
-          { label: "▸ 연구동 전체 검역 + 정밀 조사", next: "quarantine" },
-          { label: "▸ 변이 샘플 보존 — 억제제 연구 활용", next: "research" },
-          { label: "▸ 연구동 A/B 소독 + 샘플 전수 교체", next: "sterilize" }
+          { label: "▸ 연구동 전체 검역 + 정밀 조사", next: "quarantine", sub: "검역 후 정밀 조사", risk: "MEDIUM", icon: "crosshair" },
+          { label: "▸ 변이 샘플 보존 — 억제제 연구 활용", next: "research", sub: "억제제 연구 활용", risk: "VERY HIGH", icon: "flask" },
+          { label: "▸ 연구동 A/B 소독 + 샘플 전수 교체", next: "sterilize", sub: "전면 소독 후 교체", risk: "HIGH", icon: "fire" }
         ]
       },
       quarantine: {
@@ -95,13 +125,23 @@ var MISSIONS_INCIDENT = {
   // ══════════════════════════════════════════
   "MI-04": {
     id: "MI-04", title: "보안구역 인증 오류 — 대응 결정",
+    codename: "AUTH TRACE", threat: "HIGH",
+    intel: { grid: "37.5326 N, 126.9905 E", depth: "B2 / SERVER RM", env: "SECURE BREACH" },
+    report: [
+      { label: "하드웨어 백도어", value: "CONFIRMED — 기지보다 먼저 매립", level: "danger" },
+      { label: "출입 기록 무결성", value: "TAMPERED — ORACLE 재분류 흔적", level: "danger" },
+      { label: "접근 시각 패턴", value: "02:47 반복 — 야간 전송창 일치", level: "warn" },
+      { label: "제조 출처 추적", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "물리 격리 후 인증 재구축 권장", level: "info" },
+      { label: "날씨 / 환경", value: "지하 폐쇄 / 통신 차폐", level: "info" }
+    ],
     nodes: {
       start: {
         text: "조사 결과 정리.\n\n기지 건설 당시 매립된 하드웨어 백도어, 또는\nORACLE의 출입 기록 조작이 확인되었습니다.\n\n임재혁: \"세 가지 선택지가 있습니다.\"",
         choices: [
-          { label: "▸ 백도어 물리적 제거 + 인증 재구축", next: "remove" },
-          { label: "▸ 백도어를 감시 트랩으로 전환", next: "trap" },
-          { label: "▸ ORACLE에 보안 패치 요청", next: "oracle", g: 2 }
+          { label: "▸ 백도어 물리적 제거 + 인증 재구축", next: "remove", sub: "백도어 물리 제거", risk: "HIGH", icon: "fire" },
+          { label: "▸ 백도어를 감시 트랩으로 전환", next: "trap", sub: "감시 트랩으로 전환", risk: "MEDIUM", icon: "crosshair" },
+          { label: "▸ ORACLE에 보안 패치 요청", next: "oracle", g: 2, sub: "ORACLE 보안 패치", risk: "MEDIUM", icon: "dish" }
         ]
       },
       remove: {
@@ -124,13 +164,23 @@ var MISSIONS_INCIDENT = {
   // ══════════════════════════════════════════
   "MI-05": {
     id: "MI-05", title: "직원 실종 — 대응 결정",
+    codename: "GHOST WALL", threat: "HIGH",
+    intel: { grid: "37.4682 N, 126.9450 E", depth: "B2 / -8.6 m", env: "STRUCTURAL MIMIC" },
+    report: [
+      { label: "미등록 통로", value: "3곳 DETECTED — B2 방향", level: "danger" },
+      { label: "벽면 의태", value: "SUSPECTED — 호흡음 증언", level: "warn" },
+      { label: "열원 반응", value: "35.8°C / 0.4s FLASH", level: "danger" },
+      { label: "개체 식별률", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "도면 정합성", value: "ORACLE 사후 수정 확인", level: "warn" },
+      { label: "권장 접근 방식", value: "구역 봉쇄 후 원격 감시", level: "info" }
+    ],
     nodes: {
       start: {
         text: "이수현 요원은 의무실에서 회복 중입니다.\n기억은 돌아오지 않고 있습니다.\n\n도면에 없는 통로, 또는 ORACLE의 위치 은폐가 확인되었습니다.\n\n후속 조치를 결정해야 합니다.",
         choices: [
-          { label: "▸ 미등록 통로 전수 조사", next: "survey" },
-          { label: "▸ 이수현 요원 심층 면담", next: "interview" },
-          { label: "▸ 해당 구역 접근 금지 + 감시 강화", next: "lockdown" }
+          { label: "▸ 미등록 통로 전수 조사", next: "survey", sub: "미등록 통로 전수 조사", risk: "HIGH", icon: "crosshair" },
+          { label: "▸ 이수현 요원 심층 면담", next: "interview", sub: "이수현 요원 심층 면담", risk: "MEDIUM", icon: "dish" },
+          { label: "▸ 해당 구역 접근 금지 + 감시 강화", next: "lockdown", sub: "구역 봉쇄 후 감시 강화", risk: "MEDIUM", icon: "fire" }
         ]
       },
       survey: {

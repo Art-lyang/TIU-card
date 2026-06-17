@@ -2,13 +2,24 @@
 (function(){var M3={
   "M-007": {
     id: "M-007", title: "결정적 타격",
+    codename: "DECISIVE STRIKE", threat: "HIGH",
+    hero: "assets/images/missions/mission_m007_decisive_strike_clean.webp",
+    intel: { grid: "37.5247 N, 129.1142 E", depth: "SURFACE / 3 BLOCKS", env: "INDUSTRIAL RUINS" },
+    report: [
+      { label: "거점 위치", value: "CONFIRMED — 강원 동해안 폐산업단지", level: "danger" },
+      { label: "시설 성격", value: "비무장 연구 시설 — 전투 거점 아님", level: "warn" },
+      { label: "Phase 0 억제제 연구", value: "PROGRESS 73% — 우리보다 앞섬", level: "warn" },
+      { label: "내부 인원 무장", value: "비무장 민간 연구자 4명", level: "info" },
+      { label: "예상 사상자", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "날씨 / 환경", value: "폐산업단지 / 해안 강풍", level: "info" }
+    ],
     nodes: {
       start: {
         text: "[ORACLE 특별 작전 지시 — 기밀 등급: MAXIMUM]\n\n프로메테우스 거점 위치가 확정되었습니다.\n좌표: 강원도 동해안 인근 폐산업단지.\n\n이중철 지휘관. 이것은 한국 지부의 존재 의의를 증명할 작전입니다.\n\n[ORACLE: 선제 타격을 권고합니다. 전 요원 동원.]",
         choices: [
-          { label: "▸ 전원 출격", next: "strike" },
-          { label: "▸ 소규모 정찰조 우선 투입", next: "recon" },
-          { label: "▸ ORACLE 전술 지원 요청", next: "oracle_tactical", g: 3 },
+          { label: "▸ 전원 출격", next: "strike", sub: "전 요원 동원", risk: "VERY HIGH", icon: "fire" },
+          { label: "▸ 소규모 정찰조 우선 투입", next: "recon", sub: "소규모 정찰 우선", risk: "MEDIUM", icon: "crosshair" },
+          { label: "▸ ORACLE 전술 지원 요청", next: "oracle_tactical", g: 3, sub: "ORACLE 전술 지원", risk: "MEDIUM", icon: "dish" },
         ]
       },
       strike: {
@@ -63,13 +74,24 @@
   },
   "M-008": {
     id: "M-008", title: "관측중지",
+    codename: "OBSERVATION STOP", threat: "DANGER",
+    hero: "assets/images/missions/mission_m008_observation_stop_clean.webp",
+    intel: { grid: "37.4663 N, 127.0419 E", depth: "SURFACE / -0.4 m", env: "TEMPORAL ANOMALY" },
+    report: [
+      { label: "현상 분류", value: "OBSERVER ANOMALY — NON EV-Σ", level: "danger" },
+      { label: "시간 흐름", value: "감속 — 시간당 14분 손실", level: "danger" },
+      { label: "구역 내 온도", value: "외부 대비 -7.3°C 강하", level: "warn" },
+      { label: "초저주파 진동", value: "0.7Hz DETECTED — 가청 미달", level: "warn" },
+      { label: "예상 생존률", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "ORACLE 분석", value: "세션 반복 종료 — 본부 차단", level: "info" }
+    ],
     nodes: {
       start: {
         text: "기지 남동쪽 1.2km. 강도윤의 긴급 보고.\n\n\"지휘관. 직접 보셔야 합니다.\"\n\n도착하자 — 숲 한가운데, 반경 약 30m의 원형 구역.\n\n나무가 서 있지만 잎이 없습니다. 바닥에 서리가 내려 있습니다. 한여름인데.\n\n구역 안에 — 사슴 한 마리가 서 있습니다. 완전히 정지 상태.\n\n강도윤: \"30분째 저러고 있습니다. EV-Σ 감염 징후는 없습니다.\"",
         choices: [
-          { label: "▸ 구역 안으로 진입", next: "enter_zone" },
-          { label: "▸ 외곽에서 계측 장비 설치", next: "perimeter" },
-          { label: "▸ ORACLE 원격 분석 요청", next: "oracle_remote", g: 2 },
+          { label: "▸ 구역 안으로 진입", next: "enter_zone", sub: "구역 직접 진입", risk: "VERY HIGH", icon: "crosshair" },
+          { label: "▸ 외곽에서 계측 장비 설치", next: "perimeter", sub: "외곽 계측 장비 설치", risk: "HIGH", icon: "flask" },
+          { label: "▸ ORACLE 원격 분석 요청", next: "oracle_remote", g: 2, sub: "ORACLE 원격 분석", risk: "MEDIUM", icon: "dish" },
         ]
       },
       enter_zone: {

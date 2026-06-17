@@ -1,6 +1,28 @@
 // TERMINAL SESSION — app.js (App 컴포넌트, 글로벌 유틸은 app-init.js)
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
 var getLocale=function(){return (window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko'};
+// ── DEV 전용: 현장임무 직접 실행 런처 (URL ?dev=1 일 때만 노출). 일반 빌드/플레이어에겐 보이지 않음. ──
+function DevMissionLauncher(p){
+  var ids=Object.keys((typeof MISSIONS!=='undefined'&&MISSIONS)||{}).sort(function(a,b){
+    var ga=a.indexOf('MI-')===0?1:0,gb=b.indexOf('MI-')===0?1:0;
+    if(ga!==gb)return ga-gb;return a<b?-1:a>b?1:0;
+  });
+  var btn=h('button',{onClick:p.onToggle,style:{position:'fixed',left:10,bottom:10,zIndex:99999,font:'11px monospace',padding:'6px 11px',cursor:'pointer',background:'rgba(8,18,16,.93)',color:'#39d98a',border:'1px solid rgba(57,217,138,.55)',borderRadius:3,letterSpacing:'.05em'}},p.open?'✕ DEV':'🔧 DEV·MISSION');
+  if(!p.open)return btn;
+  function row(id){
+    var m=(MISSIONS&&MISSIONS[id])||{};var isInc=id.indexOf('MI-')===0;
+    return h('button',{key:id,onClick:function(){p.onLaunch(id)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(10,22,20,.9)',color:isInc?'#e0b050':'#7fe0c0',border:'1px solid '+(isInc?'rgba(224,176,80,.4)':'rgba(127,224,192,.35)'),borderRadius:3}},h('span',{style:{opacity:.75,marginRight:8}},'['+id+']'),(m.title||''));
+  }
+  var fieldIds=ids.filter(function(id){return id.indexOf('MI-')!==0});
+  var incIds=ids.filter(function(id){return id.indexOf('MI-')===0});
+  function lbl(txt,col){return h('div',{style:{font:'10px monospace',color:col,margin:'7px 0 2px',opacity:.7,letterSpacing:'.06em'}},txt);}
+  var panel=h('div',{style:{position:'fixed',left:10,bottom:46,zIndex:99999,width:330,maxHeight:'72vh',overflowY:'auto',padding:'10px 12px',background:'rgba(6,14,13,.97)',border:'1px solid rgba(57,217,138,.5)',borderRadius:5,boxShadow:'0 6px 24px rgba(0,0,0,.6)'}},
+    h('div',{style:{font:'10px monospace',color:'#39d98a',letterSpacing:'.1em',marginBottom:4,opacity:.85}},'// DEV — 현장임무 직접 실행 (완료 시 메뉴 복귀, 세이브 불변)'),
+    fieldIds.length?lbl('▓ 현장임무 (미니게임 포함)','#7fe0c0'):null,fieldIds.map(row),
+    incIds.length?lbl('▓ 인시던트 (대응 결정)','#e0b050'):null,incIds.map(row)
+  );
+  return h(React.Fragment,null,btn,panel);
+}
 function App(){
   var _p=useState('boot'),phase=_p[0],setPhase=_p[1];
   var _s=useState({c:50,r:65,t:50,o:40,day:1}),stats=_s[0],setStats=_s[1];
@@ -23,6 +45,9 @@ function App(){
   var _ret=useState('game'),ret=_ret[0],setRet=_ret[1];
   var _cc=useState(CARDS[0]),curCard=_cc[0],setCurCard=_cc[1];
   var _cm=useState(null),curMission=_cm[0],setCurMission=_cm[1];
+  var _dev=useState(false),showDevPanel=_dev[0],setShowDevPanel=_dev[1];
+  var debugMissionRef=useRef(false);
+  var DEV=(function(){try{return /[?&]dev\b/.test(location.search)}catch(e){return false}})();
   var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40}),trust=_tr[0],setTrust=_tr[1];
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
   var _cd=useState({}),cooldowns=_cd[0],setCooldowns=_cd[1];
@@ -478,6 +503,9 @@ function App(){
     if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);clearToastAfter(2400)},400)}}
   };
   var hMission=function(o){if(o.gOnly){setGi(function(g){var ng0=g+(o.g||0);persistGame(stats,ng0,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng0});return}Save.del('ts_activeMission');SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return}nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
+  // DEV 런처로 발동한 임무는 캠페인을 진행시키지 않고 메뉴로 복귀한다 (gOnly 중간 GI 업데이트는 무시).
+  var launchDebugMission=function(id){if(typeof MISSIONS==='undefined'||!MISSIONS[id])return;debugMissionRef.current=true;setShowDevPanel(false);setCurMission(id);setPhase('mission')};
+  var hMissionDebug=function(o){if(o&&o.gOnly)return;debugMissionRef.current=false;Save.del('ts_activeMission');setCurMission(null);setPhase('menu')};
   var hReward=function(r){SFX.play('reward');if(typeof rememberRewardId==='function')rememberRewardId(rewardMemoryId(r));Save.del('ts_resumeRewards');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
     if(act===3){var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
@@ -691,7 +719,7 @@ function App(){
   var hasSave=!!Save.get('ts_game',null);
   var hasSessionHistory=sessions>0||endings.length>0;
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}});
+  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission}));
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing')return h(BriefingScreen,{act:act,stats:stats,transRoute:transRoute,onEnter:function(){clearResumeCheckpoint();persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);nextCard(stats,gi,logs,chainQueue);setPhase('game')}});
   if(phase==='go')return withOracleLink(h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,endImg:endImg,resultDay:goDay,onRestart:restart,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}}));
@@ -699,7 +727,7 @@ function App(){
   if(phase==='reward')return withOracleLink(h(RewardScreen,{stats:stats,onPick:hReward,facility:facility,getRewardPreviewDelta:getRewardPreviewDelta,initialRewards:Save.get('ts_resumeRewards',null),onRewardsReady:function(items){Save.set('ts_resumeRewards',items)}}));
   if(phase==='evening'){BGM.setTempVolume(0.04);return withOracleLink(h(React.Fragment,null,h(EveningChat2,{day:stats.day,act:act,logs:logs,gi:gi,trust:trust,facility:facility,sessions:sessions,usedEvening:usedEvening,onMarkEvening:function(key){setUsedEvening(function(p){if(p.indexOf(key)>=0)return p;var n=p.concat([key]);Save.saveUsedEvening(n);return n})},onChat:function(cn){modTrust(cn,1)},onResponse:function(cn,delta){modTrust(cn,delta)},onDone:function(){BGM.restoreVolume();hEvening()},onTrustMod:function(ck,v){modTrust(ck,v)},onGiMod:function(v){setGi(function(g){var ng=g+v;persistGame(stats,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng})},onLog:function(id){tryUnlock(id)}})))};
   if(phase==='dialogue'&&curDlg)return withOracleLink(h(Dialogue,{dialogue:curDlg,onChoice:hDlg}));
-  if(phase==='mission'&&curMission)return withOracleLink(h(FieldMission,{missionId:curMission,trust:trust,logs:logs,onComplete:hMission}));
+  if(phase==='mission'&&curMission)return withOracleLink(h(FieldMission,{missionId:curMission,trust:trust,logs:logs,act:act,onComplete:(debugMissionRef.current?hMissionDebug:hMission)}));
   if(phase==='escape_game')return withOracleLink(h(EscapeGameScreen,{stats:stats,gi:gi,logs:logs,trust:trust,onResult:onEscapeResult}));
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,sessions:sessions,onClose:function(){setPhase(ret)}});
   if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
@@ -721,6 +749,6 @@ function App(){
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
-    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}})));
+    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission})));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
