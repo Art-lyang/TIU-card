@@ -30,7 +30,7 @@ const IMG = {
   spec_015_brainseeker: "assets/images/specs/spec_015_brainseeker_hq.jpg",
   bg_command: "assets/images/backgrounds/bg_command.jpg",
   bg_corridor: "assets/images/backgrounds/bg_corridor.jpg",
-  title_screen: "assets/images/backgrounds/title_screen.jpg",
+  title_screen: "assets/images/backgrounds/title_screen.webp",
   bg_restricted: "assets/images/backgrounds/bg_restricted.jpg",
   spec_001_mannequin: "assets/images/specs/spec_001_mannequin_hq_v2.jpg",
   spec_003_brood: "assets/images/specs/spec_003_brood_hq_v2.jpg",
