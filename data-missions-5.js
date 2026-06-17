@@ -2,13 +2,24 @@
 (function(){var M5={
   "M-010": {
     id: "M-010", title: "SPEC-015 추적 작전",
+    codename: "BRAIN SEEKER", spec: "SPEC-015", threat: "DANGER",
+    hero: "assets/images/missions/mission_m010_brain_seeker_clean.webp",
+    intel: { grid: "37.5215 N, 126.9240 E", depth: "-3.0 m", env: "FLOODED SEWER" },
+    report: [
+      { label: "누적 포식", value: "12+ CONFIRMED", level: "danger" },
+      { label: "학습 단계", value: "순찰 패턴 동기화 — ACTIVE", level: "danger" },
+      { label: "방어 기관", value: "등껍질 부재 — 척추 노출", level: "warn" },
+      { label: "얼굴 가죽 전리품", value: "3 DETECTED", level: "warn" },
+      { label: "예상 사상자", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "수중 교전 조건", value: "아군 절대 불리 / 시야 1.5m", level: "info" }
+    ],
     nodes: {
       start: {
         text: "봉쇄선 남측 하수구 진입점. 강도윤이 열화상 스캐너를 켠다.\n\n수로 깊이 3m. 폭 4m. 수면 아래 어둠.\n\n열화상에 — 수면 바로 아래, 거대한 열원이 하나. 움직이지 않는다.\n\nBS-GANGWON-01. 매복 중이다.\n\n강도윤 (무전): \"확인했습니다. 수면 아래 잠복. 두개골만 노출.\"\n\"접근하면 도약합니다. 1.5m 이상에서 기습.\"\n\n윤세진 (무전): \"등껍질이 없어요. 척추와 두개골이 직접 노출됩니다.\"\n\"하지만 물속에서는 우리가 압도적으로 불리해요.\"\n\n[ORACLE: BS-GANGWON-01. 추정 포식 12+. 학습 단계 진입.]\n[ORACLE: 주의 — 이 개체는 당신의 순찰 패턴을 알고 있습니다.]",
         choices: [
-          { label: "▸ 배수 후 지상전 — 수로 배수 밸브 개방", next: "drain" },
-          { label: "▸ 미끼 유인 — 수로 밖으로 끌어내기", next: "lure" },
-          { label: "▸ 수중 강습 — 직접 진입", next: "dive", trustReq: { doyun: 50 }, blockLogs: ["LOG-DOYUN-MINOR-WOUND","LOG-074-DONE","LOG-075"] }
+          { label: "▸ 배수 후 지상전 — 수로 배수 밸브 개방", next: "drain", sub: "수로 배수 후 지상전", risk: "HIGH", icon: "fire" },
+          { label: "▸ 미끼 유인 — 수로 밖으로 끌어내기", next: "lure", sub: "수로 밖으로 유인", risk: "HIGH", icon: "crosshair" },
+          { label: "▸ 수중 강습 — 직접 진입", next: "dive", trustReq: { doyun: 50 }, blockLogs: ["LOG-DOYUN-MINOR-WOUND","LOG-074-DONE","LOG-075"], sub: "수중 직접 강습", risk: "VERY HIGH", icon: "fire" }
         ]
       },
       drain: {

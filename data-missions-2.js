@@ -2,13 +2,23 @@
 (function(){var M2={
   "M-005": {
     id: "M-005", title: "Brood Drone 색출전",
+    codename: "BROOD DRONE", spec: "SPEC-003", threat: "DANGER",
+    intel: { grid: "37.4512 N, 126.8901 E", depth: "+18 m", env: "SWARM ZONE" },
+    report: [
+      { label: "군집 규모", value: "40+ CONFIRMED", level: "danger" },
+      { label: "대형 통제", value: "ACTIVE RELAY", level: "warn" },
+      { label: "지휘 개체", value: "SPEC-011 DETECTED", level: "danger" },
+      { label: "분산 시점", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "지휘 개체 우선 제거", level: "info" },
+      { label: "날씨 / 환경", value: "야간 / 저시야", level: "info" }
+    ],
     nodes: {
       start: {
         text: "봉쇄선 남측 500m. Brood Drone 40체 이상 확인.\n\n이전과 다르다. 대형을 유지하고 있다. 누군가가 지휘하고 있다.\n\n강도윤: \"지휘 개체를 찾아야 합니다. 제거하면 나머지는 흩어집니다.\"\n\n[ORACLE: 군체 통신 교란 장비 가용. 반경 200m 유효.]",
         choices: [
-          { label: "▸ 교란 장비로 드론 분산", next: "disrupt" },
-          { label: "▸ 지휘 개체 직접 수색", next: "hunt" },
-          { label: "▸ ORACLE 드론으로 상공 탐색", next: "oracle_drone", g: 2 },
+          { label: "▸ 교란 장비로 드론 분산", next: "disrupt", sub: "교란 장비로 분산", risk: "MEDIUM", icon: "crosshair" },
+          { label: "▸ 지휘 개체 직접 수색", next: "hunt", sub: "지휘 개체 직접 수색", risk: "HIGH", icon: "crosshair" },
+          { label: "▸ ORACLE 드론으로 상공 탐색", next: "oracle_drone", g: 2, sub: "상공 원격 탐색", risk: "LOW", icon: "dish" },
         ]
       },
       disrupt: {
@@ -60,13 +70,24 @@
   },
   "M-006": {
     id: "M-006", title: "포자 지대 진입",
+    codename: "SPORE PHANTOM", spec: "SPEC-008", threat: "HIGH",
+    hero: "assets/images/missions/mission_m006_spore_phantom_clean.webp",
+    intel: { grid: "37.8412 N, 128.5590 E", depth: "SURFACE / FOG LAYER", env: "SPORE FOG" },
+    report: [
+      { label: "포자 농도", value: "기준치 12배", level: "danger" },
+      { label: "인간형 집합체", value: "DETECTED — 실체 없음", level: "warn" },
+      { label: "물리 제거", value: "IMPOSSIBLE — 밀도 저감만 가능", level: "warn" },
+      { label: "예상 생존률", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "방독면 유효 시간", value: "약 40분", level: "info" },
+      { label: "날씨 / 환경", value: "짙은 안개 / 시야 30m", level: "info" }
+    ],
     nodes: {
       start: {
         text: "방독면 착용. 포자 밀집 지역으로 진입.\n\n시야 30m 미만. 짙은 안개.\n\n발밑에서 푸석한 감촉. 포자가 지면에 쌓여 있다.\n\n강도윤: \"조명을 유지하십시오. 꺼지면 안 됩니다.\"\n\n전방 20m — 안개 속에서 형체가 보인다. 사람처럼 걸어오고 있다.",
         choices: [
-          { label: "▸ 조명을 비춘다", next: "light" },
-          { label: "▸ 뒤로 물러난다", next: "retreat" },
-          { label: "▸ ORACLE 포자 농도 분석", next: "oracle_scan", g: 2 },
+          { label: "▸ 조명을 비춘다", next: "light", sub: "조명으로 분산 유도", risk: "HIGH", icon: "crosshair" },
+          { label: "▸ 뒤로 물러난다", next: "retreat", sub: "안개 밖으로 후퇴", risk: "LOW", icon: "dish" },
+          { label: "▸ ORACLE 포자 농도 분석", next: "oracle_scan", g: 2, sub: "포자 농도 원격 분석", risk: "MEDIUM", icon: "dish" },
         ]
       },
       light: {

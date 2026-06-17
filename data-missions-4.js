@@ -2,13 +2,24 @@
 (function(){var M4={
   "M-009": {
     id: "M-009", title: "SPEC-004 제거 작전",
+    codename: "SEED SPREADER", spec: "SPEC-004", threat: "DANGER",
+    hero: "assets/images/missions/mission_m009_seed_spreader_clean.webp",
+    intel: { grid: "37.6512 N, 127.0498 E", depth: "-2.0 m", env: "SPORE BLIGHT" },
+    report: [
+      { label: "포자 확산", value: "ACTIVE EMISSION", level: "danger" },
+      { label: "EV-Σ 산포", value: "CONFIRMED", level: "danger" },
+      { label: "흡입 감염 위험", value: "VERY HIGH", level: "danger" },
+      { label: "2차 폭발 방출", value: "소각 시 발생 — 방호복 필수", level: "warn" },
+      { label: "확산 속도", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "500m 격리 후 단계적 소각", level: "info" }
+    ],
     nodes: {
       start: {
         text: "봉쇄선 북동 2.4km. 윤세진이 분석한 좌표로 이동.\n\n나무가 없다. 풀도 없다. 반경 수백 미터가 회색 황무지.\n\n중앙에 — 높이 3m의 형체. 식물처럼 보이지만 내부가 맥동하고 있다.\n상부에서 불규칙하게 포자 구름이 분출된다.\n\nSPEC-004. Seed Spreader.\n\n윤세진 (무전): \"이것이 바이러스의 근원입니다. 이변체를 만드는 EV-Σ를 퍼뜨리는 산포체예요.\"\n\"봉쇄선 이쪽에서 발견됐다는 건... 이미 침투했다는 뜻이에요.\"\n\n강도윤: \"확보가 아닙니다. 이건 제거해야 합니다.\"\n\n[ORACLE: 경고 — SPEC-004 소각 시 폭발적 2차 포자 방출 위험. 방호복 착용 필수.]",
         choices: [
-          { label: "▸ 전면 소각 — 즉시 제거", next: "burn_direct" },
-          { label: "▸ 단계적 접근 — 토양 처리 후 소각", next: "phased" },
-          { label: "▸ ORACLE 원격 타격 요청", next: "oracle_strike", g: 2 }
+          { label: "▸ 전면 소각 — 즉시 제거", next: "burn_direct", sub: "즉시 제거", risk: "HIGH", icon: "fire" },
+          { label: "▸ 단계적 접근 — 토양 처리 후 소각", next: "phased", sub: "토양 처리 후 소각", risk: "MEDIUM", icon: "fire" },
+          { label: "▸ ORACLE 원격 타격 요청", next: "oracle_strike", g: 2, sub: "직접 개입 최소화", risk: "VERY HIGH", icon: "dish" }
         ]
       },
       burn_direct: {

@@ -2,13 +2,24 @@
 var MISSIONS = {
   "M-001": {
     id: "M-001", title: "SPEC-012 오염 구역 정밀 조사",
+    codename: "BLOOD PIT", spec: "SPEC-012", threat: "DANGER",
+    hero: "assets/images/missions/mission_m001_blood_pit_clean.webp",
+    intel: { grid: "37.5704 N, 126.9839 E", depth: "-12.4 m", env: "ORGANIC TRAP" },
+    report: [
+      { label: "오염 범위", value: "EXPANSION DETECTED", level: "danger" },
+      { label: "생체 점액", value: "CONFIRMED", level: "warn" },
+      { label: "고착 위험", value: "VERY HIGH", level: "danger" },
+      { label: "예상 생존률", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "신속 조사 후 철수 권장", level: "info" },
+      { label: "날씨 / 환경", value: "안개 / 강수", level: "info" }
+    ],
     nodes: {
       start: {
         text: "사전 드론 정찰과 윤세진의 토양 분석 보고를 기반으로, SPEC-012 서식지의 정밀 조사를 위해 봉쇄선 외곽 2.3km 지점에 도달했다.\n\n드론 영상에서 확인된 것과 동일한 패턴 — 검붉은 점액질이 지면을 뒤덮고 있으며, 나무 뿌리가 비정상적으로 부풀어 올라 있다.\n\n사전 보고보다 오염 범위가 넓다. 강도윤이 경계를 서고 있다.\n\n[ORACLE: SPEC-012 서식 범위 확장 확인. 고순도 샘플 확보 시 윤세진의 Phase 전환 연구에 활용 가능.]",
         choices: [
-          { label: "▸ 제거 작전 개시 — 오염원 소각", next: "eliminate" },
-          { label: "▸ 연구용 개체 확보 시도 — 격리 후 표본 채취", next: "capture" },
-          { label: "▸ ORACLE 원격 분석으로 대체 요청", next: "oracle", g: 2 },
+          { label: "▸ 제거 작전 개시 — 오염원 소각", next: "eliminate", sub: "오염원 소각", crew: "4+", risk: "HIGH", icon: "fire" },
+          { label: "▸ 연구용 개체 확보 시도 — 격리 후 표본 채취", next: "capture", sub: "격리 후 표본 채취", crew: "3+", risk: "VERY HIGH", icon: "flask" },
+          { label: "▸ ORACLE 원격 분석으로 대체 요청", next: "oracle", g: 2, sub: "직접 개입 최소화", crew: "2+", risk: "MEDIUM", icon: "dish" },
         ]
       },
       eliminate: {
@@ -29,13 +40,24 @@ var MISSIONS = {
   },
   "M-002": {
     id: "M-002", title: "SPEC-011 활동 구역 조사",
+    codename: "SHELL TALKER", spec: "SPEC-011", threat: "HIGH",
+    hero: "assets/images/missions/mission_m002_shell_talker_clean.webp",
+    intel: { grid: "37.6011 N, 127.0925 E", depth: "+8.2 m", env: "PREDATOR FOREST" },
+    report: [
+      { label: "음성 모방", value: "CONFIRMED", level: "danger" },
+      { label: "고유 음성 패턴", value: "7 DETECTED — 희생자 성대 복제", level: "warn" },
+      { label: "매복 / 기습", value: "VERY HIGH — 목·촉수 사정 3 m", level: "danger" },
+      { label: "예상 생존률", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "우선 제거 — 군체 지휘 차단", level: "info" },
+      { label: "날씨 / 환경", value: "저조도 / 무음 산림", level: "info" }
+    ],
     nodes: {
       start: {
         text: "윤세진의 행동 패턴 분석과 음향 센서 데이터를 기반으로 SPEC-011(Shell Talker)의 활동 반경을 특정했다. 인접 셀 C-14 구역.\n\n숲으로 진입한다. 강도윤이 앞서 걷는다.\n\n조용하다. 사전 보고대로 새소리조차 없다.\n\n그때 — 누군가의 목소리가 들린다.\n\n\"...지휘관님, 여기입니다. 도와주십시오.\"\n\nC-14 셀 소속 요원의 목소리다. 3일 전 실종 보고된 인물.\n\n강도윤이 당신의 팔을 잡는다. 고개를 천천히 젓는다.\n\n[ORACLE: SPEC-011 음성 모방 확인. 경고 — 대상은 희생자의 음성만 복제합니다.]",
         choices: [
-          { label: "▸ 제거 작전 개시 — 무력화 제거", next: "eliminate" },
-          { label: "▸ 연구용 개체 확보 시도 — 생포 연구", next: "capture" },
-          { label: "▸ ORACLE 음향 분석 요청", next: "analyze", g: 2 },
+          { label: "▸ 제거 작전 개시 — 무력화 제거", next: "eliminate", sub: "무력화 제거", risk: "HIGH", icon: "fire" },
+          { label: "▸ 연구용 개체 확보 시도 — 생포 연구", next: "capture", sub: "생포 연구", risk: "VERY HIGH", icon: "flask" },
+          { label: "▸ ORACLE 음향 분석 요청", next: "analyze", g: 2, sub: "음향 분석 요청", risk: "MEDIUM", icon: "dish" },
         ]
       },
       eliminate: {
@@ -54,13 +76,24 @@ var MISSIONS = {
   },
   "M-003": {
     id: "M-003", title: "미분류 흔적 추적",
+    codename: "UNCLASSIFIED TRACE", threat: "HIGH",
+    hero: "assets/images/missions/mission_m003_unclassified_trace_clean.webp",
+    intel: { grid: "37.4512 N, 126.6321 E", depth: "SURFACE +0 m", env: "COASTAL RIDGE" },
+    report: [
+      { label: "DB 패턴 일치", value: "0건 — UNMATCHED", level: "danger" },
+      { label: "은폐 기술", value: "전문 등급 CONFIRMED", level: "warn" },
+      { label: "장비 출처", value: "비한국제 / 군용 아님", level: "warn" },
+      { label: "좌표 정합", value: "해안 방벽 노드 일치 DETECTED", level: "danger" },
+      { label: "대상 신원", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "독자 추적 비권장 / 위임", level: "info" }
+    ],
     nodes: {
       start: {
         text: "기지 인근 재탐지 좌표 도착.\n\n흔적이 선명하다. 전문적인 은폐 — 그러나 완벽하지 않다. 의도적으로 남긴 것인가?\n\n두 갈래 경로. 하나는 산 쪽, 하나는 마을 쪽.",
         choices: [
-          { label: "▸ 산 쪽 경로 추적", next: "mountain" },
-          { label: "▸ 마을 쪽 경로 추적", next: "village" },
-          { label: "▸ ORACLE에 경로 분석 요청", next: "oracle_path", g: 2 },
+          { label: "▸ 산 쪽 경로 추적", next: "mountain", sub: "산악 경로 추적", risk: "HIGH", icon: "crosshair" },
+          { label: "▸ 마을 쪽 경로 추적", next: "village", sub: "마을 경로 추적", risk: "MEDIUM", icon: "crosshair" },
+          { label: "▸ ORACLE에 경로 분석 요청", next: "oracle_path", g: 2, sub: "원격 동선 분석", risk: "LOW", icon: "dish" },
         ]
       },
       mountain: {
@@ -90,13 +123,23 @@ var MISSIONS = {
   },
   "M-004": {
     id: "M-004", title: "SPEC-001 확인 및 격리 판정",
+    codename: "MANNEQUIN", spec: "SPEC-001", threat: "HIGH",
+    intel: { grid: "37.5443 N, 127.0557 E", depth: "+6.8 m (2F)", env: "DORMANT NEST" },
+    report: [
+      { label: "열 서명", value: "4 CONTACTS DETECTED", level: "danger" },
+      { label: "체온", value: "34°C — 정상 이하", level: "warn" },
+      { label: "감염 단계", value: "EV-Σ PHASE 1 (CONFIRMED)", level: "warn" },
+      { label: "전환 위험", value: "VERY HIGH — 자극 시 0.3초 폭력 전환", level: "danger" },
+      { label: "예상 사상자", value: "산출 불가 — 표본 부족", level: "err" },
+      { label: "권장 접근 방식", value: "3m 이내 접근 금지 / 열감지 확인 후 판정", level: "info" }
+    ],
     nodes: {
       start: {
         text: "열감지 드론 정찰에서 2층 건물 내부에 비정상 열 서명 4건이 감지되었다. 체온 34°C 전후 — 정상 범위보다 낮지만 생체 반응은 있다.\n\n윤세진의 분석: SPEC-001(Mannequin) Phase 1으로 추정.\n\n직접 확인 후 격리 등급을 판정해야 한다.\n\n건물에 진입한다. 강도윤이 뒤를 따른다.\n\n2층 복도 — 끝에 인간 형태가 서 있다. 드론 영상에서 본 것과 같은 위치.",
         choices: [
-          { label: "▸ 제거 작전 개시 — 원거리 무력화", next: "eliminate" },
-          { label: "▸ 연구용 개체 확보 시도 — 비접촉 격리 포획", next: "capture" },
-          { label: "▸ ORACLE 원격 스캔 요청", next: "oracle", g: 2 },
+          { label: "▸ 제거 작전 개시 — 원거리 무력화", next: "eliminate", sub: "원거리 무력화", risk: "HIGH", icon: "fire" },
+          { label: "▸ 연구용 개체 확보 시도 — 비접촉 격리 포획", next: "capture", sub: "비접촉 격리 포획", risk: "VERY HIGH", icon: "flask" },
+          { label: "▸ ORACLE 원격 스캔 요청", next: "oracle", g: 2, sub: "ORACLE 원격 스캔", risk: "MEDIUM", icon: "dish" },
         ]
       },
       eliminate: {

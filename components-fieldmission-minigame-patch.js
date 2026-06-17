@@ -10,6 +10,9 @@ function FieldMission(p){
   var s5=useState(null),pendingChoice=s5[0],setPendingChoice=s5[1];
   var s6=useState(null),missionBonus=s6[0],setMissionBonus=s6[1];
   var s7=useState(null),missionNarrative=s7[0],setMissionNarrative=s7[1];
+  var s8=useState(true),briefOpen=s8[0],setBriefOpen=s8[1];
+  var s9=useState(false),reportOpen=s9[0],setReportOpen=s9[1]; // ANALYSIS REPORT 기본 접힘
+  var briefRef=useRef(null);
 
   function getMissionI18nKey(missionId,nodeId){
     return missionId+'_'+nodeId;
@@ -118,6 +121,9 @@ function FieldMission(p){
     return function(){clearInterval(t);};
   },[nodeId,node.text,choiceLabelSignature]);
 
+  // BRIEFING 박스 내부 스크롤: 타이핑 중엔 최신 줄을 따라가고, 완료되면 상단으로 리셋해 처음부터 읽히게 한다.
+  useEffect(function(){ if(!briefRef.current)return; briefRef.current.scrollTop=showChoices?0:briefRef.current.scrollHeight; },[textShown,briefOpen,showChoices]);
+
   function finalizeChoice(choice,extraBonus){
     if(choice.next==='end'){
       var bonus=(extraBonus!==undefined)?extraBonus:missionBonus;
@@ -200,37 +206,164 @@ function FieldMission(p){
     return function(){window.removeEventListener('keydown',onKey);};
   },[showChoices,visChoices,activeMiniGame,missionBonus]);
 
-  return h('div',{className:'screen fm-mission-screen',style:{overflow:'hidden'}},
-    IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.08}}),
-    h('div',{style:{width:'100%',maxWidth:420,padding:'6px 0',flexShrink:0}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'#f0a030',letterSpacing:2,textAlign:'center'}},tt('fieldMission.title',null,'FIELD MISSION')),
-      h('div',{style:{fontSize:13,color:'#ccddcc',textAlign:'center',marginTop:2}},missionTitle),
-      mImg&&nodeId==='start'&&h('img',{src:mImg,className:'mission-img',alt:missionTitle})
+  // ── HUD dossier 렌더 (시안 기반). 데이터 필드(codename/threat/intel/report, 선택지 sub/crew/risk/icon)는 전부 optional·폴백. ──
+  var act=p.act||1;
+  var fxOff=(function(){try{return (typeof Save!=='undefined'&&Save.get&&Save.get('ts_fxMode',null)==='off')}catch(e){return false}})();
+  var isStart=nodeId==='start';
+  var codename=mission.codename||'';
+  var specTag=mission.spec||'';
+  var threat=mission.threat||'ACTIVE';
+  // i18n: EN 로케일이면 tc('missions',id)에서 dossier(report/intel/subs)를 가져와 한국어 노출 방지. 없으면 base(KO) 폴백.
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
+  var mLoc=(typeof tc==='function')?tc('missions',mission.id||p.missionId,null):null;
+  var intel=(mLoc&&mLoc.intel)?Object.assign({},mission.intel||{},mLoc.intel):mission.intel;
+  var report=(mLoc&&mLoc.report)||mission.report;
+  // 헤더 중앙=코드네임(BLOOD PIT), 위협 스트립=SPEC — 중복 제거
+  var headBig=codename||missionTitle;
+  var headName='';
+  if(codename){headName=missionTitle;if(specTag&&headName.indexOf(specTag)===0){headName=headName.slice(specTag.length).replace(/^[\s\-:]+/,'');}}
+  var threatCode=specTag||'';
+  function actAccent(a){return '#f0a030';} // 필드미션 색 통일(앰버/레드) — Act 틴트 미사용
+  function fmIcon(name){
+    var st={viewBox:'0 0 24 24',width:22,height:22,fill:'none',stroke:'currentColor',strokeWidth:1.6,strokeLinecap:'round',strokeLinejoin:'round',className:'fm-ic fm-ic--'+name};
+    var stf=Object.assign({},st,{fill:'currentColor',stroke:'none'});
+    if(name==='fire')return h('svg',stf,h('path',{d:'M12 21a6 6 0 0 0 6-6c0-4-4-6-4-10 0 0-3 2-3 6 0 0-2-1-2-3-2 2-3 4-3 7a6 6 0 0 0 6 6z'}));
+    if(name==='flask')return h('svg',st,h('path',{d:'M9 2h6'}),h('path',{d:'M10 2v7l-4.3 8.6A1.5 1.5 0 0 0 7 20h10a1.5 1.5 0 0 0 1.3-2.4L14 9V2'}),h('path',{d:'M7.5 15h9'}));
+    if(name==='dish')return h('svg',st,h('path',{d:'M3 21l5-5'}),h('path',{d:'M5 14a10 10 0 0 1 10-10'}),h('path',{d:'M8 14a6 6 0 0 1 6-6'}),h('circle',{cx:16.5,cy:7.5,r:1.3,fill:'currentColor',stroke:'none'}));
+    if(name==='shield')return h('svg',st,h('path',{d:'M12 3l7 2.5v5.5c0 4.2-2.9 7.3-7 8.5-4.1-1.2-7-4.3-7-8.5V5.5z'}));
+    if(name==='seal')return h('svg',st,h('rect',{x:5,y:11,width:14,height:9,rx:1.5}),h('path',{d:'M8 11V8a4 4 0 0 1 8 0v3'}),h('circle',{cx:12,cy:15,r:1.1,fill:'currentColor',stroke:'none'}));
+    if(name==='water')return h('svg',st,h('path',{d:'M3 9c2.2-2 4.3-2 6.5 0s4.3 2 6.5 0 3.8-1.6 5-1.5'}),h('path',{d:'M3 15c2.2-2 4.3-2 6.5 0s4.3 2 6.5 0 3.8-1.6 5-1.5'}));
+    if(name==='exit')return h('svg',st,h('path',{d:'M13 4h6v16h-6'}),h('path',{d:'M3 12h11'}),h('path',{d:'M8.5 7l5 5-5 5'}));
+    if(name==='light')return h('svg',st,h('circle',{cx:12,cy:12,r:3.4}),h('path',{d:'M12 2v2.4 M12 19.6V22 M2 12h2.4 M19.6 12H22 M5 5l1.7 1.7 M17.3 17.3 19 19 M19 5l-1.7 1.7 M6.7 17.3 5 19'}));
+    if(name==='person')return h('svg',st,h('circle',{cx:12,cy:8,r:3.5}),h('path',{d:'M5.5 20a6.5 6.5 0 0 1 13 0'}));
+    if(name==='wave')return h('svg',st,h('circle',{cx:5,cy:12,r:1.4,fill:'currentColor',stroke:'none'}),h('path',{d:'M9 9a5 5 0 0 1 0 6'}),h('path',{d:'M12.5 6a9 9 0 0 1 0 12'}),h('path',{d:'M16 3.5a13 13 0 0 1 0 17'}));
+    if(name==='sensor')return h('svg',st,h('path',{d:'M4 17a8 8 0 0 1 16 0'}),h('path',{d:'M12 17l5-4.5'}),h('circle',{cx:12,cy:17,r:1.3,fill:'currentColor',stroke:'none'}));
+    if(name==='eye')return h('svg',st,h('path',{d:'M2 12s3.5-6.5 10-6.5 10 6.5 10 6.5-3.5 6.5-10 6.5S2 12 2 12z'}),h('circle',{cx:12,cy:12,r:2.5}));
+    if(name==='tool')return h('svg',st,h('circle',{cx:12,cy:12,r:3}),h('path',{d:'M12 4.5v2 M12 17.5v2 M4.5 12h2 M17.5 12h2 M6.7 6.7l1.4 1.4 M15.9 15.9l1.4 1.4 M17.3 6.7l-1.4 1.4 M8.1 15.9l-1.4 1.4'}));
+    if(name==='track')return h('svg',stf,h('ellipse',{cx:9,cy:8.5,rx:2,ry:3,transform:'rotate(-18 9 8.5)'}),h('ellipse',{cx:14.5,cy:15,rx:2,ry:3,transform:'rotate(-18 14.5 15)'}));
+    return h('svg',st,h('circle',{cx:12,cy:12,r:7}),h('path',{d:'M12 2v3 M12 19v3 M2 12h3 M19 12h3'})); // crosshair = 사격/무력화/제거(기본)
+  }
+  // 선택지 텍스트(부제+라벨) 키워드로 아이콘 자동 매핑 — 내용 정합. c.icon은 더 이상 사용하지 않음.
+  function pickIcon(c){
+    var s=((c&&c.sub)||'')+' '+((c&&c.label)||'');
+    if(/ORACLE|원격|위임|전술 지원|보안 패치|정비/.test(s))return 'dish';
+    if(/소각|화염|소독/.test(s))return 'fire';
+    if(/봉인|봉쇄|차단/.test(s))return 'seal';
+    if(/차폐|방호|검역|방어/.test(s))return 'shield';
+    if(/배수|수중|침수/.test(s))return 'water';
+    if(/후퇴|철수/.test(s))return 'exit';
+    if(/조명|섬광/.test(s))return 'light';
+    if(/면담|심문|인터뷰/.test(s))return 'person';
+    if(/교란|음향|음원|신호|주파수/.test(s))return 'wave';
+    if(/계측|장비 설치|센서/.test(s))return 'sensor';
+    if(/감시|관측|트랩|감시망|정찰/.test(s))return 'eye';
+    if(/물리 제거|하드웨어|추출/.test(s))return 'tool';
+    if(/표본|포획|생포|확보|연구|배양|샘플/.test(s))return 'flask';
+    if(/추적|수색|동선|경로|조사/.test(s))return 'track';
+    return 'crosshair';
+  }
+  function opTitle(c){var s=(c.label||'').replace(/^[▸\s]+/,'');var i=s.indexOf('—');return i>=0?s.slice(0,i).trim():s.trim();}
+  function opSub(c){var lbl=(c.label||'');var i=lbl.indexOf('—');if(i>=0)return lbl.slice(i+1).trim();if(mLoc&&mLoc.subs&&mLoc.subs[c.next])return mLoc.subs[c.next];return c.sub||'';}
+  function riskFill(r){r=(r||'').toUpperCase();return r.indexOf('VERY')>=0?9:r==='HIGH'?6:r==='MEDIUM'?4:r==='LOW'?2:5;}
+  function riskCls(r){r=(r||'').toUpperCase();return r.indexOf('VERY')>=0?'fm-rk--danger':r==='HIGH'?'fm-rk--warn':'fm-rk--info';}
+  function bars(n,total){var a=[];for(var k=0;k<total;k++){a.push(h('i',{key:k,className:k<n?'on':''}));}return a;}
+  function metaRow(k,v){if(!v)return null;return h('div',{className:'fm-hero-metarow'},h('span',{className:'fm-hero-metak'},k),h('span',{className:'fm-hero-metav'},v));}
+  function paras(cls){return (textShown||'').split('\n\n').map(function(t,i){return h('div',{key:i,className:cls+(/^\[ORACLE/.test(t)?' fm-p--oracle':'')},t);});}
+  var cursor=!showChoices&&h('span',{className:'fm-cursor'},'..');
+
+  function fmHeader(){
+    return h('div',{className:'fm-head'},
+      h('div',{className:'fm-head-side fm-head-l'},h('div',{className:'fm-head-proto'},'ORACLE PROTOCOL'),h('div',{className:'fm-head-line'},'FIELD SESSION')),
+      h('div',{className:'fm-head-c'},
+        h('div',{className:'fm-head-tag'},tt('fieldMission.title',null,'FIELD MISSION')),
+        h('div',{className:'fm-head-spec'},headBig),
+        headName&&h('div',{className:'fm-head-name'},headName)
+      ),
+      h('div',{className:'fm-head-side fm-head-r'},
+        h('div',{className:'fm-head-stlbl'},'MISSION STATUS'),
+        h('div',{className:'fm-head-st'+(isStart?'':' is-active')},isStart?'STANDBY':'ACTIVE'),
+        h('div',{className:'fm-head-bars'},bars(isStart?2:4,6))
+      )
+    );
+  }
+  function fmThreat(){
+    return h('div',{className:'fm-threat'},
+      h('div',{className:'fm-threat-code'},threatCode),
+      h('div',{className:'fm-threat-r'},
+        h('span',{className:'fm-threat-lbl'},'THREAT LEVEL'),
+        h('span',{className:'fm-threat-badge fm-threat--'+String(threat).toLowerCase().replace(/\s+/g,'')},'☢ '+threat)
+      )
+    );
+  }
+  var heroSrc=mission.hero||mImg;
+  function fmHero(){
+    if(!heroSrc)return null;
+    return h('div',{className:'fm-hero'+(fxOff?' fm-no-anim':'')},
+      h('img',{src:heroSrc,className:'fm-hero-img',alt:missionTitle}),
+      h('div',{className:'fm-hero-grad'}),
+      h('div',{className:'fm-hero-radar'},h('span',{className:'fm-hero-sweep'})),
+      h('div',{className:'fm-hero-gauge'},bars(0,0)),
+      intel&&h('div',{className:'fm-hero-meta'},metaRow('GRID',intel.grid),metaRow('DEPTH',intel.depth),metaRow('ENVIRONMENT',intel.env)),
+      h('div',{className:'fm-hero-rec'},h('span',{className:'fm-hero-recdot'}),'REC')
+    );
+  }
+  function reportCard(r,i){
+    return h('div',{key:i,className:'fm-rcard fm-rcard--'+(r.level||'info')},h('div',{className:'fm-rcard-lbl'},r.label),h('div',{className:'fm-rcard-val'},r.value));
+  }
+  function opCard(c,i){
+    var isTrust=!!c.trustReq,sub=opSub(c);
+    return h('button',{key:i,className:'fm-op'+(isTrust?' fm-op--trust':''),onClick:function(){handleChoice(c);}},
+      h('div',{className:'fm-op-ico'},fmIcon(pickIcon(c))),
+      h('div',{className:'fm-op-body'},
+        h('div',{className:'fm-op-top'},
+          h('span',{className:'fm-op-num'},(i<9?'0':'')+(i+1)),
+          h('span',{className:'fm-op-title'},opTitle(c)),
+          isTrust&&h('span',{className:'fm-op-trusttag'},tt('fieldMission.trustTag',null,'[신뢰]'))
+        ),
+        sub&&h('div',{className:'fm-op-sub'},sub),
+        c.risk&&h('div',{className:'fm-op-meta'},
+          h('span',{className:'fm-op-riskwrap'},(locale==='en'?'RISK ':'위험도 '),h('b',{className:riskCls(c.risk)},c.risk),h('span',{className:'fm-rk '+riskCls(c.risk)},bars(riskFill(c.risk),10)))
+        )
+      )
+    );
+  }
+  function nodeChoice(c,i){
+    var isTrust=!!c.trustReq,isEnd=c.next==='end';
+    return h('button',{key:i,className:'fm-nchoice'+(isEnd?' is-end':'')+(isTrust?' is-trust':''),onClick:function(){handleChoice(c);}},
+      h('span',{className:'fm-nchoice-num'},(i+1)+''),
+      isTrust&&h('span',{className:'fm-nchoice-trust'},tt('fieldMission.trustTag',null,'[신뢰]')),
+      h('span',{className:'fm-nchoice-label'},c.label)
+    );
+  }
+
+  var body=isStart
+    ? h('div',{className:'fm-brief-wrap'},
+        fmHero(),
+        h('div',{className:'fm-panels'},
+          h('div',{className:'fm-panel fm-panel--brief'+(briefOpen?'':' is-collapsed')},
+            h('button',{className:'fm-panel-h fm-panel-toggle',onClick:function(){setBriefOpen(function(v){return !v})}},h('span',{className:'fm-panel-chev'},briefOpen?'▾':'▸'),'▤ BRIEFING'),
+            briefOpen&&h('div',{className:'fm-brief-body',ref:briefRef},paras('fm-p'),cursor)
+          ),
+          report&&h('div',{className:'fm-panel fm-panel--report'+(reportOpen?'':' is-collapsed')},
+            h('button',{className:'fm-panel-h fm-panel-toggle',onClick:function(){setReportOpen(function(v){return !v})}},h('span',{className:'fm-panel-chev'},reportOpen?'▾':'▸'),'ANALYSIS REPORT',h('span',{className:'fm-panel-count'},'('+report.length+')')),
+            reportOpen&&h('div',{className:'fm-report'},report.map(reportCard))
+          )
+        ),
+        showChoices&&h('div',{className:'fm-ops-wrap'},h('div',{className:'fm-ops-h'},'SELECT OPERATION'),h('div',{className:'fm-ops'},visChoices.map(opCard)))
+      )
+    : h('div',{className:'fm-node-wrap'},
+        h('div',{className:'fm-panel fm-panel--report'},h('div',{className:'fm-panel-h'},'▣ FIELD REPORT'),h('div',{className:'fm-node-body'},paras('fm-np'),cursor)),
+        showChoices&&h('div',{className:'fm-nchoices'},visChoices.map(nodeChoice))
+      );
+
+  return h('div',{className:'screen fm-screen'+(isStart?' fm-screen--brief':' fm-screen--node')+(fxOff?' fm-no-anim':''),style:{'--fm-accent':actAccent(act)}},
+    IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.04}}),
+    h('div',{className:'fm-wrap'},
+      fmHeader(),
+      fmThreat(),
+      body,
+      h('div',{className:'fm-foot'},tt('fieldMission.footer',null,'ORACLE REMOTE TERMINAL — FIELD OPS'))
     ),
-    h('div',{style:{flex:1,width:'100%',maxWidth:420,overflowY:'auto',minHeight:0,padding:'4px 0',WebkitOverflowScrolling:'touch'}},
-      h('div',{style:{fontSize:13,lineHeight:1.7,color:'var(--ui)',whiteSpace:'pre-wrap',borderLeft:'2px solid var(--ui-dim)',paddingLeft:12}},textShown,!showChoices&&h('span',{style:{animation:'blink 1s infinite'}},'..'))
-    ),
-    showChoices&&h('div',{style:{width:'100%',maxWidth:420,flexShrink:0,display:'flex',flexDirection:'column',gap:6,padding:'6px 0'}},
-      visChoices.map(function(c,i){
-        var isTrust=!!c.trustReq;
-        return h('button',{
-          key:i,
-          onClick:function(){handleChoice(c);},
-          style:{
-            background:isTrust?'rgba(240,160,48,.06)':'var(--ui-bg)',
-            border:'1px solid '+(isTrust?'rgba(240,160,48,.4)':'var(--ui-border)'),
-            borderRadius:4,padding:'10px 14px',cursor:'pointer',textAlign:'left',
-            color:c.next==='end'?'#f0a030':isTrust?'#f0c060':'var(--ui)',fontSize:12,lineHeight:1.5,fontFamily:'inherit'
-          }
-        },
-          h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.3)',marginRight:8,minWidth:14,display:'inline-block'}},(i+1)+''),
-          isTrust&&h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#f0a030',letterSpacing:1,marginRight:6}},tt('fieldMission.trustTag',null,'[신뢰]')),
-          h('span',{style:{marginRight:6,opacity:0.5}},'>'),
-          c.label
-        );
-      })
-    ),
-    h('div',{className:'footer',style:{flexShrink:0}},tt('fieldMission.footer',null,'ORACLE REMOTE TERMINAL — FIELD OPS')),
     activeMiniGame&&h(FieldMiniGameOverlay,{game:activeMiniGame,onDone:handleMiniGameDone})
   );
 }
