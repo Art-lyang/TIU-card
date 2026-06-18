@@ -13,6 +13,9 @@ function FieldMission(p){
   var s8=useState(true),briefOpen=s8[0],setBriefOpen=s8[1];
   var s9=useState(false),reportOpen=s9[0],setReportOpen=s9[1]; // ANALYSIS REPORT 기본 접힘
   var briefRef=useRef(null);
+  var rootRef=useRef(null);
+  // 미니게임 진입 시 화면을 상단으로 스냅 — 절대배치 오버레이가 직전 스크롤 위치에 가려지지 않게(몰입도)
+  useEffect(function(){ if(activeMiniGame&&rootRef.current){ rootRef.current.scrollTop=0; } },[activeMiniGame]);
 
   function getMissionI18nKey(missionId,nodeId){
     return missionId+'_'+nodeId;
@@ -356,7 +359,7 @@ function FieldMission(p){
         showChoices&&h('div',{className:'fm-nchoices'},visChoices.map(nodeChoice))
       );
 
-  return h('div',{className:'screen fm-screen'+(isStart?' fm-screen--brief':' fm-screen--node')+(fxOff?' fm-no-anim':''),style:{'--fm-accent':actAccent(act)}},
+  return h('div',{ref:rootRef,className:'screen fm-screen'+(isStart?' fm-screen--brief':' fm-screen--node')+(fxOff?' fm-no-anim':''),style:{'--fm-accent':actAccent(act)}},
     IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.04}}),
     h('div',{className:'fm-wrap'},
       fmHeader(),
