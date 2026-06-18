@@ -47,6 +47,7 @@ function EndingScreen(p) {
   var progress = Math.round((unlockedCount / Math.max(1,total)) * 100);
   var getEndingView = function(id,fallback){ return (typeof tc === 'function') ? tc('endings',id,fallback||{}) : (fallback||{}); };
   var getMeta = function(cat){ return ENDING_CATEGORY_META[cat] || { label:cat, labelEn:cat, color:'#888' }; };
+  var endingNo = function(id){ var i = ENDING_CATALOG.map(function(x){return x.id;}).indexOf(id); return i>=0 ? ('#'+('0'+(i+1)).slice(-2)) : ''; };
 
   function renderNarrative(lines){
     return h('div', { style: { fontSize:12, lineHeight:2, padding:'0 16px', maxWidth:460, margin:'0 auto', whiteSpace:'pre-wrap' } },
@@ -70,7 +71,7 @@ function EndingScreen(p) {
     return h('div', { className:'screen' },
       h('div', { style: { width:'100%', maxWidth:500, padding:'20px 0', flex:1, overflowY:'auto' } },
         h('div', { style: { fontFamily:"'Share Tech Mono',monospace", fontSize:11, color:'var(--ui-dim)', letterSpacing:2, textAlign:'center', marginBottom:8 } },
-          (lockedDetail ? tt('endingGallery.hintCard', null, isKo ? 'ENDING HINT CARD' : 'ENDING HINT CARD') : tt('endingGallery.trophyCard', null, isKo ? 'ENDING TROPHY' : 'ENDING TROPHY')) + ' - ' + sel.id),
+          (lockedDetail ? tt('endingGallery.hintCard', null, isKo ? 'ENDING HINT CARD' : 'ENDING HINT CARD') : tt('endingGallery.trophyCard', null, isKo ? 'ENDING TROPHY' : 'ENDING TROPHY')) + ' · ' + endingNo(sel.id)),
         h('div', { style: { textAlign:'center', marginBottom:12 } },
           h('span', { style: { display:'inline-block', fontFamily:"'Share Tech Mono',monospace", fontSize:10, letterSpacing:1.5, color:meta.color, border:'1px solid '+meta.color, borderRadius:3, padding:'3px 8px', background:'rgba(0,0,0,.35)' } }, isKo ? meta.label : meta.labelEn)),
         lockedDetail ? h('div', { style: { margin:'0 auto 16px', maxWidth:460, minHeight:190, border:'1px solid rgba(240,160,48,.28)', borderRadius:4, background:'linear-gradient(180deg, rgba(20,14,4,.72), rgba(4,4,4,.92))', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:22, textAlign:'center' } },
@@ -99,7 +100,7 @@ function EndingScreen(p) {
           h('span', { style: { fontSize:25, lineHeight:1 } }, '?'),
           h('span', { style: { fontSize:9, marginTop:8 } }, tt('endingGallery.hint', null, 'HINT'))),
         !locked && h('div', { style: { position:'absolute', inset:0, background:'linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.58))' } }),
-        h('div', { style: { position:'absolute', top:6, left:8, fontFamily:"'Share Tech Mono',monospace", fontSize:9, letterSpacing:1, color:locked ? '#f0a030' : meta.color, background:'rgba(0,0,0,.58)', padding:'2px 6px', borderRadius:2 } }, '[' + e.id + ']'),
+        h('div', { style: { position:'absolute', top:6, left:8, fontFamily:"'Share Tech Mono',monospace", fontSize:9, letterSpacing:1, color:locked ? '#f0a030' : meta.color, background:'rgba(0,0,0,.58)', padding:'2px 6px', borderRadius:2 } }, endingNo(e.id)),
         h('div', { style: { position:'absolute', right:8, bottom:7, fontFamily:"'Share Tech Mono',monospace", fontSize:9, letterSpacing:1.5, color:locked ? '#9a6c28' : '#7affc6' } }, locked ? tt('endingGallery.hintCardShort', null, 'HINT CARD') : tt('endingGallery.trophy', null, 'TROPHY'))
       ),
       h('div', { style: { padding:'10px 12px 12px' } },
