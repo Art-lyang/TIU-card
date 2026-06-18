@@ -939,3 +939,20 @@ b.fm-rk--info{color:#caa14a}
 .bf-enter{margin:5px auto 0;padding:13px 40px;flex-shrink:0;font-family:'Share Tech Mono',monospace;letter-spacing:2px;color:var(--ui);border:1px solid rgba(var(--ui-rgb),.55);background:rgba(var(--ui-rgb),.08);box-shadow:0 0 14px rgba(var(--ui-rgb),.15)}
 .bf-enter:hover{background:rgba(var(--ui-rgb),.16)}
 @media(max-width:480px){.bf-hero{height:160px}.bf-hero-num{font-size:48px}.bf-directive{font-size:12.5px}}
+
+/* ── ENDING / GAME OVER — dossier (reuses .bf-* grammar) ───────── */
+.go-hero{height:186px}
+.go-hero-tag{position:absolute;left:13px;top:34px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:2px;color:rgba(var(--ui-rgb),.7)}
+.go-ending-name{position:absolute;left:13px;right:13px;bottom:26px;font-size:21px;font-weight:700;color:#f3efe6;text-shadow:0 0 14px rgba(var(--ui-rgb),.5);letter-spacing:.5px;line-height:1.12}
+.go-hero-day{position:absolute;left:13px;bottom:9px;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(var(--ui-rgb),.78)}
+.go-archived{position:absolute;right:11px;top:10px;display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(var(--ui-rgb),.8)}
+.go-narr{font-size:13px;line-height:1.9}
+.go-narr-line{color:var(--ui-text,#cdd6dd);white-space:pre-wrap}
+.go-narr-cmd{color:var(--ui);font-family:'Share Tech Mono',monospace;font-weight:700;text-shadow:0 0 8px rgba(var(--ui-rgb),.4);white-space:pre-wrap}
+.go-reason{color:var(--ui-text,#cdd6dd);font-size:14px;line-height:1.6;margin-bottom:12px}
+.go-msg{font-style:italic;color:rgba(var(--ui-rgb),.72);margin-top:13px;font-size:13px;line-height:1.6}
+.go-grant{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(var(--ui-rgb),.78);letter-spacing:1px;margin-top:12px}
+.go-btns{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;padding-bottom:10px}
+.go-btnrow{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
+.go-btnrow .btn{font-size:12px;padding:9px 16px;min-height:42px;margin-top:0}
+@media(max-width:480px){.go-hero{height:158px}.go-ending-name{font-size:18px}}

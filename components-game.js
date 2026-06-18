@@ -1039,19 +1039,42 @@ function GameOver(p){
     var endView=tc('endings',p.endId,null);
     if(endView)narr=Object.assign({},narr||{},endView);
   }
-  var imgStyle={width:'100%',maxWidth:420,borderRadius:8,marginBottom:16,opacity:0.9};
   var resultDay=(p.resultDay||(p.stats&&p.stats.day)||'?');
-  var resultDayNode=h('div',{className:'go-stat'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay));
-  var btns=h('div',{style:{flexShrink:0,display:'flex',flexDirection:'column',alignItems:'center',gap:10,paddingBottom:20}},
-    h('button',{className:'btn btn-amber',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
-    h('div',{style:{display:'flex',gap:10,flexWrap:'wrap',justifyContent:'center'}},p.onMainMenu&&h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',style:{fontSize:12,padding:'10px 18px',minHeight:44,marginTop:0},onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
-  if(narr&&narr.narrative){var eImg=(p.endImg&&IMG[p.endImg])||(p.endId?IMG['ending_'+p.endId]:null);return h('div',{className:'boot',style:{justifyContent:'flex-start',paddingTop:20,overflowY:'auto'}},eImg&&h('img',{src:eImg,alt:narr.name,style:imgStyle}),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:8,flexShrink:0}},'ENDING: '+narr.name),resultDayNode,h('div',{style:{fontSize:13,lineHeight:2,maxWidth:420,width:'100%',padding:'0 8px'}},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,style:{color:isCmd?'#f0a030':isEmpty?'transparent':'var(--ui)',fontFamily:isCmd?"'Share Tech Mono',monospace":'inherit',fontWeight:isCmd?'bold':'normal',minHeight:isEmpty?10:'auto',whiteSpace:'pre-wrap',textAlign:'left'}},isEmpty?'\u00A0':l)})),btns)}
-  var eid=p.endId||'',rsn=p.reason||'',goImg=null;
-  if(eid.indexOf('C_c')===0||/봉쇄|Containment/i.test(rsn))goImg=IMG.ending_C_c;
-  else if(eid==='C_r'||/자원|Resource/i.test(rsn))goImg=IMG.ending_C_r;
-  else if(eid==='C_t'||/신뢰|Trust/i.test(rsn))goImg=IMG.ending_C_t;
-  else if(eid==='C_o'||/평가|접속|Evaluation|ORACLE access/i.test(rsn))goImg=IMG.ending_C_o;
-  return h('div',{className:'boot',style:{overflowY:'auto'}},goImg&&h('img',{src:goImg,alt:'Game Over',style:imgStyle}),h('div',{style:{fontSize:13,lineHeight:1.9,maxWidth:420,width:'100%',textAlign:'center'}},h('div',{className:'go-title'},tt('gameOver.title',{session:p.sessions+1},'─── SESSION #'+(p.sessions+1)+' TERMINATED ───')),h('div',{className:'go-reason'},p.reason),resultDayNode,h('div',{className:'go-section'},tt('gameOver.reportSection',null,'── ORACLE 최종 보고 ──')),h('div',{className:'go-stat'},tt('gameOver.duration',{days:p.stats.day},'운영 기간: '+p.stats.day+'일')),h('div',{className:'go-stat'},tt('gameOver.stats',{c:p.stats.c,r:p.stats.r,t:p.stats.t,o:p.stats.o},'봉쇄: '+p.stats.c+' | 자원: '+p.stats.r+' | 신뢰: '+p.stats.t+' | 평가: '+p.stats.o)),h('div',{className:'go-msg'},'"'+msg+'"'),h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.78)',marginTop:12,letterSpacing:1}},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE'))),btns);
+  var sessionNo=(p.sessions||0)+1;
+  var statNames={c:tt('stats.c',null,'Containment'),r:tt('stats.r',null,'Resources'),t:tt('stats.t',null,'Trust'),o:tt('stats.o',null,'Evaluation')};
+  var eImg=(p.endImg&&IMG[p.endImg])||(p.endId?IMG['ending_'+p.endId]:null);
+  if(!eImg){var _eid=p.endId||'',_rsn=p.reason||'';if(_eid.indexOf('C_c')===0||/봉쇄|Containment/i.test(_rsn))eImg=IMG.ending_C_c;else if(_eid==='C_r'||/자원|Resource/i.test(_rsn))eImg=IMG.ending_C_r;else if(_eid==='C_t'||/신뢰|Trust/i.test(_rsn))eImg=IMG.ending_C_t;else if(_eid==='C_o'||/평가|접속|Evaluation|ORACLE access/i.test(_rsn))eImg=IMG.ending_C_o;}
+  var isNarr=!!(narr&&narr.narrative);
+  var endName=(narr&&narr.name)||p.reason||'SESSION CLOSED';
+  var header=h('div',{className:'bf-head'},
+    h('div',{className:'bf-head-side'},'ORACLE',h('br'),'// SESSION',h('br'),'CLOSED'),
+    h('div',{className:'bf-head-c'},h('div',{className:'bf-head-tag'},'FINAL RECORD'),h('div',{className:'bf-head-acts'},h('b',null,'SESSION #'+sessionNo))),
+    h('div',{className:'bf-head-side bf-head-r'},h('div',{className:'bf-head-prio'},'RESULT DAY',h('br'),h('b',null,String(resultDay))),h('div',{className:'bf-head-bars'},[0,1,2,3].map(function(i){return h('i',{key:i,className:'on'})}))));
+  var hero=h('div',{className:'bf-hero go-hero'},
+    eImg&&h('img',{src:eImg,alt:endName,className:'bf-hero-img'}),
+    h('div',{className:'bf-hero-grad'}),h('div',{className:'bf-hero-scan'}),
+    h('div',{className:'go-archived'},h('span',{className:'bf-hero-recdot'}),'ARCHIVED'),
+    h('div',{className:'go-hero-tag'},isNarr?'ENDING':'TERMINATED'),
+    h('div',{className:'go-ending-name'},endName),
+    h('div',{className:'go-hero-day'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay)),
+    h('span',{className:'bf-corner tl'}),h('span',{className:'bf-corner tr'}),h('span',{className:'bf-corner bl'}),h('span',{className:'bf-corner br'}));
+  var body;
+  if(isNarr){
+    body=h('div',{className:'bf-panel'},
+      h('div',{className:'bf-panel-h'},'// FINAL TRANSMISSION',h('span',null,'SESSION #'+sessionNo)),
+      h('div',{className:'go-narr'},narr.narrative.map(function(l,i){var isCmd=l.indexOf('>')===0||l.indexOf('[')===0;var isEmpty=l==='';return h('div',{key:i,className:isCmd?'go-narr-cmd':'go-narr-line',style:{minHeight:isEmpty?10:'auto'}},isEmpty?' ':l)})));
+  }else{
+    body=h('div',{className:'bf-panel'},
+      h('div',{className:'bf-panel-h'},tt('gameOver.reportSection',null,'ORACLE 최종 보고'),h('span',null,tt('gameOver.duration',{days:p.stats.day},'DAY '+p.stats.day))),
+      p.reason&&h('div',{className:'go-reason'},p.reason),
+      h('div',{className:'bf-gauges'},['c','r','t','o'].map(function(k){var v=p.stats[k];var low=v<=25;return h('div',{key:k,className:'bf-gauge'+(low?' low':'')},h('div',{className:'bf-gauge-top'},h('span',{className:'bf-gauge-lbl'},statNames[k]),h('span',{className:'bf-gauge-val'},v+'%')),h('div',{className:'bf-gauge-track'},h('div',{className:'bf-gauge-fill',style:{width:Math.max(0,Math.min(100,v))+'%'}})))})),
+      h('div',{className:'go-msg'},'"'+msg+'"'),
+      h('div',{className:'go-grant'},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE')));
+  }
+  var btns=h('div',{className:'go-btns'},
+    h('button',{className:'btn bf-enter',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
+    h('div',{className:'go-btnrow'},p.onMainMenu&&h('button',{className:'btn',onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
+  return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,btns));
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
