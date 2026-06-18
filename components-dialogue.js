@@ -76,16 +76,17 @@ function Dialogue(p){
     return function(){window.removeEventListener('keydown',onKey)};
   },[sc,picked,chosen,choices]);
   return h('div',{className:'screen dialogue-screen'},
-    h('div',{className:'title-frame'},h('span',null,'ORACLE // COMMUNICATION')),
+    h('div',{className:'dlg-head'},
+      h('span',{className:'dlg-head-l'},'ORACLE // COMM LINK'),
+      h('span',{className:'dlg-head-r'},h('span',{className:'dlg-live'}),tt('dialogue.live',null,'LIVE'))),
     h(CharacterCommPanel,{nameKey:d.char,displayName:charName,role:charRole}),
-    h('div',{className:'oracle-card dialogue-card'},
-      h('div',{className:'oracle-card__glow'}),
+    h('div',{className:'bf-panel dlg-panel'},
+      h('div',{className:'bf-panel-h'},'// INCOMING TRANSMISSION',!sc&&!chosen?h('span',{className:'dlg-rcue'},'▶'):null),
       h('div',{className:'dialogue-scroll',ref:textRef},
         lines.slice(0,li).map(function(l,i){return h('div',{key:i,className:'dialogue-line'},String(l))}),
-        chosen&&chosen.reply&&h('div',{className:'dialogue-reply'},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▌'))),
-      !sc&&!chosen&&h('div',{style:{textAlign:'right',marginTop:4}},h('span',{style:{color:'rgba(var(--ui-rgb),.4)',animation:'blink 1s infinite',fontSize:12}},'▶'))),
+        chosen&&chosen.reply&&h('div',{className:'dialogue-reply'},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▐')))),
     sc&&!chosen&&h('div',{className:'dialogue-choices'},
-      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(var(--ui-rgb),.8)':'rgba(var(--ui-rgb),.7)';var tc={'냉정':'#6699cc','공감':'#f0c060','분석':'#33cccc','강경':'#ff6644','Cold':'#6699cc','Empathy':'#f0c060','Analysis':'#33cccc','Hardline':'#ff6644'};var tagCol=c.tag&&tc[c.tag]||'#888';return h('button',{key:i,className:'dialogue-choice-btn',style:{background:isMe?'rgba(var(--ui-rgb),.08)':'rgba(var(--ui-rgb),.045)',border:'1px solid '+(isMe?bdrSel:bdrCol),opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px rgba(var(--ui-rgb),.16)':'none',pointerEvents:picked>=0?'none':'auto'},onClick:function(){handlePick(c,i)}},
+      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(var(--ui-rgb),.8)':'rgba(var(--ui-rgb),.7)';return h('button',{key:i,className:'dialogue-choice-btn',style:{background:isMe?'rgba(var(--ui-rgb),.08)':'rgba(var(--ui-rgb),.045)',border:'1px solid '+(isMe?bdrSel:bdrCol),opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px rgba(var(--ui-rgb),.16)':'none',pointerEvents:picked>=0?'none':'auto'},onClick:function(){handlePick(c,i)}},
         h('span',null,c.label))}))
   );
 }
