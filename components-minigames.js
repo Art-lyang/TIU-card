@@ -105,13 +105,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ORACLE TRACE',
     ko: {
       title: '권한 흔적 추적',
-      intro: '인접한 노드만 따라 움직이며 KEY 흔적을 모은 뒤 EXIT로 빠져나온다. 붉은 노드는 노출도를 올린다.',
+      intro: '인접한 노드만 따라 움직이며 KEY 흔적을 둘 이상 모은 뒤 EXIT로 빠져나온다. 붉은 노드는 노출도를 올린다.',
       action: '노드 선택',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Authority Trace',
-      intro: 'Move only through adjacent nodes, collect KEY traces, then reach EXIT before exposure peaks.',
+      intro: 'Move only through adjacent nodes, collect at least two KEY traces, then reach EXIT before exposure peaks.',
       action: 'Select Node',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -121,13 +121,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ROUTE EVADE',
     ko: {
       title: '수로 추적 우회 경로',
-      intro: '제한 이동 횟수 안에 위험 타일을 피해 목표 지점까지 이동한다. 빨간 칸은 진입 즉시 실패다.',
+      intro: '제한 이동 횟수 안에 위험 칸을 피해 목표 지점까지 이동한다. 빨간 칸은 진입 즉시 실패, 황색 칸은 이동력을 2 소모한다.',
       action: '이동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Drainage Route Intercept',
-      intro: 'Reach the target within limited moves while avoiding danger tiles. Red tiles fail on contact.',
+      intro: 'Reach the target within limited moves while avoiding danger tiles. Red tiles fail on contact; amber tiles cost 2 moves.',
       action: 'Move',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -137,7 +137,7 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SAMPLE RECOVERY',
     ko: {
       title: '활성 샘플 추적 회수',
-      intro: '회수 탐침을 조작해 이동하는 활성 샘플을 회수장 안에 붙잡고 회수율을 채운다.',
+      intro: '탐침을 조작해 이동하는 활성 샘플을 포집 영역 안에 붙잡고 회수율을 채운다.',
       action: '회수 장비 작동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
@@ -882,8 +882,8 @@ function RouteMiniGame(p){
 function EvidenceMiniGame(p){
   var copy=p.copy;
   var cases=[
-    { leadKo:'벽면 좌표와 장비 흔적을 검토한다.', leadEn:'Review the wall coordinates and equipment traces.', correct:['coord','salt','boot'],
-      hintKo:'판독 기준: 장소를 특정하는 좌표, 해안 접근 흔적, 비표준 이동 흔적처럼 “어디서 들어왔고 어떻게 움직였는지”를 증명하는 단서를 고르세요.',
+    { leadKo:'각인된 해안 좌표와 장비 흔적을 검토한다.', leadEn:'Review the engraved coastline coordinates and equipment traces.', correct:['coord','salt','boot'],
+      hintKo:'판독 기준: 장소를 특정하는 좌표, 해안 접근 흔적, 비규격 이동 흔적처럼 “어디서 들어왔고 어떻게 움직였는지”를 증명하는 단서를 고르세요.',
       hintEn:'Sorting rule: choose evidence that proves where the subject entered and how they moved, such as location marks, coastal residue, and non-standard tracks.',
       items:[
       {id:'coord',ko:'해안 좌표 각인',en:'Coastline coordinates'},
@@ -904,9 +904,9 @@ function EvidenceMiniGame(p){
       {id:'light',ko:'형광등 점멸 기록',en:'Fluorescent flicker log'},
       {id:'temp',ko:'서버실 온도 편차',en:'Server room heat drift'}
     ]},
-    { leadKo:'현장 샘플 보고와 오염 흔적을 추린다.', leadEn:'Sort the live sample report from contamination noise.', correct:['spike','resin','tag'],
+    { leadKo:'현장 샘플 보고와 오염 흔적을 추린다.', leadEn:'Sift the field sample report for contamination traces.', correct:['spike','resin','tag'],
       hintKo:'판독 기준: 검체 상태 변화, 응고/잔류 물질, 오염 표식 이상처럼 샘플 오염을 직접 설명하는 단서를 고르세요.',
-      hintEn:'Sorting rule: choose clues that directly explain sample contamination: specimen-state change, residue/coagulation, and broken contamination markings.',
+      hintEn:'Sorting rule: choose clues that directly explain sample contamination: specimen-state change, residue/coagulation, and missing contamination markings.',
       items:[
       {id:'spike',ko:'급상승 포자 밀도',en:'Spore density spike'},
       {id:'resin',ko:'응고 수지 흔적',en:'Coagulated resin trace'},
