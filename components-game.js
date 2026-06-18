@@ -272,25 +272,32 @@ function Stats(p){
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isKo=locale==='ko';
   var showGiShadow=(p.sessions||0)>=2;
-  // 양방향 섀도 게이지 — 중앙(0) 기준 우측=충성(+), 좌측=저항(-). 표시 범위 ±60 (Act4 분기 임계 -30/-15/+10 가독 우선)
+  // 양방향 섀도 게이지 — 중앙(0) 기준 우측=충성(+), 좌측=저항(-). GI는 3회차+에서만, 숫자 없이 노출
   var giV=Math.max(-60,Math.min(60,p.gi||0));
   var giMag=Math.abs(giV)/60*50;
   var giPos=giV>=0;
-  return h('div',{className:isKo?'stats-pane stats-pane-ko':'stats-pane',style:{width:'100%',maxWidth:440,flexShrink:0}},
-    h('div',{className:'section-hdr'},h('span',null,tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day))),
-    sm.map(function(s){var v=p.stats[s.k],d=v<=15,hi=v>=85;var delta=pv.__delta?(pv[s.k]||0):((pv[s.k]||0)*5);var newV=Math.max(0,Math.min(100,v+delta));return h('div',{key:s.k,className:'gauge-row'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
-      h('div',{className:'gauge-icon gauge-icon-'+s.k}),
-      h('span',{className:'gauge-label'},s.l),
-      h('div',{className:'gauge-bar'},
-        h('div',{className:'gauge-bar-inner'},
-          delta>0?h('div',{style:{position:'absolute',left:v+'%',top:0,width:Math.max(0,newV-v)+'%',height:'100%',background:'rgba(var(--ui-rgb),0.22)',zIndex:1,transition:'all 0.15s'}}):null,
-          h('div',{className:'gauge-fill',style:{width:(delta<0?newV:v)+'%',transition:'width 0.15s'}}),
-          delta<0?h('div',{style:{position:'absolute',left:newV+'%',top:0,width:Math.max(0,v-newV)+'%',height:'100%',background:'rgba(255,50,50,0.3)',zIndex:1,transition:'all 0.15s'}}):null)),
-      h('span',{className:'gauge-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444',fontSize:12}:{}},delta!==0?(delta>0?'+':'')+delta:v))}),
-    showGiShadow&&h('div',{className:'gi-shadow-row','aria-hidden':'true'},
-      h('div',{className:'gi-shadow-track'},
-        h('div',{className:'gi-shadow-center'}),
-        h('div',{className:'gi-shadow-fill'+(giPos?'':' gi-neg'),style:giPos?{left:'50%',width:giMag+'%'}:{right:'50%',width:giMag+'%'}})))
+  return h('div',{className:'stats-console'+(isKo?' stats-console-ko':''),style:{width:'100%',maxWidth:440,flexShrink:0}},
+    h('div',{className:'stats-console-h'},
+      h('span',{className:'sc-h-l'},tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day)),
+      h('span',{className:'sc-h-r'},'LIVE')),
+    h('div',{className:'cg-grid'},sm.map(function(s){
+      var v=p.stats[s.k],d=v<=15,hi=v>=85;
+      var delta=pv.__delta?(pv[s.k]||0):((pv[s.k]||0)*5);
+      var newV=Math.max(0,Math.min(100,v+delta));
+      return h('div',{key:s.k,className:'cg-cell'+(d?' gauge-danger':'')+(hi?' gauge-high':'')},
+        h('div',{className:'cg-top'},
+          h('div',{className:'gauge-icon gauge-icon-'+s.k}),
+          h('span',{className:'cg-label'},s.l),
+          h('span',{className:'cg-val',style:delta!==0?{color:delta>0?'var(--ui)':'#ff4444'}:{}},delta!==0?((delta>0?'+':'')+delta):v)),
+        h('div',{className:'cg-bar'},
+          h('div',{className:'cg-fill',style:{width:(delta<0?newV:v)+'%'}}),
+          delta>0?h('div',{className:'cg-delta',style:{left:v+'%',width:Math.max(0,newV-v)+'%',background:'rgba(var(--ui-rgb),0.32)'}}):null,
+          delta<0?h('div',{className:'cg-delta',style:{left:newV+'%',width:Math.max(0,v-newV)+'%',background:'rgba(255,50,50,0.42)'}}):null));
+    })),
+    showGiShadow?h('div',{className:'sc-gi-row','aria-hidden':'true'},
+      h('div',{className:'sc-gi-track'},
+        h('div',{className:'sc-gi-center'}),
+        h('div',{className:'sc-gi-fill'+(giPos?'':' gi-neg'),style:giPos?{left:'50%',width:giMag+'%'}:{right:'50%',width:giMag+'%'}}))):null
   );
 }
 function DayObjectiveLegacy(p){
