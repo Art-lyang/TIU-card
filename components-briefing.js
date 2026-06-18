@@ -23,10 +23,10 @@ var BRIEFING_TEXT = {
 };
 
 var BRIEFING_IMG={
-  1:{a:'img/act1.png'},
-  2:{a:'img/act2a.png',b:'img/act2b.png'},
-  3:{a:'img/act3a.png',b:'img/act3b.png'},
-  4:{a:'img/act4a.png',b:'img/act4b.png'}
+  1:{a:'img/act1.png', show:'img/act1.png'},
+  2:{a:'img/act2a.png',b:'img/act2b.png', show:'img/act2b.png'},
+  3:{a:'img/act3a.png',b:'img/act3b.png', show:'img/act3b.png'},
+  4:{a:'img/act4a.png',b:'img/act4b.png', show:'img/act4a.png'}
 };
 
 function BriefingImage(p){
@@ -60,11 +60,9 @@ function BriefingScreen(p){
   var pad2=function(n){return ('0'+n).slice(-2)};
   var bars=act===2?2:act===3?3:4;
   var bi=BRIEFING_IMG[act]||{};
-  var heroImg=bi.b
-    ? h(React.Fragment,null,
-        h('img',{src:bi.a,alt:'Act '+act,className:'bf-hero-img',style:{animation:'bfFlicker 3s ease-in-out infinite'}}),
-        h('img',{src:bi.b,alt:'Act '+act,className:'bf-hero-img',style:{position:'absolute',top:0,left:0,animation:'bfFlicker 3s ease-in-out infinite',animationDelay:'1.5s',opacity:0}}))
-    : (bi.a?h('img',{src:bi.a,alt:'Act '+act,className:'bf-hero-img'}):null);
+  // A/B 교차 깜빡임 제거 → 단일 정지 이미지. 완전 흑백 변형(act2a/act3a)은 표시 안 함(컬러 변형만 show)
+  var heroSrc=bi.show||bi.a||null;
+  var heroImg=heroSrc?h('img',{src:heroSrc,alt:'Act '+act,className:'bf-hero-img'}):null;
   return h('div',{className:'screen bf-screen'},
     h('div',{className:'bf-wrap'},
       h('div',{className:'bf-head'},
