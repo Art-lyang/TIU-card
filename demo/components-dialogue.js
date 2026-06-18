@@ -98,13 +98,14 @@ function LogViewer(p){
   var pageSize=12,totalPages=Math.max(1,Math.ceil(ul.length/pageSize));
   var safePage=Math.max(0,Math.min(page,totalPages-1));
   var pageLogs=ul.slice(safePage*pageSize,safePage*pageSize+pageSize);
+  var bgOverlay=IMG.bg_corridor?h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.06}}):null;
   var pager=function(){
     if(totalPages<=1)return null;
-    var btn=function(label,disabled,nextPage){return h('button',{className:'btn',disabled:disabled,style:{fontSize:11,padding:'7px 14px',marginTop:0,opacity:disabled?0.35:1,cursor:disabled?'default':'pointer'},onClick:function(){if(!disabled)setPage(nextPage)}},label)};
-    return h('div',{style:{display:'flex',alignItems:'center',justifyContent:'center',gap:10,margin:'12px 0'}},
-      btn(isEn?'Prev':'이전',safePage<=0,Math.max(0,safePage-1)),
-      h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',minWidth:72,textAlign:'center'}},(safePage+1)+' / '+totalPages),
-      btn(isEn?'Next':'다음',safePage>=totalPages-1,Math.min(totalPages-1,safePage+1)));
+    var btn=function(label,disabled,nextPage){return h('button',{className:'btn',disabled:disabled,style:{fontSize:11,padding:'6px 14px',marginTop:0,minHeight:0,opacity:disabled?0.3:1,cursor:disabled?'default':'pointer'},onClick:function(){if(!disabled)setPage(nextPage)}},label)};
+    return h('div',{className:'vw-pager'},
+      btn(isEn?'PREV':'이전',safePage<=0,Math.max(0,safePage-1)),
+      h('span',{className:'vw-pager-n'},(safePage+1)+' / '+totalPages),
+      btn(isEn?'NEXT':'다음',safePage>=totalPages-1,Math.min(totalPages-1,safePage+1)));
   };
   var getLogText=function(log){
     var overlay=(isEn&&typeof tc==='function')?tc('oracleLogs',log.id,null):null;
@@ -113,25 +114,32 @@ function LogViewer(p){
   if(sel){
     var log=ORACLE_LOGS.filter(function(l){return l.id===sel})[0];
     var text=getLogText(log);
-    return h('div',{className:'screen'},h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:16}},'ORACLE DATABASE - RECORD VIEW'),
-      h('div',{style:{fontSize:14,color:'var(--ui)',fontWeight:'bold',textAlign:'center',marginBottom:16}},text.title),
-      h('div',{style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:16,fontFamily:"'Share Tech Mono',monospace",fontSize:12,lineHeight:2,color:'var(--ui)',whiteSpace:'pre-wrap'}},text.content),
-      h('div',{style:{display:'flex',gap:10,justifyContent:'center',marginTop:20}},
-        h('button',{className:'btn',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:function(){setSel(null)}},tt('logs.list',null,isEn?'← List':'← 목록')),
-        h('button',{className:'btn btn-amber',style:{fontSize:12,padding:'8px 20px',marginTop:0},onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기'))
-      )
-    ));
+    return h('div',{className:'screen vw-screen'},
+      h('div',{className:'vw-wrap'},
+        h('div',{className:'vw-panel'},
+          h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,isEn?'RECORD VIEW':'기록 열람')),
+          h('div',{style:{marginBottom:8}},h('span',{className:'vw-cat-badge'},log.id)),
+          h('div',{className:'vw-detail-title'},text.title),
+          h('div',{className:'vw-detail-body'},text.content)),
+        h('div',{className:'vw-buttons'},
+          h('button',{className:'btn',onClick:function(){setSel(null)}},tt('logs.list',null,isEn?'← List':'← 목록')),
+          h('button',{className:'btn bf-enter',onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기')))
+      ));
   }
-  return h('div',{className:'screen'},IMG.bg_corridor&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.07}}),h('div',{style:{width:'100%',maxWidth:420,padding:'20px 0',flex:1,overflowY:'auto'}},
-    h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui-dim)',letterSpacing:2,textAlign:'center',marginBottom:6}},'ORACLE DATABASE'),
-    h('div',{style:{fontSize:12,color:'#888',textAlign:'center',marginBottom:20}},tt('logs.unlocked',{current:ul.length,total:ORACLE_LOGS.length},isEn?(ul.length+'/'+ORACLE_LOGS.length+' records unlocked'):(ul.length+'/'+ORACLE_LOGS.length+' 기록 해금'))),
-    pager(),
-    pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,onClick:function(){setSel(l.id)},style:{background:'var(--ui-bg)',border:'1px solid var(--ui-border)',borderRadius:4,padding:'12px 16px',marginBottom:8,cursor:'pointer'}},h('div',{style:{display:'flex',justifyContent:'space-between',gap:12,alignItems:'center'}},h('span',{style:{fontSize:13,color:'var(--ui)',minWidth:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},text.title),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'var(--ui-dim)',flexShrink:0}},l.id)))}),
-    pager(),
-    lk>0&&h('div',{style:{fontSize:12,color:'#333',textAlign:'center',marginTop:12,fontStyle:'italic'}},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다'))),
-    h('button',{className:'btn btn-amber',style:{display:'block',margin:'20px auto 0',fontSize:12,padding:'8px 20px'},onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기'))
-  ));
+  return h('div',{className:'screen vw-screen'},
+    bgOverlay,
+    h('div',{className:'vw-wrap'},
+      h('div',{className:'vw-panel'},
+        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ul.length+'/'+ORACLE_LOGS.length+(isEn?' UNLOCKED':' 해금'))),
+        pager(),
+        pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,className:'vw-row vw-row-entry',onClick:function(){setSel(l.id)}},
+          h('span',{className:'vw-row-name'},text.title),
+          h('span',{className:'vw-row-meta'},l.id))}),
+        pager(),
+        lk>0&&h('div',{className:'vw-note'},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')))),
+      h('div',{className:'vw-buttons'},
+        h('button',{className:'btn bf-enter',onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기')))
+    ));
 }
 // EndingScreen 은 components-endings.js로 분리 (갤러리 UI + 이미지 썸네일)
 // FieldMission은 components.js에서 정의 (trustReq, 키보드, M-009/M-010 이미지 지원)

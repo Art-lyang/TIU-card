@@ -980,3 +980,28 @@ b.fm-rk--info{color:#caa14a}
 .sc-gi-center{position:absolute;left:50%;top:-1px;bottom:-1px;width:1px;background:rgba(255,255,255,.22);z-index:1}
 .sc-gi-fill{position:absolute;top:0;height:100%;background:linear-gradient(90deg,rgba(95,0,0,.2),rgba(158,8,8,.72));box-shadow:0 0 8px rgba(140,0,0,.28);transition:width .55s ease}
 .sc-gi-fill.gi-neg{background:linear-gradient(270deg,rgba(95,45,0,.2),rgba(190,112,18,.62));box-shadow:0 0 8px rgba(240,160,48,.24)}
+
+/* ── ARCHIVE / LOG VIEWER — dossier list (act-colored) ─────────── */
+.vw-screen{justify-content:flex-start;padding-top:8px;overflow-y:auto}
+.vw-wrap{position:relative;z-index:1;width:100%;max-width:460px;margin:0 auto;display:flex;flex-direction:column;gap:9px;padding:2px 0 16px}
+.vw-panel{border:1px solid rgba(var(--ui-rgb),.18);background:linear-gradient(180deg,rgba(var(--ui-rgb),.045),rgba(3,8,10,.5));padding:10px 12px}
+.vw-panel-h{display:flex;justify-content:space-between;align-items:center;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--ui);margin-bottom:9px;padding-bottom:5px;border-bottom:1px solid rgba(var(--ui-rgb),.14)}
+.vw-panel-h span{color:rgba(var(--ui-rgb),.5);font-size:8.5px;letter-spacing:1px}
+.vw-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:11px 12px;margin-bottom:7px;border:1px solid rgba(var(--ui-rgb),.18);background:linear-gradient(90deg,rgba(var(--ui-rgb),.05),rgba(4,9,11,.25));cursor:pointer;transition:border-color .15s ease,background .15s ease}
+.vw-row:last-child{margin-bottom:0}
+.vw-row:hover{border-color:rgba(var(--ui-rgb),.45);background:linear-gradient(90deg,rgba(var(--ui-rgb),.1),rgba(4,9,11,.3))}
+.vw-row.is-empty{opacity:.42;cursor:default;border-style:dashed}
+.vw-row.is-new{border-left:2px solid var(--ui)}
+.vw-row-name{font-size:13px;font-weight:700;color:var(--ui);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vw-row.is-empty .vw-row-name{color:rgba(var(--ui-rgb),.35);font-weight:400}
+.vw-row-entry .vw-row-name{font-weight:400;color:var(--ui-text,#cdd6dd)}
+.vw-row-meta{display:flex;align-items:center;gap:8px;flex-shrink:0;font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(var(--ui-rgb),.5)}
+.vw-new-badge{font-family:'Share Tech Mono',monospace;font-size:9px;color:#f0a030;background:rgba(240,160,48,.1);border:1px solid rgba(240,160,48,.35);border-radius:2px;padding:1px 6px;letter-spacing:.5px}
+.vw-note{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(var(--ui-rgb),.38);text-align:center;margin-top:10px;letter-spacing:.5px;font-style:italic}
+.vw-cat-badge{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:var(--ui);border:1px solid rgba(var(--ui-rgb),.4);border-radius:2px;padding:2px 8px;background:rgba(var(--ui-rgb),.06)}
+.vw-detail-title{font-size:16px;font-weight:700;color:#f3efe6;text-shadow:0 0 12px rgba(var(--ui-rgb),.4);margin:8px 0 2px}
+.vw-detail-body{font-size:13px;line-height:1.92;color:var(--ui-text,#cdd6dd);white-space:pre-wrap}
+.vw-buttons{display:flex;gap:10px;justify-content:center;margin-top:4px;padding-bottom:6px}
+.vw-buttons .btn{font-size:12px;padding:9px 20px;min-height:42px;margin-top:0}
+.vw-pager{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 10px}
+.vw-pager-n{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(var(--ui-rgb),.6);min-width:64px;text-align:center}
