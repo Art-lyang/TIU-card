@@ -57,17 +57,40 @@ function BriefingScreen(p){
   var briefingFallback={text:act===2?BRIEFING_TEXT.act2_intro:act===3?(BRIEFING_TEXT.act3[transRoute]||''):(BRIEFING_TEXT.act4[transRoute]||'')};
   var briefingView=(typeof tc==='function')?tc('briefings',briefingKey,briefingFallback):briefingFallback;
   var msg=briefingView.text||briefingFallback.text;
-  return h('div',{className:'screen',style:{overflowY:'auto'}},
-    h('div',{className:'title-frame'},h('span',null,'ORACLE // BRIEFING')),
-    h(BriefingImage,{act:act}),
-    h('div',{style:{width:'100%',maxWidth:440,background:'linear-gradient(180deg,rgba(var(--ui-rgb),.055),rgba(3,7,8,.82))',border:'1px solid rgba(var(--ui-rgb),.34)',borderRadius:4,boxShadow:'0 0 14px rgba(var(--ui-rgb),.12),inset 0 0 22px rgba(var(--ui-rgb),.035)',padding:'28px 30px',flex:1,display:'flex',flexDirection:'column',justifyContent:'center',minHeight:0}},
-      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:12}},
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:2}},'ACT '+act+' BRIEFING'),
-        h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:prioColor,letterSpacing:1}},'PRIORITY: '+prioLabel)),
-      h('div',{style:{fontSize:13,color:'var(--ui)',lineHeight:2,borderLeft:'2px solid rgba(var(--ui-rgb),.3)',paddingLeft:14,marginBottom:16}},
-        tt('briefing.analysis',null,'Analyzed recent operational data.')),
-      h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:6,marginBottom:16}},
-        ['c','r','t','o'].map(function(k){var v=stats[k];var d=v<=25;return h('div',{key:k,style:{fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:d?'#ff4444':'var(--ui)',padding:'4px 0'}},statNames[k]+': '+v+'%')})),
-      h('div',{style:{fontSize:12,color:routeColor,lineHeight:2,borderLeft:'2px solid '+borderColor,paddingLeft:14,marginBottom:16,whiteSpace:'pre-wrap'}},msg)),
-    h('button',{className:'btn btn-amber',style:{margin:'8px auto',padding:'12px 32px',flexShrink:0},onClick:function(){if(typeof SFX!=='undefined')SFX.play('btn_on');onEnter();}},tt('briefing.enter',null,'[ ENTER ]')));
+  var pad2=function(n){return ('0'+n).slice(-2)};
+  var bars=act===2?2:act===3?3:4;
+  var bi=BRIEFING_IMG[act]||{};
+  var heroImg=bi.b
+    ? h(React.Fragment,null,
+        h('img',{src:bi.a,alt:'Act '+act,className:'bf-hero-img',style:{animation:'bfFlicker 3s ease-in-out infinite'}}),
+        h('img',{src:bi.b,alt:'Act '+act,className:'bf-hero-img',style:{position:'absolute',top:0,left:0,animation:'bfFlicker 3s ease-in-out infinite',animationDelay:'1.5s',opacity:0}}))
+    : (bi.a?h('img',{src:bi.a,alt:'Act '+act,className:'bf-hero-img'}):null);
+  return h('div',{className:'screen bf-screen'},
+    h('div',{className:'bf-wrap'},
+      h('div',{className:'bf-head'},
+        h('div',{className:'bf-head-side'},'ORACLE',h('br'),'// TRANSITION',h('br'),'ENCRYPTED'),
+        h('div',{className:'bf-head-c'},
+          h('div',{className:'bf-head-tag'},'DIRECTIVE'),
+          h('div',{className:'bf-head-acts'},'ACT '+pad2(act-1),h('span',{className:'bf-head-arrow'},' ▸▸ '),h('b',null,'ACT '+pad2(act)))),
+        h('div',{className:'bf-head-side bf-head-r'},
+          h('div',{className:'bf-head-prio'},'PRIORITY',h('br'),h('b',null,prioLabel)),
+          h('div',{className:'bf-head-bars'},[0,1,2,3].map(function(i){return h('i',{key:i,className:i<bars?'on':''})})))),
+      h('div',{className:'bf-hero'},
+        heroImg,
+        h('div',{className:'bf-hero-grad'}),
+        h('div',{className:'bf-hero-scan'}),
+        h('div',{className:'bf-hero-num'},pad2(act)),
+        h('div',{className:'bf-hero-rec'},h('span',{className:'bf-hero-recdot'}),'REC'),
+        h('div',{className:'bf-hero-cap'},'ACT '+act+' // TRANSITION FEED'),
+        h('span',{className:'bf-corner tl'}),h('span',{className:'bf-corner tr'}),h('span',{className:'bf-corner bl'}),h('span',{className:'bf-corner br'})),
+      h('div',{className:'bf-panel'},
+        h('div',{className:'bf-panel-h'},'// ORACLE DIRECTIVE',h('span',null,'PRIORITY '+prioLabel)),
+        h('div',{className:'bf-analysis'},tt('briefing.analysis',null,'Analyzed recent operational data.')),
+        h('div',{className:'bf-directive'},msg)),
+      h('div',{className:'bf-panel'},
+        h('div',{className:'bf-panel-h'},'// OPERATIONAL STATUS',h('span',null,'DAY '+(stats.day||'-'))),
+        h('div',{className:'bf-gauges'},['c','r','t','o'].map(function(k){var v=stats[k];var low=v<=25;return h('div',{key:k,className:'bf-gauge'+(low?' low':'')},
+          h('div',{className:'bf-gauge-top'},h('span',{className:'bf-gauge-lbl'},statNames[k]),h('span',{className:'bf-gauge-val'},v+'%')),
+          h('div',{className:'bf-gauge-track'},h('div',{className:'bf-gauge-fill',style:{width:Math.max(0,Math.min(100,v))+'%'}})))}))),
+      h('button',{className:'btn bf-enter',onClick:function(){if(typeof SFX!=='undefined')SFX.play('btn_on');onEnter();}},tt('briefing.enter',null,'[ ENTER ]'))));
 }
