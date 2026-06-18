@@ -36,7 +36,7 @@ var CARDS_BASE = [
   { id: "C-016", act: [2,3], priority: "상", req: (s, g) => g <= 40, msg: "[미분류 통신] ORACLE 데이터 링크 일시적 불안정. 미확인 암호화 통신(소바리 발신 추정)이 수신되었습니다.", left: { label: "무시 (권장)", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "독자 해독 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   { id: "C-017", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-003"), msg: "이전 수집된 프로메테우스 통신 패턴을 기반으로 인근의 은신처를 특정했습니다.", left: { label: "ORACLE 보고", fx: { c: 1, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "비공식 접촉", fx: { c: -1, r: 0, t: 2, o: -2 }, g: -4 } },
   { id: "C-018", act: [3], priority: "상", req: (s) => s.c < 40, msg: "봉쇄 구역 경계에서 대규모 이변체 이동 징후 포착. 현재 봉쇄력으로는 대응이 불확실합니다.", left: { label: "전 요원 방어 배치", fx: { c: 2, r: -2, t: 1, o: 0 }, g: 0 }, right: { label: "ORACLE에 지원 요청", fx: { c: 1, r: -1, t: -1, o: 2 }, g: 3 } },
-  { id: "C-019", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-008"), msg: "강도윤이 보고한 '미분류 활동 흔적'과 동일한 패턴이 기지 인근에서 재탐지되었습니다.", left: { label: "경계 태세 강화", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "단독 추적", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2, mission: "M-003" } },
+  { id: "C-019", act: [3], priority: "중", once: true, req: (s, g, logs) => logs.includes("LOG-008"), msg: "강도윤이 보고한 '미분류 활동 흔적'과 동일한 패턴이 기지 인근에서 재탐지되었습니다.", left: { label: "경계 태세 강화", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 }, right: { label: "단독 추적", fx: { c: 0, r: -1, t: 1, o: -1 }, g: -2, mission: "M-003" } },
   { id: "C-020", act: [3,4], priority: "중", img: "card_oracle_error",
     req: function(s,g){ return g <= 20 },
     msg: function(){

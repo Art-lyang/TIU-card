@@ -311,7 +311,7 @@ function normalizeGameSave(game){
     promoted.stats={c:game.stats.c,r:game.stats.r,t:game.stats.t,o:game.stats.o,day:day};
     promoted.act=maxAct;
     promoted.ct=0;
-    promoted.chainQueue=[];
+    promoted.chainQueue=Array.isArray(game.chainQueue)?game.chainQueue:[]; // act 경계 자동승급 시 진행 중 연계카드 큐 보존(BUG #7) — 큐 비움은 실제 전환점 doBriefing이 담당
     if(maxAct===2)promoted.transRoute='A';
     else if(maxAct===3)promoted.transRoute=getAct3RouteFromFlags(promoted.actFlags);
     else if(maxAct===4)promoted.transRoute=getAct4RouteFromState(promoted);
@@ -324,7 +324,7 @@ function normalizeGameSave(game){
   fixed.stats={c:game.stats.c,r:game.stats.r,t:game.stats.t,o:game.stats.o,day:day};
   fixed.act=maxAct;
   fixed.ct=0;
-  fixed.chainQueue=[];
+  fixed.chainQueue=Array.isArray(game.chainQueue)?game.chainQueue:[]; // 진행 중 연계카드 큐 보존(BUG #7)
   if(maxAct===1)fixed.transRoute='';
   fixed.__normalized=true;
   return fixed;
