@@ -31,21 +31,35 @@ function rememberRewardId(id){
 }
 function pickRewardsUnique(pool,count){
   pool=Array.isArray(pool)?pool:[];
-  var picked=[];
-  var seen={};
   var recent=getRecentRewardIds();
-  var shuffled=pickN(pool,pool.length).sort(function(a,b){
-    var ar=recent.indexOf(rewardMemoryId(a))>=0;
-    var br=recent.indexOf(rewardMemoryId(b))>=0;
-    return ar===br?0:(ar?1:-1);
-  });
-  for(var i=0;i<shuffled.length&&picked.length<count;i++){
-    var id=rewardMemoryId(shuffled[i]);
-    if(id&&seen[id])continue;
-    if(id)seen[id]=true;
-    picked.push(shuffled[i]);
+  var byRecent=function(a,b){var ar=recent.indexOf(rewardMemoryId(a))>=0,br=recent.indexOf(rewardMemoryId(b))>=0;return ar===br?0:(ar?1:-1)};
+  // 스탯 다양성 캡: 같은 스탯을 (+)부스트하는 보상이 과반(기본 2)을 넘지 않게 해
+  // 보상 4장이 전부 한 스탯(예: 봉쇄)으로 쏠리는 '도배'를 방지한다.
+  var statCap=Math.max(2,Math.ceil(count/2));
+  var pass=function(shuffled,enforce){
+    var picked=[],seen={},pos={c:0,r:0,t:0,o:0};
+    for(var i=0;i<shuffled.length&&picked.length<count;i++){
+      var r=shuffled[i],id=rewardMemoryId(r),fx=(r&&r.fx)||{};
+      if(id&&seen[id])continue;
+      if(enforce){
+        var over=((fx.c||0)>0&&pos.c>=statCap)||((fx.r||0)>0&&pos.r>=statCap)||((fx.t||0)>0&&pos.t>=statCap)||((fx.o||0)>0&&pos.o>=statCap);
+        if(over)continue;
+      }
+      if(id)seen[id]=true;
+      picked.push(r);
+      if((fx.c||0)>0)pos.c++; if((fx.r||0)>0)pos.r++; if((fx.t||0)>0)pos.t++; if((fx.o||0)>0)pos.o++;
+    }
+    return picked;
+  };
+  // 캡을 만족하는 4장 조합을 재셔플로 최대 12회 시도 → 못 찾으면 완화(기존 동작, 미달 방지).
+  var last=pickN(pool,pool.length).sort(byRecent);
+  for(var att=0;att<12;att++){
+    var sh=pickN(pool,pool.length).sort(byRecent);
+    last=sh;
+    var r=pass(sh,true);
+    if(r.length>=count)return r;
   }
-  return picked;
+  return pass(last,false);
 }
 
 function Boot(p){
