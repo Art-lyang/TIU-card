@@ -21,7 +21,7 @@
   <div class="screen-overlay"></div>
   <div class="scanline"></div>
   <!-- BUILD_VER: 수동 ?v= 대신 이 값을 올리면 모든 스크립트 캐시가 갱신됩니다 -->
-<script>var BUILD_VER=288;</script>
+<script>var BUILD_VER=289;</script>
   <script src="crash-guard.js?v=1"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -50,7 +50,7 @@
   <script src="data-core.js?v=23"></script>
   <script src="data-status-tags.js?v=13"></script>
   <!-- Act2/Act3 카드 중간 간부진 대화 확장 (DIALOGUES push, data-core.js 뒤 로드) -->
-  <script src="data-dialogues-extra.js?v=6"></script>
+  <script src="data-dialogues-extra.js?v=7"></script>
 
   <!-- Data: Cards -->
   <script src="data-cards-prologue.js?v=18"></script>
@@ -142,6 +142,8 @@
   <script src="data-evening-extra-3.js?v=1"></script>
   <script src="data-hidden-story.js?v=13"></script>
   <script src="data-character-arcs.js?v=4"></script>
+  <!-- 간부 의심 대화: DIALOGUES used-추적이 인덱스 기반이라 반드시 모든 대화 push 이후(맨 끝)에 로드 -->
+  <script src="data-dialogues-susp.js?v=1"></script>
   <script src="evening-lines.js?v=12"></script>
 
   <!-- Images -->
@@ -192,7 +194,7 @@
   <script src="components-glitch.js?v=2"></script>
   <script src="components-escape-roll.js?v=1"></script>
   <script src="components-escape.js?v=6"></script>
-  <script src="components-fieldmission-minigame-patch.js?v=17"></script>
+  <script src="components-fieldmission-minigame-patch.js?v=18"></script>
 
   <!-- App -->
   <script src="firebase-config.js?v=1"></script>

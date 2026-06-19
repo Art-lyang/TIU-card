@@ -83,6 +83,7 @@ const DATA_FILES = [
   'data-evening-responses-2.js',
   'data-evening-responses-3.js',
   'data-character-arcs.js',
+  'data-dialogues-susp.js',
   'evening-lines.js',
   'data-result-text.js',
   'data-result-story-1.js',

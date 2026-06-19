@@ -14,6 +14,7 @@ function FieldMission(p){
   var s9=useState(false),reportOpen=s9[0],setReportOpen=s9[1]; // ANALYSIS REPORT 기본 접힘
   var briefRef=useRef(null);
   var rootRef=useRef(null);
+  var completedRef=useRef(false); // 미션 종료 onComplete 중복 호출 가드(더블클릭/더블탭 시 result 이중 적용 방지)
   // 미니게임 진입 시 화면을 상단으로 스냅 — 절대배치 오버레이가 직전 스크롤 위치에 가려지지 않게(몰입도)
   useEffect(function(){ if(activeMiniGame&&rootRef.current){ rootRef.current.scrollTop=0; } },[activeMiniGame]);
 
@@ -108,6 +109,7 @@ function FieldMission(p){
     setPendingChoice(null);
     setMissionBonus(null);
     setMissionNarrative(null);
+    completedRef.current=false;
   },[p.missionId]);
 
   var choiceLabelSignature=(node.choices||[]).map(function(c){ return c.label||''; }).join('||');
@@ -129,6 +131,8 @@ function FieldMission(p){
 
   function finalizeChoice(choice,extraBonus){
     if(choice.next==='end'){
+      if(completedRef.current)return; // 이미 완료 처리됨 — 중복 호출(더블클릭) 차단
+      completedRef.current=true;
       var bonus=(extraBonus!==undefined)?extraBonus:missionBonus;
       p.onComplete(mergeMissionBonus(choice,bonus));
       return;
