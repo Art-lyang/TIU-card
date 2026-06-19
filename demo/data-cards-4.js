@@ -121,5 +121,19 @@ var CARDS_INVESTIGATE = [
     req: function(s,g,logs){ return logs.includes("LOG-029") && logs.includes("ONCE-C-274") && !logs.includes("LOG-041") },
     msg: "ORACLE 긴급 통보.\n\n[SPEC-015 위협 등급 변경: HIGH → CRITICAL]\n[NAMED SPECIMEN 등록: BS-GANGWON-01]\n[추정 누적 포식: 12+. 학습 단계 진입 확인]\n\n강도윤: \"이 개체는 시간이 지날수록 강해집니다. 지금 잡아야 합니다.\"\n\n윤세진: \"뇌 섭취 메커니즘은 연구 가치가 높아요.\"\n\"두개골이 없으니 척추 직접 타격으로 무력화할 수 있습니다.\"\n\"하지만 물속에서 싸우면 우리가 불리합니다.\"\n\n결정해야 합니다.",
     left: { label: "제거 작전 — 하수구 소탕", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-010" },
-    right: { label: "생포 작전 — 미끼 유인 포획", fx: { c: 0, r: -2, t: 1, o: -1 }, g: -1, mission: "M-010" } }
+    right: { label: "생포 작전 — 미끼 유인 포획", fx: { c: 0, r: -2, t: 1, o: -1 }, g: -1, mission: "M-010" } },
+
+  // ═══ 긴급 현장임무 (파일럿) — 비활성(휴면) 변이체 긴급 조우 ═══
+  // 이번 세션 비활성 종에서만 발동 → 조사 루트와 상호배타(같은 종 이중 조우 없음).
+  // tag 미부여(specOk 우회) + req로 휴면 판정. once + day 게이트로 드물게.
+
+  { id: "CT-301", act: [2,3], priority: "상", bg: "forest", once: true,
+    req: function(s,g,logs){
+      return s.day >= 7
+        && typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
+        && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-011') < 0;
+    },
+    msg: "긴급 — 야간 봉쇄선 경보.\n\n남측 게이트 근무조 무전: \"안에서 사람 목소리가... 게이트 바로 앞입니다. 실종된 요원들 목소리예요.\"\n\n강도윤: \"사전 징후 없이 게이트까지 왔습니다. 음성 모방형 — Shell Talker입니다. 근무조가 흔들리고 있어요. 즉시 결정이 필요합니다.\"",
+    left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E01" },
+    right: { label: "ORACLE 연동 차단 대응", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E01" } }
 ];

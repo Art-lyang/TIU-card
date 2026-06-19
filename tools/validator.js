@@ -55,6 +55,7 @@ const DATA_FILES = [
   'data-missions-4.js',
   'data-missions-5.js',
   'data-missions-variants.js',
+  'data-missions-emergency.js',
   'data-logs-integrity.js',
   'data-endings.js',
   'data-act4-escape.js',
