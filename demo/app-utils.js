@@ -49,7 +49,7 @@ var Save={
   clearGame:function(){
     var snapshots={};
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{snapshots[k]=localStorage.getItem(k)}catch(e){snapshots[k]=null}});
-    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');_onceShown.length=0;
+    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_curCard');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');_onceShown.length=0;
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{if(snapshots[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,snapshots[k])}catch(e){}});
   },
   saveLogs:function(ids){Save.set('ts_logs',ids)},
@@ -81,4 +81,23 @@ var SFX={
     case'check':self.tone(600,0.08,'sine',0.06);setTimeout(function(){self.tone(900,0.1,'sine',0.05)},60);break;
     case'btn_off':self.tone(200,0.06,'square',0.04);break;
   }}catch(e){}}
+};
+// ═══ Delta float text — shows +/- values rising from gauges after swipe ═══
+var showDeltaFloats=function(before,after){
+  var keys=['c','r','t','o'];
+  keys.forEach(function(k){
+    var d=(after[k]||0)-(before[k]||0);
+    if(d===0)return;
+    var row=document.querySelector('.gauge-icon-'+k);
+    if(!row)row=document.querySelector('.gauge-row');
+    var parent=row?row.closest('.gauge-row'):null;
+    if(!parent)return;
+    var el=document.createElement('span');
+    el.className='delta-float';
+    el.textContent=(d>0?'+':'')+d;
+    el.style.color=d>0?'var(--ui)':'#ff4444';
+    parent.style.position='relative';
+    parent.appendChild(el);
+    setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},1600);
+  });
 };

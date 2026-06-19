@@ -49,7 +49,7 @@ var Save={
   clearGame:function(){
     var snapshots={};
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{snapshots[k]=localStorage.getItem(k)}catch(e){snapshots[k]=null}});
-    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');_onceShown.length=0;
+    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_curCard');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');_onceShown.length=0;
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{if(snapshots[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,snapshots[k])}catch(e){}});
   },
   saveLogs:function(ids){Save.set('ts_logs',ids)},

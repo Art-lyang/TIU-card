@@ -241,7 +241,17 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var fallback=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&(!c.id||!cd[c.id]||c.repeatable)&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var emergencyFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
   var emergency=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&introOk(c,logs,stats,gi)&&specOk(c)}catch(e){return false}});
-  return pickWeightedFlow(valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:emergency)),stats,gi,logs,ca,rec,tr);
+  // 상위 풀이 전부 비어 중복이 불가피해지는 경우(특히 인트로 미완료 구간의 좁은 풀 고갈)에는
+  // introOk만 완화해 '최근에 안 나온' 신선 카드를 우선 확보 → act1 중복 카드 방지.
+  // specOk(휴면 종 차단)·deckOk·recent 제외는 유지하므로 부작용 최소.
+  var introRelaxFresh=CARDS.filter(function(c){try{return c.id!=='CA-001'&&c.id!=='CA-001B'&&(!c.act||c.act.indexOf(ca)>=0)&&(!c.once||logs.indexOf('ONCE-'+c.id)<0)&&!(c.id&&cd[c.id]&&cardHasMission(c))&&!c.req&&!c.transReq&&(!c.feReq||facComp.indexOf(c.feReq)>=0)&&feProposeAvailable(c)&&facilityProposalAvailable(c)&&deckAvailable(c)&&(!c.cond||c.cond(stats,gi,logs))&&rec.indexOf(c.id)<0&&specOk(c)}catch(e){return false}});
+  var chosenPool=valid.length>0?valid:(fallback.length>0?fallback:(emergencyFresh.length>0?emergencyFresh:(introRelaxFresh.length>0?introRelaxFresh:emergency)));
+  // 그래도 emergency(진짜 중복 불가피)에 도달하면 '가장 오래전에 나온' 카드를 골라 체감 중복 최소화
+  if(chosenPool===emergency&&emergency.length>0){
+    var lru=emergency.slice().sort(function(a,b){var ia=rec.indexOf(a.id),ib=rec.indexOf(b.id);return (ia<0?-1:ia)-(ib<0?-1:ib)});
+    return lru[0];
+  }
+  return pickWeightedFlow(chosenPool,stats,gi,logs,ca,rec,tr);
 };
 
 function getMaxActForDay(day){

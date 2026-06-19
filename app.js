@@ -212,9 +212,19 @@ function App(){
     else if(activeMission)Save.del('ts_activeMission');
     var initQueue=(sg&&Array.isArray(sg.chainQueue))?sg.chainQueue.map(function(c){return typeof c==='string'?(typeof CARD_BY_ID!=='undefined'?CARD_BY_ID[c]:null):c}).filter(Boolean):[];
     if(initQueue.length>0){setCurCard(initQueue[0]);setChainQueue(initQueue.slice(1))}
-    else{setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}))}
+    else{
+      // 재개 시 '표시 중이던 카드'를 복원해, 카드가 떠 있는 상태로 리로드/재개해도 같은 카드가 다시 뽑히는
+      // 중복(특히 once 카드)을 막는다. act 불일치/이미 해소된 once는 복원하지 않고 새로 뽑는다.
+      var savedCardId=Save.get('ts_curCard',null);
+      var savedCard=(savedCardId&&typeof CARD_BY_ID!=='undefined')?CARD_BY_ID[savedCardId]:null;
+      var restorable=savedCard&&(!savedCard.act||savedCard.act.indexOf(initAct)>=0)&&(!savedCard.once||((sl||[]).indexOf('ONCE-'+savedCard.id)<0));
+      if(restorable)setCurCard(savedCard);
+      else setCurCard(drawCard(initStats,initGi,sl||['LOG-001'],initCd,initRecent,initAct,initRoute, sf||{approved:[],pending:[],completed:[],proposed:[]}));
+    }
   },[]);
   useEffect(function(){ if(typeof window!=='undefined')window.__ts_liveLogs=(logs||['LOG-001']).slice(); },[logs]);
+  // 현재 표시 중인 카드 id를 저장 — 리로드/재개 시 동일 카드 복원용(once 카드 재등장 중복 방지). SYS-FALLBACK 등 비정형 카드는 제외.
+  useEffect(function(){ if(phase==='game'&&curCard&&curCard.id&&curCard.id!=='SYS-FALLBACK'){try{Save.set('ts_curCard',curCard.id)}catch(e){}} },[curCard,phase]);
   // 가이드 힌트 — phase 진입형 (첫 카드 / 첫 야간통신 / 첫 현장임무)
   useEffect(function(){
     if(phase==='game')fireGuideHint('h1',tt('guide.h1',null,'[ORACLE: 카드를 기울이면 판단 결과 예측치가 표시됩니다]'));
