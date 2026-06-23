@@ -49,7 +49,8 @@
     border-radius:8px;overflow:hidden;isolation:isolate;
     background:#05060a}
   /* 실제 한국 지도(행정구역 경계선 포함) — 강원도 중심으로 줌인 */
-  .krwrap{position:absolute;width:460px;height:690px;left:-207px;top:-101px}
+  .krwrap{position:absolute;width:460px;height:690px;left:-207px;top:-101px;
+    animation:cctvglitch 6.5s linear infinite}
   /* 회색 면 → 검정, 흰 경계선 → 밝게 (임계 분리) */
   .krimg{position:absolute;inset:0;background:var(--kr) no-repeat center/cover;
     filter:brightness(.55) contrast(50)}
@@ -64,14 +65,31 @@
     background:linear-gradient(180deg,transparent,rgba(var(--orange-rgb),.12),transparent);
     animation:scan 4.2s linear infinite;pointer-events:none}
   @keyframes scan{0%{top:-40%}100%{top:100%}}
-  .map-lbl{position:absolute;left:7px;top:6px;font-size:8.5px;letter-spacing:.1em;
+
+  /* === CCTV 효과: 정전기 노이즈 + 주사선 + 글리치 + 깜빡임 === */
+  .cctv-noise{position:absolute;inset:0;pointer-events:none;z-index:3;opacity:.13;mix-blend-mode:screen;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") repeat;
+    background-size:130px 130px;animation:tvnoise .5s steps(7) infinite}
+  @keyframes tvnoise{0%{background-position:0 0}100%{background-position:-130px 70px}}
+  .cctv-lines{position:absolute;inset:0;pointer-events:none;z-index:3;mix-blend-mode:multiply;
+    background:repeating-linear-gradient(0deg,rgba(0,0,0,.22) 0 1px,transparent 1px 3px)}
+  .cctv-lines::after{content:"";position:absolute;inset:0;
+    box-shadow:inset 0 0 22px rgba(0,0,0,.7)}  /* 비네팅 */
+  .map{animation:cctvflicker 5s steps(1) infinite}
+  @keyframes cctvflicker{0%,100%{filter:none}48%{filter:none}49%{filter:brightness(1.25)}
+    50%{filter:brightness(.82)}51%{filter:none}96%{filter:none}97%{filter:brightness(1.18)}98%{filter:none}}
+  @keyframes cctvglitch{0%,92%,100%{transform:translate(0,0)}
+    92.5%{transform:translate(-3px,1px)}93%{transform:translate(3px,-1px)}
+    93.5%{transform:translate(-2px,0)}94%{transform:translate(2px,1px)}94.5%{transform:translate(0,0)}
+    78%{transform:translate(0,0)}78.5%{transform:translate(2px,-1px)}79%{transform:translate(-2px,0)}79.5%{transform:translate(0,0)}}
+  .map-lbl{position:absolute;left:7px;top:6px;font-size:8.5px;letter-spacing:.1em;z-index:7;
     color:var(--orange);text-shadow:0 0 5px rgba(0,0,0,.9)}
-  .map-stat{position:absolute;left:7px;bottom:5px;right:7px;font-size:8.5px;
+  .map-stat{position:absolute;left:7px;bottom:5px;right:7px;font-size:8.5px;z-index:7;
     letter-spacing:.05em;display:flex;justify-content:space-between;
     color:var(--orange);text-shadow:0 0 5px rgba(0,0,0,.9)}
 
   /* 기지 핀 (강원 동해안, 주황 고정) */
-  .pin{position:absolute;left:77%;top:52%;transform:translate(-50%,-50%);pointer-events:none}
+  .pin{position:absolute;left:77%;top:52%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
   .pin i{display:block;width:7px;height:7px;border-radius:50%;background:var(--orange);
     box-shadow:0 0 9px var(--orange),0 0 2px #000;position:relative;z-index:2}
   .pin .ring{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;
@@ -92,7 +110,7 @@
   .ov-lockdown{background:repeating-linear-gradient(45deg,transparent 0 7px,rgba(var(--orange-rgb),.12) 7px 8px)}
 
   /* === 카드 선택시 변화 모션 (1회성, 자동 원복) === */
-  .fx{position:absolute;inset:0;pointer-events:none;opacity:0}
+  .fx{position:absolute;inset:0;pointer-events:none;opacity:0;z-index:6}
   .fx.run{animation:fxshow 1.3s ease-out}
   @keyframes fxshow{0%{opacity:0}12%{opacity:1}80%{opacity:1}100%{opacity:0}}
   .fx .wave{position:absolute;left:50%;top:47%;width:10px;height:10px;border-radius:50%;
@@ -162,6 +180,8 @@
       <div class="krwrap"><div class="krimg"></div><div class="krtint"></div></div>
       <div class="gridv"></div>
       <div class="scan"></div>
+      <div class="cctv-lines"></div>
+      <div class="cctv-noise"></div>
       <div class="map-lbl">강원 // GRID</div>
       <div class="pin"><i></i><span class="ring"></span><span>기지</span></div>
 
