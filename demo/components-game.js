@@ -280,6 +280,29 @@ function MainMenu(p){
             })),
           h('button',{type:'button',className:'main-terminal-save-auto',onClick:function(){setShowSnapshotSelect(false);if(p.onContinue)p.onContinue()}},tt('menu.savePicker.auto',null,'CONTINUE CURRENT AUTO SAVE'))))));
 }
+// ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
+var CCTV_CLIPS={
+  brainseeker:{src:'assets/video/brainseeker-cctv.mp4?v=2',cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',en:'PERIMETER BREACH DETECTED'}}
+};
+var MISSION_CCTV={'M-E01':'brainseeker'}; // 침입형 변이체 미션만 매핑. 없으면 스팅 없이 바로 미션
+function CctvSting(p){
+  var clip=CCTV_CLIPS[p.clipKey]||CCTV_CLIPS.brainseeker;
+  var isKo=((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko')==='ko';
+  var vref=useRef(null);
+  useEffect(function(){
+    var v=vref.current;if(v){v.muted=true;try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+    var t=setTimeout(function(){p.onDone&&p.onDone()},p.duration||2800);
+    return function(){clearTimeout(t)};
+  },[]);
+  return h('div',{className:'cctv-sting',onClick:function(){p.onDone&&p.onDone()}},
+    h('video',{className:'cctv-sting-vid',ref:vref,src:clip.src,muted:true,autoPlay:true,playsInline:true,preload:'auto'}),
+    h('div',{className:'cctv-sting-scan'}),
+    h('div',{className:'cctv-sting-noise'}),
+    h('div',{className:'cctv-sting-rec'},'● REC'),
+    h('div',{className:'cctv-sting-cam'},clip.cam),
+    h('div',{className:'cctv-sting-warn'},'⚠ '+(isKo?clip.warn.ko:clip.warn.en)),
+    h('div',{className:'cctv-sting-skip'},isKo?'탭하여 건너뛰기':'TAP TO SKIP'));
+}
 function Stats(p){
   var sm=[{k:'c',l:tt('stats.c',null,'봉쇄')},{k:'r',l:tt('stats.r',null,'자원')},{k:'t',l:tt('stats.t',null,'신뢰')},{k:'o',l:tt('stats.o',null,'평가')}];
   var pv=p.preview||{};

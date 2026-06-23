@@ -51,6 +51,7 @@ function App(){
   var _ret=useState('game'),ret=_ret[0],setRet=_ret[1];
   var _cc=useState(CARDS[0]),curCard=_cc[0],setCurCard=_cc[1];
   var _cm=useState(null),curMission=_cm[0],setCurMission=_cm[1];
+  var _sting=useState(null),cctvSting=_sting[0],setCctvSting=_sting[1];
   var _dev=useState(false),showDevPanel=_dev[0],setShowDevPanel=_dev[1];
   var _dbf=useState(null),debugBriefing=_dbf[0],setDebugBriefing=_dbf[1];
   var _dgo=useState(false),debugGO=_dgo[0],setDebugGO=_dgo[1];
@@ -507,7 +508,7 @@ function App(){
     if(sg){SFX.play('glitch');setCurCard(sg);unlockCardInput();return}
     var go=chkGameOver(ns);
     if(go){SFX.play('gameover');doGO(go,ns,ng);return}
-    if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');Save.set('ts_activeMission',ch.mission);setCurMission(ch.mission);setTimeout(function(){setPhase('mission')},400);return}
+    if(ch.mission&&MISSIONS[ch.mission]){SFX.play('reload');Save.set('ts_activeMission',ch.mission);setCurMission(ch.mission);var _ck=(typeof MISSION_CCTV!=='undefined')&&MISSION_CCTV[ch.mission];if(_ck){setCctvSting(_ck)}else{setTimeout(function(){setPhase('mission')},400)}return}
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
     var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext,pendingBonusForSave)}
@@ -738,6 +739,7 @@ function App(){
   };
   var hasSave=!!Save.get('ts_game',null);
   var hasSessionHistory=sessions>0||endings.length>0;
+  if(cctvSting)return h(CctvSting,{clipKey:cctvSting,onDone:function(){setCctvSting(null);setPhase('mission')}});
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
   if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding}));
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
