@@ -297,7 +297,7 @@ function Stats(p){
   useEffect(function(){var v=vref.current;if(!v)return;v.muted=true;if(mapEv==='attack'){var pr=v.play&&v.play();if(pr&&pr.catch)pr.catch(function(){})}else{try{v.pause()}catch(e){}}},[mapEv]);
   return h('div',{className:'hud-top'},
     h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv,onClick:function(){var seq=['idle','attack','research','lockdown'];setTestEv(seq[(seq.indexOf(mapEv)+1)%seq.length])}},
-      h('video',{className:'km-video',ref:vref,src:'assets/video/brainseeker-cctv.mp4',loop:true,muted:true,autoPlay:true,playsInline:true,preload:'metadata'}),
+      h('video',{className:'km-video',ref:vref,src:'assets/video/brainseeker-cctv.mp4?v=2',loop:true,muted:true,autoPlay:true,playsInline:true,preload:'metadata'}),
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
