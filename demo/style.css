@@ -1048,8 +1048,8 @@ b.fm-rk--info{color:#caa14a}
 .km-lbl{position:absolute;left:6px;top:5px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
 .km-stat{position:absolute;left:6px;bottom:4px;right:6px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:7.5px;letter-spacing:.5px;display:flex;justify-content:space-between;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
 .km-pin{position:absolute;left:90%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
-.km-pin i{display:block;width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#ffe2b0 0%,var(--ko) 55%,#d96a12 100%);box-shadow:0 0 14px var(--ko),0 0 5px var(--ko),0 0 2px #000;animation:kmDot 2.1s ease-in-out infinite}
-@keyframes kmDot{0%,100%{box-shadow:0 0 12px var(--ko),0 0 4px var(--ko),0 0 2px #000;transform:scale(1)}50%{box-shadow:0 0 20px var(--ko),0 0 8px var(--ko),0 0 3px #000;transform:scale(1.12)}}
+.km-pin i{display:block;width:14px;height:14px;border-radius:50%;background:var(--ko);box-shadow:0 0 10px rgba(var(--ko-rgb),.65);animation:kmDot 2.1s ease-in-out infinite}
+@keyframes kmDot{0%,100%{box-shadow:0 0 7px rgba(var(--ko-rgb),.55)}50%{box-shadow:0 0 15px rgba(var(--ko-rgb),.85)}}
 /* 자연스러운 물결: 부드러운 그라데이션 링이 scale로 퍼지며 페이드 인→아웃(깜빡임 방지) */
 .km-pin .ring,.km-pin::before,.km-pin::after{content:"";position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:radial-gradient(circle,transparent 44%,rgba(var(--ko-rgb),.75) 62%,transparent 80%);opacity:0;transform:scale(.12);animation:kmPing 3s ease-out infinite}
 .km-pin::before{animation-delay:1s}
