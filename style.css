@@ -1043,7 +1043,7 @@ b.fm-rk--info{color:#caa14a}
 @keyframes kmGlitch{0%,92%,100%{transform:translate(0,0)}78%{transform:translate(0,0)}78.5%{transform:translate(2px,-1px)}79%{transform:translate(-2px,0)}79.5%{transform:translate(0,0)}92.5%{transform:translate(-3px,1px)}93%{transform:translate(3px,-1px)}93.5%{transform:translate(-2px,0)}94%{transform:translate(2px,1px)}94.5%{transform:translate(0,0)}}
 .km-lbl{position:absolute;left:6px;top:5px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
 .km-stat{position:absolute;left:6px;bottom:4px;right:6px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:7.5px;letter-spacing:.5px;display:flex;justify-content:space-between;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
-.km-pin{position:absolute;left:77%;top:52%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
+.km-pin{position:absolute;left:90%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
 .km-pin i{display:block;width:7px;height:7px;border-radius:50%;background:var(--ko);box-shadow:0 0 9px var(--ko),0 0 2px #000}
 .km-pin .ring{position:absolute;left:50%;top:50%;width:7px;height:7px;border-radius:50%;border:1.4px solid var(--ko);transform:translate(-50%,-50%);animation:kmPing 2.2s ease-out infinite}
 @keyframes kmPing{0%{width:7px;height:7px;opacity:.9}100%{width:32px;height:32px;opacity:0}}

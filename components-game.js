@@ -299,7 +299,7 @@ function Stats(p){
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
       h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
       h('div',{className:'km-lbl'},'강원 // GRID'),
-      h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'}),h('span',null,'기지')),
+      h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'})),
       h('div',{className:'km-stat'},h('span',null,mapStatLabel),h('span',null,'97.1%'))),
   h('div',{className:'stats-console'+(isKo?' stats-console-ko':'')},
     h('div',{className:'stats-console-h'},
