@@ -290,10 +290,11 @@ function Stats(p){
   var giV=Math.max(-60,Math.min(60,p.gi||0));
   var giMag=Math.abs(giV)/60*50;
   var giPos=giV>=0;
+  var lowCount=['c','r','t','o'].filter(function(k){return p.stats[k]!=null&&p.stats[k]<25}).length;
   var mapEv=p.mapEvent||'idle';
   var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
   return h('div',{className:'hud-top'},
-    h('div',{className:'hud-map','data-ev':mapEv,'aria-hidden':'true'},
+    h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv,'aria-hidden':'true'},
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
