@@ -286,15 +286,18 @@ function Stats(p){
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isKo=locale==='ko';
   var showGiShadow=(p.sessions||0)>=2;
+  var _tev=useState(null),testEv=_tev[0],setTestEv=_tev[1];var vref=useRef(null); // TODO(phase2): 실제 게임 이벤트로 교체. 현재는 지도 탭으로 상태 순환(테스트)
   // 양방향 섀도 게이지 — 중앙(0) 기준 우측=충성(+), 좌측=저항(-). GI는 3회차+에서만, 숫자 없이 노출
   var giV=Math.max(-60,Math.min(60,p.gi||0));
   var giMag=Math.abs(giV)/60*50;
   var giPos=giV>=0;
   var lowCount=['c','r','t','o'].filter(function(k){return p.stats[k]!=null&&p.stats[k]<25}).length;
-  var mapEv=p.mapEvent||'idle';
+  var mapEv=testEv||p.mapEvent||'idle';
   var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
+  useEffect(function(){var v=vref.current;if(!v)return;v.muted=true;if(mapEv==='attack'){var pr=v.play&&v.play();if(pr&&pr.catch)pr.catch(function(){})}else{try{v.pause()}catch(e){}}},[mapEv]);
   return h('div',{className:'hud-top'},
-    h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv,'aria-hidden':'true'},
+    h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv,onClick:function(){var seq=['idle','attack','research','lockdown'];setTestEv(seq[(seq.indexOf(mapEv)+1)%seq.length])}},
+      h('video',{className:'km-video',ref:vref,src:'assets/video/brainseeker-cctv.mp4',loop:true,muted:true,autoPlay:true,playsInline:true,preload:'metadata'}),
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
