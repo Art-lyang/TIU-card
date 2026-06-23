@@ -1033,6 +1033,8 @@ b.fm-rk--info{color:#caa14a}
 /* 변이체 공격 상태: 미니맵이 브레인시커 CCTV 영상으로 전환(루프) */
 .km-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;display:none;background:#000}
 .hud-map[data-ev="attack"] .km-video{display:block}
+/* 공격(CCTV 영상) 상태에선 평상시 지도 마커 숨김 */
+.hud-map[data-ev="attack"] .km-pin{display:none}
 /* 글리치/흔들림은 위험 상태(4대 자원 중 2개 이상 <25)에서만 */
 .hud-map.is-glitch{animation:kmFlicker 5s steps(1) infinite}
 .hud-map.is-glitch .km-wrap{animation:kmGlitch 6.5s linear infinite}
