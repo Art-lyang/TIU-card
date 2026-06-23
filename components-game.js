@@ -290,7 +290,18 @@ function Stats(p){
   var giV=Math.max(-60,Math.min(60,p.gi||0));
   var giMag=Math.abs(giV)/60*50;
   var giPos=giV>=0;
-  return h('div',{className:'stats-console'+(isKo?' stats-console-ko':''),style:{width:'100%',maxWidth:440,flexShrink:0}},
+  var mapEv=p.mapEvent||'idle';
+  var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
+  return h('div',{className:'hud-top'},
+    h('div',{className:'hud-map','data-ev':mapEv,'aria-hidden':'true'},
+      h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
+      h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
+      h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
+      h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
+      h('div',{className:'km-lbl'},'강원 // GRID'),
+      h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'}),h('span',null,'기지')),
+      h('div',{className:'km-stat'},h('span',null,mapStatLabel),h('span',null,'97.1%'))),
+  h('div',{className:'stats-console'+(isKo?' stats-console-ko':'')},
     h('div',{className:'stats-console-h'},
       h('span',{className:'sc-h-l'},tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day)),
       h('span',{className:'sc-h-r'},'LIVE')),
@@ -312,7 +323,7 @@ function Stats(p){
       h('div',{className:'sc-gi-track'},
         h('div',{className:'sc-gi-center'}),
         h('div',{className:'sc-gi-fill'+(giPos?'':' gi-neg'),style:giPos?{left:'50%',width:giMag+'%'}:{right:'50%',width:giMag+'%'}}))):null
-  );
+  ));
 }
 function DayObjectiveLegacy(p){
   var st=p.stats||{},act=p.act||1,day=st.day||1;
