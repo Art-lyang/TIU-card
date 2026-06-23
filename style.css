@@ -1027,7 +1027,7 @@ b.fm-rk--info{color:#caa14a}
 .hud-top{width:100%;max-width:440px;flex-shrink:0;margin:2px 0 4px;display:flex;gap:8px;align-items:flex-start}
 .hud-top .stats-console{flex:1;min-width:0;margin:0}
 .hud-map{--ko:#ff8c2b;--ko-rgb:255,140,43;position:relative;flex:0 0 116px;width:116px;height:104px;
-  border:1px solid rgba(var(--ui-rgb),.2);border-radius:3px;overflow:hidden;isolation:isolate;
+  border:1px solid rgba(var(--ui-rgb),.2);border-radius:3px;overflow:hidden;isolation:isolate;clip-path:inset(0 round 3px);
   background:#05060a;cursor:pointer}
 .km-wrap{position:absolute;width:356px;height:534px;left:-163px;top:-71px}
 /* 변이체 공격 상태: 미니맵이 브레인시커 CCTV 영상으로 전환(루프) */
@@ -1050,14 +1050,14 @@ b.fm-rk--info{color:#caa14a}
 @keyframes kmGlitch{0%,92%,100%{transform:translate(0,0)}78%{transform:translate(0,0)}78.5%{transform:translate(2px,-1px)}79%{transform:translate(-2px,0)}79.5%{transform:translate(0,0)}92.5%{transform:translate(-3px,1px)}93%{transform:translate(3px,-1px)}93.5%{transform:translate(-2px,0)}94%{transform:translate(2px,1px)}94.5%{transform:translate(0,0)}}
 .km-lbl{position:absolute;left:6px;top:5px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
 .km-stat{position:absolute;left:6px;bottom:4px;right:6px;z-index:7;font-family:'Share Tech Mono',monospace;font-size:7.5px;letter-spacing:.5px;display:flex;justify-content:space-between;color:var(--ko);text-shadow:0 0 5px rgba(0,0,0,.9)}
-.km-pin{position:absolute;left:90%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
+.km-pin{position:absolute;left:80%;top:50%;transform:translate(-50%,-50%);pointer-events:none;z-index:7}
 .km-pin i{display:block;width:14px;height:14px;border-radius:50%;background:var(--ko);box-shadow:0 0 10px rgba(var(--ko-rgb),.65);animation:kmDot 2.1s ease-in-out infinite}
 @keyframes kmDot{0%,100%{box-shadow:0 0 7px rgba(var(--ko-rgb),.55)}50%{box-shadow:0 0 15px rgba(var(--ko-rgb),.85)}}
 /* 자연스러운 물결: 부드러운 그라데이션 링이 scale로 퍼지며 페이드 인→아웃(깜빡임 방지) */
-.km-pin .ring,.km-pin::before,.km-pin::after{content:"";position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:radial-gradient(circle,transparent 44%,rgba(var(--ko-rgb),.75) 62%,transparent 80%);opacity:0;transform:scale(.12);animation:kmPing 3s ease-out infinite}
+.km-pin .ring,.km-pin::before,.km-pin::after{content:"";position:absolute;left:50%;top:50%;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;background:radial-gradient(circle,transparent 44%,rgba(var(--ko-rgb),.75) 62%,transparent 80%);opacity:0;transform:scale(.12);animation:kmPing 3s ease-out infinite}
 .km-pin::before{animation-delay:1s}
 .km-pin::after{animation-delay:2s}
-@keyframes kmPing{0%{transform:scale(.12);opacity:0}18%{opacity:.85}100%{transform:scale(1.15);opacity:0}}
+@keyframes kmPing{0%{transform:scale(.12);opacity:0}18%{opacity:.85}100%{transform:scale(1.05);opacity:0}}
 .km-ov{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;z-index:2}
 .hud-map[data-ev="attack"] .km-ov-attack{opacity:1}
 .hud-map[data-ev="research"] .km-ov-research{opacity:1}
