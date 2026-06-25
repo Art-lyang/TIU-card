@@ -318,7 +318,7 @@ function CctvSting(p){
   },[]);
   var media=isVid
     ? h('video',{className:'cctv-sting-vid',ref:vref,src:clip.src,muted:true,autoPlay:true,playsInline:true,preload:'auto'})
-    : h('img',{className:'cctv-sting-vid cctv-sting-img',src:clip.img,alt:''});
+    : h('img',{className:'cctv-sting-vid cctv-sting-img',src:clip.img,alt:'',style:{objectPosition:clip.pos||'50% 38%'}});
   return h('div',{className:'cctv-sting',onClick:function(){p.onDone&&p.onDone()}},
     media,
     h('div',{className:'cctv-sting-scan'}),

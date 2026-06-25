@@ -1086,6 +1086,6 @@ b.fm-rk--info{color:#caa14a}
 @keyframes cctvBlink{50%{opacity:.25}}
 @keyframes warnBlink{0%,100%{opacity:1}50%{opacity:.45}}
 
-/* 정지 이미지 CCTV 스팅 — 전체가 보이도록 contain + 미세 줌 (얼굴 잘림 방지) */
-.cctv-sting-img{object-fit:contain;background:#000;animation:cctvKenBurns 3s ease-out forwards}
-@keyframes cctvKenBurns{from{transform:scale(1.0)}to{transform:scale(1.05)}}
+/* 정지 이미지 CCTV 스팅 — 초광각 파노라마라 화면을 채워 빈 여백 제거(깨짐 방지), 피사체 쪽 정렬 + 어두운 원본 보정 */
+.cctv-sting-img{object-fit:cover;background:#000;filter:brightness(1.14) contrast(1.05) saturate(.95);animation:cctvKenBurns 4s ease-out forwards}
+@keyframes cctvKenBurns{from{transform:scale(1.04)}to{transform:scale(1.12)}}
