@@ -42,6 +42,43 @@
           choices: [{ label: "[ 기지 귀환 — ORACLE 권고 수행 ]", next: "end", result: { c: 1, r: 0, t: 0, o: 2 }, log: "LOG-004" }]
         }
       }
+    },
+    // ── M-E02 : SPEC-015 Brain Seeker 긴급 하수도 침입 (봉쇄선 내부 조우) ──
+    "M-E02": {
+      id: "M-E02", title: "하수도 침입 — 긴급 대응",
+      codename: "BRAIN SEEKER", spec: "SPEC-015", threat: "DANGER",
+      hero: "assets/images/missions/mission_m010_brain_seeker_clean.webp",
+      intel: { grid: "37.5215 N, 126.9240 E", depth: "SUB-LEVEL -3 m", env: "NIGHT / SEWER INTAKE" },
+      report: [
+        { label: "조우 유형", value: "긴급 — 사전 정찰 없음", level: "danger" },
+        { label: "침입 경로", value: "하수도 흡입구 — 봉쇄선 내부", level: "danger" },
+        { label: "방어 기관", value: "등껍질 부재 — 척추 노출", level: "warn" },
+        { label: "학습 단계", value: "순찰 패턴 동기화 — ACTIVE", level: "warn" },
+        { label: "예상 사상자", value: "산출 불가 — 표본 부족", level: "err" },
+        { label: "교전 조건", value: "협소 통로 / 시야 제한", level: "info" }
+      ],
+      nodes: {
+        start: {
+          text: "심야 경보.\n\n하수도 흡입구 격자가 안쪽에서 뜯겨 나갔다. 봉쇄선 내부다.\n\n강도윤 (무전): \"...들어왔습니다. 하수도를 타고 기지 하층으로. 사전 징후 없었습니다.\"\n\"열화상에 거대한 열원 하나. 두개골만 노출. 등껍질이 없습니다 — 척추가 그대로 보여요.\"\n\n윤세진 (무전): \"특수 변이 개체로 확인됨. 누적 포식 개체예요. 우리 순찰 시간을 학습했습니다.\"\n\"하층 통로는 좁아요. 도약 공격에 불리합니다.\"\n\n[ORACLE: 특수 변이 개체 확인 — 지정 BS-GANGWON-01. 봉쇄선 내부 침입. 학습 단계 진입.]\n\n시간이 없다.",
+          choices: [
+            { label: "▸ 하층 통로 봉쇄 + 집중 사격", next: "seal", sub: "통로 봉쇄 후 제압", risk: "HIGH", icon: "fire" },
+            { label: "▸ 배수로 역류 — 흡입구로 역유인", next: "flush", sub: "역류로 유인 제압", risk: "MEDIUM", icon: "crosshair" },
+            { label: "▸ ORACLE 열화상 추적 요청", next: "track", g: 2, sub: "열화상 추적 요청", risk: "LOW", icon: "dish" }
+          ]
+        },
+        seal: {
+          text: "하층 통로 양쪽을 차폐문으로 봉쇄한다. 퇴로를 끊는다.\n\n좁은 통로 안 — 개체가 모습을 드러낸다. 체고 2.2m. 바다거북형 두개골. 측면 안와에서 빛이 반사된다.\n\n도약. 강도윤의 분대가 일제히 척추를 노린다.\n\n3발. 두개골 상부 관통. 개체가 콘크리트를 긁으며 쓰러진다.\n\n윤세진: \"척추 반응 없음. 무력화 확인.\"\n\n등껍질 없는 개체는 — 방어 수단이 없었다. 다만 통로 벽에, 누군가의 얼굴 가죽이 떨어져 있다.",
+          choices: [{ label: "[ 기지 귀환 — 침입 개체 제거 ]", next: "end", result: { c: 2, r: -2, t: 0, o: 1 }, log: "LOG-041" }]
+        },
+        flush: {
+          text: "배수 펌프를 역회전시킨다. 하수도에 역류가 인다.\n\n수위가 차오르자 개체가 흡입구 쪽으로 밀려난다. 학습형 개체는 익숙한 경로로 후퇴하려 한다 — 예상대로.\n\n흡입구 길목에 전기 그물. 작동.\n\n경련. 강도윤이 두개골에 3발을 박는다. 멈춘다.\n\n윤세진: \"근무 인원 손실 없음. ...이 경로, 기록해 둘게요. 또 올 테니까.\"",
+          choices: [{ label: "[ 기지 귀환 — 무피해 제압 ]", next: "end", result: { c: 1, r: -1, t: 2, o: 0 }, log: "LOG-041" }]
+        },
+        track: {
+          text: "[ORACLE: 하층 열화상 격자 추적 개시...]\n\n[ORACLE: 개체는 봉쇄선 실종자 다수를 포식한 누적 개체로 판단됩니다. 하수도 흡입구는 학습된 침입 경로입니다.]\n[ORACLE: 차폐 후 원거리 제압을 권고합니다. 근접 교전 불필요.]\n\n권고대로 통로를 차폐하고, 원거리에서 정리한다. 손실 없음.\n\n흡입구 격자를 다시 용접하는 동안, 강도윤은 한참 그 자리를 떠나지 못한다.",
+          choices: [{ label: "[ 기지 귀환 — ORACLE 권고 수행 ]", next: "end", result: { c: 1, r: 0, t: 0, o: 2 }, log: "LOG-041" }]
+        }
+      }
     }
   };
   Object.keys(ME).forEach(function(k){ MISSIONS[k] = ME[k]; });

@@ -135,5 +135,18 @@ var CARDS_INVESTIGATE = [
     },
     msg: "긴급 — 야간 봉쇄선 경보.\n\n남측 게이트 근무조 무전: \"안에서 사람 목소리가... 게이트 바로 앞입니다. 실종된 요원들 목소리예요.\"\n\n강도윤: \"사전 징후 없이 게이트까지 왔습니다. 음성 모방형 — Shell Talker입니다. 근무조가 흔들리고 있어요. 즉시 결정이 필요합니다.\"",
     left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E01" },
-    right: { label: "ORACLE 연동 차단 대응", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E01" } }
+    right: { label: "ORACLE 연동 차단 대응", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E01" } },
+
+  // CT-302 : SPEC-015 Brain Seeker 긴급 하수도 침입 — 휴면 종 한정 + 봉쇄위기/방치 트리거
+  { id: "CT-302", act: [2,3], priority: "상", bg: "forest", once: true,
+    req: function(s,g,logs){
+      return s.day >= 8
+        && !logs.includes("LOG-041")
+        && typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
+        && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-015') < 0
+        && (s.c <= 30 || s.day >= 13);
+    },
+    msg: "긴급 — 심야 하층 경보.\n\n하수도 흡입구 격자가 안쪽에서 뜯겨 나갔습니다. 봉쇄선 내부입니다.\n\n강도윤: \"하수도를 타고 기지 하층까지 들어왔습니다. 사전 징후 없었습니다. 두개골만 노출된 거대 개체 — 등껍질이 없습니다.\"\n\n윤세진: \"특수 변이 개체예요. 우리 순찰 시간을 학습했습니다. 즉시 결정이 필요합니다.\"",
+    left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E02" },
+    right: { label: "하층 차폐 + ORACLE 추적", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E02" } }
 ];
