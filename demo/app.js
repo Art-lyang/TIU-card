@@ -766,7 +766,7 @@ function App(){
   if(phase==='miniguide')return h(MiniGameGuide,{onClose:function(){setPhase(ret)}});
   return withOracleLink(h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
-    h(Stats,{stats:stats,preview:preview,gi:gi,sessions:sessions}),
+    h(Stats,{stats:stats,preview:preview,gi:gi,sessions:sessions,mapEvent:(stats.c<=20?'attack':stats.c>=85?'lockdown':'idle')}),
     h(DayObjective,{stats:stats,act:act,logs:logs,gi:gi}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},tt('scenario.act',{act:act},'ACT '+act)),
