@@ -1086,6 +1086,6 @@ b.fm-rk--info{color:#caa14a}
 @keyframes cctvBlink{50%{opacity:.25}}
 @keyframes warnBlink{0%,100%{opacity:1}50%{opacity:.45}}
 
-/* 정지 이미지 CCTV 스팅 — 미세 줌으로 생동감 */
-.cctv-sting-img{animation:cctvKenBurns 3s ease-out forwards}
-@keyframes cctvKenBurns{from{transform:scale(1.05)}to{transform:scale(1.13)}}
+/* 정지 이미지 CCTV 스팅 — 전체가 보이도록 contain + 미세 줌 (얼굴 잘림 방지) */
+.cctv-sting-img{object-fit:contain;background:#000;animation:cctvKenBurns 3s ease-out forwards}
+@keyframes cctvKenBurns{from{transform:scale(1.0)}to{transform:scale(1.05)}}
