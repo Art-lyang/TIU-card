@@ -283,7 +283,7 @@ function MainMenu(p){
 // ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
   brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
-  blood_pit:     {img:'assets/images/missions/mission_m001_blood_pit_clean.webp',            cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
+  blood_pit:     {src:'assets/video/bloodpit-cctv.mp4?v=1',start:6.5,end:9.5,                cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
   shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_clean.webp',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
   shell_gate:    {img:'assets/images/missions/mission_m002_shell_talker_clean.webp',         cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
   mannequin:     {img:'assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg', cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
