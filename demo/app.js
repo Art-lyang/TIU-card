@@ -31,6 +31,18 @@ function DevMissionLauncher(p){
   );
   return h(React.Fragment,null,btn,panel);
 }
+// 미니맵 상태 산출 — 브레인시커 기습(CT-302) 조건 충족 시 'attack' 사전경보, 그 외 봉쇄 상태 기반
+function computeMapEvent(stats, logs){
+  logs = logs || [];
+  var ambushPending = (typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
+    && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-015') < 0
+    && logs.indexOf('LOG-041') < 0
+    && stats.day >= 8 && (stats.c <= 30 || stats.day >= 13));
+  if (ambushPending) return 'attack';
+  if (stats.c <= 20) return 'attack';
+  if (stats.c >= 85) return 'lockdown';
+  return 'idle';
+}
 function App(){
   var _p=useState('boot'),phase=_p[0],setPhase=_p[1];
   var _s=useState({c:50,r:65,t:50,o:40,day:1}),stats=_s[0],setStats=_s[1];
@@ -766,7 +778,7 @@ function App(){
   if(phase==='miniguide')return h(MiniGameGuide,{onClose:function(){setPhase(ret)}});
   return withOracleLink(h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),
-    h(Stats,{stats:stats,preview:preview,gi:gi,sessions:sessions,mapEvent:(stats.c<=20?'attack':stats.c>=85?'lockdown':'idle')}),
+    h(Stats,{stats:stats,preview:preview,gi:gi,sessions:sessions,mapEvent:computeMapEvent(stats,logs)}),
     h(DayObjective,{stats:stats,act:act,logs:logs,gi:gi}),
     h('div',{className:'info-bar'},
       h('span',{className:'info-tag'},tt('scenario.act',{act:act},'ACT '+act)),
