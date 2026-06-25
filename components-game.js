@@ -282,7 +282,7 @@ function MainMenu(p){
 }
 // ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
-  brainseeker:{src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:10.5,cam:'CCTV // SEWER LINE 3',warn:{ko:'하수도 침입 감지',en:'SEWER BREACH DETECTED'}}
+  brainseeker:{src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',warn:{ko:'하수도 침입 감지',en:'SEWER BREACH DETECTED'}}
 };
 var MISSION_CCTV={'M-010':'brainseeker'}; // 변이체 조우 미션 → CCTV 클립. 매핑 없으면 스팅 없이 바로 미션
 function CctvSting(p){
