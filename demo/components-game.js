@@ -294,7 +294,7 @@ var CCTV_CLIPS={
 };
 var MISSION_CCTV={
   'M-001':'blood_pit','M-002':'shell_talker','M-004':'mannequin','M-005':'brood_drone',
-  'M-006':'spore_phantom','M-009':'seed_spreader','M-010':'brainseeker','M-E01':'shell_gate','M-E02':'brainseeker','MI-03':'sample_contam'
+  'M-006':'spore_phantom','M-009':'seed_spreader','M-010':'brainseeker','M-E01':'shell_gate','M-E02':'brainseeker','M-E03':'brood_drone','M-E04':'mannequin','MI-03':'sample_contam'
 }; // 변이체 조우 미션 → CCTV 클립(영상 src / 정지 img). 매핑 없으면 스팅 없이 바로 미션
 function CctvSting(p){
   var clip=CCTV_CLIPS[p.clipKey]||CCTV_CLIPS.brainseeker;

@@ -31,14 +31,10 @@ function DevMissionLauncher(p){
   );
   return h(React.Fragment,null,btn,panel);
 }
-// 미니맵 상태 산출 — 브레인시커 기습(CT-302) 조건 충족 시 'attack' 사전경보, 그 외 봉쇄 상태 기반
+// 미니맵 상태 산출 — 돌발 기습(CT-30x) 조건 충족 시 'attack' 사전경보, 그 외 봉쇄 상태 기반
 function computeMapEvent(stats, logs){
   logs = logs || [];
-  var ambushPending = (typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
-    && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-015') < 0
-    && logs.indexOf('LOG-041') < 0
-    && stats.day >= 8 && (stats.c <= 30 || stats.day >= 13));
-  if (ambushPending) return 'attack';
+  if (typeof anyAmbushPending === 'function' && anyAmbushPending(stats, logs)) return 'attack';
   if (stats.c <= 20) return 'attack';
   if (stats.c >= 85) return 'lockdown';
   return 'idle';

@@ -139,14 +139,22 @@ var CARDS_INVESTIGATE = [
 
   // CT-302 : SPEC-015 Brain Seeker 긴급 하수도 침입 — 휴면 종 한정 + 봉쇄위기/방치 트리거
   { id: "CT-302", act: [2,3], priority: "상", bg: "forest", once: true,
-    req: function(s,g,logs){
-      return s.day >= 8
-        && !logs.includes("LOG-041")
-        && typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
-        && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-015') < 0
-        && (s.c <= 30 || s.day >= 13);
-    },
+    req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-015','LOG-041',s,logs); },
     msg: "긴급 — 심야 하층 경보.\n\n하수도 흡입구 격자가 안쪽에서 뜯겨 나갔습니다. 봉쇄선 내부입니다.\n\n강도윤: \"하수도를 타고 기지 하층까지 들어왔습니다. 사전 징후 없었습니다. 두개골만 노출된 거대 개체 — 등껍질이 없습니다.\"\n\n윤세진: \"특수 변이 개체예요. 우리 순찰 시간을 학습했습니다. 즉시 결정이 필요합니다.\"",
     left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E02" },
-    right: { label: "하층 차폐 + ORACLE 추적", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E02" } }
+    right: { label: "하층 차폐 + ORACLE 추적", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E02" } },
+
+  // CT-303 : SPEC-003 Brood Drone 긴급 환기구 군체 침입 — 휴면 종 한정
+  { id: "CT-303", act: [2,3], priority: "상", bg: "forest", once: true,
+    req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-003','LOG-014',s,logs); },
+    msg: "긴급 — 환기 계통 경보.\n\n상부 환기구 필터가 안쪽에서 찢겼습니다. 다수의 소형 개체가 덕트를 타고 내부로 확산 중입니다.\n\n임재혁: \"환기구마다 반응이 떠요. 한두 마리가 아닙니다 — 군체입니다.\"\n\n윤세진: \"Brood Drone이에요. 지휘 개체가 근처에 있다는 뜻입니다. 덕트 전체로 퍼지기 전에 결정해야 합니다.\"",
+    left: { label: "환기 계통 전면 차단 + 소각", fx: { c: 2, r: -2, t: 0, o: 1 }, g: 1, mission: "M-E03" },
+    right: { label: "ORACLE 군체 추적 — 지휘 개체 우선", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2, mission: "M-E03" } },
+
+  // CT-304 : SPEC-001 Mannequin 긴급 정지 위장 잠입 — 휴면 종 한정
+  { id: "CT-304", act: [2,3], priority: "상", bg: "forest", once: true,
+    req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-001','LOG-013',s,logs); },
+    msg: "긴급 — 인원 점검 불일치.\n\n야간 보급 창고. 정기 인원 점검에서 머릿수가 하나 더 잡힙니다.\n\n강도윤: \"구석에 사람 형체 하나. ...미동이 없습니다. 호흡도, 열도 거의 없어요.\"\n\n윤세진: \"Mannequin이에요. 보급품 틈에 섞여 들어온 정지 위장형. 자극하기 전에 식별이 먼저예요.\"",
+    left: { label: "즉시 제압 — 접근 사격", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-E04" },
+    right: { label: "열화상 식별 후 격리", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0, mission: "M-E04" } }
 ];

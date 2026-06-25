@@ -26,6 +26,20 @@ var normalizeActiveSpecs=function(list){var seen={},out=[];if(!Array.isArray(lis
 var initActiveSpecs=function(){ACTIVE_SPECS=normalizeActiveSpecs(pickN(ALL_SPEC_TAGS,ACTIVE_SPEC_COUNT));try{localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}catch(e){}};
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);var normalized=normalizeActiveSpecs(parsed);if(normalized.length===ACTIVE_SPEC_COUNT){ACTIVE_SPECS=normalized;localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
+// 돌발 긴급 기습(CT-30x/M-E0x) 공용 게이트 — 트리거 카드 req와 미니맵 사전경보가 동일 로직 공유
+var EMERGENCY_AMBUSHES=[
+  {spec:'spec-015',mission:'M-E02',done:'LOG-041'}, // BRAIN SEEKER 하수도 침입
+  {spec:'spec-003',mission:'M-E03',done:'LOG-014'}, // BROOD DRONE 환기구 군체 침입
+  {spec:'spec-001',mission:'M-E04',done:'LOG-013'}  // MANNEQUIN 정지 위장 잠입
+];
+var ambushPending=function(specTag,doneLog,s,logs){
+  logs=logs||[];
+  if(typeof ACTIVE_SPECS==='undefined'||!Array.isArray(ACTIVE_SPECS)||ACTIVE_SPECS.length===0)return false;
+  if(ACTIVE_SPECS.indexOf(specTag)>=0)return false;        // 활성 종은 조사루트로 다룸(상호배타)
+  if(doneLog&&logs.indexOf(doneLog)>=0)return false;        // 이미 처리됨
+  return (s.day>=8)&&(s.c<=30||s.day>=13);                  // 봉쇄위기 또는 방치
+};
+var anyAmbushPending=function(s,logs){for(var i=0;i<EMERGENCY_AMBUSHES.length;i++){var a=EMERGENCY_AMBUSHES[i];if(ambushPending(a.spec,a.done,s,logs))return true;}return false;};
 var _cardFullText=function(c,stats,gi,logs){var txt=_introMsgText(c,stats,gi,logs);try{if(c&&c.left)txt+=' '+(c.left.label||'');if(c&&c.right)txt+=' '+(c.right.label||'')}catch(e){}return txt};
 var cardHasMission=function(c){return !!(c&&((c.left&&c.left.mission)||(c.right&&c.right.mission)||c.mission))};
 var cardFeProposeIds=function(c){var ids=[];if(c&&c.left&&c.left.fePropose)ids.push(c.left.fePropose);if(c&&c.right&&c.right.fePropose)ids.push(c.right.fePropose);return ids};

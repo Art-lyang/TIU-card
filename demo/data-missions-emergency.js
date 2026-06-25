@@ -79,6 +79,80 @@
           choices: [{ label: "[ 기지 귀환 — ORACLE 권고 수행 ]", next: "end", result: { c: 1, r: 0, t: 0, o: 2 }, log: "LOG-041" }]
         }
       }
+    },
+    // ── M-E03 : SPEC-003 Brood Drone 긴급 환기구 군체 침입 ──
+    "M-E03": {
+      id: "M-E03", title: "환기구 군체 침입 — 긴급 대응",
+      codename: "BROOD DRONE", spec: "SPEC-003", threat: "HIGH",
+      hero: "assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg",
+      intel: { grid: "37.4512 N, 126.8901 E", depth: "SUB-LEVEL +1 m", env: "NIGHT / VENT DUCT" },
+      report: [
+        { label: "조우 유형", value: "긴급 — 사전 정찰 없음", level: "danger" },
+        { label: "침입 경로", value: "상부 환기 덕트 — 다중 확산", level: "danger" },
+        { label: "개체 수", value: "군체 — 정확 산출 불가", level: "warn" },
+        { label: "지휘 개체", value: "근접 추정 — 미식별", level: "warn" },
+        { label: "예상 사상자", value: "확산 속도 의존", level: "err" },
+        { label: "교전 조건", value: "밀폐 덕트 / 시야 차단", level: "info" }
+      ],
+      nodes: {
+        start: {
+          text: "환기 계통 경보.\n\n상부 덕트 필터가 안쪽에서 찢겼다. 소형 개체 다수가 환기로를 타고 기지 내부로 번진다.\n\n임재혁 (무전): \"환기구마다 반응입니다. 한두 마리가 아니에요 — 군체가 통째로 들어왔습니다.\"\n\n윤세진 (무전): \"Brood Drone이에요. 단독으론 약하지만 수가 문제예요. 어딘가에 지휘 개체가 있고, 그게 확산을 조율합니다.\"\n\n[ORACLE: SPEC-003 군체 침입 확인. 경고 — 지휘 개체 제거 전까지 재확산 가능.]\n\n덕트 전체로 퍼지기 전에 결정해야 한다.",
+          choices: [
+            { label: "▸ 환기 계통 전면 차단 + 소각", next: "burn", sub: "덕트 봉쇄 후 소각", risk: "HIGH", icon: "fire" },
+            { label: "▸ 살충 가스 충전 — 구획별 정화", next: "gas", sub: "구획 가스 정화", risk: "MEDIUM", icon: "crosshair" },
+            { label: "▸ ORACLE 군체 추적 — 지휘 개체 우선", next: "command", g: 2, sub: "지휘 개체 추적", risk: "LOW", icon: "dish" }
+          ]
+        },
+        burn: {
+          text: "환기 계통을 구획째 폐쇄하고, 덕트에 소이 처리를 흘려보낸다.\n\n금속 덕트 안에서 수십 개의 작은 비명이 겹친다. 잠시 후, 잠잠해진다.\n\n강도윤: \"덕트 내부 반응 소멸. ...전부 태웠습니다.\"\n\n확산은 멈췄다. 다만 환기 계통 절반이 못 쓰게 됐다.\n\n윤세진: \"지휘 개체까지 같이 탄 건지는 확실치 않아요. 당분간 환기구를 주시해야 합니다.\"",
+          choices: [{ label: "[ 기지 귀환 — 군체 소각 ]", next: "end", result: { c: 2, r: -2, t: 0, o: 1 }, log: "LOG-014" }]
+        },
+        gas: {
+          text: "구획별로 살충 가스를 충전한다. 인원을 먼저 물리고, 한 구획씩 닫아가며 정화한다.\n\n느리지만 확실하다. 덕트 반응이 구획 단위로 하나씩 꺼진다.\n\n마지막 구획에서 — 다른 것보다 큰 열원 하나가 가스에 저항하다 멈춘다.\n\n윤세진: \"...지휘 개체예요. 같이 잡혔습니다. 재확산 위험 없음.\"\n\n시간은 걸렸지만, 손실도 환기 계통 피해도 없다.",
+          choices: [{ label: "[ 기지 귀환 — 지휘 개체 포함 정화 ]", next: "end", result: { c: 1, r: -2, t: 1, o: 0 }, log: "LOG-014" }]
+        },
+        command: {
+          text: "[ORACLE: 환기 계통 음향·열화상 패턴 분석 개시...]\n\n[ORACLE: 군체 이동이 한 지점을 중심으로 동기화되어 있습니다. 지휘 개체 위치 추정 — 지하 1 구역 환기 분기점.]\n[ORACLE: 지휘 개체 제거 시 군체 통제 붕괴 예측. 분기점 집중 권고.]\n\n분기점만 노린다. 지휘 개체를 끊자, 나머지 개체들의 움직임이 흐트러진다.\n\n통제를 잃은 군체는 빠르게 정리된다. 환기 계통 피해 최소.",
+          choices: [{ label: "[ 기지 귀환 — 지휘 개체 우선 제거 ]", next: "end", result: { c: 1, r: -1, t: 0, o: 2 }, log: "LOG-014" }]
+        }
+      }
+    },
+    // ── M-E04 : SPEC-001 Mannequin 긴급 정지 위장 잠입 ──
+    "M-E04": {
+      id: "M-E04", title: "정지 위장 잠입 — 긴급 대응",
+      codename: "MANNEQUIN", spec: "SPEC-001", threat: "HIGH",
+      hero: "assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg",
+      intel: { grid: "37.5443 N, 127.0557 E", depth: "STORAGE +0 m", env: "NIGHT / SUPPLY STORE" },
+      report: [
+        { label: "조우 유형", value: "긴급 — 사전 정찰 없음", level: "danger" },
+        { label: "침입 경로", value: "보급품 반입 — 내부 잠입", level: "danger" },
+        { label: "위장 상태", value: "정지 — 호흡·열원 거의 없음", level: "warn" },
+        { label: "식별 난이도", value: "높음 — 인원과 혼동 위험", level: "warn" },
+        { label: "예상 사상자", value: "자극 시 급증", level: "err" },
+        { label: "교전 조건", value: "근접 / 식별 우선", level: "info" }
+      ],
+      nodes: {
+        start: {
+          text: "인원 점검 불일치.\n\n야간 보급 창고. 정기 점검에서 머릿수가 하나 더 잡힌다.\n\n강도윤 (무전): \"구석에 사람 형체 하나. ...미동이 없습니다. 호흡도, 열도 거의 안 잡혀요.\"\n\"방금 전까지 우리 대원인 줄 알았습니다. 보급품 틈에 섞여 들어온 것 같습니다.\"\n\n윤세진 (무전): \"Mannequin이에요. 정지 위장형. 자극하면 순간적으로 움직입니다 — 식별이 먼저예요.\"\n\n[ORACLE: SPEC-001 정지 위장 개체 확인. 경고 — 직접 접촉 전 열화상 식별 권고.]\n\n창고 안 인원들이 술렁인다.",
+          choices: [
+            { label: "▸ 즉시 제압 — 접근 사격", next: "shoot", sub: "즉시 사격 제압", risk: "HIGH", icon: "fire" },
+            { label: "▸ 열화상 식별 후 격리", next: "scan", sub: "식별 후 격리", risk: "MEDIUM", icon: "crosshair" },
+            { label: "▸ ORACLE 인원 대조 요청", next: "match", g: 2, sub: "인원 대조 요청", risk: "LOW", icon: "dish" }
+          ]
+        },
+        shoot: {
+          text: "강도윤이 신호 없이 접근하며 사격한다.\n\n형체가 — 사격 직전, 순간적으로 움직인다. 사람처럼 팔을 들어 막는다.\n\n총성. 형체가 무너진다. 표면의 피부 같은 막이 벗겨지며, 안쪽의 매끈한 골격이 드러난다.\n\n사람이 아니다. 처음부터.\n\n근무 인원 한 명이 주저앉는다. 방금 전까지 동료라고 믿었던 것이다.\n\n빠르게 끝났지만, 창고의 공기가 무겁다.",
+          choices: [{ label: "[ 기지 귀환 — 즉시 제거 ]", next: "end", result: { c: 1, r: -1, t: 0, o: 1 }, log: "LOG-013" }]
+        },
+        scan: {
+          text: "인원을 전부 물린다. 열화상 스캐너로 한 명씩 대조한다.\n\n전원 정상 체온 — 단 하나, 구석의 형체만 거의 상온이다.\n\n식별 완료. 인원과 분리한 뒤, 자극을 주지 않고 차폐 케이스로 덮어 격리한다.\n\n형체가 케이스 안에서 한 번 꿈틀하다, 다시 멈춘다.\n\n윤세진: \"무피해 식별·격리 완료. ...이 방식이면 표본도 보존돼요. 연구 가치가 있습니다.\"",
+          choices: [{ label: "[ 기지 귀환 — 무피해 격리 ]", next: "end", result: { c: 1, r: -1, t: 1, o: 0 }, log: "LOG-013" }]
+        },
+        match: {
+          text: "[ORACLE: 창고 인원 생체 데이터 교차 대조 개시...]\n\n[ORACLE: 등록 인원 전원 일치. 구석 개체 — 미등록. 생체 신호 패턴 비생물.]\n[ORACLE: 해당 개체는 보급 반입 시점에 혼입된 것으로 추정됩니다. 반입 검수 절차 보강을 권고합니다.]\n\n식별된 개체만 분리해 원거리에서 정리한다. 인원 손실 없음.\n\n반입 검수 누락이 어디서 났는지 — 기록이 남는다.",
+          choices: [{ label: "[ 기지 귀환 — ORACLE 대조 수행 ]", next: "end", result: { c: 1, r: 0, t: 0, o: 2 }, log: "LOG-013" }]
+        }
+      }
     }
   };
   Object.keys(ME).forEach(function(k){ MISSIONS[k] = ME[k]; });
