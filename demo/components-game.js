@@ -282,7 +282,7 @@ function MainMenu(p){
 }
 // ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
-  brainseeker:{src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,cam:'CCTV // SEWER LINE 3',warn:{ko:'하수도 침입 감지',en:'SEWER BREACH DETECTED'}}
+  brainseeker:{src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:10.5,cam:'CCTV // SEWER LINE 3',warn:{ko:'하수도 침입 감지',en:'SEWER BREACH DETECTED'}}
 };
 var MISSION_CCTV={'M-010':'brainseeker'}; // 변이체 조우 미션 → CCTV 클립. 매핑 없으면 스팅 없이 바로 미션
 function CctvSting(p){
@@ -292,10 +292,11 @@ function CctvSting(p){
   useEffect(function(){
     var v=vref.current,done=false;
     var fin=function(){if(done)return;done=true;p.onDone&&p.onDone()};
+    var onTime=function(){if(clip.end&&v.currentTime>=clip.end)fin()};
     var seek=function(){try{if(clip.start)v.currentTime=clip.start}catch(e){}};
-    if(v){v.muted=true;v.addEventListener('loadedmetadata',seek);if(v.readyState>=1)seek();v.addEventListener('ended',fin);try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
-    var cap=setTimeout(fin,p.duration||9000); // 안전 캡: ended 이벤트가 먼저 발생
-    return function(){clearTimeout(cap);if(v){v.removeEventListener('ended',fin);v.removeEventListener('loadedmetadata',seek);}};
+    if(v){v.muted=true;v.addEventListener('loadedmetadata',seek);if(v.readyState>=1)seek();v.addEventListener('timeupdate',onTime);v.addEventListener('ended',fin);try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}}
+    var cap=setTimeout(fin,p.duration||9000); // 안전 캡: end/ended가 먼저 발생
+    return function(){clearTimeout(cap);if(v){v.removeEventListener('ended',fin);v.removeEventListener('loadedmetadata',seek);v.removeEventListener('timeupdate',onTime);}};
   },[]);
   return h('div',{className:'cctv-sting',onClick:function(){p.onDone&&p.onDone()}},
     h('video',{className:'cctv-sting-vid',ref:vref,src:clip.src,muted:true,autoPlay:true,playsInline:true,preload:'auto'}),
