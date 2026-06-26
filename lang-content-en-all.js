@@ -3585,4 +3585,116 @@ window.TS_I18N.mergeContent('en', {
   }
 });
 
+// --- Emergency ambush family (CT-30x trigger cards / M-E0x missions) ---
+window.TS_I18N.mergeContent('en', {
+  cards: {
+    "CT-301": {
+      msg: 'Emergency — nighttime containment-line alert.\n\nSouth gate watch over comms: "There are human voices inside... right at the gate. They\'re the voices of the missing operatives."\n\nKang Do-yun: "It reached the gate with no prior signs. Voice-mimic type — Shell Talker. The watch is rattled. We need a decision now."',
+      leftLabel: 'Deploy the response team immediately',
+      rightLabel: 'Cut ORACLE linkage and respond'
+    },
+    "CT-302": {
+      msg: 'Emergency — late-night sub-level alert.\n\nThe sewer intake grate has been torn out from the inside. It is inside the containment line.\n\nKang Do-yun: "It came up through the sewer into the lower base. No prior signs. A massive specimen with only the skull exposed — no shell."\n\nYoon Se-jin: "It\'s a specialized mutant specimen. It has learned our patrol timing. We need a decision now."',
+      leftLabel: 'Deploy the response team immediately',
+      rightLabel: 'Seal the lower level + ORACLE tracking'
+    },
+    "CT-303": {
+      msg: 'Emergency — ventilation system alert.\n\nThe upper vent filter has been shredded from the inside. Numerous small specimens are spreading through the ducts into the interior.\n\nLim Jae-hyeok: "Every vent is lighting up. This isn\'t one or two — it\'s a brood."\n\nYoon Se-jin: "It\'s a Brood Drone. That means a command specimen is nearby. We have to decide before it spreads through the whole duct network."',
+      leftLabel: 'Full ventilation shutdown + incineration',
+      rightLabel: 'ORACLE brood tracking — command specimen first'
+    },
+    "CT-304": {
+      msg: 'Emergency — headcount mismatch.\n\nNight supply storage. The routine headcount comes back one too many.\n\nKang Do-yun: "There\'s a human shape in the corner. ...No movement. Almost no respiration, no heat."\n\nYoon Se-jin: "It\'s a Mannequin. A still-camouflage type that slipped in among the supplies. Identify it before provoking it."',
+      leftLabel: 'Neutralize immediately — close-range fire',
+      rightLabel: 'Thermal-identify, then isolate'
+    }
+  },
+  missions: {
+    'M-E01': {
+      title: 'Silent Breach at the Line — Emergency Response',
+      nodes: {
+        start: {
+          text: 'Nighttime alert.\n\nSouth gate of the containment line. The night watch sends a transmission.\n\n"...There are human voices inside. Right in front of the gate."\n\nVoices leak through the comms. Not one. Several.\n\n"...Open up. It\'s me. I\'m cold."\n\nKang Do-yun cuts the channel. "Every one of those is a name on the missing list. No prior signs. It just came to the gate."\n\nYoon Se-jin: "It\'s a Shell Talker. It\'s trying to make us open the gate. The watch is wavering."\n\n[ORACLE: SPEC-011 voice mimicry confirmed. Warning — the target only replicates the voices of its victims.]\n\nThere is no time.',
+          choices: ['▸ Suppress now — deploy the gate firing team','▸ Cut the audio + encircle — pull the watch back','▸ Request ORACLE acoustic cross-match']
+        },
+        suppress: {
+          text: 'You deploy the gate firing team. A flare bursts.\n\nIn front of the gate — a shape resolves. An exoskeleton with a hole bored through its neck. A human voice still flows from inside it.\n\nKang Do-yun does not wait for a signal. Volley fire.\n\nA scream. No way to tell if it is human or replicated.\n\nFive seconds later, the voice stops.\n\nOne of the watch slumps against the gate rail. He said he had just heard his brother\'s voice.\n\nOn the way back, no one speaks.',
+          choices: ['[ Return to Branch — Immediate Elimination ]']
+        },
+        contain: {
+          text: 'You pull the watch off the gate. White noise is broadcast through the external speakers — burying the voice lure.\n\nWith the voice cut off, the shape begins to move. Sideways, along the gate.\n\nKang Do-yun\'s squad closes from three directions — using only operators who will not react to the voice.\n\nEncircled. Neutralized. Not clean, but no further casualties.\n\nYoon Se-jin: "Nobody on the watch was hurt. ...I\'ll log this method. It will come again."',
+          choices: ['[ Return to Branch — No-Casualty Suppression ]']
+        },
+        analyze: {
+          text: '[ORACLE: Cross-analyzing the gate audio against the ROK military DB...]\n\nResult: many of the replicated voices match the missing-persons list along the nearby containment line.\nOne of them — an operative lost three years ago in an eastern Gangwon operation.\n\n[ORACLE: This specimen is assessed as a cumulative individual that has consumed multiple victims. The demand to open the gate is learned luring behavior.]\n[ORACLE: Recommend raising the barrier and neutralizing at range. No direct engagement by the watch required.]\n\nYou follow the recommendation — raise the barrier, clear it from range. No losses.\n\nEven after the gate falls silent, Kang Do-yun cannot leave the spot for a long while.',
+          choices: ['[ Return to Branch — ORACLE Recommendation Executed ]']
+        }
+      }
+    },
+    'M-E02': {
+      title: 'Sewer Breach — Emergency Response',
+      nodes: {
+        start: {
+          text: 'Late-night alert.\n\nThe sewer intake grate has been torn out from the inside. It is inside the containment line.\n\nKang Do-yun (over comms): "...It got in. Up through the sewer into the lower base. No prior signs."\n"One massive heat source on thermal. Only the skull exposed. No shell — the spine is right there."\n\nYoon Se-jin (over comms): "Confirmed as a specialized mutant specimen. A cumulative predator. It has learned our patrol timing."\n"The lower passages are narrow. Bad ground against a leaping attack."\n\n[ORACLE: Specialized mutant specimen confirmed — designation BS-GANGWON-01. Breach inside the containment line. Learning stage entered.]\n\nThere is no time.',
+          choices: ['▸ Seal the lower passage + concentrated fire','▸ Reverse the drainage — lure it back to the intake','▸ Request ORACLE thermal tracking']
+        },
+        seal: {
+          text: 'You seal both ends of the lower passage with blast doors. Cut off its retreat.\n\nInside the narrow corridor — the specimen reveals itself. Height 2.2 meters. Sea-turtle skull profile. Light reflects from the lateral socket.\n\nIt leaps. Kang Do-yun\'s squad targets the spine in unison.\n\nThree rounds through the top of the skull. The specimen drops, claws scraping concrete.\n\nYoon Se-jin: "No spinal response. Neutralization confirmed."\n\nWithout a shell, it had no defense. But on the corridor wall, a sheet of someone\'s facial skin has come loose.',
+          choices: ['[ Return to Branch — Intruder Eliminated ]']
+        },
+        flush: {
+          text: 'You reverse the drainage pumps. A backflow rises through the sewer.\n\nAs the water climbs, the specimen is pushed toward the intake. A learning individual retreats along the route it knows — exactly as predicted.\n\nAn electrified net waits at the intake mouth. Triggered.\n\nConvulsion. Kang Do-yun puts three rounds into the skull. It stops.\n\nYoon Se-jin: "No personnel losses. ...I\'ll log this route. It will come again."',
+          choices: ['[ Return to Branch — No-Casualty Suppression ]']
+        },
+        track: {
+          text: '[ORACLE: Initiating lower-level thermal-grid tracking...]\n\n[ORACLE: The specimen is assessed as a cumulative individual that has consumed many of the line\'s missing. The sewer intake is a learned breach route.]\n[ORACLE: Recommend sealing, then neutralizing at range. No close engagement required.]\n\nYou follow the recommendation — seal the passage, clear it from range. No losses.\n\nWhile the intake grate is welded shut again, Kang Do-yun cannot leave the spot for a long while.',
+          choices: ['[ Return to Branch — ORACLE Recommendation Executed ]']
+        }
+      }
+    },
+    'M-E03': {
+      title: 'Vent Brood Breach — Emergency Response',
+      nodes: {
+        start: {
+          text: 'Ventilation system alert.\n\nThe upper duct filter has been shredded from the inside. Numerous small specimens spread through the vents into the interior.\n\nLim Jae-hyeok (over comms): "Every vent is reading. Not one or two — a whole brood got in."\n\nYoon Se-jin (over comms): "It\'s a Brood Drone. Weak alone, but the numbers are the problem. There\'s a command specimen somewhere coordinating the spread."\n\n[ORACLE: SPEC-003 brood breach confirmed. Warning — re-spread possible until the command specimen is removed.]\n\nDecide before it fills the whole duct network.',
+          choices: ['▸ Full ventilation shutdown + incineration','▸ Charge insecticidal gas — purge by compartment','▸ ORACLE brood tracking — command specimen first']
+        },
+        burn: {
+          text: 'You seal the ventilation by compartment and run incendiary through the ducts.\n\nDozens of small screams overlap inside the metal ducting. A moment later, silence.\n\nKang Do-yun: "No reactions in the ducts. ...Burned them all."\n\nThe spread is stopped. But half the ventilation system is wrecked.\n\nYoon Se-jin: "Not sure the command specimen burned with them. We will have to watch the vents for a while."',
+          choices: ['[ Return to Branch — Brood Incinerated ]']
+        },
+        gas: {
+          text: 'You charge insecticidal gas compartment by compartment. Pull personnel first, then close and purge one section at a time.\n\nSlow, but certain. The duct readings wink out section by section.\n\nIn the last compartment — one heat source larger than the rest resists the gas, then stops.\n\nYoon Se-jin: "...That\'s the command specimen. Caught with the rest. No risk of re-spread."\n\nIt took time, but no losses and no damage to the ventilation.',
+          choices: ['[ Return to Branch — Purged Including Command Specimen ]']
+        },
+        command: {
+          text: '[ORACLE: Analyzing ventilation acoustic and thermal patterns...]\n\n[ORACLE: Brood movement is synchronized around a single point. Command specimen position estimated — sub-level 1 vent junction.]\n[ORACLE: Removing the command specimen is predicted to collapse brood control. Recommend concentrating on the junction.]\n\nYou target only the junction. The instant the command specimen is cut off, the others\' movements scatter.\n\nWith control lost, the brood is cleared quickly. Minimal damage to the ventilation.',
+          choices: ['[ Return to Branch — Command Specimen Removed First ]']
+        }
+      }
+    },
+    'M-E04': {
+      title: 'Still-Camouflage Infiltration — Emergency Response',
+      nodes: {
+        start: {
+          text: 'Headcount mismatch.\n\nNight supply storage. The routine count comes back one too many.\n\nKang Do-yun (over comms): "A human shape in the corner. ...No movement. Almost no respiration, no heat."\n"A second ago I took it for one of our own. It looks like it came in among the supplies."\n\nYoon Se-jin (over comms): "It\'s a Mannequin. Still-camouflage type. Provoke it and it moves in an instant — identify it first."\n\n[ORACLE: SPEC-001 still-camouflage specimen confirmed. Warning — recommend thermal identification before direct contact.]\n\nThe personnel in the storeroom stir.',
+          choices: ['▸ Neutralize immediately — close-range fire','▸ Thermal-identify, then isolate','▸ Request ORACLE personnel cross-match']
+        },
+        shoot: {
+          text: 'Kang Do-yun closes in firing, with no signal.\n\nThe shape — an instant before the shot — moves. It raises an arm to block, like a person.\n\nGunfire. The shape collapses. A skin-like membrane peels back, revealing the smooth frame beneath.\n\nNot human. Never was.\n\nOne of the watch sinks to the floor. A moment ago he believed it was a comrade.\n\nIt ended fast, but the air in the storeroom is heavy.',
+          choices: ['[ Return to Branch — Immediate Elimination ]']
+        },
+        scan: {
+          text: 'You pull everyone back and cross-check each one with a thermal scanner.\n\nAll at normal body temperature — except the shape in the corner, which is nearly ambient.\n\nIdentification complete. You separate it from personnel and, without provoking it, cover it with a containment case to isolate it.\n\nThe shape twitches once inside the case, then goes still again.\n\nYoon Se-jin: "No-casualty identification and isolation complete. ...This way preserves a specimen, too. There\'s research value."',
+          choices: ['[ Return to Branch — No-Casualty Isolation ]']
+        },
+        match: {
+          text: '[ORACLE: Cross-matching storeroom personnel biometrics...]\n\n[ORACLE: All registered personnel accounted for. The corner specimen — unregistered. Biosignal pattern non-biological.]\n[ORACLE: The specimen is assessed to have been mixed in at the supply-intake stage. Recommend reinforcing intake inspection procedures.]\n\nYou separate only the identified specimen and clear it from range. No personnel losses.\n\nWhere the intake inspection failed — that gets logged.',
+          choices: ['[ Return to Branch — ORACLE Cross-Match Executed ]']
+        }
+      }
+    }
+  }
+});
+
 })();
