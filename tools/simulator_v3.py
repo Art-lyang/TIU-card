@@ -370,6 +370,101 @@ CHAIN_IDS = collect_chain_ids()
 HIDDEN_LOG_GROUPS = collect_hidden_logs()
 MISSION_TRIGGERS = collect_mission_trigger_cards()
 
+# ═══════════ ACTIVE_SPECS / 돌발 긴급 시뮬 ═══════════
+
+ALL_SPEC_TAGS = ['spec-001', 'spec-003', 'spec-004', 'spec-008', 'spec-011', 'spec-012', 'spec-015']
+ACTIVE_SPEC_COUNT = 3
+
+# EMERGENCY_AMBUSHES 미러 (app-init.js)
+EMERGENCY_AMBUSHES = [
+    {'spec': 'spec-015', 'mission': 'M-E02', 'done': 'LOG-041'},
+    {'spec': 'spec-003', 'mission': 'M-E03', 'done': 'LOG-014'},
+    {'spec': 'spec-001', 'mission': 'M-E04', 'done': 'LOG-013'},
+]
+
+# CT-301 ~ CT-304: 긴급 돌발 카드 ID 목록
+AMBUSH_CARD_IDS = {'CT-301', 'CT-302', 'CT-303', 'CT-304'}
+# CT-302/303/304의 spec-목표 매핑 (ambushPending 쪽)
+AMBUSH_CARD_SPEC = {
+    'CT-302': 'spec-015',
+    'CT-303': 'spec-003',
+    'CT-304': 'spec-001',
+}
+
+def pick_active_specs():
+    """세션당 ACTIVE_SPEC_COUNT종 고정 활성 변이체 선택."""
+    return set(random.sample(ALL_SPEC_TAGS, ACTIVE_SPEC_COUNT))
+
+def sim_ambush_pending(spec_tag, done_log, s, logs, active_specs):
+    """app-init.js ambushPending 미러.
+    활성 종(active_specs)은 조사루트로 다룸 → 여기선 False (상호배타).
+    done_log가 이미 있으면 완료 → False.
+    s.day >= 5 이상이어야 등장."""
+    if not active_specs:
+        return False
+    if spec_tag in active_specs:
+        return False  # 활성 종은 조사루트 → ambush 제외
+    if done_log in logs:
+        return False
+    day = s.get('day', 1)
+    if day < 5:
+        return False
+    return True
+
+def sim_spec_ok(card, active_specs):
+    """specOk 미러: spec 태그 카드는 active_specs에 속할 때만 등장."""
+    tag = card.get('tag') or ''
+    if not tag.startswith('spec-'):
+        return True
+    if not active_specs:
+        return True
+    return tag in active_specs
+
+def eval_req_extended(expr, s, gi, logs, active_specs):
+    """eval_req 확장판 — ambushPending/ACTIVE_SPECS 글로벌 처리 추가."""
+    if not expr:
+        return True
+    # CT-30x의 ambushPending 패턴: 특수 파이썬 함수로 인터셉트
+    # JS: ambushPending('spec-015','LOG-041',s,logs)
+    import re as _re
+    ambush_m = _re.search(
+        r"ambushPending\(['\"]([^'\"]+)['\"],\s*['\"]([^'\"]+)['\"]",
+        expr
+    )
+    if ambush_m:
+        spec_tag = ambush_m.group(1)
+        done_log = ambush_m.group(2)
+        return sim_ambush_pending(spec_tag, done_log, s, logs, active_specs)
+    # CT-301 패턴: ACTIVE_SPECS.indexOf('spec-011') < 0
+    active_spec_m = _re.search(
+        r"ACTIVE_SPECS\.indexOf\(['\"]([^'\"]+)['\"]\)\s*<\s*0",
+        expr
+    )
+    if active_spec_m:
+        spec_tag = active_spec_m.group(1)
+        day_m = _re.search(r's\.day\s*>=\s*(\d+)', expr)
+        min_day = int(day_m.group(1)) if day_m else 0
+        if s.get('day', 1) < min_day:
+            return False
+        return spec_tag not in active_specs
+    # 일반 eval_req
+    return eval_req(expr, s, gi, logs)
+
+# 미션 트리거 카드 목록 (카드 body에서 mission 필드 있는 것 전체)
+MISSION_CARD_IDS = set()
+for _c in CARDS:
+    for _sk in ('left', 'right'):
+        _side = _c.get(_sk)
+        if _side and _side.get('mission'):
+            MISSION_CARD_IDS.add(_c['id'])
+            break
+
+# 체인 카드 ID 목록 (CH-로 시작하는 것)
+CHAIN_CARD_IDS = {c['id'] for c in CARDS if c['id'].startswith('CH-')}
+
+# 카드 연속 중복 감지용 윈도우 크기
+REPEAT_WINDOW = 5
+
 SESSION_DECK_PACK_WEIGHTS = [
     ('DG_MERIDIAN', 2),
     ('B3_PREDECESSOR', 2),
@@ -692,6 +787,7 @@ def simulate_one(profile):
     recent = collections.deque(maxlen=60)
     tag_cd = {}
     session_deck = pick_session_deck()
+    active_specs = pick_active_specs()  # 세션별 ACTIVE_SPECS
     act_flags = {'prom_met': False, 'mission_done': False, 'chain_done': False, 'prom_mission': False}
     trans_route = ''
     card_freq = collections.Counter()
@@ -699,14 +795,23 @@ def simulate_one(profile):
     max_days = 50
 
     # 추적용
-    missions_triggered = set()
+    missions_triggered = set()       # mission 필드가 있는 카드가 실제 등장한 mission ID
     chains_started = set()
     chains_completed = set()
     hidden_logs_found = set()
     death_day = None
     death_act = None
-    stat_history = []  # (day, act, c, r, t, o, gi)
+    stat_history = []
     evening_log = []
+
+    # 덱 이상징후 추적
+    null_draw_days = []              # pool=0으로 드로우 실패한 day
+    repeat_streaks = 0               # REPEAT_WINDOW 내 동일 카드 재출현 횟수
+    ambush_triggered = {}            # CT-30x id → 발동 day
+    ambush_eligible_checked = {}     # CT-30x id → 조건 검사 횟수
+    mission_card_seen = set()        # 이번 세션에서 등장한 미션 카드 ID (mission 필드 보유 카드)
+    chain_card_seen = set()          # 이번 세션에서 등장한 체인 카드 ID
+    recent_window = collections.deque(maxlen=REPEAT_WINDOW)  # 짧은 윈도우 중복 감지용
 
     while s['day'] <= max_days and ending is None:
         if s['day'] > 35:
@@ -727,6 +832,7 @@ def simulate_one(profile):
             break
 
         n = CARDS_PER_DAY[act]
+        drew_any = False
         for _ in range(n):
             pool = []
             for c in CARDS:
@@ -742,13 +848,47 @@ def simulate_one(profile):
                     elif tag_cd.get(c['id'], -99) >= s['day'] - 15: continue
                 if c['once'] and ('ONCE-' + c['id']) in logs: continue
                 if not session_deck_ok(c, logs, act, session_deck): continue
-                if not eval_req(c['req'], s, gi, logs): continue
+                # ACTIVE_SPECS 게이팅 (specOk 미러)
+                if not sim_spec_ok(c, active_specs): continue
+                # req 평가: ambushPending/ACTIVE_SPECS 처리 확장 버전
+                if not eval_req_extended(c['req'], s, gi, logs, active_specs): continue
                 pool.append(c)
 
+            # CT-30x 등장 가능성 사전 점검 (조건 충족 여부 기록)
+            for ct_id, spec_tag in AMBUSH_CARD_SPEC.items():
+                if ct_id not in logs and ('ONCE-' + ct_id) not in logs:
+                    done_log = next((a['done'] for a in EMERGENCY_AMBUSHES if a['spec'] == spec_tag), None)
+                    if done_log and sim_ambush_pending(spec_tag, done_log, s, logs, active_specs):
+                        ambush_eligible_checked[ct_id] = ambush_eligible_checked.get(ct_id, 0) + 1
+            # CT-301 별도 점검 (spec-011 휴면 여부)
+            if ('ONCE-CT-301') not in logs:
+                if s.get('day', 1) >= 7 and 'spec-011' not in active_specs:
+                    ambush_eligible_checked['CT-301'] = ambush_eligible_checked.get('CT-301', 0) + 1
+
             if not pool:
+                null_draw_days.append(s['day'])
                 break
 
             c = weighted_card_choice(pool, logs, act, session_deck, s)
+            drew_any = True
+
+            # 연속 중복 감지: REPEAT_WINDOW 내 같은 카드 재등장
+            if c['id'] in recent_window:
+                repeat_streaks += 1
+            recent_window.append(c['id'])
+
+            # 긴급 돌발(CT-30x) 발동 기록
+            if c['id'] in AMBUSH_CARD_IDS:
+                ambush_triggered[c['id']] = s['day']
+
+            # 미션 카드 등장 기록
+            if c['id'] in MISSION_CARD_IDS:
+                mission_card_seen.add(c['id'])
+
+            # 체인 카드 등장 기록
+            if c['id'] in CHAIN_CARD_IDS:
+                chain_card_seen.add(c['id'])
+
             dir_choice = choose_side_profile(c, s, gi, profile, logs)
             side = c[dir_choice]
             before_s = dict(s)
@@ -833,6 +973,9 @@ def simulate_one(profile):
         if ending:
             break
 
+        if not drew_any:
+            null_draw_days.append(s['day'])
+
         # 스탯 기록
         stat_history.append({
             'day': s['day'], 'act': act,
@@ -899,6 +1042,14 @@ def simulate_one(profile):
         'death_day': death_day,
         'death_act': death_act,
         'stat_history': stat_history,
+        # 새 추적 항목
+        'null_draw_days': list(null_draw_days),
+        'repeat_streaks': repeat_streaks,
+        'ambush_triggered': dict(ambush_triggered),   # {ct_id: day}
+        'ambush_eligible': dict(ambush_eligible_checked),  # {ct_id: check_count}
+        'mission_card_seen': set(mission_card_seen),  # 이번 세션에서 등장한 미션 카드
+        'chain_card_seen': set(chain_card_seen),      # 이번 세션에서 등장한 체인 카드
+        'active_specs': list(active_specs),
     }
 
 # ═══════════ 집계 함수 ═══════════
@@ -924,6 +1075,23 @@ def aggregate(results, profile):
     death_acts = collections.Counter()
     card_freq_total = collections.Counter()
 
+    # 새 지표 집계용
+    sessions_with_mission_card = 0    # 미션 카드(mission 필드) 1회+ 등장 세션 수
+    sessions_with_chain_card = 0      # 체인 카드 1회+ 등장 세션 수
+    sessions_with_ambush = 0          # CT-30x 1회+ 발동 세션 수
+    ambush_trigger_counts = collections.Counter()  # CT-30x id별 발동 세션 수
+    ambush_eligible_sessions = collections.Counter()  # CT-30x id별 조건 충족 세션 수
+    null_draw_sessions = 0            # null 드로우 발생 세션 수
+    null_draw_total = 0               # null 드로우 총 횟수
+    null_draw_day_counts = collections.Counter()
+    repeat_streak_total = 0           # 연속 중복 총 횟수
+    repeat_streak_sessions = 0        # 연속 중복 발생 세션 수
+
+    # 저자원 구간 미션/긴급 발동 추적 (Act3에서 c 또는 r <= 30인 세션)
+    low_resource_sessions = 0
+    low_resource_mission_sessions = 0
+    low_resource_ambush_sessions = 0
+
     for r in results:
         ending_count[r['ending']] += 1
         days.append(r['day'])
@@ -945,6 +1113,53 @@ def aggregate(results, profile):
             death_acts[r['death_act']] += 1
         for cid, cnt in r['card_freq'].items():
             card_freq_total[cid] += cnt
+
+        # 미션 카드 세션 등장 여부
+        if r.get('mission_card_seen'):
+            sessions_with_mission_card += 1
+
+        # 체인 카드 세션 등장 여부
+        if r.get('chain_card_seen'):
+            sessions_with_chain_card += 1
+
+        # CT-30x 발동 여부
+        triggered = r.get('ambush_triggered', {})
+        if triggered:
+            sessions_with_ambush += 1
+            for ct_id in triggered:
+                ambush_trigger_counts[ct_id] += 1
+
+        # CT-30x 조건 충족 여부 (eligible)
+        eligible = r.get('ambush_eligible', {})
+        for ct_id, cnt in eligible.items():
+            if cnt > 0:
+                ambush_eligible_sessions[ct_id] += 1
+
+        # null 드로우
+        nd = r.get('null_draw_days', [])
+        if nd:
+            null_draw_sessions += 1
+            null_draw_total += len(nd)
+            for d in nd:
+                null_draw_day_counts[d] += 1
+
+        # 연속 중복
+        rs = r.get('repeat_streaks', 0)
+        if rs > 0:
+            repeat_streak_sessions += 1
+            repeat_streak_total += rs
+
+        # 저자원 Act3 구간 분석
+        is_low_resource = any(
+            h['act'] == 3 and (h['c'] <= 30 or h['r'] <= 30)
+            for h in r.get('stat_history', [])
+        )
+        if is_low_resource:
+            low_resource_sessions += 1
+            if r.get('mission_card_seen'):
+                low_resource_mission_sessions += 1
+            if triggered:
+                low_resource_ambush_sessions += 1
 
     days.sort()
     gis.sort()
@@ -975,6 +1190,45 @@ def aggregate(results, profile):
         },
         'never_seen_cards': len([c for c in CARDS if card_freq_total.get(c['id'], 0) == 0]),
         'total_cards': len(CARDS),
+        # ── 신규 지표 ──
+        'deck_health': {
+            'sessions_with_mission_card': sessions_with_mission_card,
+            'sessions_with_mission_card_pct': round(100 * sessions_with_mission_card / n, 1),
+            'sessions_with_chain_card': sessions_with_chain_card,
+            'sessions_with_chain_card_pct': round(100 * sessions_with_chain_card / n, 1),
+            'sessions_with_ambush': sessions_with_ambush,
+            'sessions_with_ambush_pct': round(100 * sessions_with_ambush / n, 1),
+            'ambush_by_card': {
+                ct_id: {
+                    'triggered_sessions': ambush_trigger_counts.get(ct_id, 0),
+                    'triggered_pct': round(100 * ambush_trigger_counts.get(ct_id, 0) / n, 1),
+                    'eligible_sessions': ambush_eligible_sessions.get(ct_id, 0),
+                    'eligible_pct': round(100 * ambush_eligible_sessions.get(ct_id, 0) / n, 1),
+                    'trigger_rate_of_eligible': round(
+                        100 * ambush_trigger_counts.get(ct_id, 0) /
+                        max(ambush_trigger_counts.get(ct_id, 0), ambush_eligible_sessions.get(ct_id, 1)), 1
+                    ) if ambush_eligible_sessions.get(ct_id, 0) > 0 else 0,
+                }
+                for ct_id in ['CT-301', 'CT-302', 'CT-303', 'CT-304']
+            },
+            'null_draw_sessions': null_draw_sessions,
+            'null_draw_sessions_pct': round(100 * null_draw_sessions / n, 1),
+            'null_draw_total': null_draw_total,
+            'null_draw_top_days': {str(d): cnt for d, cnt in null_draw_day_counts.most_common(5)},
+            'repeat_streak_sessions': repeat_streak_sessions,
+            'repeat_streak_sessions_pct': round(100 * repeat_streak_sessions / n, 1),
+            'repeat_streak_total': repeat_streak_total,
+        },
+        'low_resource_act3': {
+            'sessions': low_resource_sessions,
+            'sessions_pct': round(100 * low_resource_sessions / n, 1),
+            'mission_appeared_pct': round(
+                100 * low_resource_mission_sessions / low_resource_sessions, 1
+            ) if low_resource_sessions > 0 else 0,
+            'ambush_appeared_pct': round(
+                100 * low_resource_ambush_sessions / low_resource_sessions, 1
+            ) if low_resource_sessions > 0 else 0,
+        },
     }
 
     for ch in CHAR_KEYS:
@@ -1040,6 +1294,31 @@ def print_profile_report(agg):
             print(f'  위험 Day: {", ".join(f"Day {d}({c}회)" for d, c in top_days)}')
 
     print(f'\n▸ 미출현 카드: {agg["never_seen_cards"]}/{agg["total_cards"]}')
+
+    dh2 = agg['deck_health']
+    print(f'\n▸ 덱 건강도 지표')
+    print(f'  현장임무 카드 등장 세션:  {dh2["sessions_with_mission_card_pct"]:5.1f}%  ({dh2["sessions_with_mission_card"]}/{n})')
+    print(f'  체인(CH-*) 카드 등장 세션: {dh2["sessions_with_chain_card_pct"]:5.1f}%  ({dh2["sessions_with_chain_card"]}/{n})')
+    print(f'  긴급 돌발(CT-30x) 발동 세션: {dh2["sessions_with_ambush_pct"]:5.1f}%  ({dh2["sessions_with_ambush"]}/{n})')
+    print(f'  null 드로우 세션:        {dh2["null_draw_sessions_pct"]:5.1f}%  (총 {dh2["null_draw_total"]}회)')
+    if dh2['null_draw_top_days']:
+        print(f'    최다 Day: {list(dh2["null_draw_top_days"].items())[:3]}')
+    print(f'  연속 중복 발생 세션:     {dh2["repeat_streak_sessions_pct"]:5.1f}%  (총 {dh2["repeat_streak_total"]}회)')
+    print(f'\n  CT-30x 긴급 돌발 상세:')
+    for ct_id in ['CT-301', 'CT-302', 'CT-303', 'CT-304']:
+        d = dh2['ambush_by_card'][ct_id]
+        elig = d['eligible_pct']
+        trig = d['triggered_pct']
+        rate = d['trigger_rate_of_eligible']
+        status = '[정상]' if elig > 0 else '[조건미충족]'
+        print(f'    {ct_id}: 조건충족 {elig:5.1f}% 세션  발동 {trig:5.1f}%  (충족→발동율 {rate:.1f}%) {status}')
+
+    lr = agg['low_resource_act3']
+    if lr['sessions'] > 0:
+        print(f'\n▸ 저자원 Act3 구간 (c or r <= 30)')
+        print(f'  해당 세션: {lr["sessions_pct"]}%')
+        print(f'  해당 구간에서 미션 카드 등장: {lr["mission_appeared_pct"]}%')
+        print(f'  해당 구간에서 긴급 돌발 발동: {lr["ambush_appeared_pct"]}%')
 
 def print_comparison(all_aggs):
     print(f'\n{"=" * 70}')
