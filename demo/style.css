@@ -1089,3 +1089,14 @@ b.fm-rk--info{color:#caa14a}
 /* 정지 이미지 CCTV 스팅 — 초광각 파노라마라 화면을 채워 빈 여백 제거(깨짐 방지), 피사체 쪽 정렬 + 어두운 원본 보정 */
 .cctv-sting-img{object-fit:cover;background:#000;filter:brightness(1.14) contrast(1.05) saturate(.95);animation:cctvKenBurns 4s ease-out forwards}
 @keyframes cctvKenBurns{from{transform:scale(1.04)}to{transform:scale(1.12)}}
+
+/* 현장임무 비미니게임 위험 판정(d100) 배너 */
+.fm-roll-banner{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px auto 0;max-width:420px;padding:6px 10px;border:1px solid rgba(var(--ui-rgb),.3);border-radius:3px;background:rgba(var(--ui-rgb),.05);font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.5px;animation:fadeIn .25s ease}
+.fm-roll-tag{color:rgba(var(--ui-rgb),.55);font-size:9px;letter-spacing:1.5px}
+.fm-roll-tier{font-size:12px}
+.fm-roll-d{color:rgba(var(--ui-rgb),.5);font-size:10px}
+.fm-roll-note{color:rgba(var(--ui-rgb),.6);font-size:10px}
+.fm-roll--great{border-color:rgba(122,255,198,.5)}.fm-roll--great .fm-roll-tier{color:#7affc6}
+.fm-roll--ok .fm-roll-tier{color:var(--ui)}
+.fm-roll--partial{border-color:rgba(240,176,48,.5)}.fm-roll--partial .fm-roll-tier{color:#f0b030}
+.fm-roll--fail{border-color:rgba(255,90,90,.55)}.fm-roll--fail .fm-roll-tier{color:#ff5a5a}

@@ -15,6 +15,8 @@ function FieldMission(p){
   var briefRef=useRef(null);
   var rootRef=useRef(null);
   var completedRef=useRef(false); // 미션 종료 onComplete 중복 호출 가드(더블클릭/더블탭 시 result 이중 적용 방지)
+  var riskBonusRef=useRef(null); // 비미니게임 위험 선택 d100 판정 보너스(접근→종료까지 보관)
+  var sRoll=useState(null),lastRoll=sRoll[0],setLastRoll=sRoll[1]; // 직전 판정 결과 배너용
   // 미니게임 진입 시 화면을 상단으로 스냅 — 절대배치 오버레이가 직전 스크롤 위치에 가려지지 않게(몰입도)
   useEffect(function(){ if(activeMiniGame&&rootRef.current){ rootRef.current.scrollTop=0; } },[activeMiniGame]);
 
@@ -134,6 +136,7 @@ function FieldMission(p){
       if(completedRef.current)return; // 이미 완료 처리됨 — 중복 호출(더블클릭) 차단
       completedRef.current=true;
       var bonus=(extraBonus!==undefined)?extraBonus:missionBonus;
+      if(riskBonusRef.current){bonus=mergeMissionBonus(bonus||{},riskBonusRef.current);riskBonusRef.current=null;}
       p.onComplete(mergeMissionBonus(choice,bonus));
       return;
     }
@@ -148,6 +151,8 @@ function FieldMission(p){
       setActiveMiniGame(miniConfig);
       return;
     }
+    // 미니게임이 없는 위험 선택 → d100 판정으로 결과 변동(접근 선택에서 굴리고 종료 시 결과에 병합)
+    if(choice.risk&&!missionBonus){var rr=rollRiskOutcome(choice);if(rr){riskBonusRef.current=rr.bonus;setLastRoll(rr);}}
     finalizeChoice(choice);
   }
 
@@ -163,6 +168,29 @@ function FieldMission(p){
     if(rank==='partial')return 'success';
     if(rank==='success')return 'great';
     return rank;
+  }
+  // 비미니게임 위험 선택 d100 판정 — risk를 실제 성공률로(신뢰 보정), 결과에 변동(보너스/페널티)을 준다.
+  function rollRiskOutcome(choice){
+    var risk=(choice&&choice.risk||'').toUpperCase();
+    if(risk!=='LOW'&&risk!=='MEDIUM'&&risk!=='HIGH')return null; // 위험도 없는 선택은 결정론적 유지
+    var target=risk==='LOW'?85:risk==='MEDIUM'?70:55;
+    if(choice.trustReq){var ck=Object.keys(choice.trustReq)[0];var tv=(p.trust&&p.trust[ck])||0;target+=tv>=65?10:tv>=50?5:0;}
+    target=Math.max(40,Math.min(95,target));
+    var roll=Math.floor(Math.random()*100)+1;
+    var tier=roll<=5?'great':(roll<=target?'success':(roll>=96?'critfail':'partial'));
+    var delta=tier==='great'?{r:1,t:1}:tier==='partial'?{r:-1}:tier==='critfail'?{r:-2,t:-1}:{};
+    return {tier:tier,roll:roll,risk:risk,bonus:{result:delta}};
+  }
+  function rollBanner(rr){
+    var isEn=locale==='en';
+    var label=rr.tier==='great'?(isEn?'CRITICAL SUCCESS':'대성공'):rr.tier==='success'?(isEn?'SUCCESS':'성공'):rr.tier==='partial'?(isEn?'PARTIAL':'부분 성공'):(isEn?'SETBACK':'차질 발생');
+    var note=rr.tier==='great'?(isEn?'bonus secured':'추가 성과'):rr.tier==='partial'?(isEn?'extra cost':'자원 추가 소모'):rr.tier==='critfail'?(isEn?'losses incurred':'손실 발생'):'';
+    var cls=rr.tier==='great'?'fm-roll--great':rr.tier==='critfail'?'fm-roll--fail':rr.tier==='partial'?'fm-roll--partial':'fm-roll--ok';
+    return h('div',{className:'fm-roll-banner '+cls},
+      h('span',{className:'fm-roll-tag'},isEn?'JUDGMENT':'판정'),
+      h('b',{className:'fm-roll-tier'},label),
+      h('span',{className:'fm-roll-d'},'d100 '+rr.roll),
+      note&&h('span',{className:'fm-roll-note'},'· '+note));
   }
 
   function handleMiniGameDone(rank){
@@ -360,6 +388,7 @@ function FieldMission(p){
       )
     : h('div',{className:'fm-node-wrap'},
         h('div',{className:'fm-panel fm-panel--report'},h('div',{className:'fm-panel-h'},'▣ FIELD REPORT'),h('div',{className:'fm-node-body'},paras('fm-np'),cursor)),
+        showChoices&&lastRoll&&rollBanner(lastRoll),
         showChoices&&h('div',{className:'fm-nchoices'},visChoices.map(nodeChoice))
       );
 
