@@ -168,6 +168,46 @@
           { label: 'Recommended Approach', value: 'Lock down zone, remote watch', level: 'info' }
         ],
         subs: { survey: 'Survey all passages', interview: 'Deep-interview Agent Lee', lockdown: 'Seal zone, watch' }
+      },
+      'M-E01': {
+        report: [
+          { label: 'Encounter Type', value: 'EMERGENCY — NO PRIOR RECON', level: 'danger' },
+          { label: 'Voice Mimicry', value: 'CONFIRMED — MISSING OPERATIVE VOICES', level: 'danger' },
+          { label: 'Approach Distance', value: '30 M FROM CONTAINMENT GATE', level: 'warn' },
+          { label: 'Est. Survival Rate', value: 'INCALCULABLE — INSUFFICIENT DATA', level: 'err' },
+          { label: 'Recommended Approach', value: 'IGNORE VOICE / SEAL IMMEDIATELY', level: 'info' },
+          { label: 'Weather / Environ', value: 'NIGHT / SILENT', level: 'info' }
+        ]
+      },
+      'M-E02': {
+        report: [
+          { label: 'Encounter Type', value: 'EMERGENCY — NO PRIOR RECON', level: 'danger' },
+          { label: 'Breach Route', value: 'SEWER INTAKE — INSIDE THE LINE', level: 'danger' },
+          { label: 'Defensive Organ', value: 'NO SHELL — SPINE EXPOSED', level: 'warn' },
+          { label: 'Learning Stage', value: 'PATROL PATTERN SYNC — ACTIVE', level: 'warn' },
+          { label: 'Projected Casualties', value: 'NO DATA — INSUFFICIENT SAMPLE', level: 'err' },
+          { label: 'Engagement Conditions', value: 'NARROW PASSAGE / LIMITED VIS', level: 'info' }
+        ]
+      },
+      'M-E03': {
+        report: [
+          { label: 'Encounter Type', value: 'EMERGENCY — NO PRIOR RECON', level: 'danger' },
+          { label: 'Breach Route', value: 'UPPER VENT DUCT — MULTI-SPREAD', level: 'danger' },
+          { label: 'Specimen Count', value: 'BROOD — UNCOUNTABLE', level: 'warn' },
+          { label: 'Command Specimen', value: 'PROXIMITY EST. — UNIDENTIFIED', level: 'warn' },
+          { label: 'Projected Casualties', value: 'DEPENDENT ON SPREAD RATE', level: 'err' },
+          { label: 'Engagement Conditions', value: 'SEALED DUCT / VIS BLOCKED', level: 'info' }
+        ]
+      },
+      'M-E04': {
+        report: [
+          { label: 'Encounter Type', value: 'EMERGENCY — NO PRIOR RECON', level: 'danger' },
+          { label: 'Breach Route', value: 'SUPPLY INTAKE — INTERNAL INFILTRATION', level: 'danger' },
+          { label: 'Camouflage State', value: 'STILL — MINIMAL RESP / HEAT', level: 'warn' },
+          { label: 'ID Difficulty', value: 'HIGH — RISK OF PERSONNEL CONFUSION', level: 'warn' },
+          { label: 'Projected Casualties', value: 'SPIKES IF PROVOKED', level: 'err' },
+          { label: 'Engagement Conditions', value: 'CLOSE RANGE / ID FIRST', level: 'info' }
+        ]
       }
     }
   });
