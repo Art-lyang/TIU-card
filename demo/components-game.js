@@ -1196,6 +1196,16 @@ function RewardScreen(p){
     var basePool=REWARDS.slice();
     if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
     var pool=pickRewardsUnique(basePool,count);
+    // 저자원/저스탯 보호: 임계(≤15) 스탯을 더 깎기만 하는 옵션만 제시되어 강제 게임오버로 몰리는 상황 방지.
+    // 해당 스탯을 깎지 않는(fx>=0) 옵션이 풀에 하나도 없으면 basePool의 안전 옵션 1개로 마지막 항목을 교체.
+    ['c','r','t','o'].forEach(function(k){
+      if(p.stats[k]==null||p.stats[k]>15)return;
+      var hasSafe=pool.some(function(r){return !r.fx||(r.fx[k]||0)>=0});
+      if(hasSafe)return;
+      var ids=pool.map(function(r){return r.id});
+      var safe=basePool.filter(function(r){return ids.indexOf(r.id)<0&&(!r.fx||(r.fx[k]||0)>=0)});
+      if(safe.length>0&&pool.length>0)pool[pool.length-1]=safe[Math.floor(Math.random()*safe.length)];
+    });
     // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
       var fac=p.facility;var feRewards=[];

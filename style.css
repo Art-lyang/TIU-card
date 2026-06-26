@@ -33,7 +33,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .oracle-link-time{font-size:12px;color:rgba(var(--ui-card-rgb),.94);text-shadow:0 0 9px rgba(var(--ui-card-rgb),.34);white-space:nowrap}
 .oracle-link-date{font-size:10px;color:rgba(var(--ui-green-dim-rgb),.7);white-space:nowrap}
 .screen{display:flex;flex-direction:column;align-items:center;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;padding:0 12px;padding-top:max(4px,env(safe-area-inset-top));padding-bottom:max(4px,env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
-.oracle-link-active .screen{padding-bottom:max(calc(var(--oracle-link-h) + 28px),env(safe-area-inset-bottom))}
+.oracle-link-active .screen{padding-bottom:max(calc(var(--oracle-link-h) + 44px),env(safe-area-inset-bottom))}
 .screen::-webkit-scrollbar{width:3px}
 .screen::-webkit-scrollbar-track{background:transparent}
 .screen::-webkit-scrollbar-thumb{background:var(--ui-scroll);border-radius:2px}
@@ -154,7 +154,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .evening-relation-value{font-size:10px;color:rgba(var(--ui-rgb),.56);font-variant-numeric:tabular-nums}
 .evening-relation-bar{height:5px;margin-top:6px;border:1px solid rgba(var(--ui-rgb),.12);background:rgba(0,0,0,.34);border-radius:999px;overflow:hidden}
 .evening-relation-status{margin-top:5px;font-family:'Share Tech Mono',monospace;font-size:8px;color:rgba(var(--ui-rgb),.56);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right}
-.evidence-table{width:100%;max-width:420px;box-sizing:border-box;margin:12px auto 0}
+.evidence-table{width:100%;max-width:420px;box-sizing:border-box;margin:12px auto 20px}
 .evening-complete-note{width:100%;max-width:420px;box-sizing:border-box;margin:12px auto 0;padding:8px 10px;border:1px solid rgba(var(--ui-rgb),.24);border-radius:4px;background:rgba(var(--ui-rgb),.045);font-size:11px;line-height:1.45;color:rgba(var(--ui-rgb),.78);text-align:center}
 .go-title{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:3px;color:#ff4444;margin-bottom:16px}
 .go-reason{color:var(--ui-text);margin-bottom:20px;font-size:14px;line-height:1.6}
