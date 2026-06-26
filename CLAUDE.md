@@ -64,6 +64,19 @@
 - `unlock`: `function(logs){ return logs.indexOf("LOG-XXX")>=0 }` 형식
 - `content`: 본문 문자열. `\n`으로 줄바꿈. ORACLE 보고서 톤 유지.
 
+## Mission i18n Rule (현장임무/긴급 추가 시)
+
+신규 미션(`M-*`, `M-E*`, `MI-*`) 추가 시 영어 i18n은 **두 파일을 함께** 갱신한다:
+- 서사(`title` / 노드 `text` / `choices`) → `lang-content-en-all.js`
+- 인텔 패널(`report` 라벨·값) → `lang-fieldmission-dossier-en.js`
+
+`report`는 EN 없으면 KO 원본을 그대로 노출한다(안전망 없음). dossier 누락 시 영어 모드 "ANALYSIS REPORT"에 한국어가 보이므로 두 파일을 항상 같이 본다. `intel`(grid/depth/env)은 원본을 영문으로 쓰면 별도 번역 불필요.
+
+## CCTV Sting / 돌발 기습 (CT-30x → M-E0x)
+
+- 기습 게이트는 `app-init.js`의 `EMERGENCY_AMBUSHES`(spec/mission/done 레지스트리) + `ambushPending()`/`anyAmbushPending()` 공용 헬퍼가 단일 소스. 트리거 카드 `req`와 미니맵 사전경보(`app.js` `computeMapEvent`)가 이걸 공유하므로, 조건 변경 시 헬퍼 한 곳만 수정한다.
+- CCTV 스팅 영상은 **H.264(avc1) + faststart** 만 사용한다. `mp4v`(MPEG-4 Part 2)·HEVC·ProRes는 브라우저 `<video>`가 못 돌린다. 영상 없으면 `CCTV_CLIPS`에서 `img`(미션 hero)로 둔다.
+
 ## Tech Stack
 
 - Runtime: static HTML + React 18 CDN + vanilla JS/CSS
