@@ -1653,9 +1653,9 @@ window.TS_I18N.mergeContent('en', {
     },
     "R-08": {
       "title": "Base Air-Raid Drill",
-      "desc": "Run a surprise-response simulation. Long-term morale and containment readiness both improve.",
+      "desc": "Run a surprise-response simulation without HQ approval. Morale and containment readiness rise, but ORACLE evaluation drops.",
       "benefit": "Containment +10, Trust +10",
-      "cost": "Resources -10"
+      "cost": "Evaluation -10"
     },
     "R-09": {
       "title": "Independent Recon Authorization",
@@ -1665,9 +1665,9 @@ window.TS_I18N.mergeContent('en', {
     },
     "R-10": {
       "title": "Research Support for Yoon Se-jin",
-      "desc": "Allocate additional resources to anomaly research.",
+      "desc": "Expand Yoon Se-jin's anomaly research without HQ approval. ORACLE evaluation drops.",
       "benefit": "Trust +5",
-      "cost": "Resources -5"
+      "cost": "Evaluation -5"
     }
   },
   "eveningChats": {

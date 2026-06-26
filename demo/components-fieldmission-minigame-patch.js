@@ -178,7 +178,7 @@ function FieldMission(p){
     target=Math.max(40,Math.min(95,target));
     var roll=Math.floor(Math.random()*100)+1;
     var tier=roll<=5?'great':(roll<=target?'success':(roll>=96?'critfail':'partial'));
-    var delta=tier==='great'?{r:1,t:1}:tier==='partial'?{r:-1}:tier==='critfail'?{r:-2,t:-1}:{};
+    var delta=tier==='great'?{r:1,t:1}:tier==='partial'?{r:-1}:tier==='critfail'?{c:-1,r:-1,t:-1}:{};
     return {tier:tier,roll:roll,risk:risk,bonus:{result:delta}};
   }
   function rollBanner(rr){
