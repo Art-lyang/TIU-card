@@ -752,7 +752,7 @@ function App(){
   var hasSessionHistory=sessions>0||endings.length>0;
   if(cctvSting)return h(CctvSting,{clipKey:cctvSting,onDone:function(){setCctvSting(null);setPhase('mission')}});
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting}));
+  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting}));
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing'){
     if(debugBriefing)return h(BriefingScreen,{act:debugBriefing.act,stats:stats,transRoute:debugBriefing.route,onEnter:function(){setDebugBriefing(null);setPhase('menu')}});
@@ -760,7 +760,7 @@ function App(){
   }
   if(phase==='go'){
     var goBack=debugGO?function(){setDebugGO(false);setPhase('menu')}:null;
-    return withOracleLink(h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,endImg:endImg,resultDay:goDay,onRestart:goBack||restart,onMainMenu:goBack||returnToMainMenu,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')}}));
+    return withOracleLink(h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,endImg:endImg,resultDay:goDay,onRestart:goBack||restart,onMainMenu:goBack||returnToMainMenu,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')},onAchievements:function(){setRet('go');setPhase('achievements')}}));
   }
   if(phase==='news')return withOracleLink(h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){Save.set('ts_resumePhase','reward');setPhase('reward')}})));
   if(phase==='reward')return withOracleLink(h(RewardScreen,{stats:stats,onPick:hReward,facility:facility,getRewardPreviewDelta:getRewardPreviewDelta,initialRewards:Save.get('ts_resumeRewards',null),onRewardsReady:function(items){Save.set('ts_resumeRewards',items)}}));
@@ -771,6 +771,7 @@ function App(){
   if(phase==='logs')return h(LogViewer,{unlockedIds:logs,sessions:sessions,onClose:function(){setPhase(ret)}});
   if(phase==='archive')return h(ArchiveViewer,{logs:logs,seenArchive:seenArchive,onMarkSeen:function(id){setSeenArchive(function(p){if(p.indexOf(id)>=0)return p;var n=p.concat([id]);Save.saveSeenArchive(n);return n})},onClose:function(){setPhase(ret)}});
   if(phase==='endings')return h(EndingScreen,{endings:endings,sessions:sessions,onClose:function(){setPhase(ret)}});
+  if(phase==='achievements')return h(AchievementsScreen,{unlockedIds:achievements,sessions:sessions,onClose:function(){setPhase(ret)}});
   if(phase==='miniguide')return h(MiniGameGuide,{onClose:function(){setPhase(ret)}});
   return withOracleLink(h('div',{className:'screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // TERMINAL SESSION')),

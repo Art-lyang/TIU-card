@@ -181,6 +181,9 @@ function MainMenu(p){
   if(p.hasSessionHistory&&p.onEndings){
     menuItems.push({key:'endings',primary:false,icon:'archive',title:tt('menu.routes.endings.title',null,'[ 엔딩 ]'),sub:tt('menu.routes.endings.sub',null,'SESSION OUTCOME RECORDS'),action:tt('menu.routes.endings.action',null,'VIEW ENDINGS'),onClick:p.onEndings});
   }
+  if(p.onAchievements){
+    menuItems.push({key:'achievements',primary:false,icon:'command',title:tt('menu.routes.achievements.title',null,'[ 업적 ]'),sub:tt('menu.routes.achievements.sub',null,'ACHIEVEMENT RECORDS'),action:tt('menu.routes.achievements.action',null,'VIEW ACHIEVEMENTS'),onClick:p.onAchievements});
+  }
   menuItems.push(
     {key:'settings',primary:false,icon:'settings',title:tt('menu.routes.settings.title',null,'[ 시스템 설정 ]'),sub:tt('menu.routes.settings.sub',null,'DISPLAY / AUDIO / LANGUAGE'),action:tt('menu.routes.settings.action',null,'SYSTEM CONFIG'),onClick:function(){setSub('settings')}}
   );
@@ -1154,7 +1157,7 @@ function GameOver(p){
   }
   var btns=h('div',{className:'go-btns'},
     h('button',{className:'btn bf-enter',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
-    h('div',{className:'go-btnrow'},p.onMainMenu&&h('button',{className:'btn',onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',onClick:p.onEndings},tt('gameOver.endings',null,'엔딩'))));
+    h('div',{className:'go-btnrow'},p.onMainMenu&&h('button',{className:'btn',onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',onClick:p.onEndings},tt('gameOver.endings',null,'엔딩')),p.onAchievements&&h('button',{className:'btn',onClick:p.onAchievements},tt('gameOver.achievements',null,'업적'))));
   return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,btns));
 }
 function Tutorial(p){
