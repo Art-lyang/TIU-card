@@ -365,10 +365,31 @@ def collect_mission_trigger_cards():
                 triggers[m.group(1)] = m.group(2)
     return triggers
 
+def collect_chain_trigger_map():
+    """data-chains*.js에서 체인 트리거 매핑: (card_id, direction) -> chain_id."""
+    chain_map = {}
+    for fn in os.listdir(ROOT):
+        if fn.startswith('data-chains') and fn.endswith('.js'):
+            src = read(fn)
+            for m in re.finditer(r'"(CH-[^"]+)":\s*\{[^}]*trigger:\s*"([^"]+)"', src, re.S):
+                chain_id = m.group(1)
+                trigger = m.group(2)
+                if '-left' in trigger:
+                    card_id = trigger.replace('-left', '')
+                    chain_map[(card_id, 'left')] = chain_id
+                elif '-right' in trigger:
+                    card_id = trigger.replace('-right', '')
+                    chain_map[(card_id, 'right')] = chain_id
+                else:
+                    chain_map[(trigger, 'left')] = chain_id
+                    chain_map[(trigger, 'right')] = chain_id
+    return chain_map
+
 MISSION_IDS = collect_mission_ids()
 CHAIN_IDS = collect_chain_ids()
 HIDDEN_LOG_GROUPS = collect_hidden_logs()
 MISSION_TRIGGERS = collect_mission_trigger_cards()
+CHAIN_TRIGGER_MAP = collect_chain_trigger_map()  # (card_id, dir) -> chain_id
 
 # ═══════════ ACTIVE_SPECS / 돌발 긴급 시뮬 ═══════════
 
@@ -808,9 +829,9 @@ def simulate_one(profile):
     null_draw_days = []              # pool=0으로 드로우 실패한 day
     repeat_streaks = 0               # REPEAT_WINDOW 내 동일 카드 재출현 횟수
     ambush_triggered = {}            # CT-30x id → 발동 day
-    ambush_eligible_checked = {}     # CT-30x id → 조건 검사 횟수
+    ambush_eligible_checked = {}     # CT-30x id → 조건 충족(세션 내 첫 1회)
     mission_card_seen = set()        # 이번 세션에서 등장한 미션 카드 ID (mission 필드 보유 카드)
-    chain_card_seen = set()          # 이번 세션에서 등장한 체인 카드 ID
+    chain_triggered_this_session = set()  # 이번 세션에서 트리거된 체인 ID
     recent_window = collections.deque(maxlen=REPEAT_WINDOW)  # 짧은 윈도우 중복 감지용
 
     while s['day'] <= max_days and ending is None:
@@ -854,16 +875,17 @@ def simulate_one(profile):
                 if not eval_req_extended(c['req'], s, gi, logs, active_specs): continue
                 pool.append(c)
 
-            # CT-30x 등장 가능성 사전 점검 (조건 충족 여부 기록)
+            # CT-30x 등장 가능성 사전 점검 (조건 충족 여부 기록, 세션 내 첫 충족만 기록)
+            # 단, 이미 발동된(ONCE 로그 있음) 카드는 eligible 제외
             for ct_id, spec_tag in AMBUSH_CARD_SPEC.items():
-                if ct_id not in logs and ('ONCE-' + ct_id) not in logs:
+                if ct_id not in ambush_eligible_checked and ct_id not in ambush_triggered and ('ONCE-' + ct_id) not in logs:
                     done_log = next((a['done'] for a in EMERGENCY_AMBUSHES if a['spec'] == spec_tag), None)
                     if done_log and sim_ambush_pending(spec_tag, done_log, s, logs, active_specs):
-                        ambush_eligible_checked[ct_id] = ambush_eligible_checked.get(ct_id, 0) + 1
+                        ambush_eligible_checked[ct_id] = 1
             # CT-301 별도 점검 (spec-011 휴면 여부)
-            if ('ONCE-CT-301') not in logs:
+            if 'CT-301' not in ambush_eligible_checked and 'CT-301' not in ambush_triggered and ('ONCE-CT-301') not in logs:
                 if s.get('day', 1) >= 7 and 'spec-011' not in active_specs:
-                    ambush_eligible_checked['CT-301'] = ambush_eligible_checked.get('CT-301', 0) + 1
+                    ambush_eligible_checked['CT-301'] = 1
 
             if not pool:
                 null_draw_days.append(s['day'])
@@ -885,11 +907,13 @@ def simulate_one(profile):
             if c['id'] in MISSION_CARD_IDS:
                 mission_card_seen.add(c['id'])
 
-            # 체인 카드 등장 기록
-            if c['id'] in CHAIN_CARD_IDS:
-                chain_card_seen.add(c['id'])
-
             dir_choice = choose_side_profile(c, s, gi, profile, logs)
+
+            # 체인 트리거 추적: 올바른 방향 선택 시 체인 시작
+            chain_key = (c['id'], dir_choice)
+            if chain_key in CHAIN_TRIGGER_MAP:
+                chain_triggered_this_session.add(CHAIN_TRIGGER_MAP[chain_key])
+
             side = c[dir_choice]
             before_s = dict(s)
             before_gi = gi
@@ -1048,7 +1072,7 @@ def simulate_one(profile):
         'ambush_triggered': dict(ambush_triggered),   # {ct_id: day}
         'ambush_eligible': dict(ambush_eligible_checked),  # {ct_id: check_count}
         'mission_card_seen': set(mission_card_seen),  # 이번 세션에서 등장한 미션 카드
-        'chain_card_seen': set(chain_card_seen),      # 이번 세션에서 등장한 체인 카드
+        'chain_card_seen': set(chain_triggered_this_session),  # 이번 세션에서 트리거된 체인 ID
         'active_specs': list(active_specs),
     }
 
@@ -1118,7 +1142,7 @@ def aggregate(results, profile):
         if r.get('mission_card_seen'):
             sessions_with_mission_card += 1
 
-        # 체인 카드 세션 등장 여부
+        # 체인 트리거 세션 여부 (data-chains.js 체인 트리거 카드를 올바른 방향으로 선택)
         if r.get('chain_card_seen'):
             sessions_with_chain_card += 1
 
@@ -1129,11 +1153,10 @@ def aggregate(results, profile):
             for ct_id in triggered:
                 ambush_trigger_counts[ct_id] += 1
 
-        # CT-30x 조건 충족 여부 (eligible)
+        # CT-30x 조건 충족 여부 (eligible) — 세션 내 1회 이상 조건 충족 여부만 집계
         eligible = r.get('ambush_eligible', {})
-        for ct_id, cnt in eligible.items():
-            if cnt > 0:
-                ambush_eligible_sessions[ct_id] += 1
+        for ct_id in eligible:
+            ambush_eligible_sessions[ct_id] += 1
 
         # null 드로우
         nd = r.get('null_draw_days', [])
@@ -1149,11 +1172,9 @@ def aggregate(results, profile):
             repeat_streak_sessions += 1
             repeat_streak_total += rs
 
-        # 저자원 Act3 구간 분석
-        is_low_resource = any(
-            h['act'] == 3 and (h['c'] <= 30 or h['r'] <= 30)
-            for h in r.get('stat_history', [])
-        )
+        # 저자원 Act3 구간 분석 — Act3 구간(day 14~28) 중 c 또는 r <= 30인 day가 존재하는 세션
+        low_resource_days = {h['day'] for h in r.get('stat_history', []) if h['act'] == 3 and (h['c'] <= 30 or h['r'] <= 30)}
+        is_low_resource = bool(low_resource_days)
         if is_low_resource:
             low_resource_sessions += 1
             if r.get('mission_card_seen'):
@@ -1206,7 +1227,7 @@ def aggregate(results, profile):
                     'eligible_pct': round(100 * ambush_eligible_sessions.get(ct_id, 0) / n, 1),
                     'trigger_rate_of_eligible': round(
                         100 * ambush_trigger_counts.get(ct_id, 0) /
-                        max(ambush_trigger_counts.get(ct_id, 0), ambush_eligible_sessions.get(ct_id, 1)), 1
+                        ambush_eligible_sessions[ct_id], 1
                     ) if ambush_eligible_sessions.get(ct_id, 0) > 0 else 0,
                 }
                 for ct_id in ['CT-301', 'CT-302', 'CT-303', 'CT-304']
@@ -1298,7 +1319,7 @@ def print_profile_report(agg):
     dh2 = agg['deck_health']
     print(f'\n▸ 덱 건강도 지표')
     print(f'  현장임무 카드 등장 세션:  {dh2["sessions_with_mission_card_pct"]:5.1f}%  ({dh2["sessions_with_mission_card"]}/{n})')
-    print(f'  체인(CH-*) 카드 등장 세션: {dh2["sessions_with_chain_card_pct"]:5.1f}%  ({dh2["sessions_with_chain_card"]}/{n})')
+    print(f'  체인 트리거 세션(data-chains):  {dh2["sessions_with_chain_card_pct"]:5.1f}%  ({dh2["sessions_with_chain_card"]}/{n})')
     print(f'  긴급 돌발(CT-30x) 발동 세션: {dh2["sessions_with_ambush_pct"]:5.1f}%  ({dh2["sessions_with_ambush"]}/{n})')
     print(f'  null 드로우 세션:        {dh2["null_draw_sessions_pct"]:5.1f}%  (총 {dh2["null_draw_total"]}회)')
     if dh2['null_draw_top_days']:
@@ -1309,9 +1330,16 @@ def print_profile_report(agg):
         d = dh2['ambush_by_card'][ct_id]
         elig = d['eligible_pct']
         trig = d['triggered_pct']
-        rate = d['trigger_rate_of_eligible']
-        status = '[정상]' if elig > 0 else '[조건미충족]'
-        print(f'    {ct_id}: 조건충족 {elig:5.1f}% 세션  발동 {trig:5.1f}%  (충족→발동율 {rate:.1f}%) {status}')
+        # 조건 충족 세션 수 = eligible + 발동된 세션(발동 전 eligible 체크 완료된 것)
+        # trig > elig 가능: 조건 충족 직후 같은 드로우 사이클에서 발동
+        # "활성 종 제외 → 발동 가능" 확인 지표로 사용
+        if elig == 0 and trig == 0:
+            status = '[조건 미충족 — 해당 spec 전 세션 활성]'
+        elif elig == 0 and trig > 0:
+            status = '[발동됨 — eligible 체크 전 발동]'
+        else:
+            status = '[정상]'
+        print(f'    {ct_id}: 조건충족가능 {elig:5.1f}% 세션  실제발동 {trig:5.1f}% 세션  {status}')
 
     lr = agg['low_resource_act3']
     if lr['sessions'] > 0:
