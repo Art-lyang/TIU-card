@@ -27,6 +27,8 @@ var initActiveSpecs=function(){ACTIVE_SPECS=normalizeActiveSpecs(pickN(ALL_SPEC_
 var loadActiveSpecs=function(){try{var d=localStorage.getItem('ts_activeSpecs');if(d){var parsed=JSON.parse(d);var normalized=normalizeActiveSpecs(parsed);if(normalized.length===ACTIVE_SPEC_COUNT){ACTIVE_SPECS=normalized;localStorage.setItem('ts_activeSpecs',JSON.stringify(ACTIVE_SPECS))}else{initActiveSpecs()}}else{initActiveSpecs()}}catch(e){initActiveSpecs()}};
 var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTIVE_SPECS.length===0)return true;return ACTIVE_SPECS.indexOf(c.tag)>=0};
 // 돌발 긴급 기습(CT-30x/M-E0x) 공용 게이트 — 트리거 카드 req와 미니맵 사전경보가 동일 로직 공유
+// [다회차 의도] CT-30x의 once 플래그와 done LOG(LOG-041/014/013)는 resetSessionLogs에서 회차마다 리셋된다.
+//   즉 새 캠페인마다 조건(휴면 종 + 봉쇄위기/방치) 충족 시 기습이 다시 발생할 수 있다 — 의도된 동작(M-010 체인과 동일).
 var EMERGENCY_AMBUSHES=[
   {spec:'spec-015',mission:'M-E02',done:'LOG-041'}, // BRAIN SEEKER 하수도 침입
   {spec:'spec-003',mission:'M-E03',done:'LOG-014'}, // BROOD DRONE 환기구 군체 침입
