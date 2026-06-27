@@ -428,9 +428,13 @@ function App(){
   };
   useEffect(function(){
     if(phase!=='game')return;
+    // 미션/스팅 발동 대기 중엔 강제 대화를 보류한다. 미션 트리거는 phase를 'game'에 둔 채
+    // cctvSting 또는 400ms 타임아웃으로 'mission'에 진입하는데, 그 사이 logs 변동으로 이 효과가
+    // 강제 대화를 띄우면 현장임무가 스킵된다(대화가 미션을 선점). 미션 종료 후 다시 강제된다.
+    if(cctvSting||curMission)return;
     var lg=getLiveLogs(logs);
     if(shouldForceEvidenceUnlock(lg))triggerEvidenceUnlockDialogue();
-  },[phase,act,logs]);
+  },[phase,act,logs,cctvSting,curMission]);
   var swipe=function(dir){
     if(cardInputLockedRef.current||phase!=='game'||!curCard)return;
     lockCardInput();
