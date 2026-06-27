@@ -66,6 +66,9 @@ function App(){
   var _dbf=useState(null),debugBriefing=_dbf[0],setDebugBriefing=_dbf[1];
   var _dgo=useState(false),debugGO=_dgo[0],setDebugGO=_dgo[1];
   var debugMissionRef=useRef(false);
+  // 카드 사이 인터스티셜 대화: 다음 카드를 먼저 뽑아 두고 대화를 오버레이로 띄운 뒤
+  // 대화 종료 시 그 카드를 그대로 보여준다(대화가 후속 카드를 바꿔 연계가 끊기는 것 방지).
+  var interstitialDlgRef=useRef(false);
   var DEV=(function(){try{return /[?&]dev\b/.test(location.search)}catch(e){return false}})();
   var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40}),trust=_tr[0],setTrust=_tr[1];
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
@@ -315,7 +318,7 @@ function App(){
     if((eid==='F'||eid==='B')&&fxMode!=='off'){triggerGlitch(3);goDelay=3800}
     else if(fxMode!=='off'){goDelay=1200;var fo=document.createElement('div');fo.style.cssText='position:fixed;inset:0;background:#000;opacity:0;z-index:999;transition:opacity 1s ease;pointer-events:none';document.body.appendChild(fo);requestAnimationFrame(function(){fo.style.opacity='1'});setTimeout(function(){if(fo.parentNode)fo.parentNode.removeChild(fo)},goDelay+500)}
     setTimeout(function(){setPhase('go')},goDelay)};
-  var tryDlg=function(logsOverride){
+  var tryDlg=function(logsOverride,interstitial){
     var lg=Array.isArray(logsOverride)?logsOverride:logs;
     var usedDialogueList=getUsedDialogueList();
     var dlgAvailable=function(d){
@@ -331,6 +334,7 @@ function App(){
     var av=DIALOGUES.filter(function(d,i){if(usedDialogueList.indexOf(i)>=0)return false;if(!dlgAvailable(d))return false;var earlier=false;DIALOGUES.forEach(function(d2,j){if(j<i&&d2.char===d.char&&usedDialogueList.indexOf(j)<0&&dlgAvailable(d2))earlier=true});return!earlier});
     var beginDialogue=function(d){
       var idx=DIALOGUES.indexOf(d);
+      interstitialDlgRef.current=!!interstitial;
       setCurDlg(d);
       Save.set('ts_resumePhase','dialogue');Save.set('ts_resumeDialogueIndex',idx);
       setPhase('dialogue');
@@ -432,9 +436,12 @@ function App(){
     // cctvSting 또는 400ms 타임아웃으로 'mission'에 진입하는데, 그 사이 logs 변동으로 이 효과가
     // 강제 대화를 띄우면 현장임무가 스킵된다(대화가 미션을 선점). 미션 종료 후 다시 강제된다.
     if(cctvSting||curMission)return;
+    // 체인(CH-*) 진행 중엔 강제 대화를 보류한다 — 체인 카드 사이 logs 변동으로 발화되면
+    // 남은 체인 카드가 드롭/스킵된다. 체인 종료 후 다음 게임 비트에서 정상 발화된다.
+    if(chainQueue&&chainQueue.length>0)return;
     var lg=getLiveLogs(logs);
     if(shouldForceEvidenceUnlock(lg))triggerEvidenceUnlockDialogue();
-  },[phase,act,logs,cctvSting,curMission]);
+  },[phase,act,logs,cctvSting,curMission,chainQueue]);
   var swipe=function(dir){
     if(cardInputLockedRef.current||phase!=='game'||!curCard)return;
     lockCardInput();
@@ -530,7 +537,7 @@ function App(){
     if(cq&&cq.length>0){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     else if(nct>=cpd){SFX.play('news');var dayNews=genNewsHeadlines(ns,ng,nextLogs);setNh(dayNews);Save.set('ts_resumePhase','news');Save.set('ts_resumeHeadlines',dayNews);setTimeout(function(){setPhase('news')},400)}
     else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
-    else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
+    else if(nct===2||nct===3){setTimeout(function(){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext);tryDlg(nextLogs,true)},300)}
     else{nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     // 결과 서사 텍스트 or 자원 리스크 토스트
     if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);clearToastAfter(2400)},400)}}
@@ -586,6 +593,8 @@ function App(){
   nextCard(stats,gi,liveLogs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');clearResumeCheckpoint();var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);var goD=chkGameOver(ns);if(goD){SFX.play('gameover');doGO(goD,ns,ng);return}if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var usedAfter=markDialogueUsed(di);var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);if(c.log){if(Array.isArray(c.log))c.log.forEach(function(l){tryUnlock(l)});else tryUnlock(c.log)}var dlgLogs=getLiveLogs(logs);persistGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
     var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedAfter.indexOf(i)<0}).length;
+    // 인터스티셜 대화였다면 다음 카드는 대화 전에 이미 뽑혀 curCard에 세팅돼 있다 — 재드로우 없이 그대로 노출.
+    if(interstitialDlgRef.current){interstitialDlgRef.current=false;setCurDlg(null);setPhase('game');return}
     setCurDlg(null);
     if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
@@ -597,7 +606,7 @@ function App(){
     setTrust({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40});
     setCooldowns({});setRecentCards([]);setAct(1);setTransRoute('');
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
-    setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);
+    setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);interstitialDlgRef.current=false;
     setGor('');setGoDay(null);setEndNarr(null);setEndId(null);setCAlertDay(-1);setAct2Reached(false);
     setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
     // Reset archive read markers for a clean campaign.
