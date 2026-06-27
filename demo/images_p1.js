@@ -50,6 +50,7 @@
     card_story_giant: 'assets/images/cards/story/card_story_giant.jpg',
 
     card_helicopter_crash: 'assets/images/cards/card_helicopter_crash.jpg',
+    card_helicopter_crash_cctv: 'assets/images/cards/card_helicopter_crash_cctv.jpg',
     card_civilian_perimeter: 'assets/images/cards/card_civilian_perimeter.jpg',
 
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
