@@ -154,7 +154,7 @@ function genNews(s,g,logs){var l=[],recent=getRecentNewsItems(),lg=logs||[];if(s
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}
 
-function introsDone(logs){return logs.indexOf('LOG-INTRO-SH')>=0&&logs.indexOf('LOG-INTRO-KD')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-INTRO-IJ')>=0}
+function introsDone(logs){return (logs.indexOf('LOG-INTRO-SH')>=0||logs.indexOf('LOG-050')>=0)&&logs.indexOf('LOG-INTRO-KD')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-INTRO-IJ')>=0}
 
 function checkActTransition(s,g,lg,af,curAct){
   // 디스패치 타임라인: 문서 기준 (Act1→5, Act2→14, Act3→29, Act4 종료 day>35)
