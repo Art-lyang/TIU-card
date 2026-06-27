@@ -24,6 +24,8 @@ function DevMissionLauncher(p){
     h('div',{style:{font:'10px monospace',color:'#39d98a',letterSpacing:'.1em',marginBottom:4,opacity:.85}},'// DEV — 직접 실행 (완료 시 메뉴 복귀, 세이브 불변)'),
     p.onLaunchSting&&typeof MISSION_CCTV!=='undefined'?lbl('▓ CCTV 트리거 스팅 (조우 직전)','#ff8c2b'):null,
     p.onLaunchSting&&typeof MISSION_CCTV!=='undefined'?Object.keys(MISSION_CCTV).map(function(mid){var ck=MISSION_CCTV[mid];var m=(MISSIONS&&MISSIONS[mid])||{};return h('button',{key:'sting-'+mid,onClick:function(){p.onLaunchSting(mid,ck)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(22,14,6,.9)',color:'#ff8c2b',border:'1px solid rgba(255,140,43,.45)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:8}},'[CCTV]'),(m.codename||mid)+' → '+mid);}):null,
+    p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?lbl('▓ 현장임무 트리거 카드 (실제 카드→미션 경로)','#7fd0ff'):null,
+    p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?CARDS.filter(function(c){return (c.left&&c.left.mission)||(c.right&&c.right.mission)}).map(function(c){var mid=(c.left&&c.left.mission)||(c.right&&c.right.mission);return h('button',{key:'trig-'+c.id,onClick:function(){p.onLaunchTriggerCard(c.id)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(6,18,26,.9)',color:'#7fd0ff',border:'1px solid rgba(127,208,255,.4)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:8}},'['+c.id+']'),'→ '+mid);}):null,
     p.onLaunchBriefing?lbl('▓ ACT 전환 브리핑','#9fb8ff'):null,p.onLaunchBriefing?BRIEF_PRESETS.map(briefRow):null,
     p.onLaunchEnding&&endIds.length?lbl('▓ 엔딩 / 게임오버','#ff8a6a'):null,p.onLaunchEnding?endIds.map(endRow):null,
     fieldIds.length?lbl('▓ 현장임무 (미니게임 포함)','#7fe0c0'):null,fieldIds.map(row),
@@ -172,6 +174,7 @@ function App(){
     return next;
   };
   var persistGame=function(s,g,a,af,tr,cd,rc,curCt,cq,fac,pb,cm,ph){
+    if(debugMissionRef.current)return; // DEV 검증 플로우(트리거 카드/미션 직접 실행)는 세이브 불변
     Save.saveGame(
       s,g,a,af,tr,
       cd||cooldowns,
@@ -542,6 +545,18 @@ function App(){
   // DEV 런처로 발동한 임무는 캠페인을 진행시키지 않고 메뉴로 복귀한다 (gOnly 중간 GI 업데이트는 무시).
   var launchDebugMission=function(id){if(typeof MISSIONS==='undefined'||!MISSIONS[id])return;debugMissionRef.current=true;setShowDevPanel(false);setCurMission(id);setPhase('mission')};
   var launchDebugSting=function(mid,key){if(typeof MISSIONS==='undefined'||!MISSIONS[mid])return;debugMissionRef.current=true;setShowDevPanel(false);setCurMission(mid);setCctvSting(key||(typeof MISSION_CCTV!=='undefined'&&MISSION_CCTV[mid])||'brainseeker')};
+  // DEV: 현장임무 트리거 카드를 현재 카드로 주입 → 실제 카드 스와이프→미션 경로를 게이팅 없이 검증.
+  // debugMissionRef=true 라 persistGame이 보류되어 세이브 불변, 미션 완료 시 메뉴 복귀.
+  var launchDebugTriggerCard=function(cardId){
+    var pool=(typeof CARDS!=='undefined'&&Array.isArray(CARDS))?CARDS:[];
+    var card=pool.filter(function(c){return c.id===cardId})[0];
+    if(!card)return;
+    debugMissionRef.current=true;
+    setShowDevPanel(false);
+    setCurMission(null);setCctvSting(null);setCurDlg(null);
+    setCurCard(card);unlockCardInput();
+    setPhase('game');
+  };
   var hMissionDebug=function(o){if(o&&o.gOnly)return;debugMissionRef.current=false;Save.del('ts_activeMission');setCurMission(null);setPhase('menu')};
   var launchDebugBriefing=function(dact,droute){setShowDevPanel(false);setAct(dact);setTransRoute(droute);setDebugBriefing({act:dact,route:droute});setPhase('briefing')};
   var launchDebugEnding=function(eid){var def=(typeof ENDING_DEFS!=='undefined')?ENDING_DEFS[eid]:null;setShowDevPanel(false);setGor((def&&def.name)||eid);setGoDay((stats&&stats.day)||33);setEndImg(null);setEndNarr(def||null);setEndId(eid);setDebugGO(true);setPhase('go')};
@@ -759,7 +774,7 @@ function App(){
   var hasSessionHistory=sessions>0||endings.length>0;
   if(cctvSting)return h(CctvSting,{clipKey:cctvSting,onDone:function(){setCctvSting(null);setPhase('mission')}});
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting}));
+  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard}));
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing'){
     if(debugBriefing)return h(BriefingScreen,{act:debugBriefing.act,stats:stats,transRoute:debugBriefing.route,onEnter:function(){setDebugBriefing(null);setPhase('menu')}});
@@ -796,6 +811,6 @@ function App(){
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
-    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting})));
+    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard})));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
