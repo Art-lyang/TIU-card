@@ -532,9 +532,9 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Set a detour route"
       },
       "C-149": {
-        msg: "The monsoon season has started.\n\nFlooding risk in the branch sublevel. The drainage pumps must run.",
+        msg: "A cold snap has set in.\n\nFreeze-rupture risk in the branch sublevel piping. The circulation pumps must run.",
         leftLabel: "Run pumps for 24 hours",
-        rightLabel: "Respond only if it floods"
+        rightLabel: "Respond only if pipes freeze"
       },
       "C-150": {
         msg: "A lightning strike has damaged the outer comms tower. The antenna mount is bent.\n\nLim Jae-hyeok: \"External comms range is down to half. Repairing it means dipping into our reserves — we won't have margin until the next resupply.\"",
@@ -1293,11 +1293,11 @@ window.TS_I18N.mergeContent('en', {
       title: 'Observation Halted',
       nodes: {
         start: {
-          text: '1.2 km southeast of the branch. Emergency report from Kang Do-yun.\n\n"Commander. You need to see this yourself."\n\nOn arrival — a circular zone in the forest, approximately 30 meters across.\n\nThe trees are standing, but leafless. Frost covers the ground. In midsummer.\n\nInside the zone — a deer stands motionless. Completely still.\n\nKang Do-yun: "It\'s been like that for thirty minutes. No visible signs of EV-Σ infection."',
+          text: '1.2 km southeast of the branch. Emergency report from Kang Do-yun.\n\n"Commander. You need to see this yourself."\n\nOn arrival — a circular zone in the forest, approximately 30 meters across.\n\nThe trees are standing, but leafless. The snow on the ground has melted, and steam rises from it. In the dead of winter.\n\nInside the zone — a deer stands motionless. Completely still.\n\nKang Do-yun: "It\'s been like that for thirty minutes. No visible signs of EV-Σ infection."',
           choices: ['▸ Enter the zone','▸ Set up instruments at the perimeter','▸ Request ORACLE remote analysis']
         },
         enter_zone: {
-          text: 'The moment you cross the boundary, the air changes.\n\nTemperature drops by seven degrees. Sound thins out. You can hear your own heartbeat.\n\nYou approach the deer. Its eyes are open, but it is looking at nothing. It is breathing — too slowly. Two breaths per minute.\n\nKang Do-yun checks his watch.\n"Commander. We\'ve been inside for three minutes."\nHe shows it to you. Fourteen minutes have passed.\n\nTime is slowing down.',
+          text: 'The moment you cross the boundary, the air changes.\n\nTemperature rises by seven degrees. Sound thins out. You can hear your own heartbeat.\n\nYou approach the deer. Its eyes are open, but it is looking at nothing. It is breathing — too slowly. Two breaths per minute.\n\nKang Do-yun checks his watch.\n"Commander. We\'ve been inside for three minutes."\nHe shows it to you. Fourteen minutes have passed.\n\nTime is slowing down.',
           choices: ['▸ Go deeper','▸ Withdraw immediately']
         },
         anomaly: {
@@ -2100,7 +2100,7 @@ window.TS_I18N.mergeContent('en', {
     "news_bc_06": {"type":"domestic","text":"Three surveillance cameras in eastern Gangwon fail simultaneously; cause remains unknown."},
     "news_bc_07": {"type":"domestic","text":"A coastal city's economy enters its fourth year of decline as population loss collapses tourism."},
     "news_bc_08": {"type":"domestic","text":"Ten years after native residents were relocated from the Gangwon quarantine zone, compensation lawsuits remain in court."},
-    "news_br_01": {"type":"domestic","text":"A supply route through the Gangwon highlands is temporarily cut off by heavy rain."},
+    "news_br_01": {"type":"domestic","text":"A supply route through the Gangwon highlands is temporarily cut off by heavy snow."},
     "news_br_02": {"type":"domestic","text":"Prices for military supplies continue to rise."},
     "news_br_03": {"type":"domestic","text":"A pharmaceutical supplier issues notice of delivery delays to containment regions."},
     "news_br_04": {"type":"domestic","text":"Emergency food reserves fall to 62% of the recommended threshold."},
@@ -2397,9 +2397,9 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Handle it during the next scheduled inspection"
       },
       "CA-023": {
-        msg: "A sudden shower begins with no forecast warning.\n\nA work team is still operating outside the containment line.\n\nKang Do-yun: \"We have enough rain gear. Your call?\"",
+        msg: "Heavy snow begins to fall with no forecast warning.\n\nA work team is still operating outside the containment line.\n\nKang Do-yun: \"We have enough cold-weather gear. Your call?\"",
         leftLabel: "Order immediate return",
-        rightLabel: "Issue rain gear and let them continue"
+        rightLabel: "Issue cold-weather gear and let them continue"
       },
       "CA-024": {
         msg: "Dense fog has covered the containment line since morning.\n\n\"Visibility is under thirty meters. How should we handle patrol frequency?\"\n\nKang Do-yun is waiting for the order.",
@@ -2587,7 +2587,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Delegate it to Kang Do-yun"
       },
       "C-025": {
-        msg: "Heavy rain is expected to block external supply routes for at least 48 hours. Emergency ration allocation is required.",
+        msg: "Heavy snow and cold are expected to block external supply routes for at least 48 hours. Emergency ration allocation is required.",
         leftLabel: "Implement rationing",
         rightLabel: "Seek alternate route (high risk)"
       },

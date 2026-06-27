@@ -29,9 +29,9 @@ if (typeof CARDS_PROLOGUE !== 'undefined') {
 
     // ── 날씨 (tag: "weather") ──
     { id: "CA-023", act: [1], priority: "하", bg: "weather", tag: "weather",
-      msg: "예보에 없던 소나기가 내리기 시작했습니다.\n\n봉쇄선 외곽에서 작업 중인 팀이 있습니다.\n\n강도윤: \"우비는 충분합니다. 어떻게 할까요?\"",
+      msg: "예보에 없던 폭설이 내리기 시작했습니다.\n\n봉쇄선 외곽에서 작업 중인 팀이 있습니다.\n\n강도윤: \"방한 장비는 충분합니다. 어떻게 할까요?\"",
       left: { label: "즉시 복귀 명령", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 },
-      right: { label: "우비 지급 후 작업 계속", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
+      right: { label: "방한 장비 지급 후 작업 계속", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
 
     { id: "CA-024", act: [1], priority: "하", bg: "weather", tag: "weather",
       msg: "오전부터 짙은 안개가 봉쇄선 일대를 뒤덮었습니다.\n\n\"시야가 30미터도 안 됩니다. 순찰 주기를 어떻게 할까요?\"\n\n강도윤이 기다리고 있습니다.",
