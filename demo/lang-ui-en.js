@@ -83,6 +83,7 @@ window.TS_I18N.mergeUI('en', {
       logs:{title:'[ LOGS ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
       miniguide:{title:'[ MINIGAME GUIDE ]',sub:'FIELD MODULE PRACTICE',action:'OPEN GUIDE'},
       endings:{title:'[ ENDINGS ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
+      achievements:{title:'[ ACHIEVEMENTS ]',sub:'ACHIEVEMENT RECORDS',action:'VIEW ACHIEVEMENTS'},
       settings:{title:'[ SYSTEM SETTINGS ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
   },

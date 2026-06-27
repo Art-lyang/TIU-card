@@ -154,7 +154,7 @@ var CARDS_INVESTIGATE = [
   // CT-304 : SPEC-001 Mannequin 긴급 정지 위장 잠입 — 휴면 종 한정
   { id: "CT-304", act: [2,3], priority: "상", bg: "forest", once: true,
     req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-001','LOG-013',s,logs); },
-    msg: "긴급 — 인원 점검 불일치.\n\n야간 보급 창고. 정기 인원 점검에서 머릿수가 하나 더 잡힙니다.\n\n강도윤: \"구석에 사람 형체 하나. ...미동이 없습니다. 호흡도, 열도 거의 없어요.\"\n\n윤세진: \"Mannequin이에요. 보급품 틈에 섞여 들어온 정지 위장형. 자극하기 전에 식별이 먼저예요.\"",
+    msg: "긴급 — 인원 점검 불일치.\n\n야간 보급 창고. 정기 인원 점검에서 머릿수가 하나 더 잡힙니다.\n\n강도윤: \"구석에 사람 형체 하나. ...미동이 없습니다. 호흡도, 열도 거의 없어요.\"\n\n윤세진: \"마네킹이에요. 보급품 틈에 섞여 들어온 정지 위장형. 자극하기 전에 식별이 먼저예요.\"",
     left: { label: "즉시 제압 — 접근 사격", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-E04" },
     right: { label: "열화상 식별 후 격리", fx: { c: 1, r: -1, t: 1, o: 0 }, g: 0, mission: "M-E04" } }
 ];

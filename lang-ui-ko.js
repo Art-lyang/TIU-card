@@ -84,6 +84,7 @@ window.TS_I18N.mergeUI('ko', {
       logs:{title:'[ 기록 ]',sub:'PREVIOUS SESSION LOGS',action:'VIEW LOGS'},
       miniguide:{title:'[ 미니게임 가이드 ]',sub:'FIELD MODULE PRACTICE',action:'OPEN GUIDE'},
       endings:{title:'[ 엔딩 ]',sub:'SESSION OUTCOME RECORDS',action:'VIEW ENDINGS'},
+      achievements:{title:'[ 업적 ]',sub:'ACHIEVEMENT RECORDS',action:'VIEW ACHIEVEMENTS'},
       settings:{title:'[ 시스템 설정 ]',sub:'DISPLAY / AUDIO / LANGUAGE',action:'SYSTEM CONFIG'}
     }
   },
