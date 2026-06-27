@@ -1,7 +1,7 @@
 // data-cards-1.js — 기본 카드 (C-001~C-051)
 var CARDS_BASE = [
   { id: "C-001", act: [2,3,4], priority: "하", msg: "신규 요원 3명이 기지에 도착했습니다. 배치 승인이 필요합니다.", left: { label: "내일 배치", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "즉시 배치", fx: { c: 1, r: -1, t: 1, o: 1 }, g: 1 } },
-  { id: "C-002", act: [2,3,4], priority: "중", img: "card_civilian_perimeter", cctv: "card_civilian_perimeter", msg: "봉쇄 구역 외곽에서 민간인 접근 시도 감지. 대응 지침을 결정하십시오.", left: { label: "경고 방송만", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "요원 파견 차단", fx: { c: 1, r: -1, t: -1, o: 1 }, g: 1 } },
+  { id: "C-002", act: [2,3,4], priority: "중", img: "card_civilian_perimeter", cctv: "card_civilian_perimeter_cctv", msg: "봉쇄 구역 외곽에서 민간인 접근 시도 감지. 대응 지침을 결정하십시오.", left: { label: "경고 방송만", fx: { c: -1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "요원 파견 차단", fx: { c: 1, r: -1, t: -1, o: 1 }, g: 1 } },
   { id: "C-003", act: [2,3], priority: "상", tag: "spec-011", req: function(s,g,logs){ return !logs.includes("LOG-004") }, msg: "인접 셀 C-14에서 SPEC-011 (Shell Talker) 목격 보고.\n\n\"인간의 목소리로 구조 요청을 흉내냅니다. 접근한 요원 1명이 유인당했습니다.\"\n\n해당 셀 요원이 지원 요청.", left: { label: "거절: 자원 보존", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "요원 2명 파견", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 1 } },
   { id: "C-004", act: [2,3,4], priority: "하", msg: "의무실에서 의료 물자 부족 보고. 외부 조달 요청이 올라왔습니다.", left: { label: "내부 재고로 버텨", fx: { c: 0, r: -1, t: -1, o: 0 }, g: -1 }, right: { label: "외부 조달 승인", fx: { c: 0, r: 2, t: 0, o: -1 }, g: 1 } },
   { id: "C-005", act: [2], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },

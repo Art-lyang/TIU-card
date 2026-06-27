@@ -52,6 +52,7 @@
     card_helicopter_crash: 'assets/images/cards/card_helicopter_crash.jpg',
     card_helicopter_crash_cctv: 'assets/images/cards/card_helicopter_crash_cctv.jpg',
     card_civilian_perimeter: 'assets/images/cards/card_civilian_perimeter.jpg',
+    card_civilian_perimeter_cctv: 'assets/images/cards/card_civilian_perimeter_cctv.jpg',
     card_prometheus_sighting: 'assets/images/cards/card_prometheus_sighting.jpg',
     card_prometheus_sighting_cctv: 'assets/images/cards/card_prometheus_sighting_cctv.jpg',
     card_foster_sighting: 'assets/images/cards/card_foster_sighting.jpg',
