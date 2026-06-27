@@ -5,7 +5,7 @@ var CARDS_BASE = [
   { id: "C-003", act: [2,3], priority: "상", tag: "spec-011", req: function(s,g,logs){ return !logs.includes("LOG-004") }, msg: "인접 셀 C-14에서 SPEC-011 (Shell Talker) 목격 보고.\n\n\"인간의 목소리로 구조 요청을 흉내냅니다. 접근한 요원 1명이 유인당했습니다.\"\n\n해당 셀 요원이 지원 요청.", left: { label: "거절: 자원 보존", fx: { c: 0, r: 0, t: -1, o: -1 }, g: -1 }, right: { label: "요원 2명 파견", fx: { c: -1, r: 0, t: 1, o: 1 }, g: 1 } },
   { id: "C-004", act: [2,3,4], priority: "하", msg: "의무실에서 의료 물자 부족 보고. 외부 조달 요청이 올라왔습니다.", left: { label: "내부 재고로 버텨", fx: { c: 0, r: -1, t: -1, o: 0 }, g: -1 }, right: { label: "외부 조달 승인", fx: { c: 0, r: 2, t: 0, o: -1 }, g: 1 } },
   { id: "C-005", act: [2], priority: "하", msg: "임재혁 기술관이 ORACLE 단말기 펌웨어 업데이트를 제안합니다.", left: { label: "보류", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -1 }, right: { label: "업데이트 승인", fx: { c: 0, r: -1, t: 0, o: 2 }, g: 2 } },
-  { id: "C-006", act: [2,3], priority: "상", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -1, t: 1, o: 2 }, g: 2 } },
+  { id: "C-006", act: [2,3], priority: "상", img: "card_prometheus_sighting", cctv: "card_prometheus_sighting_cctv", msg: "서울 동부 봉쇄 구역 인근에서 프로메테우스 소속 추정 인원 3명 활동 감지.", left: { label: "감시만: 정보 수집", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 }, right: { label: "즉각 대응팀 투입", fx: { c: 1, r: -1, t: 1, o: 2 }, g: 2 } },
   { id: "C-007", act: [2], priority: "중", msg: "강도윤 요원이 봉쇄선 외곽 정찰을 자원합니다. 단독 작전입니다.", left: { label: "허가", fx: { c: 1, r: 0, t: 1, o: -1 }, g: -1 }, right: { label: "ORACLE 판단 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 } },
   { id: "C-008", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중",
     msg: function(){

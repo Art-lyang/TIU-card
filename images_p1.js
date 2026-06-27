@@ -52,6 +52,8 @@
     card_helicopter_crash: 'assets/images/cards/card_helicopter_crash.jpg',
     card_helicopter_crash_cctv: 'assets/images/cards/card_helicopter_crash_cctv.jpg',
     card_civilian_perimeter: 'assets/images/cards/card_civilian_perimeter.jpg',
+    card_prometheus_sighting: 'assets/images/cards/card_prometheus_sighting.jpg',
+    card_prometheus_sighting_cctv: 'assets/images/cards/card_prometheus_sighting_cctv.jpg',
 
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
     facility_fe002_training_ground: 'assets/images/facility/facility_fe002_training_ground.jpg',
@@ -122,7 +124,6 @@
     'C-009': 'card_core_jaehyuk_overnight_data',
     'C-023': 'card_core_wastewater_discharge',
     'C-024': 'card_core_lab_corridor_alt',
-    'C-025': 'card_core_sewer_leak',
     'C-026': 'facility_fe006_cctv_control',
     'C-027': 'card_core_secret_passage',
     'C-035': 'card_core_haeun_usb',
