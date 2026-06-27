@@ -1070,6 +1070,8 @@ b.fm-rk--info{color:#caa14a}
 @keyframes kmPing{0%{transform:scale(.12);opacity:0}18%{opacity:.85}100%{transform:scale(1.05);opacity:0}}
 /* 카드 지정 CCTV 피드: 미니맵을 해당 스틸로 전환. 그리드/스캔/노이즈(z-index3)가 위에 깔려 감시 화면 느낌 */
 .km-cctv{position:absolute;inset:0;z-index:2;background-size:cover;background-position:center;background-repeat:no-repeat;filter:grayscale(1) contrast(1.12) brightness(.82)}
+.km-warn{position:absolute;top:7px;left:50%;transform:translateX(-50%);z-index:5;font-family:'Share Tech Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;color:#ff4030;background:rgba(34,2,2,.72);border:1px solid rgba(255,64,48,.9);border-radius:2px;padding:1px 7px;text-shadow:0 0 6px rgba(255,48,32,.9);box-shadow:0 0 10px rgba(255,40,30,.45);animation:kmWarnBlink 1.05s steps(1) infinite;pointer-events:none;white-space:nowrap}
+@keyframes kmWarnBlink{0%,55%{opacity:1}56%,100%{opacity:.12}}
 .km-stat.km-stat-rec span:first-child{color:#ff5a5a;animation:kmDot 1.4s ease-in-out infinite}
 .km-ov{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;z-index:2}
 .hud-map[data-ev="attack"] .km-ov-attack{opacity:1}

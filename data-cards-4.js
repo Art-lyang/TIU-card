@@ -138,7 +138,7 @@ var CARDS_INVESTIGATE = [
     right: { label: "ORACLE 연동 차단 대응", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E01" } },
 
   // CT-302 : SPEC-015 Brain Seeker 긴급 하수도 침입 — 휴면 종 한정 + 봉쇄위기/방치 트리거
-  { id: "CT-302", act: [2,3], priority: "상", bg: "forest", once: true, img: "card_brainseeker_breach", cctv: "card_brainseeker_breach_cctv",
+  { id: "CT-302", act: [2,3], priority: "상", alert: true, bg: "forest", once: true, img: "card_brainseeker_breach", cctv: "card_brainseeker_breach_cctv",
     req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-015','LOG-041',s,logs); },
     msg: "긴급 — 심야 하층 경보.\n\n하수도 흡입구 격자가 안쪽에서 뜯겨 나갔습니다. 봉쇄선 내부입니다.\n\n강도윤: \"하수도를 타고 기지 하층까지 들어왔습니다. 사전 징후 없었습니다. 두개골만 노출된 거대 개체 — 등껍질이 없습니다.\"\n\n윤세진: \"특수 변이 개체예요. 우리 순찰 시간을 학습했습니다. 즉시 결정이 필요합니다.\"",
     left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E02" },
