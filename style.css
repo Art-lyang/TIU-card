@@ -1068,6 +1068,9 @@ b.fm-rk--info{color:#caa14a}
 .km-pin::before{animation-delay:1s}
 .km-pin::after{animation-delay:2s}
 @keyframes kmPing{0%{transform:scale(.12);opacity:0}18%{opacity:.85}100%{transform:scale(1.05);opacity:0}}
+/* 카드 지정 CCTV 피드: 미니맵을 해당 스틸로 전환. 그리드/스캔/노이즈(z-index3)가 위에 깔려 감시 화면 느낌 */
+.km-cctv{position:absolute;inset:0;z-index:2;background-size:cover;background-position:center;background-repeat:no-repeat;filter:grayscale(1) contrast(1.12) brightness(.82)}
+.km-stat.km-stat-rec span:first-child{color:#ff5a5a;animation:kmDot 1.4s ease-in-out infinite}
 .km-ov{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .5s;z-index:2}
 .hud-map[data-ev="attack"] .km-ov-attack{opacity:1}
 .hud-map[data-ev="research"] .km-ov-research{opacity:1}

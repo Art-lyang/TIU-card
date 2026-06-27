@@ -372,18 +372,21 @@ function Stats(p){
   var syncPool=['97.1%','96.8%','97.3%','96.9%','97.0%'];
   var statLabel=(cur?cur.t:mapStatLabel);
   var statRight=(mapEv==='idle')?syncPool[tick%syncPool.length]:'97.1%';
+  // 현재 카드가 cctv 이미지를 지정하면 미니맵을 해당 CCTV 피드로 전환 (지도/핀/순찰 숨김)
+  var cctv=p.cctvFeed||null;
   return h('div',{className:'hud-top'},
-    h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv},
+    h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':'')+(cctv?' has-cctv':''),'data-ev':mapEv},
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
+      cctv?h('div',{className:'km-cctv',style:{backgroundImage:'url('+cctv+')'}}):null,
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
       h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
-      h('div',{className:'km-lbl'},'강원 // GRID'),
-      h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'})),
-      (mapEv==='idle')?h('div',{className:'km-patrol km-patrol-1'}):null,
-      (mapEv==='idle')?h('div',{className:'km-patrol km-patrol-2'}):null,
-      idleSighting?h('div',{className:'km-sight',key:'s'+tick},h('i',null)):null,
-      h('div',{className:'km-stat'},h('span',{key:tick,className:'km-stat-l'},statLabel),h('span',null,statRight))),
+      h('div',{className:'km-lbl'},cctv?(isKo?'CCTV // 외곽':'CCTV // PERIMETER'):'강원 // GRID'),
+      (!cctv)?h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'})):null,
+      (!cctv&&mapEv==='idle')?h('div',{className:'km-patrol km-patrol-1'}):null,
+      (!cctv&&mapEv==='idle')?h('div',{className:'km-patrol km-patrol-2'}):null,
+      (!cctv&&idleSighting)?h('div',{className:'km-sight',key:'s'+tick},h('i',null)):null,
+      cctv?h('div',{className:'km-stat km-stat-rec'},h('span',null,'● REC'),h('span',null,'LIVE')):h('div',{className:'km-stat'},h('span',{key:tick,className:'km-stat-l'},statLabel),h('span',null,statRight))),
   h('div',{className:'stats-console'+(isKo?' stats-console-ko':'')},
     h('div',{className:'stats-console-h'},
       h('span',{className:'sc-h-l'},tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day)),
