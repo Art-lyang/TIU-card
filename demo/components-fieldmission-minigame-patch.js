@@ -342,6 +342,17 @@ function FieldMission(p){
       h('div',{className:'fm-hero-rec'},h('span',{className:'fm-hero-recdot'}),'REC')
     );
   }
+  function fmResultHero(roll){
+    var tier=(roll&&roll.tier)||'neutral';
+    var km={great:'result_great',success:'result_success',partial:'result_partial',critfail:'result_setback'};
+    var src=(typeof IMG!=='undefined')?IMG[km[tier]||'result_neutral']:null;
+    if(!src)return null;
+    return h('div',{className:'fm-hero fm-hero--result fm-hero--'+tier+(fxOff?' fm-no-anim':'')},
+      h('img',{src:src,className:'fm-hero-img',alt:'result'}),
+      h('div',{className:'fm-hero-grad'}),
+      h('div',{className:'fm-hero-rec'},h('span',{className:'fm-hero-recdot'}),'REC')
+    );
+  }
   function reportCard(r,i){
     return h('div',{key:i,className:'fm-rcard fm-rcard--'+(r.level||'info')},h('div',{className:'fm-rcard-lbl'},r.label),h('div',{className:'fm-rcard-val'},r.value));
   }
@@ -387,6 +398,7 @@ function FieldMission(p){
         showChoices&&h('div',{className:'fm-ops-wrap'},h('div',{className:'fm-ops-h'},'SELECT OPERATION'),h('div',{className:'fm-ops'},visChoices.map(opCard)))
       )
     : h('div',{className:'fm-node-wrap'},
+        (visChoices&&visChoices.some(function(c){return c.next==='end';}))?fmResultHero(lastRoll):null,
         h('div',{className:'fm-panel fm-panel--report'},h('div',{className:'fm-panel-h'},'▣ FIELD REPORT'),h('div',{className:'fm-node-body'},paras('fm-np'),cursor)),
         showChoices&&lastRoll&&rollBanner(lastRoll),
         showChoices&&h('div',{className:'fm-nchoices'},visChoices.map(nodeChoice))

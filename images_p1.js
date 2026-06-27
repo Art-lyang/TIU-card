@@ -66,6 +66,11 @@
     card_feed_gap_cctv: 'assets/images/cards/card_feed_gap_cctv.jpg',
     card_escape_route: 'assets/images/cards/card_escape_route.jpg',
     card_escape_route_cctv: 'assets/images/cards/card_escape_route_cctv.jpg',
+    result_great: 'assets/images/missions/result_great.jpg',
+    result_success: 'assets/images/missions/result_success.jpg',
+    result_partial: 'assets/images/missions/result_partial.jpg',
+    result_setback: 'assets/images/missions/result_setback.jpg',
+    result_neutral: 'assets/images/missions/result_neutral.jpg',
 
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
     facility_fe002_training_ground: 'assets/images/facility/facility_fe002_training_ground.jpg',
