@@ -302,8 +302,8 @@ function MainMenu(p){
 var CCTV_CLIPS={
   brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
   blood_pit:     {img:'assets/images/missions/mission_m001_blood_pit_clean.webp',            cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
-  shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_clean.webp',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
-  shell_gate:    {img:'assets/images/missions/mission_m002_shell_talker_clean.webp',         cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
+  shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_clean.webp?v=2',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
+  shell_gate:    {img:'assets/images/missions/mission_m002_shell_talker_clean.webp?v=2',         cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
   mannequin:     {img:'assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg', cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
   brood_drone:   {img:'assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg',cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
   spore_phantom: {img:'assets/images/missions/mission_m006_spore_phantom_clean.webp',        cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
