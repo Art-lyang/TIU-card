@@ -60,6 +60,12 @@
     card_mannequin_sighting_cctv: 'assets/images/cards/card_mannequin_sighting_cctv.jpg',
     card_brainseeker_breach: 'assets/images/cards/card_brainseeker_breach.jpg',
     card_brainseeker_breach_cctv: 'assets/images/cards/card_brainseeker_breach_cctv.jpg',
+    card_breach_horde: 'assets/images/cards/card_breach_horde.jpg',
+    card_breach_horde_cctv: 'assets/images/cards/card_breach_horde_cctv.jpg',
+    card_feed_gap: 'assets/images/cards/card_feed_gap.jpg',
+    card_feed_gap_cctv: 'assets/images/cards/card_feed_gap_cctv.jpg',
+    card_escape_route: 'assets/images/cards/card_escape_route.jpg',
+    card_escape_route_cctv: 'assets/images/cards/card_escape_route_cctv.jpg',
 
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
     facility_fe002_training_ground: 'assets/images/facility/facility_fe002_training_ground.jpg',

@@ -96,7 +96,7 @@ var CARDS_ACT4 = [
     left:{ label:"설계안을 작전 계획에 넣는다", fx:{c:0,r:-1,t:2,o:-3}, g:-5 },
     right:{ label:"아직 때가 아니다", fx:{c:0,r:0,t:-1,o:0}, g:-1 } },
 
-  { id:"CA4-R002", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
+  { id:"CA4-R002", act:[4], once:true, transReq:"A4_RESIST", priority:"상", img:"card_escape_route", cctv:"card_escape_route_cctv",
     req:function(s,g,logs){ return (logs.indexOf('ONCE-CA4-R001')>=0||logs.indexOf('ONCE-CA4-R001B')>=0) && logs.indexOf('LOG-075')<0 && logs.indexOf('LOG-074-DONE')<0 },
     msg:"강도윤이 봉쇄선 외곽 안전 경로를 확보했습니다.\n\n\"감시 공백 구간입니다. 새벽 3시에서 5시 사이.\"\n\"이 경로라면 ORACLE이 감지하기 전에 빠져나갈 수 있습니다.\"",
     left:{ label:"경로를 최종 검토한다", fx:{c:-1,r:0,t:2,o:-3}, g:-5 },
