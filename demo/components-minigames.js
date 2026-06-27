@@ -1228,6 +1228,10 @@ function MiniGameGuide(p){
   var _sel=useState(ids[0]||''),selected=_sel[0],setSelected=_sel[1];
   var _active=useState(null),active=_active[0],setActive=_active[1];
   var _last=useState(null),last=_last[0],setLast=_last[1];
+  var GUIDE_PER=5;
+  var _gp=useState(0); var gpage=_gp[0]; var setGpage=_gp[1];
+  var gpCount=Math.max(1,Math.ceil(allIds.length/GUIDE_PER));
+  var curGp=Math.min(gpage,gpCount-1);
   var guideScrollRef=useRef(null);
   var guideActionRef=useRef(null);
   var game=FIELD_MINIGAME_LIBRARY[selected]||FIELD_MINIGAME_LIBRARY[ids[0]];
@@ -1285,6 +1289,7 @@ function MiniGameGuide(p){
         h('section',{style:{border:'1px solid rgba(var(--ui-rgb),.18)',borderRadius:4,background:'rgba(0,0,0,.22)',padding:10}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#f0a030',letterSpacing:1.5,marginBottom:8}},labels.list),
           allIds.map(function(id,idx){
+            if(idx<curGp*GUIDE_PER||idx>=curGp*GUIDE_PER+GUIDE_PER)return null;
             var item=FIELD_MINIGAME_LIBRARY[id];
             var unlocked=ids.indexOf(id)>=0;
             if(!unlocked){
@@ -1299,7 +1304,8 @@ function MiniGameGuide(p){
               h('span',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:9,opacity:.72,marginBottom:2}},String(idx+1).padStart(2,'0')+' / '+item.kind),
               h('span',null,itemCopy.title)
             );
-          })
+          }),
+          gpCount>1?h('div',{style:{display:'flex',justifyContent:'center',alignItems:'center',gap:12,marginTop:8}},h('button',{type:'button',onClick:function(){if(curGp>0)setGpage(curGp-1);},style:{background:'none',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:13,width:26,height:24,cursor:curGp===0?'default':'pointer',opacity:curGp===0?0.3:1,borderRadius:3}},'‹'),h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,letterSpacing:1,color:'var(--ui-dim)',minWidth:46,textAlign:'center'}},(curGp+1)+' / '+gpCount),h('button',{type:'button',onClick:function(){if(curGp<gpCount-1)setGpage(curGp+1);},style:{background:'none',border:'1px solid rgba(var(--ui-rgb),.3)',color:'var(--ui)',fontFamily:"'Share Tech Mono',monospace",fontSize:13,width:26,height:24,cursor:curGp===gpCount-1?'default':'pointer',opacity:curGp===gpCount-1?0.3:1,borderRadius:3}},'›')):null
         ),
         game&&h('section',{style:{border:'1px solid rgba(var(--ui-rgb),.22)',borderRadius:4,background:'var(--ui-bg)',padding:14,minHeight:310}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#f0a030',letterSpacing:1.5,marginBottom:8}},game.kind),

@@ -12,8 +12,12 @@
     var total = list.length;
     var uc = list.filter(function(a){ return unlocked[a.id]; }).length;
     var progress = Math.round((uc / Math.max(1,total)) * 100);
+    var PER_PAGE = 10;
+    var _pg = React.useState(0); var page = _pg[0]; var setPage = _pg[1];
+    var pageCount = Math.max(1, Math.ceil(total / PER_PAGE));
+    var curPage = Math.min(page, pageCount - 1);
 
-    var rows = list.map(function(a,i){
+    var allRows = list.map(function(a,i){
       var has = !!unlocked[a.id];
       var v = (typeof getAchievementView === 'function') ? getAchievementView(a) : a;
       var secret = a.hidden && !has;
@@ -35,6 +39,8 @@
       );
     });
 
+    var rows = allRows.slice(curPage * PER_PAGE, curPage * PER_PAGE + PER_PAGE);
+
     return h('div', { className:'screen' },
       h('div', { style:{ width:'100%', maxWidth:520, padding:'20px 12px', flex:1, overflowY:'auto' } },
         h('div', { style:{ fontFamily:"'Share Tech Mono',monospace", fontSize:11, color:'var(--ui-dim)', letterSpacing:2, textAlign:'center', marginBottom:6 } },
@@ -44,6 +50,11 @@
         h('div', { style:{ height:6, border:'1px solid rgba(var(--ui-rgb),.2)', background:'#050505', margin:'0 auto 18px', maxWidth:360, borderRadius:99, overflow:'hidden' } },
           h('div', { style:{ width:progress + '%', height:'100%', background:'linear-gradient(90deg,#f0a030,#7affc6)' } })),
         h('div', { style:{ display:'flex', flexDirection:'column', gap:8 } }, rows),
+        pageCount > 1 ? h('div', { style:{ display:'flex', justifyContent:'center', alignItems:'center', gap:14, marginTop:16 } },
+          h('button', { onClick:function(){ if(curPage>0) setPage(curPage-1); }, style:{ background:'none', border:'1px solid rgba(var(--ui-rgb),.3)', color:'var(--ui)', fontFamily:"'Share Tech Mono',monospace", fontSize:14, width:30, height:26, cursor:curPage===0?'default':'pointer', opacity:curPage===0?0.3:1, borderRadius:3 } }, '‹'),
+          h('span', { style:{ fontFamily:"'Share Tech Mono',monospace", fontSize:11, letterSpacing:1.5, color:'var(--ui-dim)', minWidth:54, textAlign:'center' } }, (curPage+1) + ' / ' + pageCount),
+          h('button', { onClick:function(){ if(curPage<pageCount-1) setPage(curPage+1); }, style:{ background:'none', border:'1px solid rgba(var(--ui-rgb),.3)', color:'var(--ui)', fontFamily:"'Share Tech Mono',monospace", fontSize:14, width:30, height:26, cursor:curPage===pageCount-1?'default':'pointer', opacity:curPage===pageCount-1?0.3:1, borderRadius:3 } }, '›')
+        ) : null,
         h('button', { className:'btn btn-amber', style:{ display:'block', margin:'24px auto 8px', fontSize:12, padding:'8px 20px' }, onClick:p.onClose },
           isKo ? '닫기' : 'Close')
       )
