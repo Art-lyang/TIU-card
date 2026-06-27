@@ -28,7 +28,7 @@ var CARDS_NEW_B = [
 
   // ═══ Act 2: 자원/위기 ═══
 
-  { id: "C-217", act: [2], priority: "상", bg: "base", img: "char_haeun_tense",
+  { id: "C-217", act: [2], priority: "상", bg: "base", img: "card_helicopter_crash",
     msg: "보급 헬기가 기지 2km 전방에서 불시착했습니다. 화물의 절반 이상이 파손.\n\n서하은: \"식량 3주치가 1주치로 줄었습니다. 재요청하면 2주 후에나 도착합니다.\"\n\n\"아니면 현재 비축분으로 절약 운영해야 합니다.\"",
     left: { label: "긴급 재보급 요청", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "배급 축소 — 비축분으로 버틴다", fx: { c: 0, r: 0, t: -2, o: 0 }, g: 0 } },

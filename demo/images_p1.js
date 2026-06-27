@@ -49,6 +49,9 @@
     card_story_secret_escape_group: 'assets/images/cards/story/card_story_secret_escape_group.jpg',
     card_story_giant: 'assets/images/cards/story/card_story_giant.jpg',
 
+    card_helicopter_crash: 'assets/images/cards/card_helicopter_crash.jpg',
+    card_civilian_perimeter: 'assets/images/cards/card_civilian_perimeter.jpg',
+
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
     facility_fe002_training_ground: 'assets/images/facility/facility_fe002_training_ground.jpg',
     facility_fe003_sensor_array: 'assets/images/facility/facility_fe003_sensor_array.jpg',
