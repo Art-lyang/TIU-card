@@ -126,7 +126,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-default-wm{position:absolute;inset:8px 10px;border-radius:4px;pointer-events:none;z-index:0;overflow:hidden;
   background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(var(--ui-rgb),.045) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(var(--ui-rgb),.045) 23px 24px);
   -webkit-mask-image:linear-gradient(180deg,transparent 0,black 14%,black 86%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0,black 14%,black 86%,transparent 100%)}
-.card-default-wm::after{content:"";position:absolute;right:12px;bottom:12px;width:90px;height:90px;background:url('assets/images/logos/logo_oracle_mark.png') no-repeat center/contain;opacity:.08;filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(.4) brightness(.95)}
+.card-default-wm::after{content:"";position:absolute;right:14px;bottom:104px;width:84px;height:84px;background:url('assets/images/logos/logo_oracle_mark.png') no-repeat center/contain;opacity:.08;filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(.4) brightness(.95)}
 .act-2 .card-default-wm::after{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(.35) brightness(.95)}
 .act-3 .card-default-wm::after{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(.45) brightness(.9)}
 .act-4 .card-default-wm::after{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(.5) brightness(.85)}
