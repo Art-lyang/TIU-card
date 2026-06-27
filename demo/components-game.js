@@ -3,6 +3,21 @@
 var h=React.createElement,useState=React.useState,useEffect=React.useEffect,useRef=React.useRef,useCallback=React.useCallback;
 // i18n 헬퍼: tt(path, params, fallback) — t() 없으면 폴백 반환
 var tt=function(path,params,fallback){if(typeof t==='function'){var v=t(path,params);return(v&&v!==path)?v:(fallback||path)}return fallback||path};
+// 미니맵 idle 앰비언트 텔레메트리 — ORACLE 감시 HUD가 보고할 법한 겨울/센서 readout 풀.
+// 그림이 아니라 데이터를 순환시켜 몰입을 해치지 않으면서 화면을 살린다(겨울 통일 설정과 직결).
+function buildMapTelemetry(day,isKo){
+  day=day||1;
+  var snow=18+((day*7)%34), temp=9+((day*5)%11), wind=6+((day*3)%7), nodes=20-(day%4), wild=1+(day%4);
+  return [
+    {t:isKo?('적설 '+snow+'cm · 한파주의보'):('Snow '+snow+'cm · cold-wave alert')},
+    {t:isKo?('기온 -'+temp+'°C · 노면 결빙'):('Temp -'+temp+'°C · road icing')},
+    {t:isKo?('봉쇄선 풍속 '+wind+'m/s'):('Perimeter wind '+wind+'m/s')},
+    {t:isKo?('센서 노드 '+nodes+'/20 온라인'):('Sensor nodes '+nodes+'/20 online')},
+    {t:isKo?'위성 패스 동기화 정상':'Satellite pass nominal'},
+    {t:isKo?'외곽 순찰 — 이상 없음':'Outer patrol — all clear'},
+    {t:isKo?('야생 개체 추적 '+wild+' · 비위협'):('Wildlife tracked '+wild+' · non-threat'),sighting:true}
+  ];
+}
 function uniqueHeadlines(headlines){
   var out=[];
   (headlines||[]).forEach(function(item){if(item&&out.indexOf(item)<0)out.push(item)});
@@ -344,6 +359,19 @@ function Stats(p){
   var lowCount=['c','r','t','o'].filter(function(k){return p.stats[k]!=null&&p.stats[k]<25}).length;
   var mapEv=p.mapEvent||'idle';
   var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
+  // idle 앰비언트: 텔레메트리 readout를 천천히 순환 + 순찰 블립 + 드문 비미션 목격 핑
+  var _tk=useState(0),tick=_tk[0],setTick=_tk[1];
+  useEffect(function(){
+    if(mapEv!=='idle'){setTick(0);return;}
+    var iv=setInterval(function(){setTick(function(v){return v+1});},4200);
+    return function(){clearInterval(iv);};
+  },[mapEv]);
+  var telem=buildMapTelemetry(p.stats.day,isKo);
+  var cur=(mapEv==='idle')?telem[tick%telem.length]:null;
+  var idleSighting=!!(cur&&cur.sighting);
+  var syncPool=['97.1%','96.8%','97.3%','96.9%','97.0%'];
+  var statLabel=(cur?cur.t:mapStatLabel);
+  var statRight=(mapEv==='idle')?syncPool[tick%syncPool.length]:'97.1%';
   return h('div',{className:'hud-top'},
     h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':''),'data-ev':mapEv},
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
@@ -352,7 +380,10 @@ function Stats(p){
       h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
       h('div',{className:'km-lbl'},'강원 // GRID'),
       h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'})),
-      h('div',{className:'km-stat'},h('span',null,mapStatLabel),h('span',null,'97.1%'))),
+      (mapEv==='idle')?h('div',{className:'km-patrol km-patrol-1'}):null,
+      (mapEv==='idle')?h('div',{className:'km-patrol km-patrol-2'}):null,
+      idleSighting?h('div',{className:'km-sight',key:'s'+tick},h('i',null)):null,
+      h('div',{className:'km-stat'},h('span',{key:tick,className:'km-stat-l'},statLabel),h('span',null,statRight))),
   h('div',{className:'stats-console'+(isKo?' stats-console-ko':'')},
     h('div',{className:'stats-console-h'},
       h('span',{className:'sc-h-l'},tt('stats.title',{day:p.stats.day},'ORACLE STATUS — DAY '+p.stats.day)),
