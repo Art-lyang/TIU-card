@@ -6,8 +6,8 @@ IMG.card_oracle_error='assets/images/cards/card_oracle_error.jpg';
 // 관리자 잠금 → C-077 (14KB)
 IMG.card_admin_lock='assets/images/cards/card_admin_lock.jpg';
 
-// 폭우/강물 범람 → C-025 (20KB)
-IMG.card_flood='assets/images/cards/card_flood.jpg';
+// 폭설·한파 보급로 차단 → C-025 (26KB)
+IMG.card_snow_blockade='assets/images/cards/card_snow_blockade.jpg';
 
 // 통신 겹침 → C-011 (16KB)
 IMG.card_signal_overlap='assets/images/cards/card_signal_overlap.jpg';
