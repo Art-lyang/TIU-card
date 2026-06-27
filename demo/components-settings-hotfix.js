@@ -128,12 +128,13 @@
     var _sfxVol=useState(function(){return Save.get('ts_sfxVol',50)}),sfxVol=_sfxVol[0],setSfxVol=_sfxVol[1];
     var _currentLang=useState(function(){return(window.TS_I18N&&window.TS_I18N.getLocale())||'ko'}),currentLang=_currentLang[0];
     var _pendingLang=useState(currentLang),pendingLang=_pendingLang[0],setPendingLang=_pendingLang[1];
+    var _restarting=useState(false),restarting=_restarting[0],setRestarting=_restarting[1];
 
     var closePanel=function(){
       var nextLang=pendingLang||currentLang;
       if(window.TS_I18N&&nextLang!==currentLang){
         window.TS_I18N.setLocale(nextLang);
-        if(typeof window!=='undefined'&&window.location&&typeof window.location.reload==='function'){window.location.reload();return;}
+        setRestarting(nextLang);if(typeof window!=='undefined'&&window.location&&typeof window.location.reload==='function'){setTimeout(function(){window.location.reload()},1600);return;}
       }
       p.onClose();
     };
@@ -184,6 +185,7 @@
           _settingsTabBtn('guide',tr('settings.tabs.guide','PROTOCOL'),tab,setTab),
           _settingsTabBtn('info',tr('settings.tabs.info','INFO'),tab,setTab)),
         h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},content))
+      ,restarting?h('div',{style:{position:'fixed',top:'16%',left:'50%',transform:'translateX(-50%)',zIndex:320,background:'rgba(3,7,8,.97)',border:'1px solid rgba(var(--ui-rgb),.55)',borderRadius:4,padding:'10px 18px',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:1,textAlign:'center',whiteSpace:'pre-line',boxShadow:'0 0 24px rgba(var(--ui-rgb),.18)',animation:'fadeIn .25s ease'}},restarting==='en'?'⟳ Changing language — restarting session.':'⟳ 언어 변경 — 세션을 재시작합니다.'):null
     );
   };
 })();

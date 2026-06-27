@@ -381,7 +381,7 @@ function Stats(p){
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
       h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
-      h('div',{className:'km-lbl'},cctv?(isKo?'CCTV // 외곽':'CCTV // PERIMETER'):'강원 // GRID'),
+      h('div',{className:'km-lbl'},cctv?(isKo?'CCTV // 외곽':'CCTV // PERIMETER'):(isKo?'강원 // GRID':'GANGWON // GRID')),
       (p.mutantAlert||mapEv==='attack')?h('div',{className:'km-warn'},isKo?'⚠ 경고':'⚠ WARNING'):null,
       (!cctv)?h('div',{className:'km-pin'},h('i',null),h('span',{className:'ring'})):null,
       (!cctv&&mapEv==='idle')?h('div',{className:'km-patrol km-patrol-1'}):null,
