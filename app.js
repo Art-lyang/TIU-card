@@ -68,6 +68,9 @@ function App(){
   var _dbf=useState(null),debugBriefing=_dbf[0],setDebugBriefing=_dbf[1];
   var _dgo=useState(false),debugGO=_dgo[0],setDebugGO=_dgo[1];
   var debugMissionRef=useRef(false);
+  // freshCardRef: 아직 스와이프되지 않은 "다음 카드"가 curCard에 준비돼 있음을 표시.
+  // 대화(랜덤/강제)가 끝나도 카드를 다시 뽑지 않고 이 버퍼 카드를 그대로 노출 → 연계 흐름 보존.
+  var freshCardRef=useRef(false);
   var DEV=(function(){try{return /[?&]dev\b/.test(location.search)}catch(e){return false}})();
   var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40}),trust=_tr[0],setTrust=_tr[1];
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
@@ -128,6 +131,9 @@ function App(){
     return base;
   };
   useEffect(function(){if(phase!=='game'&&cardInputLockedRef.current)unlockCardInput()},[phase]);
+  // curCard가 새 카드로 바뀌면 "스와이프 대기 중인 신선한 카드"로 표시 — 이후 대화가 끼어도 재드로우 없이 보존.
+  // (nextCard·세이프가드·봉기실패·복원·DEV 주입 등 모든 setCurCard 경로를 일괄 커버)
+  useEffect(function(){if(curCard)freshCardRef.current=true},[curCard]);
   var uniqueFacilityIds=function(ids){
     var seen={},out=[];
     (Array.isArray(ids)?ids:[]).forEach(function(id){if(id&&!seen[id]){seen[id]=true;out.push(id)}});
@@ -343,7 +349,7 @@ function App(){
     // 박소영 합류 후 첫 대화 보장
     if(lg.indexOf('LOG-082')>=0&&lg.indexOf('LOG-INTRO-SY')<0){var syAv=av.filter(function(d){return d.char==='\ubc15\uc18c\uc601'});if(syAv.length>0)return beginDialogue(syAv[0])}
     var prob=0.35;if(av.length>0&&Math.random()<prob)return beginDialogue(pick(av));return false};
-  var nextCard=function(s,g,lg,cq,curAct,cdOverride,rcOverride,trOverride,facOverride){var a=curAct||act;var useCd=cdOverride||cooldowns;var useRecent=rcOverride||recentCards;var useRoute=typeof trOverride==='string'?trOverride:transRoute;var useFacility=facOverride||facility;var liveLg=getLiveLogs(lg);if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,liveLg,useCd,useRecent,a,useRoute,useFacility);if(!c){c={id:'SYS-FALLBACK',msg:tt('app.fallbackCardMsg',null,'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...'),left:{label:tt('app.fallbackCardLeft',null,'대기'),fx:{},g:0},right:{label:tt('app.fallbackCardRight',null,'재접속 시도'),fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var base=rcOverride||p;var n=base.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}unlockCardInput()};
+  var nextCard=function(s,g,lg,cq,curAct,cdOverride,rcOverride,trOverride,facOverride){var a=curAct||act;var useCd=cdOverride||cooldowns;var useRecent=rcOverride||recentCards;var useRoute=typeof trOverride==='string'?trOverride:transRoute;var useFacility=facOverride||facility;var liveLg=getLiveLogs(lg);if(cq&&cq.length>0){setCurCard(cq[0]);setChainQueue(cq.slice(1))}else{var c=drawCard(s,g,liveLg,useCd,useRecent,a,useRoute,useFacility);if(!c){c={id:'SYS-FALLBACK',msg:tt('app.fallbackCardMsg',null,'[ORACLE: 데이터 스트림 일시 중단]\n\n통신 복구 대기 중...'),left:{label:tt('app.fallbackCardLeft',null,'대기'),fx:{},g:0},right:{label:tt('app.fallbackCardRight',null,'재접속 시도'),fx:{},g:0}}}setCurCard(c);setRecentCards(function(p){var base=rcOverride||p;var n=base.concat([c.id]);return n.length>60?n.slice(n.length-60):n})}unlockCardInput();freshCardRef.current=true};
   // Act 전환 판정은 app-logic.js의 checkActTransitionLogic 단일 경로만 사용한다.
   // TIME_UP 디스패치: day>35 도달 시 상태(GI/신뢰) 기반 엔딩 강제 부여
   var resolveTimeUp=function(s,g,tr,lg){
@@ -444,6 +450,7 @@ function App(){
   var swipe=function(dir){
     if(cardInputLockedRef.current||phase!=='game'||!curCard)return;
     lockCardInput();
+    freshCardRef.current=false; // 현재 카드 소비 시작 — 다음 카드는 새로 결정된다
     SFX.play('swipe');setToast('');
     try{if(navigator.vibrate)navigator.vibrate(15)}catch(e){}
     var pendingBonusForSave=pendingBonus||null;
@@ -535,8 +542,8 @@ function App(){
     // 체인 큐에 카드가 남아 있으면 DAY 종료보다 우선 처리 (서사 연속성 보장)
     if(cq&&cq.length>0){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     else if(nct>=cpd){SFX.play('news');var dayNews=genNewsHeadlines(ns,ng,nextLogs);setNh(dayNews);Save.set('ts_resumePhase','news');Save.set('ts_resumeHeadlines',dayNews);setTimeout(function(){setPhase('news')},400)}
-    else if(!isIntrosDone(nextLogs)){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
-    else if(nct===2||nct===3){setTimeout(function(){if(!tryDlg(nextLogs))nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)},300)}
+    else if(!isIntrosDone(nextLogs)){setTimeout(function(){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext);tryDlg(nextLogs)},300)}
+    else if(nct===2||nct===3){setTimeout(function(){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext);tryDlg(nextLogs)},300)}
     else{nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     // 결과 서사 텍스트 or 자원 리스크 토스트
     if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);clearToastAfter(2400)},400)}}
@@ -603,9 +610,10 @@ function App(){
     var trans=checkActTransitionLogic(stats,gi,liveLogs,actFlags,act);if(trans){doBriefing(trans.act,stats,trans.route);return}var se=chkSpecialEnding(stats,gi,act,trust,liveLogs,actFlags,facility);if(se){var def=ENDING_DEFS[se];doGO(def?def.name:(getLocale()==='en'?'Session terminated':'\uC138\uC158 \uC885\uB8CC'),stats,gi,se);return}if(stats.c>=85&&stats.day!==cAlertDay){setCAlertDay(stats.day);setTimeout(function(){setToastType('alert');setToast(tt('app.cStabilityAlert',{value:stats.c},'[ORACLE: KR-INIT-001 봉쇄 완전성 '+stats.c+'% — 한국지부 안정화 임박]'));clearToastAfter(3800)},700)}
   nextCard(stats,gi,liveLogs,chainQueue);setPhase('game')};
   var hDlg=function(c){SFX.play('dialogue');clearResumeCheckpoint();var ns=applyFx(stats,c.fx||{}),ng=gi+(c.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);var goD=chkGameOver(ns);if(goD){SFX.play('gameover');doGO(goD,ns,ng);return}if(curDlg&&c.trust!==undefined)modTrust(curDlg.char,c.trust);var di=curDlg?DIALOGUES.indexOf(curDlg):-1;var usedAfter=markDialogueUsed(di);var csi=curDlg?DIALOGUES.filter(function(d,i){return d.char===curDlg.char&&i<=di}).length-1:0;checkLogs(ns,ng,null,curDlg?curDlg.char:null,csi);if(c.log){if(Array.isArray(c.log))c.log.forEach(function(l){tryUnlock(l)});else tryUnlock(c.log)}var dlgLogs=getLiveLogs(logs);persistGame(ns,ng,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);
-    var wasIntro=di>=0&&di<=3;var remainingIntros=[0,1,2,3].filter(function(i){return usedAfter.indexOf(i)<0}).length;
     setCurDlg(null);
-    if(wasIntro&&remainingIntros>0){nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game');return}
+    // 대화 종료 시: 아직 안 넘긴 다음 카드가 준비돼 있으면(=대화 전에 뽑아둔 버퍼) 다시 뽑지 않고 그대로 노출.
+    // 버퍼가 없을 때(미션/복원 등 예외)만 새 카드를 뽑는다.
+    if(freshCardRef.current){setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
   var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
