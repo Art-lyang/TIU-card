@@ -22,6 +22,8 @@ function DevMissionLauncher(p){
   function endRow(eid){var def=(typeof ENDING_DEFS!=='undefined'&&ENDING_DEFS[eid])||{};return h('button',{key:'e'+eid,onClick:function(){p.onLaunchEnding&&p.onLaunchEnding(eid)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(22,12,12,.9)',color:'#ff8a6a',border:'1px solid rgba(255,138,106,.4)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:8}},'['+eid+']'),def.name||'');}
   var panel=h('div',{style:{position:'fixed',left:10,bottom:46,zIndex:99999,width:330,maxHeight:'72vh',overflowY:'auto',padding:'10px 12px',background:'rgba(6,14,13,.97)',border:'1px solid rgba(57,217,138,.5)',borderRadius:5,boxShadow:'0 6px 24px rgba(0,0,0,.6)'}},
     h('div',{style:{font:'10px monospace',color:'#39d98a',letterSpacing:'.1em',marginBottom:4,opacity:.85}},'// DEV — 직접 실행 (완료 시 메뉴 복귀, 세이브 불변)'),
+    p.onPreviewPanel?lbl('▓ 패널 미리보기 (UI 확인)','#8affc0'):null,
+    p.onPreviewPanel?h('div',{style:{display:'flex',gap:6,margin:'2px 0 6px'}},[['research','연구'],['evidence','조사'],['facility','시설']].map(function(pp){return h('button',{key:'pv-'+pp[0],onClick:function(){p.onPreviewPanel(pp[0])},style:{flex:1,font:'11px monospace',padding:'7px 4px',cursor:'pointer',background:'rgba(10,26,22,.9)',color:'#8affc0',border:'1px solid rgba(138,255,192,.45)',borderRadius:3}},pp[1])})):null,
     p.onLaunchSting&&typeof MISSION_CCTV!=='undefined'?lbl('▓ CCTV 트리거 스팅 (조우 직전)','#ff8c2b'):null,
     p.onLaunchSting&&typeof MISSION_CCTV!=='undefined'?Object.keys(MISSION_CCTV).map(function(mid){var ck=MISSION_CCTV[mid];var m=(MISSIONS&&MISSIONS[mid])||{};return h('button',{key:'sting-'+mid,onClick:function(){p.onLaunchSting(mid,ck)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(22,14,6,.9)',color:'#ff8c2b',border:'1px solid rgba(255,140,43,.45)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:8}},'[CCTV]'),(m.codename||mid)+' → '+mid);}):null,
     p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?lbl('▓ 현장임무 트리거 카드 (실제 카드→미션 경로)','#7fd0ff'):null,
@@ -67,6 +69,7 @@ function App(){
   var _cm=useState(null),curMission=_cm[0],setCurMission=_cm[1];
   var _sting=useState(null),cctvSting=_sting[0],setCctvSting=_sting[1];
   var _dev=useState(false),showDevPanel=_dev[0],setShowDevPanel=_dev[1];
+  var _devPanel=useState(null),devPanel=_devPanel[0],setDevPanel=_devPanel[1];
   var _dbf=useState(null),debugBriefing=_dbf[0],setDebugBriefing=_dbf[1];
   var _dgo=useState(false),debugGO=_dgo[0],setDebugGO=_dgo[1];
   var debugMissionRef=useRef(false);
@@ -804,6 +807,20 @@ function App(){
     if(!toast)return null;
     return h('div',{'data-toast-bar':true,key:'toastbar',style:(function(){var isCenter=toastType==='alert';var isRed=toastType==='risk';var isAch=toastType==='achievement';return{position:'fixed',top:isCenter?'50%':'auto',bottom:isCenter?'auto':'calc(var(--oracle-link-h) + 34px)',left:'50%',transform:isCenter?'translate(-50%,-50%)':'translateX(-50%)',background:isAch?'rgba(3,7,8,.94)':isRed?'rgba(255,68,68,0.15)':'rgba(3,7,8,.9)',border:'1px solid '+(isAch?'rgba(var(--ui-rgb),.5)':isRed?'rgba(255,68,68,0.4)':'rgba(var(--ui-rgb),.3)'),borderRadius:4,padding:isAch?'10px 20px':'8px 16px',fontFamily:"'Share Tech Mono',monospace",fontSize:isAch?12:11,color:isAch?'rgba(var(--ui-rgb),.95)':isRed?'#ff6644':'rgba(var(--ui-rgb),.8)',letterSpacing:1,zIndex:140,animation:'fadeIn 0.3s ease',textAlign:'center',maxWidth:320,whiteSpace:'pre-line',boxShadow:isAch?'0 0 20px rgba(var(--ui-rgb),.15)':'none'}})()},toast.replace(/\. /g,'.\n'));
   };
+  var devPreview=function(){
+    if(!DEV||!devPanel)return null;
+    var close=function(){setDevPanel(null)};
+    var node=null;
+    if(devPanel==='research'&&typeof ResearchPanel!=='undefined'){
+      node=h(ResearchPanel,{research:research,stats:(stats&&stats.r)?stats:{c:62,r:58,t:60,o:50},day:Math.max(stats.day||1,22),act:Math.max(act||1,2),logs:['LOG-RES-OPEN','LOG-EV-UNLOCK','LOG-017','LOG-RD-UNLOCK','LOG-INTRO-YS','LOG-080','LOG-082'],onStart:function(){},onClose:close});
+    }else if(devPanel==='evidence'&&typeof EvidencePanel==='function'){
+      node=h(EvidencePanel,{logs:['LOG-EV-UNLOCK'].concat((typeof EVIDENCE!=='undefined'?EVIDENCE.map(function(e){return e.src}):[])),onClose:close});
+    }else if(devPanel==='facility'&&typeof FacilityPanel==='function'){
+      var _pf=facility||{};node=h(FacilityPanel,{facility:{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]},onClose:close,onApprove:function(){}});
+    }
+    if(!node)return null;
+    return h('div',{className:'act-'+Math.max(act||1,2)},node);
+  };
   var withOracleLink=function(node){
     if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return h(React.Fragment,null,node,renderToastBar());
     return h(React.Fragment,null,node,h(OracleLinkBar,{day:stats.day,phase:phase}),renderToastBar());
@@ -812,7 +829,7 @@ function App(){
   var hasSessionHistory=sessions>0||endings.length>0;
   if(cctvSting)return h(CctvSting,{clipKey:cctvSting,onDone:function(){setCctvSting(null);setPhase('mission')}});
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard}));
+  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onPreviewPanel:function(which){setDevPanel(which)}}),DEV&&devPreview());
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing'){
     if(debugBriefing)return h(BriefingScreen,{act:debugBriefing.act,stats:stats,transRoute:debugBriefing.route,onEnter:function(){setDebugBriefing(null);setPhase('menu')}});
@@ -850,6 +867,6 @@ function App(){
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
     showResearch&&typeof ResearchPanel!=='undefined'&&h(ResearchPanel,{research:research,stats:stats,day:stats.day,act:act,logs:getLiveLogs(logs),onStart:startResearch,onClose:function(){setShowResearch(false)}}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
-    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard})));
+    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onPreviewPanel:function(which){setDevPanel(which)}}),DEV&&devPreview()));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
