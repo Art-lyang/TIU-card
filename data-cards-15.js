@@ -55,7 +55,7 @@ var CARDS_EXTERNAL = [
     cond: function(s,g,logs){ return logs.indexOf('LOG-083-WATCH')>=0 && s.day>=31 },
     msg: "박소영을 감시한 지 사흘째.\n\n임재혁: \"03:20, 박소영이 단파로 외부에 송신했습니다. 수신처 — 프로메테우스.\"\n\n복원된 내용: ORACLE의 COASTAL MIRROR 데이터 위치, 그리고 한 줄.\n\n\"기지 인원은 작전 종료 시 회수 대상 아님.\"\n\n그녀는 자신이 발각된 걸 모릅니다.",
     left: { label: "역정보를 흘린다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: -1 },
-    right: { label: "조용히 손절을 준비한다", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1 } },
+    right: { label: "조용히 손절을 준비한다", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, log: "LOG-SY-CUT" } },
 
   // ═══ 미확인 관찰자 — 흔적만 남기는 관찰자 ═══
 
