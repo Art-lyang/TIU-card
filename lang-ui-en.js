@@ -128,7 +128,7 @@ window.TS_I18N.mergeUI('en', {
     header:'ORACLE BRIEFING — {current}/{total}',
     skip:'[ SKIP TUTORIAL ]',
     steps:[
-      { lines:['Initializing ORACLE greeting protocol.','','Welcome, PILEHEAD.','','You have been assigned as the first commander','of the ORACLE Proxy Network — Branch KR-INIT-001.','','Before [REDACTED], the unknown virus EV-Σ emerged.','The infected mutate into anomalies,','and major cities worldwide remain under lockdown.'], choices:[{label:'Continue',next:1}] },
+      { lines:['Initializing ORACLE greeting protocol.','','Welcome, PILEHEAD.','','You have been assigned as the first commander','of the ORACLE Korea Branch — KR-INIT-001.','','Before [REDACTED], the unknown virus EV-Σ emerged.','The infected mutate into anomalies,','and major cities worldwide remain under lockdown.'], choices:[{label:'Continue',next:1}] },
       { lines:['[Mission Briefing]','','ORACLE classifies PROMETHEUS','as a hostile force.','','Your duties:','▸ Maintain quarantine zones and respond to anomalies','▸ Oversee base operations','▸ Execute ORACLE directives and monitor outside threats','','Four senior officers will support your command.'], choices:[{label:'Continue',next:2}] },
       { lines:['You must manage four core metrics.','','{{icon-c}} Containment — quarantine line integrity','{{icon-r}} Resources — food, medicine, equipment','{{icon-t}} Trust — confidence of branch personnel','{{icon-o}} Evaluation — ORACLE’s assessment of you','','If any metric reaches 0, the mission fails.','If Containment reaches 100, the operation also ends.','','← Left / Right →','Swipe the card to make your choice.','Tilt a card before committing to preview the projected stat changes.'], choices:[{label:'Start Session',next:-1}] }
     ],
