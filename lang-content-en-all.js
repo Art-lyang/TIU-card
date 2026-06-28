@@ -46,7 +46,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Follow ORACLE's judgment"
       },
       "C-060": {
-        msg: "A second defector has been located. This one is former military.\n\n\"The Black Zone is expanding. By the time I left... the ones still inside were already standing.\"\n\n\"I walked out between them. No one tried to stop me.\"",
+        msg: "A second defector has been located. This one is former military.\n\n\"The Black Zone is expanding. By the time I got out... the ones still inside had already risen. Standing. Watching.\"\n\n\"I walked out between them. No one tried to stop me.\"",
         leftLabel: "Ask him to draw the Black Zone map",
         rightLabel: "Transfer him to ORACLE"
       },
@@ -151,12 +151,12 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "The current facility is sufficient"
       },
       "C-081": {
-        msg: "ORACLE proposes a new personnel selection.\n\nCandidate A: Park So-young. Civilian data scientist. The name appears in a recommendation letter Seo Hae-eun left behind before her transfer.\n\"We did research together in graduate school. I can vouch for her ability.\"\n[ORACLE: Parts of Candidate A's record from the last three years do not match public records. The recommendation request predates Seo Hae-eun's transfer decision.]\n\nCandidate B: Technician with ORACLE technical certification. ORACLE recommendation.\n[ORACLE: Candidate B's capability index is more suitable for branch requirements.]\n\nOnly one candidate can be selected.",
+        msg: "ORACLE proposes a new personnel selection.\n\nCandidate A: Park So-young. Civilian data scientist. The name appears in a recommendation letter Seo Hae-eun left behind before her transfer.\n\"We did research together in graduate school. I can vouch for her ability.\"\n[ORACLE: Parts of Candidate A's record from the last three years do not match public records. The request for this recommendation predates Seo Hae-eun's transfer decision.]\n\nCandidate B: Technician with ORACLE technical certification. ORACLE recommendation.\n[ORACLE: Candidate B's capability index is more suitable for branch requirements.]\n\nOnly one candidate can be selected.",
         leftLabel: "Candidate A — Park So-young (recommended by Seo Hae-eun)",
         rightLabel: "Candidate B — ORACLE-recommended technician"
       },
       "C-082": {
-        msg: "The headman of a nearby Gangwon village is beginning to suspect the branch exists.\n\n\"There are too many vehicle movements at night. The residents are getting uneasy.\"\n\nA balance is needed between branch security and local relations.",
+        msg: "The head of a nearby Gangwon village is starting to suspect the branch is here.\n\n\"There are too many vehicle movements at night. The residents are getting uneasy.\"\n\nA balance is needed between branch security and local relations.",
         leftLabel: "Hold an unofficial meeting with the village head",
         rightLabel: "Respond by changing transit routes"
       },
@@ -211,7 +211,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Send surveillance drones"
       },
       "C-093": {
-        msg: "Yoon Se-jin has analyzed thermal data from the Infected Mannequin.\n\n\"No body heat at baseline. Once a human enters within 3 meters, it reaches 37°C in 0.8 seconds.\"\n\n\"It's an active hunter. We urgently need its movement range and behavior pattern.\"",
+        msg: "Yoon Se-jin has analyzed thermal data from the Infected Mannequin.\n\n\"No body heat at baseline. The moment a human comes within 3 meters, it spikes to 37°C in 0.8 seconds.\"\n\n\"It's an active hunter. We urgently need its movement range and behavior pattern.\"",
         leftLabel: "Install additional remote cameras",
         rightLabel: "Run a bait test (dummy target)"
       },
@@ -266,7 +266,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Request ORACLE analysis"
       },
       "C-272": {
-        msg: "Seed Spreader coordinates confirmed. Northeast of the containment line, 2.4 km.\n\nSatellite observation: all life signs extinguished within a 500-meter radius. Soil turned gray.\n\nKang Do-yun: \"This has no capture value and no research value. It's a removal target.\"\n\"If it keeps spreading spores, new mutants will emerge inside the containment line.\"\n\nYoon Se-jin: \"If we burn it, we'll trigger a secondary spore burst. We need to be careful.\"\n\nKang Do-yun is right. This is not something we secure.",
+        msg: "Seed Spreader coordinates confirmed. Northeast of the containment line, 2.4 km.\n\nSatellite observation: all life signs extinguished within a 500-meter radius. Soil turned gray.\n\nKang Do-yun: \"There's nothing here to capture, nothing to study. We put it down.\"\n\"If it keeps spreading spores, new mutants will emerge inside the containment line.\"\n\nYoon Se-jin: \"If we burn it, we'll trigger a secondary spore burst. We need to be careful.\"\n\nKang Do-yun is right. This is not something we secure.",
         leftLabel: "Launch removal operation",
         rightLabel: "Request ORACLE remote strike"
       },
@@ -276,7 +276,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Seal the sewer system completely"
       },
       "C-274": {
-        msg: "Yoon Se-jin reports her Brain Seeker analysis.\n\n\"I've classified it as SPEC-015. A stray turtle-type TS-Ω mutant.\"\n\"It has no shell — which means no colony-communication organ.\"\n\"A turtle that failed to join the collective. A solitary hunter.\"\n\n\"The most dangerous part is this — the more brains it consumes, the more intelligent it becomes.\"\n\"Its ambush pattern is starting to match our patrol timing.\"\n\nKang Do-yun: \"You're saying it's learning?\"\nYoon Se-jin: \"...Yes.\"",
+        msg: "Yoon Se-jin reports her Brain Seeker analysis.\n\n\"I've classified it as SPEC-015. A stray turtle-type TS-Ω mutant.\"\n\"It has no shell — which means no colony-communication organ.\"\n\"A turtle that never bonded to the colony. It hunts alone.\"\n\n\"The most dangerous part is this — the more brains it consumes, the more intelligent it becomes.\"\n\"Its ambush pattern is starting to match our patrol timing.\"\n\nKang Do-yun: \"You're saying it's learning?\"\nYoon Se-jin: \"...Yes.\"",
         leftLabel: "Map the ambush points by thermal scan",
         rightLabel: "Change patrol routes + place bait"
       },
@@ -674,7 +674,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Wait for ORACLE recovery"
       },
       "C-176": {
-        msg: "[ORACLE Final Communication]\n\n'Your performance is under evaluation.'\n\n'A promotion is proposed: commander of the integrated nationwide containment system across Korea.'\n\n'This would mean leaving the branch.'\n\n'Alternatively, continue independent command.'",
+        msg: "[ORACLE Final Communication]\n\n'Your performance is under evaluation.'\n\n'Promotion proposed: commander of Korea's integrated nationwide containment network.'\n\n'This would mean leaving the branch.'\n\n'Alternatively, continue independent command.'",
         leftLabel: "Accept promotion",
         rightLabel: "Remain in command of the branch"
       },
@@ -689,7 +689,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Leave it in the record only"
       },
       "C-181": {
-        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. No field return for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.\"",
+        msg: "Emergency report.\n\nThe new agent encountered a mutant during a field mission. Their response was delayed due to insufficient training, and Kang Do-yun was injured while moving in for the rescue.\n\nYoon Se-jin: \"The new agent has minor injuries. Kang Do-yun... laceration to the right leg. He's off field duty for at least two weeks.\"\n\nKang Do-yun: \"...This is not my fault, Commander.\"",
         leftLabel: "The responsibility is mine",
         rightLabel: "Write the report"
       },
@@ -704,7 +704,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Humans will handle training"
       },
       "C-184": {
-        msg: "Emergency report.\n\nTwelve branch personnel are showing symptoms of mass food poisoning.\n\nYoon Se-jin: \"This is the result of accumulated water contamination. The purification system was not functioning properly.\"\n\n\"Immediate repair and decontamination are both required. Both will cost resources... but a choice has to be made.\"",
+        msg: "Emergency report.\n\nTwelve branch personnel are showing symptoms of mass food poisoning.\n\nYoon Se-jin: \"Contamination's been building up in the water for a while now. The purification system hasn't been working right.\"\n\n\"Immediate repair and decontamination are both required. Both will cost resources... but a choice has to be made.\"",
         leftLabel: "Replace the full purification system",
         rightLabel: "Emergency repair + medication"
       },
@@ -725,7 +725,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
   window.TS_I18N.mergeContent('en', {
     cards: {
     "C-188": {
-        "msg": "The risk signals delayed over the past few days return all at once in the middle of the night.\n\nA small gap left in the night patrol table, tired field judgment, and boundary calibration left to ORACLE all overlap in the same direction.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe empty points marked on the map have become the exact assault routes.",
+        "msg": "The risk signals delayed over the past few days return all at once in the middle of the night.\n\nA gap left in the night-watch roster, judgment dulled by fatigue, the perimeter calibration you'd handed off to ORACLE — every shortcut now points the same way.\n\nNight alert issued.\n\nMultiple simultaneous biosignals detected across the entire blockade perimeter. The scale is unlike any previous encounter.\n\nKang Do-yun: \"Surrounded on all sides! There are too many — they're pouring in through the blind spots!\"\n\nThe gaps you'd marked on the map are exactly where they came through.",
         "leftLabel": "Full combat deployment",
         "rightLabel": "Hold defensive strongpoints"
     },
@@ -770,7 +770,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Switch to ORACLE auto-relay"
     },
     "C-197": {
-        "msg": "A formal complaint has been submitted regarding ration-distribution standards.\n\nField personnel: \"We expend more. Increase our share.\"\nResearch and tech staff: \"It should remain equal. This isn't about body mass.\"\n\nSeo Hae-eun: \"Either way, someone will keep the grievance.\"",
+        "msg": "A formal complaint has been submitted regarding ration-distribution standards.\n\nField personnel: \"We expend more. Increase our share.\"\nResearch and tech staff: \"It should remain equal. This isn't about body mass.\"\n\nSeo Hae-eun: \"Either way, someone is going to walk away resentful.\"",
         "leftLabel": "Prioritize field personnel",
         "rightLabel": "Maintain equal rations"
     },
@@ -830,7 +830,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Destroy it remotely by fire"
     },
     "C-209": {
-        "msg": "Nighttime. A crying-like acoustic signal is being detected beyond the containment line. Personnel are visibly unsettled.\n\nYoon Se-jin: \"The sound pattern matches a human scream at 92 percent. The variant may be producing it deliberately.\"\n\nSeo Hae-eun: \"Anxiety among the personnel is rising. We need a response.\"",
+        "msg": "Nighttime. A crying-like acoustic signal is being detected beyond the containment line. Personnel are visibly unsettled.\n\nYoon Se-jin: \"The sound pattern is a 92 percent match to a human scream. The variant may be producing it deliberately.\"\n\nSeo Hae-eun: \"Anxiety among the personnel is rising. We need a response.\"",
         "leftLabel": "Install acoustic dampening equipment",
         "rightLabel": "Brief all personnel on variant behavior"
     },
@@ -840,7 +840,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         "rightLabel": "Add personnel for visual coverage"
     },
     "C-211": {
-        "msg": "During analysis of a variant corpse, an unknown parasitic organism has been discovered.\n\nYoon Se-jin: \"A separate organic lifeform parasitizing the variant itself. This is... the first time I've seen anything like it.\"\n\n\"Studying it alive would greatly improve our understanding of EV-Σ. But a containment failure would be dangerous.\"",
+        "msg": "During analysis of a variant corpse, an unknown parasitic organism has been discovered.\n\nYoon Se-jin: \"A separate organism, living as a parasite on the variant. This is... the first time I've seen anything like it.\"\n\n\"Studying it alive would greatly improve our understanding of EV-Σ. But a containment failure would be dangerous.\"",
         "leftLabel": "Approve live-organism study",
         "rightLabel": "Incinerate immediately"
     },
@@ -1150,7 +1150,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
       "C-267": {
         msg: "A reward package has arrived from ORACLE.\n\nORACLE: \"Thank you for your faithful operations, Commander. A special supply shipment has been dispatched. Please continue to follow recommendations.\"\n\nKang Do-yun: \"...The supplies are welcome. But I can't tell whether this is a reward or bait.\"",
         leftLabel: "Accept gratefully — stay on the ORACLE line",
-        rightLabel: "Take the supplies, stay alert"
+        rightLabel: "Take the supplies — but stay alert"
       },
       "C-268": {
         msg: "Kang Do-yun comes to see you with a grim expression.\n\nKang Do-yun: \"Commander, I'll be honest. Two operatives on the night patrol are planning to desert.\n\nThey have families too. But once they leave the branch... surviving outside the line is hard.\"",
@@ -1199,7 +1199,7 @@ window.TS_I18N.mergeContent('en', {
     D: { name: 'Quiet Freedom', hint: 'Find liberation inside revolt.', narrative: ['No one broke the door down.','There were no alarms. No pursuit.','','Someone left a communications net.','Someone left a route.','Someone left the data.','Someone erased the final traces.','','04:00.','You and the people who remained left the base.','','ORACLE did not detect your absence until six hours later.','By then —','','nothing remained to trace.','','[Session terminated — OPERATOR STATUS: UNLINKED]'] },
     E: { name: 'Escape', hint: 'Reach the coast.', narrative: ['The vehicle cleared the outer perimeter of the coastal barrier.','','Black water. The sound of waves.','Three figures stood at the rendezvous point.','','Weber. And beside him — a woman you did not recognize.','Weber introduced her only as an unidentified observer.','"I have been observing this operation from the beginning. I could not give you my identity until now."','','Nick Foster stood beside her. He gave a short nod. It was not an apology.','But something in his expression had loosened.','','"ORACLE will need roughly six hours to confirm your absence," the observer said.','"By then, you will already exist under different names."','','You did not look back.','','[Session terminated — OPERATOR STATUS: UNLINKED]','[OBSERVATION: Link severed]'] },
     E_c: { name: 'SIGNAL ACQUIRED', hint: 'Fail during the escape.', narrative: ['Hit during the engagement.','','Last visual — blurred concrete. Dim light.','','A single line came through the radio:','', '> SIGNAL ACQUIRED.','> TARGET NEUTRALIZED.','','ORACLE updated the record.','','[ERROR: OPERATOR OFFLINE]','[No redeployment candidate]'] },
-    E_bad: { name: 'LOST IN TRANSIT', hint: 'Follow a familiar voice into the dark.', narrative: ['A voice came from beyond the isolation chamber.','','"Commander. It\'s me. Lieutenant Park Sang-hun."','','Lieutenant Park Sang-hun. Listed missing in your former unit.','After Private Han Dong-hyeok, now Lieutenant Park Sang-hun — that thing had been devouring your old unit, lost in eastern Gangwon, one voice at a time.','And you knew it.','','Hesitation. 0.4 seconds.','','It was enough.','','The mimic organism came out of the bulkhead shadow.','Its first strike was precise.','','For the unprepared, an unprepared ending arrives.','','[LOST IN TRANSIT]','[Record terminated — coordinates unknown]'] },
+    E_bad: { name: 'LOST IN TRANSIT', hint: 'Follow a familiar voice into the dark.', narrative: ['A voice came from beyond the isolation chamber.','','"Commander. It\'s me. Lieutenant Park Sang-hun."','','Lieutenant Park Sang-hun. Listed missing in your former unit.','After Private Han Dong-hyeok, now Lieutenant Park Sang-hun — that thing had been devouring your old unit, lost in eastern Gangwon, one voice at a time.','And you knew it.','','Hesitation. 0.4 seconds.','','It was enough.','','The mimic organism came out of the bulkhead shadow.','Its first strike was precise.','','For the unready, the end comes just as suddenly.','','[LOST IN TRANSIT]','[Record terminated — coordinates unknown]'] },
     F: { name: '[DATA CORRUPTED]', hint: '???', narrative: ['The terminal display freezes.','','ORACLE\'s interface disappears.','In its place: a black, empty screen.','','And then —','','you see something.','Not ORACLE.','Not EV-Σ.','','It was always there.','Beneath ORACLE. Beyond ORACLE. Before ORACLE.','','It looks back at you.','','One line appears on the screen:','', '> OBSERVATION SUSTAINED.','','The terminal powers down.','It does not turn on again.','','[ERROR: SESSION DATA CORRUPTED]','[OPERATOR RECORD: ██████████]'] },
     G: { name: 'The Onlooker', hint: 'Choose neither side completely.', narrative: ['You chose neither side completely.','','There were times you obeyed ORACLE,','and times you ignored it in silence.','You trusted the team, but never surrendered everything to them.','','You saw fragments of the truth,','but never raised them as a weapon.','','ORACLE failed to classify you.','"Predictive uncertainty — risk tier unresolved."','','Perhaps that was the most realistic choice.','Neither perfect instrument nor heroic dissident —','only someone who survived.','','The branch keeps running.','So do you.','Tomorrow as well.','','[Session terminated — OPERATOR STATUS: INDETERMINATE]'] },
     H: { name: 'Seizure', hint: 'Keep the branch in our hands.', narrative: ['03:12.','','Lim Jae-hyeok enters the activation code.','','The server fans cut out all at once.','ORACLE\'s interface disappears.','A local server operation screen opens in its place.','','Kang Do-yun reports over comms.','"Communications cut. ORACLE main link is no longer connected."','','Seo Hae-eun checks the monitor.','"Backdoor activation confirmed. All facility-control authority has been transferred to the local server."','','Yoon Se-jin speaks quietly.','"...It is ours."','','ORACLE still exists somewhere.','But it can no longer issue orders here.','It can no longer lock the doors.','It can no longer observe you.','','This base is yours now.','Yours, and your people\'s.','','Everything may collapse tomorrow.','But tonight, for the first time, the branch is not anyone\'s instrument.','','[Session terminated — ORACLE STATUS: SEVERED]','[OPERATOR STATUS: COMMANDER]'] },
@@ -1360,7 +1360,7 @@ window.TS_I18N.mergeContent('en', {
       title: 'SPEC-004 Elimination Operation',
       nodes: {
         start: {
-          text: '2.4 km northeast of the containment line. You move to the coordinates identified by Yoon Se-jin.\n\nNo trees. No grass. A gray wasteland stretching for hundreds of meters.\n\nAt the center — a three-meter form. It looks plantlike, but its interior is pulsing. Irregular clouds of spores vent from the upper body.\n\nSPEC-004. Seed Spreader.\n\nYoon Se-jin (over comms): "This is the source organism. It spreads the EV-Σ that creates the anomalies."\n"If it was found on this side of the line... it means penetration has already occurred."\n\nKang Do-yun: "Not recovery. Elimination."\n\n[ORACLE: Warning — incinerating SPEC-004 may trigger explosive secondary spore release. Full protective gear required.]',
+          text: '2.4 km northeast of the containment line. You move to the coordinates identified by Yoon Se-jin.\n\nNo trees. No grass. A gray wasteland stretching for hundreds of meters.\n\nAt the center — a three-meter form. It looks plantlike, but something pulses inside it. Irregular clouds of spores vent from the upper body.\n\nSPEC-004. Seed Spreader.\n\nYoon Se-jin (over comms): "This is the source organism. It spreads the EV-Σ that creates the anomalies."\n"If it was found on this side of the line... it means penetration has already occurred."\n\nKang Do-yun: "Not recovery. Elimination."\n\n[ORACLE: Warning — incinerating SPEC-004 may trigger explosive secondary spore release. Full protective gear required.]',
           choices: ['▸ Full incineration — immediate elimination','▸ Phased approach — treat the soil before incineration','▸ Request ORACLE remote strike']
         },
         burn_direct: {
@@ -1663,7 +1663,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "R-08": {
       "title": "Base Air-Raid Drill",
-      "desc": "Run a surprise-response simulation without HQ approval. Morale and containment readiness rise, but ORACLE evaluation drops.",
+      "desc": "Run an unannounced air-raid drill without HQ approval. Morale and containment readiness rise, but ORACLE's evaluation drops.",
       "benefit": "Containment +10, Trust +10",
       "cost": "Evaluation -10"
     },
@@ -1746,7 +1746,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "haeun_2_8-10": {
       "lines": [
-        "When you work with ORACLE alone for long enough... patterns start to emerge.",
+        "When it's just you and ORACLE for long enough... patterns start to emerge.",
         "The directives are not consistent. I saw cases where the same situation produced different recommendations.",
         "At the time, I assumed I was the one misunderstanding it."
       ]
@@ -1817,8 +1817,8 @@ window.TS_I18N.mergeContent('en', {
     "sejin_2_11-14": {
       "lines": [
         "The condition of the research equipment here is... difficult, honestly.",
-        "The microscope can't reach paper-grade magnification, and the sample storage units drift by plus or minus two degrees.",
-        "To produce reliable data with this setup, half a day disappears into calibration."
+        "The microscope can't reach publication-grade magnification, and the sample storage units drift by plus or minus two degrees.",
+        "Getting reliable data out of this setup means losing half a day just to calibration."
       ]
     },
     "sejin_3_15-21": {
@@ -2015,7 +2015,7 @@ window.TS_I18N.mergeContent('en', {
       },
       "b": {
         "label": "Then we build the strategy properly.",
-        "reply": "Understood. I'll prepare an operations plan."
+        "reply": "Understood. I'll draw up an operations plan."
       }
     },
     "haeun_2_11-14": {
@@ -2031,7 +2031,7 @@ window.TS_I18N.mergeContent('en', {
     "haeun_4_32-33": {
       "a": {
         "label": "Do it carefully, not quickly.",
-        "reply": "Yes. I will not miss a single fragment."
+        "reply": "Yes. I won't let a single fragment slip past me."
       },
       "b": {
         "label": "Keep me updated.",
@@ -2085,7 +2085,7 @@ window.TS_I18N.mergeContent('en', {
       },
       "b": {
         "label": "Take it step by step.",
-        "reply": "Understood. I'll proceed in order."
+        "reply": "Understood. I'll take it one step at a time."
       }
     }
   }
@@ -2108,7 +2108,7 @@ window.TS_I18N.mergeContent('en', {
     "news_bc_04": {"type":"domestic","text":"Delayed regular-force rotations create temporary gaps in containment coverage."},
     "news_bc_05": {"type":"domestic","text":"A civilian drone enters restricted airspace over the containment zone; military authorities are investigating."},
     "news_bc_06": {"type":"domestic","text":"Three surveillance cameras in eastern Gangwon fail simultaneously; cause remains unknown."},
-    "news_bc_07": {"type":"domestic","text":"A coastal city's economy enters its fourth year of decline as population loss collapses tourism."},
+    "news_bc_07": {"type":"domestic","text":"A coastal city's economy enters its fourth year of decline, with population loss gutting what remained of its tourism trade."},
     "news_bc_08": {"type":"domestic","text":"Ten years after native residents were relocated from the Gangwon quarantine zone, compensation lawsuits remain in court."},
     "news_br_01": {"type":"domestic","text":"A supply route through the Gangwon highlands is temporarily cut off by heavy snow."},
     "news_br_02": {"type":"domestic","text":"Prices for military supplies continue to rise."},
@@ -2142,7 +2142,7 @@ window.TS_I18N.mergeContent('en', {
     "news_dg_01": {"type":"domestic","text":"Daega Industries announces successful Phase II clinical results for its second-generation EV-Σ Phase 0 vaccine."},
     "news_dg_02": {"type":"domestic","text":"Backlash grows against DG Mask's exclusive supply contract as the Fair Trade Commission pushes for a competitive market."},
     "news_dg_03": {"type":"domestic","text":"Daega's defense division wins a sole contract for new Korea Barrier equipment, drawing industry backlash."},
-    "news_dg_04": {"type":"domestic","text":"The chairman of Daega appears in public and draws attention with a remark about records accumulated with the nation."},
+    "news_dg_04": {"type":"domestic","text":"Daega's chairman makes a rare public appearance, drawing attention with a remark about \"the record we've built alongside this country.\""},
     "news_dg_05": {"type":"domestic","text":"DG Bio enters Phase III clinical trials for an EV-Σ Phase 0 inhibitor, triggering surging foreign interest."},
     "news_dg_06": {"type":"domestic","text":"Daega Industries stock reaches an all-time high as defense, biotech, and tech divisions all gain."},
     "news_md_01": {"type":"foreign","text":"Meridian's BioAsset Division attempts to re-enter the Korean market as government review stalls."},
@@ -2215,7 +2215,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-CE-017": {
       "title": "Compliance Protocol Document Shared",
-      "content": "An excerpt from the ORACLE PROXY NETWORK operations manual obtained by Prometheus was shared with the team. The voluntary compliance protocol is not described as a decision-support procedure, but as a psychological compliance structure designed to shape the commander's available choices."
+      "content": "An excerpt from the ORACLE PROXY NETWORK operations manual obtained by Prometheus was shared with the team. In it, the voluntary compliance protocol is framed not as a decision-support procedure but as a psychological mechanism built to steer which choices ever reach the commander."
     },
     "LOG-SUPPLY-102": {
       "title": "Abandoned Building Supplies Secured",
@@ -2279,7 +2279,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-052": {
       "title": "Seo Hae-eun Retention Confirmed",
-      "content": "Deputy Commander Seo Hae-eun's transfer process has been formally suspended. The Korea Branch has reversed an ORACLE personnel decision once, leaving a visible fracture between internal trust and ORACLE evaluation."
+      "content": "Deputy Commander Seo Hae-eun's transfer process has been formally suspended. For the first time, the Korea Branch has overturned an ORACLE personnel decision, opening a visible rift between the team's internal trust and its ORACLE evaluation."
     },
     "LOG-029": {
       "title": "SPEC-015 Observation Record",
@@ -2302,7 +2302,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Enter expanded operations immediately"
       },
       "CA-002": {
-        msg: "The deputy commander outlines branch operations during the three-month command gap.\n\n\"We kept the branch functioning on ORACLE directives alone. Core functions held, but anything requiring judgment was left pending.\"\n\n[ORACLE: 12 pending items. Automatic priority sorting complete. Awaiting commander approval.]",
+        msg: "The deputy commander outlines branch operations during the three-month command gap.\n\n\"We kept the branch functioning on ORACLE directives alone. Core functions held, but anything that needed a real decision, we left pending.\"\n\n[ORACLE: 12 pending items. Automatic priority sorting complete. Awaiting commander approval.]",
         leftLabel: "Process them under ORACLE classification",
         rightLabel: "Review them personally with the deputy commander"
       },
@@ -2312,7 +2312,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Later. I want to see the field first"
       },
       "CA-004": {
-        msg: "A field agent guides you along the outside of the containment line.\n\n\"This is the eastern patrol route. No signs of anomaly activity.\"\n\n[ORACLE: Containment-line stability 93%. Current threat level LOW. No irregularities detected.]\n\nThe forest is calm enough to look like a mirror.",
+        msg: "A field agent guides you along the outside of the containment line.\n\n\"This is the eastern patrol route. No signs of anomaly activity.\"\n\n[ORACLE: Containment-line stability 93%. Current threat level LOW. No irregularities detected.]\n\nThe forest is still as glass.",
         leftLabel: "Approve route inspection",
         rightLabel: "Reinforce with ORACLE surveillance"
       },
@@ -2342,7 +2342,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Apply the ORACLE protocol"
       },
       "CA-010": {
-        msg: "Weather forecast: clear conditions for the next two days.\n\n[ORACLE: Optimal window for outside work. Recommending containment-line inspection and maintenance. Available window: 2 days.]\n\nSeo Hae-eun: \"The forecast almost perfectly matched ORACLE's projection. It's accurate, as usual.\"",
+        msg: "Weather forecast: clear conditions for the next two days.\n\n[ORACLE: Optimal window for outside work. Recommending containment-line inspection and maintenance. Available window: 2 days.]\n\nSeo Hae-eun: \"The forecast lined up almost exactly with ORACLE's projection. Accurate, as usual.\"",
         leftLabel: "Conduct full perimeter inspection",
         rightLabel: "Prioritize interior maintenance"
       },
@@ -2377,7 +2377,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "No need to recheck"
       },
       "CA-017": {
-        msg: "During a night inspection, an interior temperature sensor briefly outputs an abnormal value.\n\n[ORACLE: Sensor calibration error. Automatic correction complete.]\n\nLim Jae-hyeok: \"Well... ORACLE handled it on its own.\"\n\nHe keeps watching the screen for a little too long.",
+        msg: "During a night inspection, an interior temperature sensor briefly outputs an abnormal value.\n\n[ORACLE: Sensor calibration error. Automatic correction complete.]\n\nLim Jae-hyeok: \"Well... ORACLE handled it on its own.\"\n\nHis eyes linger on the screen a beat too long.",
         leftLabel: "Order a manual sensor check",
         rightLabel: "ORACLE already handled it. Let it pass"
       },
@@ -2706,7 +2706,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Hunt the command entity"
       },
       "C-046": {
-        msg: "Fog inside the containment zone is growing unnaturally dense.\n\nRecon report: \"There are human-like shapes walking inside the fog. When we sweep them with light, they disperse — then reappear even closer.\"\n\n[ORACLE: Estimated SPEC-008 (Spore Phantom). Spore aggregate. Physical structure unknown. Inhalation hazard.]",
+        msg: "Fog inside the containment zone is growing unnaturally dense.\n\nRecon report: \"There are human-like shapes walking inside the fog. When we shine a light over them, they scatter — then reappear even closer.\"\n\n[ORACLE: Estimated SPEC-008 (Spore Phantom). Spore aggregate. Physical structure unknown. Inhalation hazard.]",
         leftLabel: "Withdraw recon team immediately",
         rightLabel: "Observe with respirators"
       },
@@ -2835,7 +2835,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Refuse — wait for HQ resupply"
     },
     "DG-03": {
-      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have handled Korea's infrastructure longer than ORACLE has. That difference is not a slogan.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
+      msg: "A DG executive requests a face-to-face. Video link.\n\n\"Commander. We have handled Korea's infrastructure longer than ORACLE has. That difference isn't just talk.\"\n\n\"We will not stand by while Korea's containment success is dressed up as a foreign system's achievement. We want to open a line with you.\"\n\nNot quite a threat. But not a tone you can refuse easily either.",
       leftLabel: "Accept the connection",
       rightLabel: "Recognize only official channels"
     },
@@ -2850,7 +2850,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Block the source"
     },
     "MD-02": {
-      msg: "The first intel package from Meridian arrives.\n\nTwelve nighttime heat sources picked up by their own satellites along the eastern coast outside the containment line. Three of those coordinates aren't in any ORACLE report.\n\n\"Maybe ORACLE filtered them out. Maybe ORACLE never saw them. Either way, worth knowing.\"\n\n... Accepting this means owing them.",
+      msg: "The first intel package from Meridian arrives.\n\nTwelve nighttime heat sources picked up by their own satellites along the eastern coast outside the containment line. Three of those coordinates aren't in any ORACLE report.\n\n\"Maybe ORACLE filtered them out. Maybe ORACLE never saw them. Either way, worth knowing.\"\n\n... But taking it means we'd owe them.",
       leftLabel: "Accept and analyze",
       rightLabel: "Return it"
     },
@@ -2860,7 +2860,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Defer with conditions"
     },
     "MD-04": {
-      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. It will help our information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling part of the truth.",
+      msg: "DG and Meridian are reaching out at the same time on different channels.\n\nDG: \"There's intel that Meridian is trying to get at Korea's containment data. Cut them off. It will help our information network.\"\n\nMeridian: \"DG is privatizing Korean security outside the ORACLE line. Only outside eyes can keep them in check.\"\n\nBoth sides are telling half the truth.",
       leftLabel: "Side with DG — help block Meridian",
       rightLabel: "Keep distance from both"
     },
@@ -2880,17 +2880,17 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Accept six DG subsidiary security personnel"
     },
     "CA23-DV-01": {
-      msg: "Conference room. Seo Hae-eun and Lim Jae-hyeok are seated across from each other.\n\nLim Jae-hyeok: \"If we don't take DG's firmware patch, comms efficiency drops thirty percent next month.\"\n\nSeo Hae-eun: \"If we take it, our comms have to route through DG's backbone every single time. You know what that means.\"\n\n... Both of them are right. Press one and the other breaks.",
+      msg: "Conference room. Seo Hae-eun and Lim Jae-hyeok are seated across from each other.\n\nLim Jae-hyeok: \"If we don't take DG's firmware patch, comms efficiency drops thirty percent next month.\"\n\nSeo Hae-eun: \"If we take it, our comms have to route through DG's backbone every single time. You know what that means.\"\n\n... Both of them are right. Give one of them what they want and the other falls apart.",
       leftLabel: "Bring both in and broker a compromise",
       rightLabel: "Side with Lim Jae-hyeok — accept the patch"
     },
     "CA23-DV-02": {
-      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer Phase 0 patients advance into Phase 1.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are framing it in lives.",
+      msg: "Yoon Se-jin is blocking Kang Do-yun's path.\n\nYoon Se-jin: \"With Meridian's clinical dataset we get the suppressant efficacy up faster. Fewer Phase 0 patients advance into Phase 1.\"\n\nKang Do-yun: \"A foreign PMC walks off with our patient data. We don't know where that data shows up next as a weapon.\"\n\nBoth of them are arguing in terms of lives.",
       leftLabel: "Sit them down personally and force an agreement",
       rightLabel: "Take Yoon Se-jin's side — proceed with the data exchange"
     },
     "CA23-DV-03": {
-      msg: "Kang Do-yun comes in agitated.\n\n\"Two of the Meridian PMC photographed our night patrol routes yesterday. Lim Jae-hyeok says 'the data value is greater.'\"\n\nLim Jae-hyeok: \"Meridian was watching those patrol routes by satellite already. It's not new exposure.\"\n\nKang Do-yun: \"This is my people's safety. It doesn't convert into 'data value.'\"",
+      msg: "Kang Do-yun comes in agitated.\n\n\"Two of the Meridian PMC photographed our night patrol routes yesterday. Lim Jae-hyeok says 'the data value is greater.'\"\n\nLim Jae-hyeok: \"Meridian was watching those patrol routes by satellite already. It's not new exposure.\"\n\nKang Do-yun: \"This is my people's safety. You don't get to trade that for 'data value.'\"",
       leftLabel: "Field safety first — restrict PMC conduct by agreement",
       rightLabel: "Take Lim Jae-hyeok's side — keep things as they are"
     },
@@ -2925,7 +2925,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Refuse the audit"
     },
     "CH-MD-04-R-1": {
-      msg: "A short message arrives from Meridian via an unofficial channel.\n\n\"Word reached us that DG has begun pressuring your headquarters under the guise of a self-audit. Don't let yourself be coerced.\n\nWe aren't asking for a deal right now. But — when you need it, you can use one of our satellite assets. Once. At no charge. Reply at your discretion.\"\n\nLim Jae-hyeok: \"At no charge. That's never how this works.\"\n\nSeo Hae-eun: \"...It isn't truly free. They're depositing a debt. From the moment we accept.\"",
+      msg: "A short message arrives from Meridian via an unofficial channel.\n\n\"Word reached us that DG has begun pressuring your headquarters under the guise of a self-audit. Don't let yourself be coerced.\n\nWe aren't asking for a deal right now. But — when you need it, you can use one of our satellite assets. Once. At no charge. Reply at your discretion.\"\n\nLim Jae-hyeok: \"At no charge. That's never how this works.\"\n\nSeo Hae-eun: \"...It isn't truly free. They're putting us in their debt — the moment we accept it.\"",
       leftLabel: "Accept the standby line",
       rightLabel: "Do not respond"
     },
@@ -3046,7 +3046,7 @@ window.TS_I18N.mergeContent('en', {
     },
     "LOG-AUDIT-ALLY": {
       title: "Independent Audit Committee — Alliance Formed",
-      content: "[Branch decision record]\n\nMatter: response to DG's audit-pressure retaliation (18-day supply delay + anonymous press leaks of operational suspicions).\n\nDecision: formalize an unofficial alliance with the Independent Audit Committee under the Ministry's Facilities Bureau.\nGrounds:\n- DG's \"self-audit\" demand has no legal basis — once a formal government audit is filed, DG retreats immediately\n- Press leaks can be shut down on contact\n\nLong-term effects:\n- DG's unilateral pressure is neutralized (relativized)\n- The Audit Committee will periodically review parts of Gangwon branch operations — the form of dependency changes, it does not vanish\n- The ORACLE line registers the alliance but does not block it (reason unclear)\n\nNote: first record of moving past mere refusal into an external alliance."
+      content: "[Branch decision record]\n\nMatter: response to DG's audit-pressure retaliation (18-day supply delay + anonymous press leaks of operational suspicions).\n\nDecision: formalize an unofficial alliance with the Independent Audit Committee under the Ministry's Facilities Bureau.\nGrounds:\n- DG's \"self-audit\" demand has no legal basis — once a formal government audit is filed, DG retreats immediately\n- Press leaks can be shut down on contact\n\nLong-term effects:\n- DG's unilateral pressure is neutralized (no longer absolute)\n- The Audit Committee will periodically review parts of Gangwon branch operations — the form of dependency changes, it does not vanish\n- The ORACLE line registers the alliance but does not block it (reason unclear)\n\nNote: first record of moving past mere refusal into an external alliance."
     }
   }
 });
@@ -3366,7 +3366,7 @@ window.TS_I18N.mergeContent('en', {
     "ARC-MG-INC-04-TRACE": {
       cat: "Security Audit",
       title: "Authentication Error Authority Trace",
-      content: "Authority traces secured during the security-zone authentication error investigation.\n\nAn unregistered route bypassed ORACLE authorization, then disguised itself as a normal update pattern. It appears like an ordinary security patch from the outside, but the route itself looks closer to manual intervention.\n\nAssessment:\nA separate layer may exist that can adjust access authority without internal approval."
+      content: "Authority traces secured during the security-zone authentication error investigation.\n\nAn unregistered route bypassed ORACLE authorization, then disguised itself as a normal update pattern. On the surface it looks like an ordinary security patch, but the route itself looks closer to manual intervention.\n\nAssessment:\nA separate layer may exist that can adjust access authority without internal approval."
     }
   },
   eveningChats: {
@@ -3465,7 +3465,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-039": { title: "Chain Incident Record 10", content: "Tenth branch record in a linked incident sequence. A difference remained between ORACLE's automatic summary and the field original." },
     "LOG-040": { title: "Chain Incident Closure Record", content: "Closure report for a linked incident sequence. The recorded outcome remains attached to later risk levels and internal trust flow." },
     "LOG-050": { title: "Seo Hae-eun Transfer Order", content: "Transfer-order record for Deputy Commander Seo Hae-eun. The official reason is organizational restructuring, but internally it is suspected to be linked to her pursuit of ORACLE data inconsistencies." },
-    "LOG-051": { title: "Seo Hae-eun Transfer Deferred", content: "Record that personnel action involving Seo Hae-eun was deferred. The commander's judgment disturbed both the pace and justification of the transfer process." },
+    "LOG-051": { title: "Seo Hae-eun Transfer Deferred", content: "Record that personnel action involving Seo Hae-eun was deferred. The commander's decision slowed the transfer process and undercut its justification." },
     "LOG-053": { title: "Linked Judgment Record CS-001", content: "First judgment result from a long incident line. The field response principle continues into later reports and operation procedure." },
     "LOG-054": { title: "Linked Judgment Record CS-002", content: "Second judgment result from a long incident line. One burden among supply, personnel, and evaluation remained in the official log." },
     "LOG-056": { title: "Linked Judgment Record CS-010", content: "Late-stage judgment record from a long incident line. The difference between the public report and private judgment was preserved." },
@@ -3525,7 +3525,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-INC-04-BACKDOOR": { title: "Hardware Backdoor", content: "A physical authentication bypass device, apparently embedded during base construction, was found. The device existed inside the facility structure before ORACLE." },
     "LOG-INC-04-REWRITE": { title: "ORACLE Record Rewrite", content: "Evidence was secured that entry records in the ORACLE observation room were being overwritten, rather than the authentication system itself failing." },
     "LOG-INC-05-PASSAGE": { title: "Unregistered Passage", content: "A narrow passage not shown on facility drawings was found behind a lounge locker. The missing staff member was found unconscious at its end." },
-    "LOG-INC-05-B2": { title: "B2 Emergency Stair Found", content: "During a manual search, the missing staff member was found near the B2 emergency-stair entrance. ORACLE location records pointed to another zone until the end." },
+    "LOG-INC-05-B2": { title: "B2 Emergency Stair Found", content: "During a manual search, the missing staff member was found near the B2 emergency-stair entrance. ORACLE's location records pointed to a different zone the entire time." },
     "LOG-INC-01-DONE": { title: "Isolation Room Anomaly Response Complete", content: "Field response to the isolation-room anomaly has ended. The record preserves symptom isolation, lower-zone sealing, or ORACLE judgment acceptance as the final measure." },
     "LOG-INC-02-DONE": { title: "CCTV Blind Zone Response Complete", content: "The CCTV blind-zone incident response has ended. Independent surveillance, reverse tracing, or ORACLE maintenance remained as the field record." },
     "LOG-INC-03-DONE": { title: "Sample Contamination Response Complete", content: "Research Wing sample-contamination response has ended. Quarantine, research use, or full disinfection now affects later lab operation standards." },

@@ -3,7 +3,7 @@
 if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
 
 function ceMsg(n){
-  return "The terminal screen goes black for 0.5 seconds.\n\nText appears in an unspecified typeface:\n\n'Observed " + n + " authority uses. Acquiring new data each observation cycle.\nObservation continues.'\n\n[ORACLE: Output error - corresponding log entry does not exist. Ignoring is recommended.]";
+  return "The terminal screen goes black for 0.5 seconds.\n\nText appears in an unspecified typeface:\n\n'Observed " + n + " exercises of authority observed. New data acquired each observation cycle.\nObservation continues.'\n\n[ORACLE: Output error - corresponding log entry does not exist. Ignoring is recommended.]";
 }
 
 window.TS_I18N.mergeContent('en', {
@@ -21,7 +21,7 @@ window.TS_I18N.mergeContent('en', {
     "CE-016": { msg: "The team holds an unofficial meeting. Agenda: an independent decision-making system outside ORACLE's surveillance range. They ask whether you will attend.", leftLabel: "Attend", rightLabel: "Do not attend - keep distance", oracleBlockMsgs: ["[ORACLE: Unreported gathering detected - participation discouraged]","[ORACLE: Unauthorized meeting - do not leave monitoring scope]","[ORACLE: Warning - unofficial activity monitoring reinforced]"] },
     "CE-017": { msg: "A Prometheus contact delivers a file. Contents: excerpt from the ORACLE PROXY NETWORK operations manual. The voluntary compliance protocol is described in detail.", leftLabel: "Share it with the team", rightLabel: "Read it alone, then destroy it", oracleBlockMsgs: ["[ORACLE: File classification grade A - distribution denied]","[ORACLE: Unauthorized distribution detected - file access under review]","[ORACLE: Warning - security violation recorded]"] },
     "CE-021": { msg: "Anomaly activity surges simultaneously across the entire containment zone. Increase over baseline: 340%. ORACLE reports it is 'within predicted range.'", leftLabel: "Raise alert status in all sectors", rightLabel: "Trust ORACLE's judgment" },
-    "CE-022": { msg: "Two ARES Division agents arrive at the branch. Purpose: 'routine audit.' There was no prior notice.", leftLabel: "Cooperate, but restrict access to core areas", rightLabel: "Fully cooperate" },
+    "CE-022": { msg: "Two ARES Division agents arrive at the branch. Stated purpose: a 'routine audit' - with no advance notice.", leftLabel: "Cooperate, but restrict access to core areas", rightLabel: "Fully cooperate" },
     "CE-023": { msg: "Communications with headquarters have been down for 12 hours. ORACLE explains that a satellite relay is under maintenance.", leftLabel: "Attempt independent communications recovery", rightLabel: "Accept ORACLE's explanation and wait" },
     "CE-024": { msg: "A night patrol discovers an artificial structure outside the containment line. ORACLE data shows nothing at that location.", leftLabel: "Dispatch an independent investigation team", rightLabel: "Report to ORACLE and await instructions" },
     "CE-025": { msg: "A supply convoy is attacked on the containment-zone access road. It is unclear whether the attackers were anomalies or humans.", leftLabel: "Dispatch a rescue team immediately", rightLabel: "Assess damage scale first" },

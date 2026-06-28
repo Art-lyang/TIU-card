@@ -44,7 +44,7 @@
           { label: 'Infection Phase', value: 'EV-Σ PHASE 1 (CONFIRMED)', level: 'warn' },
           { label: 'Shift Risk', value: 'VERY HIGH — 0.3s violent shift on stimulus', level: 'danger' },
           { label: 'Est. Casualties', value: 'NO DATA — INSUFFICIENT SAMPLE', level: 'err' },
-          { label: 'Recommended Approach', value: 'No approach within 3m / assess after thermal confirm', level: 'info' }
+          { label: 'Recommended Approach', value: 'No approach within 3m / assess after thermal confirmation', level: 'info' }
         ],
         subs: { eliminate: 'Remote neutralization', capture: 'Non-contact isolation capture', oracle: 'ORACLE remote scan' }
       },
@@ -121,7 +121,7 @@
           { label: 'Chamber Voiceprint', value: 'Human voice — not containment target', level: 'danger' },
           { label: 'Subsurface Vibration', value: 'PERSISTENT — continues after shielding', level: 'warn' },
           { label: 'Recurrence Window', value: 'NO DATA — INSUFFICIENT SAMPLE', level: 'err' },
-          { label: 'Recommended Approach', value: 'Identify cause over blocking symptom', level: 'info' }
+          { label: 'Recommended Approach', value: 'Find the cause before suppressing the symptom', level: 'info' }
         ],
         subs: { shield: 'Install EM shielding', seal: 'Seal lower B2 permanently', oracle: 'Delegate diagnostic pass' }
       },

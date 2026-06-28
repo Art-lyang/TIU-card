@@ -12,7 +12,7 @@ window.TS_I18N.mergeContent('en', {
     "haeun_1_3-5": { lines: ["When I work late alone, I start thinking too much.", "The ORACLE patterns I saw in overseas analysis do not quite match the texture of this Korea Branch.", "It is too early to conclude anything. That is why I am watching it carefully."] },
     "haeun_1_4-5": { lines: ["I am organizing communication logs.", "There are quite a few external reception records, so they need classification.", "I will report once they are sorted."] },
     "haeun_2_8-12": { lines: ["Commander, may I ask you something?", "Sometimes I am not sure whether following ORACLE's orders is really the right thing.", "The more I look at the data, the more it feels like something is missing."] },
-    "haeun_2_12-14": { lines: ["While writing the report, I looked for records from the previous commander.", "There are none. No operation logs for the three months before your assignment.", "If ORACLE managed the branch, there should be logs... They were deleted."] },
+    "haeun_2_12-14": { lines: ["While writing the report, I looked for records from the previous commander.", "There are none. No operation logs for the three months before your assignment.", "If ORACLE ran the branch, there'd be logs... which means someone deleted them."] },
     "sejin_1_2-4": { lines: ["Commander, the lab temperature is a little unstable.", "It could affect anomaly sample storage, so I am monitoring it.", "I asked Jae-hyeok to take a look at the cooling system."] },
     "sejin_1_4-5": { lines: ["When I wrote papers, data was everything.", "Here... I can feel that there are people behind the data.", "The anomalies may have been people once too. Thinking that way changes the research."] },
     "sejin_1_5-5": { lines: ["I found seasonality in anomaly behavior patterns.", "When temperature drops, activity decreases. It is not hibernation, but close.", "If we use this, we may improve containment efficiency."] },
@@ -51,7 +51,7 @@ window.TS_I18N.mergeContent('en', {
     "sejin_1_4-5": { a: { label: "That is a good perspective.", reply: "...Thank you. I am glad I can share thoughts like this." }, b: { label: "Emotional projection is dangerous.", reply: "...Yes. I will be careful." } },
     "sejin_1_5-5": { a: { label: "Reflect it in containment strategy.", reply: "Yes! I will share it with Do-yun too." }, b: { label: "Gather more data.", reply: "Understood. I will observe for one more month." } },
     "sejin_2_7-11": { a: { label: "Rest when you need to rest.", reply: "...Yes. I will try." }, b: { label: "Condition management is basic.", reply: "...Understood. I am sorry." } },
-    "sejin_2_12-14": { a: { label: "I think it is memory.", reply: "...If so, they are truly sad beings." }, b: { label: "Treat them only as research subjects.", reply: "...Yes. I will exclude emotion." } },
+    "sejin_2_12-14": { a: { label: "I think it is memory.", reply: "...If so, then they're truly tragic." }, b: { label: "Treat them only as research subjects.", reply: "...Yes. I will exclude emotion." } },
     "jaehyuk_1_2-5": { a: { label: "Proceed.", reply: "Thank you. I will finish the work by tomorrow." }, b: { label: "Maintain current status.", reply: "...Understood. I will proceed if approval comes later." } },
     "jaehyuk_1_3-5": { a: { label: "Submit the maintenance plan.", reply: "Yes. I will organize it and report by tomorrow." }, b: { label: "Is the current status enough?", reply: "It is fine for now, but regular inspection is necessary." } },
     "sejin_research_open": { a: { label: "Good. Let's see what you're researching.", reply: "Thank you. Then you choose the first project, Commander. We'll go through it together." }, b: { label: "Resources are limited. Choose carefully.", reply: "Understood. Still, I'm glad you looked. I'll line up the highest-priority work first." } },
@@ -92,7 +92,7 @@ window.TS_I18N.mergeContent('en', {
     "sejin_3b_17-23": { lines: ["Commander, this may sound strange, but anomalies do not frighten me.", "What frightens me is when I begin to understand why they look this way.", "When something that should not make sense begins to make sense.", "That is a territory no ethics textbook covered."] },
     "sejin_4b_31-32": { lines: ["I brought a flowerpot into the lab. It is a hydrangea.", "Agents passing by said the room felt warmer.", "The longer a branch operates, the more it needs signs of people.", "ORACLE does not calculate things like that."] },
     "sejin_4b_33": { lines: ["Commander, one strange thing I found during anomaly research.", "Certain entities perform something close to healing on each other.", "Biologically it makes no sense, but it is in the observation records.", "...It is difficult to exclude the possibility that this species was once human."] },
-    "sejin_4b_34": { lines: ["I am a doctor, but here I do not think I have done the work of a doctor properly.", "Research kept coming first. An ethics journal would reject this field report.", "Still, watching how you care for the agents teaches me.", "I want to be in that place too."] },
+    "sejin_4b_34": { lines: ["I'm a doctor, but here I'm not sure I've really been one.", "Research kept coming first. An ethics journal would reject this field report.", "Still, watching how you care for the agents teaches me.", "I want to be in that place too."] },
     "sejin_4b_35": { lines: ["Commander. I have a draft paper titled The Language of Risk.", "It is about how ORACLE's language makes danger sound ordinary.", "I may never publish it, but I wanted to show it to you.", "Someday, after this branch is settled."] }
   },
   eveningResponses: {
@@ -188,7 +188,7 @@ window.TS_I18N.mergeContent('en', {
     doyun_injured: {
       low: [
         "...Reporting in.",
-        "Returning to field duty is impossible.",
+        "I can't return to field duty.",
         "That is all."
       ],
       mid: [

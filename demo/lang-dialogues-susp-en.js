@@ -21,7 +21,7 @@ window.TS_I18N.mergeContent('en', {
       "name": "Lim Jae-hyeok", "role": "Intelligence / Technical Officer",
       "lines": [
         "Commander. Let me point out one thing, as an engineer.",
-        "ORACLE ties together hundreds of thousands of sensors without error. A system like that makes 'mistakes.'",
+        "ORACLE ties hundreds of thousands of sensors together flawlessly. And yet a system like that supposedly makes 'mistakes.'",
         "But those errors — they only ever happen right where it hurts us. Always there.",
         "That technology failing in that exact way is what strikes me as strange. It does not look like error. It looks like intent."
       ],
@@ -40,13 +40,13 @@ window.TS_I18N.mergeContent('en', {
       ],
       "choices": [
         { "label": "There must be a reason to restrict the research.", "tag": "Analysis", "reply": "Right. But that reason does not seem to be on our side." },
-        { "label": "It is only a safety regulation.", "tag": "Cold", "reply": "...Yes. Safety. That word does cover everything." }
+        { "label": "It is only a safety regulation.", "tag": "Cold", "reply": "...Right. Safety. That one word really does cover everything, doesn't it." }
       ]
     },
     "dlg_doyun_susp": {
       "name": "Kang Do-yun", "role": "Tactical Commander",
       "lines": [
-        "Commander. There is something you only catch in the field. Reporting it.",
+        "Commander. There are things you only catch in the field. I'm bringing one to you.",
         "The things near the containment line — anomalies, animals, either way, sometimes their movements are off.",
         "They should be panicking and scattering, but they move aligned in one direction. Like they got a signal.",
         "It is like someone is pulling the strings. I wish it were my imagination, but it has happened more than once or twice."

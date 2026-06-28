@@ -122,7 +122,7 @@ window.TS_I18N.mergeUI('en', {
     act2:'Monitor external threats and balance ORACLE advisories with field judgment.',
     act3:'Trace nonstandard signals and secure critical evidence.',
     act4:'Prepare the final decision while preserving staff loyalty and branch survival.',
-    critical:'Risk threshold detected. Stabilize the failing resource first.'
+    critical:'Risk threshold detected. Stabilize the metric closest to collapse first.'
   },
   tutorial:{
     header:'ORACLE BRIEFING — {current}/{total}',
@@ -196,7 +196,7 @@ window.TS_I18N.mergeUI('en', {
   fieldMission:{ title:'FIELD MISSION', trustTag:'[TRUST]', footer:'ORACLE REMOTE TERMINAL — FIELD OPS' },
   mission:{ trustLabel:'TRUST' },
   briefing:{
-    analysis:'Analyzed recent operational data.',
+    analysis:'Recent operational data has been analyzed.',
     enter:'[ ENTER ]'
   },
   missionDebug:{
@@ -227,7 +227,7 @@ window.TS_I18N.mergeUI('en', {
     rewardPending:'Selectable during the next reward phase.',
     completedEffect:'Completed effect',
     rewardUnlocked:'Reward card added',
-    empty:'No facility expansions are currently available.\nNew proposals will appear through operation cards.'
+    empty:'No facility expansions are currently available.\nNew proposals will surface from operation cards.'
   },
   gameOver:{
     title:'─── SESSION #{session} TERMINATED ───',
@@ -327,7 +327,7 @@ window.TS_I18N.mergeUI('en', {
   statusTags:{
     facility:{
       c:{ safe:'Containment Line Stable', warn:'Containment Line On Alert', danger:'Containment Line Fractured', critical:'Containment Collapse Imminent' },
-      r:{ safe:'Supplies Sufficient', warn:'Supplies Stable', danger:'Supplies Unstable', critical:'Supply Depletion Imminent' },
+      r:{ safe:'Supplies Sufficient', warn:'Supplies Adequate', danger:'Supplies Unstable', critical:'Supply Depletion Imminent' },
       t:{ safe:'Unit Cohesion', warn:'Trust Maintained', danger:'Unrest Spreading', critical:'Desertion Risk' },
       o:{ safe:'ORACLE Confidence', warn:'Under Observation', danger:'Suspicion Rising', critical:'Replacement Under Review' }
     },
@@ -355,6 +355,6 @@ window.TS_I18N.mergeUI('en', {
     fallbackCardRight:'Retry connection',
     facilityAdded:'Facility expansion added to the reward pool', facilityPending:'Facility proposal moved to the pending list', facilityRegistered:'Facility expansion registered to the reward pool', facilityComplete:'[{title}] construction complete{suffix}', facilityDefault:'Facility', uprisingSuffix:' | internal record updated',
     observerError:'[ORACLE: System error — ERR:0x8F2A UNHANDLED EXCEPTION]', followupCardAdded:'[Follow-up card added] {id}',
-    cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]', resourceReserveUsed:'[Emergency supplies found] Unregistered emergency stock was pulled from the rear storage bay. The task was completed, and resource depletion has been prevented once for this session.'
+    cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]', resourceReserveUsed:'[Emergency supplies found] Unregistered emergency stock was pulled from the rear storage bay. The job is done — and resource depletion has been offset, this once, for the session.'
   }
 });

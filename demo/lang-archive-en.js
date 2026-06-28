@@ -30,11 +30,11 @@
       },
       "ARC-SPEC-002": {
         title: "SPEC-002 - Hardened Variant",
-        content: "M-TYPE / EV-Sigma Phase 2 variant.\n\nThe entire body hardens into a gray-brown keratin layer. Body mass increases to three or four times the original weight.\n\nStandard firearms are ineffective. Wall and vehicle breach cases have been reported.\n\nMovement speed is reduced, but no stationary state has been recorded. Slow does not mean stoppable.\n\nResponse protocol: avoid physical engagement. High-temperature incineration or acidic solvent is required."
+        content: "M-TYPE / EV-Sigma Phase 2 variant.\n\nThe entire body hardens into a gray-brown keratin layer. Body mass increases to three or four times the original weight.\n\nStandard firearms are ineffective. Wall and vehicle breach cases have been reported.\n\nIt moves slowly, but it has never been recorded coming to a halt. Slow doesn't mean it can be stopped.\n\nResponse protocol: avoid physical engagement. High-temperature incineration or acidic solvent is required."
       },
       "ARC-SPEC-004": {
         title: "SPEC-004 - Seed Spreader",
-        content: "S-TYPE / fixed dispersal organism.\n\nTwo to four meters tall. Plant-like exterior with pulsing biological tissue inside.\n\nAfter rooting in soil, it releases spores across a radius of several kilometers.\n\nHost behavior alteration resembles the Cordyceps mechanism.\n\nRemoval can trigger explosive secondary spore release. Do not approach within 500 meters unless soil contamination treatment is prepared."
+        content: "S-TYPE / fixed dispersal organism.\n\nTwo to four meters tall. Plant-like exterior with pulsing biological tissue inside.\n\nAfter rooting in soil, it releases spores across a radius of several kilometers.\n\nThe way it rewrites host behavior resembles the Cordyceps mechanism.\n\nRemoval can trigger explosive secondary spore release. Do not approach within 500 meters unless soil contamination treatment is prepared."
       },
       "ARC-SPEC-005": {
         title: "SPEC-005 - Shell Walker",
@@ -110,7 +110,7 @@
       },
       "ARC-FAC-TUNNEL": {
         title: "Emergency Evacuation Tunnel",
-        content: "Underground emergency passage north of the branch.\n\nBuilt as an evacuation route following a prior command decision. Previously, the branch had only one external exit. Kang Do-yun argued that a containment collapse would leave only thirty seconds to decide, leading to this additional route.\n\nStructure: branch north side to roughly 200 meters beyond the containment perimeter. One-way evacuation only.\n\nCapacity: up to eight people at once.\nLighting: emergency battery system, approximately forty-eight hours.\n\nThis tunnel may become decisive for personnel survival during a major night assault."
+        content: "Underground emergency passage north of the branch.\n\nBuilt as an evacuation route following a prior command decision. Previously, the branch had only one external exit. Kang Do-yun argued that a containment collapse would leave only thirty seconds to decide; the route was added on that basis.\n\nStructure: branch north side to roughly 200 meters beyond the containment perimeter. One-way evacuation only.\n\nCapacity: up to eight people at once.\nLighting: emergency battery system, approximately forty-eight hours.\n\nThis tunnel may become decisive for personnel survival during a major night assault."
       },
       "ARC-FAC-LAB": {
         title: "Research Lab",
@@ -134,7 +134,7 @@
       },
       "ARC-SCI-EVOLVE": {
         title: "Evolution Classification System (ORACLE Standard)",
-        content: "EV-Sigma evolution-state classification used by ORACLE.\n\nThe terminal currently exposes only partial class names and limited regional mapping.\n\nOVERDRIVE / CONTROLLED / DELAYED / STAGNANT / COMPLETE\n\nExact regional assignment and the reason Korea Branch is treated as an exception variable are unavailable at current access level.\n\nAdditional classification data requires related logs."
+        content: "EV-Sigma evolution-state classification used by ORACLE.\n\nThe terminal currently exposes only partial class names and limited regional mapping.\n\nOVERDRIVE / CONTROLLED / DELAYED / STAGNANT / COMPLETE\n\nExact regional assignment, and the reason Korea Branch is treated as an exception variable, are unavailable at the current access level.\n\nAdditional classification data requires related logs."
       },
       "ARC-SCI-TEMP": {
         title: "EV-Sigma Environmental Response Conditions",
