@@ -816,7 +816,7 @@ function App(){
     }else if(devPanel==='evidence'&&typeof EvidencePanel==='function'){
       node=h(EvidencePanel,{logs:['LOG-EV-UNLOCK'].concat((typeof EVIDENCE!=='undefined'?EVIDENCE.map(function(e){return e.src}):[])),onClose:close});
     }else if(devPanel==='facility'&&typeof FacilityPanel==='function'){
-      var _pf=facility||{};node=h(FacilityPanel,{facility:{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]},onClose:close,onApprove:function(){}});
+      var _pf=facility||{};var _fc=((_pf.pending||[]).length+(_pf.approved||[]).length+(_pf.completed||[]).length)>0?{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]}:{pending:['FE-001','FE-002'],approved:['FE-003'],completed:['FE-004','FE-005'],proposed:[]};node=h(FacilityPanel,{facility:_fc,onClose:close,onApprove:function(){}});
     }
     if(!node)return null;
     return h('div',{className:'act-'+Math.max(act||1,2)},node);

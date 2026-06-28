@@ -1195,3 +1195,13 @@ b.fm-rk--info{color:#caa14a}
 .rlab-btn:active{background:var(--ui);color:#06090b;border-color:var(--ui)}
 .rlab-btn.is-disabled{color:rgba(190,205,200,.32);border-color:rgba(255,255,255,.1);background:rgba(255,255,255,.02);cursor:default;pointer-events:none}
 .rlab-btn.is-running{color:rgba(var(--ui-rgb),.55);border-color:rgba(var(--ui-rgb),.25);background:transparent;cursor:default;pointer-events:none}
+/* 시설탭 전용 (facility) — .rlab 대시보드 셸 재사용 */
+.flab-section{font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:2px;color:rgba(180,198,192,.5);text-transform:uppercase;margin:4px 0 9px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.07)}
+.rlab-body > * + .flab-section{margin-top:14px}
+.flab-uptag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:#f0a838;border:1px solid rgba(240,168,56,.42);background:rgba(240,168,56,.1);border-radius:3px;padding:2px 7px;margin:0 0 7px}
+.flab-card.flab-up{border-color:rgba(240,168,56,.4);box-shadow:0 0 0 1px rgba(240,168,56,.16),0 5px 18px rgba(0,0,0,.42)}
+.flab-card.flab-up .rlab-thumb{border-color:rgba(240,168,56,.5);box-shadow:inset 0 0 0 1px rgba(240,168,56,.3)}
+.flab-hint{font-size:10px;color:rgba(180,198,192,.5);line-height:1.5;margin:0 0 9px;font-style:italic}
+.flab-effect{margin-top:auto;padding:8px 10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);border-radius:7px;font-size:10px;color:rgba(196,212,206,.72);line-height:1.55}
+.flab-effect-h{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1.5px;color:rgba(95,208,138,.85);margin-bottom:3px}
+.flab-effect-rw{margin-top:4px;color:#f0a838}

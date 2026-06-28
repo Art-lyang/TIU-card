@@ -3,54 +3,71 @@
 // FacilityStatusSection: 뉴스 페이즈 시설 상태 표시
 
 function FacilityPanel(p) {
-  var tab = 'manage';
+  var EN = (typeof getLocale === 'function' && getLocale() === 'en');
+  var L = function(ko, en){ return EN ? en : ko; };
   var fac = p.facility || { approved: [], pending: [], completed: [], proposed: [] };
+  var pend = fac.pending || [], appr = fac.approved || [], comp = fac.completed || [];
+  var FE = (typeof FACILITY_EXPANSIONS !== 'undefined') ? FACILITY_EXPANSIONS : [];
+  var getExp = function(id){ var fe=FE.filter(function(f){return f.id===id;})[0]; return (typeof getFacilityExpansionView==='function')?getFacilityExpansionView(fe):fe; };
+  var rewardView = function(fe){ if(!fe)return null; var bonus=((typeof REWARDS_FACILITY_BONUS!=='undefined')?REWARDS_FACILITY_BONUS:[]).filter(function(r){return r.feReq===fe.id;})[0]; if(!bonus)return null; var loc=(typeof tc==='function')?tc('rewards',bonus.id,null):null; return Object.assign({},bonus,loc||{}); };
 
-  // 탭 스타일
-  var tabBtn = function(key, label) {
-    var active = tab === key;
-    return h('span', {
-      style: {
-        fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        letterSpacing: 1, padding: '6px 14px', cursor: 'pointer',
-        color: active ? 'var(--ui)' : 'rgba(var(--ui-rgb),.38)',
-        borderBottom: active ? '2px solid var(--ui)' : '2px solid transparent',
-        transition: 'all 0.2s'
-      },
-      onClick: function() {}
-    }, label);
+  var pending = pend.map(getExp).filter(Boolean);
+  var approved = appr.filter(function(id){ return comp.indexOf(id)<0; }).map(getExp).filter(Boolean);
+  var completed = comp.map(getExp).filter(Boolean);
+
+  var FDIR = 'assets/images/facility/';
+  var FIMG = { 'FE-001':FDIR+'facility_fe001_cryo_storage.jpg','FE-002':FDIR+'facility_fe002_training_ground.jpg','FE-003':FDIR+'facility_fe003_sensor_array.jpg','FE-004':FDIR+'facility_fe004_medical_bay.jpg','FE-005':FDIR+'facility_fe005_supply_route.jpg','FE-006':FDIR+'facility_fe006_cctv_control.jpg','FE-007':FDIR+'facility_fe007_emergency_bunker.jpg','FE-008':FDIR+'facility_fe008_north_patrol.jpg' };
+  var FALLBACK = FDIR + 'facility_hero.jpg';
+  var thumbOf = function(fe){ return FIMG[fe.id] || FALLBACK; };
+
+  var card = function(fe, kind){
+    var isUp = !!fe.uprising;
+    var pill = kind==='completed' ? h('span',{className:'rlab-pill rlab-pill--done'}, L('완료','DONE'))
+      : (kind==='approved' ? h('span',{className:'rlab-pill rlab-pill--run'}, L('승인','APPROVED'))
+        : h('span',{className:'rlab-pill rlab-pill--wait'}, L('결재','PENDING')));
+    var rw = kind==='completed' ? rewardView(fe) : null;
+    return h('div', { key: fe.id, className:'rlab-card flab-card'+(isUp?' flab-up':'')+(kind==='completed'?' is-done':'') },
+      h('div',{className:'rlab-thumb'}, h('div',{className:'rlab-thumb-img',style:{backgroundImage:'url('+thumbOf(fe)+')'}}), h('div',{className:'rlab-thumb-fx'})),
+      h('div',{className:'rlab-info'},
+        h('div',{className:'rlab-title-row'}, h('div',{className:'rlab-title'}, fe.name), pill),
+        isUp && h('div',{className:'flab-uptag'}, L('독립 인프라','INDEPENDENT INFRA')),
+        h('div',{className:'rlab-desc'}, fe.desc),
+        kind==='pending' ? h(React.Fragment, null,
+            fe.hint && h('div',{className:'flab-hint'}, fe.hint),
+            h('button',{type:'button',className:'rlab-btn',onClick:function(){ if(p.onApprove)p.onApprove(fe.id); }}, L('[ 승인 ]','[ APPROVE ]')))
+          : (kind==='approved' ? h('div',{className:'rlab-state rlab-state--run'}, L('다음 보상 단계에서 선택 가능','Selectable in the next reward phase'))
+            : ((rw||fe.rewardBenefit) && h('div',{className:'flab-effect'},
+                h('div',{className:'flab-effect-h'}, L('완료 효과','EFFECT')),
+                (fe.rewardBenefit||fe.rewardCost) && h('div',null, (fe.rewardBenefit||'') + (fe.rewardCost?' / '+fe.rewardCost:'')),
+                rw && h('div',{className:'flab-effect-rw'}, L('보상카드','REWARD')+' · '+(rw.title||'')+' — '+(rw.benefit||'')+(rw.cost?' / '+rw.cost:''))))))
+      );
   };
 
-  return h('div', {
-    style: {
-      position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
-      background: 'rgba(3,7,8,.98)', zIndex: 100,
-      display: 'flex', flexDirection: 'column'
-    }
-  },
-    // 헤더
-    h('div', {
-      style: {
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '8px 12px', borderBottom: '1px solid rgba(var(--ui-rgb),.22)',
-        background: 'rgba(var(--ui-rgb),.045)', flexShrink: 0
-      }
-    },
-      h('div', { style: { display: 'flex', gap: 4 } },
-        tabBtn('manage', tt('facility.manageTab',null,'Expansion Management'))),
-      h('span', {
-        style: {
-          fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-          color: 'rgba(var(--ui-rgb),.55)', cursor: 'pointer', padding: '4px 10px',
-          border: '1px solid rgba(var(--ui-rgb),.24)', letterSpacing: 1
-        },
-        onClick: p.onClose
-      }, tt('facility.close',null,'[ Close ]'))),
+  var sectionLabel = function(t){ return h('div',{className:'flab-section'}, t); };
+  var hasAny = pending.length || approved.length || completed.length;
 
-    // 컨텐츠
-    h(FacilityManageTab, {
-      facility: fac, onApprove: p.onApprove
-    })
+  return h('div', { className:'rlab-screen' },
+    h('div', { className:'rlab-frame' },
+      h('div', { className:'rlab-hero' },
+        h('div',{className:'rlab-hero-img',style:{backgroundImage:'url(assets/images/facility/facility_hero.jpg)'}}),
+        h('div',{className:'rlab-hero-top'},
+          h('div',{className:'rlab-kicker'}, h('span',{className:'rlab-live'}), L('시설 관리','FACILITY')),
+          h('span',{className:'rlab-close',onClick:function(){ if(p.onClose)p.onClose(); }}, '×')),
+        h('div',{className:'rlab-hero-id'},
+          h('div',{className:'rlab-hero-name'}, L('기지 시설','Base Facilities')),
+          h('div',{className:'rlab-hero-role'}, L('담당 전술지휘관 · ','Field commander · '), h('b',null,L('강도윤','Kang Do-yun'))))),
+      h('div',{className:'rlab-res'},
+        h('div',{className:'rlab-res-item'}, h('div',{className:'rlab-res-k'}, L('결재','PEND')), h('div',{className:'rlab-res-v'}, pending.length)),
+        h('div',{className:'rlab-res-item'}, h('div',{className:'rlab-res-k'}, L('승인','APPR')), h('div',{className:'rlab-res-v'}, approved.length)),
+        h('div',{className:'rlab-res-item'}, h('div',{className:'rlab-res-k'}, L('완료','DONE')), h('div',{className:'rlab-res-v'}, completed.length))),
+      h('div',{className:'rlab-body'},
+        !hasAny ? h('div',{className:'rlab-empty'}, L('현재 진행 중인 시설 확장이 없습니다.','No facility expansions available right now.'))
+        : h(React.Fragment, null,
+            pending.length>0 && h(React.Fragment,null, sectionLabel(L('결재 대기','PENDING APPROVAL')), pending.map(function(fe){return card(fe,'pending');})),
+            approved.length>0 && h(React.Fragment,null, sectionLabel(L('승인됨 · 보상 대기','APPROVED · AWAITING REWARD')), approved.map(function(fe){return card(fe,'approved');})),
+            completed.length>0 && h(React.Fragment,null, sectionLabel(L('완료','COMPLETED')), completed.map(function(fe){return card(fe,'completed');}))),
+        h('div',{className:'rlab-foot'}, L('※ 시설 확장은 작전 카드를 통해 제안됩니다.','※ Expansions are proposed through operation cards.')))
+    )
   );
 }
 
