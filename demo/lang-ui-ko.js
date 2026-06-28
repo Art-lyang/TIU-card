@@ -384,7 +384,7 @@ window.TS_I18N.mergeUI('ko', {
       special:{
         haeunStay:'잔류', haeunRecover:'데이터 복구 중',
         doyunAlive:'생존', doyunWounded:'중상', doyunMinorWound:'경상',
-        sejinResearch:'연구 진행', sejinAnalysis:'분석 중',
+        sejinResearch:'연구 진행', sejinAnalysis:'분석 중', sejinLight:'약점 규명', jaehyeokJoint:'합동 연구',
         jaehyeokTech:'기술 분석', weberContact:'접촉 성립', fosterInfo:'정보 제공',
         soyoungExposed:'정체 노출', soyoungJoined:'합류'
       }

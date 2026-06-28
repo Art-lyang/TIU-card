@@ -53,6 +53,8 @@ var CHAR_STATUS_TAGS={
     {char:'강도윤',log:'LOG-DOYUN-MINOR-WOUND',key:'statusTags.character.special.doyunMinorWound',label:'경상',cls:'ctag-special'},
     {char:'윤세진',log:'LOG-RES-012',key:'statusTags.character.special.sejinResearch',label:'연구 진행',cls:'ctag-special'},
     {char:'윤세진',log:'LOG-RES-011',key:'statusTags.character.special.sejinAnalysis',label:'분석 중',cls:'ctag-special'},
+    {char:'윤세진',log:'LOG-RES-LIGHT',key:'statusTags.character.special.sejinLight',label:'약점 규명',cls:'ctag-special'},
+    {char:'임재혁',log:'LOG-RES-JOINT',key:'statusTags.character.special.jaehyeokJoint',label:'합동 연구',cls:'ctag-special'},
     {char:'임재혁',log:'LOG-RES-001',key:'statusTags.character.special.jaehyeokTech',label:'기술 분석',cls:'ctag-special'},
     {char:'마르쿠스 베버',log:'LOG-080',key:'statusTags.character.special.weberContact',label:'접촉 성공',cls:'ctag-special'},
     {char:'닉 포스터',log:'LOG-081',key:'statusTags.character.special.fosterInfo',label:'정보 제공',cls:'ctag-special'},

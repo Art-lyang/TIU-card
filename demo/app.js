@@ -97,6 +97,7 @@ function App(){
   var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
   var _fac=useState({approved:[],pending:[],completed:[],proposed:[]}),facility=_fac[0],setFacility=_fac[1];
   var _fot=useState(false),facOfferedToday=_fot[0],setFacOfferedToday=_fot[1];
+  var _res=useState({}),research=_res[0],setResearch=_res[1];
   var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
   var _cil=useState(false),cardInputLocked=_cil[0],setCardInputLocked=_cil[1];
   var cardInputLockedRef=useRef(false);
@@ -211,6 +212,7 @@ function App(){
     var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
     var sf=Save.getFacility();if(sf){sf=normalizeFacilityState(sf);Save.saveFacility(sf);setFacility(sf)}
+    var sr=Save.getResearch();if(sr&&typeof researchNormalize==='function'){sr=researchNormalize(sr);Save.saveResearch(sr);setResearch(sr)}
     var sg=Save.get('ts_game',null);
     if(sg&&sg.stats&&typeof ensureProgressLogsForGame==='function'){sl=ensureProgressLogsForGame(sl,sg);Save.saveLogs(sl);setLogs(sl);if(typeof window!=='undefined')window.__ts_liveLogs=sl.slice();}
     // 기존 세이브 마이그레이션: legacy onceShown과 초반 once 카드 ONCE 플래그 병합
@@ -261,6 +263,7 @@ function App(){
   var _bgmMuted=useState(false),bgmMuted=_bgmMuted[0],setBgmMuted=_bgmMuted[1];
   var _showSettings=useState(false),showSettings=_showSettings[0],setShowSettings=_showSettings[1];
   var _showFacility=useState(false),showFacility=_showFacility[0],setShowFacility=_showFacility[1];
+  var _showResearch=useState(false),showResearch=_showResearch[0],setShowResearch=_showResearch[1];
   var _showEvidence=useState(false),showEvidence=_showEvidence[0],setShowEvidence=_showEvidence[1];
   var _achievements=useState(function(){return Save.getAchievements()}),achievements=_achievements[0],setAchievements=_achievements[1];
   var _glitch=useState(0),glitchLevel=_glitch[0],setGlitchLevel=_glitch[1];
@@ -595,6 +598,19 @@ function App(){
       feDef=(typeof FACILITY_EXPANSIONS!=='undefined')?FACILITY_EXPANSIONS.filter(function(f){return f.id===r.feId})[0]:null;
       if(completedFacility&&feDef&&feDef.uprising){nextGi=gi-2}
     }
+    // 연구 콘솔 일자 진행(Q1=B): 하루 마감 시 active 프로젝트 진척/판정. 결과 fx는 raw 적용(온건, Q2=A).
+    if(typeof researchAdvanceDay==='function'){
+      var radv=researchAdvanceDay(researchNormalize(research),Math.random);
+      if(radv.effects&&radv.effects.length){
+        radv.effects.forEach(function(ef){
+          if(ef.fx){next.c=Math.max(0,Math.min(act>=2?100:95,next.c+(ef.fx.c||0)));next.r=Math.max(0,Math.min(95,next.r+(ef.fx.r||0)));next.t=Math.max(0,Math.min(95,next.t+(ef.fx.t||0)));next.o=Math.max(0,Math.min(95,next.o+(ef.fx.o||0)));}
+          if(ef.log)tryUnlock(ef.log);
+        });
+        var rToast=radv.effects.map(function(ef){var pj=(typeof researchGetProject==='function')?researchGetProject(ef.id):null;var nm=pj?pj.name:ef.id;if(ef.outcome==='complete')return '[연구 완료] '+nm+(ef.toast?' — '+ef.toast:'');if(ef.outcome==='stage')return '[연구 진척] '+nm+(ef.stageLabel?' · '+ef.stageLabel:'');return '[연구 차질] '+nm+(ef.toast?' — '+ef.toast:'');}).join('\n');
+        setToastType('');setTimeout(function(){setToast(rToast);clearToastAfter(3200)},700);
+      }
+      setResearch(radv.state);Save.saveResearch(radv.state);
+    }
     setStats(next);setGi(nextGi);persistGame(next,nextGi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue,nextFacility);setCt(0);Save.set('ts_resumePhase','evening');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');
     if(r.feId&&completedFacility){
       setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | 내부 기록 갱신'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));clearToastAfter(2400)},300)}
@@ -617,7 +633,7 @@ function App(){
     // 버퍼가 없을 때(미션/복원 등 예외)만 새 카드를 뽑는다.
     if(freshCardRef.current){setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
@@ -628,6 +644,7 @@ function App(){
     setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);
     setGor('');setGoDay(null);setEndNarr(null);setEndId(null);setCAlertDay(-1);setAct2Reached(false);
     setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
+    setResearch({});Save.del('ts_research');
     // Reset archive read markers for a clean campaign.
     setSeenArchive([]);Save.del('ts_seenArchive');
     Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_act2_reached');clearResumeCheckpoint();initActiveSpecs();if(typeof initSessionDeck==='function')initSessionDeck(Save.getSessions());setShowEvidence(false);
@@ -703,6 +720,7 @@ function App(){
     var pue=pack.usedEvening||[];
     var psa=pack.seenArchive||[];
     var pfac=normalizeFacilityState(pack.facility||{approved:[],pending:[],completed:[],proposed:[]});
+    var pres=(typeof researchNormalize==='function')?researchNormalize(pack.research||{}):(pack.research||{});setResearch(pres);Save.saveResearch(pres);
     Save.del('ts_activeMission');
     setStats(ps);setGi(pgi);setAct(pact);setActFlags(paf);setTransRoute(ptr);
     var savedCard=(pack.currentCardId&&typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[pack.currentCardId])||pack.currentCard||null;
@@ -740,6 +758,16 @@ function App(){
     if(!feId||base.approved.indexOf(feId)>=0||base.completed.indexOf(feId)>=0){Save.saveFacility(base);return base}
     var next=normalizeFacilityState({approved:base.approved.concat([feId]),pending:base.pending.filter(function(id){return id!==feId}),completed:base.completed,proposed:base.proposed.concat([feId])});
     Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));clearToastAfter(2200)};
+  // 연구 단계 착수: 자원 차감 + active. 자원은 즉시 반영(setStats).
+  var startResearch=function(id){
+    if(typeof researchStart!=='function')return;
+    var r0=researchStart(research,id,stats,stats.day,act,getLiveLogs(logs));
+    if(!r0.ok){setToastType('');setToast(tt('app.researchCantStart',null,'착수 조건을 충족하지 못했습니다'));clearToastAfter(2000);return}
+    setStats(r0.stats);setResearch(r0.state);Save.saveResearch(r0.state);
+    persistGame(r0.stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue,facility);
+    var pj=(typeof researchGetProject==='function')?researchGetProject(id):null;
+    setToastType('');setToast('[연구 착수] '+((pj&&pj.name)||id));clearToastAfter(2000);
+  };
   // directUpgrade 는 main 머지 후 제거됨 — uprising GI-2 로직은 hReward 내부 r.feId 처리부로 이관
 
   // ═══ CH-007 미니게임 결과 수신 핸들러 ═══
@@ -815,11 +843,13 @@ function App(){
       (function(){var unlocked=logs.filter(function(id){return id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&!SESSION_SCOPED_LOGS[id]}).length;return h('span',{className:'info-tag',style:{cursor:'pointer'},onClick:function(){setRet('game');setPhase('logs')}},'LOG '+unlocked+'/'+ORACLE_LOGS.length)})(),
       (typeof ARCHIVE_ENTRIES!=='undefined')&&(function(){var uc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)}catch(err){return false}}).length;if(uc===0)return null;var nc=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(logs)&&seenArchive.indexOf(e.id)<0}catch(err){return false}}).length;return h('span',{className:'info-tag',style:{cursor:'pointer',color:nc>0?'#f0a030':'rgba(var(--ui-rgb),.7)',borderColor:nc>0?'rgba(240,160,48,.5)':'rgba(var(--ui-rgb),.2)',gap:4},onClick:function(){setRet('game');setPhase('archive')}},'ARC'+(nc>0?' '+nc+' ●':''))})(),
       (function(){var fc=(facility.completed||[]).length,fa=(facility.approved||[]).length,fp=(facility.pending||[]).length;var total=fc+fa+fp;if(total===0)return null;return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowFacility(true)}},tt('scenario.facility',{done:fc,total:total},getLocale()==='en'?('FAC '+fc+'/'+total):('시설 '+fc+'/'+total)))})(),
+      (function(){if(typeof RESEARCH_PROJECTS==='undefined'||typeof researchVisible!=='function')return null;var llogs=getLiveLogs(logs);var vis=RESEARCH_PROJECTS.filter(function(pj){return researchVisible(pj,stats.day,act,llogs)});if(vis.length===0)return null;var done=(typeof researchDoneCount==='function')?researchDoneCount(research):0;var actn=(typeof researchActiveCount==='function')?researchActiveCount(research):0;var lbl=(getLocale()==='en'?('RES '+done+'/'+vis.length):('연구 '+done+'/'+vis.length))+(actn>0?' ▸':'');return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowResearch(true)}},lbl)})(),
       logs.indexOf('LOG-EV-UNLOCK')>=0&&(function(){var col=typeof getActiveEvidence==='function'?getActiveEvidence(logs).length:(typeof getCollectedEvidence==='function'?getCollectedEvidence(logs).length:0);return h('span',{className:'info-tag',style:{cursor:'pointer',color:'var(--ui)',borderColor:'rgba(var(--ui-rgb),.4)'},onClick:function(){setShowEvidence(true)}},tt('scenario.evidence',{count:col},getLocale()==='en'?('EVIDENCE '+col):('증거 '+col)))})(),
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{key:curCard.id+'_'+stats.day+'_'+ct,card:curCard,onSwipe:swipe,onPreview:setPreview,getPreviewDelta:getChoicePreviewDelta,gi:gi,day:stats.day,modalActive:!!(showSettings||showFacility||showEvidence),disabled:cardInputLocked,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);clearToastAfter(2600)},onReply:function(msg){setToastType('');setToast(msg);clearToastAfter(1500)}}),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
+    showResearch&&typeof ResearchPanel!=='undefined'&&h(ResearchPanel,{research:research,stats:stats,day:stats.day,act:act,logs:getLiveLogs(logs),onStart:startResearch,onClose:function(){setShowResearch(false)}}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
     glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard})));
 }

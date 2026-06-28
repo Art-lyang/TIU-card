@@ -463,6 +463,8 @@ var Save={
   saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])},
   getFacility:function(){return Save.get('ts_facility',null)},
   saveFacility:function(data){Save.set('ts_facility',data)},
+  getResearch:function(){return Save.get('ts_research',null)},
+  saveResearch:function(data){Save.set('ts_research',data)},
   // ═══ 스냅샷 슬롯 (1~3) — 분기 선택 도움용 수동 저장 ═══
   saveSnapshot:function(slot,data){
     var curCard=data&&data.currentCard||null;
@@ -479,6 +481,7 @@ var Save={
       usedEvening:Save.get('ts_usedEvening',[]),
       seenArchive:Save.get('ts_seenArchive',[]),
       facility:Save.get('ts_facility',null),
+      research:Save.get('ts_research',null),
       combos:Save.get('ts_combos',[]),
       evidenceUsed:Save.get('ts_evidence_used',[]),
       resourceReserveUsed:Save.get('ts_resourceReserveUsed',false)===true,
@@ -520,6 +523,7 @@ var Save={
     Save.set('ts_usedEvening',pack.usedEvening||[]);
     Save.set('ts_seenArchive',pack.seenArchive||[]);
     if(pack.facility)Save.set('ts_facility',pack.facility);else Save.del('ts_facility');
+    if(pack.research)Save.set('ts_research',pack.research);else Save.del('ts_research');
     if(pack.combos)Save.set('ts_combos',pack.combos);else Save.del('ts_combos');
     if(pack.evidenceUsed)Save.set('ts_evidence_used',pack.evidenceUsed);else Save.del('ts_evidence_used');
     if(Object.prototype.hasOwnProperty.call(pack,'resourceReserveUsed')){if(pack.resourceReserveUsed===true)Save.set('ts_resourceReserveUsed',true);else Save.del('ts_resourceReserveUsed')}else Save.del('ts_resourceReserveUsed');
