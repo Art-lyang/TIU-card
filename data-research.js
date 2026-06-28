@@ -13,14 +13,14 @@ var RESEARCH_PROJECTS = [
     desc: "감염자의 Phase 0→1 전환을 늦추는 지연 화합물. 성공 시 사람을 구할 시간을 번다.",
     reqLog: "LOG-INTRO-YS", minDay: 6, minAct: 1,
     doneLog: "LOG-017",
-    doneFx: { c: 4, t: 4 },
+    doneFx: { c: 5, t: 5 },
     doneToast: "억제제 실용화 — 봉쇄·신뢰 강화",
     stages: [
-      { label: "동물 실험", days: 2, cost: { r: 8 }, risk: 0.15, fail: { r: 0 },
+      { label: "동물 실험", days: 2, cost: { r: 5 }, risk: 0.15, fail: { r: 0 },
         failToast: "동물 실험 데이터 불안정 — 재시도 필요" },
-      { label: "화합물 정제", days: 3, cost: { r: 10 }, risk: 0.25, fail: { o: 1 },
+      { label: "화합물 정제", days: 3, cost: { r: 10 }, risk: 0.25, fail: { o: 5 },
         failToast: "정제 실패 — ORACLE이 자원 사용을 주시" },
-      { label: "인체 임상", days: 3, cost: { r: 12 }, risk: 0.4, fail: { t: -3, o: 2 },
+      { label: "인체 임상", days: 3, cost: { r: 15 }, risk: 0.4, fail: { t: -5, o: 5 },
         failToast: "임상 부작용 — 팀 신뢰 흔들림, ORACLE 주목 상승" }
     ],
     en: {
@@ -41,12 +41,12 @@ var RESEARCH_PROJECTS = [
     desc: "확보한 SPEC 표본의 조직·행동 패턴 정밀 분석. 성공 시 현장 대응 인텔을 확보한다.",
     reqLog: "LOG-INTRO-YS", minDay: 8, minAct: 2,
     doneLog: "LOG-RES-012",
-    doneFx: { o: -2, c: 3 },
+    doneFx: { o: -5, c: 5 },
     doneToast: "표본 분석 완료 — 대응 인텔 확보",
     stages: [
-      { label: "표본 안정화", days: 2, cost: { r: 6 }, risk: 0.2, fail: { o: 1 },
+      { label: "표본 안정화", days: 2, cost: { r: 5 }, risk: 0.2, fail: { o: 5 },
         failToast: "표본 반응 불안정 — 재시도 필요" },
-      { label: "활체 정밀 분석", days: 2, cost: { r: 8 }, risk: 0.3, fail: { c: -3 },
+      { label: "활체 정밀 분석", days: 2, cost: { r: 10 }, risk: 0.3, fail: { c: -5 },
         failToast: "격리 절차 일부 실패 — 봉쇄 소폭 약화" }
     ],
     en: {
@@ -71,7 +71,7 @@ var RESEARCH_PROJECTS = [
     stages: [
       { label: "프레임 분석", days: 2, cost: { r: 5 }, risk: 0.1, fail: { r: 0 },
         failToast: "분석 노이즈 과다 — 재시도 필요" },
-      { label: "파장대 특정", days: 3, cost: { r: 7 }, risk: 0.2, fail: { r: -3 },
+      { label: "파장대 특정", days: 3, cost: { r: 10 }, risk: 0.2, fail: { r: -5 },
         failToast: "장비 과부하 — 자원 소량 손실" }
     ],
     en: {
@@ -91,14 +91,14 @@ var RESEARCH_PROJECTS = [
     desc: "윤세진의 표본 데이터와 임재혁의 ORACLE 쿼리 역분석을 합쳐 예측 모델의 편향을 규명한다. 두 사람이 함께해야 가능한 연구.",
     reqLogs: ["LOG-INTRO-YS", "LOG-INTRO-IJ"], minDay: 14, minAct: 2,
     doneLog: "LOG-RES-JOINT",
-    doneFx: { t: 3, o: -3 },
+    doneFx: { t: 5, o: -5 },
     doneToast: "ORACLE 편향 입증 — 신뢰 결집, 충성 하락",
     stages: [
-      { label: "데이터 통합", days: 2, cost: { r: 8 }, risk: 0.2, fail: { o: 1 },
+      { label: "데이터 통합", days: 2, cost: { r: 10 }, risk: 0.2, fail: { o: 5 },
         failToast: "통합 중 쿼리 흔적 노출 — ORACLE 주목" },
-      { label: "쿼리 역분석", days: 3, cost: { r: 10 }, risk: 0.3, fail: { o: 2 },
+      { label: "쿼리 역분석", days: 3, cost: { r: 10 }, risk: 0.3, fail: { o: 5 },
         failToast: "역분석 감지 — ORACLE 주목 상승" },
-      { label: "편향 입증", days: 3, cost: { r: 10 }, risk: 0.35, fail: { t: -2, o: 2 },
+      { label: "편향 입증", days: 3, cost: { r: 15 }, risk: 0.35, fail: { t: -5, o: 5 },
         failToast: "입증 실패 — 팀 사기·보안 동시 타격" }
     ],
     en: {
