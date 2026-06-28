@@ -101,7 +101,6 @@ function ArchiveViewer(p) {
               isNew && h('span', { className: 'vw-new-badge' }, 'NEW')
             );
           }),
-          entryPager(),
           catLocked > 0 && h('div', { className: 'vw-note' }, isKo ? (catLocked + '건의 항목이 잠겨 있습니다') : (catLocked + ' entries still locked'))
         ),
         h('div', { className: 'vw-buttons' },
@@ -143,7 +142,6 @@ function ArchiveViewer(p) {
             )
           );
         }),
-        catPager(),
         locked > 0 && h('div', { className: 'vw-note' }, isKo ? (locked + '건의 항목이 잠겨 있습니다') : (locked + ' entries still locked'))
       ),
       h('div', { className: 'vw-buttons' },
