@@ -5,7 +5,7 @@ var CARDS_NEW_B = [
 
   // ═══ Act 2: ORACLE 갈등 ═══
 
-  { id: "C-213", act: [2], priority: "중", bg: "comms",
+  { id: "C-213", act: [2], priority: "중", bg: "comms", cond: function(s,g,logs){ return logs.indexOf('LOG-050')<0; },
     msg: "[ORACLE 제안]\n\n\"기지 내 요원 간 사적 통신 내용을 분석하면 이탈 위험 요원을 사전에 식별할 수 있습니다.\"\n\n\"보안 강화를 위해 승인을 요청합니다.\"\n\n서하은이 표정이 굳어집니다.",
     left: { label: "거부 — 사생활은 보장한다", fx: { c: 0, r: 0, t: 2, o: -1 }, g: -2 },
     right: { label: "승인 — 보안이 우선이다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },

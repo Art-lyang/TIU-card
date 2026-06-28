@@ -129,9 +129,7 @@ var CARDS_INVESTIGATE = [
 
   { id: "CT-301", act: [2,3], priority: "상", bg: "forest", once: true,
     req: function(s,g,logs){
-      return s.day >= 7
-        && typeof ACTIVE_SPECS !== 'undefined' && Array.isArray(ACTIVE_SPECS)
-        && ACTIVE_SPECS.length > 0 && ACTIVE_SPECS.indexOf('spec-011') < 0;
+      return typeof ambushPending==='function' && ambushPending('spec-011','LOG-004',s,logs);
     },
     msg: "긴급 — 야간 봉쇄선 경보.\n\n남측 게이트 근무조 무전: \"안에서 사람 목소리가... 게이트 바로 앞입니다. 실종된 요원들 목소리예요.\"\n\n강도윤: \"사전 징후 없이 게이트까지 왔습니다. 음성 모방형 — Shell Talker입니다. 근무조가 흔들리고 있어요. 즉시 결정이 필요합니다.\"",
     left: { label: "현장 대응팀 즉시 투입", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1, mission: "M-E01" },

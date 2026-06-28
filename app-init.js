@@ -32,7 +32,8 @@ var specOk=function(c){if(!c.tag||c.tag.indexOf('spec-')!==0)return true;if(ACTI
 var EMERGENCY_AMBUSHES=[
   {spec:'spec-015',mission:'M-E02',done:'LOG-041'}, // BRAIN SEEKER 하수도 침입
   {spec:'spec-003',mission:'M-E03',done:'LOG-014'}, // BROOD DRONE 환기구 군체 침입
-  {spec:'spec-001',mission:'M-E04',done:'LOG-013'}  // MANNEQUIN 정지 위장 잠입
+  {spec:'spec-001',mission:'M-E04',done:'LOG-013'}, // MANNEQUIN 정지 위장 잠입
+  {spec:'spec-011',mission:'M-E01',done:'LOG-004'}  // SHELL TALKER 봉쇄선 음성 돌파
 ];
 var ambushPending=function(specTag,doneLog,s,logs){
   logs=logs||[];
