@@ -44,7 +44,7 @@ EVENING_RESPONSES['jaehyuk_2_5-99'] = {
 // 윤세진 — 연구 콘솔 해금 이벤트 이브닝 (priority:'event', 1회성)
 // ═══════════════════════════════════════════════════════════════
 EVENING_CHATS.push(
-  { char: '윤세진', act: [1,2,3], dayMin: 6, dayMax: 99,
+  { char: '윤세진', act: [2,3], dayMin: 11, dayMax: 99,
     priority: 'event',
     responseKey: 'sejin_research_open',
     condFn: function(p){ return p.logs.indexOf('LOG-INTRO-YS') >= 0 && p.logs.indexOf('LOG-RES-OPEN') < 0; },
