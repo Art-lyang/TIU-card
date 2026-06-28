@@ -72,6 +72,13 @@
     result_partial: 'assets/images/missions/result_partial.jpg',
     result_setback: 'assets/images/missions/result_setback.jpg',
     result_neutral: 'assets/images/missions/result_neutral.jpg',
+    result_mannequin: 'assets/images/missions/result_mannequin.jpg',
+    result_brood: 'assets/images/missions/result_brood.jpg',
+    result_seedspreader: 'assets/images/missions/result_seedspreader.jpg',
+    result_spore: 'assets/images/missions/result_spore.jpg',
+    result_shelltalker: 'assets/images/missions/result_shelltalker.jpg',
+    result_bloodpit: 'assets/images/missions/result_bloodpit.jpg',
+    result_brainseeker: 'assets/images/missions/result_brainseeker.jpg',
 
     facility_fe001_cryo_storage: 'assets/images/facility/facility_fe001_cryo_storage.jpg',
     facility_fe002_training_ground: 'assets/images/facility/facility_fe002_training_ground.jpg',

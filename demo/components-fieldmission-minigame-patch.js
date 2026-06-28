@@ -345,7 +345,9 @@ function FieldMission(p){
   function fmResultHero(roll){
     var tier=(roll&&roll.tier)||'neutral';
     var km={great:'result_great',success:'result_success',partial:'result_partial',critfail:'result_setback'};
-    var src=(typeof IMG!=='undefined')?IMG[km[tier]||'result_neutral']:null;
+    var SPEC_RESULT={'SPEC-001':'result_mannequin','SPEC-003':'result_brood','SPEC-004':'result_seedspreader','SPEC-008':'result_spore','SPEC-011':'result_shelltalker','SPEC-012':'result_bloodpit','SPEC-015':'result_brainseeker'};
+    var specKey=(mission&&mission.spec)?SPEC_RESULT[mission.spec]:null;
+    var src=(typeof IMG!=='undefined')?((specKey&&IMG[specKey])?IMG[specKey]:IMG[km[tier]||'result_neutral']):null;
     if(!src)return null;
     return h('div',{className:'fm-hero fm-hero--result fm-hero--'+tier+(fxOff?' fm-no-anim':'')},
       h('img',{src:src,className:'fm-hero-img',alt:'result'}),
