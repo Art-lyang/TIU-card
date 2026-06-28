@@ -92,7 +92,6 @@ function ArchiveViewer(p) {
       h('div', { className: 'vw-wrap' },
         h('div', { className: 'vw-panel' },
           h('div', { className: 'vw-panel-h' }, '// ' + catLabel(selCat).toUpperCase(), h('span', null, isKo ? (catEntries.length + '해금' + (catLocked > 0 ? ' / ' + catLocked + '미발견' : '')) : (catEntries.length + ' / ' + catLocked + ' LOCKED'))),
-          entryPager(),
           entryPageList.map(function(e) {
             var isNew = prevUnlocked.indexOf(e.id) < 0;
             var eView = entryView(e);
@@ -101,6 +100,7 @@ function ArchiveViewer(p) {
               isNew && h('span', { className: 'vw-new-badge' }, 'NEW')
             );
           }),
+          entryPager(),
           catLocked > 0 && h('div', { className: 'vw-note' }, isKo ? (catLocked + '건의 항목이 잠겨 있습니다') : (catLocked + ' entries still locked'))
         ),
         h('div', { className: 'vw-buttons' },
@@ -128,7 +128,6 @@ function ArchiveViewer(p) {
     h('div', { className: 'vw-wrap' },
       h('div', { className: 'vw-panel' },
         h('div', { className: 'vw-panel-h' }, '// ORACLE ARCHIVE', h('span', null, unlocked.length + '/' + ARCHIVE_ENTRIES.length + (isKo ? ' 해금' : ' UNLOCKED'))),
-        catPager(),
         ARCHIVE_CATEGORIES.slice(safeCatPage * CAT_PER, safeCatPage * CAT_PER + CAT_PER).map(function(cat) {
           var catUnlocked = unlocked.filter(function(e) { return e.cat === cat }).length;
           var catTotal = ARCHIVE_ENTRIES.filter(function(e) { return e.cat === cat }).length;
@@ -142,6 +141,7 @@ function ArchiveViewer(p) {
             )
           );
         }),
+        catPager(),
         locked > 0 && h('div', { className: 'vw-note' }, isKo ? (locked + '건의 항목이 잠겨 있습니다') : (locked + ' entries still locked'))
       ),
       h('div', { className: 'vw-buttons' },
