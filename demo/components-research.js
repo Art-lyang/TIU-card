@@ -91,8 +91,8 @@ function ResearchPanel(p) {
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('연구 콘솔', 'RESEARCH CONSOLE')),
           h('span', { className: 'rlab-close', onClick: function () { if (p.onClose) p.onClose(); } }, '×')),
         h('div', { className: 'rlab-hero-id' },
-          h('div', { className: 'rlab-hero-name' }, L('윤세진', 'Yoon Se-jin')),
-          h('div', { className: 'rlab-hero-role' }, L('연구원 · 의료관 / 변이체 연구', 'Researcher · Medical / Aberrant studies')))),
+          h('div', { className: 'rlab-hero-name' }, L('이변체 연구실', 'Aberrant Research Lab')),
+          h('div', { className: 'rlab-hero-role' }, L('담당 연구관 · ', 'Lead researcher · '), h('b', null, L('윤세진', 'Yoon Se-jin'))))),
       h('div', { className: 'rlab-res' }, resItem(L('자원', 'RES'), stats.r), resItem(L('봉쇄', 'CON'), stats.c), resItem(L('신뢰', 'TRU'), stats.t)),
       h('div', { className: 'rlab-body' },
         visible.length === 0

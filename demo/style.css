@@ -1153,6 +1153,7 @@ b.fm-rk--info{color:#caa14a}
 .rlab-hero-id{position:absolute;left:17px;bottom:13px;z-index:2}
 .rlab-hero-name{font-size:23px;font-weight:700;color:#eef5f2;letter-spacing:.3px;line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.7)}
 .rlab-hero-role{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.6px;color:rgba(204,224,218,.62);margin-top:4px}
+.rlab-hero-role b{color:rgba(238,245,242,.92);font-weight:400}
 .rlab-res{display:flex;flex-shrink:0;background:rgba(255,255,255,.022);border-bottom:1px solid rgba(255,255,255,.06)}
 .rlab-res-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-right:1px solid rgba(255,255,255,.05)}
 .rlab-res-item:last-child{border-right:none}
