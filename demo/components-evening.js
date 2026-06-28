@@ -466,7 +466,7 @@ function EveningChat2(p){
       !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',order:20,margin:'18px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,'다음 DAY 진행'):tt('evening.skip',null,'SKIP'))+' ]'),
       h(FactionRelationPanel,{logs:p.logs,gi:p.gi}),
       h('div',{className:'evening-select-grid'},
-        available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=isEveningContactDisabled(c);return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
+        available.map(function(c,idx){var portrait=CHAR_IMG[c.name]||null;var _emoP=(typeof resolveEveningEmotionImg==='function')?resolveEveningEmotionImg(c.key,{tier:(typeof getTrustTier==='function')?getTrustTier(p.trust,c.key):'mid',act:p.act}):null;if(_emoP)portrait=_emoP;var completed=!!doneToday[c.name];var locked=Object.keys(doneToday).length>0&&!completed;var disabled=isEveningContactDisabled(c);return h('div',{key:c.name,onClick:disabled?undefined:function(){pickChar(c)},className:'evening-contact-card'+(completed?' is-complete':'')+(locked?' is-locked':''),'aria-disabled':disabled?'true':undefined},
           h('span',{className:'evening-contact-index'},'0'+(idx+1)),
           portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
           h('div',{className:'evening-contact-name'},localizeCharName(c)),
@@ -480,6 +480,8 @@ function EveningChat2(p){
         h('button',{className:'btn',style:{fontSize:11,padding:'8px 20px',opacity:0.7},onClick:function(){setShowSkipConfirm(false)}},tt('common.cancel',null,'Cancel')),
         h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 20px'},onClick:p.onDone},tt('common.confirm',null,'Confirm')))));
   var portrait=CHAR_IMG[selChar.name]||null;
+  var _emoPortrait=(typeof resolveEveningEmotionImg==='function')?resolveEveningEmotionImg(selChar.key,{tier:(typeof getTrustTier==='function')?getTrustTier(p.trust,selChar.key):'mid',act:p.act,chatKey:(chat&&typeof getChatI18nKey==='function')?getChatI18nKey(chat):''}):null;
+  if(_emoPortrait)portrait=_emoPortrait;
   return h('div',{className:'screen dialogue-screen evening-dialogue-screen'},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h(CharacterCommPanel,{nameKey:selChar.name,charKey:selChar.key,displayName:localizeCharName(selChar),role:localizeCharRole(selChar),portrait:portrait}),
