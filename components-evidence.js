@@ -245,50 +245,57 @@ function EvidenceTable(p) {
   );
 }
 
-// 게임 화면용 증거 패널 오버레이 (열람 전용, 조합 불가)
+// 게임 화면용 증거 패널 오버레이 (열람 전용, 조합 불가) — 이미지 중심 대시보드(.rlab) + 카테고리 그룹
 function EvidencePanel(p) {
   var allCollected = getCollectedEvidence(p.logs || []).map(localizeEvidenceRecord);
   var collected = (typeof getActiveEvidence === 'function' ? getActiveEvidence(p.logs || []) : getCollectedEvidence(p.logs || [])).map(localizeEvidenceRecord);
   var unlocked = getUnlockedCombos();
-  var catColor = { oracle: 'rgba(var(--ui-rgb),.9)', field: 'var(--ui)', external: 'rgba(var(--ui-rgb),.78)', incident: '#ff6666', internal: 'rgba(var(--ui-rgb),.58)' };
-  var catName = { oracle: 'ORACLE', field: 'FIELD', external: 'EXTERNAL', incident: 'INCIDENT', internal: 'INTERNAL' };
-  return h('div', { style: { position: 'fixed', inset: 0, zIndex: 100,
-    background: 'rgba(3,7,8,.95)', overflowY: 'auto', padding: '20px 16px' } },
-    h('div', { style: { maxWidth: 440, margin: '0 auto' } },
-      h('div', { style: { display: 'flex', justifyContent: 'space-between',
-        alignItems: 'center', marginBottom: 16, paddingBottom: 8,
-        borderBottom: '1px solid rgba(var(--ui-rgb),.15)' } },
-        h('span', { style: { fontFamily: "'Share Tech Mono',monospace",
-          fontSize: 13, color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블', 'EVIDENCE TABLE')),
-        h('span', { onClick: p.onClose, style: { cursor: 'pointer',
-          fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-          color: 'rgba(var(--ui-rgb),.5)', padding: '4px 8px',
-          border: '1px solid rgba(var(--ui-rgb),.2)' } }, '[ ' + evidenceText('닫기', 'CLOSE') + ' ]')),
-      h('div', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.4)',
-        fontFamily: "'Share Tech Mono',monospace", marginBottom: 10 } },
-        evidenceText('활성: ', 'ACTIVE: ') + collected.length + ' / ' + allCollected.length + ' · ' +
-          evidenceText('수집 ', 'COLLECTED ') + allCollected.length + ' / ' + EVIDENCE.length),
-      collected.length === 0 && h('div', { style: { fontSize: 12, color: 'rgba(var(--ui-rgb),.3)',
-        textAlign: 'center', padding: '20px 0', lineHeight: 1.6 } },
-        allCollected.length === 0
-          ? evidenceText('수집된 증거가 없습니다.', 'No evidence records collected.')
-          : evidenceText('현재 조합 가능한 활성 자료가 없습니다. 분석 완료 정보는 아래 통찰 목록과 로그 탭에서 확인할 수 있습니다.',
-            'No active records are currently available. Completed insight data remains below and in Logs.')),
-      h('div', { className: 'ev-grid-scroll', style: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 6,
-        maxHeight: 'calc(2 * (72px + 6px))', overflowY: 'auto', scrollbarWidth: 'none',
-        msOverflowStyle: 'none', WebkitOverflowScrolling: 'touch' } },
-        collected.map(function(ev) {
-          var cc = catColor[ev.cat] || 'var(--ui)';
-          return h('div', { key: ev.id, style: { padding: '8px 10px', minHeight: 72,
-            border: '1px solid rgba(var(--ui-rgb),.1)', borderRadius: 2 } },
-            h('div', { style: { display: 'flex', alignItems: 'center', gap: 4, marginBottom: 3 } },
-              h('span', { style: { width: 6, height: 6, borderRadius: '50%', background: cc, flexShrink: 0 } }),
-              h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: cc } }, catName[ev.cat])),
-            h('div', { style: { fontSize: 11, color: 'var(--ui)', lineHeight: 1.4 } }, ev.name),
-            h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.3)', marginTop: 2 } }, ev.desc));
-        })),
-      renderEvidenceInsights(unlocked, false),
-      h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.25)', textAlign: 'center',
-        marginTop: 16, fontFamily: "'Share Tech Mono',monospace" } },
-        evidenceText('증거 조합은 이브닝 챗에서 가능합니다.', 'Evidence combinations are available during Evening Chat.'))));
+  var EN = evidenceLocale() === 'en'; var L = function(ko, en){ return EN ? en : ko; };
+  var catColor = { oracle: 'var(--ui)', field: 'rgba(var(--ui-rgb),.78)', external: 'rgba(var(--ui-rgb),.92)', incident: '#ff6f5a', internal: 'rgba(var(--ui-rgb),.6)' };
+  var catName = { oracle: L('ORACLE','ORACLE'), field: L('현장','FIELD'), external: L('외부','EXTERNAL'), incident: L('사건','INCIDENT'), internal: L('내부','INTERNAL') };
+  var CAT_ORDER = ['oracle','field','external','incident','internal'];
+
+  var groups = {};
+  collected.forEach(function(ev){ var c = ev.cat || 'internal'; (groups[c] = groups[c] || []).push(ev); });
+
+  var evCard = function(ev){
+    return h('div', { key: ev.id, className: 'ev2-card', style: { borderLeftColor: catColor[ev.cat] || 'var(--ui)' } },
+      h('div', { className: 'ev2-name' }, ev.name),
+      h('div', { className: 'ev2-desc' }, ev.desc));
+  };
+
+  var EVN = (typeof EVIDENCE !== 'undefined') ? EVIDENCE.length : allCollected.length;
+  var EVC = (typeof EVIDENCE_COMBOS !== 'undefined') ? EVIDENCE_COMBOS.length : unlocked.length;
+
+  return h('div', { className: 'rlab-screen' },
+    h('div', { className: 'rlab-frame' },
+      h('div', { className: 'rlab-hero' },
+        h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(assets/images/evidence/evidence_hero.jpg)' } }),
+        h('div', { className: 'rlab-hero-top' },
+          h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('조사 테이블','EVIDENCE TABLE')),
+          h('span', { className: 'rlab-close', onClick: function(){ if(p.onClose)p.onClose(); } }, '×')),
+        h('div', { className: 'rlab-hero-id' },
+          h('div', { className: 'rlab-hero-name' }, L('조사 테이블','Evidence Table')),
+          h('div', { className: 'rlab-hero-role' }, L('담당 정보분석관 · ','Intel analyst · '), h('b', null, L('임재혁','Lim Jae-hyeok'))))),
+      h('div', { className: 'rlab-res' },
+        h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('활성','ACTIVE')), h('div', { className: 'rlab-res-v' }, collected.length)),
+        h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('수집','COLLECTED')), h('div', { className: 'rlab-res-v' }, allCollected.length + '/' + EVN)),
+        h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('통찰','INSIGHTS')), h('div', { className: 'rlab-res-v' }, unlocked.length + '/' + EVC))),
+      h('div', { className: 'rlab-body' },
+        collected.length === 0
+          ? h('div', { className: 'rlab-empty' }, allCollected.length === 0
+              ? L('수집된 증거가 없습니다.','No evidence records collected.')
+              : L('현재 조합 가능한 활성 자료가 없습니다. 분석 완료 정보는 아래 통찰과 로그 탭에 보존됩니다.','No active records available. Completed insights remain below and in Logs.'))
+          : CAT_ORDER.filter(function(c){ return groups[c] && groups[c].length; }).map(function(c){
+              return h('div', { key: c, className: 'ev2-group' },
+                h('div', { className: 'ev2-cathead', style: { color: catColor[c] } },
+                  h('span', { className: 'ev2-catdot', style: { background: catColor[c] } }),
+                  catName[c],
+                  h('span', { className: 'ev2-catn' }, groups[c].length)),
+                groups[c].map(evCard));
+            }),
+        renderEvidenceInsights(unlocked, false),
+        h('div', { className: 'rlab-foot' }, L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.')))
+    )
+  );
 }

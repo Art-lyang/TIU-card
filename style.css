@@ -1205,3 +1205,13 @@ b.fm-rk--info{color:#caa14a}
 .flab-effect{margin-top:auto;padding:8px 10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);border-radius:7px;font-size:10px;color:rgba(196,212,206,.72);line-height:1.55}
 .flab-effect-h{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1.5px;color:rgba(95,208,138,.85);margin-bottom:3px}
 .flab-effect-rw{margin-top:4px;color:#f0a838}
+/* 조사탭 전용 (evidence) — 카테고리 그룹 카드 */
+.ev2-group{margin-bottom:15px}
+.rlab-body > * + .ev2-group{margin-top:2px}
+.ev2-cathead{display:flex;align-items:center;gap:7px;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:2px;margin:0 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06)}
+.ev2-catdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+.ev2-catn{margin-left:auto;color:rgba(180,198,192,.42);font-size:9px;letter-spacing:1px}
+.ev2-card{padding:9px 12px;margin:0 0 7px;border:1px solid rgba(255,255,255,.07);border-left-width:3px;border-radius:7px;background:rgba(255,255,255,.022);transition:border-color .15s ease,background .15s ease}
+.ev2-card:hover{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.14)}
+.ev2-name{font-size:12px;color:#e6ede9;line-height:1.35;font-weight:500}
+.ev2-desc{font-size:10px;color:rgba(190,206,200,.5);line-height:1.45;margin-top:3px}
