@@ -151,7 +151,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "The current facility is sufficient"
       },
       "C-081": {
-        msg: "ORACLE proposes a new personnel selection.\n\nCandidate A: Park So-young. Civilian data scientist. The name appears in a recommendation letter Seo Hae-eun left behind before her transfer.\n\"We did research together in graduate school. I can vouch for her ability.\"\n\nCandidate B: Technician with ORACLE technical certification. ORACLE recommendation.\n[ORACLE: Candidate B's capability index is more suitable for branch requirements.]\n\nOnly one candidate can be selected.",
+        msg: "ORACLE proposes a new personnel selection.\n\nCandidate A: Park So-young. Civilian data scientist. The name appears in a recommendation letter Seo Hae-eun left behind before her transfer.\n\"We did research together in graduate school. I can vouch for her ability.\"\n[ORACLE: Parts of Candidate A's record from the last three years do not match public records. The recommendation request predates Seo Hae-eun's transfer decision.]\n\nCandidate B: Technician with ORACLE technical certification. ORACLE recommendation.\n[ORACLE: Candidate B's capability index is more suitable for branch requirements.]\n\nOnly one candidate can be selected.",
         leftLabel: "Candidate A — Park So-young (recommended by Seo Hae-eun)",
         rightLabel: "Candidate B — ORACLE-recommended technician"
       },
