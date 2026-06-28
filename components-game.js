@@ -490,6 +490,7 @@ function DayObjectiveLegacy(p){
 function DayObjective(p){
   var st=p.stats||{},act=p.act||1,day=st.day||1;
   var logs=p.logs||[];
+  var _objc=useState(false),objChanged=_objc[0],setObjChanged=_objc[1];var objPrevRef=useRef(null);
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko';
   var isEn=locale==='en';
   var statNames={c:isEn?'Containment':'봉쇄',r:isEn?'Resources':'자원',t:isEn?'Trust':'신뢰',o:isEn?'Evaluation':'평가'};
@@ -542,6 +543,23 @@ function DayObjective(p){
   if(act>=3&&(oracleRel<=55||hasLog('LOG-EV-UNLOCK')||hasLog('LOG-LJC-PROM-01')))corruption=1;
   if(act>=3&&(oracleRel<=45||hasLog('LOG-080')||hasLog('LOG-081')||hasLog('LOG-LJC-PROM-03')||hasLog('LOG-UPRISING-PHASE1')))corruption=2;
   if(oracleRel<=35||hasLog('LOG-UPRISING-PHASE2')||hasLog('LOG-UPRISING-PHASE3')||hasLog('LOG-ESCAPE-TRIG'))corruption=3;
+  // ── ORACLE 능동 지시: 플레이어 선택으로 지표가 위험해지면 ORACLE 시점에서 목표를 바꿔 회복을 유도 ──
+  //    (검열 단계 corruption>=2 전까지만. 평가(ORACLE 충성) 최우선, 그 외 가장 낮은 위험 지표.)
+  if(corruption<2){
+    var oDir=null,oSub=null;
+    if(typeof st.o==='number'&&st.o<=35){
+      oDir=isEn?'[ORACLE: Evaluation below threshold. Comply with directives to restore standing.]':'[ORACLE: 운영 평가 미달. 지시를 준수해 평가를 회복하십시오.]';
+      oSub=isEn?'Choose ORACLE-aligned options to raise Evaluation.':'ORACLE 정렬 선택지로 평가를 끌어올리세요.';
+    }else{
+      var dirMap={
+        c:[isEn?'[ORACLE: Containment critical. Reinforce the perimeter — top priority.]':'[ORACLE: 봉쇄 안정도 임계. 봉쇄선 강화를 최우선으로 지시합니다.]',isEn?'Prioritize containment-raising options.':'봉쇄를 올리는 선택을 우선하세요.'],
+        r:[isEn?'[ORACLE: Supply critical. Secure resources first.]':'[ORACLE: 보급 임계. 자원 확보를 우선하십시오.]',isEn?'Prioritize resource-raising options.':'자원을 확보하는 선택을 우선하세요.'],
+        t:[isEn?'[ORACLE: Internal trust dropping. Stabilize personnel morale.]':'[ORACLE: 내부 신뢰 저하 감지. 인원 사기 안정화를 권고합니다.]',isEn?'Prioritize trust-raising options.':'신뢰를 올리는 선택을 우선하세요.']};
+      var lowK=['c','r','t'].filter(function(k){return typeof st[k]==='number'&&st[k]<=30}).sort(function(a,b){return st[a]-st[b]})[0];
+      if(lowK){oDir=dirMap[lowK][0];oSub=dirMap[lowK][1];}
+    }
+    if(oDir){text=oDir;if(!sub)sub=oSub;}
+  }
   if(corruption===1){
     sub=sub|| (isEn?'Objective signal unstable. Review logs and field reports.':'목표 신호가 불안정합니다. 로그와 현장 보고를 확인하세요.');
   }else if(corruption===2){
@@ -551,10 +569,21 @@ function DayObjective(p){
     text=isEn?'[OBJECTIVE CHANNEL SEALED]':'[목표 채널 봉인됨]';
     sub=isEn?'Operator deviation exceeds reporting threshold. Independent judgment required.':'지휘관 이탈 지수가 보고 임계값을 초과했습니다. 독자 판단이 필요합니다.';
   }
-  return h('div',{className:'objective-bar objective-corrupt-'+corruption},
+  // 목표(text)가 직전과 달라지면(=플레이어 선택으로 ORACLE 지시가 바뀌면) 갱신 연출 트리거
+  useEffect(function(){
+    if(objPrevRef.current!==null&&objPrevRef.current!==text){
+      setObjChanged(true);
+      var tm=setTimeout(function(){setObjChanged(false)},1600);
+      objPrevRef.current=text;
+      return function(){clearTimeout(tm)};
+    }
+    objPrevRef.current=text;
+  },[text]);
+  return h('div',{className:'objective-bar objective-corrupt-'+corruption+(objChanged?' is-updated':'')},
     h('span',{className:'objective-label'},tt('objective.label',null,'DAY OBJECTIVE')),
     h('span',{className:'objective-text'},text),
-    sub?h('span',{className:'objective-sub'},sub):null
+    sub?h('span',{className:'objective-sub'},sub):null,
+    objChanged?h('span',{className:'obj-updated-badge'},isEn?'▶ DIRECTIVE UPDATED':'▶ 지시 갱신'):null
   );
 }
 

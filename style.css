@@ -80,6 +80,13 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .objective-corrupt-2 .objective-label,.objective-corrupt-2 .objective-text{color:#ff8d61;text-shadow:0 0 7px rgba(255,80,40,.25);animation:glitchText .45s steps(3,end) infinite}
 .objective-corrupt-3{border-color:rgba(255,60,60,.48);background:repeating-linear-gradient(90deg,rgba(255,60,60,.08) 0 12px,rgba(0,0,0,.12) 12px 22px),rgba(5,10,12,.28);box-shadow:inset 0 0 18px rgba(255,0,0,.08),0 0 10px rgba(255,0,0,.06)}
 .objective-corrupt-3 .objective-label,.objective-corrupt-3 .objective-text{color:#ff4444;text-shadow:1px 0 rgba(0,240,255,.5),-1px 0 rgba(255,0,64,.45);animation:glitchText .18s steps(2,end) infinite}
+/* 목표 갱신 연출 — ORACLE 지시가 바뀔 때 펄스 + 글리치 + '지시 갱신' 배지 */
+.objective-bar{position:relative}
+.objective-bar.is-updated{animation:objUpdate .6s ease}
+.objective-bar.is-updated .objective-text{animation:glitchText .2s steps(2,end) 3}
+@keyframes objUpdate{0%{box-shadow:0 0 0 1px rgba(240,160,48,.75),inset 0 0 22px rgba(240,160,48,.3);transform:translateY(-2px)}45%{box-shadow:0 0 12px rgba(240,160,48,.4),inset 0 0 18px rgba(240,160,48,.14)}100%{transform:none}}
+.obj-updated-badge{position:absolute;top:-8px;right:8px;z-index:2;pointer-events:none;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:2px;color:#f0a030;background:rgba(5,10,12,.92);padding:1px 5px;border:1px solid rgba(240,160,48,.5);border-radius:2px;text-shadow:0 0 6px rgba(240,160,48,.5);animation:objBadge 1.6s ease forwards}
+@keyframes objBadge{0%{opacity:0;transform:translateX(6px)}12%{opacity:1;transform:none}82%{opacity:1}100%{opacity:0}}
 .objective-corrupt-3 .objective-sub{color:#ff8d61}
 @keyframes criticalPulse{0%,100%{opacity:1}50%{opacity:0.55}}
 .delta-float{position:absolute;right:30px;top:50%;font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:bold;pointer-events:none;animation:deltaFloatUp 1.5s ease-out forwards;z-index:3;text-shadow:0 0 6px currentColor}
