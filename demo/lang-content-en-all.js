@@ -1061,6 +1061,16 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         leftLabel: "Confront Park So-young",
         rightLabel: "Play dumb — keep her under watch"
       },
+      "CS-016": {
+        msg: "The day after the confrontation. Park So-young doesn't deny it.\n\n\"...You're right. Prometheus sent me. To see what ORACLE is doing inside the containment line.\"\n\n\"But what I found here was... you. There's far more I left out of my reports.\"\n\nShe sets down her terminal. \"So what will you do now.\"",
+        leftLabel: "Bring her back into trust — use her as an asset",
+        rightLabel: "Restrict her work under surveillance"
+      },
+      "CS-017": {
+        msg: "Third day watching Park So-young.\n\nLim Jae-hyeok: \"03:20. Park So-young transmitted to an external receiver by shortwave. Destination — Prometheus.\"\n\nRecovered content: the location of ORACLE's COASTAL MIRROR data, and one line.\n\n\"Base personnel are not to be recovered at operation's end.\"\n\nShe has no idea she's been made.",
+        leftLabel: "Feed her false intel",
+        rightLabel: "Quietly prepare to cut her loose"
+      },
       "C-254": {
         msg: "Kang Do-yun's patrol report.\n\n\"500 meters east of the containment line. Footprints in the soil.\"\n\nNot military boots, not civilian hiking boots. The pattern is irregular — like someone deliberately scuffed it out.\n\n\"Someone passed through here. And they didn't want us to see them.\"",
         leftLabel: "Run a detailed sweep — three hours",
@@ -3495,6 +3505,8 @@ window.TS_I18N.mergeContent('en', {
     "LOG-082": { title: "Park So-young Joined", content: "Analyst Park So-young joined the Korea Branch. She reinforces the analysis line left vacant after Seo Hae-eun's transfer." },
     "LOG-082-REPORT": { title: "Park So-young Analysis Report", content: "Park So-young's first analysis report after joining. It connects the logs Seo Hae-eun left behind with the current data flow." },
     "LOG-083": { title: "External Contact Follow-up Record", content: "Follow-up record for an external-contact line. It is used for later faction relationship and evening chat conditions." },
+    "LOG-083-PURSUE": { title: "Park So-young — Confronted", content: "Branch record: the commander confronted Park So-young about her identity directly. She no longer hides who she is and confesses she was sent by Prometheus." },
+    "LOG-083-WATCH": { title: "Park So-young — Under Watch", content: "Branch record: knowing her identity, the commander chose to feign ignorance and surveil. She keeps her Prometheus contact line open, unaware she has been made." },
     "LOG-INC-01": { title: "Isolation Room Anomaly", content: "Repeated temperature drops and faint voice signals were detected in Research Wing B's isolation room. The cause may be electromagnetic interference from a lower zone rather than the isolated subject itself." },
     "LOG-INC-02": { title: "CCTV Blind Zone", content: "B1 corridor security cameras went offline in sequence. A possible internal command or concealment script was recorded rather than a simple fault." },
     "LOG-INC-03": { title: "Research Wing Sample Contamination", content: "Self-mutating contamination occurred inside sample incubator 3. It is estimated as structural change within the sample, not external inflow." },

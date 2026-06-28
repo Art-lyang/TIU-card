@@ -41,8 +41,21 @@ var CARDS_EXTERNAL = [
   { id: "C-253", act: [4], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-081')>=0 && logs.indexOf('LOG-083')<0 && s.day>=30 },
     msg: "포스터와의 대화 중.\n\n\"아, 새 분석관이 왔다면서요?\"\n\n무심하게 말합니다.\n\n\"소영이... 잘 적응하던가요?\"\n\n이름을 알고 있습니다.\n\n\"... 아. 몰랐어요? 우리 쪽 사람인데.\"\n\n웃습니다.\n\n\"서하은이 추천했다고요? 맞아요. 소영이가 그렇게 부탁한 거니까.\"",
-    left: { label: "박소영을 추궁한다", fx: { c: 0, r: 0, t: -2, o: -1 }, g: -3 },
-    right: { label: "모른 척한다 — 감시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1 } },
+    left: { label: "박소영을 추궁한다", fx: { c: 0, r: 0, t: -2, o: -1 }, g: -3, log: "LOG-083-PURSUE" },
+    right: { label: "모른 척한다 — 감시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1, log: "LOG-083-WATCH" } },
+
+  // ═══ C-253 분기 후속 — 추궁(CS-016) / 감시(CS-017) 루트가 서로 다른 결말로 갈림 ═══
+  { id: "CS-016", act: [4], priority: "상", bg: "comms", once: true,
+    cond: function(s,g,logs){ return logs.indexOf('LOG-083-PURSUE')>=0 && s.day>=31 },
+    msg: "추궁 다음 날. 박소영은 부인하지 않습니다.\n\n\"...맞아요. 프로메테우스가 보냈습니다. ORACLE이 봉쇄선 안에서 뭘 하는지 보라고.\"\n\n\"하지만 여기 와서 본 건... 당신들이었어요. 보고서에 안 적은 게 더 많습니다.\"\n\n그녀가 단말기를 내려놓습니다. \"이제 어떻게 하실 겁니까.\"",
+    left: { label: "신뢰선에 복귀 — 자산으로 쓴다", fx: { c: 0, r: 0, t: 2, o: -2 }, g: -2 },
+    right: { label: "감시 하에 업무를 제한한다", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 1 } },
+
+  { id: "CS-017", act: [4], priority: "상", bg: "comms", once: true,
+    cond: function(s,g,logs){ return logs.indexOf('LOG-083-WATCH')>=0 && s.day>=31 },
+    msg: "박소영을 감시한 지 사흘째.\n\n임재혁: \"03:20, 박소영이 단파로 외부에 송신했습니다. 수신처 — 프로메테우스.\"\n\n복원된 내용: ORACLE의 COASTAL MIRROR 데이터 위치, 그리고 한 줄.\n\n\"기지 인원은 작전 종료 시 회수 대상 아님.\"\n\n그녀는 자신이 발각된 걸 모릅니다.",
+    left: { label: "역정보를 흘린다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: -1 },
+    right: { label: "조용히 손절을 준비한다", fx: { c: 0, r: -1, t: 1, o: 0 }, g: -1 } },
 
   // ═══ 미확인 관찰자 — 흔적만 남기는 관찰자 ═══
 
