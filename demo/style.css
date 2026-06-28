@@ -1013,6 +1013,7 @@ b.fm-rk--info{color:#caa14a}
 .vw-buttons .btn{font-size:12px;padding:9px 20px;min-height:42px;margin-top:0}
 .vw-pager{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 0 10px}
 .vw-pager-n{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(var(--ui-rgb),.6);min-width:64px;text-align:center}
+.vw-tabs{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 11px;padding-bottom:9px;border-bottom:1px solid rgba(var(--ui-rgb),.14)}.vw-tab{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.5px;color:var(--ui-dim);background:rgba(var(--ui-rgb),.05);border:1px solid rgba(var(--ui-rgb),.22);border-radius:3px;padding:4px 10px;cursor:pointer;transition:color .15s,background .15s,border-color .15s;white-space:nowrap;line-height:1.1}.vw-tab:hover{color:var(--ui);border-color:rgba(var(--ui-rgb),.45)}.vw-tab.active{color:#05080b;background:var(--ui);border-color:var(--ui);font-weight:700;text-shadow:none}
 
 /* ── DIALOGUE — dossier comm link ─────────────────────────────── */
 .dlg-head{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:440px;flex-shrink:0;padding:6px 4px 7px;border-bottom:1px solid rgba(var(--ui-rgb),.2);margin-bottom:8px}

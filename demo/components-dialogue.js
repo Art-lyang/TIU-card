@@ -95,8 +95,19 @@ function LogViewer(p){
   var isEn=locale==='en';
   var s1=useState(null),sel=s1[0],setSel=s1[1];
   var s2=useState(0),page=s2[0],setPage=s2[1];
-  var ul=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ul.length;
-  var pageSize=12,totalPages=Math.max(1,Math.ceil(ul.length/pageSize));
+  var s3=useState('all'),topic=s3[0],setTopic=s3[1];
+  var ulAll=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ulAll.length;
+  var LOG_TOPICS=[{k:'all',ko:'전체',en:'ALL'},{k:'spec',ko:'이변체',en:'SPECIMENS'},{k:'prom',ko:'프로메테우스',en:'PROMETHEUS'},{k:'oracle',ko:'ORACLE',en:'ORACLE'},{k:'people',ko:'인물',en:'PERSONNEL'},{k:'etc',ko:'기타',en:'OTHER'}];
+  var SPEC_K=['SPEC-','이변체','CODENAME','관측 기록','마네킹','군체','포자','Brood','Spore','Shell Talker','Blood Pit'];
+  var PROM_K=['프로메테우스','Prometheus','COASTAL MIRROR'];
+  var ORC_K=['Observer','OBSERVER','미등록 레이어','미등록 인터페이스','관측 레이어','은폐','불일치','감시','은닉','필터링'];
+  var PPL_K=['서하은','윤세진','임재혁','강도윤'];
+  var anyIn=function(s,arr){for(var i=0;i<arr.length;i++){if(s.indexOf(arr[i])>=0)return true;}return false;};
+  var classifyLog=function(l){var s=(l.id||'')+' '+(l.title||'')+' '+(l.content||'');
+    if(anyIn(s,SPEC_K))return 'spec'; if(anyIn(s,PROM_K))return 'prom'; if(anyIn(s,ORC_K))return 'oracle'; if(anyIn(s,PPL_K))return 'people'; return 'etc';};
+  var topicCount=function(k){return k==='all'?ulAll.length:ulAll.filter(function(l){return classifyLog(l)===k}).length;};
+  var ul=(topic==='all')?ulAll:ulAll.filter(function(l){return classifyLog(l)===topic});
+  var pageSize=10,totalPages=Math.max(1,Math.ceil(ul.length/pageSize));
   var safePage=Math.max(0,Math.min(page,totalPages-1));
   var pageLogs=ul.slice(safePage*pageSize,safePage*pageSize+pageSize);
   var bgOverlay=IMG.bg_corridor?h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_corridor+')',opacity:0.06}}):null;
@@ -131,7 +142,8 @@ function LogViewer(p){
     bgOverlay,
     h('div',{className:'vw-wrap'},
       h('div',{className:'vw-panel'},
-        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ul.length+'/'+ORACLE_LOGS.length+(isEn?' UNLOCKED':' 해금'))),
+        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ulAll.length+'/'+ORACLE_LOGS.length+(isEn?' UNLOCKED':' 해금'))),
+        h('div',{className:'vw-tabs'},LOG_TOPICS.filter(function(tp){return tp.k==='all'||topicCount(tp.k)>0;}).map(function(tp){var c=topicCount(tp.k);return h('button',{key:tp.k,className:'vw-tab'+(topic===tp.k?' active':''),onClick:function(){setTopic(tp.k);setPage(0);}},(isEn?tp.en:tp.ko)+(c>0?(' '+c):''))})),
         pager(),
         pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,className:'vw-row vw-row-entry',onClick:function(){setSel(l.id)}},
           h('span',{className:'vw-row-name'},text.title),
