@@ -38,7 +38,9 @@ window.TS_I18N.mergeContent('en', {
     "CE-042": { msg: "Dawn. The remaining senior officers stand outside your room. \"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
     "CE-042B": { msg: "Dawn. The remaining senior officers stand outside your room.\n\nThe analysis logs Seo Hae-eun left behind remain preserved on a backup terminal.\n\n\"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
     "CE-042C": { msg: "Dawn. Seo Hae-eun, Yoon Se-jin, and Lim Jae-hyeok stand outside your room.\n\nKang Do-yun's last operation journal sits in the empty place he left behind.\n\n\"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
-    "CE-042D": { msg: "Dawn. Only Yoon Se-jin and Lim Jae-hyeok stand outside your room.\n\nSeo Hae-eun's analysis logs and Kang Do-yun's last operation journal both remain preserved on a backup terminal.\n\n\"Commander. The places they left behind belong to you now too. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" }
+    "CE-042D": { msg: "Dawn. Only Yoon Se-jin and Lim Jae-hyeok stand outside your room.\n\nSeo Hae-eun's analysis logs and Kang Do-yun's last operation journal both remain preserved on a backup terminal.\n\n\"Commander. The places they left behind belong to you now too. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
+    "CE-042E": { msg: "Dawn. The remaining senior officers stand outside your room.\n\nPark So-young stands among them. It was she who moved Seo Hae-eun's analysis logs onto a backup terminal.\n\n\"Commander. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" },
+    "CE-042F": { msg: "Dawn. Yoon Se-jin, Lim Jae-hyeok, and Park So-young stand outside your room.\n\nSeo Hae-eun's analysis logs and Kang Do-yun's last operation journal remain preserved on a backup terminal. It was Park So-young who organized both records to the end.\n\n\"Commander. The places they left behind belong to you now too. It is time to decide.\"", leftLabel: "\"...Understood. We go together.\"", rightLabel: "\"Not yet.\"" }
   },
   resultText: {
     "CE-001_left": "You analyze the captured string. It is a trace of something that does not belong to ORACLE.",
@@ -82,7 +84,11 @@ window.TS_I18N.mergeContent('en', {
     "CE-042C_left": "You decide to go together. Kang Do-yun's last operation journal is packed as the branch lights begin to go out one by one.",
     "CE-042C_right": "\"Not yet.\" The remaining senior staff quietly withdraw. Only the operation journal left at Kang Do-yun's seat loses its light.",
     "CE-042D_left": "You decide to go together. Every record the two of them left behind is packed as the branch lights begin to go out one by one.",
-    "CE-042D_right": "\"Not yet.\" Yoon Se-jin and Lim Jae-hyeok quietly withdraw. Only the places those two left behind remain in the dark."
+    "CE-042D_right": "\"Not yet.\" Yoon Se-jin and Lim Jae-hyeok quietly withdraw. Only the places those two left behind remain in the dark.",
+    "CE-042E_left": "You decide to go together. Park So-young packs even Seo Hae-eun's records as the branch lights begin to go out one by one.",
+    "CE-042E_right": "\"Not yet.\" The remaining senior staff quietly withdraw. Park So-young looks at you for a moment, then closes the door last.",
+    "CE-042F_left": "You decide to go together. Park So-young packs every record the two of them left behind as the branch lights begin to go out one by one.",
+    "CE-042F_right": "\"Not yet.\" Yoon Se-jin and Lim Jae-hyeok withdraw. Park So-young gazes for a long while at the places those two left behind, then quietly closes the door."
   }
 });
 })();
