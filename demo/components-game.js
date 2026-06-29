@@ -236,8 +236,7 @@ function MainMenu(p){
   if(sub==='settings')return h('div',{className:'boot',style:{justifyContent:'flex-start',padding:'16px 0',overflowY:'auto'}},
     h(SettingsPanel,{onClose:function(){setSub(null)},onReset:p.onReset,onFullReset:p.onFullReset,
       onLogs:function(){setSub(null);p.onLogs()},onArchive:function(){setSub(null);p.onArchive()},
-      onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange,
-      onMainMenu:function(){setSub(null);if(p.onMainMenu)p.onMainMenu();}}));
+      onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap,onFxModeChange:p.onFxModeChange}));
   // 메인 메뉴
   return h('div',{className:'main-terminal-menu'},
     h('div',{className:'main-terminal-crt', 'aria-hidden':true}),
