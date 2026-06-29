@@ -60,8 +60,7 @@ function EveningChat(p){
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
-  var demoEarlyCoreOfficer=function(c){return !!(typeof window!=='undefined'&&window.TIU_DEMO&&window.TIU_DEMO.enabled&&c&&['haeun','doyun','sejin','jaehyuk'].indexOf(c.key)>=0&&p.act<=2)};
-  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2&&!demoEarlyCoreOfficer(c))return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.name==='서하은'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.name==='강도윤'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.name==='마르쿠스 베버'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.name==='닉 포스터'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.name==='박소영'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -244,8 +243,7 @@ function EveningChat2(p){
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
-  var demoEarlyCoreOfficer=function(c){return !!(typeof window!=='undefined'&&window.TIU_DEMO&&window.TIU_DEMO.enabled&&c&&['haeun','doyun','sejin','jaehyuk'].indexOf(c.key)>=0&&p.act<=2)};
-  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2&&!demoEarlyCoreOfficer(c))return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
+  var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
   var usedEv=p.usedEvening||[];
   var ecBaseKey=function(ec){return ec.char+'_'+ec.act[0]+'_'+ec.dayMin+'-'+ec.dayMax};
   var _ecKeyCounts={};EVENING_CHATS.forEach(function(ec){var k=ecBaseKey(ec);_ecKeyCounts[k]=(_ecKeyCounts[k]||0)+1});
@@ -482,7 +480,8 @@ function EveningChat2(p){
   var portrait=CHAR_IMG[selChar.name]||null;
   var _emoPortrait=(typeof resolveEveningEmotionImg==='function')?resolveEveningEmotionImg(selChar.key,{tier:(typeof getTrustTier==='function')?getTrustTier(p.trust,selChar.key):'mid',act:p.act,chatKey:(chat&&typeof getChatI18nKey==='function')?getChatI18nKey(chat):''}):null;
   if(_emoPortrait)portrait=_emoPortrait;
-  return h('div',{className:'screen dialogue-screen evening-dialogue-screen'},
+  var skipChat=function(){if(!chatLines.length||done)return;setLi(chatLines.length-1);setCi(chatLines[chatLines.length-1].length);setDone(true)};
+  return h('div',{className:'screen dialogue-screen evening-dialogue-screen',onClick:skipChat,style:(chatLines.length&&!done)?{cursor:'pointer'}:null},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h(CharacterCommPanel,{nameKey:selChar.name,charKey:selChar.key,displayName:localizeCharName(selChar),role:localizeCharRole(selChar),portrait:portrait}),
     h('div',{className:'oracle-card dialogue-card'},
@@ -494,6 +493,6 @@ function EveningChat2(p){
         replyLine&&h('div',{className:'dialogue-reply dialogue-reply--evening'},replyLine)
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText))),
     done&&!choiceDone&&resp&&h('div',{className:'dialogue-choices'},
-      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,className:'dialogue-choice-btn',style:{border:'1px solid '+bdrCol},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
+      [resp.a,resp.b].map(function(opt,i){return h('button',{key:i,className:'dialogue-choice-btn',onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
     (noChat||done)&&(!resp||choiceDone)&&h('div',{className:'dialogue-choices'},h('button',{className:'btn btn-amber',style:{display:'block',margin:'4px auto 0',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,'이브닝 화면으로 돌아가기')+' ]')));
 }

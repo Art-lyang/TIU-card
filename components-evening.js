@@ -480,7 +480,8 @@ function EveningChat2(p){
   var portrait=CHAR_IMG[selChar.name]||null;
   var _emoPortrait=(typeof resolveEveningEmotionImg==='function')?resolveEveningEmotionImg(selChar.key,{tier:(typeof getTrustTier==='function')?getTrustTier(p.trust,selChar.key):'mid',act:p.act,chatKey:(chat&&typeof getChatI18nKey==='function')?getChatI18nKey(chat):''}):null;
   if(_emoPortrait)portrait=_emoPortrait;
-  return h('div',{className:'screen dialogue-screen evening-dialogue-screen'},
+  var skipChat=function(){if(!chatLines.length||done)return;setLi(chatLines.length-1);setCi(chatLines[chatLines.length-1].length);setDone(true)};
+  return h('div',{className:'screen dialogue-screen evening-dialogue-screen',onClick:skipChat,style:(chatLines.length&&!done)?{cursor:'pointer'}:null},
     h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
     h(CharacterCommPanel,{nameKey:selChar.name,charKey:selChar.key,displayName:localizeCharName(selChar),role:localizeCharRole(selChar),portrait:portrait}),
     h('div',{className:'oracle-card dialogue-card'},
@@ -492,6 +493,6 @@ function EveningChat2(p){
         replyLine&&h('div',{className:'dialogue-reply dialogue-reply--evening'},replyLine)
       ):h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.55)',lineHeight:1.7}},noChatText))),
     done&&!choiceDone&&resp&&h('div',{className:'dialogue-choices'},
-      [resp.a,resp.b].map(function(opt,i){var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';return h('button',{key:i,className:'dialogue-choice-btn',style:{border:'1px solid '+bdrCol},onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
+      [resp.a,resp.b].map(function(opt,i){return h('button',{key:i,className:'dialogue-choice-btn',onClick:function(){pickResp(opt)}},h('span',null,opt.label))})),
     (noChat||done)&&(!resp||choiceDone)&&h('div',{className:'dialogue-choices'},h('button',{className:'btn btn-amber',style:{display:'block',margin:'4px auto 0',padding:'10px 28px'},onClick:returnToEvening},'[ '+tt('evening.returnToEvening',null,'이브닝 화면으로 돌아가기')+' ]')));
 }

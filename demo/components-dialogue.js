@@ -57,13 +57,13 @@ function Dialogue(p){
   var s1=useState(0),li=s1[0],setLi=s1[1];var s2=useState(false),sc=s2[0],setSc=s2[1];
   var s3=useState(-1),picked=s3[0],setPicked=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(''),rTxt=s5[0],setRTxt=s5[1];var s6=useState(false),rDone=s6[0],setRDone=s6[1];
-  var textRef=useRef(null);
+  var textRef=useRef(null);var skipRef=useRef(false);
   useEffect(function(){setLi(0);setSc(false);setPicked(-1);setChosen(null);setRTxt('');setRDone(false)},[d]);
   useEffect(function(){if(li<lines.length){var t=setTimeout(function(){setLi(function(v){return v+1})},800);return function(){clearTimeout(t)}}else{var t2=setTimeout(function(){setSc(true)},400);return function(){clearTimeout(t2)}}},[li,lines]);
-  useEffect(function(){if(!chosen||!chosen.reply)return;var txt=chosen.reply;var i=0;var t=setInterval(function(){if(i<txt.length){i++;setRTxt(txt.substring(0,i))}else{clearInterval(t);setTimeout(function(){setRDone(true)},800)}},30);return function(){clearInterval(t)}},[chosen]);
+  useEffect(function(){if(!chosen||!chosen.reply)return;var txt=chosen.reply;var i=0;skipRef.current=false;var t=setInterval(function(){if(skipRef.current){clearInterval(t);setRTxt(txt);skipRef.current=false;setTimeout(function(){setRDone(true)},150);return}if(i<txt.length){i++;setRTxt(txt.substring(0,i))}else{clearInterval(t);setTimeout(function(){setRDone(true)},800)}},30);return function(){clearInterval(t)}},[chosen]);
   useEffect(function(){if(rDone&&chosen){var t=setTimeout(function(){p.onChoice(chosen)},1400);return function(){clearTimeout(t)}}},[rDone,chosen,p]);
   useEffect(function(){var el=textRef.current;if(el)el.scrollTop=el.scrollHeight},[li,rTxt,rDone,chosen]);
-  var handlePick=function(c,i){if(picked>=0)return;setPicked(i);setTimeout(function(){setChosen(c)},500)};
+  var handlePick=function(c,i){if(picked>=0)return;setPicked(i);setTimeout(function(){setChosen(c)},500)};var skipReveal=function(){if(li<lines.length){setLi(lines.length);setSc(true);return}if(chosen&&!rDone){skipRef.current=true}};
   useEffect(function(){
     var onKey=function(e){
       if(!sc||picked>=0||chosen)return;
@@ -75,7 +75,7 @@ function Dialogue(p){
     window.addEventListener('keydown',onKey);
     return function(){window.removeEventListener('keydown',onKey)};
   },[sc,picked,chosen,choices]);
-  return h('div',{className:'screen dialogue-screen'},
+  return h('div',{className:'screen dialogue-screen',onClick:skipReveal,style:(li<lines.length||(chosen&&!rDone))?{cursor:'pointer'}:null},
     h('div',{className:'dlg-head'},
       h('span',{className:'dlg-head-l'},'ORACLE // COMM LINK'),
       h('span',{className:'dlg-head-r'},h('span',{className:'dlg-live'}),tt('dialogue.live',null,'LIVE'))),
@@ -86,7 +86,7 @@ function Dialogue(p){
         lines.slice(0,li).map(function(l,i){return h('div',{key:i,className:'dialogue-line'},String(l))}),
         chosen&&chosen.reply&&h('div',{className:'dialogue-reply'},rTxt,!rDone&&h('span',{style:{animation:'blink 1s infinite',marginLeft:2}},'▐')))),
     sc&&!chosen&&h('div',{className:'dialogue-choices'},
-      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;var bdrCol=i===0?'rgba(var(--ui-rgb),.55)':'rgba(var(--ui-rgb),.35)';var bdrSel=i===0?'rgba(var(--ui-rgb),.8)':'rgba(var(--ui-rgb),.7)';return h('button',{key:i,className:'dialogue-choice-btn',style:{background:isMe?'rgba(var(--ui-rgb),.08)':'rgba(var(--ui-rgb),.045)',border:'1px solid '+(isMe?bdrSel:bdrCol),opacity:isOther?0.15:1,transform:isMe?'scale(1.02)':'scale(1)',boxShadow:isMe?'0 0 12px rgba(var(--ui-rgb),.16)':'none',pointerEvents:picked>=0?'none':'auto'},onClick:function(){handlePick(c,i)}},
+      choices.map(function(c,i){var isMe=picked===i;var isOther=picked>=0&&picked!==i;return h('button',{key:i,className:'dialogue-choice-btn'+(isMe?' is-picked':'')+(isOther?' is-dimmed':''),onClick:function(){handlePick(c,i)}},
         h('span',null,c.label))}))
   );
 }
