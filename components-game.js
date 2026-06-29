@@ -1274,7 +1274,7 @@ function RewardScreen(p){
   var buildRewardPool=function(){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
-    if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0)basePool.push(r)})}
+    if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;var rwOff=fac.rewardOff||[];REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0&&rwOff.indexOf(r.feReq)<0)basePool.push(r)})}
     var pool=pickRewardsUnique(basePool,count);
     // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){

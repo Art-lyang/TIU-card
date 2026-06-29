@@ -98,7 +98,7 @@ function App(){
   var _act=useState(1),act=_act[0],setAct=_act[1];
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
   var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
-  var _fac=useState({approved:[],pending:[],completed:[],proposed:[]}),facility=_fac[0],setFacility=_fac[1];
+  var _fac=useState({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]}),facility=_fac[0],setFacility=_fac[1];
   var _fot=useState(false),facOfferedToday=_fot[0],setFacOfferedToday=_fot[1];
   var _res=useState({}),research=_res[0],setResearch=_res[1];
   var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
@@ -151,7 +151,9 @@ function App(){
     var approved=uniqueFacilityIds(fac.approved).filter(function(id){return completed.indexOf(id)<0});
     var pending=uniqueFacilityIds(fac.pending).filter(function(id){return completed.indexOf(id)<0&&approved.indexOf(id)<0});
     var proposed=uniqueFacilityIds([].concat(fac.proposed||[],approved,pending,completed));
-    return {approved:approved,pending:pending,completed:completed,proposed:proposed};
+    // rewardOff: 완료 시설의 보상카드를 보상 풀에서 제외하도록 플레이어가 끈 목록. 완료된 시설만 의미가 있다.
+    var rewardOff=uniqueFacilityIds(fac.rewardOff).filter(function(id){return completed.indexOf(id)>=0});
+    return {approved:approved,pending:pending,completed:completed,proposed:proposed,rewardOff:rewardOff};
   };
   var facilityHasExpansion=function(fac,feId){
     var f=normalizeFacilityState(fac);
@@ -646,7 +648,7 @@ function App(){
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
     setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);
     setGor('');setGoDay(null);setEndNarr(null);setEndId(null);setCAlertDay(-1);setAct2Reached(false);
-    setFacility({approved:[],pending:[],completed:[],proposed:[]});setFacOfferedToday(false);
+    setFacility({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]});setFacOfferedToday(false);
     setResearch({});Save.del('ts_research');
     // Reset archive read markers for a clean campaign.
     setSeenArchive([]);Save.del('ts_seenArchive');
@@ -759,8 +761,19 @@ function App(){
   var approvePending=function(feId){setFacility(function(prev){
     var base=normalizeFacilityState(prev);
     if(!feId||base.approved.indexOf(feId)>=0||base.completed.indexOf(feId)>=0){Save.saveFacility(base);return base}
-    var next=normalizeFacilityState({approved:base.approved.concat([feId]),pending:base.pending.filter(function(id){return id!==feId}),completed:base.completed,proposed:base.proposed.concat([feId])});
+    var next=normalizeFacilityState({approved:base.approved.concat([feId]),pending:base.pending.filter(function(id){return id!==feId}),completed:base.completed,proposed:base.proposed.concat([feId]),rewardOff:base.rewardOff});
     Save.saveFacility(next);return next});setToastType('');setToast(tt('app.facilityAdded',null,'시설 확장이 보상 풀에 추가되었습니다'));clearToastAfter(2200)};
+  // 완료 시설의 보상카드 보상 풀 포함/제외 토글 (시설 탭에서 호출). rewardOff에 들어 있으면 buildRewardPool이 건너뛴다.
+  var toggleFacilityReward=function(feId){
+    if(!feId)return;
+    var base=normalizeFacilityState(facility);
+    if(base.completed.indexOf(feId)<0)return;
+    var off=(base.rewardOff||[]).slice();var idx=off.indexOf(feId);var nowOff;
+    if(idx>=0){off.splice(idx,1);nowOff=false}else{off.push(feId);nowOff=true}
+    var next=normalizeFacilityState({approved:base.approved,pending:base.pending,completed:base.completed,proposed:base.proposed,rewardOff:off});
+    setFacility(next);Save.saveFacility(next);
+    setToastType('');setToast(nowOff?tt('app.facilityRewardOff',null,'보상카드를 보상 풀에서 제외했습니다'):tt('app.facilityRewardOn',null,'보상카드를 보상 풀에 포함했습니다'));clearToastAfter(1800);
+  };
   // 연구 단계 착수: 자원 차감 + active. 자원은 즉시 반영(setStats).
   var startResearch=function(id){
     if(typeof researchStart!=='function')return;
@@ -816,7 +829,7 @@ function App(){
     }else if(devPanel==='evidence'&&typeof EvidencePanel==='function'){
       node=h(EvidencePanel,{logs:['LOG-EV-UNLOCK'].concat((typeof EVIDENCE!=='undefined'?EVIDENCE.map(function(e){return e.src}):[])),onClose:close});
     }else if(devPanel==='facility'&&typeof FacilityPanel==='function'){
-      var _pf=facility||{};var _fc=((_pf.pending||[]).length+(_pf.approved||[]).length+(_pf.completed||[]).length)>0?{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]}:{pending:['FE-001','FE-002'],approved:['FE-003'],completed:['FE-004','FE-005'],proposed:[]};node=h(FacilityPanel,{facility:_fc,onClose:close,onApprove:function(){}});
+      var _pf=facility||{};var _fc=((_pf.pending||[]).length+(_pf.approved||[]).length+(_pf.completed||[]).length)>0?{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]}:{pending:['FE-001','FE-002'],approved:['FE-003'],completed:['FE-004','FE-005'],proposed:[]};node=h(FacilityPanel,{facility:_fc,onClose:close,onApprove:function(){},onToggleReward:function(){},devPreview:true});
     }
     if(!node)return null;
     return h('div',{className:'act-'+Math.max(act||1,2)},node);
@@ -864,7 +877,7 @@ function App(){
       h('span',{className:'info-tag',style:{cursor:'pointer',marginLeft:'auto'},onClick:function(){setShowSettings(true)}},'☰')),
     h(CardC,{key:curCard.id+'_'+stats.day+'_'+ct,card:curCard,onSwipe:swipe,onPreview:setPreview,getPreviewDelta:getChoicePreviewDelta,gi:gi,day:stats.day,modalActive:!!(showSettings||showFacility||showEvidence),disabled:cardInputLocked,onOracleBlock:function(msg){setToastType('oracle');setToast(msg);clearToastAfter(2600)},onReply:function(msg){setToastType('');setToast(msg);clearToastAfter(1500)}}),
     showSettings&&h(SettingsPanel,{onClose:function(){setShowSettings(false)},onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setShowSettings(false);setRet('game');setPhase('logs')},onArchive:function(){setShowSettings(false);setRet('game');setPhase('archive')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),
-    showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending}),
+    showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending,onToggleReward:toggleFacilityReward}),
     showResearch&&typeof ResearchPanel!=='undefined'&&h(ResearchPanel,{research:research,stats:stats,day:stats.day,act:act,logs:getLiveLogs(logs),onStart:startResearch,onClose:function(){setShowResearch(false)}}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
     glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onPreviewPanel:function(which){setDevPanel(which)}}),DEV&&devPreview()));

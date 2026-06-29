@@ -1159,7 +1159,8 @@ b.fm-rk--info{color:#caa14a}
 .rlab-res-item:last-child{border-right:none}
 .rlab-res-k{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1.5px;color:rgba(170,190,186,.5)}
 .rlab-res-v{font-size:15px;font-weight:700;color:#dfeae6;letter-spacing:.5px}
-.rlab-body{flex:1;overflow-y:auto;padding:15px 14px 26px}
+.rlab-body{flex:1;overflow-y:auto;padding:15px 14px 26px;scrollbar-width:none;-ms-overflow-style:none}
+.rlab-body::-webkit-scrollbar{width:0;height:0;display:none}
 .rlab-foot{font-family:'Share Tech Mono',monospace;font-size:9px;color:rgba(170,190,186,.4);margin-top:11px;line-height:1.6;text-align:center}
 .rlab-empty{color:rgba(170,190,186,.45);font-size:12.5px;text-align:center;margin-top:50px}
 .rlab-card{position:relative;display:grid;grid-template-columns:94px minmax(0,1fr);gap:13px;padding:12px;margin:0 0 13px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.014));border:1px solid rgba(255,255,255,.085);border-radius:12px;box-shadow:0 5px 18px rgba(0,0,0,.38);overflow:hidden;transition:border-color .18s ease,box-shadow .18s ease,transform .18s ease}
@@ -1199,15 +1200,49 @@ b.fm-rk--info{color:#caa14a}
 .flab-section{font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:2px;color:rgba(180,198,192,.5);text-transform:uppercase;margin:4px 0 9px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.07)}
 .rlab-body > * + .flab-section{margin-top:14px}
 .flab-uptag{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:8px;letter-spacing:1px;color:#f0a838;border:1px solid rgba(240,168,56,.42);background:rgba(240,168,56,.1);border-radius:3px;padding:2px 7px;margin:0 0 7px}
-.flab-card.flab-up{border-color:rgba(240,168,56,.4);box-shadow:0 0 0 1px rgba(240,168,56,.16),0 5px 18px rgba(0,0,0,.42)}
+.flab-card.flab-up{border-color:rgba(240,168,56,.5);box-shadow:0 0 0 1px rgba(240,168,56,.22),0 5px 18px rgba(0,0,0,.42),0 0 16px rgba(240,168,56,.08)}
+.flab-card.flab-up::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,rgba(240,168,56,.85),rgba(240,168,56,.35));box-shadow:0 0 8px rgba(240,168,56,.4)}
+.flab-card.flab-up:hover{border-color:rgba(240,168,56,.7)}
 .flab-card.flab-up .rlab-thumb{border-color:rgba(240,168,56,.5);box-shadow:inset 0 0 0 1px rgba(240,168,56,.3)}
 .flab-hint{font-size:10px;color:rgba(180,198,192,.5);line-height:1.5;margin:0 0 9px;font-style:italic}
 .flab-effect{margin-top:auto;padding:8px 10px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.03);border-radius:7px;font-size:10px;color:rgba(196,212,206,.72);line-height:1.55}
 .flab-effect-h{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1.5px;color:rgba(95,208,138,.85);margin-bottom:3px}
 .flab-effect-rw{margin-top:4px;color:#f0a838}
+.flab-effect.is-rwoff .flab-effect-rw{color:rgba(196,212,206,.4);text-decoration:line-through}
+/* 보상카드 풀 포함/제외 토글 (완료 시설) */
+.flab-rwtoggle{display:inline-flex;align-items:center;gap:6px;margin-top:7px;padding:5px 10px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:.6px;color:rgba(95,208,138,.9);background:rgba(95,208,138,.08);border:1px solid rgba(95,208,138,.4);border-radius:20px;cursor:pointer;transition:all .15s ease}
+.flab-rwtoggle:hover{background:rgba(95,208,138,.16);border-color:rgba(95,208,138,.7)}
+.flab-rwtoggle .flab-rwdot{width:6px;height:6px;border-radius:50%;background:#5fd08a;box-shadow:0 0 6px rgba(95,208,138,.7)}
+.flab-rwtoggle.is-off{color:rgba(190,205,200,.5);background:rgba(255,255,255,.03);border-color:rgba(255,255,255,.16)}
+.flab-rwtoggle.is-off:hover{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.3);color:rgba(210,222,218,.8)}
+.flab-rwtoggle.is-off .flab-rwdot{background:rgba(190,205,200,.35);box-shadow:none}
+/* 시설 탭 ? 안내 버튼 + 안내 오버레이 */
+.rlab-hero-ctrls{display:flex;align-items:center;gap:4px}
+.rlab-help-btn{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:rgba(232,242,240,.8);border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.06);cursor:pointer;transition:all .15s ease;user-select:none}
+.rlab-help-btn:hover{color:#fff;border-color:rgba(var(--ui-rgb),.8);box-shadow:0 0 12px rgba(var(--ui-rgb),.4)}
+.flab-help{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(3,6,8,.86);backdrop-filter:blur(3px);animation:fadeIn .2s ease}
+.flab-help-box{width:100%;max-width:420px;padding:20px 20px 18px;background:linear-gradient(180deg,rgba(16,22,26,.98),rgba(8,12,16,.98));border:1px solid rgba(var(--ui-rgb),.32);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 22px rgba(var(--ui-rgb),.1)}
+.flab-help-h{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2.5px;color:var(--ui);text-transform:uppercase;padding-bottom:11px;margin-bottom:13px;border-bottom:1px solid rgba(var(--ui-rgb),.2)}
+.flab-help-row{display:grid;grid-template-columns:54px minmax(0,1fr);gap:11px;margin-bottom:13px}
+.flab-help-row:last-child{margin-bottom:0}
+.flab-help-tag{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1px;color:var(--ui);border:1px solid rgba(var(--ui-rgb),.4);background:rgba(var(--ui-rgb),.08);border-radius:4px;padding:4px 0;text-align:center;height:fit-content}
+.flab-help-txt{font-size:11.5px;line-height:1.65;color:rgba(214,226,222,.82)}
+.flab-help-ok{display:block;width:100%;margin-top:17px;padding:11px;font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--ui);background:rgba(var(--ui-rgb),.12);border:1px solid rgba(var(--ui-rgb),.5);border-radius:8px;cursor:pointer;transition:all .15s ease}
+.flab-help-ok:hover{background:rgba(var(--ui-rgb),.22);border-color:rgba(var(--ui-rgb),.85);box-shadow:0 0 16px rgba(var(--ui-rgb),.25)}
+.flab-help-ok:active{background:var(--ui);color:#06090b}
 /* 조사탭 전용 (evidence) — 카테고리 그룹 카드 */
 .ev2-group{margin-bottom:15px}
 .rlab-body > * + .ev2-group{margin-top:2px}
+/* 조사탭 상단 카테고리 필터 칩 */
+.ev2-filter{display:flex;flex-shrink:0;gap:6px;padding:11px 14px 3px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+.ev2-filter::-webkit-scrollbar{width:0;height:0;display:none}
+.ev2-chip{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;flex-shrink:0;padding:5px 11px;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:.6px;color:rgba(196,212,206,.62);background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:20px;cursor:pointer;transition:color .15s ease,border-color .15s ease,background .15s ease,box-shadow .15s ease}
+.ev2-chip .ev2-chip-dot{width:6px;height:6px;border-radius:50%;background:var(--chipcol,var(--ui));flex-shrink:0;opacity:.7;transition:opacity .15s ease,box-shadow .15s ease}
+.ev2-chip:hover{color:rgba(222,234,230,.92);border-color:rgba(255,255,255,.26)}
+.ev2-chip:hover .ev2-chip-dot{opacity:1}
+.ev2-chip.is-active{color:var(--chipcol,var(--ui));border-color:var(--chipcol,var(--ui));background:rgba(255,255,255,.06);box-shadow:0 0 12px -3px var(--chipcol,var(--ui))}
+.ev2-chip.is-active .ev2-chip-dot{opacity:1;box-shadow:0 0 6px var(--chipcol,var(--ui))}
+.ev2-chip-n{font-size:8.5px;opacity:.65;letter-spacing:0}
 .ev2-cathead{display:flex;align-items:center;gap:7px;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:2px;margin:0 0 8px;padding-bottom:5px;border-bottom:1px solid rgba(255,255,255,.06)}
 .ev2-catdot{width:7px;height:7px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
 .ev2-catn{margin-left:auto;color:rgba(180,198,192,.42);font-size:9px;letter-spacing:1px}

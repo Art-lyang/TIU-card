@@ -257,6 +257,13 @@ function EvidencePanel(p) {
 
   var groups = {};
   collected.forEach(function(ev){ var c = ev.cat || 'internal'; (groups[c] = groups[c] || []).push(ev); });
+  var availCats = CAT_ORDER.filter(function(c){ return groups[c] && groups[c].length; });
+
+  // 상단 카테고리 필터 — 'all'이면 전체, 아니면 해당 분류만.
+  var _ac = useState('all'), activeCat = _ac[0], setActiveCat = _ac[1];
+  var showFilter = collected.length > 0 && availCats.length >= 2;
+  // 칩이 숨겨졌거나(분류<2) 활성 분류가 사라지면 전체로 폴백 → 통찰·전체 콘텐츠가 다시 보이고 막다른 상태가 없다.
+  var effCat = (activeCat !== 'all' && (!showFilter || availCats.indexOf(activeCat) < 0)) ? 'all' : activeCat;
 
   var evCard = function(ev){
     return h('div', { key: ev.id, className: 'ev2-card', style: { borderLeftColor: catColor[ev.cat] || 'var(--ui)' } },
@@ -281,12 +288,19 @@ function EvidencePanel(p) {
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('활성','ACTIVE')), h('div', { className: 'rlab-res-v' }, collected.length)),
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('수집','COLLECTED')), h('div', { className: 'rlab-res-v' }, allCollected.length + '/' + EVN)),
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('통찰','INSIGHTS')), h('div', { className: 'rlab-res-v' }, unlocked.length + '/' + EVC))),
+      showFilter && h('div', { className: 'ev2-filter' },
+        h('button', { type: 'button', className: 'ev2-chip' + (effCat === 'all' ? ' is-active' : ''), style: { '--chipcol': 'var(--ui)' }, onClick: function(){ setActiveCat('all'); } },
+          h('span', { className: 'ev2-chip-dot' }), L('전체','ALL'), h('span', { className: 'ev2-chip-n' }, collected.length)),
+        availCats.map(function(c){
+          return h('button', { key: c, type: 'button', className: 'ev2-chip' + (effCat === c ? ' is-active' : ''), style: { '--chipcol': catColor[c] }, onClick: function(){ setActiveCat(c); } },
+            h('span', { className: 'ev2-chip-dot' }), catName[c], h('span', { className: 'ev2-chip-n' }, groups[c].length));
+        })),
       h('div', { className: 'rlab-body' },
         collected.length === 0
           ? h('div', { className: 'rlab-empty' }, allCollected.length === 0
               ? L('수집된 증거가 없습니다.','No evidence records collected.')
               : L('현재 조합 가능한 활성 자료가 없습니다. 분석 완료 정보는 아래 통찰과 로그 탭에 보존됩니다.','No active records available. Completed insights remain below and in Logs.'))
-          : CAT_ORDER.filter(function(c){ return groups[c] && groups[c].length; }).map(function(c){
+          : CAT_ORDER.filter(function(c){ return groups[c] && groups[c].length && (effCat === 'all' || c === effCat); }).map(function(c){
               return h('div', { key: c, className: 'ev2-group' },
                 h('div', { className: 'ev2-cathead', style: { color: catColor[c] } },
                   h('span', { className: 'ev2-catdot', style: { background: catColor[c] } }),
@@ -294,7 +308,7 @@ function EvidencePanel(p) {
                   h('span', { className: 'ev2-catn' }, groups[c].length)),
                 groups[c].map(evCard));
             }),
-        renderEvidenceInsights(unlocked, false),
+        effCat === 'all' && renderEvidenceInsights(unlocked, false),
         h('div', { className: 'rlab-foot' }, L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.')))
     )
   );

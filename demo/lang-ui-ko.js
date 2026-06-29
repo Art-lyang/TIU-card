@@ -414,6 +414,8 @@ window.TS_I18N.mergeUI('ko', {
     facilityAdded:'시설 확장이 보상 풀에 추가되었습니다',
     facilityPending:'확장 제안이 대기 목록에 추가되었습니다',
     facilityRegistered:'시설 확장이 보상 풀에 등록되었습니다',
+    facilityRewardOff:'보상카드를 보상 풀에서 제외했습니다',
+    facilityRewardOn:'보상카드를 보상 풀에 포함했습니다',
     observerError:'[ORACLE: 시스템 에러 — ERR:0x8F2A UNHANDLED EXCEPTION]',
     followupCardAdded:'[후속 카드 추가] {id}',
     facilityComplete:'[{title}] 확장 공사 완료{suffix}',
