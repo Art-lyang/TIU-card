@@ -437,7 +437,7 @@ b.fm-rk--info{color:#caa14a}
 .settings-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:rgba(var(--ui-rgb),0.06);border:1px solid rgba(var(--ui-rgb),0.25);color:var(--ui);font-size:16px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;border-radius:var(--r-sm);padding:0;line-height:1;text-shadow:0 0 6px var(--ui-glow);-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15);z-index:2}
 .settings-btn:active{background:rgba(var(--ui-rgb),0.15);border-color:rgba(var(--ui-rgb),0.5)}
 @media(max-width:430px){.settings-btn{width:28px;height:28px;font-size:14px;right:4px}}
-.fs-small .card-msg{font-size:12px}.fs-small .oracle-card__title{font-size:14px}.fs-small .oracle-card__desc{font-size:10px}
+:root{--fs-choice:11px;--fs-fx:11px}.fs-small{--fs-choice:10px;--fs-fx:10px}.fs-large{--fs-choice:14px;--fs-fx:14px}.fs-small .card-msg{font-size:12px}.fs-small .oracle-card__title{font-size:14px}.fs-small .oracle-card__desc{font-size:10px}
 .fs-large .card-msg{font-size:16px}.fs-large .oracle-card__title{font-size:18px}.fs-large .oracle-card__desc{font-size:14px}
 .oracle-card{position:relative;padding:16px 18px 14px;border:1px solid rgba(var(--ui-rgb),.22);background:linear-gradient(180deg,rgba(var(--ui-rgb),.05),rgba(var(--ui-rgb),.01)),linear-gradient(90deg,rgba(var(--ui-rgb),.03),transparent 45%);box-shadow:0 6px 18px rgba(0,0,0,.38),inset 0 0 20px rgba(var(--ui-rgb),.03);cursor:pointer;transition:all .16s ease;overflow:hidden;margin-bottom:8px}
 .oracle-card::before,.oracle-card::after{content:"";position:absolute;width:20px;height:20px;border-color:rgba(var(--ui-rgb),.45);pointer-events:none}
