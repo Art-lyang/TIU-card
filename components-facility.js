@@ -5,13 +5,7 @@
 function FacilityPanel(p) {
   var EN = (typeof getLocale === 'function' && getLocale() === 'en');
   var L = function(ko, en){ return EN ? en : ko; };
-  var SAVE = (typeof Save !== 'undefined') ? Save : null;
-  // 초회차 강제 안내: ts_facilityHelpSeen 미설정이면 첫 진입 시 자동 표시. 이후엔 ? 버튼으로만.
-  var helpSeen = SAVE ? !!SAVE.get('ts_facilityHelpSeen', false) : true;
-  var _help = useState(function(){ return !p.devPreview && !helpSeen; });
-  var helpOpen = _help[0], setHelpOpen = _help[1];
-  var openHelp = function(){ setHelpOpen(true); };
-  var closeHelp = function(){ if(SAVE && !p.devPreview) SAVE.set('ts_facilityHelpSeen', true); setHelpOpen(false); };
+  var help = useRlabHelp('ts_facilityHelpSeen', p.devPreview);
 
   var fac = p.facility || { approved: [], pending: [], completed: [], proposed: [], rewardOff: [] };
   var pend = fac.pending || [], appr = fac.approved || [], comp = fac.completed || [];
@@ -60,15 +54,11 @@ function FacilityPanel(p) {
   var sectionLabel = function(t){ return h('div',{className:'flab-section'}, t); };
   var hasAny = pending.length || approved.length || completed.length;
 
-  var helpRow = function(tag, body){ return h('div',{className:'flab-help-row'}, h('div',{className:'flab-help-tag'}, tag), h('div',{className:'flab-help-txt'}, body)); };
-  var helpOverlay = helpOpen && h('div',{className:'flab-help', onClick:function(e){ if(e.target===e.currentTarget) closeHelp(); }},
-    h('div',{className:'flab-help-box'},
-      h('div',{className:'flab-help-h'}, L('시설 관리 안내','FACILITY MANAGEMENT')),
-      h('div',{className:'flab-help-body'},
-        helpRow(L('확장','BUILD'), L('시설 확장은 작전 카드로 제안됩니다. 승인하면 다음 보상 단계에서 골라 완공할 수 있습니다.','Expansions are proposed through operation cards. Approve one, then pick it during the next reward phase to complete it.')),
-        helpRow(L('표식','MARK'), L('호박색 테두리와 ‘독립 인프라’ 표식이 붙은 시설은 기지를 외부 통제에서 자립시키는 기반 설비입니다. 충분히 갖추면 다른 길이 열릴 수 있습니다.','Facilities with an amber border and the ‘Independent Infra’ mark are the groundwork for running this base on its own. Gather enough of them and another path may open.')),
-        helpRow(L('보상','REWARD'), L('완료한 시설은 보상카드를 보상 풀에 추가합니다. 선택지가 너무 많아지면 완료 시설의 토글로 보상카드를 개별 제외/포함할 수 있습니다.','Completed facilities add a reward card to the reward pool. If there are too many choices, use the toggle on a completed facility to exclude or re-add its reward card.'))),
-      h('button',{type:'button',className:'flab-help-ok',onClick:closeHelp}, L('확인','GOT IT'))));
+  var helpRows = [
+    [L('확장','BUILD'), L('시설 확장은 작전 카드로 제안됩니다. 승인하면 다음 보상 단계에서 골라 완공할 수 있습니다.','Expansions are proposed through operation cards. Approve one, then pick it during the next reward phase to complete it.')],
+    [L('표식','MARK'), L('호박색 테두리와 ‘독립 인프라’ 표식이 붙은 시설은 기지를 외부 통제에서 자립시키는 기반 설비입니다. 충분히 갖추면 다른 길이 열릴 수 있습니다.','Facilities with an amber border and the ‘Independent Infra’ mark are the groundwork for running this base on its own. Gather enough of them and another path may open.')],
+    [L('보상','REWARD'), L('완료한 시설은 보상카드를 보상 풀에 추가합니다. 선택지가 너무 많아지면 완료 시설의 토글로 보상카드를 개별 제외/포함할 수 있습니다.','Completed facilities add a reward card to the reward pool. If there are too many choices, use the toggle on a completed facility to exclude or re-add its reward card.')]
+  ];
 
   return h('div', { className:'rlab-screen' },
     h('div', { className:'rlab-frame' },
@@ -77,7 +67,7 @@ function FacilityPanel(p) {
         h('div',{className:'rlab-hero-top'},
           h('div',{className:'rlab-kicker'}, h('span',{className:'rlab-live'}), L('시설 관리','FACILITY')),
           h('div',{className:'rlab-hero-ctrls'},
-            h('span',{className:'rlab-help-btn',onClick:openHelp,title:L('탭 안내','Tab guide')}, '?'),
+            h(RlabHelpButton,{onClick:help.show,title:L('탭 안내','Tab guide')}),
             h('span',{className:'rlab-close',onClick:function(){ if(p.onClose)p.onClose(); }}, '×'))),
         h('div',{className:'rlab-hero-id'},
           h('div',{className:'rlab-hero-name'}, L('기지 시설','Base Facilities')),
@@ -93,7 +83,7 @@ function FacilityPanel(p) {
             approved.length>0 && h(React.Fragment,null, sectionLabel(L('승인됨 · 보상 대기','APPROVED · AWAITING REWARD')), approved.map(function(fe){return card(fe,'approved');})),
             completed.length>0 && h(React.Fragment,null, sectionLabel(L('완료','COMPLETED')), completed.map(function(fe){return card(fe,'completed');}))),
         h('div',{className:'rlab-foot'}, L('※ 시설 확장은 작전 카드를 통해 제안됩니다.','※ Expansions are proposed through operation cards.'))),
-      helpOverlay
+      h(RlabHelpOverlay,{open:help.open,onClose:help.close,title:L('시설 관리 안내','FACILITY MANAGEMENT'),ok:L('확인','GOT IT'),rows:helpRows})
     )
   );
 }

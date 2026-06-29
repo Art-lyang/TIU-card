@@ -825,9 +825,9 @@ function App(){
     var close=function(){setDevPanel(null)};
     var node=null;
     if(devPanel==='research'&&typeof ResearchPanel!=='undefined'){
-      node=h(ResearchPanel,{research:research,stats:(stats&&stats.r)?stats:{c:62,r:58,t:60,o:50},day:Math.max(stats.day||1,22),act:Math.max(act||1,2),logs:['LOG-RES-OPEN','LOG-EV-UNLOCK','LOG-017','LOG-RD-UNLOCK','LOG-INTRO-YS','LOG-080','LOG-082'],onStart:function(){},onClose:close});
+      node=h(ResearchPanel,{research:research,stats:(stats&&stats.r)?stats:{c:62,r:58,t:60,o:50},day:Math.max(stats.day||1,22),act:Math.max(act||1,2),logs:['LOG-RES-OPEN','LOG-EV-UNLOCK','LOG-017','LOG-RD-UNLOCK','LOG-INTRO-YS','LOG-080','LOG-082'],onStart:function(){},onClose:close,devPreview:true});
     }else if(devPanel==='evidence'&&typeof EvidencePanel==='function'){
-      node=h(EvidencePanel,{logs:['LOG-EV-UNLOCK'].concat((typeof EVIDENCE!=='undefined'?EVIDENCE.map(function(e){return e.src}):[])),onClose:close});
+      node=h(EvidencePanel,{logs:['LOG-EV-UNLOCK'].concat((typeof EVIDENCE!=='undefined'?EVIDENCE.map(function(e){return e.src}):[])),onClose:close,devPreview:true});
     }else if(devPanel==='facility'&&typeof FacilityPanel==='function'){
       var _pf=facility||{};var _fc=((_pf.pending||[]).length+(_pf.approved||[]).length+(_pf.completed||[]).length)>0?{approved:_pf.approved||[],pending:_pf.pending||[],completed:_pf.completed||[],proposed:_pf.proposed||[]}:{pending:['FE-001','FE-002'],approved:['FE-003'],completed:['FE-004','FE-005'],proposed:[]};node=h(FacilityPanel,{facility:_fc,onClose:close,onApprove:function(){},onToggleReward:function(){},devPreview:true});
     }

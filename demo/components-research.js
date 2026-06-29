@@ -28,6 +28,13 @@ function ResearchPanel(p) {
 
   var visible = RESEARCH_PROJECTS.filter(function (proj) { return researchVisible(proj, day, act, logs); });
 
+  var help = useRlabHelp('ts_researchHelpSeen', p.devPreview);
+  var helpRows = [
+    [L('착수', 'BEGIN'), L('윤세진 연구관의 변이체·바이러스 연구입니다. 단계마다 자원을 들여 ‘단계 착수’로 시작합니다.', "Yoon Se-jin's aberrant/virus research. Each stage costs resources — start it with 'Begin Stage'.")],
+    [L('진행', 'PROGRESS'), L('착수한 단계는 매일 진행되고, 하루 마감 시 성공·실패가 판정됩니다. 성공률은 카드에 표시됩니다.', 'An active stage advances every day and resolves (success/fail) at day end. The success rate is shown on each card.')],
+    [L('완료', 'COMPLETE'), L('모든 단계를 마치면 완료 보상이 적용됩니다. 자원이 부족하면 착수 버튼이 비활성화됩니다.', 'Finishing all stages applies the completion reward. If resources run short, the begin button is disabled.')]
+  ];
+
   var projCard = function (proj) {
     var ps = researchProjState(research, proj.id);
     var pen = (EN && proj.en) ? proj.en : null;
@@ -89,7 +96,9 @@ function ResearchPanel(p) {
         h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(' + RDIR + 'research_hero.jpg)' } }),
         h('div', { className: 'rlab-hero-top' },
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('연구 콘솔', 'RESEARCH CONSOLE')),
-          h('span', { className: 'rlab-close', onClick: function () { if (p.onClose) p.onClose(); } }, '×')),
+          h('div', { className: 'rlab-hero-ctrls' },
+            h(RlabHelpButton, { onClick: help.show, title: L('탭 안내', 'Tab guide') }),
+            h('span', { className: 'rlab-close', onClick: function () { if (p.onClose) p.onClose(); } }, '×'))),
         h('div', { className: 'rlab-hero-id' },
           h('div', { className: 'rlab-hero-name' }, L('이변체 연구실', 'Aberrant Research Lab')),
           h('div', { className: 'rlab-hero-role' }, L('담당 연구관 · ', 'Lead researcher · '), h('b', null, L('윤세진', 'Yoon Se-jin'))))),
@@ -98,6 +107,7 @@ function ResearchPanel(p) {
         visible.length === 0
           ? h('div', { className: 'rlab-empty' }, L('아직 착수 가능한 연구가 없습니다.', 'No research available yet.'))
           : visible.map(projCard),
-        h('div', { className: 'rlab-foot' }, L('※ 착수 후 매일 진행됩니다. 결과는 하루 마감 시 판정됩니다.', '※ Progress advances each day. Outcomes resolve at day end.'))))
+        h('div', { className: 'rlab-foot' }, L('※ 착수 후 매일 진행됩니다. 결과는 하루 마감 시 판정됩니다.', '※ Progress advances each day. Outcomes resolve at day end.'))),
+      h(RlabHelpOverlay, { open: help.open, onClose: help.close, title: L('연구 콘솔 안내', 'RESEARCH CONSOLE'), ok: L('확인', 'GOT IT'), rows: helpRows }))
   );
 }

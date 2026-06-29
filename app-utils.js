@@ -3,6 +3,30 @@
 // NOTE: CARDS is defined in app.js (loaded after this file)
 // React aliases — must be defined before any component file
 var h=React.createElement,useState=React.useState,useEffect=React.useEffect,useRef=React.useRef,useCallback=React.useCallback;
+// ── 공유 도움말 오버레이 (.rlab 대시보드: 시설/조사/연구 공용) ──
+// useRlabHelp: 초회차 강제(storageKey 미설정 + !devPreview)로 1회 자동 표시, 이후엔 ? 버튼으로만 재열람.
+// 플래그는 newGame/clearGame에서 지우지 않아 다회차에는 자동 표시되지 않는다.
+function useRlabHelp(storageKey, devPreview){
+  var SAVE=(typeof Save!=='undefined')?Save:null;
+  var seen=SAVE?!!SAVE.get(storageKey,false):true;
+  var st=useState(function(){ return !devPreview && !seen; });
+  return { open: st[0],
+    show: function(){ st[1](true); },
+    close: function(){ if(SAVE && !devPreview) SAVE.set(storageKey,true); st[1](false); } };
+}
+function RlabHelpButton(props){
+  return h('span',{className:'rlab-help-btn',onClick:props.onClick,title:(props&&props.title)||'?'},'?');
+}
+function RlabHelpOverlay(props){
+  if(!props.open) return null;
+  return h('div',{className:'rlab-help',onClick:function(e){ if(e.target===e.currentTarget && props.onClose) props.onClose(); }},
+    h('div',{className:'rlab-help-box'},
+      h('div',{className:'rlab-help-h'}, props.title),
+      h('div',{className:'rlab-help-body'}, (props.rows||[]).map(function(r,i){
+        return h('div',{key:i,className:'rlab-help-row'}, h('div',{className:'rlab-help-tag'}, r[0]), h('div',{className:'rlab-help-txt'}, r[1]));
+      })),
+      h('button',{type:'button',className:'rlab-help-ok',onClick:props.onClose}, props.ok)));
+}
 var pick=function(a){return a[Math.floor(Math.random()*a.length)]};
 var pickWeighted=function(a){if(!a||a.length===0)return null;var total=0;for(var i=0;i<a.length;i++){total+=cardWeight(a[i])}var roll=Math.random()*total;for(var j=0;j<a.length;j++){roll-=cardWeight(a[j]);if(roll<=0)return a[j]}return a[a.length-1]};
 var pickN=function(a,n){return[].concat(a).sort(function(){return Math.random()-0.5}).slice(0,Math.min(n,a.length))};

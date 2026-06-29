@@ -265,6 +265,13 @@ function EvidencePanel(p) {
   // 칩이 숨겨졌거나(분류<2) 활성 분류가 사라지면 전체로 폴백 → 통찰·전체 콘텐츠가 다시 보이고 막다른 상태가 없다.
   var effCat = (activeCat !== 'all' && (!showFilter || availCats.indexOf(activeCat) < 0)) ? 'all' : activeCat;
 
+  var help = useRlabHelp('ts_evidenceHelpSeen', p.devPreview);
+  var helpRows = [
+    [L('수집','COLLECT'), L('현장·임무·로그에서 확보한 증거가 분류별로 정리됩니다. 상단 ‘수집’ 카운터로 전체 확보량을 봅니다.','Evidence gathered from field ops, missions and logs is sorted by category. The COLLECTED counter shows your total.')],
+    [L('분류','FILTER'), L('상단 분류 칩(ORACLE·현장·외부·사건·내부)으로 원하는 계열만 모아 볼 수 있습니다.','Use the category chips (ORACLE/FIELD/EXTERNAL/INCIDENT/INTERNAL) to view one line at a time.')],
+    [L('조합','COMBINE'), L('증거 2~3개를 맞물리면 새 통찰이 열립니다. 조합은 이브닝 챗에서 하고, 해금된 통찰은 이 목록 하단에 보존됩니다.','Link 2–3 records to unlock a new insight. Combine during Evening Chat; unlocked insights stay at the bottom of this list.')]
+  ];
+
   var evCard = function(ev){
     return h('div', { key: ev.id, className: 'ev2-card', style: { borderLeftColor: catColor[ev.cat] || 'var(--ui)' } },
       h('div', { className: 'ev2-name' }, ev.name),
@@ -280,7 +287,9 @@ function EvidencePanel(p) {
         h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(assets/images/evidence/evidence_hero.jpg)' } }),
         h('div', { className: 'rlab-hero-top' },
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('조사 테이블','EVIDENCE TABLE')),
-          h('span', { className: 'rlab-close', onClick: function(){ if(p.onClose)p.onClose(); } }, '×')),
+          h('div', { className: 'rlab-hero-ctrls' },
+            h(RlabHelpButton, { onClick: help.show, title: L('탭 안내','Tab guide') }),
+            h('span', { className: 'rlab-close', onClick: function(){ if(p.onClose)p.onClose(); } }, '×'))),
         h('div', { className: 'rlab-hero-id' },
           h('div', { className: 'rlab-hero-name' }, L('조사 테이블','Evidence Table')),
           h('div', { className: 'rlab-hero-role' }, L('담당 정보분석관 · ','Intel analyst · '), h('b', null, L('임재혁','Lim Jae-hyeok'))))),
@@ -309,7 +318,8 @@ function EvidencePanel(p) {
                 groups[c].map(evCard));
             }),
         effCat === 'all' && renderEvidenceInsights(unlocked, false),
-        h('div', { className: 'rlab-foot' }, L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.')))
+        h('div', { className: 'rlab-foot' }, L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.'))),
+      h(RlabHelpOverlay, { open: help.open, onClose: help.close, title: L('조사 테이블 안내','EVIDENCE TABLE'), ok: L('확인','GOT IT'), rows: helpRows })
     )
   );
 }
