@@ -643,8 +643,9 @@ function CardC(p){
     var r=el.getBoundingClientRect();
     return x<(r.left+r.width/2)?'left':'right';
   };
+  var _ent=useState(false),entering=_ent[0],setEntering=_ent[1];
   useEffect(function(){return function(){clearHoldPreview();clearChoiceCue()}},[]);
-  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null)},[card.id]);
+  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);setEntering(true);var _et=setTimeout(function(){setEntering(false)},340);return function(){clearTimeout(_et)}},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir){
     var branch=card[kdir];
@@ -753,7 +754,7 @@ function CardC(p){
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
-    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass,style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)'+(chosen?' scale(0.85)':''),animation:shaking?'oracleShake 0.6s ease':'none',transition:dragging||shaking?'none':'transform 0.35s ease, opacity 0.25s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
+    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass+(entering?' is-entering':''),style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)'+(chosen?' scale(0.85)':''),animation:shaking?'oracleShake 0.6s ease':undefined,transition:dragging||shaking?'none':'transform 0.35s ease, opacity 0.25s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){e.preventDefault();hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       h('span',{className:'card-corner-node card-corner-node--tl','aria-hidden':true}),
@@ -1349,7 +1350,7 @@ function RewardScreen(p){
           fl.neg.map(function(e){var arrow=Math.abs(e.v)>=10?'▼▼':'▼';return h('span',{key:e.k,className:'oracle-card__effect oracle-card__effect--neg'},arrow+' '+SN[e.k]+' '+e.v)})
         ),
         miniBar(pd),
-        isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},'— EXECUTE —')
+        isSel&&h('button',{className:'oracle-card__execute',onClick:function(e){e.stopPropagation();p.onPick(r)}},tt('reward.execute',null,'— EXECUTE —'))
       )}))
     ),
     h('div',{className:'footer-frame'},h('span',null,'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'))

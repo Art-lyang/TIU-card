@@ -143,6 +143,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .boot{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px 20px}
 .btn{background:url('button_default.png') center/100% 100% no-repeat;border:none;color:var(--ui);font-family:'Noto Sans KR',sans-serif;font-size:14px;padding:14px 28px;cursor:pointer;letter-spacing:1px;margin-top:24px;transition:all 0.2s;min-height:44px;text-shadow:0 0 8px var(--ui-glow);-webkit-tap-highlight-color:rgba(var(--ui-rgb),0.15)}
 .btn:active{background-image:url('button_active.png');color:#050808;text-shadow:none}
+.btn:focus-visible{outline:2px solid var(--ui);outline-offset:2px;box-shadow:0 0 10px var(--ui-glow)}
+.card-panel.is-entering{animation:cardEnter .32s ease}
 .btn-amber{color:#f0a030;text-shadow:0 0 8px rgba(240,160,48,0.3)}
 .btn-amber:active{color:#050808}
 button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effect,.dialogue-line,.dialogue-reply,.dialogue-choice-btn,.main-terminal-button-copy strong,.main-terminal-button-copy small,.comm-panel__name,.comm-panel__role,.comm-panel__code{overflow-wrap:anywhere;line-break:strict}
@@ -427,7 +429,7 @@ b.fm-rk--info{color:#caa14a}
 }
 @media(min-width:768px){.card-msg{font-size:15px}.mission-img{height:200px}}
 @media(prefers-reduced-motion:reduce){
-  .card-panel{animation:none}
+  .card-panel,.card-panel.is-entering{animation:none}
   .card-panel::before,.card-panel::after{transition:none}
   .oracle-link-dot,.oracle-link-wave i{animation:none}
 }
@@ -1148,7 +1150,8 @@ b.fm-rk--info{color:#caa14a}
 .rlab-kicker{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:9.5px;letter-spacing:3px;color:rgba(232,242,240,.82);text-transform:uppercase}
 .rlab-live{width:6px;height:6px;border-radius:50%;background:var(--ui);box-shadow:0 0 8px var(--ui);animation:rlabPulse 1.8s ease-in-out infinite}
 @keyframes rlabPulse{0%,100%{opacity:.5}50%{opacity:1}}
-.rlab-close{cursor:pointer;color:rgba(232,242,240,.85);font-size:22px;line-height:1;padding:0 6px;transition:color .15s,text-shadow .15s}
+.rlab-close{cursor:pointer;color:rgba(232,242,240,.85);font-size:22px;line-height:1;padding:0 6px;transition:color .15s,text-shadow .15s;background:none;border:none;font-family:inherit}
+.rlab-close:focus-visible,.rlab-help-btn:focus-visible{outline:2px solid var(--ui);outline-offset:2px}
 .rlab-close:hover{color:#fff;text-shadow:0 0 10px rgba(var(--ui-rgb),.6)}
 .rlab-hero-id{position:absolute;left:17px;bottom:13px;z-index:2}
 .rlab-hero-name{font-size:23px;font-weight:700;color:#eef5f2;letter-spacing:.3px;line-height:1.05;text-shadow:0 2px 12px rgba(0,0,0,.7)}
@@ -1218,7 +1221,7 @@ b.fm-rk--info{color:#caa14a}
 .flab-rwtoggle.is-off .flab-rwdot{background:rgba(190,205,200,.35);box-shadow:none}
 /* 시설 탭 ? 안내 버튼 + 안내 오버레이 */
 .rlab-hero-ctrls{display:flex;align-items:center;gap:4px}
-.rlab-help-btn{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:rgba(232,242,240,.8);border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.06);cursor:pointer;transition:all .15s ease;user-select:none}
+.rlab-help-btn{display:flex;align-items:center;justify-content:center;width:22px;height:22px;padding:0;border-radius:50%;font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:rgba(232,242,240,.8);border:1px solid rgba(255,255,255,.32);background:rgba(255,255,255,.06);cursor:pointer;transition:all .15s ease;user-select:none}
 .rlab-help-btn:hover{color:#fff;border-color:rgba(var(--ui-rgb),.8);box-shadow:0 0 12px rgba(var(--ui-rgb),.4)}
 .rlab-help{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(3,6,8,.86);backdrop-filter:blur(3px);animation:fadeIn .2s ease}
 .rlab-help-box{width:100%;max-width:420px;padding:20px 20px 18px;background:linear-gradient(180deg,rgba(16,22,26,.98),rgba(8,12,16,.98));border:1px solid rgba(var(--ui-rgb),.32);border-radius:12px;box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 22px rgba(var(--ui-rgb),.1)}

@@ -192,7 +192,7 @@ window.TS_I18N.mergeUI('en', {
       veryLow4:'Operational anomaly detected. Headquarters review under consideration.'
     }
   },
-  reward:{ c:'Containment', r:'Resources', t:'Trust', o:'Evaluation', pickCount:'Choose 1 of {count}', footer:'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001' },
+  reward:{ c:'Containment', r:'Resources', t:'Trust', o:'Evaluation', pickCount:'Choose 1 of {count}', execute:'— EXECUTE —', footer:'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001' },
   fieldMission:{ title:'FIELD MISSION', trustTag:'[TRUST]', footer:'ORACLE REMOTE TERMINAL — FIELD OPS' },
   mission:{ trustLabel:'TRUST' },
   briefing:{

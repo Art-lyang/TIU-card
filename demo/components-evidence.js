@@ -289,7 +289,7 @@ function EvidencePanel(p) {
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('조사 테이블','EVIDENCE TABLE')),
           h('div', { className: 'rlab-hero-ctrls' },
             h(RlabHelpButton, { onClick: help.show, title: L('탭 안내','Tab guide') }),
-            h('span', { className: 'rlab-close', onClick: function(){ if(p.onClose)p.onClose(); } }, '×'))),
+            h('button', { type: 'button', className: 'rlab-close', 'aria-label': L('닫기','Close'), onClick: function(){ if(p.onClose)p.onClose(); } }, '×'))),
         h('div', { className: 'rlab-hero-id' },
           h('div', { className: 'rlab-hero-name' }, L('조사 테이블','Evidence Table')),
           h('div', { className: 'rlab-hero-role' }, L('담당 정보분석관 · ','Intel analyst · '), h('b', null, L('임재혁','Lim Jae-hyeok'))))),

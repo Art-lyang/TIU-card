@@ -286,7 +286,13 @@ function App(){
   var _glitch=useState(0),glitchLevel=_glitch[0],setGlitchLevel=_glitch[1];
   var _fxMode=useState(function(){return Save.get('ts_fxMode','full')}),fxMode=_fxMode[0],setFxMode=_fxMode[1];
   useEffect(function(){var sv=Save.get('ts_volume',null);if(sv!==null&&typeof BGM!=='undefined')BGM.vol=sv/100;var sm=Save.get('ts_muted',null);if(sm===true&&typeof BGM!=='undefined'){BGM.muted=true;setBgmMuted(true)};if(sm===true&&typeof SFX!=='undefined')SFX.muted=true;var sfv=Save.get('ts_sfxVol',null);if(sfv!==null&&typeof SFX!=='undefined')SFX.vol=sfv/100;var fs=Save.get('ts_fontSize','normal');if(fs!=='normal'){var r=document.getElementById('root');if(r)r.classList.add('fs-'+fs)}},[]);
-  useEffect(function(){var h2=function(e){if(e.key==='Escape'&&phase==='game'&&!showSettings)setShowSettings(true)};window.addEventListener('keydown',h2);return function(){window.removeEventListener('keydown',h2)}},[phase,showSettings]);
+  useEffect(function(){var h2=function(e){if(e.key!=='Escape')return;
+    // 열린 .rlab 오버레이(연구/조사/시설)가 있으면 ESC로 먼저 닫는다(설정보다 우선) — 중복 발동 방지
+    if(showResearch){setShowResearch(false);return}
+    if(showEvidence){setShowEvidence(false);return}
+    if(showFacility){setShowFacility(false);return}
+    if(phase==='game'&&!showSettings)setShowSettings(true)};
+    window.addEventListener('keydown',h2);return function(){window.removeEventListener('keydown',h2)}},[phase,showSettings,showFacility,showEvidence,showResearch]);
   var getLiveLogs=function(fallback){
     if(typeof window!=='undefined'&&Array.isArray(window.__ts_liveLogs))return window.__ts_liveLogs.slice();
     return Array.isArray(fallback)?fallback.slice():(Array.isArray(logs)?logs.slice():['LOG-001']);
@@ -629,6 +635,7 @@ function App(){
       }
       setResearch(radv.state);Save.saveResearch(radv.state);
     }
+    setPrevStats({c:next.c,r:next.r,t:next.t,o:next.o,day:next.day}); // 일일 보고 추세용: 새 날의 시작 스탯 스냅샷
     setStats(next);setGi(nextGi);persistGame(next,nextGi,act,actFlags,transRoute,cooldowns,recentCards,0,chainQueue,nextFacility);setCt(0);Save.set('ts_resumePhase','evening');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');
     if(r.feId&&completedFacility){
       setToastType('');setTimeout(function(){var suffix=feDef&&feDef.uprising?tt('app.uprisingSuffix',null,' | 내부 기록 갱신'):'';setToast(tt('app.facilityComplete',{title:r.title||tt('app.facilityDefault',null,'시설'),suffix:suffix},'['+(r.title||'시설')+'] 확장 공사 완료'+suffix));clearToastAfter(2400)},300)}
@@ -661,7 +668,7 @@ function App(){
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
     setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);
     setGor('');setGoDay(null);setEndNarr(null);setEndId(null);setCAlertDay(-1);setAct2Reached(false);
-    setFacility({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]});setFacOfferedToday(false);
+    setFacility({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]});setFacOfferedToday(false);setPrevStats(null);
     setResearch({});Save.del('ts_research');
     // Reset archive read markers for a clean campaign.
     setSeenArchive([]);Save.del('ts_seenArchive');

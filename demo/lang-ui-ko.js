@@ -205,6 +205,7 @@ window.TS_I18N.mergeUI('ko', {
   reward:{
     c:'봉쇄', r:'자원', t:'신뢰', o:'평가',
     pickCount:'{count}개 중 선택',
+    execute:'— 실행 —',
     footer:'ORACLE REMOTE TERMINAL — BRANCH KR-INIT-001'
   },
   fieldMission:{

@@ -15,7 +15,7 @@ function useRlabHelp(storageKey, devPreview){
     close: function(){ if(SAVE && !devPreview) SAVE.set(storageKey,true); st[1](false); } };
 }
 function RlabHelpButton(props){
-  return h('span',{className:'rlab-help-btn',onClick:props.onClick,title:(props&&props.title)||'?'},'?');
+  return h('button',{type:'button',className:'rlab-help-btn','aria-label':(props&&props.title)||'?',onClick:props.onClick,title:(props&&props.title)||'?'},'?');
 }
 function RlabHelpOverlay(props){
   if(!props.open) return null;
@@ -113,11 +113,10 @@ var showDeltaFloats=function(before,after){
     var d=(after[k]||0)-(before[k]||0);
     if(d===0)return;
     var row=document.querySelector('.gauge-icon-'+k);
-    if(!row)row=document.querySelector('.gauge-row');
-    var parent=row?row.closest('.gauge-row'):null;
+    var parent=row?row.closest('.cg-cell'):null;
     if(!parent)return;
     var el=document.createElement('span');
-    el.className='delta-float';
+    el.className='delta-float '+(d>0?'delta-up':'delta-down');
     el.textContent=(d>0?'+':'')+d;
     el.style.color=d>0?'var(--ui)':'#ff4444';
     parent.style.position='relative';
