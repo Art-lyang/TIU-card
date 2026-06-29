@@ -655,7 +655,7 @@ function CardC(p){
     setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null);setChoiceCue(null)},replyMsg?1500:300);
   };
   var requestChoice=function(kdir){
-    if(p.disabled||chosen||shaking)return;
+    if(p.disabled||chosen||shaking||entering)return;
     clearHoldPreview();
     if(p.onPreview)p.onPreview(null);
     var shouldBlock=card.oracleBlock&&blockCount<card.oracleBlock&&kdir===(card.oracleBlockDir||'left');
@@ -697,7 +697,7 @@ function CardC(p){
   var th=80,dir=dx>th?'right':dx<-th?'left':null,tx=chosen==='left'?-400:chosen==='right'?400:dx;
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){
-    if(p.disabled)return;
+    if(p.disabled||entering)return;
     sxRef.current=x;setSx(x);setDragging(true);dragActiveRef.current=true;holdPreviewDir.current=choiceDirFromX(x);clearHoldPreview();
     holdPreviewTimer.current=setTimeout(function(){if(dragActiveRef.current&&Math.abs(dx)<8)previewChoice(holdPreviewDir.current)},180);
   };
