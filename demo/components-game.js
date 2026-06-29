@@ -246,7 +246,6 @@ function MainMenu(p){
         h('div',{className:'main-terminal-header-main'},
           h('span',{className:'main-terminal-header-title'},'ORACLE //'),
           h('div',{className:'main-terminal-header-tools'},
-            h('span',{className:'main-terminal-header-live'},h('span',{className:'main-terminal-header-live-dot','aria-hidden':true}),'LIVE'),
             h('span',{className:'main-terminal-header-time'},nowText))),
         h('div',{className:'main-terminal-header-status'},
           h('div',{className:'terminal-boot-locale main-terminal-locale main-terminal-locale--status','aria-label':tt('boot.language',null,'Language')},
@@ -254,7 +253,6 @@ function MainMenu(p){
               return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase());
             })),
           h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
-          h('span',{className:'main-terminal-session'},tt('menu.sessionId',null,'SESSION ID: KR-B3-011')),
           h('span',{className:'main-terminal-signal','aria-label':'signal strength','aria-hidden':true},h('i'),h('i'),h('i'),h('i')))),
       h('section',{className:'main-terminal-feed','aria-label':'terminal session surveillance feed'},
         IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
@@ -264,7 +262,7 @@ function MainMenu(p){
           h('span',null,tt('menu.securityLabel',null,'SECURITY LEVEL:'),' ',h('strong',null,tt('menu.securityOrange',null,'ORANGE')))),
         h('div',{className:'main-terminal-feed-hud main-terminal-feed-bottom'},
           h('span',{className:'main-terminal-live'},h('span',{className:'main-terminal-live-dot','aria-hidden':true}),tt('menu.feedLive',null,'FEED: LIVE')),
-          h('span',{className:'main-terminal-version'},tt('menu.feedVersion',null,'TERMINAL SESSION v1.11'),h('span',{className:'main-terminal-barcode','aria-hidden':true})))),
+          h('span',{className:'main-terminal-version'},tt('menu.feedVersion',null,'TERMINAL SESSION v1.11')))),
       h('section',{className:'main-terminal-log','aria-label':'system log'},
         h('span',{className:'main-terminal-log-icon','aria-hidden':true},'>_'),
         h('div',{className:'main-terminal-log-copy'},
@@ -762,7 +760,7 @@ function CardC(p){
       h('span',{className:'card-corner-node card-corner-node--bl','aria-hidden':true}),
       h('span',{className:'card-corner-node card-corner-node--br','aria-hidden':true}),
       specBg?h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
-      glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease infinite'}},'⚠ SYSTEM ERROR — UNREGISTERED PROTOCOL'),
+      glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease 3'}},'SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
       timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
@@ -904,7 +902,7 @@ function NewsReport(p){
       if(st.t<=15)lines.push({text:'Personnel Cohesion — desertion risk',color:'red'});
       else if(st.t<=25)lines.push({text:'Personnel Cohesion — morale decline detected',color:'orange'});
       if(st.o<=30)lines.push({text:'Comms Layer — ORACLE relay unstable',color:'orange'});
-      comp.forEach(function(feId){var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' — online ✓',color:'green'})});
+      comp.forEach(function(feId){var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' — online',color:'green'})});
       appr.forEach(function(feId){if(comp.indexOf(feId)>=0)return;var fe=typeof FACILITY_EXPANSIONS!=='undefined'?FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0]:null;if(fe)lines.push({text:feName(fe)+' — expansion pending',color:'gray'})});
       if(lines.length===0)lines.push({text:'All sectors operating normally',color:'green'});
     }else{
