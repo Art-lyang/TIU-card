@@ -814,7 +814,7 @@ function News(p){
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={h:["운영 효율 양호. 현행 유지 권고.","ORACLE 권고 이행률 우수. 한국 지부 성과 상위권.","지휘관 판단 신뢰도 높음. 현 운영 방침 유지.","기지 안정성 확인. 추가 권한 부여 검토 중."],m:["운영 안정. 일부 비표준 패턴 감지.","전반적 안정. 독립적 판단 빈도 소폭 증가.","기지 운영 정상 범위. 일부 지표 변동 주시 중.","ORACLE 권고 이행률 보통. 관찰 지속."],l:["비표준 판단 빈도 증가. 모니터링 강화.","독자적 의사결정 패턴 감지. 분석 중.","ORACLE 권고 이탈 빈도 상승. 기록 중.","운영 데이터 분석 — 비표준 항목 다수 확인."],v:["비표준 운영 패턴 다수 감지. 주의 요망.","지휘관 신뢰 지표 하락 중. 재평가 예정.","ORACLE 권고 무시 빈도 위험 수준 접근.","운영 이상 감지. 본부 보고 검토 중."]};
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|')].join('|'));
-  var statBar=function(k,v,nm){var d=v<=20;return h('div',{key:k,style:{display:'flex',alignItems:'center',gap:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},h('span',{style:{color:'rgba(var(--ui-rgb),.55)',width:24}},nm),h('div',{style:{flex:1,height:3,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.6)',width:20,textAlign:'right',fontSize:9}},v))};
+  var statBar=function(k,v,nm){var d=v<=20;return h('div',{key:k,style:{display:'flex',alignItems:'center',gap:6,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},h('span',{style:{color:'rgba(var(--ui-rgb),.55)',width:24}},nm),h('div',{style:{flex:1,height:3,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},h('div',{style:{position:'absolute',top:0,bottom:0,left:0,width:v+'%',background:d?'rgba(255,68,68,.65)':'rgba(var(--ui-rgb),.55)',transition:'width 0.4s'}})),h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.6)',width:20,textAlign:'right',fontSize:9}},v))};
   return h('div',{className:'oracle-card',style:{width:'100%',maxWidth:440,padding:'20px 22px 16px',cursor:'default',marginTop:'auto',marginBottom:'auto',display:'flex',flexDirection:'column',maxHeight:'calc(100vh - 60px)',overflow:'hidden'}},
     h('div',{className:'oracle-card__glow'}),
     h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginBottom:6}},
@@ -822,23 +822,23 @@ function News(p){
       h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},'DAY '+(p.day||'?')+' REPORT'),
     h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
-      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[STATUS OVERVIEW]'),
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},'[STATUS OVERVIEW]'),
         h('div',{style:{display:'flex',flexDirection:'column',gap:4}},
           statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'봉쇄')),statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'자원')),statBar('t',(st.t==null?50:st.t),tt('stats.t',null,'신뢰')),statBar('o',(st.o==null?40:st.o),tt('stats.o',null,'평가'))),
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:gi<0?'#f0a030':'rgba(var(--ui-rgb),.55)',marginTop:8,fontStyle:'italic'}},assess)),
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
         if(sitLines.length===0)return null;
-        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[SITUATION REPORT]'),
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},'[SITUATION REPORT]'),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('⚠')>=0;
             return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
           }))
       })(),
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
-      headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
+      headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
         h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
         h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))}),
       shown>=headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
@@ -876,8 +876,8 @@ function NewsReport(p){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
       h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},nm),
-      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
-        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('div',{style:{position:'relative',minWidth:0,height:7,background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{position:'absolute',top:0,bottom:0,left:0,width:v+'%',background:d?'rgba(255,68,68,.65)':'rgba(var(--ui-rgb),.55)',transition:'width 0.4s'}})),
       h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:28,textAlign:'right',fontSize:9}},v)
     )
   };
@@ -910,8 +910,8 @@ function NewsReport(p){
       lines=getFacilityStatusLines(st,comp,appr)||[];
       if(!lines.length)return null;
     }
-    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
       lines.map(function(line,i){
         return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'▸ '+line.text)
       })
@@ -924,8 +924,8 @@ function NewsReport(p){
       h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
     h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
-      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
           statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
           statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
@@ -935,17 +935,17 @@ function NewsReport(p){
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
         if(sitLines.length===0)return null;
-        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('⚠')>=0;
             return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
           }))
       })(),
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
       headlines.slice(0,shown).map(function(l,i){
         var hl=parseHL(l);
-        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
           h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
       }),
@@ -984,8 +984,8 @@ function NewsReport2(p){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'76px minmax(0,1fr) 28px',alignItems:'center',columnGap:8,fontFamily:"'Share Tech Mono',monospace",fontSize:10}},
       h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}},nm),
-      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
-        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('div',{style:{position:'relative',minWidth:0,height:7,background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{position:'absolute',top:0,bottom:0,left:0,width:v+'%',background:d?'rgba(255,68,68,.65)':'rgba(var(--ui-rgb),.55)',transition:'width 0.4s'}})),
       h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:28,textAlign:'right',fontSize:9}},v)
     );
   };
@@ -1015,8 +1015,8 @@ function NewsReport2(p){
       lines=getFacilityStatusLines(st,comp,appr)||[];
       if(!lines.length)return null;
     }
-    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
       lines.map(function(line,i){
         return h('div',{key:'fac-'+i,style:{fontSize:11,lineHeight:1.6,color:cm[line.color]||'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'}},'▸ '+line.text)
       })
@@ -1029,8 +1029,8 @@ function NewsReport2(p){
       h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
     h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
-      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
           statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
           statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
@@ -1040,17 +1040,17 @@ function NewsReport2(p){
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
         if(sitLines.length===0)return null;
-        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('⚠')>=0;
             return h('div',{key:'sit-'+i,style:{fontSize:11,lineHeight:1.6,color:isWarn?'#ff8844':'var(--ui-text)',fontFamily:"'Share Tech Mono',monospace",padding:'2px 0',animation:'fadeIn 0.4s ease'}},line)
           }))
       })(),
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
       headlines.slice(0,shown).map(function(l,i){
         var hl=parseHL(l);
-        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
           h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))
       }),
@@ -1114,8 +1114,8 @@ function NewsReport3(p){
     var d=v<=20;
     return h('div',{key:k,style:{display:'grid',gridTemplateColumns:'96px minmax(0,1fr) 32px',alignItems:'center',columnGap:10,fontFamily:"'Share Tech Mono',monospace",fontSize:10,lineHeight:1.2}},
       h('span',{style:{color:'rgba(var(--ui-rgb),.72)',minWidth:0,whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis',paddingRight:2}},nm),
-      h('div',{style:{minWidth:0,height:4,background:'rgba(255,255,255,.06)',borderRadius:2,overflow:'hidden'}},
-        h('div',{style:{height:'100%',width:v+'%',background:d?'rgba(255,68,68,.6)':'rgba(var(--ui-rgb),.4)',borderRadius:2,transition:'width 0.4s'}})),
+      h('div',{style:{position:'relative',minWidth:0,height:7,background:'rgba(var(--ui-rgb),.1)',border:'1px solid rgba(var(--ui-rgb),.2)',borderRadius:2,overflow:'hidden'}},
+        h('div',{style:{position:'absolute',top:0,bottom:0,left:0,width:v+'%',background:d?'rgba(255,68,68,.65)':'rgba(var(--ui-rgb),.55)',transition:'width 0.4s'}})),
       h('span',{style:{color:d?'#ff4444':'rgba(var(--ui-rgb),.78)',width:32,textAlign:'right',fontSize:9}},v)
     );
   };
@@ -1145,10 +1145,10 @@ function NewsReport3(p){
       lines=getFacilityStatusLines(st,comp,appr)||[];
       if(!lines.length)return null;
     }
-    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
+    return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionFacility',null,'[FACILITY STATUS]')),
       lines.map(function(line,i){
-        return h('div',{key:'fac-'+i,style:Object.assign({},reportBody,{color:cm[line.color]||'rgba(var(--ui-rgb),.78)',padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'})},'> '+line.text)
+        return h('div',{key:'fac-'+i,style:Object.assign({},reportBody,{color:cm[line.color]||'rgba(var(--ui-rgb),.78)',padding:'2px 0',animation:line.blink?'blink 1s infinite':'fadeIn 0.4s ease'})},'▸ '+line.text)
       })
     );
   })();
@@ -1159,8 +1159,8 @@ function NewsReport3(p){
       h('span',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.5)',letterSpacing:1}},'ACT '+act)),
     h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',fontWeight:'bold',marginBottom:10,letterSpacing:1,borderBottom:'1px solid rgba(var(--ui-rgb),.15)',paddingBottom:8,flexShrink:0}},tt('news.dayReport',{day:(p.day||'?')},'DAY '+(p.day||'?')+' REPORT')),
     h('div',{style:{flex:1,overflowY:'auto',minHeight:0}},
-      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
+      h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionStatus',null,'[STATUS OVERVIEW]')),
         h('div',{style:{display:'flex',flexDirection:'column',gap:6}},
           statBar('c',(st.c==null?50:st.c),tt('stats.c',null,'Containment')),
           statBar('r',(st.r==null?60:st.r),tt('stats.r',null,'Resources')),
@@ -1170,17 +1170,17 @@ function NewsReport3(p){
       (function(){
         var sitLines=typeof getSituationLines==='function'?getSituationLines(st,p.prevStats||null,act):[];
         if(sitLines.length===0)return null;
-        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)'}},
-          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
+        return h('div',{style:{marginBottom:12,padding:'8px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)'}},
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionSituation',null,'[SITUATION REPORT]')),
           sitLines.map(function(line,i){
             var isWarn=line.indexOf('경고')>=0||line.indexOf('warning')>=0||line.indexOf('CRITICAL')>=0;
             return h('div',{key:'sit-'+i,style:Object.assign({},reportBody,{color:isWarn?'#ff8844':'rgba(var(--ui-rgb),.82)',padding:'2px 0',animation:'fadeIn 0.4s ease'})},line)
           }))
       })(),
-      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
+      h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},tt('news.sectionIntel',null,'[INTEL BRIEFING]')),
       headlines.slice(0,shown).map(function(l,i){
         var hl=parseHL(l);
-        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.08)',animation:'fadeIn 0.4s ease'}},
+        return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
           h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
           h('div',{style:Object.assign({},reportBody,{color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.86)'})},hl.text))
       }),
