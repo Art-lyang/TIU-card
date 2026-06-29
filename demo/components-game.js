@@ -543,22 +543,32 @@ function DayObjective(p){
   if(act>=3&&(oracleRel<=55||hasLog('LOG-EV-UNLOCK')||hasLog('LOG-LJC-PROM-01')))corruption=1;
   if(act>=3&&(oracleRel<=45||hasLog('LOG-080')||hasLog('LOG-081')||hasLog('LOG-LJC-PROM-03')||hasLog('LOG-UPRISING-PHASE1')))corruption=2;
   if(oracleRel<=35||hasLog('LOG-UPRISING-PHASE2')||hasLog('LOG-UPRISING-PHASE3')||hasLog('LOG-ESCAPE-TRIG'))corruption=3;
-  // ── ORACLE 능동 지시: 플레이어 선택으로 지표가 위험해지면 ORACLE 시점에서 목표를 바꿔 회복을 유도 ──
-  //    (검열 단계 corruption>=2 전까지만. 평가(ORACLE 충성) 최우선, 그 외 가장 낮은 위험 지표.)
+  // ── ORACLE 능동 지시: 지표 상태에 따라 목표(text)+권고(sub)를 바꿔 회복을 유도 ──
+  //    검열(corruption>=2) 전까지만. 평가(o, ORACLE 충성) 최우선, 그 외 가장 낮은 c/r/t.
+  //    ≤35(o)·≤30(c/r/t)=firm(지시), 그보다 높고 ≤40=advisory(권고)로 두 단계.
+  //    권고(oSub)는 진행 안내(sub)를 덮어쓰되, 조사테이블 미해금 안내(subLocked)는 진행 필수라 보존.
   if(corruption<2){
+    var subLocked=(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0)||(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0);
     var oDir=null,oSub=null;
-    if(typeof st.o==='number'&&st.o<=35){
-      oDir=isEn?'[ORACLE: Evaluation below threshold. Comply with directives to restore standing.]':'[ORACLE: 운영 평가 미달. 지시를 준수해 평가를 회복하십시오.]';
-      oSub=isEn?'Choose ORACLE-aligned options to raise Evaluation.':'ORACLE 정렬 선택지로 평가를 끌어올리세요.';
+    if(typeof st.o==='number'&&st.o<=40){
+      var oFirm=st.o<=35;
+      oDir=oFirm?(isEn?'[ORACLE: Evaluation below threshold. Comply with directives to restore standing.]':'[ORACLE: 운영 평가 미달. 지시를 준수해 평가를 회복하십시오.]')
+                :(isEn?'[ORACLE: Evaluation below the advisory line. Recovery recommended.]':'[ORACLE: 운영 평가가 권고선 아래입니다. 평가 회복을 권장합니다.]');
+      oSub=oFirm?(isEn?'Choose ORACLE-aligned options to raise Evaluation.':'ORACLE 정렬 선택지로 평가를 끌어올리세요.')
+                :(isEn?'Lean toward ORACLE-aligned options to shore up Evaluation.':'ORACLE 정렬 선택지로 평가를 보강하세요.');
     }else{
       var dirMap={
-        c:[isEn?'[ORACLE: Containment critical. Reinforce the perimeter — top priority.]':'[ORACLE: 봉쇄 안정도 임계. 봉쇄선 강화를 최우선으로 지시합니다.]',isEn?'Prioritize containment-raising options.':'봉쇄를 올리는 선택을 우선하세요.'],
-        r:[isEn?'[ORACLE: Supply critical. Secure resources first.]':'[ORACLE: 보급 임계. 자원 확보를 우선하십시오.]',isEn?'Prioritize resource-raising options.':'자원을 확보하는 선택을 우선하세요.'],
-        t:[isEn?'[ORACLE: Internal trust dropping. Stabilize personnel morale.]':'[ORACLE: 내부 신뢰 저하 감지. 인원 사기 안정화를 권고합니다.]',isEn?'Prioritize trust-raising options.':'신뢰를 올리는 선택을 우선하세요.']};
-      var lowK=['c','r','t'].filter(function(k){return typeof st[k]==='number'&&st[k]<=30}).sort(function(a,b){return st[a]-st[b]})[0];
-      if(lowK){oDir=dirMap[lowK][0];oSub=dirMap[lowK][1];}
+        c:{f:[isEn?'[ORACLE: Containment critical. Reinforce the perimeter — top priority.]':'[ORACLE: 봉쇄 안정도 임계. 봉쇄선 강화를 최우선으로 지시합니다.]',isEn?'Prioritize containment-raising options.':'봉쇄를 올리는 선택을 우선하세요.'],
+           s:[isEn?'[ORACLE: Containment slipping. Reinforcing the perimeter is advised.]':'[ORACLE: 봉쇄 안정도 저하. 봉쇄선 보강을 권고합니다.]',isEn?'Consider containment-raising options.':'봉쇄를 올리는 선택을 고려하세요.']},
+        r:{f:[isEn?'[ORACLE: Supply critical. Secure resources first.]':'[ORACLE: 보급 임계. 자원 확보를 우선하십시오.]',isEn?'Prioritize resource-raising options.':'자원을 확보하는 선택을 우선하세요.'],
+           s:[isEn?'[ORACLE: Supply running low. Securing resources is advised.]':'[ORACLE: 보급량 저하. 자원 확보를 권고합니다.]',isEn?'Consider resource-raising options.':'자원을 확보하는 선택을 고려하세요.']},
+        t:{f:[isEn?'[ORACLE: Internal trust dropping. Stabilize personnel morale.]':'[ORACLE: 내부 신뢰 저하 감지. 인원 사기 안정화를 권고합니다.]',isEn?'Prioritize trust-raising options.':'신뢰를 올리는 선택을 우선하세요.'],
+           s:[isEn?'[ORACLE: Internal trust softening. Morale management advised.]':'[ORACLE: 내부 신뢰 약화 조짐. 사기 관리를 권고합니다.]',isEn?'Consider trust-raising options.':'신뢰를 올리는 선택을 고려하세요.']}};
+      var lowK=['c','r','t'].filter(function(k){return typeof st[k]==='number'&&st[k]<=40}).sort(function(a,b){return st[a]-st[b]})[0];
+      if(lowK){var tier=st[lowK]<=30?'f':'s';oDir=dirMap[lowK][tier][0];oSub=dirMap[lowK][tier][1];}
     }
-    if(oDir){text=oDir;if(!sub)sub=oSub;}
+    // 지시 텍스트는 항상 반영하되, 권고(oSub)는 진행 필수 안내(subLocked)와 위험 자원 경고(critical)를 덮어쓰지 않는다.
+    if(oDir){text=oDir;if(!subLocked&&!critical.length)sub=oSub;}
   }
   if(corruption===1){
     sub=sub|| (isEn?'Objective signal unstable. Review logs and field reports.':'목표 신호가 불안정합니다. 로그와 현장 보고를 확인하세요.');

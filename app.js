@@ -136,6 +136,17 @@ function App(){
     setUsedDlg(base);
     return base;
   };
+  // 인트로(간부진 4인 소개) 대화를 '완료' 처리. 로그(LOG-INTRO-*)만 풀면 isIntrosDone은 true가 되지만
+  // 일반 대화 풀이 미사용 인트로 대화를 가장 이른 대화로 보고 다시 띄운다(Act1 생략→Act2 직행 시 발생).
+  // introsDone일 때만 인트로 대화 인덱스를 usedDlg에 넣어 재등장을 막는다. 스킵 직후 + 세이브 로드 마이그레이션 양쪽에서 호출.
+  var markIntroDialoguesUsed=function(lg){
+    if(typeof DIALOGUES==='undefined'||typeof isIntroDlgCheck!=='function'||typeof isIntrosDone!=='function')return false;
+    if(!isIntrosDone(lg||[]))return false;
+    var base=getUsedDialogueList();var changed=false;
+    DIALOGUES.forEach(function(d,i){if(isIntroDlgCheck(d,i)&&base.indexOf(i)<0){base=base.concat([i]);changed=true;}});
+    if(changed){Save.saveUsedDlg(base);setUsedDlg(base);}
+    return changed;
+  };
   useEffect(function(){if(phase!=='game'&&cardInputLockedRef.current)unlockCardInput()},[phase]);
   // curCard가 새 카드로 바뀌면 "스와이프 대기 중인 신선한 카드"로 표시 — 이후 대화가 끼어도 재드로우 없이 보존.
   // (nextCard·세이프가드·봉기실패·복원·DEV 주입 등 모든 setCurCard 경로를 일괄 커버)
@@ -214,6 +225,7 @@ function App(){
     // 구버전(4~5인) trust 세이브는 신규 인물 초기값 위에 병합해 0 시작을 방지
     var st=Save.get('ts_trust',null);if(st)setTrust(Object.assign({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40},st));
     var sud=Save.getUsedDlg();if(sud&&sud.length)setUsedDlg(sud);
+    markIntroDialoguesUsed(sl); // 기존 Act1 생략 세이브 복구: introsDone인데 인트로 대화 미완료면 완료 처리(Act2 재등장 방지)
     var sue=Save.getUsedEvening();if(sue&&sue.length)setUsedEvening(sue);
     var ssa=Save.getSeenArchive();if(ssa&&ssa.length)setSeenArchive(ssa);
     var sf=Save.getFacility();if(sf){sf=normalizeFacilityState(sf);Save.saveFacility(sf);setFacility(sf)}
@@ -519,6 +531,7 @@ function App(){
     if(curCard.id==='CA-001B'&&dir==='right'){
       tryUnlock('LOG-ACT1-SKIP');
       ['LOG-INTRO-SH','LOG-INTRO-KD','LOG-INTRO-YS','LOG-INTRO-IJ'].forEach(function(id){tryUnlock(id)});
+      markIntroDialoguesUsed(getLiveLogs(logs)); // 간부진 소개 대화도 완료 처리 → Act2에서 재등장 방지
       tryUnlock('LOG-ACT2');Save.set('ts_act2_reached',true);setAct2Reached(true);
       var skipStats={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:5};
       var skipFlags=deriveActFlags(nextActFlags,null,null,false);
