@@ -255,6 +255,31 @@ function MiniPanel(p){
     }, p.children));
 }
 
+// 공용 필드미션 터미널 셸 — Sequence 미니게임 룩을 전 미니게임에 통일. props: code/kind/title/intro/status[{k,v,cls}]/footL/footR/progress + children(스테이지)
+function FieldTerminalShell(p){
+  var status=p.status||[];
+  return h('div',{className:'fm-term-overlay'},
+    h('div',{className:'fm-term-frame'},
+      h('div',{className:'fm-term-scan'}),
+      h('div',{className:'fm-term-topbar'},
+        h('span',{className:'fm-term-signal'},h('i'),h('i'),h('i'),h('i')),
+        h('span',{className:'fm-term-field'},'FIELD MISSION'),
+        h('span',{className:'fm-term-menu'},'...')),
+      h('div',{className:'fm-term-header'},
+        h('div',{className:'fm-term-idline'},h('span',null,p.code||''),h('span',null,p.kind||'')),
+        h('h1',null,p.title),
+        p.intro?h('p',null,p.intro):null),
+      status.length?h('div',{className:'fm-term-status'},
+        status.map(function(s,i){return h('span',{key:i},(s.k?s.k+': ':''),h('b',{className:s.cls||''},s.v));})):null,
+      h('div',{className:'fm-term-body'},p.children),
+      (p.progress!=null||p.footL||p.footR)?h('div',{className:'fm-term-footer'},
+        h('span',null,p.footL||''),
+        (p.progress!=null)?h('div',{className:'fm-term-progress'},h('i',{style:{width:Math.max(0,Math.min(100,p.progress))+'%'}})):h('span',null,''),
+        h('span',null,p.footR||'')):null
+    )
+  );
+}
+
 function SignalMiniGame(p){
   var copy=p.copy;
   var startBand=0.45+Math.random()*0.1;
@@ -307,27 +332,25 @@ function SignalMiniGame(p){
     p.onDone(rank);
   }
 
-  return h(MiniPanel,null,
-    h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'#7affc6',letterSpacing:1.5,marginBottom:12}},
-      h('span',null,'M-002'),
-      h('span',null,'SIGNAL ALIGNMENT')),
-    h('div',{style:{fontSize:32,fontWeight:'700',color:'#ecfff4',marginBottom:10}},copy.title),
-    h('div',{style:{fontSize:15,lineHeight:1.7,color:'rgba(210,235,220,0.82)',marginBottom:18}},copy.intro),
-    h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:12,color:'rgba(210,235,220,0.62)',marginBottom:8}},
-      h('span',null,'TIME: '+time+'s'),
-      h('span',null,'PARTIAL ±1 CELL')),
-    h('div',{style:{padding:'18px 14px 22px',border:'1px solid rgba(122,255,198,0.22)',borderRadius:'22px',background:'rgba(5,18,11,0.76)'}},
-      h('div',{style:{position:'relative',height:138,borderRadius:'16px',overflow:'hidden',background:'linear-gradient(180deg, rgba(9,36,28,0.95), rgba(4,18,13,0.95))'}},
-        h('div',{style:{position:'absolute',inset:0,backgroundImage:'linear-gradient(90deg, rgba(122,255,198,0.06) 1px, transparent 1px), linear-gradient(180deg, rgba(122,255,198,0.04) 1px, transparent 1px)',backgroundSize:'22px 22px'}}),
-        h('div',{style:{position:'absolute',left:'0',right:'0',top:'49%',height:'2px',background:'rgba(72,232,255,0.8)',boxShadow:'0 0 8px rgba(72,232,255,0.35)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.start*100)+'%',width:((bandRef.current.end-bandRef.current.start)*100)+'%',background:'rgba(245,188,64,0.16)',borderLeft:'2px solid rgba(245,188,64,0.9)',borderRight:'2px solid rgba(245,188,64,0.9)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:((bandRef.current.start-bandRef.current.partial)*100)+'%',width:(bandRef.current.partial*100)+'%',borderRight:'1px dashed rgba(245,188,64,0.7)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.end*100)+'%',width:(bandRef.current.partial*100)+'%',borderLeft:'1px dashed rgba(245,188,64,0.7)'}}),
-        h('div',{style:{position:'absolute',top:'10px',bottom:'10px',left:(cursor*100)+'%',width:'9px',transform:'translateX(-50%)',borderRadius:'999px',background:'#78ffbe',boxShadow:'0 0 18px rgba(120,255,190,0.95), 0 0 44px rgba(120,255,190,0.35)'}})
-      ),
-      h('div',{style:{display:'flex',justifyContent:'center',marginTop:18}},
-        h('button',{className:'btn',onClick:confirmHit,style:{minWidth:180,padding:'12px 18px',fontSize:18,borderRadius:'999px'}},copy.action))
-    ));
+  var pct=Math.round((time/8)*100);
+  return h(FieldTerminalShell,{
+    code:'M-002',kind:'SIGNAL ALIGNMENT',title:copy.title,intro:copy.intro,
+    status:[{k:'TIME',v:time+'s',cls:time<=3?'is-bad':''},{k:'PARTIAL',v:'\u00b11 CELL'}],
+    footL:'SIGNAL LOCK',progress:pct,footR:pct+'%'
+  },
+    h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center'}},
+      h('div',{style:{position:'relative',height:150,borderRadius:'10px',overflow:'hidden',background:'linear-gradient(180deg, rgba(9,36,28,0.95), rgba(4,18,13,0.95))'}},
+        h('div',{style:{position:'absolute',inset:0,backgroundImage:'linear-gradient(90deg, rgba(91,255,122,0.06) 1px, transparent 1px), linear-gradient(180deg, rgba(91,255,122,0.04) 1px, transparent 1px)',backgroundSize:'22px 22px'}}),
+        h('div',{style:{position:'absolute',left:'0',right:'0',top:'49%',height:'2px',background:'rgba(91,255,122,0.5)'}}),
+        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.start*100)+'%',width:((bandRef.current.end-bandRef.current.start)*100)+'%',background:'rgba(255,211,63,0.15)',borderLeft:'2px solid rgba(255,211,63,0.9)',borderRight:'2px solid rgba(255,211,63,0.9)'}}),
+        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:((bandRef.current.start-bandRef.current.partial)*100)+'%',width:(bandRef.current.partial*100)+'%',borderRight:'1px dashed rgba(255,211,63,0.6)'}}),
+        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.end*100)+'%',width:(bandRef.current.partial*100)+'%',borderLeft:'1px dashed rgba(255,211,63,0.6)'}}),
+        h('div',{style:{position:'absolute',top:'10px',bottom:'10px',left:(cursor*100)+'%',width:'8px',transform:'translateX(-50%)',borderRadius:'999px',background:'#5bff7a',boxShadow:'0 0 16px rgba(91,255,122,0.95), 0 0 40px rgba(91,255,122,0.35)'}})
+      )
+    ),
+    h('div',{className:'fm-term-actions'},
+      h('button',{className:'fm-term-btn is-amber',onClick:confirmHit},copy.action))
+  );
 }
 
 function SequenceMiniGame(p){

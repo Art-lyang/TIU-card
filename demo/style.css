@@ -1258,3 +1258,42 @@ b.fm-rk--info{color:#caa14a}
 .ev2-card:hover{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.14)}
 .ev2-name{font-size:12px;color:#e6ede9;line-height:1.35;font-weight:500}
 .ev2-desc{font-size:10px;color:rgba(190,206,200,.5);line-height:1.45;margin-top:3px}
+/* ── 공용 필드미션 터미널 셸 (.fm-term-*) — Sequence 미니게임 룩을 전 미니게임에 통일 ── */
+.fm-term-overlay{position:absolute;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:8px;background:radial-gradient(circle at 50% 18%,rgba(91,255,122,.12),transparent 46%),#020805;color:#e8fff0;overflow:hidden}
+.fm-term-frame{position:relative;width:min(calc(100vw - 16px),430px);height:min(calc(100vh - 16px),676px);height:min(calc(100svh - 16px),676px);max-height:calc(100vh - 16px);max-height:calc(100svh - 16px);background:linear-gradient(180deg,rgba(4,19,10,.98),rgba(1,8,5,.99));border:1px solid rgba(91,255,122,.72);box-shadow:inset 0 0 0 1px rgba(91,255,122,.12),inset 0 0 34px rgba(91,255,122,.06),0 0 24px rgba(0,0,0,.7);clip-path:polygon(18px 0,calc(100% - 18px) 0,100% 28px,100% calc(100% - 28px),calc(100% - 18px) 100%,18px 100%,0 calc(100% - 28px),0 28px);padding:26px 22px 22px;display:flex;flex-direction:column;gap:9px;box-sizing:border-box;overflow:hidden;font-family:'Noto Sans KR',sans-serif;text-shadow:none}
+.fm-term-scan{position:absolute;inset:18px;background:url('assets/field-mission-ui/fx/scanline_grid_overlay_1080x1700.png') center/100% 100% no-repeat;opacity:.12;pointer-events:none}
+.fm-term-frame>*:not(.fm-term-scan){position:relative;z-index:1}
+.fm-term-topbar{height:22px;display:grid;grid-template-columns:58px minmax(0,1fr) 58px;align-items:center;font-family:'Share Tech Mono',monospace;color:#5bff7a;letter-spacing:.34em;font-size:10px;line-height:1;flex-shrink:0}
+.fm-term-signal{display:flex;align-items:flex-end;gap:3px}
+.fm-term-signal i{display:block;width:4px;background:#5bff7a;box-shadow:0 0 7px rgba(91,255,122,.6)}
+.fm-term-signal i:nth-child(1){height:9px}.fm-term-signal i:nth-child(2){height:14px}.fm-term-signal i:nth-child(3){height:11px}.fm-term-signal i:nth-child(4){height:17px}
+.fm-term-field{text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fm-term-menu{text-align:right;letter-spacing:.15em}
+.fm-term-header{flex-shrink:0;background:linear-gradient(180deg,rgba(8,30,18,.78),rgba(2,13,8,.84));border:1px solid rgba(91,255,122,.45);clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 18px,100% calc(100% - 18px),calc(100% - 16px) 100%,16px 100%,0 calc(100% - 18px),0 18px);box-shadow:inset 0 0 18px rgba(91,255,122,.08);padding:13px 18px 12px;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box}
+.fm-term-idline{display:flex;justify-content:space-between;gap:10px;font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1.2;color:#5bff7a;letter-spacing:.16em;margin-bottom:6px}
+.fm-term-idline span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fm-term-header h1{margin:0 0 6px;font-size:clamp(20px,5.4vw,26px);line-height:1.12;color:#f2fff5;font-weight:900;letter-spacing:0;text-shadow:0 0 8px rgba(255,255,255,.3),0 0 20px rgba(91,255,122,.16);overflow-wrap:anywhere}
+.fm-term-header p{margin:0;font-size:12px;line-height:1.5;color:rgba(232,255,240,.78);overflow-wrap:anywhere}
+.fm-term-status{flex-shrink:0;display:flex;justify-content:space-between;gap:8px;align-items:center;background:rgba(3,18,11,.72);border:1px solid rgba(91,255,122,.24);padding:8px 14px;box-sizing:border-box;font-family:'Share Tech Mono',monospace;font-size:11px;line-height:1;color:rgba(232,255,240,.72);letter-spacing:.05em}
+.fm-term-status span{display:inline-flex;align-items:center;gap:5px;min-width:0;white-space:nowrap}
+.fm-term-status b{color:#5bff7a;font-weight:700}.fm-term-status b.is-warn{color:#ffd33f}.fm-term-status b.is-bad{color:#ff7a7a}
+.fm-term-body{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:11px}
+.fm-term-stage{position:relative;background:linear-gradient(180deg,rgba(3,22,12,.72),rgba(1,10,6,.82));border:1px solid rgba(91,255,122,.34);clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 12px,100% calc(100% - 12px),calc(100% - 12px) 100%,12px 100%,0 calc(100% - 12px),0 12px);padding:14px 16px;box-sizing:border-box}
+.fm-term-actions{flex-shrink:0;display:flex;justify-content:center;gap:10px;padding-top:2px}
+.fm-term-btn{appearance:none;border:1px solid rgba(91,255,122,.5);background:linear-gradient(180deg,rgba(5,29,15,.92),rgba(2,13,8,.96));clip-path:polygon(12px 0,calc(100% - 12px) 0,100% 50%,calc(100% - 12px) 100%,12px 100%,0 50%);color:#5bff7a;font-family:'Share Tech Mono',monospace;letter-spacing:.1em;font-size:14px;font-weight:700;min-width:180px;padding:12px 22px;cursor:pointer;text-shadow:0 0 8px rgba(91,255,122,.5);box-shadow:inset 0 0 13px rgba(91,255,122,.06)}
+.fm-term-btn:hover,.fm-term-btn:focus-visible{filter:brightness(1.16);border-color:rgba(255,211,63,.6)}
+.fm-term-btn:active{transform:translateY(1px)}
+.fm-term-btn:disabled{opacity:.4;cursor:default;filter:none}
+.fm-term-btn.is-amber{border-color:rgba(255,211,63,.55);color:#ffd33f;text-shadow:0 0 8px rgba(255,211,63,.5)}
+.fm-term-footer{flex-shrink:0;display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:10px;align-items:center;font-family:'Share Tech Mono',monospace;font-size:10px;line-height:1;color:rgba(91,255,122,.65);letter-spacing:.08em;min-height:18px}
+.fm-term-footer span{white-space:nowrap}
+.fm-term-progress{height:5px;background:rgba(91,255,122,.12);overflow:hidden}
+.fm-term-progress i{display:block;height:100%;background:#5bff7a;box-shadow:0 0 8px rgba(91,255,122,.6);transition:width .2s ease}
+@media(max-width:430px){
+ .fm-term-overlay{padding:4px}
+ .fm-term-frame{width:min(calc(100vw - 8px),390px);height:min(calc(100vh - 8px),640px);height:min(calc(100svh - 8px),640px);max-height:calc(100vh - 8px);max-height:calc(100svh - 8px);padding:20px 16px 18px;gap:7px}
+ .fm-term-header h1{font-size:clamp(19px,5.6vw,23px)}
+ .fm-term-header p{font-size:11px;line-height:1.42}
+ .fm-term-status{font-size:9px;padding:7px 10px;gap:4px}
+ .fm-term-btn{min-width:150px;font-size:12px;padding:10px 18px}
+}
