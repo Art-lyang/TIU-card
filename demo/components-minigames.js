@@ -1224,11 +1224,53 @@ function ScreeningMiniGame(p){
   );
 }
 
+// 미니게임 시작 게이트 — 플레이 방법 안내 후 [시작]을 눌러야 타이머/모션 작동(게임은 START 후 마운트되므로 타이머 자동 정지)
+var MINI_CONTROLS = {
+  signal:{ko:'커서가 황색 안정 구간에 들어올 때 [판정 확정]을 누르세요.',en:'Press confirm when the cursor enters the amber band.'},
+  sequence:{ko:'패널 지시 순서대로 봉인 버튼을 누르세요.',en:'Press the seal buttons in the order shown.'},
+  breach:{ko:'인접한 노드만 따라 KEY 2개를 모은 뒤 EXIT로 빠져나오세요. 붉은 노드는 노출을 올립니다.',en:'Move only through adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
+  route:{ko:'붉은 위험 칸을 피해 제한 이동 횟수 안에 목표 칸으로 이동하세요. 황색 칸은 이동력 2 소모.',en:'Avoid red danger tiles and reach the goal within the move limit. Amber tiles cost 2 moves.'},
+  sample:{ko:'버튼을 길게 눌러 탐침을 올리고 움직이는 샘플에 겹쳐 회수율을 채우세요. 과부하 주의.',en:'Press and hold to raise the probe, overlap the moving sample to fill recovery. Watch overload.'},
+  scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머무르세요. 가짜 반응은 신호를 떨어뜨립니다.',en:'Drag to move the scanner and hold over the true signal. Decoys drop the lock.'},
+  evidence:{ko:'실제 단서만 골라 제한된 판독 슬롯을 채운 뒤 확정하세요.',en:'Pick only the real clues to fill the limited slots, then lock.'},
+  reconstruction:{ko:'깨진 조각을 시간 순서대로 선택하세요. 잘못 이으면 추적선이 흔들립니다.',en:'Select the fragments in chronological order. Wrong picks destabilize the trace.'},
+  statement:{ko:'기록과 모순되는 진술 하나를 지정하세요.',en:'Flag the single statement that contradicts the record.'},
+  screening:{ko:'이상 생체 반응을 보이는 인원을 표시한 뒤 확정하세요.',en:'Mark the personnel with abnormal readings, then confirm.'}
+};
+function MinigameOnboarding(p){
+  var en=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  var L=function(ko,e){return en?e:ko;};
+  var ctl=MINI_CONTROLS[p.type]||{};
+  useEffect(function(){
+    var onKey=function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();if(p.onStart)p.onStart();} };
+    window.addEventListener('keydown',onKey);
+    return function(){window.removeEventListener('keydown',onKey);};
+  },[p]);
+  return h(FieldTerminalShell,{
+    code:'MODULE',kind:p.game.kind,title:p.copy.title,
+    status:[{k:'STATUS',v:L('\ub300\uae30','STANDBY'),cls:'is-warn'},{k:'TIMER',v:L('\uc2dc\uc791 \uc2dc \uc791\ub3d9','STARTS ON GO')}]
+  },
+    h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:11}},
+      h('div',{className:'mg-ob-card'},
+        h('div',{className:'mg-ob-h'},L('\u25a4 \uc784\ubb34 \ubaa9\ud45c','\u25a4 OBJECTIVE')),
+        h('div',{className:'mg-ob-txt'},p.copy.intro)),
+      (ctl.ko||ctl.en)?h('div',{className:'mg-ob-card mg-ob-card--ctl'},
+        h('div',{className:'mg-ob-h'},L('\u25b8 \uc870\uc791','\u25b8 CONTROLS')),
+        h('div',{className:'mg-ob-txt'},L(ctl.ko,ctl.en))):null,
+      h('div',{className:'mg-ob-note'},L('\uc2dc\uc791\uc744 \ub204\ub974\uba74 \uc81c\ud55c \uc2dc\uac04\uc774 \uc791\ub3d9\ud569\ub2c8\ub2e4.','The timer starts only after you press start.'))
+    ),
+    h('div',{className:'fm-term-actions'},
+      h('button',{className:'fm-term-btn is-amber',onClick:p.onStart},L('\u25b6 \uc2dc\uc791','\u25b6 START')))
+  );
+}
+
 function FieldMiniGameOverlay(p){
+  var _ob=useState(false),started=_ob[0],setStarted=_ob[1];
   if(!p.game)return null;
   var game=FIELD_MINIGAME_LIBRARY[p.game.type];
   if(!game)return null;
   var copy=getMiniLocaleCopy(game);
+  if(!started)return h(MinigameOnboarding,{game:game,copy:copy,type:p.game.type,onStart:function(){setStarted(true);}});
   if(p.game.type==='signal')return h(SignalMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='sequence')return h(SequenceMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='breach')return h(BreachMiniGame,{copy:copy,onDone:p.onDone});
