@@ -107,3 +107,74 @@ high contrast, dim cold lighting, no people, no on-screen text, no logo, 3:2 lan
 - [ ] (선택) 우선순위 2 — mission≡spec 분리
 
 > 파일명·경로를 유지하면 **코드 변경 없이** 교체만으로 반영됩니다.
+
+---
+
+# 🎬 영상(CCTV 클립) — 선택
+
+> "간단한 영상도 가능?" → **가능**. Higgsfield `image→video`로 5초 내외 감시 루프 생성.
+> 우리 게임 적용처는 **CCTV 스팅 클립**(돌발 기습 CT-30x / 변이체 조우 미션 도입).
+
+## 현황 (`components-game.js` `CCTV_CLIPS`)
+
+- **실제 영상 보유: `brainseeker` 1개뿐** (`assets/video/brainseeker-cctv.mp4`).
+- 나머지는 전부 **정지 이미지(`img`) 대체** 중 → 영상으로 승격 가능:
+  `blood_pit · shell_talker · shell_gate · mannequin · brood_drone · spore_phantom · seed_spreader · sample_contam`
+
+## 제약 (꼭 지킬 것)
+
+1. **포맷: H.264(avc1) + faststart 만** 브라우저 `<video>` 재생됨 (CLAUDE.md 규칙). `mp4v`·HEVC·ProRes 금지.
+2. **이 클라우드 세션은 생성물 다운로드 차단(403)** → **PC/Higgsfield 웹에서 생성·변환 후 커밋.** (이 환경엔 `ffmpeg`도 없음)
+3. **크레딧**: 영상은 이미지보다 무거움 — 대략 1,000 크레딧 ≈ 영상 200개. 몇 개면 PLUS로 충분.
+4. 길이 5초 내외, 무음(게임 BGM과 충돌 방지), 흑백 감시 톤(기존 `brainseeker` 클립과 통일).
+
+## 공통 영상 프롬프트 접두 (영문)
+
+```
+black and white CCTV surveillance footage, fixed security camera, grainy low frame rate,
+dim ORACLE military containment base in winter, subtle slow motion, ~5 second seamless loop,
+no text, no camera movement
+```
+
+## 클립별 내용 / 프롬프트
+
+| clipKey | 미션 | 대상 파일(권장) | 내용 + 프롬프트(접두 뒤에 붙임) |
+|---|---|---|---|
+| blood_pit | M-001 | `assets/video/bloodpit-cctv.mp4` | B2 유기 함정실, 붉은 점액(흑백)이 고이고 떨어짐, 옅은 김 / `B2 organic trap chamber, dark slime pooling and dripping, faint steam` |
+| shell_talker / shell_gate | M-002 / M-E01 | `assets/video/shelltalker-cctv.mp4` | 야간 봉쇄 게이트 너머 정지한 인간형 실루엣, 옅은 안개, 불길한 정적 / `night perimeter gate, a still humanoid silhouette standing beyond the fence, faint mist, eerie stillness` |
+| mannequin | M-004 / M-E04 | `assets/video/mannequin-cctv.mp4` | 창고 속 정지한 마네킹형 개체, 미세한 경련 한 번 / `dormant mannequin-like figure standing motionless among storage, a single micro-twitch` |
+| brood_drone | M-005 / M-E03 | `assets/video/brood-cctv.mp4` | 복도 벽을 기어다니는 소형 군체 드론들 / `corridor with small swarm drones skittering along the walls` |
+| spore_phantom | M-006 | `assets/video/spore-cctv.mp4` | 포자 안개 찬 복도, 빛줄기 사이로 떠다니는 입자 / `fog-filled corridor with drifting spore particles, a light beam cutting through` |
+| seed_spreader | M-009 | `assets/video/seedspreader-cctv.mp4` | 오염 구역, 포자를 살포하는 개체와 떠다니는 홀씨 / `blighted sector, a seeding entity releasing drifting spore motes` |
+| sample_contam | MI-03 | `assets/video/samplecontam-cctv.mp4` | 실험실 격리 셀, 시료 용기 균열·유출 / `lab containment cell, a sample canister cracking with seeping fluid` |
+
+> 참조 스타일: 기존 `assets/video/brainseeker-cctv.mp4` (하수도 침입). 톤·그레인·프레임레이트 맞추기.
+
+## 변환 명령 (PC, 생성 mp4 → 브라우저 호환)
+
+```bash
+ffmpeg -i raw.mp4 -t 5 -an \
+  -c:v libx264 -profile:v main -pix_fmt yuv420p \
+  -movflags +faststart \
+  shelltalker-cctv.mp4
+```
+- `-an` 무음, `-t 5` 5초 컷, `+faststart` 필수, `yuv420p` 호환성.
+
+## 코드 연결 (영상 1개 완성될 때마다)
+
+`components-game.js`의 `CCTV_CLIPS`에서 해당 키를 **`img:` → `src:`** 로 교체(있던 `cam`/`warn`는 유지):
+```js
+// 예: shell_gate 를 정지이미지 → 영상으로
+shell_gate: { src:'assets/video/shelltalker-cctv.mp4?v=1', start:0, end:5,
+              cam:'CCTV // PERIMETER GATE B', warn:{ko:'봉쇄선 침입 감지', en:'PERIMETER BREACH DETECTED'} },
+```
+- `src`가 있으면 자동으로 영상 재생, 없으면 `img` 폴백.
+- **main + demo 양쪽** `components-game.js` 수정 + `?v=` 캐시 태그.
+
+## 영상 작업 체크리스트
+
+- [ ] CCTV 클립 생성(우선순위: shell_gate→M-E01, 그다음 자주 뜨는 종)
+- [ ] `ffmpeg`로 H.264 + faststart + 무음 5초 변환
+- [ ] `assets/video/` 에 저장 (main + demo)
+- [ ] `components-game.js` `CCTV_CLIPS` 해당 키 `img→src` 교체 (main + demo) + 캐시 태그
+- [ ] 모바일 Safari/Chrome에서 실제 재생 확인
