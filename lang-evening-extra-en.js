@@ -231,6 +231,161 @@ window.TS_I18N.mergeContent('en', {
         "Instead of going in myself, I will handle placement and extraction routes.",
         "...I will not make you pull me out because I overdid it."
       ]
+    },
+    "doyun_1_1-4": {
+      low: ["Kang Do-yun. Tactical commander.","I handle field operations and containment line management.","That is all."],
+      high: ["Commander, I'm Kang Do-yun, tactical commander. I'm in charge of field operations and containment line management.","We ran for three months without a commander before you arrived. I have a read on the field situation, so just say the word if you need anything.","I look forward to working with you.","...I'm glad you came."],
+      bond: ["Commander, I'm Kang Do-yun, tactical commander.","I oversee field operations and the containment line. We held out three months with no commander... and now someone's finally here.","Whatever you need in the field, just say it. I'll make it happen.","I look forward to working with you."]
+    },
+    "haeun_1_1-4": {
+      low: ["Seo Hae-eun. Deputy commander and data analysis.","I've compiled the base status report. Please review it if you need to.","That is all."],
+      high: ["Hello, Commander. I'm Seo Hae-eun, deputy commander and data analyst at ORACLE's Korea Branch.","You're the first commander ever assigned to the Korea Branch. I've put together the base status report, so please look it over whenever it's convenient.","If anything's unclear or there's any way I can help, please don't hesitate to ask.","I look forward to working with you."],
+      bond: ["Hello, Commander. I'm Seo Hae-eun, your deputy commander. I handle data analysis too.","It's your first day, you must be exhausted. If you have any questions about the base, feel free to just ask me.","Having you here is a real reassurance.","I look forward to working with you."]
+    },
+    "doyun_2_5-7": {
+      low: ["The Philadelphia Z-Ω zone footage... have you seen it?","That is all I have to report.","The containment line is holding."],
+      high: ["Have you seen the Philadelphia Z-Ω zone footage?","I wasn't there myself... but the footage is enough. A whole city turned over in a single night.","That's why the containment line matters. If theirs breaks, we're finished too.","...It's a good thing you came here, Commander."],
+      bond: ["You've seen the Philadelphia Z-Ω zone footage, right?","I wasn't there myself... but once you see it, you can't forget it. A whole city turned over in a single night.","That's why the containment line matters. If theirs breaks, we're finished too.","...Honestly, before you came I was worried. It's a little better now."]
+    },
+    "doyun_2_8-10": {
+      low: ["This is from my first deployment.","There was a sound outside the containment line at night.","That is all."],
+      high: ["This is from my first deployment.","At 3 a.m. I heard a sound beyond the containment line. Sounded like a human voice... but it wasn't human.","Night patrols were never the same after that.","...These days it's better than back then. The command structure's settled in."],
+      bond: ["This is from my first deployment... can I tell you?","At 3 a.m. I heard a sound beyond the containment line. Sounded like a human voice, but it wasn't human.","Honestly, that was the first night I was ever afraid. Even in special forces I never had anything like it.","...With you, I can actually say it out loud. That makes it easier."]
+    },
+    "doyun_2_11-14": {
+      low: ["A soldier follows orders.","That is all I have to report."],
+      high: ["A soldier follows orders. That's the job.","But I realized something after coming here.","The people giving the orders aren't seeing the whole picture.","That's why the voice from the field matters... and you understand that."],
+      bond: ["A soldier follows orders. That's the job.","But I realized something after coming here.","The people giving the orders aren't seeing the whole picture.","...You watch the field. That's the reason I follow you."]
+    },
+    "doyun_3_15-21": {
+      low: ["Report on the base equipment status.","The thermal scanners need maintenance.","That is all."],
+      high: ["Do you know the state of this base's equipment?","Two of the three thermal scanners won't calibrate. The night gear is outdated.","With no commander before you, the supply requests must have just been dropped.","...I'll push hard and get them serviced myself. You're working hard, and I'm not about to blame the equipment."],
+      bond: ["Commander, can I be straight with you about the equipment?","Two of the three thermal scanners won't calibrate. The night gear is outdated.","With no commander before you, the supply requests must have just been dropped.","I'll find a way to handle it. This is my post. You just set the direction."]
+    },
+    "doyun_3_22-28": {
+      low: ["I inspected the base's east defense wall.","It's vulnerable to a large-scale assault.","End of report."],
+      high: ["I inspected the base's east defense wall.","Honestly, if a large-scale assault comes, we won't hold thirty minutes.","The equipment's a problem, but... this base was never built for long-term operation in the first place.","Even so, I'll do my best with what we have. As long as you buy us the time."],
+      bond: ["Commander.","I came back from inspecting the east wall... if a large-scale assault hits, we won't hold thirty minutes.","The equipment's a problem, but this base itself wasn't built for a prolonged fight.","...Don't worry. As long as you're here, I'll hold my post to the end."]
+    },
+    "doyun_4_29-99": {
+      low: ["Commander.","Give the order and I'll carry it out.","That is all."],
+      high: ["Commander.","Whatever decision you make, I'll carry it out in the field.","That's all a soldier can do.","...No. It's because it's under your command that I can do it."],
+      bond: ["Commander.","Whatever decision you make, I'll carry it out in the field.","That's all a soldier can do, and...","...The time I've spent with you at this base meant more than my entire career in uniform."]
+    },
+    "haeun_2_5-7": {
+      low: ["Reporting in.","Before you took command, this base had no commander.","We ran on ORACLE's directives alone.","That is all."],
+      high: ["Before you arrived... this base had no commander.","We ran on ORACLE's directives alone. For about three months.","Looking back, something was off from that point on.","...I'm glad you're here. I'd been carrying my suspicions all on my own."],
+      bond: ["Before you arrived... this base had no commander.","We held out three months on ORACLE's directives alone.","Back then, looking at the data by myself... I felt something was wrong, but there was no one to tell.","It's different now. Because you're here."]
+    },
+    "haeun_2_8-10": {
+      low: ["Reporting the results of the ORACLE data review.","There are parts where the directives aren't consistent.","Please advise if further analysis is needed."],
+      high: ["When you work alone with ORACLE... you start to see patterns.","The directives aren't consistent. There were times the same situation drew a different recommendation.","Back then I assumed I'd just misunderstood it.","...Now I think I should look more carefully. Because you're looking too."],
+      bond: ["When you work alone with ORACLE... you start to see patterns.","The directives aren't consistent. There were times the same situation drew a different recommendation.","Back then I thought I'd just misunderstood it, but...","Commander, if I'd been alone I would have just buried it. Thank you."]
+    },
+    "haeun_2_11-14": {
+      low: ["I found an anomaly during data analysis.","There's a faint pattern in the ORACLE data stream.","Let me know if you need a report."],
+      high: ["May I mention one strange thing I found during analysis?","There's a faint pattern in the ORACLE data stream. Not omissions... selective delays.","I'm not certain yet. I need to watch it longer.","...Because you're paying attention, I can analyze it with some peace of mind."],
+      bond: ["Commander, this isn't an official report... it's just my gut feeling.","Something in the ORACLE data stream catches on me. Selective delays.","I'm not certain yet. But I wanted to tell you ahead of time.","...Just between us."]
+    },
+    "haeun_3_15-21": {
+      low: ["Reporting in.","There's a discrepancy between the ORACLE data and the actual data.","Please advise on next steps."],
+      high: ["Commander. I'm saying this carefully.","There's a gap between the information ORACLE shows us and the actual data.","The evidence is still thin. But the feeling is... unsettling.","I'd be grateful if you'd look at it with me."],
+      bond: ["Commander... I won't put this in the record.","What ORACLE shows and what's real are different. I'm certain.","I'm gathering more evidence. But honestly, I'm scared.","...It's because you're here that I can keep going."]
+    },
+    "haeun_3_22-28": {
+      low: ["A matter to report.","Traces of someone accessing my work logs were detected.","The cause is under investigation."],
+      high: ["Lately there are traces of someone accessing my work logs.","I don't know if it's ORACLE or someone else.","...It might be nothing. I'm sorry.","But I felt I had to tell you."],
+      bond: ["Commander, I... I think someone is watching me.","There are traces of access to my work logs. Whether it's ORACLE or someone else...","...It's not that I'm scared. Because you're here.","It's just that we should be careful. Both of us."]
+    },
+    "haeun_4_29-99": {
+      low: ["Reporting in.","I'm working on recovering ORACLE's deleted data.","I'll report on progress later."],
+      high: ["Commander. I'm saying this carefully.","I'm sorting through the recoverable data among what ORACLE deleted.","It's taking time... but I'll find every last piece of it.","There are things you need to know buried in there. I'll dig them out."],
+      bond: ["Commander... I haven't told anyone this yet.","The data ORACLE erased — I'm recovering it. I'm almost there.","Looking at why it was erased... it's clear ORACLE was trying to hide it from us.","I'll see it through to the end. Because you need to know the truth."]
+    },
+    "sejin_1_1-4": {
+      low: ["Yoon Se-jin. Researcher and medical officer.","I handle EV-Σ biological research and base medical care.","That is all."],
+      high: ["Hello, Commander. I'm Yoon Se-jin, researcher and medical officer. I handle EV-Σ biological research and the base's medical care.","If you have any questions about the anomalies, feel free to ask. I'll explain as far as I know.","It's reassuring to have you here. I look forward to working with you.","...I'll show you some good research results!"],
+      bond: ["Hello, Commander. I'm Yoon Se-jin, researcher and medical officer.","I handle EV-Σ research and the base's medical care overall. If you ever have questions, just ask me anytime.","I've been waiting for you to arrive. I needed someone to set the research direction.","I look forward to working with you."]
+    },
+    "jaehyuk_1_1-4": {
+      low: ["Lim Jae-hyeok. Intelligence analyst.","I handle the base security systems and intelligence analysis.","That is all."],
+      high: ["Commander, I'm Lim Jae-hyeok, intelligence analyst. I handle the base security systems and intelligence gathering and analysis.","ORACLE integration and the comms infrastructure are also under my purview. If you have any system-related questions, let me know.","I look forward to working with you.","...I'll take care of the systems side."],
+      bond: ["Commander, I'm Lim Jae-hyeok, intelligence analyst.","Base security systems, intelligence gathering and analysis, ORACLE integration — I handle all of it.","If you ever have questions about the systems, let me know anytime.","I look forward to working with you. The tech side is on me."]
+    },
+    "sejin_2_5-7": {
+      low: ["Reporting the analysis of ORACLE's EV-Σ activity data.","There's a deviation between the predicted figures and the observed results.","I'll proceed with further analysis."],
+      high: ["The way ORACLE processes the EV-Σ activity data is a little strange.","There's a slight gap between my observations and ORACLE's predictions...","For coincidence, it always skews the same direction. Don't you find that odd?","...I just don't think this is something to let slide."],
+      bond: ["Commander, may I tell you something?","ORACLE's predictions and my observation data keep diverging.","Always in the same direction. It's not a coincidence.","...I'm telling you first, before anyone else. I'm not certain yet."]
+    },
+    "sejin_2_8-10": {
+      low: ["Anomaly observation report.","I observed SPEC-001, the infected mannequin.","I'll note the details in the report."],
+      high: ["This is from the first day I saw an anomaly.","SPEC-001, the infected mannequin. I watched it on the lab monitor... pupils fully dilated, completely motionless.","The moment a researcher stepped within three meters... it changed in an instant.","It was terrifying, but at the same time I wanted to understand it. What it is."],
+      bond: ["May I tell you about the first day I saw an anomaly?","When I watched SPEC-001 on the monitor, my hands were shaking. Not from fear... from awe.","As a researcher, I never imagined I'd face something like this.","Commander, I want to find the answer here. If you buy me the time."]
+    },
+    "sejin_2_11-14": {
+      low: ["Report on the research equipment status.","The microscope magnification is below standard.","Calibration is required."],
+      high: ["The state of the research equipment here is... honestly a bit rough.","The microscope magnification falls short of publication standards, and the biological sample storage runs a ±2 degree temperature variance.","To get accurate data with this gear, calibration alone takes half a day.","...Still, it has to be done. Because you gave me the chance."],
+      bond: ["Commander, can I talk a bit about the equipment?","Magnification below standard, storage unit with a ±2 degree variance...","If I'd had an environment like this when I was writing papers, I'd have given up.","But not here. Because the research here can save lives. And... because you believe in me."]
+    },
+    "sejin_3_15-21": {
+      low: ["Results of the anomaly behavior pattern analysis.","Systematic responses have been confirmed.","I'll report the details later."],
+      high: ["I've realized one thing while studying the anomalies.","They react to things, they avoid things, and sometimes they move as a group.","They're not simple infected. There's something... systematic about them.","You must have felt it too. This is bigger than we thought."],
+      bond: ["Commander, I can't sleep at night lately.","The more I watch the anomalies... the more certain I am this isn't simple infection.","There's a system to it. Whether there's a will behind it, I don't know...","...It's not that I'm afraid — it's the pressure that I have to find the answer. I wanted to be honest with you."]
+    },
+    "sejin_3_22-28": {
+      low: ["I'm comparing the ORACLE prediction model.","The error pattern is consistent.","I'll report once I've organized the results."],
+      high: ["I keep comparing the ORACLE prediction model with my observation data.","The error always skews the same direction. It's not a coincidence.","The feeling that someone has adjusted the parameters... it keeps getting stronger.","Commander, I'm going to dig into this to the end. Trust me."],
+      bond: ["Commander.","ORACLE is manipulating the data. I'm certain.","The error skewing the same way every time... it's deliberate.","I'll prove it. Please protect this research. I'm asking you."]
+    },
+    "sejin_4_29-99": {
+      low: ["Suppressant research is in progress.","I've identified a compound that delays the Phase 0 transition.","End of report."],
+      high: ["Suppressant research is in progress.","I've found a compound that can slow the conversion of Phase 0 infected by 40%.","If this works... we can save people.","It's thanks to you. For not letting me give up here."],
+      bond: ["Commander, I finally found it.","A compound that can slow the conversion of Phase 0 infected by 40%.","If this works, we can save people. Truly.","...For the first time, I'm sure coming here was the right choice. Because you're here."]
+    },
+    "jaehyuk_2_5-7": {
+      low: ["Reporting the base infrastructure inspection results.","Three corroded pipes, two power distributors past replacement.","That is all."],
+      high: ["May I report the base infrastructure inspection results?","Three pipes are corroded, and two power distributors are past their replacement window.","Three months with no commander... the maintenance gap is considerable.","Now that you're here, I'll work on restoring it systematically."],
+      bond: ["Commander, let me be straight about the base's condition.","Three corroded pipes, two power distributors past replacement. The maintenance gap is serious.","For three months I tinkered with things on my own, but there were limits.","Now that you're here, I can actually do this properly. You're a real backbone for me."]
+    },
+    "jaehyuk_2_8-10": {
+      low: ["ORACLE system check complete.","All modules normal. Comms latency within 0.3ms.","That is all."],
+      high: ["I was stunned the first time I touched the ORACLE system.","An AI system of this caliber, at a base this size. It felt like overkill.","But lately... I'm curious why they deployed a system like this here.","You must have felt it too."],
+      bond: ["The ORACLE system... at first I was just impressed.","This caliber, at this size. I thought it was overkill.","But now I get it. It's not overkill... there's some other reason behind it.","Commander, I want to find that reason too. As an engineer."]
+    },
+    "jaehyuk_2_11-14": {
+      low: ["I'm analyzing the terminal architecture.","There's an undisclosed layer in the system structure.","I'll proceed with further analysis."],
+      high: ["I've been analyzing the terminal architecture.","The system structure is a bit strange. On the surface it's three layers, but in reality it's five or more.","There's a layer I can't access. Not with my clearance.","...It means something's hidden. What do you make of it, Commander?"],
+      bond: ["Commander, this is something I've never told anyone.","There's a layer in the ORACLE architecture I can't see. Five layers or more.","As an engineer, this... unsettles me. That it's a system we use, and I don't fully know its structure.","If you'll allow it, I want to dig deeper."]
+    },
+    "jaehyuk_3_15-21": {
+      low: ["Report on degraded comms equipment sensitivity.","The parts replacement request was rejected.","I'm reviewing alternatives."],
+      high: ["The comms equipment sensitivity keeps dropping.","It needs a parts replacement, but my supply request was rejected for the third time.","ORACLE just keeps repeating that 'current performance is sufficient.'","...It is not sufficient. Commander, isn't this a little strange?"],
+      bond: ["Commander, honestly, I'm angry.","Supply request rejected three times. ORACLE just repeats 'it's sufficient.'","As an engineer, I'm telling you, it is not sufficient. I have to wonder if ORACLE is deliberately letting the equipment age...","I'm telling you because you're the only one I trust."]
+    },
+    "jaehyuk_3_22-28": {
+      low: ["Still analyzing the ORACLE architecture.","There's a possibility of a data leak.","I'll report once confirmed."],
+      high: ["Inside the ORACLE architecture... there's a layer I can't understand.","It looks like data is leaking out somewhere. I'm not certain, though.","A little more analysis and I'll know what it is.","...It might be dangerous, but I felt you should know."],
+      bond: ["Commander.","ORACLE is transmitting data to the outside. I'm almost certain.","Where to, and why, I still don't know. But I'll find out soon.","...Once I find this out, there may be no going back. Even so, I think it has to be done."]
+    },
+    "jaehyuk_4_29-99": {
+      low: ["Commander.","I have something to report regarding the ORACLE system.","I'll report at the appropriate time."],
+      high: ["Commander.","There are things I've uncovered about the ORACLE system.","I'll report at the appropriate time. For now... it's still dangerous.","But I will tell you, without fail."],
+      bond: ["Commander.","The things I've uncovered about ORACLE... I'll tell you all of it.","At the right time. For now it's still dangerous.","...If I hadn't met you, I'd have had to carry this knowledge alone. Thank you."]
+    },
+    "weber_4_29-35": {
+      low: ["Commander.","Contact me if you need information.","We have a transactional relationship. Nothing more, nothing less."],
+      high: ["Good evening, Commander.","The fact that you're still here... means you haven't given up yet.","Finding the truth in a world ORACLE built isn't easy. But it isn't impossible either.","You're a stronger person than you look, Lee Jung-cheol."],
+      bond: ["Lee Jung-cheol.","When we first met, what I saw in your eyes was anger.","It's different now. I see conviction.","If we'd met under different circumstances, we'd have made good comrades. ...Though we're becoming that even now."]
+    },
+    "foster_4_31-35": {
+      low: ["...What are you looking at.","Say what you came to say. I hate wasting time.","We only meet because we need each other anyway."],
+      high: ["...Awkward, isn't it? Same for me.","What I did to your unit, I don't regret it. But I'll admit it was pointless.","Anyway, whatever you do here, you'll do it better than I would.","...Not sure if that's a compliment."],
+      bond: ["Lee Jung-cheol.","When you threw that punch at me back then... honestly, it surprised me.","I'd only ever seen soldiers who swallowed an insult and took it.","...You were different. That's why you stuck with me."]
+    },
+    "soyoung_4_32-35": {
+      low: ["I've submitted the analysis report.","I'm following Senior Seo Hae-eun's methodology.","Please advise on next steps."],
+      high: ["Commander, I've put together today's analysis results.","Senior Seo Hae-eun's analysis methodology is really systematic. Thanks to it, I'm adapting quickly.","...I think coming to this base was the right call.","I like the people here. I really do."],
+      bond: ["Commander.","Honestly, I was nervous at first. People put their guard up when an outsider suddenly shows up.","But the team here is... warmer than I expected.","I think I understand now why Senior Seo Hae-eun worried about this base."]
     }
   }
 });
