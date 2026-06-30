@@ -21,7 +21,7 @@ function FacilityPanel(p) {
   var FDIR = 'assets/images/facility/';
   var FIMG = { 'FE-001':FDIR+'facility_fe001_cryo_storage.jpg','FE-002':FDIR+'facility_fe002_training_ground.jpg','FE-003':FDIR+'facility_fe003_sensor_array.jpg','FE-004':FDIR+'facility_fe004_medical_bay.jpg','FE-005':FDIR+'facility_fe005_supply_route.jpg','FE-006':FDIR+'facility_fe006_cctv_control.jpg','FE-007':FDIR+'facility_fe007_emergency_bunker.jpg','FE-008':FDIR+'facility_fe008_north_patrol.jpg' };
   var FALLBACK = FDIR + 'facility_hero.jpg';
-  var thumbOf = function(fe){ return FIMG[fe.id] || FALLBACK; };
+  var thumbOf = function(fe){ return (FIMG[fe.id] || FALLBACK) + '?v=2'; };
 
   var card = function(fe, kind){
     var isUp = !!fe.uprising;
