@@ -32,7 +32,9 @@ high contrast, dim cold lighting, no people, no on-screen text, no logo, 3:2 lan
 
 ---
 
-## 🔴 우선순위 1 — 시설탭 8장 (전용 아트 필요)
+## ✅ 우선순위 1 — 시설탭 8장 (전용 아트 완료 · BUILD 309 / 커밋 55db8da)
+
+> 8장 전부 gpt-image-1로 전용 신규 아트 생성·교체 완료. 720×480 흑백 최적화(합 ~341KB). md5 중복 0 확인. thumbOf ?v=2 캐시버스트.
 
 각 항목: `대상 파일` ← *현재 복사 출처* / **그려야 할 내용** / 생성 프롬프트(접두 + 아래)
 
@@ -100,10 +102,10 @@ high contrast, dim cold lighting, no people, no on-screen text, no logo, 3:2 lan
 
 ## 작업 체크리스트
 
-- [ ] FE-001 ~ FE-008 신규 아트 8장 생성 (1536×1024 JPG, 흑백 톤)
-- [ ] `assets/images/facility/` 에 **같은 파일명**으로 덮어쓰기
-- [ ] `demo/assets/images/facility/` 에도 동일 교체
-- [ ] (선택) `index.html` / `demo/index.html` 캐시 태그 갱신
+- [x] FE-001 ~ FE-008 신규 아트 8장 생성 (720×480 JPG 최적화, 흑백 톤)
+- [x] `assets/images/facility/` 에 **같은 파일명**으로 덮어쓰기
+- [x] `demo/assets/images/facility/` 에도 동일 교체
+- [x] 캐시버스트: thumbOf ?v=2 + components-facility v19
 - [ ] (선택) 우선순위 2 — mission≡spec 분리
 
 > 파일명·경로를 유지하면 **코드 변경 없이** 교체만으로 반영됩니다.
