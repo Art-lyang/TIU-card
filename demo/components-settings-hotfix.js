@@ -193,8 +193,8 @@
         h('div',{style:{background:'rgba(3,7,8,.97)',border:'1px solid rgba(255,68,68,0.42)',padding:'22px 24px',maxWidth:300,textAlign:'center',boxShadow:'0 0 40px rgba(0,0,0,.6)'}},
           h('div',{style:{fontSize:13,color:'#ff5a48',marginBottom:18,lineHeight:1.7}},currentLang==='en'?'Changing the language will restart the session. Proceed?':'언어를 변경하면 세션을 재시작합니다. 진행하시겠습니까?'),
           h('div',{style:{display:'flex',gap:10,justifyContent:'center'}},
-            h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0},onClick:function(){setPendingLang(currentLang);setLangCfm(null)}},tr('settings.cancel','취소')),
-            h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 16px',marginTop:0},onClick:function(){var n=langCfm.next;setLangCfm(null);applyLangReload(n)}},tr('settings.confirm','확인'))))):null
+            h('button',{className:'btn',style:{fontSize:11,padding:'8px 16px',marginTop:0},onClick:function(){setPendingLang(currentLang);setLangCfm(null)}},tr('settings.cancel',currentLang==='en'?'Cancel':'취소')),
+            h('button',{className:'btn btn-amber',style:{fontSize:11,padding:'8px 16px',marginTop:0},onClick:function(){var n=langCfm.next;setLangCfm(null);applyLangReload(n)}},tr('settings.confirm',currentLang==='en'?'Confirm':'확인'))))):null
     );
   };
 })();
