@@ -386,6 +386,21 @@ window.TS_I18N.mergeContent('en', {
       low: ["I've submitted the analysis report.","I'm following Senior Seo Hae-eun's methodology.","Please advise on next steps."],
       high: ["Commander, I've put together today's analysis results.","Senior Seo Hae-eun's analysis methodology is really systematic. Thanks to it, I'm adapting quickly.","...I think coming to this base was the right call.","I like the people here. I really do."],
       bond: ["Commander.","Honestly, I was nervous at first. People put their guard up when an outsider suddenly shows up.","But the team here is... warmer than I expected.","I think I understand now why Senior Seo Hae-eun worried about this base."]
+    },
+    "haeun_3_20-24": {
+      low: ["Reporting in.","I found records of the previous commander in the deletion logs.","It looks less like a transfer and more like a disappearance.","Please advise on next steps."],
+      high: ["Commander... this isn't an official report.","I found the previous commander's records. ORACLE deleted them.","He reported data inconsistencies too, and tried to check below B3.","And then the record cuts off. It was processed as a 'transfer'... but it wasn't a transfer.","Commander, you need to be careful. What we're doing... is exactly what he was doing."],
+      bond: ["Commander.","I found the previous commander. His records.","He doubted ORACLE, dug into the data, tried to check below B3.","Exactly like you. Down to the order of it.","He was alone. You aren't. You have us.","But... that's what scares me more. That it's the same pattern."]
+    },
+    "jaehyuk_3_19-23": {
+      low: ["Reporting the results of the 02:47 stakeout.","I confirmed an unauthorized process on the server rack.","Submitting the capture data."],
+      high: ["Commander. 02:47.","I staked out the server room for three days. It happens at the same time every night.","A terminal powers on by itself, and an interface we've never seen comes up.","Your name was on the screen. It was measuring something in real time.","I captured it. I have proof."],
+      bond: ["Commander, honestly, I was scared.","For three days I hid in the server room every night. Alone.","At 02:47 the terminal powers on, and... a screen observing you comes up.","OBSERVER SESSION. Trust index. Defection score.","We aren't the ones using ORACLE. Someone is watching us through ORACLE.","I followed the cable. All the way to the lower bulkhead of B3.","Below B3... it connects to where the previous commander disappeared."]
+    },
+    "jaehyuk_2_18-30": {
+      low: ["Reporting in.","After analyzing the facility status, independent operation without ORACLE is feasible.","I recommend installing a closed circuit.","I'll leave the decision to you, Commander."],
+      high: ["Commander. I'd like to speak in the shielded conference room.","Independent servers, independent comms, independent power. We have it all.","If we plant a closed circuit, we can bypass ORACLE's command chain.","Seo Hae-eun, Kang Do-yun, Yoon Se-jin. Everyone's ready.","All that's left is your decision."],
+      bond: ["Commander.","I'll be honest.","It wasn't ORACLE that built this base into what it is. It was us.","The independent infrastructure is complete. You approved every piece of it.","A closed circuit. One time is all it takes.","Let's drive ORACLE out and protect this place with our own hands.","We don't have to live as tools anymore."]
     }
   }
 });
