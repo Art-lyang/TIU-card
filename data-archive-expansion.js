@@ -273,7 +273,23 @@
     { id:"ARC-SCI-COMPOSITE-SIGNALS", cat:"과학", title:"복합 신호 오염",
       any:["LOG-MG-011-AUDIO","LOG-MG-INC-04-TRACE","LOG-EV-UNLOCK"],
       content:"후반부 이상 신호는 생체 반응, 통신 흔적, 보안 로그가 겹친 형태로 나타났다.\n\n각 분석표는 서로 다른 원인을 가리켰지만, 세 결과가 겹치는 지점에는 같은 시간대의 잡음이 남아 있었다. 원인은 하나로 닫히지 않았고, 기록은 오히려 그 겹침 때문에 더 선명해졌다.",
-      en:{title:"Composite Signal Contamination",cat:"Science",content:"Late anomalies appeared as overlaps between biological response, communication traces, and security logs.\n\nEach analysis sheet pointed to a different cause, but where the three results overlapped, the same time-band noise remained. The cause did not close into one answer; the record became clearer because of the overlap."}}
+      en:{title:"Composite Signal Contamination",cat:"Science",content:"Late anomalies appeared as overlaps between biological response, communication traces, and security logs.\n\nEach analysis sheet pointed to a different cause, but where the three results overlapped, the same time-band noise remained. The cause did not close into one answer; the record became clearer because of the overlap."}},
+    { id:"ARC-SCI-RES-SPEC", cat:"과학", title:"이변체 표본 정밀 분석",
+      any:["LOG-RES-012"],
+      content:"확보한 SPEC 표본의 조직 절편과 행동 로그를 교차 분석한 연구 기록이다.\n\n표본은 외부 자극이 없는 상태에서도 미세한 주기적 반응을 보였고, 조직 단면에서는 외부 신호에 동조하는 구조가 확인되었다.\n\n현장 대응 인텔로 환산: 개체 단독 제압보다 신호원 차단을 우선한다.",
+      en:{title:"Aberrant Specimen Detailed Analysis",cat:"Science",content:"A study cross-analyzing tissue sections and behavior logs from secured SPEC specimens.\n\nEven with no external stimulus, the specimen showed faint periodic activity, and tissue cross-sections revealed a structure that synchronizes to external signals.\n\nTranslated into field-response intel: disrupting the signal source takes priority over subduing a lone organism."}},
+    { id:"ARC-SCI-RES-LIGHT", cat:"과학", title:"이변체 광반응 약점",
+      any:["LOG-RES-LIGHT"],
+      content:"감시 영상의 빛 반응을 프레임 단위로 분해한 연구 기록이다.\n\n다수 개체가 특정 파장대의 광원에서 회피·경직 반응을 반복했고, 가시광 밖 구간에서 반응이 가장 뚜렷했다.\n\n대응 기준: 해당 파장대 조명을 비치사 제어 수단으로 분류한다.",
+      en:{title:"Aberrant Photoreaction Weakness",cat:"Science",content:"A study breaking down light reactions in surveillance footage frame by frame.\n\nMultiple organisms repeatedly showed avoidance and rigidity responses to a specific wavelength band, with the reaction strongest outside the visible-light range.\n\nResponse standard: classify lighting in that band as a non-lethal control measure."}},
+    { id:"ARC-SCI-RES-JOINT", cat:"과학", title:"ORACLE 예측 모델 편향",
+      any:["LOG-RES-JOINT"],
+      content:"윤세진의 표본 데이터와 임재혁의 ORACLE 쿼리 역분석을 합친 합동 연구 기록이다.\n\n예측 모델의 오차는 무작위가 아니라 한 방향으로 누적되었다. 같은 상황에서 ORACLE은 일관되게 봉쇄 성공률을 낮게, 외부 위협을 높게 보정했다.\n\n결론 보류: 편향의 출처가 학습 데이터인지 의도된 가중치인지 현재 권한으로는 분리할 수 없다.",
+      en:{title:"ORACLE Prediction-Model Bias",cat:"Science",content:"A joint study merging Yoon Se-jin's specimen data with Lim Jae-hyeok's reverse-analysis of ORACLE queries.\n\nThe prediction model's error was not random; it accumulated in one direction. In identical situations, ORACLE consistently adjusted containment success rates downward and external threats upward.\n\nConclusion deferred: current clearance cannot separate whether the bias originates in the training data or in deliberate weighting."}},
+    { id:"ARC-PER-SOYOUNG-TRUTH", cat:"인물심화", title:"박소영 — 잠복 경위",
+      any:["LOG-083-PURSUE","LOG-083-WATCH","LOG-SY-CUT"],
+      content:"박소영의 합류 경위에서 공식 추천 기록이 존재하지 않는다는 사실이 확인되었다.\n\n그녀는 프로메테우스가 봉쇄선 내부를 관측하기 위해 보낸 인원이었다. 다만 현장에서 작성한 비공식 기록은, 보고서에 올리지 않은 관찰이 더 많았음을 보여준다.\n\n이후 처리는 지휘관의 판단에 따라 자산 복귀, 감시 하 업무 제한, 또는 손절로 갈렸다.",
+      en:{title:"Park So-young — Cover Background",cat:"Personnel Dossiers",content:"It was confirmed that no official referral record exists for Park So-young's recruitment.\n\nShe was sent by Prometheus to observe inside the containment line. Yet her unofficial field notes show there was far more she observed than she ever filed in her reports.\n\nWhat followed split by the commander's judgment: return as an asset, restricted work under surveillance, or cutting her loose."}}
   ];
 
   var existing = {};
