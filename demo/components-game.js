@@ -796,13 +796,13 @@ function CardC(p){
         h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',fontFamily:"'Share Tech Mono',monospace",fontSize:'var(--fs-fx)',columnGap:10,rowGap:3,alignItems:'center'}},
           h('div',{style:{display:'flex',gap:6,rowGap:3,flexWrap:'wrap',alignItems:'center',justifyContent:'flex-start',textAlign:'left',opacity:0.86}},h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'←'),leftFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—')),
           h('div',{style:{display:'flex',gap:6,rowGap:3,flexWrap:'wrap',alignItems:'center',justifyContent:'flex-end',textAlign:'right',opacity:0.86}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'→')))),
-      h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:'var(--fs-choice)',pointerEvents:'none',columnGap:10,alignItems:'start'}},
+      h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:14,paddingBottom:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:'var(--fs-choice)',lineHeight:1.55,pointerEvents:'none',columnGap:16,alignItems:'start'}},
         h('div',{style:{minWidth:0,textAlign:'left'}},
-          h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block'}},'← '+leftLabel),
-          leftTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:4,marginTop:4,opacity:.72}},leftTrace)),
+          h('span',{style:{color:'rgba(var(--ui-rgb),.5)',display:'block',lineHeight:1.55}},'← '+leftLabel),
+          leftTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:5,marginTop:7,opacity:.72}},leftTrace)),
         h('div',{style:{minWidth:0,textAlign:'right'}},
-          h('span',{style:{color:'rgba(var(--ui-rgb),.45)',display:'block',width:'100%',justifySelf:'end'}},rightLabel+' →'),
-          rightTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:4,marginTop:4,justifyContent:'flex-end',opacity:.72}},rightTrace)))
+          h('span',{style:{color:'rgba(var(--ui-rgb),.5)',display:'block',width:'100%',justifySelf:'end',lineHeight:1.55}},rightLabel+' →'),
+          rightTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:5,marginTop:7,justifyContent:'flex-end',opacity:.72}},rightTrace)))
     ));
 }
 function News(p){
