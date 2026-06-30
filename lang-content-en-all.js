@@ -1071,6 +1071,11 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         leftLabel: "Feed her false intel",
         rightLabel: "Quietly prepare to cut her loose"
       },
+      "CS-018": {
+        msg: "Lim Jae-hyeok flags an anomaly during a routine comms audit.\n\n\"Commander. I traced how Park So-young's recruitment came through.\"\n\n\"She said Senior Seo recommended her. But that recommendation never went out over the base network. Not on any channel.\"\n\nKang Do-yun: \"Then where did Park So-young hear Seo Hae-eun's name?\"\n\n[ORACLE: Personnel referral path — cannot be verified.]",
+        leftLabel: "Confront Park So-young",
+        rightLabel: "Play dumb — keep her under watch"
+      },
       "C-254": {
         msg: "Kang Do-yun's patrol report.\n\n\"500 meters east of the containment line. Footprints in the soil.\"\n\nNot military boots, not civilian hiking boots. The pattern is irregular — like someone deliberately scuffed it out.\n\n\"Someone passed through here. And they didn't want us to see them.\"",
         leftLabel: "Run a detailed sweep — three hours",

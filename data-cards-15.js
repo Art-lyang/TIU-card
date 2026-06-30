@@ -39,8 +39,17 @@ var CARDS_EXTERNAL = [
     right: { label: "제한된 접근만 허용", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-253", act: [4], priority: "상", bg: "forest",
-    cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-081')>=0 && logs.indexOf('LOG-083')<0 && s.day>=30 },
+    cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-081')>=0 && logs.indexOf('LOG-083-PURSUE')<0 && logs.indexOf('LOG-083-WATCH')<0 && s.day>=30 },
     msg: "포스터와의 대화 중.\n\n\"아, 새 분석관이 왔다면서요?\"\n\n무심하게 말합니다.\n\n\"소영이... 잘 적응하던가요?\"\n\n이름을 알고 있습니다.\n\n\"... 아. 몰랐어요? 우리 쪽 사람인데.\"\n\n웃습니다.\n\n\"서하은이 추천했다고요? 맞아요. 소영이가 그렇게 부탁한 거니까.\"",
+    left: { label: "박소영을 추궁한다", fx: { c: 0, r: 0, t: -2, o: -1 }, g: -3, log: "LOG-083-PURSUE" },
+    right: { label: "모른 척한다 — 감시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1, log: "LOG-083-WATCH" } },
+
+  // ═══ 박소영 정체 — 포스터 미접촉 폴백 폭로 (합류했으나 LOG-081 없음) ═══
+  // C-253은 포스터 접촉(LOG-081)을 거쳐야 정체가 드러난다. 박소영을 합류(LOG-082)시켰지만
+  // 포스터를 무시한 플레이어를 위해, 임재혁의 통신 감사로 같은 반전을 회수하는 대체 진입점.
+  { id: "CS-018", act: [4], priority: "상", bg: "comms", once: true,
+    cond: function(s,g,logs){ return logs.indexOf('LOG-082')>=0 && logs.indexOf('LOG-081')<0 && logs.indexOf('LOG-083-PURSUE')<0 && logs.indexOf('LOG-083-WATCH')<0 && s.day>=30 },
+    msg: "임재혁이 정기 통신 감사 중 이상을 발견했습니다.\n\n\"지휘관님. 박소영 분석관 합류 경위를 역추적했습니다.\"\n\n\"서하은 선배 추천으로 왔다고 했죠. 그런데 그 추천이 기지 통신망을 통해 나간 적이 없습니다. 어느 채널에도요.\"\n\n강도윤: \"그럼 박소영은 서하은 이름을 어디서 들은 겁니까?\"\n\n[ORACLE: 해당 인사 추천 경로 — 확인 불가.]",
     left: { label: "박소영을 추궁한다", fx: { c: 0, r: 0, t: -2, o: -1 }, g: -3, log: "LOG-083-PURSUE" },
     right: { label: "모른 척한다 — 감시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: -1, log: "LOG-083-WATCH" } },
 
