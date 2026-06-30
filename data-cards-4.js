@@ -127,7 +127,7 @@ var CARDS_INVESTIGATE = [
   // 이번 세션 비활성 종에서만 발동 → 조사 루트와 상호배타(같은 종 이중 조우 없음).
   // tag 미부여(specOk 우회) + req로 휴면 판정. once + day 게이트로 드물게.
 
-  { id: "CT-301", act: [2,3], priority: "상", bg: "forest", once: true,
+  { id: "CT-301", act: [2,3], priority: "상", alert: true, bg: "forest", once: true,
     req: function(s,g,logs){
       return typeof ambushPending==='function' && ambushPending('spec-011','LOG-004',s,logs);
     },
@@ -143,14 +143,14 @@ var CARDS_INVESTIGATE = [
     right: { label: "하층 차폐 + ORACLE 추적", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1, mission: "M-E02" } },
 
   // CT-303 : SPEC-003 Brood Drone 긴급 환기구 군체 침입 — 휴면 종 한정
-  { id: "CT-303", act: [2,3], priority: "상", bg: "forest", once: true,
+  { id: "CT-303", act: [2,3], priority: "상", alert: true, bg: "forest", once: true,
     req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-003','LOG-014',s,logs); },
     msg: "긴급 — 환기 계통 경보.\n\n상부 환기구 필터가 안쪽에서 찢겼습니다. 다수의 소형 개체가 덕트를 타고 내부로 확산 중입니다.\n\n임재혁: \"환기구마다 반응이 떠요. 한두 마리가 아닙니다 — 군체입니다.\"\n\n윤세진: \"Brood Drone이에요. 지휘 개체가 근처에 있다는 뜻입니다. 덕트 전체로 퍼지기 전에 결정해야 합니다.\"",
     left: { label: "환기 계통 전면 차단 + 소각", fx: { c: 2, r: -2, t: 0, o: 1 }, g: 1, mission: "M-E03" },
     right: { label: "ORACLE 군체 추적 — 지휘 개체 우선", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 2, mission: "M-E03" } },
 
   // CT-304 : SPEC-001 Mannequin 긴급 정지 위장 잠입 — 휴면 종 한정
-  { id: "CT-304", act: [2,3], priority: "상", bg: "forest", once: true,
+  { id: "CT-304", act: [2,3], priority: "상", alert: true, bg: "forest", once: true,
     req: function(s,g,logs){ return typeof ambushPending==='function' && ambushPending('spec-001','LOG-013',s,logs); },
     msg: "긴급 — 인원 점검 불일치.\n\n야간 보급 창고. 정기 인원 점검에서 머릿수가 하나 더 잡힙니다.\n\n강도윤: \"구석에 사람 형체 하나. ...미동이 없습니다. 호흡도, 열도 거의 없어요.\"\n\n윤세진: \"마네킹이에요. 보급품 틈에 섞여 들어온 정지 위장형. 자극하기 전에 식별이 먼저예요.\"",
     left: { label: "즉시 제압 — 접근 사격", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-E04" },

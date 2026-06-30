@@ -354,8 +354,9 @@ function Stats(p){
   var giMag=Math.abs(giV)/60*50;
   var giPos=giV>=0;
   var lowCount=['c','r','t','o'].filter(function(k){return p.stats[k]!=null&&p.stats[k]<25}).length;
-  var mapEv=p.mapEvent||'idle';
-  var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
+  // 실제 긴급 카드(alert)가 화면에 있으면 'attack'(빨간 경고), 없으면 computeMapEvent 결과('warn' 사전경보 등)
+  var mapEv=p.mutantAlert?'attack':(p.mapEvent||'idle');
+  var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='warn'?(isKo?'변이체 활동 증가':'ABERRANT ↑'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
   // idle 앰비언트: 텔레메트리 readout를 천천히 순환 + 순찰 블립 + 드문 비미션 목격 핑
   var _tk=useState(0),tick=_tk[0],setTick=_tk[1];
   useEffect(function(){

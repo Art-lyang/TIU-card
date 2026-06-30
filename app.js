@@ -40,8 +40,10 @@ function DevMissionLauncher(p){
 // 미니맵 상태 산출 — 돌발 기습(CT-30x) 조건 충족 시 'attack' 사전경보, 그 외 봉쇄 상태 기반
 function computeMapEvent(stats, logs){
   logs = logs || [];
-  if (typeof anyAmbushPending === 'function' && anyAmbushPending(stats, logs)) return 'attack';
-  if (stats.c <= 20) return 'attack';
+  if (stats.c <= 20) return 'attack';        // 봉쇄 임박 붕괴 — 게이지로 보이는 실질 위기
+  // 기습 가능(휴면종 사전경보)은 상시 조건이라 빨간 'attack' 대신 은은한 'warn'으로 표시.
+  // 실제 긴급 카드(CT-30x, alert/cctv)가 화면에 떠야 빨간 경고가 켜진다.
+  if (typeof anyAmbushPending === 'function' && anyAmbushPending(stats, logs)) return 'warn';
   if (stats.c >= 85) return 'lockdown';
   return 'idle';
 }

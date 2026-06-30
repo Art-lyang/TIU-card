@@ -1096,6 +1096,10 @@ b.fm-rk--info{color:#caa14a}
 .km-ov-attack{background:radial-gradient(46% 40% at 50% 47%,rgba(255,60,40,.34),transparent 70%);box-shadow:inset 0 0 50px rgba(255,40,30,.22)}
 .km-ov-research{background:radial-gradient(40% 34% at 50% 47%,rgba(60,220,255,.24),transparent 70%)}
 .km-ov-lockdown{background:repeating-linear-gradient(45deg,transparent 0 7px,rgba(var(--ko-rgb),.12) 7px 8px)}
+/* warn: 기습 가능 사전경보 — 빨간 중앙 경고 대신 하단 텔레메트리를 은은한 앰버로 (뜬금없는 알람 방지) */
+.hud-map[data-ev="warn"] .km-stat{color:#e0a838}
+.hud-map[data-ev="warn"] .km-stat-l{animation:kmStatIn .5s ease-out,kmWarnPulse 2.4s ease-in-out infinite}
+@keyframes kmWarnPulse{0%,100%{opacity:.6}50%{opacity:1}}
 /* idle 앰비언트: 텔레메트리 페이드 전환 + 순찰 블립 + 드문 목격 핑 (감시 HUD 디제틱 연출) */
 .km-stat-l{animation:kmStatIn .5s ease-out;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:78%}
 @keyframes kmStatIn{0%{opacity:0;transform:translateY(2px)}100%{opacity:1;transform:none}}
