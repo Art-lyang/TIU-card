@@ -12,7 +12,7 @@
     mission_m004: 'assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg',
     mission_m005: 'assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg',
     mission_m006: 'assets/images/missions/mission_m006_spore_phantom_hero.jpg',
-    mission_m007: 'assets/images/missions/mission_m007_decisive_strike_hero.jpg',
+    mission_m007: 'assets/images/missions/mission_m007_decisive_strike_hero.jpg?v=2',
     mission_m008: 'assets/images/missions/mission_m008_observation_stop_clean.webp',
     mission_m009: 'assets/images/missions/mission_m009_seed_spreader_hero.jpg',
     mission_m010: 'assets/images/missions/mission_m010_brain_seeker_hero.jpg',
