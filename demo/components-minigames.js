@@ -895,17 +895,17 @@ function EvidenceMiniGame(p){
     status:[{k:'TIME',v:time+'s',cls:time<=3?'is-bad':''},{k:'PICKS',v:selected.length+'/3'}]
   },
     h('div',{className:'fm-term-stage'},
-      h('div',{style:{padding:'14px 16px',marginBottom:14,border:'1px solid rgba(245,188,64,0.35)',borderRadius:'16px',background:'rgba(32,24,8,0.35)',color:'#f3c35b',fontSize:14,lineHeight:1.6}},
+      h('div',{style:{padding:'10px 13px',marginBottom:9,border:'1px solid rgba(245,188,64,0.35)',borderRadius:'16px',background:'rgba(32,24,8,0.35)',color:'#f3c35b',fontSize:14,lineHeight:1.6}},
         locale==='en'?active.leadEn:active.leadKo),
-      h('div',{style:{padding:'11px 14px',marginBottom:14,border:'1px solid rgba(122,255,198,0.22)',borderRadius:'14px',background:'rgba(5,18,11,0.74)',color:'rgba(210,235,220,0.84)',fontSize:13,lineHeight:1.65}},
+      h('div',{style:{padding:'8px 12px',marginBottom:9,border:'1px solid rgba(122,255,198,0.22)',borderRadius:'12px',background:'rgba(5,18,11,0.74)',color:'rgba(210,235,220,0.84)',fontSize:13,lineHeight:1.65}},
         h('b',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:10,letterSpacing:1.4,color:'#7affc6',marginBottom:4}},locale==='en'?'SORTING RULE':'판독 기준'),
         locale==='en'?active.hintEn:active.hintKo),
-      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:12,marginBottom:16}},
+      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:8,marginBottom:11}},
         active.items.map(function(item){
           var isOn=selected.indexOf(item.id)>=0;
           return h('button',{
             key:item.id,className:'btn',onClick:function(){toggle(item.id);},
-            style:{minHeight:86,borderRadius:'16px',padding:'12px 14px',textAlign:'left',background:isOn?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.9)',border:'1px solid '+(isOn?'rgba(120,255,190,0.55)':'rgba(122,255,198,0.18)'),color:isOn?'#ecfff4':'rgba(210,235,220,0.82)',fontSize:14,lineHeight:1.5}
+            style:{minHeight:64,borderRadius:'14px',padding:'9px 12px',textAlign:'left',background:isOn?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.9)',border:'1px solid '+(isOn?'rgba(120,255,190,0.55)':'rgba(122,255,198,0.18)'),color:isOn?'#ecfff4':'rgba(210,235,220,0.82)',fontSize:14,lineHeight:1.5}
           },locale==='en'?item.en:item.ko);
         })
       )
