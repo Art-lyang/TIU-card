@@ -513,6 +513,10 @@ function DayObjective(p){
     var comboCount=(typeof getUnlockedCombos==='function')?getUnlockedCombos(logs).length:0;
     sub=comboCount>0?(isEn?'Investigation notes recorded: '+comboCount:'조사테이블 통찰 기록: '+comboCount+'건'):(isEn?'Investigation table active. Review records when needed.':'조사테이블 활성화: 필요 시 기록을 확인하세요.');
   }
+  // 연구 콘솔 미개방 안내 — 조사테이블 개방 후 day 12+, 윤세진 소개 완료, 연구탭 아직 미개방 (임재혁 조사테이블 안내와 동일 방식)
+  if(!critical.length&&day>=12&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-INTRO-YS')>=0&&logs.indexOf('LOG-RES-OPEN')<0){
+    sub=isEn?'Open the research console through Yoon Se-jin\'s evening chat.':'윤세진 이브닝 챗에서 연구 콘솔을 여세요.';
+  }
   if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
     var axisIds=['LOG-CHAR-HAEUN-PARALLAX','LOG-CHAR-DOYUN-ANCHOR','LOG-CHAR-SEJIN-KINDLE','LOG-CHAR-JAEHYUK-VOIDWALK'];
     var axisCount=axisIds.filter(function(id){return logs.indexOf(id)>=0}).length;
