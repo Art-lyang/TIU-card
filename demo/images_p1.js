@@ -13,7 +13,7 @@
     mission_m005: 'assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg',
     mission_m006: 'assets/images/missions/mission_m006_spore_phantom_hero.jpg',
     mission_m007: 'assets/images/missions/mission_m007_decisive_strike_hero.jpg',
-    mission_m008: 'assets/images/missions/mission_m008_observation_stop_hero.jpg',
+    mission_m008: 'assets/images/missions/mission_m008_observation_stop_clean.webp',
     mission_m009: 'assets/images/missions/mission_m009_seed_spreader_hero.jpg',
     mission_m010: 'assets/images/missions/mission_m010_brain_seeker_hero.jpg',
     incident_mi01: 'assets/images/missions/incident_mi01_quarantine_seal_hero.jpg',
@@ -27,6 +27,7 @@
     card_core_haeun_usb: 'assets/images/cards/core/card_core_haeun_usb.jpg',
     card_core_haeun_surveillance: 'assets/images/cards/core/card_core_haeun_surveillance.jpg',
     card_core_oracle_loyalty: 'assets/images/cards/core/card_core_oracle_loyalty.jpg',
+    card_core_oracle_firmware: 'assets/images/cards/core/card_core_oracle_firmware.jpg',
     card_core_weber_arrival: 'assets/images/cards/core/card_core_weber_arrival.jpg',
     card_core_officers_command_room: 'assets/images/cards/core/card_core_officers_command_room.jpg',
     card_core_lab_corridor: 'assets/images/cards/core/card_core_lab_corridor.jpg',
@@ -46,6 +47,7 @@
     card_story_base_occupation: 'assets/images/cards/story/card_story_base_occupation.jpg',
     card_story_base_escape: 'assets/images/cards/story/card_story_base_escape.jpg',
     card_story_commander_subdued: 'assets/images/cards/story/card_story_commander_subdued.jpg',
+    card_story_power_crisis: 'assets/images/cards/story/card_story_power_crisis.jpg',
     card_story_secret_escape_group: 'assets/images/cards/story/card_story_secret_escape_group.jpg',
     card_story_giant: 'assets/images/cards/story/card_story_giant.jpg',
 
@@ -143,7 +145,7 @@
   var CARD_IMAGE_PATCHES = {
     'C-001': 'card_core_officers_command_room',
     'C-004': 'card_core_lab_corridor',
-    'C-005': 'card_core_oracle_loyalty',
+    'C-005': 'card_core_oracle_firmware',
     'C-007': 'card_core_road_collapse',
     'C-008': 'card_core_haeun_surveillance',
     'C-009': 'card_core_jaehyuk_overnight_data',
@@ -165,7 +167,7 @@
     'C-050': 'card_story_shell_walker',
     'C-051': 'card_story_shelltalker_capture',
     'CA4-R005': 'card_story_base_escape',
-    'CR-004': 'card_story_commander_subdued',
+    'CR-004': 'card_story_power_crisis',
 
     'CH-I01A-2': 'incident_mi01',
     'CH-I01B-2': 'incident_mi01',
