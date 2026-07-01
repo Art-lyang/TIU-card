@@ -21,6 +21,15 @@ function evidenceText(ko, en) {
   return evidenceLocale() === 'en' ? en : ko;
 }
 
+// 증거의 근거 원본 LOG를 찾아 현지화(로그 탭과 동일한 oracleLogs 오버레이 재사용)
+function getEvidenceSourceLog(ev) {
+  if (!ev || !ev.src || typeof ORACLE_LOGS === 'undefined') return null;
+  var log = ORACLE_LOGS.filter(function(l){ return l.id === ev.src; })[0];
+  if (!log) return null;
+  var overlay = (evidenceLocale() === 'en' && typeof tc === 'function') ? tc('oracleLogs', log.id, null) : null;
+  return { id: log.id, title: (overlay && overlay.title) || log.title, content: (overlay && overlay.content) || log.content };
+}
+
 function evidenceFailText(selected) {
   var locale = evidenceLocale();
   var isEn = locale === 'en';
@@ -261,6 +270,7 @@ function EvidencePanel(p) {
 
   // 상단 카테고리 필터 — 'all'이면 전체, 아니면 해당 분류만.
   var _ac = useState('all'), activeCat = _ac[0], setActiveCat = _ac[1];
+  var _exp = useState({}), expanded = _exp[0], setExpanded = _exp[1];  // 카드별 상세(근거 원본) 펼침
   var showFilter = collected.length > 0 && availCats.length >= 2;
   // 칩이 숨겨졌거나(분류<2) 활성 분류가 사라지면 전체로 폴백 → 통찰·전체 콘텐츠가 다시 보이고 막다른 상태가 없다.
   var effCat = (activeCat !== 'all' && (!showFilter || availCats.indexOf(activeCat) < 0)) ? 'all' : activeCat;
@@ -273,9 +283,19 @@ function EvidencePanel(p) {
   ];
 
   var evCard = function(ev){
-    return h('div', { key: ev.id, className: 'ev2-card', style: { borderLeftColor: catColor[ev.cat] || 'var(--ui)' } },
-      h('div', { className: 'ev2-name' }, ev.name),
-      h('div', { className: 'ev2-desc' }, ev.desc));
+    var isOpen = !!expanded[ev.id];
+    var src = isOpen ? getEvidenceSourceLog(ev) : null;
+    return h('div', { key: ev.id, className: 'ev2-card' + (isOpen ? ' is-open' : ''),
+        style: { borderLeftColor: catColor[ev.cat] || 'var(--ui)' },
+        onClick: function(){ setExpanded(function(m){ var n = Object.assign({}, m); if (n[ev.id]) delete n[ev.id]; else n[ev.id] = true; return n; }); } },
+      h('div', { className: 'ev2-cardhead' },
+        h('div', { className: 'ev2-name' }, ev.name),
+        h('span', { className: 'ev2-caret' }, isOpen ? '\u25be' : '\u25b8')),
+      h('div', { className: 'ev2-desc' }, ev.desc),
+      isOpen && h('div', { className: 'ev2-detail' },
+        src ? h('div', { className: 'ev2-detail-src' }, L('근거 기록', 'SOURCE') + ' \u00b7 ' + src.id) : null,
+        src ? h('div', { className: 'ev2-detail-title' }, src.title) : null,
+        h('div', { className: 'ev2-detail-body' }, src ? src.content : L('원본 기록을 찾을 수 없습니다.', 'Source record unavailable.'))));
   };
 
   var EVN = (typeof EVIDENCE !== 'undefined') ? EVIDENCE.length : allCollected.length;

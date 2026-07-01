@@ -1307,3 +1307,14 @@ b.fm-rk--info{color:#caa14a}
 .mg-ob-note{text-align:center;font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.06em;color:rgba(255,211,63,.72)}
 /* 홀드형 버튼(샘플 회수) 눌림 피드백 */
 .fm-term-btn.is-held{filter:brightness(1.25);border-color:rgba(120,255,190,.85);box-shadow:inset 0 0 16px rgba(120,255,190,.24),0 0 15px rgba(120,255,190,.3)}
+/* 조사탭 증거 카드 — 클릭 시 근거 원본 LOG 펼침(아코디언) */
+.ev2-card{cursor:pointer}
+.ev2-cardhead{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.ev2-caret{font-size:9px;line-height:1.6;color:rgba(var(--ui-rgb),.38);flex-shrink:0;transition:color .15s ease}
+.ev2-card:hover .ev2-caret{color:var(--ui)}
+.ev2-card.is-open{background:rgba(255,255,255,.045);border-color:rgba(255,255,255,.16)}
+.ev2-detail{margin-top:8px;padding-top:8px;border-top:1px dashed rgba(255,255,255,.1);animation:ev2Reveal .18s ease}
+@keyframes ev2Reveal{from{opacity:0;transform:translateY(-3px)}to{opacity:1;transform:none}}
+.ev2-detail-src{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1px;color:rgba(240,160,48,.72);margin-bottom:5px}
+.ev2-detail-title{font-size:11px;color:#e6ede9;font-weight:500;margin-bottom:5px;line-height:1.4}
+.ev2-detail-body{font-size:10px;line-height:1.6;color:rgba(190,206,200,.66);white-space:pre-line}
