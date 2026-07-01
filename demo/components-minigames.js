@@ -73,13 +73,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SIGNAL ALIGNMENT',
     ko: {
       title: 'SPEC-011 음향 패턴 정렬',
-      intro: '초록 커서를 황색 안정 구간에 맞춰 신호를 고정한다. 오차가 크면 현장 분석값이 무너진다.',
+      intro: 'SPEC-011의 음향 패턴을 안정 구간에 고정해 분석 가능한 신호를 확보한다.',
       action: '판정 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'SPEC-011 Acoustic Pattern Alignment',
-      intro: 'Lock the signal by stopping the green cursor inside the amber stability band.',
+      intro: 'Lock SPEC-011\'s acoustic pattern into the stable band to secure a readable signal.',
       action: 'Confirm',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -89,13 +89,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'QUARANTINE SEQUENCE',
     ko: {
       title: '격리 봉인 수동 시퀀스',
-      intro: '패널 지시문 순서대로 봉인 버튼을 눌러 자동 루틴의 빈틈을 메운다.',
+      intro: '자동 봉인 루틴이 놓친 단계를 수동으로 입력해 격리를 마무리한다.',
       action: '입력',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Manual Quarantine Seal Sequence',
-      intro: 'Press panel controls in protocol order to close the gap left by the automatic routine.',
+      intro: 'Manually enter the steps the auto-seal routine missed to complete the quarantine.',
       action: 'Input',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -105,13 +105,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ORACLE TRACE',
     ko: {
       title: '권한 흔적 추적',
-      intro: '인접한 노드만 따라 움직이며 KEY 흔적을 둘 이상 모은 뒤 EXIT로 빠져나온다. 붉은 노드는 노출도를 올린다.',
+      intro: '노출을 억제한 채 권한 KEY 흔적 둘을 확보하고 흔적 없이 빠져나온다.',
       action: '노드 선택',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Authority Trace',
-      intro: 'Move only through adjacent nodes, collect at least two KEY traces, then reach EXIT before exposure peaks.',
+      intro: 'Keep exposure low, secure two authority KEY traces, and slip out clean.',
       action: 'Select Node',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -121,13 +121,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ROUTE EVADE',
     ko: {
       title: '수로 추적 우회 경로',
-      intro: '제한 이동 횟수 안에 위험 칸을 피해 목표 지점까지 이동한다. 빨간 칸은 진입 즉시 실패, 황색 칸은 이동력을 2 소모한다.',
+      intro: '정해진 이동 횟수 안에 위험 구역을 피해 목표 지점에 도달한다.',
       action: '이동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Drainage Route Intercept',
-      intro: 'Reach the target within limited moves while avoiding danger tiles. Red tiles fail on contact; amber tiles cost 2 moves.',
+      intro: 'Reach the target within the fixed move count while avoiding the danger zone.',
       action: 'Move',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -137,13 +137,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SAMPLE RECOVERY',
     ko: {
       title: '활성 샘플 추적 회수',
-      intro: '탐침을 조작해 이동하는 활성 샘플을 포집 영역 안에 붙잡고 회수율을 채운다.',
+      intro: '움직이는 활성 샘플을 포집기 안에 붙든 채 과부하 전에 회수를 끝낸다.',
       action: '회수 장비 작동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Active Sample Tracking Recovery',
-      intro: 'Operate the extractor probe, keep the active specimen inside the recovery field, and fill recovery progress.',
+      intro: 'Hold the moving active sample in the collector and finish recovery before overload.',
       action: 'Operate Extractor',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -153,13 +153,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'SCAN SEARCH',
     ko: {
       title: '미등록 통로 생체 반응 스캔',
-      intro: '스캐너를 움직여 이상 반응 중심을 붙잡는다. 가짜 반응 위에 오래 머물면 스캔이 흔들린다.',
+      intro: '미등록 통로를 훑어 진짜 생체 반응 하나를 특정한다.',
       action: '스캔 유지',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Unregistered Passage Bio-Signal Scan',
-      intro: 'Sweep the scanner across the sector and hold on the true anomaly. Decoys destabilize the lock.',
+      intro: 'Sweep the unregistered passage and pin down the one real bio-signal.',
       action: 'Hold Scan',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -169,13 +169,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'EVIDENCE SORT',
     ko: {
       title: '현장 단서 분류',
-      intro: '제한된 판독 슬롯 안에 실제 단서만 골라 넣는다. 잡음 자료가 많을수록 다음 판단이 흐려진다.',
+      intro: '잡음 속에서 사건과 직결된 단서만 추려 판독을 확정한다.',
       action: '판독 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Evidence Triage',
-      intro: 'Fill the limited review slots with real clues only. Noise data will blur the next call.',
+      intro: 'Sift out only the case-critical clues from the noise and lock the read.',
       action: 'Lock Review',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -185,13 +185,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'LOG RECONSTRUCTION',
     ko: {
       title: '로그 복원 시퀀스',
-      intro: '깨진 기록 조각을 시간 순서대로 다시 이어 붙인다. 잘못 잇는 순간 추적선이 흐트러진다.',
+      intro: '훼손된 기록 조각을 시간 순서로 이어 추적선을 되살린다.',
       action: '조각 선택',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Log Reconstruction Sequence',
-      intro: 'Restore broken record fragments in the right order before the trace collapses.',
+      intro: 'Reconnect the damaged record fragments in time order to restore the trace.',
       action: 'Select Fragment',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -201,13 +201,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'STATEMENT VERIFY',
     ko: {
       title: '진술 교차 검증',
-      intro: '증언과 기록을 대조해 모순되는 진술 하나를 가려낸다. 잘못 짚으면 조사선이 완전히 흔들린다.',
+      intro: '증언과 기록을 맞대어 사실과 어긋나는 진술을 짚어낸다.',
       action: '모순 지정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Statement Cross-Check',
-      intro: 'Compare testimony against hard records and isolate the inconsistent line.',
+      intro: 'Cross-check the testimony against the record and flag the statement that doesn\'t fit.',
       action: 'Flag Contradiction',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -217,13 +217,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'LATENT SCREEN',
     ko: {
       title: '잠복 반응 스크리닝',
-      intro: '대기 인원의 생체·신경 반응을 빠르게 훑어 잠복 노출자를 식별한다. 오판은 현장 불안을 키운다.',
+      intro: '대기 인원의 생체·신경 반응을 훑어 잠복 노출자를 가려낸다.',
       action: '판독 확정',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Latent Response Screening',
-      intro: 'Sweep waiting personnel and isolate hidden exposure signs before the room destabilizes.',
+      intro: 'Scan the waiting personnel\'s vital and neural readings to pick out latent exposure.',
       action: 'Confirm Screening',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -1131,16 +1131,16 @@ function ScreeningMiniGame(p){
 
 // 미니게임 시작 게이트 — 플레이 방법 안내 후 [시작]을 눌러야 타이머/모션 작동(게임은 START 후 마운트되므로 타이머 자동 정지)
 var MINI_CONTROLS = {
-  signal:{ko:'커서가 황색 안정 구간에 들어올 때 [판정 확정]을 누르세요.',en:'Press confirm when the cursor enters the amber band.'},
-  sequence:{ko:'패널 지시 순서대로 봉인 버튼을 누르세요.',en:'Press the seal buttons in the order shown.'},
-  breach:{ko:'인접한 노드만 따라 KEY 2개를 모은 뒤 EXIT로 빠져나오세요. 붉은 노드는 노출을 올립니다.',en:'Move only through adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
-  route:{ko:'붉은 위험 칸을 피해 제한 이동 횟수 안에 목표 칸으로 이동하세요. 황색 칸은 이동력 2 소모.',en:'Avoid red danger tiles and reach the goal within the move limit. Amber tiles cost 2 moves.'},
-  sample:{ko:'버튼을 길게 눌러 탐침을 올리고 움직이는 샘플에 겹쳐 회수율을 채우세요. 과부하 주의.',en:'Press and hold to raise the probe, overlap the moving sample to fill recovery. Watch overload.'},
-  scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머무르세요. 가짜 반응은 신호를 떨어뜨립니다.',en:'Drag to move the scanner and hold over the true signal. Decoys drop the lock.'},
-  evidence:{ko:'실제 단서만 골라 제한된 판독 슬롯을 채운 뒤 확정하세요.',en:'Pick only the real clues to fill the limited slots, then lock.'},
-  reconstruction:{ko:'깨진 조각을 시간 순서대로 선택하세요. 잘못 이으면 추적선이 흔들립니다.',en:'Select the fragments in chronological order. Wrong picks destabilize the trace.'},
-  statement:{ko:'기록과 모순되는 진술 하나를 지정하세요.',en:'Flag the single statement that contradicts the record.'},
-  screening:{ko:'이상 생체 반응을 보이는 인원을 표시한 뒤 확정하세요.',en:'Mark the personnel with abnormal readings, then confirm.'}
+  signal:{ko:'초록 커서가 황색 안정 띠 안에 들어온 순간 [판정 확정]을 누른다.',en:'Press [Confirm] the moment the green cursor is inside the amber band.'},
+  sequence:{ko:'패널에 표시된 순서 그대로 봉인 버튼을 누른다.',en:'Press the seal buttons in the exact order shown on the panel.'},
+  breach:{ko:'이웃한 노드로만 이동해 KEY 2개를 모은 뒤 EXIT로 나온다. 붉은 노드는 노출을 올린다.',en:'Move only to adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
+  route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력을 2 소모한다.',en:'Move one tile up, down, left, or right. Red tiles fail instantly; amber tiles cost 2 moves.'},
+  sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
+  scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
+  evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
+  reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
+  statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
+  screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'}
 };
 function MinigameOnboarding(p){
   var en=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
