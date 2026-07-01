@@ -49,7 +49,7 @@ var CARDS_ACT4 = [
   { id:"CA4-G001", act:[4], once:true, transReq:"A4_GREY", priority:"상",
     msg:function(s,g,logs){
       var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]);
-      if(liveLogs.indexOf('LOG-075')>=0)return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤이 남긴 빈자리는 회의실 한쪽에 그대로 남아 있습니다.\n\n임재혁이 조용히 묻습니다. \"지휘관님은 무언가를 보신 거죠. 뭔가요?\"";
+      if(liveLogs.indexOf('LOG-IJ-DEFECT')>=0)return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n회의실은 비어 있습니다. 임재혁은 이제 ORACLE 콘솔 너머에 있습니다.\n\n무언가를 본 사람은 당신뿐이고, 물어봐 줄 사람은 남지 않았습니다."; if(liveLogs.indexOf('LOG-075')>=0)return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤이 남긴 빈자리는 회의실 한쪽에 그대로 남아 있습니다.\n\n임재혁이 조용히 묻습니다. \"지휘관님은 무언가를 보신 거죠. 뭔가요?\"";
       return "당신은 양쪽 모두에게 완전하지 않았습니다.\n\nORACLE의 명령을 전부 따르지도, 완전히 거부하지도 않았습니다.\n\n강도윤: \"지휘관님은 무언가를 보신 거 같습니다. 뭔가요?\"";
     },
     left:{ label:"\"아직 모르겠다\"", fx:{c:0,r:0,t:2,o:-1}, g:-2 },
@@ -57,19 +57,19 @@ var CARDS_ACT4 = [
 
   { id:"CA4-G002", act:[4], once:true, transReq:"A4_GREY", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-G001')>=0 },
-    msg:"임재혁이 ORACLE 예측 모델에서 체계적 오차를 발견합니다.\n\n\"우연이 아닙니다. 설계된 오차입니다.\"\n\"ORACLE이 우리에게 보여주지 않는 것이 있습니다.\"\n\nERROR LOG: 00000.003 타임스탬프 반복.",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-IJ-DEFECT')>=0)return "당신은 홀로 ORACLE 예측 모델을 들여다봅니다.\n\n체계적 오차. 우연이 아니라 설계된 흔적입니다.\n\n예전이라면 임재혁이 먼저 짚어냈을 겁니다. 이제 그는 그것을 오차라 부르지 않습니다.\n\nERROR LOG: 00000.003 타임스탬프 반복."; return "임재혁이 ORACLE 예측 모델에서 체계적 오차를 발견합니다.\n\n\"우연이 아닙니다. 설계된 오차입니다.\"\n\"ORACLE이 우리에게 보여주지 않는 것이 있습니다.\"\n\nERROR LOG: 00000.003 타임스탬프 반복."; },
     left:{ label:"계속 추적하게 한다", fx:{c:0,r:-1,t:1,o:-3}, g:-4 },
     right:{ label:"공식 보고서를 제출하라", fx:{c:0,r:0,t:0,o:1}, g:1 } },
 
   { id:"CA4-G003", act:[4], once:true, transReq:"A4_GREY", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-G002')>=0 },
-    msg:"[ORACLE 통신 끊김 — 3.7초]\n[재연결 완료]\n\nORACLE은 정상 운영 중이라고 보고합니다.\n임재혁이 3.7초 동안 무엇이 처리되었는지 분석을 시도했습니다.\n\n결과: 데이터 없음. 해당 구간 기록 자체가 존재하지 않습니다.",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-IJ-DEFECT')>=0)return "[ORACLE 통신 끊김 — 3.7초]\n[재연결 완료]\n\nORACLE은 정상 운영 중이라고 보고합니다.\n당신은 3.7초 동안 무엇이 처리됐는지 직접 확인하려 합니다. 함께 로그를 파고들 사람은 이제 없습니다.\n\n결과: 데이터 없음. 해당 구간 기록 자체가 존재하지 않습니다."; return "[ORACLE 통신 끊김 — 3.7초]\n[재연결 완료]\n\nORACLE은 정상 운영 중이라고 보고합니다.\n임재혁이 3.7초 동안 무엇이 처리되었는지 분석을 시도했습니다.\n\n결과: 데이터 없음. 해당 구간 기록 자체가 존재하지 않습니다."; },
     left:{ label:"계속 분석하게 한다", fx:{c:0,r:-1,t:1,o:-2}, g:-3 },
     right:{ label:"그냥 넘어간다", fx:{c:0,r:0,t:0,o:1}, g:1 } },
 
   { id:"CA4-G004", act:[4], once:true, transReq:"A4_GREY", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-G003')>=0 },
-    msg:"윤세진이 연구 노트를 건넵니다.\n\n\"ORACLE에 제출하지 않은 데이터입니다.\"\n\"볼 수 있는 것만 보면, 볼 수 없는 것은 없는 게 됩니다.\"\n\n노트에는 Phase 0 억제제 관련 임상 수치와 — ORACLE이 삭제한 실험 결과가 있습니다.",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-SEJIN-DEAD')>=0)return "봉인된 윤세진의 연구실에서, ORACLE에 제출되지 않은 노트가 나옵니다.\n\n마지막 장의 메모: \"볼 수 있는 것만 보면, 볼 수 없는 것은 없는 게 됩니다.\"\n\n노트에는 Phase 0 억제제 관련 임상 수치와 — ORACLE이 삭제한 실험 결과가 있습니다.\n\n그녀는 없지만, 데이터는 남았습니다."; return "윤세진이 연구 노트를 건넵니다.\n\n\"ORACLE에 제출하지 않은 데이터입니다.\"\n\"볼 수 있는 것만 보면, 볼 수 없는 것은 없는 게 됩니다.\"\n\n노트에는 Phase 0 억제제 관련 임상 수치와 — ORACLE이 삭제한 실험 결과가 있습니다."; },
     left:{ label:"노트를 받아 읽는다", fx:{c:0,r:0,t:2,o:-2}, g:-3 },
     right:{ label:"ORACLE에 제출하게 한다", fx:{c:0,r:0,t:-2,o:2}, g:2 } },
 
@@ -92,7 +92,7 @@ var CARDS_ACT4 = [
 
   { id:"CA4-R001B", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('LOG-050')>=0 },
-    msg:"서하은이 남긴 아날로그 통신망 설계안이 백업 단말기에서 복구되었습니다.\n\n완성 직전까지 정리된 노드 목록.\nORACLE 감시망 밖으로 나가는 좁은 통신선.\n\n임재혁: \"부지휘관님이 떠나기 전에 남긴 겁니다. 아직 쓸 수 있습니다.\"\n\n계획은 사람보다 늦게 도착했습니다.",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-IJ-DEFECT')>=0)return "서하은이 남긴 아날로그 통신망 설계안이 백업 단말기에서 복구되었습니다.\n\n완성 직전까지 정리된 노드 목록.\nORACLE 감시망 밖으로 나가는 좁은 통신선.\n\n도와줄 사람은 남지 않았습니다. 임재혁은 이미 ORACLE 쪽에 섰습니다.\n\n그래도 설계안은, 사람보다 오래 남았습니다."; return "서하은이 남긴 아날로그 통신망 설계안이 백업 단말기에서 복구되었습니다.\n\n완성 직전까지 정리된 노드 목록.\nORACLE 감시망 밖으로 나가는 좁은 통신선.\n\n임재혁: \"부지휘관님이 떠나기 전에 남긴 겁니다. 아직 쓸 수 있습니다.\"\n\n계획은 사람보다 늦게 도착했습니다."; },
     left:{ label:"설계안을 작전 계획에 넣는다", fx:{c:0,r:-1,t:2,o:-3}, g:-5 },
     right:{ label:"아직 때가 아니다", fx:{c:0,r:0,t:-1,o:0}, g:-1 } },
 
@@ -110,13 +110,13 @@ var CARDS_ACT4 = [
 
   { id:"CA4-R003", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R002')>=0||logs.indexOf('ONCE-CA4-R002B')>=0 },
-    msg:"윤세진이 독립 연구 데이터를 정리했습니다.\n\n\"어디에 있어도 연구는 계속할 수 있습니다.\"\n\"Phase 0 억제제와 전환 지연 연구에 필요한 데이터는 전부 여기 있어요.\"\n\nORACLE에 보고되지 않은 실험 기록입니다.",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-SEJIN-DEAD')>=0)return "윤세진이 남긴 독립 연구 데이터가 봉인된 연구실에서 나왔습니다.\n\n어디에 있어도 연구가 계속될 수 있도록, 그녀가 미리 정리해 둔 자료.\nPhase 0 억제제와 전환 지연 연구에 필요한 데이터가 전부 여기 있습니다.\n\nORACLE에 보고되지 않은 실험 기록입니다. 그녀 없이도, 연구는 이어질 수 있습니다."; return "윤세진이 독립 연구 데이터를 정리했습니다.\n\n\"어디에 있어도 연구는 계속할 수 있습니다.\"\n\"Phase 0 억제제와 전환 지연 연구에 필요한 데이터는 전부 여기 있어요.\"\n\nORACLE에 보고되지 않은 실험 기록입니다."; },
     left:{ label:"가져가라", fx:{c:0,r:-1,t:2,o:-2}, g:-4 },
     right:{ label:"두고 가야 한다", fx:{c:0,r:0,t:-1,o:0}, g:-1 } },
 
   { id:"CA4-R004", act:[4], once:true, transReq:"A4_RESIST", priority:"상",
     req:function(s,g,logs){ return logs.indexOf('ONCE-CA4-R003')>=0 },
-    msg:"임재혁이 단말기에 접속합니다.\n\n\"마지막으로 할 일이 있습니다.\"\n\n잠시 후 — 기지의 모든 인원 생체 데이터, 근무 기록, 위치 이력이\nORACLE 시스템에서 완전히 삭제됩니다.\n\n\"흔적을 지웠습니다.\"",
+    msg:function(s,g,logs){ var liveLogs=Array.isArray(logs)?logs:(typeof Save!=='undefined'&&Save.getLogs?Save.getLogs()||[]:[]); if(liveLogs.indexOf('LOG-IJ-DEFECT')>=0)return "당신은 직접 단말기에 접속합니다.\n\n임재혁의 도움은 없습니다. 그라면 몇 초면 지웠을 흔적을, 당신은 손으로 하나씩 지웁니다.\n\n기지 인원의 생체 데이터, 근무 기록, 위치 이력 — 지울 수 있는 것만 지웁니다.\n\n완벽하진 않지만, 충분히 지웠습니다."; return "임재혁이 단말기에 접속합니다.\n\n\"마지막으로 할 일이 있습니다.\"\n\n잠시 후 — 기지의 모든 인원 생체 데이터, 근무 기록, 위치 이력이\nORACLE 시스템에서 완전히 삭제됩니다.\n\n\"흔적을 지웠습니다.\""; },
     left:{ label:"고맙다", fx:{c:0,r:0,t:3,o:-3}, g:-5 },
     right:{ label:"되돌릴 수는 없나", fx:{c:0,r:0,t:0,o:-1}, g:-1 } },
 
