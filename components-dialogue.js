@@ -96,7 +96,7 @@ function LogViewer(p){
   var s1=useState(null),sel=s1[0],setSel=s1[1];
   var s2=useState(0),page=s2[0],setPage=s2[1];
   var s3=useState('all'),topic=s3[0],setTopic=s3[1];
-  var ulAll=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=ORACLE_LOGS.length-ulAll.length;
+  var vLogs=ORACLE_LOGS.filter(function(l){return !(l.hidden&&p.unlockedIds.indexOf(l.id)<0)});var ulAll=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=vLogs.length-ulAll.length;
   var LOG_TOPICS=[{k:'all',ko:'전체',en:'ALL'},{k:'spec',ko:'이변체',en:'SPECIMENS'},{k:'prom',ko:'프로메테우스',en:'PROMETHEUS'},{k:'oracle',ko:'ORACLE',en:'ORACLE'},{k:'people',ko:'인물',en:'PERSONNEL'},{k:'etc',ko:'기타',en:'OTHER'}];
   var SPEC_K=['SPEC-','이변체','CODENAME','관측 기록','마네킹','군체','포자','Brood','Spore','Shell Talker','Blood Pit'];
   var PROM_K=['프로메테우스','Prometheus','COASTAL MIRROR'];
@@ -142,7 +142,7 @@ function LogViewer(p){
     bgOverlay,
     h('div',{className:'vw-wrap'},
       h('div',{className:'vw-panel'},
-        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ulAll.length+'/'+ORACLE_LOGS.length+(isEn?' UNLOCKED':' 해금'))),
+        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ulAll.length+'/'+vLogs.length+(isEn?' UNLOCKED':' 해금'))),
         h('div',{className:'vw-tabs'},LOG_TOPICS.filter(function(tp){return tp.k==='all'||topicCount(tp.k)>0;}).map(function(tp){var c=topicCount(tp.k);return h('button',{key:tp.k,className:'vw-tab'+(topic===tp.k?' active':''),onClick:function(){setTopic(tp.k);setPage(0);}},(isEn?tp.en:tp.ko)+(c>0?(' '+c):''))})),
         pager(),
         pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,className:'vw-row vw-row-entry',onClick:function(){setSel(l.id)}},

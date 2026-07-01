@@ -15,7 +15,7 @@ var ENDING_CATALOG = [
   { id:'E', name:'탈출', hint:'비밀통로를 통해 기지 밖으로 살아나간다.', category:'escape' },
   { id:'E_c', name:'SIGNAL ACQUIRED', hint:'탈출 도중 신호가 먼저 붙잡힌다.', category:'escape' },
   { id:'E_bad', name:'LOST IN TRANSIT', hint:'통신과 목소리 사이에서 길을 잃는다.', category:'escape' },
-  { id:'F', name:'[데이터 손상]', hint:'OBSERVER 레이어의 승인을 따라 데이터가 깨지는 지점까지 간다.', category:'observer' },
+  { id:'F', name:'[데이터 손상]', hint:'OBSERVER 레이어의 승인을 따라 데이터가 깨지는 지점까지 간다.', category:'observer', hidden:true },
   { id:'G', name:'관망자', hint:'어느 쪽도 완전히 선택하지 않은 채 마지막까지 남는다.', category:'neutral' },
   { id:'H', name:'기지 점거', hint:'독립 인프라와 간부 신뢰를 모아 기지를 스스로의 손에 둔다.', category:'uprising' },
   { id:'TIME_UP', name:'세션 만료', hint:'35일 임시 파견 기간을 넘겨 세션 종료 판정을 받는다.', category:'timeout' }
@@ -43,7 +43,9 @@ function EndingScreen(p) {
   var unlocked = p.endings || [];
   var unlockedIds = {};
   unlocked.forEach(function(id){ unlockedIds[id] = true; });
-  var unlockedCount = ENDING_CATALOG.filter(function(e){ return unlockedIds[e.id]; }).length;
+  var _visibleEndings = ENDING_CATALOG.filter(function(e){ return !(e.hidden && !unlockedIds[e.id]); }); // 히든 엔딩(옵저버)은 해금 전 앵범·카운트에서 제외
+  total = _visibleEndings.length;
+  var unlockedCount = _visibleEndings.filter(function(e){ return unlockedIds[e.id]; }).length;
   var progress = Math.round((unlockedCount / Math.max(1,total)) * 100);
   var getEndingView = function(id,fallback){ return (typeof tc === 'function') ? tc('endings',id,fallback||{}) : (fallback||{}); };
   var getMeta = function(cat){ return ENDING_CATEGORY_META[cat] || { label:cat, labelEn:cat, color:'#888' }; };
@@ -89,7 +91,7 @@ function EndingScreen(p) {
     );
   }
 
-  var rows = ENDING_CATALOG.map(function(e) {
+  var rows = _visibleEndings.map(function(e) {
     var meta = getMeta(e.category);
     var locked = !unlockedIds[e.id];
     var img = (!locked && typeof IMG !== 'undefined') ? IMG['ending_' + e.id] : null;

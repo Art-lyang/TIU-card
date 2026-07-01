@@ -38,7 +38,8 @@ function ArchiveViewer(p) {
     return out;
   };
   var unlocked = ARCHIVE_ENTRIES.filter(function(e) { return e.unlock(p.logs) });
-  var locked = ARCHIVE_ENTRIES.length - unlocked.length;
+  var vEntries = ARCHIVE_ENTRIES.filter(function(e) { return !(e.hidden && !e.unlock(p.logs)) });
+  var locked = vEntries.length - unlocked.length;
   var prevUnlocked = p.seenArchive || [];
   useEffect(function() {
     var newOnes = unlocked.filter(function(e) { return prevUnlocked.indexOf(e.id) < 0 });
@@ -74,7 +75,7 @@ function ArchiveViewer(p) {
   // ── 카테고리 내 항목 목록 ──
   if (selCat) {
     var catEntries = unlocked.filter(function(e) { return e.cat === selCat });
-    var catLocked = ARCHIVE_ENTRIES.filter(function(e) { return e.cat === selCat && !e.unlock(p.logs) }).length;
+    var catLocked = vEntries.filter(function(e) { return e.cat === selCat && !e.unlock(p.logs) }).length;
     var ENTRY_PER = 5;
     var entryPages = Math.max(1, Math.ceil(catEntries.length / ENTRY_PER));
     var safeEntryPage = Math.max(0, Math.min(entryPage, entryPages - 1));
@@ -127,10 +128,10 @@ function ArchiveViewer(p) {
     bgOverlay,
     h('div', { className: 'vw-wrap' },
       h('div', { className: 'vw-panel' },
-        h('div', { className: 'vw-panel-h' }, '// ORACLE ARCHIVE', h('span', null, unlocked.length + '/' + ARCHIVE_ENTRIES.length + (isKo ? ' 해금' : ' UNLOCKED'))),
+        h('div', { className: 'vw-panel-h' }, '// ORACLE ARCHIVE', h('span', null, unlocked.length + '/' + vEntries.length + (isKo ? ' 해금' : ' UNLOCKED'))),
         ARCHIVE_CATEGORIES.slice(safeCatPage * CAT_PER, safeCatPage * CAT_PER + CAT_PER).map(function(cat) {
           var catUnlocked = unlocked.filter(function(e) { return e.cat === cat }).length;
-          var catTotal = ARCHIVE_ENTRIES.filter(function(e) { return e.cat === cat }).length;
+          var catTotal = vEntries.filter(function(e) { return e.cat === cat }).length;
           var catNew = unlocked.filter(function(e) { return e.cat === cat && prevUnlocked.indexOf(e.id) < 0 }).length;
           var isEmpty = catUnlocked === 0;
           return h('div', { key: cat, className: 'vw-row' + (isEmpty ? ' is-empty' : '') + (catNew > 0 ? ' is-new' : ''), onClick: isEmpty ? null : function() { setEntryPage(0); setSelCat(cat) } },

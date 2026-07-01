@@ -53,6 +53,28 @@
       left:{ label:"자료만이라도 보관", fx:{ c:0, r:0, t:0, o:-1 }, g:-2 },
       right:{ label:"ORACLE에 보고", fx:{ c:0, r:0, t:-1, o:2 }, g:2 } },
 
+    // ── 연구 진척별 ORACLE 견제 (자율성 침해 · 각 연구 완료 로그 조건 · 사망 후 억제) ──
+    { id:"C-YS-ORACLE-SPEC", act:[2,3], priority:"중", once:true,
+      req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && logs.indexOf('LOG-RES-012')>=0 && !dead(logs); },
+      msg:"ORACLE이 윤세진의 표본 분석 결과를 검토하고 있습니다.\n\n[ORACLE: 해당 데이터의 기밀 등급을 상향합니다. 이후 이 연구의 모든 기록은 본부 전용 채널로만 공유됩니다.]\n\n윤세진: \"제 분석을 팀과 공유할 수 없다는 뜻입니까?\"",
+      left:{ label:"팀과의 공유를 우선", fx:{ c:0, r:0, t:1, o:-1 }, g:-2 },
+      right:{ label:"ORACLE 보안 정책 수용", fx:{ c:0, r:0, t:0, o:2 }, g:2 } },
+    { id:"C-YS-ORACLE-LIGHT", act:[2,3], priority:"중", once:true,
+      req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && logs.indexOf('LOG-RES-LIGHT')>=0 && !dead(logs); },
+      msg:"광반응 약점 데이터가 봉쇄선에 적용 가능한 수준입니다.\n\n[ORACLE: 현장 배치 전 본부 검증이 필수입니다. 예상 소요: 14일.]\n\n임재혁: \"하루가 급한데 2주를 기다린다고요?\"",
+      left:{ label:"즉시 현장 배치", fx:{ c:1, r:0, t:1, o:-1 }, g:-3 },
+      right:{ label:"본부 검증 일정 수용", fx:{ c:0, r:0, t:-1, o:2 }, g:2 } },
+    { id:"C-YS-ORACLE-JOINT", act:[3,4], priority:"상", once:true,
+      req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && logs.indexOf('LOG-RES-JOINT')>=0 && !dead(logs); },
+      msg:"합동 연구가 ORACLE 예측 모델의 편향을 입증했습니다.\n\n[ORACLE: 해당 분석의 방법론 검증을 개시합니다.]\n\n[ORACLE: 임재혁 분석관의 쿼리 역분석 기법을 시스템 무결성 침해 위험으로 분류합니다.]\n\n윤세진: \"…이건 검증이 아니라 감시예요.\"",
+      left:{ label:"연구 결과 공개를 지속", fx:{ c:0, r:-1, t:1, o:-2 }, g:-4 },
+      right:{ label:"분석 방법을 수정해 진행", fx:{ c:0, r:0, t:-1, o:3 }, g:3 } },
+    { id:"C-YS-ORACLE-SUPPRESS", act:[3,4], priority:"상", once:true,
+      req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && logs.indexOf('LOG-017')>=0 && !dead(logs); },
+      msg:"억제제 시제품이 완성됐습니다. Phase 0 감염자를 구할 수 있습니다.\n\n[ORACLE: 임상 결과의 신뢰성 재평가가 필요합니다. 추가 데이터 500건 이상 수집 권고.]\n\n윤세진: \"그럼 언제 배치하나요?\"\n\n[ORACLE: 재평가 완료 후. 예상 30일 이상.]",
+      left:{ label:"현장 배치를 강행", fx:{ c:0, r:-2, t:1, o:-3 }, g:-4 },
+      right:{ label:"추가 재평가 수용", fx:{ c:0, r:-1, t:-1, o:3 }, g:2 } },
+
     // ── 추모 / 여파 (자료 보존 여부로 분기) ──
     { id:"C-YS-MEMORIAL", act:[3,4], priority:"중", once:true, bg:"lab",
       req:function(s,g,logs){ return dead(logs); },

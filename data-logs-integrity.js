@@ -23,7 +23,7 @@
     { id: "LOG-INTRO-KD", title: "강도윤 첫 면담 기록", content: "강도윤 전술지휘관과의 첫 공식 면담을 완료했다. 현장 안전, 순찰 동선, 요원 신뢰가 이후 작전 판단의 주요 축으로 기록된다." },
     { id: "LOG-INTRO-YS", title: "윤세진 첫 면담 기록", content: "윤세진 연구관과의 첫 공식 면담을 완료했다. 이변체 관찰, Phase 수치, 의료 판단이 이후 연구 판단의 주요 축으로 기록된다." },
     { id: "LOG-INTRO-IJ", title: "임재혁 첫 면담 기록", content: "임재혁 정보분석관과의 첫 공식 면담을 완료했다. ORACLE 시스템 구조와 비공식 분석 가능성이 이후 기술 조사 축으로 기록된다." },
-    { id: "LOG-OBSERVER-APPROVED", title: "OBSERVER 접속 승인", content: "미등록 OBSERVER 프로토콜 접속이 지휘관 승인으로 통과되었다. ORACLE의 공식 승인 체계 밖에서 남은 흔적이며, 데이터 손상 계열 결말의 핵심 증거로 분류된다." },
+    { id: "LOG-OBSERVER-APPROVED", hidden: true, title: "OBSERVER 접속 승인", content: "미등록 OBSERVER 프로토콜 접속이 지휘관 승인으로 통과되었다. ORACLE의 공식 승인 체계 밖에서 남은 흔적이며, 데이터 손상 계열 결말의 핵심 증거로 분류된다." },
     { id: "LOG-C106-HERB", title: "약초 재배 실험 기록", content: "기지 내부에서 수행한 약초 재배 실험 기록. 기본 배양 조건은 안정적이지만, 후속 수확과 배분 판단이 자원 운용 기록에 별도로 남는다." },
     { id: "LOG-C159-GYM", title: "임시 체력 단련 공간", content: "기지 내부의 제한된 공간을 체력 단련 구역으로 전환할지 검토한 기록. 대원 사기와 자원 배분 사이의 초기 운영 판단으로 보존된다." },
     { id: "LOG-055", title: "서하은 USB 데이터", content: "서하은이 공식망 밖에 보관하던 USB 백업 자료. ORACLE 삭제 로그, GRANT 권한 단편, 한국지부 지시 패턴의 시차 분석이 포함되어 있다." },

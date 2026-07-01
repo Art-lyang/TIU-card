@@ -85,7 +85,7 @@ var ARCHIVE_ENTRIES = [
     unlock: function(logs){ return logs.indexOf("LOG-082")>=0 },
     content: "직책: 데이터 분석관\n\n지부 데이터 분석 업무 지원 인원.\n\nORACLE 데이터 스트림 검토와 보고 보조를 담당합니다.\n\n세부 합류 경위와 분석 결과는 현재 인사 색인에서 제한됩니다." },
 
-  { id: "ARC-CHAR-KANG", cat: "인물", title: "미확인 관찰자",
+  { id: "ARC-CHAR-KANG", cat: "인물", title: "미확인 관찰자", hidden: true,
     unlock: function(logs){ return logs.indexOf("LOG-OBSERVER-APPROVED")>=0 },
     content: "정체: 불명\n\n기지 주변 기록에서 간헐적으로 확인되는 미확인 관찰 흔적.\n\n발자국, 단파성 스캔 흔적, 출처 불명의 접속 기록 일부가 서로 같은 항목으로 묶였습니다.\n\n소속과 목적은 확인되지 않았습니다.\n\n경고: [ORACLE은 이 항목을 정식 인물 기록으로 분류하지 않습니다]" },
 
