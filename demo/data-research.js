@@ -154,6 +154,7 @@ function researchNormalize(state) {
 function researchVisible(p, day, act, logs) {
   if (!p) return false;
   logs = logs || [];
+  if (logs.indexOf('LOG-SEJIN-DEAD') >= 0 && (p.char||'').indexOf('윤세진') >= 0) return false;
   if (p.reqLog && logs.indexOf(p.reqLog) < 0) return false;
   if (p.reqLogs) { for (var i = 0; i < p.reqLogs.length; i++) { if (logs.indexOf(p.reqLogs[i]) < 0) return false; } }
   if (typeof p.minDay === 'number' && day < p.minDay) return false;
@@ -190,7 +191,8 @@ function researchStart(state, id, stats, day, act, logs) {
   if (!researchCanStart(nState, p, nStats, day, act, logs)) return { state: nState, stats: nStats, ok: false };
   var ps = researchProjState(nState, id);
   var stage = researchCurrentStage(p, ps);
-  var k; for (k in stage.cost) { if (stage.cost.hasOwnProperty(k)) nStats[k] = Math.max(0, (nStats[k] || 0) - stage.cost[k]); }
+  var _eqMul = ((logs||[]).indexOf('LOG-SEJIN-EQUIP-OK')>=0 && (p.char||'').indexOf('윤세진')>=0) ? 0.6 : 1; // 설비 증설 승인 시 착수 비용 40% 감면(연구 가속)
+  var k; for (k in stage.cost) { if (stage.cost.hasOwnProperty(k)) nStats[k] = Math.max(0, (nStats[k] || 0) - Math.ceil(stage.cost[k]*_eqMul)); }
   ps.active = true; ps.prog = 0;
   nState[id] = ps;
   return { state: nState, stats: nStats, ok: true };

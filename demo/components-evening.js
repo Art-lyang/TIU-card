@@ -50,6 +50,7 @@ function isEveningContactUnavailableByLogs(c,logs){
   if(!c)return true;
   if(c.key==='haeun'&&logs.indexOf('LOG-050')>=0)return true;
   if(c.key==='doyun'&&(logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-074-DONE')>=0))return true;
+  if(c.key==='sejin'&&logs.indexOf('LOG-SEJIN-DEAD')>=0)return true;
   return false;
 }
 function EveningChat(p){
@@ -108,8 +109,10 @@ function EveningChat(p){
     var matches=EVENING_CHATS.filter(function(ec){
       return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)
     }).sort(sortByDay);
+    var urgentMatches=matches.filter(function(ec){return ec.priority==='urgent'});
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
-    if(eventMatches.length>0){chat=eventMatches[0]}
+    if(urgentMatches.length>0){chat=urgentMatches[0]}
+    else if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
     else{
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)}).sort(sortByDay);
@@ -347,8 +350,10 @@ function EveningChat2(p){
     var matches=EVENING_CHATS.filter(function(ec){
       return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)
     }).sort(sortByDay);
+    var urgentMatches=matches.filter(function(ec){return ec.priority==='urgent'});
     var eventMatches=matches.filter(function(ec){return ec.priority==='event'});
-    if(eventMatches.length>0){chat=eventMatches[0]}
+    if(urgentMatches.length>0){chat=urgentMatches[0]}
+    else if(eventMatches.length>0){chat=eventMatches[0]}
     else if(matches.length>0){chat=matches[0]}
     else{
       matches=EVENING_CHATS.filter(function(ec){return ec.char===selChar.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap&&!ecUsed(ec)&&skipIntro(ec)&&evalCond(ec)&&deckCond(ec)}).sort(sortByDay);

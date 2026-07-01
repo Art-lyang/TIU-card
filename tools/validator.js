@@ -385,6 +385,7 @@ try {
 // 생산되는 일반 LOG는 로그 탭/i18n에서 조회될 수 있으므로 정의가 필요하다.
 for (const log of producedLogs) {
   if (internalProgressLogs.has(log)) continue;
+  if (/^LOG-SEJIN-DELAY-/.test(log)) continue; // 윤세진 연구 지연 카운터(순수 내부 플래그, 로그 탭 비노출)
   if (log.startsWith('LOG-') && !definedLogIds.has(log)) {
     issues.undefinedProducedLogs.push({ log });
   }

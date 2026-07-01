@@ -367,6 +367,7 @@ function App(){
       if(d.char==='\uac15\ub3c4\uc724'&&(lg.indexOf('LOG-075')>=0||lg.indexOf('LOG-074-DONE')>=0))return false;
       if(d.logReq&&lg.indexOf(d.logReq)<0)return false;
       if(d.blockLogs&&d.blockLogs.some(function(id){return lg.indexOf(id)>=0}))return false;
+      if(d.char==='윤세진'&&lg.indexOf('LOG-SEJIN-DEAD')>=0)return false; // 윤세진 사망 시 전 대화 차단
       if(d.actReq&&act<d.actReq)return false;
       if(d.trustReq&&!d.trustReq(trust))return false;
       if(d.condFn){try{if(!d.condFn({logs:lg,trust:trust,act:act,stats:stats}))return false}catch(e){}}
@@ -632,7 +633,9 @@ function App(){
     }
     // 연구 콘솔 일자 진행(Q1=B): 하루 마감 시 active 프로젝트 진척/판정. 결과 fx는 raw 적용(온건, Q2=A).
     if(typeof researchAdvanceDay==='function'){
-      var radv=researchAdvanceDay(researchNormalize(research),Math.random);
+      var _rnorm=researchNormalize(research);
+      if((window.__ts_liveLogs||[]).indexOf('LOG-SEJIN-DEAD')>=0 && typeof RESEARCH_PROJECTS!=='undefined'){ RESEARCH_PROJECTS.forEach(function(_pj){ if((_pj.char||'').indexOf('윤세진')>=0 && _rnorm[_pj.id] && _rnorm[_pj.id].active){ _rnorm[_pj.id].active=false; _rnorm[_pj.id].prog=0; } }); }
+      var radv=researchAdvanceDay(_rnorm,Math.random);
       if(radv.effects&&radv.effects.length){
         radv.effects.forEach(function(ef){
           if(ef.fx){next.c=Math.max(0,Math.min(act>=2?100:95,next.c+(ef.fx.c||0)));next.r=Math.max(0,Math.min(95,next.r+(ef.fx.r||0)));next.t=Math.max(0,Math.min(95,next.t+(ef.fx.t||0)));next.o=Math.max(0,Math.min(95,next.o+(ef.fx.o||0)));}

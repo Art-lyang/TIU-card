@@ -2,6 +2,19 @@
 // EVENING_RESPONSES에 병합 (getEveningResponse가 인식 가능한 키 형식)
 
 var _ER_MISSING = {
+  // ═══ 윤세진 연구 지연 불안 (sejin) ═══
+  'sejin_anxiety_1': {
+    a: { label: '무리하지 마. 지원을 늘려볼게.', trust: 2, reply: '…고맙습니다. 조금 숨통이 트이네요.' },
+    b: { label: '지금은 자원이 빠듯해. 버텨줘.', trust: -1, reply: '…네. 제가 어떻게든 해보겠습니다.' }
+  },
+  'sejin_anxiety_2': {
+    a: { label: '장비부터 손보자. 사람이 먼저야.', trust: 2, reply: '…그 말이면 됩니다. 견딜 수 있어요.' },
+    b: { label: '침착해. 감정은 접어두고.', trust: -1, reply: '…알겠습니다. 객관적으로 하겠습니다.' }
+  },
+  'sejin_anxiety_3': {
+    a: { label: '혼자 다 짊어지지 마. 곁에 있을게.', trust: 3, reply: '…네. 그 말, 오래 기억할게요.' },
+    b: { label: '결과만 가져와. 그게 네 일이다.', trust: -2, reply: '…그렇죠. 제 일이죠. 알겠습니다.' }
+  },
   // ═══ 강도윤 (doyun) ═══
   'doyun_2_5-7': {
     a: { label: '필라델피아는 잊지 말자.', trust: 2, reply: '...네. 저도 그렇게 생각합니다.' },

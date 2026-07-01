@@ -3,6 +3,18 @@
 if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
 window.TS_I18N.mergeContent('en', {
   eveningChats: {
+    "sejin_anxiety_1": { lines: ["Commander. …I haven't been sleeping well lately.", "The analysis I keep putting off piles up, and the anomalies don't wait for me.", "Am I being impatient? I just… can't shake the feeling that there's no time."] },
+    "sejin_anxiety_2": { lines: ["The equipment threw another warning. I patched it for now… but I don't know how long it'll hold.", "Honestly, I'm scared. That something will go wrong in my hands.", "If I'd had just a little more support… No. I'll manage somehow."] },
+    "sejin_anxiety_3": { lines: ["…It's fine. I'm fine. I keep telling myself that.", "The samples, the equipment, me — we're all at our limit. But I can't let go, can I.", "If… something happens to me, please keep the data. That's all I ask."] }
+  },
+  eveningResponses: {
+    "sejin_anxiety_1": { a: { label: "Don't overwork yourself. I'll get you more support.", reply: "…Thank you. That's a little breathing room." }, b: { label: "Resources are tight right now. Hold on.", reply: "…Yes. I'll manage somehow." } },
+    "sejin_anxiety_2": { a: { label: "Fix the equipment first. People come first.", reply: "…If you say that, I can hold on." }, b: { label: "Stay calm. Set the emotions aside.", reply: "…Understood. I'll keep it objective." } },
+    "sejin_anxiety_3": { a: { label: "Don't carry it all alone. I'm here.", reply: "…Yes. I'll remember that for a long time." }, b: { label: "Just bring me results. That's your job.", reply: "…Right. My job. Understood." } }
+  }
+});
+window.TS_I18N.mergeContent('en', {
+  eveningChats: {
     "doyun_1_2-5": { lines: ["I just finished the night patrol.", "There was a thermal reaction south of the containment line, but it was a false positive.", "False positives have been increasing lately. I cannot tell whether it is the equipment or the environment."] },
     "doyun_1_3-5": { lines: ["Back in special forces, I only had to follow orders.", "Here is different. The enemy's shape is different, and so are the rules.", "...Still getting a read on it. It'll take time to get used to."] },
     "doyun_1_4-5": { lines: ["There was something strange outside the containment line.", "There were marks on a tree. Not made by a person.", "Maybe an anomaly marking territory... I should ask Se-jin."] },
