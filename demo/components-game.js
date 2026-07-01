@@ -736,6 +736,7 @@ function CardC(p){
   var specImgMap={'spec-001':IMG.spec_001_mannequin,'spec-003':IMG.spec_003_brood,'spec-004':IMG.spec_004_seedspreader,'spec-008':IMG.spec_008_spore,'spec-011':IMG.spec_011_shelltalker,'spec-012':IMG.spec_012_bloodpit,'spec-015':IMG.spec_015_brainseeker};
   var bgImgMap={base:IMG.bg_base,default:IMG.bg_base,forest:IMG.bg_forest,forest2:IMG.bg_forest2,lab:IMG.bg_lab,research:IMG.bg_lab,oracle:IMG.bg_oracle,comms:IMG.bg_comms,restricted:IMG.bg_restricted,shield_off:IMG.bg_shield_off,shield_on:IMG.bg_shield_on,supply:IMG.bg_supply,weather:IMG.bg_weather,command:IMG.bg_command,corridor:IMG.bg_corridor,seoul:IMG.bg_seoul_a,seoul_a:IMG.bg_seoul_a,seoul_b:IMG.bg_seoul_b,bg_command:IMG.bg_command,bg_seoul_a:IMG.bg_seoul_a,bg_seoul_b:IMG.bg_seoul_b};
   var specBg=card.img?IMG[card.img]:card.tag&&specImgMap[card.tag]?specImgMap[card.tag]:null;
+  var bgFeature=!!specBg; // 전용 아트(card.img/tag)면 더 뚜렷하게, 일반 bg 앰비언트는 은은하게
   if(!specBg&&card.bg&&bgImgMap[card.bg])specBg=bgImgMap[card.bg];
   var SN={c:tt('stats.c',null,'봉쇄'),r:tt('stats.r',null,'자원'),t:tt('stats.t',null,'신뢰'),o:tt('stats.o',null,'평가')};
   var fxHint=function(fx){if(!fx)return null;var tags=[];['c','r','t','o'].forEach(function(k){var v=(fx[k]||0);var abs=Math.abs(v);if(v>0)tags.push(h('span',{key:k,style:{color:'var(--ui)',display:'inline-flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}},SN[k]+(abs>=2?'↑↑':'↑')));if(v<0)tags.push(h('span',{key:k,style:{color:'rgba(255,141,97,.9)',display:'inline-flex',alignItems:'center',gap:2,whiteSpace:'nowrap'}},SN[k]+(abs>=2?'↓↓':'↓')))});return tags.length?tags:null};
@@ -778,7 +779,7 @@ function CardC(p){
       h('span',{className:'card-corner-node card-corner-node--tr','aria-hidden':true}),
       h('span',{className:'card-corner-node card-corner-node--bl','aria-hidden':true}),
       h('span',{className:'card-corner-node card-corner-node--br','aria-hidden':true}),
-      specBg?h('div',{className:'card-img-bg',style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
+      specBg?h('div',{className:'card-img-bg'+(bgFeature?' is-feature':''),style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
       glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease 3'}},'SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
       timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},

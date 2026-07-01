@@ -134,6 +134,11 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .act-2 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.3) brightness(0.7)}
 .act-3 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.4) brightness(0.6)}
 .act-4 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.5) brightness(0.5)}
+.card-img-bg.is-feature{opacity:0.34}
+.act-1 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.5) brightness(0.82)}
+.act-2 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.45) brightness(0.82)}
+.act-3 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.55) brightness(0.74)}
+.act-4 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.65) brightness(0.68)}
 /* 전용 이미지 없는 카드의 기본 워터마크 (B안): 옅은 감시 그리드 + 오른쪽 아래 ORACLE 마크. 새 에셋 없이 기존 로고 재활용, Act 색으로 틴트. */
 .card-default-wm{position:absolute;inset:8px 10px;border-radius:var(--r-sm);pointer-events:none;z-index:0;overflow:hidden;
   background-image:repeating-linear-gradient(0deg,transparent 0 23px,rgba(var(--ui-rgb),.045) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(var(--ui-rgb),.045) 23px 24px);
