@@ -3,7 +3,7 @@
   "M-007": {
     id: "M-007", title: "결정적 타격",
     codename: "DECISIVE STRIKE", threat: "HIGH",
-    hero: "assets/images/missions/mission_m007_decisive_strike_clean.webp",
+    hero: "assets/images/missions/mission_m007_decisive_strike_clean.webp?v=2",
     intel: { grid: "37.5247 N, 129.1142 E", depth: "SURFACE / 3 BLOCKS", env: "INDUSTRIAL RUINS" },
     report: [
       { label: "거점 위치", value: "CONFIRMED — 강원 동해안 폐산업단지", level: "danger" },
@@ -75,7 +75,7 @@
   "M-008": {
     id: "M-008", title: "관측중지",
     codename: "OBSERVATION STOP", threat: "DANGER",
-    hero: "assets/images/missions/mission_m008_observation_stop_clean.webp",
+    hero: "assets/images/missions/mission_m008_observation_stop_clean.webp?v=2",
     intel: { grid: "37.4663 N, 127.0419 E", depth: "SURFACE / -0.4 m", env: "TEMPORAL ANOMALY" },
     report: [
       { label: "현상 분류", value: "OBSERVER ANOMALY — NON EV-Σ", level: "danger" },
