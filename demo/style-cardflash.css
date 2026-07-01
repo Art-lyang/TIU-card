@@ -1,0 +1,37 @@
+/* style-cardflash.css — 서사 정점 카드 이미지 플래시 연출 (opt-in: card.flashImg)
+   원칙: 논블로킹(탭 즉시 스킵), fxMode 존중(full/reduced/off), 카드당 1회.
+   .card-flash 는 .card-panel 의 형제 레이어(스와이프 트랜스폼 영향 없음). */
+.card-flash{
+  position:absolute; inset:0; z-index:60;
+  display:flex; align-items:center; justify-content:center;
+  pointer-events:auto;                 /* 탭 스킵용 */
+  background:rgba(3,7,8,.28);           /* 완전 블랙아웃 금지 — 논블로킹 인상 */
+  animation:cardFlashBgIn .18s ease both;
+  cursor:pointer;
+}
+.card-flash-img{
+  width:min(62%,320px); aspect-ratio:4/3;
+  background-size:cover; background-position:center;
+  border:1px solid rgba(var(--ui-rgb),.5);
+  box-shadow:0 0 40px rgba(0,0,0,.6), 0 0 18px rgba(var(--ui-rgb),.18);
+  animation:cardFlashIn .35s cubic-bezier(.2,.8,.2,1) both,
+            cardFlashOut .5s ease 1.7s both;   /* full: 홀드 후 디졸브 */
+}
+@keyframes cardFlashIn{
+  from{ opacity:0; transform:scale(.94); filter:brightness(1.6) blur(2px); }
+  to  { opacity:1; transform:scale(1);   filter:none; }
+}
+@keyframes cardFlashOut{ from{opacity:1;} to{opacity:0;} }
+@keyframes cardFlashBgIn{ from{opacity:0;} to{opacity:1;} }
+
+/* reduced: 글리치/스케일 제거, 단순 페이드, 홀드 짧게 */
+.card-flash--reduced .card-flash-img{
+  filter:none;
+  animation:cardFlashIn .2s ease both, cardFlashOut .4s ease 1.2s both;
+}
+
+/* off는 컴포넌트 미마운트가 1차, CSS 이중 안전망 */
+.fx-off .card-flash{ display:none; }
+@media (prefers-reduced-motion: reduce){
+  .card-flash-img{ animation:cardFlashIn .01s linear both, cardFlashOut .3s ease 1.2s both; }
+}

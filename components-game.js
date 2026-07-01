@@ -619,6 +619,17 @@ function CardC(p){
   var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null),choiceCueTimer=useRef(null);
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
   var s7=useState(timerTotal),remaining=s7[0],setRemaining=s7[1];
+  // ── 이미지 플래시 연출 (opt-in card.flashImg · fxMode 존중 · 카드당 1회) ──
+  var _fxMode=(typeof Save!=='undefined'&&Save.get)?Save.get('ts_fxMode','full'):'full';
+  var flashSrc=(card.flashImg&&typeof IMG!=='undefined'&&IMG[card.flashImg])?IMG[card.flashImg]:null;
+  var sfl=useState(false),flashOn=sfl[0],setFlashOn=sfl[1];var flashTimer=useRef(null);
+  var dismissFlash=function(){if(flashTimer.current){clearTimeout(flashTimer.current);flashTimer.current=null;}setFlashOn(false);};
+  useEffect(function(){
+    if(!flashSrc||_fxMode==='off')return;
+    setFlashOn(true);
+    flashTimer.current=setTimeout(function(){setFlashOn(false);flashTimer.current=null;},_fxMode==='reduced'?1600:2200);
+    return function(){if(flashTimer.current){clearTimeout(flashTimer.current);flashTimer.current=null;}};
+  },[]);
   var clearHoldPreview=function(){
     if(holdPreviewTimer.current){clearTimeout(holdPreviewTimer.current);holdPreviewTimer.current=null}
   };
@@ -750,6 +761,7 @@ function CardC(p){
   var leftTrace=choiceTrace('left'),rightTrace=choiceTrace('right');
   var cueClass=(choiceCue==='left'?' is-cue-left':choiceCue==='right'?' is-cue-right':'')+(chosen==='left'?' is-commit-left':chosen==='right'?' is-commit-right':'');
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
+    (flashOn&&flashSrc)?h('div',{className:'card-flash'+(_fxMode==='reduced'?' card-flash--reduced':''),onClick:dismissFlash},h('div',{className:'card-flash-img',style:{backgroundImage:'url('+flashSrc+')'}})):null,
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
     h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass+(entering?' is-entering':''),style:{transform:shaking?'none':'translateX('+tx+'px) rotate('+(tx*0.04)+'deg)'+(chosen?' scale(0.85)':''),animation:shaking?'oracleShake 0.6s ease':undefined,transition:dragging||shaking?'none':'transform 0.35s ease, opacity 0.25s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
