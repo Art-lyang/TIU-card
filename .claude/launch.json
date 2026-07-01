@@ -3,9 +3,12 @@
   "configurations": [
     {
       "name": "game",
+      "autoPort": true,
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8080"],
-      "port": 8080
+      "runtimeArgs": [
+        "-c",
+        "import os,http.server,socketserver;socketserver.TCPServer.allow_reuse_address=True;port=int(os.environ.get('PORT','8080'));socketserver.TCPServer(('',port),http.server.SimpleHTTPRequestHandler).serve_forever()"
+      ]
     }
   ]
 }
