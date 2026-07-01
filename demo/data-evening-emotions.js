@@ -55,7 +55,7 @@
     'doyun_axis_anchor':'anger','doyun_2_11-14':'focus','doyun_3_22-28':'pain','doyun_4_29-99':'pain','doyun_3_15-21':'focus',
     'haeun_1_1-4':'suspicion','haeun_2_11-14':'suspicion','haeun_3_15-21':'suspicion','haeun_4_34-35':'betrayal','haeun_g4_3':'resolve',
     'sejin_anxiety_1':'dread','sejin_anxiety_2':'dread','sejin_anxiety_3':'dread','sejin_1_2-4':'concern','sejin_2_5-7':'dread','sejin_3_22-28':'dread','sejin_3b_17-23':'dread','sejin_4b_33':'concern','sejin_g4_3':'hope',
-    'jaehyuk_2_5-99':'focus','jaehyuk_2a_8-12':'focus','jaehyuk_3a_14-17':'alarm','jaehyuk_3a_18-23':'guilt','jaehyuk_4a_29-30':'guilt','jaehyuk_g3_1':'alarm','jaehyuk_g4_1':'alarm',
+    'jaehyuk_2_5-99':'focus','jaehyuk_2a_8-12':'focus','jaehyuk_3a_14-17':'alarm','jaehyuk_3a_18-23':'guilt','jaehyuk_4a_29-30':'guilt','jaehyuk_g3_1':'alarm','jaehyuk_g4_1':'alarm','ij_break_1':'guilt','ij_break_2':'guilt','ij_break_3':'alarm',
     'soyoung_4c_29-30':'loyalty','soyoung_4c_31-33':'exposed','soyoung_4c_34-35':'loyalty'
   };
 

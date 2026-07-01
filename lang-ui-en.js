@@ -336,7 +336,7 @@ window.TS_I18N.mergeUI('en', {
       special:{
         haeunStay:'Staying Behind', haeunRecover:'Data Recovery In Progress',
         doyunAlive:'Alive', doyunWounded:'Critical Wound', doyunMinorWound:'Minor Wound',
-        sejinDead:'Vital Signs Off', sejinResearch:'Research Active', sejinAnalysis:'Analyzing', sejinLight:'Weakness Found', jaehyeokJoint:'Joint Study',
+        jaehyukDefect:'ORACLE-Aligned', sejinDead:'Vital Signs Off', sejinResearch:'Research Active', sejinAnalysis:'Analyzing', sejinLight:'Weakness Found', jaehyeokJoint:'Joint Study',
         jaehyeokTech:'Technical Analysis', weberContact:'Contact Established', fosterInfo:'Intel Provided',
         soyoungExposed:'Identity Exposed', soyoungJoined:'Joined'
       }

@@ -66,6 +66,7 @@ var CHAR_STATUS_TAGS={
 var getCharTags=function(charName,charKey,trust,logs){
   var result=[];
   if(charName==='윤세진'&&logs&&logs.indexOf('LOG-SEJIN-DEAD')>=0){ return [{label:tsTag('statusTags.character.special.sejinDead','바이탈 OFF'),cls:'ctag-danger'}]; }
+  if(charName==='임재혁'&&logs&&logs.indexOf('LOG-IJ-DEFECT')>=0){ return [{label:tsTag('statusTags.character.special.jaehyukDefect','ORACLE 동조'),cls:'ctag-danger'}]; }
   var specials=CHAR_STATUS_TAGS.special;
   for(var i=0;i<specials.length;i++){
     if(specials[i].char===charName&&logs.indexOf(specials[i].log)>=0){

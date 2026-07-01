@@ -23,32 +23,32 @@
 
     // ── 사후 변이본 6종 (원본과 동일 req + 사망 조건) ──
     { id:"C-031-D", act:[2,3], priority:"중", once:true,
-      req:function(s,g,logs){ return s.day>=6 && logs.indexOf("LOG-004")>=0; }, cond:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return s.day>=6 && logs.indexOf("LOG-004")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:"임재혁이 윤세진의 관측 일지를 넘겨봅니다.\n\n\"Shell Talker 활동 반경 40% 확대 — 여기까지가 그녀가 기록한 마지막 패턴입니다.\"\n\n\"이변체는 계속 움직이는데, 읽어낼 사람이 없습니다.\"",
       left:{ label:"유작 데이터로 대응선 유지", fx:{ c:1, r:0, t:1, o:0 }, g:0 },
       right:{ label:"ORACLE 자동 분석에 맡긴다", fx:{ c:0, r:0, t:0, o:1 }, g:1 } },
     { id:"C-062-D", act:[3,4], priority:"중", once:true,
-      req:function(s,g,logs){ return s.day>=6 && logs.indexOf("LOG-009")>=0; }, cond:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return s.day>=6 && logs.indexOf("LOG-009")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:"블랙존 경계 확대 보고가 다시 올라왔습니다.\n\n\"'EV-Σ는 이렇게 움직이지 않는다.' 윤세진이 남긴 메모입니다.\"\n\n임재혁: \"그녀라면 답을 찾았을 겁니다. 우린 아직 못 찾았습니다.\"",
       left:{ label:"메모를 근거로 재분석 시도", fx:{ c:0, r:-1, t:1, o:0 }, g:-1 },
       right:{ label:"본부 판단을 따른다", fx:{ c:0, r:0, t:0, o:1 }, g:1 } },
     { id:"C-064-D", act:[3], priority:"중", once:true,
-      req:function(s,g,logs){ return logs.indexOf("LOG-005")>=0; }, cond:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return logs.indexOf("LOG-005")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:"윤세진의 연구실은 봉인됐습니다. 임재혁이 그녀가 남긴 Blood Pit 분석 노트를 정리합니다.\n\n\"…여기까지가 그녀가 본 전부입니다. 이어받을 사람이 없습니다.\"",
       left:{ label:"유작 데이터 보존", fx:{ c:0, r:0, t:1, o:0 }, g:-1 },
       right:{ label:"연구 종결 처리", fx:{ c:0, r:0, t:0, o:1 }, g:1 } },
     { id:"C-065-D", act:[3], priority:"중", once:true,
-      req:function(s,g,logs){ return logs.indexOf("LOG-004")>=0; }, cond:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return logs.indexOf("LOG-004")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:"윤세진이 만들던 음성 감별 알고리즘은 미완성으로 남았습니다.\n\n임재혁: \"절반은 돌아갑니다. 나머지는… 그녀 머릿속에 있었어요.\"",
       left:{ label:"미완 알고리즘이라도 배치", fx:{ c:1, r:0, t:0, o:0 }, g:0 },
       right:{ label:"오탐 위험 — 보류", fx:{ c:0, r:0, t:0, o:1 }, g:0 } },
     { id:"C-067-D", act:[3,4], priority:"상", once:true,
-      req:function(s,g,logs){ return logs.indexOf("LOG-005")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf("LOG-017")<0; },
+      req:function(s,g,logs){ return logs.indexOf("LOG-005")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0 && logs.indexOf("LOG-017")<0; },
       msg:"억제제 시제품은 마지막 임상 직전에서 멈췄습니다.\n\n임재혁: \"윤세진의 데이터가 없으면 여기서 더 못 갑니다. Phase 0에서 사람을 구할 수 있었는데.\"",
       left:{ label:"남은 자료로 임상 강행", fx:{ c:0, r:-2, t:-1, o:-1 }, g:-2, log:"LOG-017" },
       right:{ label:"연구 동결", fx:{ c:0, r:0, t:0, o:1 }, g:0 } },
     { id:"C-087-D", act:[4], priority:"상", once:true,
-      req:function(s,g,logs){ return g<=30 && logs.indexOf("LOG-003")>=0; }, cond:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return g<=30 && logs.indexOf("LOG-003")>=0; }, cond:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:"프로메테우스 억제 약물 자료가 다시 확인됐습니다.\n\n\"윤세진이라면 우리 연구와 합쳤을 겁니다.\" 임재혁이 말끝을 흐립니다.\n\n\"이제 합칠 연구가 없습니다.\"",
       left:{ label:"자료만이라도 보관", fx:{ c:0, r:0, t:0, o:-1 }, g:-2 },
       right:{ label:"ORACLE에 보고", fx:{ c:0, r:0, t:-1, o:2 }, g:2 } },
@@ -77,7 +77,7 @@
 
     // ── 추모 / 여파 (자료 보존 여부로 분기) ──
     { id:"C-YS-MEMORIAL", act:[3,4], priority:"중", once:true, bg:"lab",
-      req:function(s,g,logs){ return dead(logs); },
+      req:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:function(){ try{ var L=(typeof window!=='undefined'&&window.__ts_liveLogs)||[];
         if(L.indexOf('LOG-SEJIN-DATA-SAVED')>=0)
           return "봉인된 연구실 앞. 임재혁이 윤세진의 마지막 저장 드라이브를 지휘관에게 건넵니다.\n\n\"…그녀가 끝까지 지킨 자료입니다. 언젠가 이걸 이어받을 사람이 오겠죠.\"\n\n연구실 문에는 그녀의 이름표가 그대로 남아 있습니다.";

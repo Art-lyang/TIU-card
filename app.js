@@ -368,6 +368,7 @@ function App(){
       if(d.logReq&&lg.indexOf(d.logReq)<0)return false;
       if(d.blockLogs&&d.blockLogs.some(function(id){return lg.indexOf(id)>=0}))return false;
       if(d.char==='윤세진'&&lg.indexOf('LOG-SEJIN-DEAD')>=0)return false; // 윤세진 사망 시 전 대화 차단
+      if(d.char==='임재혁'&&lg.indexOf('LOG-IJ-DEFECT')>=0)return false; // 임재혁 전향 시 전 대화 차단
       if(d.actReq&&act<d.actReq)return false;
       if(d.trustReq&&!d.trustReq(trust))return false;
       if(d.condFn){try{if(!d.condFn({logs:lg,trust:trust,act:act,stats:stats}))return false}catch(e){}}

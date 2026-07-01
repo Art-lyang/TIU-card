@@ -416,4 +416,16 @@ window.TS_I18N.mergeContent('en', {
     }
   }
 });
+window.TS_I18N.mergeContent('en', {
+  eveningChats: {
+    "ij_break_1": { lines: ["When someone drops out, the workload gets redistributed to whoever's left. On paper, that's how you handle it.","...But the math won't close. Why it had to be that person — that part keeps hanging there.","I went back through the ORACLE logs. At the moment of that decision, ORACLE was recommending a different path."] },
+    "ij_break_2": { lines: ["Another seat is empty.","Strange, isn't it. The containment line, the resources — they all move within ORACLE's predicted range. It's always the people who waver.","Lately I'm most at ease in front of the ORACLE console. That thing, at least, doesn't suddenly vanish on you."] },
+    "ij_break_3": { lines: ["Every night I run those decisions back. What ORACLE recommended at each point, and what you chose.","...I can see a pattern. At every point things went wrong, a person intervened.","Don't misunderstand — it isn't an accusation. It's just… what the data is saying."] }
+  },
+  eveningResponses: {
+    "ij_break_1": { a: { label: "ORACLE isn't always right.", reply: "…I know. I do. But I keep thinking — if we'd followed it, would they still be here." }, b: { label: "It's not your fault.", reply: "I never said it was. I just… want to know where it first went wrong." } },
+    "ij_break_2": { a: { label: "People aren't systems.", reply: "I know. People can't be predicted. That's… honestly what scares me." }, b: { label: "This must be hard on you too.", reply: "I'm fine. I have to be. I'm the only one left who can read the systems." } },
+    "ij_break_3": { a: { label: "That's hindsight.", reply: "It is. But ORACLE sees the outcome first. That's the difference from people." }, b: { label: "What are you trying to say?", reply: "…I haven't sorted it out yet. When I have, I'll tell you." } }
+  }
+});
 })();

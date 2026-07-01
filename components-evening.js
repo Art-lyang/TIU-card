@@ -51,6 +51,7 @@ function isEveningContactUnavailableByLogs(c,logs){
   if(c.key==='haeun'&&logs.indexOf('LOG-050')>=0)return true;
   if(c.key==='doyun'&&(logs.indexOf('LOG-075')>=0||logs.indexOf('LOG-074-DONE')>=0))return true;
   if(c.key==='sejin'&&logs.indexOf('LOG-SEJIN-DEAD')>=0)return true;
+  if(c.key==='jaehyuk'&&logs.indexOf('LOG-IJ-DEFECT')>=0)return true;
   return false;
 }
 function EveningChat(p){
