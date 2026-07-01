@@ -301,6 +301,7 @@ var CCTV_CLIPS={
   blood_pit:     {img:'assets/images/missions/mission_m001_blood_pit_clean.webp',            cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
   shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_cctv.webp?v=1',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
   shell_gate:    {img:'assets/images/missions/mission_m002_shell_talker_cctv_med.webp?v=1',pos:'50% 30%',         cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
+  shell_clean:   {img:'assets/images/missions/mission_m002_shell_talker_clean.webp?v=1',        cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
   mannequin:     {img:'assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg', cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
   brood_drone:   {img:'assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg',cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
   spore_phantom: {img:'assets/images/missions/mission_m006_spore_phantom_clean.webp',        cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
