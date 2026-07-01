@@ -7,7 +7,7 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": [
         "-c",
-        "import os,http.server,socketserver;socketserver.TCPServer.allow_reuse_address=True;port=int(os.environ.get('PORT','8080'));socketserver.TCPServer(('',port),http.server.SimpleHTTPRequestHandler).serve_forever()"
+        "import os,http.server;http.server.ThreadingHTTPServer.allow_reuse_address=True;port=int(os.environ.get('PORT','8080'));http.server.ThreadingHTTPServer(('',port),http.server.SimpleHTTPRequestHandler).serve_forever()"
       ]
     }
   ]
