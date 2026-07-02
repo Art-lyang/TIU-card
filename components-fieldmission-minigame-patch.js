@@ -386,7 +386,7 @@ function FieldMission(p){
 
   var body=isStart
     ? h('div',{className:'fm-brief-wrap'},
-        fmHero(),
+        (node&&node.scene&&typeof TacticalFeed!=='undefined')?h(TacticalFeed,{scene:node.scene,risk:(typeof tacticalMaxRisk==='function')?tacticalMaxRisk(node):'',fxOff:fxOff}):fmHero(),
         h('div',{className:'fm-panels'},
           h('div',{className:'fm-panel fm-panel--brief'+(briefOpen?'':' is-collapsed')},
             h('button',{className:'fm-panel-h fm-panel-toggle',onClick:function(){setBriefOpen(function(v){return !v})}},h('span',{className:'fm-panel-chev'},briefOpen?'▾':'▸'),'▤ BRIEFING'),

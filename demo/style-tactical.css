@@ -1,0 +1,33 @@
+/* style-tactical.css — 현장임무 관제 피드 (TacticalFeed, 파일럿 M-007)
+   좌표 보간: .tf-agent/.tf-civ/.tf-hostile 의 left/top transition(1.8s)이 이동 애니메이션.
+   튜닝 지점: 이동 속도=transition, 높이=.tacfeed height, 전투 펄스=tfCombat. */
+.tacfeed{position:relative;width:100%;height:148px;margin-bottom:10px;overflow:hidden;border:1px solid rgba(var(--ui-rgb),.35);background:#04090b;border-radius:var(--r-sm)}
+.tf-map{position:absolute;inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0 21px,rgba(var(--ui-rgb),.07) 21px 22px),repeating-linear-gradient(90deg,transparent 0 21px,rgba(var(--ui-rgb),.07) 21px 22px)}
+.tf-scan{position:absolute;left:0;right:0;height:34px;top:-34px;background:linear-gradient(180deg,transparent,rgba(var(--ui-rgb),.10));animation:tfScan 3.4s linear infinite;pointer-events:none}
+.tf-target{position:absolute;transform:translate(-50%,-50%);color:rgba(var(--ui-rgb),.9);font-size:12px;text-shadow:0 0 8px rgba(var(--ui-rgb),.5)}
+.tf-target::after{content:"";position:absolute;left:50%;top:50%;width:30px;height:30px;margin:-15px 0 0 -15px;border:1px dashed rgba(var(--ui-rgb),.4);border-radius:50%;animation:tfSpin 7s linear infinite}
+.tf-agent{position:absolute;width:6px;height:6px;margin:-3px 0 0 -3px;border-radius:50%;background:var(--ui);box-shadow:0 0 7px var(--ui-glow);
+  transition:left 1.8s cubic-bezier(.4,.1,.3,1),top 1.8s cubic-bezier(.4,.1,.3,1)}
+.tf-civ{position:absolute;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;background:rgba(255,255,255,.72);box-shadow:0 0 4px rgba(255,255,255,.4);
+  transition:left 1.8s ease,top 1.8s ease}
+.tf-hostile{position:absolute;transform:translate(-50%,-50%);color:#ff5a48;font-size:12px;text-shadow:0 0 7px rgba(255,68,68,.6);animation:tfBlink .9s steps(2) infinite;
+  transition:left 1.8s ease,top 1.8s ease}
+.tf-head{position:absolute;left:8px;top:6px;right:8px;display:flex;justify-content:space-between;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1.6px;color:rgba(var(--ui-rgb),.85);pointer-events:none}
+.tf-live{color:#ff5a48;animation:tfBlink 1.2s steps(2) infinite}
+.tf-status{position:absolute;left:0;right:0;bottom:0;display:flex;gap:12px;align-items:center;padding:4px 8px;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(var(--ui-rgb),.8);background:linear-gradient(0deg,rgba(3,7,8,.85),transparent)}
+.tf-vital{color:var(--ui);animation:tfPulse 1.6s ease-in-out infinite}
+.tf-status.is-high .tf-vital{color:#f0a030;animation-duration:1s}
+.tf-status.is-vhigh .tf-vital{color:#ff4444;animation-duration:.55s}
+.tf-status.is-high .tf-risk{color:#f0a030}
+.tf-status.is-vhigh .tf-risk{color:#ff4444}
+.tacfeed--combat{border-color:rgba(255,68,68,.55);animation:tfCombat 1s steps(2) infinite}
+.tacfeed--retreat .tf-agent{box-shadow:0 0 5px rgba(var(--ui-rgb),.35)}
+@keyframes tfScan{to{top:100%}}
+@keyframes tfSpin{to{transform:rotate(360deg)}}
+@keyframes tfBlink{50%{opacity:.3}}
+@keyframes tfPulse{0%,100%{opacity:1}50%{opacity:.45}}
+@keyframes tfCombat{50%{box-shadow:0 0 18px rgba(255,68,68,.22) inset}}
+/* fm-no-anim(화면효과 축소/끔)일 때 모션 정지 — 위치는 즉시 스냅 */
+.fm-no-anim .tf-scan,.fm-no-anim .tf-live,.fm-no-anim .tf-vital,.fm-no-anim .tf-hostile,.fm-no-anim .tf-target::after,.tacfeed.fm-no-anim{animation:none}
+.fm-no-anim .tf-agent,.fm-no-anim .tf-civ,.fm-no-anim .tf-hostile{transition:none}
