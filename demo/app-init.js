@@ -487,12 +487,12 @@ var Save={
       seenArchive:Save.get('ts_seenArchive',[]),
       facility:Save.get('ts_facility',null),
       research:Save.get('ts_research',null),
-      combos:Save.get('ts_combos',[]),
-      evidenceUsed:Save.get('ts_evidence_used',[]),
+      combos:arrOr(Save.get('ts_combos',[]),[]),
+      evidenceUsed:arrOr(Save.get('ts_evidence_used',[]),[]),
       resourceReserveUsed:Save.get('ts_resourceReserveUsed',false)===true,
-      onceShown:Save.get('ts_onceShown',[]),
-      recentNews:Save.get('ts_recentNews',[]),
-      recentRewards:Save.get('ts_recentRewards',[]),
+      onceShown:arrOr(Save.get('ts_onceShown',[]),[]),
+      recentNews:arrOr(Save.get('ts_recentNews',[]),[]),
+      recentRewards:arrOr(Save.get('ts_recentRewards',[]),[]),
       activeSpecs:(typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(Save.get('ts_activeSpecs',ACTIVE_SPECS||[])):Save.get('ts_activeSpecs',null)),
       sessionDeck:Save.get('ts_sessionDeck',null)||((typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null),
       currentCardId:curCardId,
@@ -542,7 +542,7 @@ var Save={
     return pack;
   },
   // ═══ 업적 ═══
-  getAchievements:function(){return Save.get('ts_achievements',[])},
+  getAchievements:function(){return arrOr(Save.get('ts_achievements',[]),[])},
   saveAchievements:function(ids){Save.set('ts_achievements',ids)}
 };
 
