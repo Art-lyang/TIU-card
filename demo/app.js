@@ -85,7 +85,7 @@ function App(){
   // freshCardRef: 아직 스와이프되지 않은 "다음 카드"가 curCard에 준비돼 있음을 표시.
   // 대화(랜덤/강제)가 끝나도 카드를 다시 뽑지 않고 이 버퍼 카드를 그대로 노출 → 연계 흐름 보존.
   var freshCardRef=useRef(false);
-  var DEV=(function(){try{return /[?&]dev\b/.test(location.search)}catch(e){return false}})();
+  var DEV=(function(){try{if(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)return false;return /[?&]dev\b/.test(location.search)}catch(e){return false}})(); // 설치형(TWA/PWA)에선 딥링크로 ?dev 가 들어와도 차단 — 개발용은 브라우저 탭에서만
   var _tr=useState({haeun:50,doyun:50,sejin:50,jaehyuk:50,weber:20,foster:15,soyoung:40}),trust=_tr[0],setTrust=_tr[1];
   var _cq=useState([]),chainQueue=_cq[0],setChainQueue=_cq[1];
   var _cd=useState({}),cooldowns=_cd[0],setCooldowns=_cd[1];
