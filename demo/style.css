@@ -1343,3 +1343,18 @@ b.fm-rk--info{color:#caa14a}
 .vw-cat-cell-name{font-size:12.5px;font-weight:700;color:var(--ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .vw-cat-cell.is-empty .vw-cat-cell-name{color:rgba(var(--ui-rgb),.35);font-weight:400}
 .vw-cat-cell-meta{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:9.5px;color:rgba(var(--ui-rgb),.5)}
+
+/* ── 아카이브 아트 레이어: 카테고리 셀 배경 아트 + 목록/상세 배너 ── */
+.vw-cat-cell{position:relative;overflow:hidden;min-height:66px}
+.vw-cat-cell-art{position:absolute;inset:0;background-size:cover;background-position:center 28%;filter:grayscale(.85) brightness(.55);opacity:.5;transition:opacity .15s ease,filter .15s ease}
+.vw-cat-cell::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,10,.1),rgba(3,8,10,.78));pointer-events:none}
+.vw-cat-cell:hover .vw-cat-cell-art{opacity:.68;filter:grayscale(.5) brightness(.65)}
+.vw-cat-cell-name,.vw-cat-cell-meta{position:relative;z-index:1}
+.vw-cat-cell-name{text-shadow:0 1px 5px rgba(0,0,0,.85)}
+.vw-cat-cell.is-empty .vw-cat-cell-art{opacity:.14}
+.vw-banner{position:relative;height:88px;border:1px solid rgba(var(--ui-rgb),.22);border-radius:var(--r-sm);margin:0 0 11px;overflow:hidden;display:flex;align-items:flex-end}
+.vw-banner-img{position:absolute;inset:0;background-size:cover;background-position:center 28%;filter:grayscale(.6) brightness(.7)}
+.vw-banner::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,8,10,.05),rgba(3,8,10,.72))}
+.vw-banner-t{position:relative;z-index:1;font-size:15px;font-weight:700;color:#f3efe6;padding:8px 12px;letter-spacing:.5px;text-shadow:0 1px 6px rgba(0,0,0,.9)}
+.vw-banner--detail{height:126px}
+/* fx-off: 아트 레이어 유지(정적 이미지라 성능 무해) — 별도 게이트 불필요 */
