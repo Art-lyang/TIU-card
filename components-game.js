@@ -257,7 +257,14 @@ function MainMenu(p){
         IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
         h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
         // ORACLE 관측 밀도 그리드 — 세이브 day+세션 시드, 엔딩 F/G 보유 시 옵저버 역상 레이어
-        typeof ObservationGrid!=='undefined'&&h(ObservationGrid,{seed:(function(){try{var g=Save.get('ts_game',null);return ((g&&g.day)||1)*97+(p.sessions||0)*13+1}catch(e){return 1}})(),observer:(function(){try{var e=Save.getEndings();return e.indexOf('F')>=0||e.indexOf('G')>=0}catch(x){return false}})()}),
+        typeof ObservationGrid!=='undefined'&&(function(){
+          // 데이터 부식 노출도: 세션·엔딩이 쌓일수록 배너에 관측 그래프가 글리치로 드러난다 (첫 플레이 0 = 원본 배너)
+          var _end=[];try{_end=Save.getEndings()}catch(e){}
+          var _int=Math.min(1,(p.sessions||0)*0.15+_end.length*0.12);
+          if(_int<=0)return null;
+          var _g=null;try{_g=Save.get('ts_game',null)}catch(e){}
+          return h(ObservationGrid,{seed:(((_g&&_g.day)||1)*97+(p.sessions||0)*13+1),intensity:_int,observer:_end.indexOf('F')>=0||_end.indexOf('G')>=0});
+        })(),
         h('div',{className:'main-terminal-feed-hud main-terminal-feed-top'},
           h('span',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY')),
           h('span',null,tt('menu.securityLabel',null,'SECURITY LEVEL:'),' ',h('strong',null,tt('menu.securityOrange',null,'ORANGE')))),
