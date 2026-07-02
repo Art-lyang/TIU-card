@@ -1,7 +1,7 @@
 /* style-daycut.css — DAY 전환 컷 v3 (전국→강원 동해안 기지 줌인 + 상황 마커)
    day+1 시 게임 화면 위 ~2.8s, 표시 전용/탭 스킵.
-   지도 기하: korea-sk.png(1920x2880)에서 기지(37.52N 129.11E)=이미지 (82.5%,21%).
-   최종 프레임 background-size:200% / position:99% 13% → 기지가 박스 (66%,40%)에 위치.
+   지도 기하: 기지 = 좌상단 미니맵 핀과 동일 좌표(이미지 71.9%,23.0% — km-wrap 역산).
+   최종 프레임 background-size:200% / position:89% 15% → 기지가 박스 (55%,43%)에 위치.
    튜닝 지점: 홀드=dcOut delay(2.35s)+app.js 타이머(2800ms), 줌 속도=dcZoom(1.25s). */
 .daycut{position:fixed;inset:0;z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;
   background:rgba(3,7,8,.94);font-family:'Share Tech Mono',monospace;
@@ -15,7 +15,7 @@
 .daycut-map{position:relative;width:224px;height:192px;overflow:hidden;border:1px solid rgba(var(--ui-rgb),.4);background:#050a0c;box-shadow:0 0 24px rgba(var(--ui-rgb),.12) inset}
 /* 최종(줌인) 상태가 base — dcZoom은 from(전국)만 정의. reduced에서 animation:none이면 곧장 최종 프레임 */
 .daycut-map-img{position:absolute;inset:0;background:url('assets/images/maps/korea-sk.png') no-repeat;
-  background-size:200%;background-position:99% 13%;
+  background-size:200%;background-position:89% 15%;
   filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(.5) brightness(.62);opacity:.8;
   animation:dcZoom 1.25s cubic-bezier(.3,.7,.25,1) both}
 @keyframes dcZoom{from{background-size:100%;background-position:50% 30%}}
@@ -26,19 +26,19 @@
 /* 마커 그룹 — 줌 완료 후 페이드 인 */
 .daycut-mark{position:absolute;inset:0;animation:dcMarkIn .35s ease 1.1s both}
 @keyframes dcMarkIn{from{opacity:0}}
-.daycut-ring{position:absolute;left:58%;top:40%;width:46px;height:46px;margin:-23px 0 0 -23px;border:1px solid rgba(var(--ui-rgb),.9);border-radius:50%;
+.daycut-ring{position:absolute;left:55%;top:43%;width:46px;height:46px;margin:-23px 0 0 -23px;border:1px solid rgba(var(--ui-rgb),.9);border-radius:50%;
   box-shadow:0 0 12px rgba(var(--ui-rgb),.4);animation:dcRing 1.6s ease-out infinite}
 .daycut-ring::after{content:"";position:absolute;left:50%;top:50%;width:5px;height:5px;margin:-2.5px 0 0 -2.5px;border-radius:50%;background:var(--ui);box-shadow:0 0 7px var(--ui-glow)}
 .daycut-ring.is-warn{border-color:rgba(240,160,48,.9);box-shadow:0 0 12px rgba(240,160,48,.4)}
 .daycut-ring.is-danger{border-color:rgba(255,68,68,.95);box-shadow:0 0 14px rgba(255,68,68,.45);animation-duration:.9s}
 .daycut-ring.is-lock{border-style:double;border-width:3px;border-color:rgba(154,223,255,.95);box-shadow:0 0 16px rgba(154,223,255,.45);animation-duration:.7s}
-.daycut-base-label{position:absolute;left:58%;top:53%;transform:translateX(-50%);font-size:8px;letter-spacing:1.5px;white-space:nowrap;
+.daycut-base-label{position:absolute;left:55%;top:56%;transform:translateX(-50%);font-size:8px;letter-spacing:1.5px;white-space:nowrap;
   color:var(--ui);text-shadow:0 0 8px var(--ui-glow)}
 .daycut-patrol{position:absolute;width:4px;height:4px;border-radius:50%;background:rgba(var(--ui-rgb),.9);box-shadow:0 0 5px rgba(var(--ui-rgb),.5);animation:dcDrift 2.6s ease-in-out infinite}
 .daycut-patrol+.daycut-patrol{animation-duration:3.2s;animation-direction:reverse}
 .daycut-x{position:absolute;color:#f0a030;font-size:14px;text-shadow:0 0 8px rgba(240,160,48,.5);animation:dcBlink 1s steps(2) infinite}
 .daycut-x.is-hot{color:#ff4444;text-shadow:0 0 8px rgba(255,68,68,.6);animation-duration:.5s}
-.daycut-lamp{position:absolute;left:47%;top:48%;width:7px;height:7px;border-radius:50%;background:var(--ui);box-shadow:0 0 8px var(--ui-glow);animation:dcBlink 1.4s steps(2) infinite}
+.daycut-lamp{position:absolute;left:43%;top:52%;width:7px;height:7px;border-radius:50%;background:var(--ui);box-shadow:0 0 8px var(--ui-glow);animation:dcBlink 1.4s steps(2) infinite}
 .daycut-cam{position:absolute;left:6px;top:5px;font-size:8px;letter-spacing:1.5px;color:rgba(var(--ui-rgb),.85);text-shadow:0 0 6px rgba(var(--ui-rgb),.4)}
 .daycut-rec{position:absolute;right:6px;top:5px;font-size:8px;letter-spacing:1px;color:#ff5a48;animation:dcBlink 1.2s steps(2) infinite}
 .daycut-tele{margin-top:6px;text-align:center;font-size:9px;letter-spacing:1.5px;color:rgba(var(--ui-rgb),.6)}

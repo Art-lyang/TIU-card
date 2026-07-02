@@ -51,9 +51,9 @@ function DayCutOverlay(p){
   var sync=(90+Math.round(c/12))+'.'+(day%10);
   var sub=ev==='lockdown'?(isEn?'LOCKDOWN ACTIVE':'봉쇄선 가동'):ev==='attack'?(isEn?'⚠ ABERRANT ACTIVITY':'⚠ 변이체 활동 감지'):ev==='warn'?(isEn?'ABERRANT ACTIVITY RISING':'변이체 활동 증가'):(isEn?'SECTOR SYNC STABLE':'구역 동기화 안정');
   var sm=[[isEn?'CNT':'봉쇄',st.c],[isEn?'RES':'자원',st.r],[isEn?'TRS':'신뢰',st.t],[isEn?'EVL':'평가',st.o]];
-  var pt1={left:(44+((day*7)%10))+'%',top:(42+((day*5)%8))+'%'};
-  var pt2={left:(56+((day*3)%8))+'%',top:(50+((day*11)%8))+'%'};
-  var xPos=ev==='attack'?{left:'46%',top:'33%'}:{left:'30%',top:'27%'};
+  var pt1={left:(40+((day*7)%10))+'%',top:(48+((day*5)%8))+'%'};
+  var pt2={left:(52+((day*3)%8))+'%',top:(56+((day*11)%8))+'%'};
+  var xPos=ev==='attack'?{left:'43%',top:'35%'}:{left:'27%',top:'29%'};
   return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
     h('div',{className:'daycut-frame'},
       h('span',{className:'dc-br dc-br-tl'}),h('span',{className:'dc-br dc-br-tr'}),h('span',{className:'dc-br dc-br-bl'}),h('span',{className:'dc-br dc-br-br'}),
