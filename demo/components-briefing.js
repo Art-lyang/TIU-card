@@ -39,6 +39,23 @@ function BriefingImage(p){
       h('img',{src:bi.b,alt:'Act '+p.act+' B',style:{width:'100%',display:'block',borderRadius:4,border:'1px solid rgba(var(--ui-rgb),.2)',boxShadow:'0 0 20px rgba(var(--ui-rgb),.1)',position:'absolute',top:0,left:0,animation:'bfFlicker 3s ease-in-out infinite',animationDelay:'1.5s',opacity:0}})));
 }
 
+// DAY 전환 컷 — 하루가 넘어갈 때 게임 화면 위에 1회 표시. 수명은 app.js가 관리(표시 전용), 탭=스킵.
+function DayCutOverlay(p){
+  var st=p.stats||{},day=p.day||st.day||1,logs=p.logs||[];
+  var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  var ev='idle';try{if(typeof computeMapEvent==='function')ev=computeMapEvent(st,logs)}catch(e){}
+  var c=st.c||0;var ringCls=c<=25?' is-danger':c<=45?' is-warn':'';
+  var resOn=logs.indexOf('LOG-RES-OPEN')>=0;
+  var sub=ev==='attack'?(isEn?'⚠ ABERRANT ACTIVITY':'⚠ 변이체 활동 감지'):ev==='warn'?(isEn?'ABERRANT ACTIVITY RISING':'변이체 활동 증가'):(isEn?'SECTOR SYNC STABLE':'구역 동기화 안정');
+  return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
+    h('div',{className:'daycut-map'},
+      h('div',{className:'daycut-ring'+ringCls}),
+      (ev==='attack'||ev==='warn')?h('span',{className:'daycut-x'+(ev==='attack'?' is-hot':'')},'✕'):null,
+      resOn?h('span',{className:'daycut-lamp'}):null),
+    h('div',{className:'daycut-day'},'DAY '+day),
+    h('div',{className:'daycut-sub'},sub),
+    h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
+}
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
   useEffect(function(){if(typeof SFX!=='undefined')SFX.play('radio');},[]);

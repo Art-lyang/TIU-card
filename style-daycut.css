@@ -1,0 +1,25 @@
+/* style-daycut.css — DAY 전환 컷 (day+1 시 게임 화면 위 ~2.2s, 표시 전용/탭 스킵)
+   튜닝 지점: 홀드 길이는 dcOut delay(1.8s)+app.js 타이머(2250ms), 배경 어둡기는 .daycut background. */
+.daycut{position:fixed;inset:0;z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;cursor:pointer;
+  background:rgba(3,7,8,.94);font-family:'Share Tech Mono',monospace;
+  animation:dcIn .25s ease both,dcOut .45s ease 1.8s both}
+.daycut-map{position:relative;width:150px;height:150px;border:1px solid rgba(var(--ui-rgb),.35);
+  background:repeating-linear-gradient(0deg,transparent 0 17px,rgba(var(--ui-rgb),.07) 17px 18px),repeating-linear-gradient(90deg,transparent 0 17px,rgba(var(--ui-rgb),.07) 17px 18px)}
+.daycut-ring{position:absolute;left:50%;top:50%;width:56px;height:56px;margin:-28px 0 0 -28px;border:1px solid rgba(var(--ui-rgb),.75);border-radius:50%;
+  box-shadow:0 0 12px rgba(var(--ui-rgb),.3);animation:dcRing 1.6s ease-out infinite}
+.daycut-ring.is-warn{border-color:rgba(240,160,48,.8);box-shadow:0 0 12px rgba(240,160,48,.3)}
+.daycut-ring.is-danger{border-color:rgba(255,68,68,.85);box-shadow:0 0 14px rgba(255,68,68,.35);animation-duration:.9s}
+.daycut-x{position:absolute;right:18%;top:22%;color:#f0a030;font-size:14px;text-shadow:0 0 8px rgba(240,160,48,.5);animation:dcBlink 1s steps(2) infinite}
+.daycut-x.is-hot{color:#ff4444;text-shadow:0 0 8px rgba(255,68,68,.6);animation-duration:.5s}
+.daycut-lamp{position:absolute;left:16%;bottom:18%;width:7px;height:7px;border-radius:50%;background:var(--ui);box-shadow:0 0 8px var(--ui-glow);animation:dcBlink 1.4s steps(2) infinite}
+.daycut-day{font-size:30px;letter-spacing:8px;color:var(--ui);text-shadow:0 0 14px var(--ui-glow);animation:glitchText .18s ease 2}
+.daycut-sub{font-size:11px;letter-spacing:2px;color:rgba(var(--ui-rgb),.75)}
+.daycut-skip{position:absolute;bottom:26px;font-size:9px;letter-spacing:2px;color:rgba(var(--ui-rgb),.4)}
+@keyframes dcIn{from{opacity:0}to{opacity:1}}
+@keyframes dcOut{from{opacity:1}to{opacity:0}}
+@keyframes dcRing{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.25);opacity:.35}}
+@keyframes dcBlink{50%{opacity:.25}}
+.fx-reduced .daycut-day{animation:glitchText 0s}
+.fx-reduced .daycut-ring,.fx-reduced .daycut-x,.fx-reduced .daycut-lamp{animation:none}
+/* off는 app.js에서 미세팅 — CSS 이중 안전망 */
+.fx-off .daycut{display:none}
