@@ -256,6 +256,8 @@ function MainMenu(p){
       h('section',{className:'main-terminal-feed','aria-label':'terminal session surveillance feed'},
         IMG.title_screen&&h('img',{src:IMG.title_screen,alt:'TERMINAL SESSION'}),
         h('div',{className:'main-terminal-feed-noise','aria-hidden':true}),
+        // ORACLE 관측 밀도 그리드 — 세이브 day+세션 시드, 엔딩 F/G 보유 시 옵저버 역상 레이어
+        typeof ObservationGrid!=='undefined'&&h(ObservationGrid,{seed:(function(){try{var g=Save.get('ts_game',null);return ((g&&g.day)||1)*97+(p.sessions||0)*13+1}catch(e){return 1}})(),observer:(function(){try{var e=Save.getEndings();return e.indexOf('F')>=0||e.indexOf('G')>=0}catch(x){return false}})()}),
         h('div',{className:'main-terminal-feed-hud main-terminal-feed-top'},
           h('span',null,tt('menu.feedTopLeft',null,'ORACLE KOREA BRANCH // INTERNAL USE ONLY')),
           h('span',null,tt('menu.securityLabel',null,'SECURITY LEVEL:'),' ',h('strong',null,tt('menu.securityOrange',null,'ORANGE')))),

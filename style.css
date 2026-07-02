@@ -1370,3 +1370,9 @@ b.fm-rk--info{color:#caa14a}
 #root.fx-off .evb-line-sel,.fx-off .evb-line-sel{animation:none}
 
 @media(max-width:760px) and (min-height:1000px){.main-terminal-menu-list{justify-content:space-evenly}}
+
+/* ORACLE 관측 밀도 그리드 (메뉴 피드 오버레이) */
+.obsgrid{position:absolute;left:16px;right:16px;bottom:16px;height:40%;z-index:1;pointer-events:none;opacity:.62;
+  -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%)}
+.obsgrid canvas{display:block;width:100%;height:100%}
+.main-terminal-feed{position:relative}
