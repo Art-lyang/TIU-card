@@ -1,0 +1,20 @@
+/* style-oracle-override.css — ORACLE 개입(oracleBlock) 풀스크린 연출
+   app.js onOracleBlock에서 ~1.2s 표시 후 자동 해제. 표시 전용(포인터 통과).
+   튜닝 지점: 홀드 길이는 orovOut의 delay(.8s), 틴트 강도는 배경 rgba. */
+.oracle-ov{position:fixed;inset:0;z-index:210;pointer-events:none;display:flex;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,rgba(var(--ui-rgb),.10),rgba(3,7,8,.55) 78%);
+  animation:orovIn .15s ease both,orovOut .35s ease .8s both}
+.oracle-ov-box{position:relative;overflow:hidden;max-width:78%;padding:14px 22px;text-align:center;
+  border:1px solid rgba(var(--ui-rgb),.55);background:rgba(3,7,8,.88);
+  font-family:'Share Tech Mono',monospace;box-shadow:0 0 30px rgba(var(--ui-rgb),.25)}
+.oracle-ov-box::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(var(--ui-rgb),.06) 2px 3px)}
+.oracle-ov-t{font-size:11px;letter-spacing:3px;color:var(--ui);margin-bottom:6px;animation:glitchText .15s ease 2}
+.oracle-ov-m{font-size:12px;color:var(--ui-text);line-height:1.6;white-space:pre-line}
+@keyframes orovIn{from{opacity:0}to{opacity:1}}
+@keyframes orovOut{from{opacity:1}to{opacity:0}}
+/* reduced: 글리치 제거, 틴트만 */
+.oracle-ov--reduced{background:radial-gradient(ellipse at center,rgba(var(--ui-rgb),.07),rgba(3,7,8,.4) 78%)}
+.oracle-ov--reduced .oracle-ov-t{animation:none}
+/* off는 app.js에서 미마운트 — CSS 이중 안전망 */
+.fx-off .oracle-ov{display:none}
