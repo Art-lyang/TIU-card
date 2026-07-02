@@ -516,7 +516,7 @@ function parseHtmlAssets(html) {
   return out;
 }
 // demo에만 있거나 root에만 있는 게 정상인 파일들 (demo 모드 게이트/클라우드 세이브)
-const MIRROR_ONLY_ROOT = new Set(['firebase-config.js', 'cloud-save.js']);
+const MIRROR_ONLY_ROOT = new Set(['firebase-config.js', 'cloud-save.js', 'manifest.json', 'icons/icon-192.png']); // manifest/아이콘/SW 는 PWA·TWA 용 — demo 미적용이 의도
 const MIRROR_ONLY_DEMO = new Set(['demo-mode.js']);
 
 const rootHtmlPath = path.join(ROOT, 'index.html');

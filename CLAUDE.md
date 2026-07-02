@@ -80,7 +80,7 @@
 
 ## Tech Stack
 
-- Runtime: static HTML + React 18 CDN + vanilla JS/CSS
+- Runtime: static HTML + React 18 (vendor/ 로컬 번들) + vanilla JS/CSS. 폰트도 fonts/ 셀프호스트 — 외부 CDN 의존 없음
 - Storage: localStorage
 - Build: none (index.html이 단일 진입점)
 - Deploy: GitHub Pages
