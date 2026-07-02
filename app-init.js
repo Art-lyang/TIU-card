@@ -563,5 +563,9 @@ var SFX={
     case'dialogue':self.tone(500,0.1,'sine',0.08);setTimeout(function(){self.tone(700,0.12,'sine',0.06)},80);break;
     case'reward':self.tone(400,0.1,'sine',0.1);setTimeout(function(){self.tone(600,0.1,'sine',0.08)},100);setTimeout(function(){self.tone(800,0.15,'sine',0.06)},200);break;
     case'glitch':self.noise(0.15,0.1);self.tone(60,0.1,'square',0.08);break;
+    case'stat_up':self.tone(660,0.05,'triangle',0.05);setTimeout(function(){self.tone(990,0.06,'triangle',0.045)},55);break;
+    case'stat_down':self.tone(440,0.06,'triangle',0.05);setTimeout(function(){self.tone(300,0.08,'triangle',0.045)},55);break;
+    case'tab':self.tone(1300,0.03,'square',0.03);break;
+    case'warn':self.tone(230,0.11,'square',0.06);setTimeout(function(){self.tone(230,0.11,'square',0.06)},150);break;
   }}catch(e){}}
 };
