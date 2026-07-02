@@ -899,8 +899,10 @@ function App(){
     return h('div',{className:'act-'+Math.max(act||1,2)},node);
   };
   var withOracleLink=function(node){
-    if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return h(React.Fragment,null,node,renderToastBar());
-    return h(React.Fragment,null,node,h(OracleLinkBar,{day:stats.day,phase:phase}),renderToastBar());
+    // DAY 전환 컷은 day 증가 시점 화면(news/reward/브리핑 등)에서 떠야 한다 — menu/game return에만 두면 실전에서 안 보인다 (프리뷰만 되는 버그의 원인)
+    var dcNode=daycut&&typeof DayCutOverlay!=='undefined'?h(DayCutOverlay,{day:daycut,stats:stats,logs:getLiveLogs(logs),onSkip:function(){if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);setDaycut(null)}}):null;
+    if(typeof OracleLinkBar!=='function'||!shouldUseOracleLink(phase)||showSettings||showFacility||showEvidence)return h(React.Fragment,null,node,dcNode,renderToastBar());
+    return h(React.Fragment,null,node,h(OracleLinkBar,{day:stats.day,phase:phase}),dcNode,renderToastBar());
   };
   var hasSave=!!Save.get('ts_game',null);
   var hasSessionHistory=sessions>0||endings.length>0;
