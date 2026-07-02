@@ -212,6 +212,22 @@ var FIELD_MINIGAME_LIBRARY = {
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
   },
+  strike: {
+    id: 'strike',
+    kind: 'STRIKE DESIGNATION',
+    ko: {
+      title: '타격 표적 지정',
+      intro: '드론 판독으로 구획별 신호를 대조해 통신 장비 구획 두 곳을 표적으로 지정한다. 인체 열원 구획은 사격선에서 제외해야 한다.',
+      action: '표적 확정',
+      resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
+    },
+    en: {
+      title: 'Strike Designation',
+      intro: 'Cross-read drone returns and designate the two comms-equipment blocks. Blocks with human heat must stay off the firing line.',
+      action: 'Confirm Targets',
+      resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
+    }
+  },
   screening: {
     id: 'screening',
     kind: 'LATENT SCREEN',
@@ -1140,7 +1156,8 @@ var MINI_CONTROLS = {
   evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
   reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
-  screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'}
+  screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'},
+  strike:{ko:'전파 반응이 강한 통신 장비 구획 두 곳을 표시한 뒤 [표적 확정]을 누른다. 열원이 인체인 구획은 피할 것.',en:'Mark the two blocks with strong RF returns, then press [Confirm Targets]. Avoid blocks with human heat.'}
 };
 function MinigameOnboarding(p){
   var en=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
@@ -1169,6 +1186,89 @@ function MinigameOnboarding(p){
   );
 }
 
+function StrikeMiniGame(p){
+  var copy=p.copy;
+  var suites=[
+    { answer:['b2','b4'], blocks:[
+      {id:'b1',nameKo:'구획 A',nameEn:'Block A',rf:'none',heat:'human',vib:'none'},
+      {id:'b2',nameKo:'구획 B',nameEn:'Block B',rf:'strong',heat:'machine',vib:'steady'},
+      {id:'b3',nameKo:'구획 C',nameEn:'Block C',rf:'weak',heat:'none',vib:'none'},
+      {id:'b4',nameKo:'구획 D',nameEn:'Block D',rf:'strong',heat:'machine',vib:'steady'},
+      {id:'b5',nameKo:'구획 E',nameEn:'Block E',rf:'none',heat:'human',vib:'none'}
+    ]},
+    { answer:['b1','b3'], blocks:[
+      {id:'b1',nameKo:'구획 A',nameEn:'Block A',rf:'strong',heat:'machine',vib:'steady'},
+      {id:'b2',nameKo:'구획 B',nameEn:'Block B',rf:'none',heat:'human',vib:'none'},
+      {id:'b3',nameKo:'구획 C',nameEn:'Block C',rf:'strong',heat:'machine',vib:'steady'},
+      {id:'b4',nameKo:'구획 D',nameEn:'Block D',rf:'weak',heat:'none',vib:'none'},
+      {id:'b5',nameKo:'구획 E',nameEn:'Block E',rf:'none',heat:'human',vib:'none'}
+    ]}
+  ];
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+  var labels=locale==='en'
+    ? { kind:'STRIKE DESIGNATION', time:'TIME', mark:'TARGET', rf:'RF', heat:'HEAT', vib:'VIB' }
+    : { kind:'타격 표적 지정', time:'시간', mark:'표적', rf:'전파', heat:'열원', vib:'진동' };
+  var valueKo={ strong:'강', weak:'약', none:'없음', human:'인체', machine:'기계', steady:'규칙' };
+  function readingValue(value){
+    return locale==='en'?String(value).toUpperCase():(valueKo[value]||value);
+  }
+  var suiteRef=useRef(null);
+  if(!suiteRef.current)suiteRef.current=suites[Math.floor(Math.random()*suites.length)];
+  var suite=suiteRef.current;
+  var _selected=useState([]),selected=_selected[0],setSelected=_selected[1];
+  var _time=useState(16),time=_time[0],setTime=_time[1];
+  var finished=useRef(false);
+
+  useEffect(function(){
+    if(finished.current)return;
+    if(time<=0){ finished.current=true; finalize(selected); return; }
+    var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
+    return function(){clearTimeout(t);};
+  },[time,selected]);
+
+  function toggle(id){
+    if(finished.current)return;
+    setSelected(function(prev){
+      if(prev.indexOf(id)>=0)return prev.filter(function(v){return v!==id;});
+      if(prev.length>=2)return prev;
+      return prev.concat([id]);
+    });
+  }
+
+  function finalize(picks){
+    var chosen=(picks||selected).slice();
+    // 인체 열원 구획을 표적으로 지정 = 즉시 실패 (사격선에 민간인)
+    var humanPick=chosen.some(function(id){var b=null;for(var i=0;i<suite.blocks.length;i++){if(suite.blocks[i].id===id){b=suite.blocks[i];break}}return b&&b.heat==='human';});
+    if(humanPick){ p.onDone('fail'); return; }
+    var hit=chosen.filter(function(id){return suite.answer.indexOf(id)>=0;}).length;
+    if(hit===2&&chosen.length===2)p.onDone(time>=8?'great':'success');
+    else if(hit===1)p.onDone('partial');
+    else p.onDone('fail');
+  }
+
+  return h(FieldTerminalShell,{
+    code:'M-007',kind:labels.kind,title:copy.title,intro:copy.intro,
+    status:[{k:labels.time,v:time+'s',cls:time<=2?'is-bad':''},{k:labels.mark,v:selected.length+'/2'}]
+  },
+    h('div',{className:'fm-term-stage',style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:12,padding:'16px',alignContent:'start'}},
+      suite.blocks.map(function(block){
+        var active=selected.indexOf(block.id)>=0;
+        return h('button',{
+          key:block.id,className:'btn',onClick:function(){toggle(block.id);},
+          style:{minHeight:110,borderRadius:'16px',padding:'12px 14px',textAlign:'left',background:active?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.92)',border:'1px solid '+(active?'rgba(120,255,190,0.5)':'rgba(122,255,198,0.18)'),color:'rgba(210,235,220,0.86)',fontSize:13,lineHeight:1.55}
+        },
+          h('div',{style:{fontSize:15,fontWeight:'700',marginBottom:6,color:active?'#ecfff4':'#78ffbe'}},locale==='en'?block.nameEn:block.nameKo),
+          h('div',null,labels.rf+': '+readingValue(block.rf)),
+          h('div',null,labels.heat+': '+readingValue(block.heat)),
+          h('div',null,labels.vib+': '+readingValue(block.vib))
+        );
+      })
+    ),
+    h('div',{className:'fm-term-actions'},
+      h('button',{className:'fm-term-btn is-amber',disabled:selected.length===0,onClick:function(){if(!finished.current){finished.current=true;finalize(selected);}}},copy.action))
+  );
+}
+
 function FieldMiniGameOverlay(p){
   var _ob=useState(false),started=_ob[0],setStarted=_ob[1];
   if(!p.game)return null;
@@ -1186,6 +1286,7 @@ function FieldMiniGameOverlay(p){
   if(p.game.type==='reconstruction')return h(ReconstructionMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='statement')return h(StatementMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:p.onDone});
+  if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:p.onDone});
   return null;
 }
 

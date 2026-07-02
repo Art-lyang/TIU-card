@@ -1,8 +1,7 @@
 // components-fieldmission-tactical.js — 현장임무 관제 피드 (VISUAL-LAYER-SPEC 1️⃣, 파일럿 M-007)
 // 미션 노드에 선택 필드 scene 이 있으면 히어로 대신 이 뷰포트가 표시된다:
 //   scene: { agents:[{x,y}], target:{x,y}, hostiles:[{x,y}], civs:[{x,y}], event:'approach|contact|combat|retreat|hold' }
-// 좌표는 뷰포트 % 기준. 같은 컴포넌트가 노드 전환에도 마운트 유지되므로
-// 좌표 변화가 CSS transition(1.8s)으로 보간돼 "요원이 이동하는" 애니메이션이 된다.
+// 배경(미션 히어로) 위 라이브 피드 프레임 — 핀 마커는 배경 가독성을 위해 미표시(scene.event/risk만 상태 스트립 구동).
 // 표시 전용 — 게임 로직·판정에는 일절 관여하지 않는다. scene 없는 노드/미션은 기존 화면 그대로(하위호환).
 function TacticalFeed(p){
   var sc=p.scene||{};
@@ -15,10 +14,6 @@ function TacticalFeed(p){
     p.bg?h('div',{className:'tf-bg',style:{backgroundImage:'url('+p.bg+')'}}):null,
     h('div',{className:'tf-map'}),
     h('div',{className:'tf-scan'}),
-    sc.target?h('span',{className:'tf-target',style:{left:sc.target.x+'%',top:sc.target.y+'%'}},'◆'):null,
-    (sc.civs||[]).map(function(cv,i){return h('span',{key:'c'+i,className:'tf-civ',style:{left:cv.x+'%',top:cv.y+'%'}})}),
-    (sc.hostiles||[]).map(function(hx,i){return h('span',{key:'x'+i,className:'tf-hostile',style:{left:hx.x+'%',top:hx.y+'%'}},'✕')}),
-    (sc.agents||[]).map(function(a,i){return h('span',{key:'a'+i,className:'tf-agent',style:{left:a.x+'%',top:a.y+'%'}})}),
     h('div',{className:'tf-head'},
       h('span',null,isEn?'TACTICAL FEED':'전술 피드'),
       h('span',{className:'tf-live'},'● LIVE')),

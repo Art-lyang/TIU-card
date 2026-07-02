@@ -14,7 +14,7 @@
     },
     "M-007": {
       start: {
-        strike: { key: "strike_bioscan", type: "scan" }
+        strike: { key: "strike_designation", type: "strike" }
       }
     }
   });
@@ -161,20 +161,20 @@
     "M-007": {
       strike: {
         great: {
-          ko: { textSuffix: "[생체 반응 스캔: 대성공]\n건물 3동의 생체 반응이 전부 지도에 잡힌다. 내부 4명 — 무장 반응 없음.\n진입 각이 완전히 정리되고, 사격선에서 민간인이 제외된다.", endLabel: "[ 기지 귀환 — 내부 전원 식별 ]" },
-          en: { textSuffix: "[Bio-Signal Scan: Great Success]\nEvery signature inside the three buildings resolves on the map. Four occupants — no weapon response.\nThe entry angles are fully set, and civilians drop off the firing line.", endLabel: "[ Return to Base — All Occupants Identified ]" }
+          ko: { textSuffix: "[타격 표적 지정: 대성공]\n통신 장비 구획 두 곳이 정확히 사격선에 오른다. 인체 열원 구획은 전부 제외.\n타격은 장비에만 향한다 — 적어도 계획상으로는.", endLabel: "[ 기지 귀환 — 표적 지정 완료 ]" },
+          en: { textSuffix: "[Strike Designation: Great Success]\nBoth comms-equipment blocks lock onto the firing line. Every human-heat block is excluded.\nThe strike points at hardware only — on paper, at least.", endLabel: "[ Return to Base — Targets Designated ]" }
         },
         success: {
-          ko: { textSuffix: "[생체 반응 스캔: 성공]\n내부 인원의 위치가 대부분 확인된다. 무장 반응은 감지되지 않는다.\n적어도 어느 문부터 열어야 하는지는 분명해졌다.", endLabel: "[ 기지 귀환 — 내부 반응 확인 ]" },
-          en: { textSuffix: "[Bio-Signal Scan: Success]\nMost interior positions are confirmed. No armed response detected.\nAt the very least, it is clear which door to open first.", endLabel: "[ Return to Base — Interior Confirmed ]" }
+          ko: { textSuffix: "[타격 표적 지정: 성공]\n통신 장비 구획이 표적으로 고정된다.\n지정이 늦어 진입조의 대기가 길어졌지만, 사격선은 깨끗하다.", endLabel: "[ 기지 귀환 — 표적 고정 ]" },
+          en: { textSuffix: "[Strike Designation: Success]\nThe comms blocks are locked as targets.\nThe designation ran long and the entry team waited, but the firing line is clean.", endLabel: "[ Return to Base — Targets Locked ]" }
         },
         partial: {
-          ko: { textSuffix: "[생체 반응 스캔: 부분 성공]\n반응 일부가 벽체에 가려 흐릿하다. 인원 수는 잡히지만 위치가 불완전하다.\n진입조는 모퉁이마다 한 박자씩 멈춰서 확인해야 한다.", endLabel: "[ 기지 귀환 — 부분 식별 ]" },
-          en: { textSuffix: "[Bio-Signal Scan: Partial Success]\nSome signatures blur behind the walls. Headcount reads, positions stay incomplete.\nThe entry team has to pause and clear every corner.", endLabel: "[ Return to Base — Partial Identification ]" }
+          ko: { textSuffix: "[타격 표적 지정: 부분 성공]\n표적 하나는 정확했지만, 다른 하나는 빈 구획이었다.\n남은 통신 장비 구획은 진입조가 눈으로 확인해야 한다.", endLabel: "[ 기지 귀환 — 표적 일부 지정 ]" },
+          en: { textSuffix: "[Strike Designation: Partial Success]\nOne target was true; the other was an empty block.\nThe remaining comms block has to be confirmed by eye, door by door.", endLabel: "[ Return to Base — Partial Designation ]" }
         },
         fail: {
-          ko: { textSuffix: "[생체 반응 스캔: 실패]\n간섭 때문에 내부 반응을 갈라내지 못한다.\n진입은 계속되지만, 문 너머에 누가 있는지 모른 채 들어간다.", endLabel: "[ 기지 귀환 — 스캔 실패 ]" },
-          en: { textSuffix: "[Bio-Signal Scan: Failure]\nInterference smears the interior returns into noise.\nThe entry proceeds, but no one knows who is behind each door.", endLabel: "[ Return to Base — Scan Failed ]" }
+          ko: { textSuffix: "[타격 표적 지정: 실패]\n지정한 구획에서 인체 열원이 확인된다. 사격선이 급히 취소된다.\n작전은 계속되지만, 방금 무엇을 쏠 뻔했는지는 모두가 안다.", endLabel: "[ 기지 귀환 — 표적 지정 실패 ]" },
+          en: { textSuffix: "[Strike Designation: Failure]\nHuman heat resolves inside a designated block. The firing line is scrubbed in a hurry.\nThe operation continues, but everyone knows what was nearly fired upon.", endLabel: "[ Return to Base — Designation Failed ]" }
         }
       }
     }
@@ -458,6 +458,21 @@
         right: 'Tag and monitor quietly'
       },
       fx: { left: { t: 1, o: 1 }, right: { c: 1, t: 0 } }
+    },
+    strike: {
+      ko: {
+        title: '타격 구획 사후 처리',
+        prompt: '무력화된 통신 장비 구획에 남은 데이터 코어를 회수할지, 현장에서 파기할지 결정한다.',
+        left: '데이터 코어 회수',
+        right: '현장 파기'
+      },
+      en: {
+        title: 'Strike Block Follow-Up',
+        prompt: 'Decide whether the residual data cores in the neutralized comms blocks are recovered or destroyed on site.',
+        left: 'Recover data cores',
+        right: 'Destroy on site'
+      },
+      fx: { left: { t: 1, o: -1 }, right: { c: 1, o: 1 } }
     },
     screening: {
       ko: {
