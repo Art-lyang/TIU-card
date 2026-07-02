@@ -14,7 +14,7 @@
     },
     "M-007": {
       start: {
-        strike: { key: "latent_screen", type: "screening" }
+        strike: { key: "strike_bioscan", type: "scan" }
       }
     }
   });
@@ -161,20 +161,20 @@
     "M-007": {
       strike: {
         great: {
-          ko: { textSuffix: "[잠복 반응 스크리닝: 대성공]\n대기 인원 가운데 잠복 반응을 보이는 둘이 즉시 분리된다.\n작전실의 긴장은 오히려 차갑게 가라앉고, 사격선도 더 명확해진다.", endLabel: "[ 기지 귀환 — 현장 선별 완료 ]" },
-          en: { textSuffix: "[Latent Screening: Great Success]\nTwo latent-exposure signatures are isolated from the waiting group at once.\nThe room gets colder, not louder, and the firing line becomes clearer.", endLabel: "[ Return to Base — Screening Complete ]" }
+          ko: { textSuffix: "[생체 반응 스캔: 대성공]\n건물 3동의 생체 반응이 전부 지도에 잡힌다. 내부 4명 — 무장 반응 없음.\n진입 각이 완전히 정리되고, 사격선에서 민간인이 제외된다.", endLabel: "[ 기지 귀환 — 내부 전원 식별 ]" },
+          en: { textSuffix: "[Bio-Signal Scan: Great Success]\nEvery signature inside the three buildings resolves on the map. Four occupants — no weapon response.\nThe entry angles are fully set, and civilians drop off the firing line.", endLabel: "[ Return to Base — All Occupants Identified ]" }
         },
         success: {
-          ko: { textSuffix: "[잠복 반응 스크리닝: 성공]\n잠복 노출자의 징후가 분리되며 대기 인원의 불안이 정리된다.\n현장은 여전히 긴장돼 있지만, 적어도 누굴 먼저 봐야 하는지는 분명하다.", endLabel: "[ 기지 귀환 — 잠복 반응 식별 ]" },
-          en: { textSuffix: "[Latent Screening: Success]\nHidden exposure signs separate from the group and the waiting room steadies.\nThe room remains tense, but at least the first priority is clear.", endLabel: "[ Return to Base — Latent Signatures Isolated ]" }
+          ko: { textSuffix: "[생체 반응 스캔: 성공]\n내부 인원의 위치가 대부분 확인된다. 무장 반응은 감지되지 않는다.\n적어도 어느 문부터 열어야 하는지는 분명해졌다.", endLabel: "[ 기지 귀환 — 내부 반응 확인 ]" },
+          en: { textSuffix: "[Bio-Signal Scan: Success]\nMost interior positions are confirmed. No armed response detected.\nAt the very least, it is clear which door to open first.", endLabel: "[ Return to Base — Interior Confirmed ]" }
         },
         partial: {
-          ko: { textSuffix: "[잠복 반응 스크리닝: 부분 성공]\n이상 징후를 일부 짚어냈지만 전부 분리하지는 못한다.\n사격선은 좁혀졌으나, 방 안의 불안은 완전히 가라앉지 않는다.", endLabel: "[ 기지 귀환 — 잠복 반응 의심자 선별 ]" },
-          en: { textSuffix: "[Latent Screening: Partial Success]\nSome anomaly signs are caught, but not all of them are cleanly isolated.\nThe firing line narrows, though the room never fully settles.", endLabel: "[ Return to Base — Suspects Narrowed ]" }
+          ko: { textSuffix: "[생체 반응 스캔: 부분 성공]\n반응 일부가 벽체에 가려 흐릿하다. 인원 수는 잡히지만 위치가 불완전하다.\n진입조는 모퉁이마다 한 박자씩 멈춰서 확인해야 한다.", endLabel: "[ 기지 귀환 — 부분 식별 ]" },
+          en: { textSuffix: "[Bio-Signal Scan: Partial Success]\nSome signatures blur behind the walls. Headcount reads, positions stay incomplete.\nThe entry team has to pause and clear every corner.", endLabel: "[ Return to Base — Partial Identification ]" }
         },
         fail: {
-          ko: { textSuffix: "[잠복 반응 스크리닝: 실패]\n정상 반응과 잠복 징후를 갈라내지 못한 채 시간이 흐른다.\n현장 판단은 이어지지만, 대기실 전체가 더 예민해진 상태다.", endLabel: "[ 기지 귀환 — 현장 선별 실패 ]" },
-          en: { textSuffix: "[Latent Screening: Failure]\nTime burns away before normal response and latent exposure can be separated.\nThe operation continues, but the whole staging room becomes more brittle.", endLabel: "[ Return to Base — Screening Failed ]" }
+          ko: { textSuffix: "[생체 반응 스캔: 실패]\n간섭 때문에 내부 반응을 갈라내지 못한다.\n진입은 계속되지만, 문 너머에 누가 있는지 모른 채 들어간다.", endLabel: "[ 기지 귀환 — 스캔 실패 ]" },
+          en: { textSuffix: "[Bio-Signal Scan: Failure]\nInterference smears the interior returns into noise.\nThe entry proceeds, but no one knows who is behind each door.", endLabel: "[ Return to Base — Scan Failed ]" }
         }
       }
     }

@@ -12,6 +12,7 @@ function TacticalFeed(p){
   var riskCls=/VERY/i.test(risk)?' is-vhigh':/HIGH/i.test(risk)?' is-high':'';
   var comms=evt==='combat'?(isEn?'NOISY':'교란'):(isEn?'OK':'양호');
   return h('div',{className:'tacfeed tacfeed--'+evt+(p.fxOff?' fm-no-anim':''),'aria-hidden':true},
+    p.bg?h('div',{className:'tf-bg',style:{backgroundImage:'url('+p.bg+')'}}):null,
     h('div',{className:'tf-map'}),
     h('div',{className:'tf-scan'}),
     sc.target?h('span',{className:'tf-target',style:{left:sc.target.x+'%',top:sc.target.y+'%'}},'◆'):null,
