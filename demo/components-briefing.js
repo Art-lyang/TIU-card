@@ -46,13 +46,26 @@ function DayCutOverlay(p){
   var ev='idle';try{if(typeof computeMapEvent==='function')ev=computeMapEvent(st,logs)}catch(e){}
   var c=st.c||0;var ringCls=c<=25?' is-danger':c<=45?' is-warn':'';
   var resOn=logs.indexOf('LOG-RES-OPEN')>=0;
+  var sync=(90+Math.round(c/12))+'.'+(day%10);
   var sub=ev==='attack'?(isEn?'⚠ ABERRANT ACTIVITY':'⚠ 변이체 활동 감지'):ev==='warn'?(isEn?'ABERRANT ACTIVITY RISING':'변이체 활동 증가'):(isEn?'SECTOR SYNC STABLE':'구역 동기화 안정');
+  var sm=[[isEn?'CNT':'봉쇄',st.c],[isEn?'RES':'자원',st.r],[isEn?'TRS':'신뢰',st.t],[isEn?'EVL':'평가',st.o]];
   return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
-    h('div',{className:'daycut-map'},
-      h('div',{className:'daycut-ring'+ringCls}),
-      (ev==='attack'||ev==='warn')?h('span',{className:'daycut-x'+(ev==='attack'?' is-hot':'')},'✕'):null,
-      resOn?h('span',{className:'daycut-lamp'}):null),
+    h('div',{className:'daycut-frame'},
+      h('span',{className:'dc-br dc-br-tl'}),h('span',{className:'dc-br dc-br-tr'}),h('span',{className:'dc-br dc-br-bl'}),h('span',{className:'dc-br dc-br-br'}),
+      h('div',{className:'daycut-map'},
+        h('div',{className:'daycut-map-img'}),
+        h('div',{className:'daycut-gridlines'}),
+        h('div',{className:'daycut-sweep'}),
+        h('div',{className:'daycut-ring'+ringCls}),
+        h('span',{className:'daycut-patrol dc-p1'}),
+        h('span',{className:'daycut-patrol dc-p2'}),
+        (ev==='attack'||ev==='warn')?h('span',{className:'daycut-x'+(ev==='attack'?' is-hot':'')},'✕'):null,
+        resOn?h('span',{className:'daycut-lamp'}):null,
+        h('div',{className:'daycut-cam'},isEn?'SAT // GANGWON GRID':'위성 // 강원 GRID'),
+        h('div',{className:'daycut-rec'},'● LIVE')),
+      h('div',{className:'daycut-tele'},'37.52N 129.11E — '+(isEn?'SYNC ':'동기화 ')+sync+'%')),
     h('div',{className:'daycut-day'},'DAY '+day),
+    h('div',{className:'daycut-stats'},sm.map(function(s2){var low=(s2[1]||0)<=25;return h('span',{key:s2[0],className:'daycut-st'+(low?' is-low':'')},s2[0]+' '+(s2[1]||0))})),
     h('div',{className:'daycut-sub'},sub),
     h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
 }
