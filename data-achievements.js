@@ -28,6 +28,7 @@ var ACHIEVEMENTS = [
   { id:'END_D',     steamId:'ENDING_QUIET_FREEDOM',  name:'조용한 자유',           desc:'반란 속의 해방을 얻다.',
     unlock:function(s){return s.endings.indexOf('D')>=0} },
   { id:'END_F',     steamId:'ENDING_CORRUPTED',      name:'[데이터 손상]',         desc:'기록할 수 없는 것을 기록하다.',
+    hidden:true, // 엔딩 갤러리와 동일 정책 — F(OBSERVER 레이어)는 해금 전 비노출
     unlock:function(s){return s.endings.indexOf('F')>=0} },
   { id:'END_G',     steamId:'ENDING_OBSERVER',       name:'관망자',                desc:'개입하지 않는 자로 기록되다.',
     unlock:function(s){return s.endings.indexOf('G')>=0} },
