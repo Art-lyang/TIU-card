@@ -134,6 +134,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .act-2 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.3) brightness(0.7)}
 .act-3 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(20deg) saturate(0.4) brightness(0.6)}
 .act-4 .card-img-bg{filter:grayscale(1) sepia(1) hue-rotate(-10deg) saturate(0.5) brightness(0.5)}
+/* 전용 카드 아트(card.img/tag)는 앰비언트 bg보다 뚜렷하게 노출 — 투자한 아트가 실제로 보이게. opacity가 가시성 조절 지점(앰비언트 0.1 대비). */
 .card-img-bg.is-feature{opacity:0.34}
 .act-1 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(180deg) saturate(0.5) brightness(0.82)}
 .act-2 .card-img-bg.is-feature{filter:grayscale(1) sepia(1) hue-rotate(80deg) saturate(0.45) brightness(0.82)}

@@ -14,6 +14,7 @@
 // 10) 생산되는 LOG가 ORACLE_LOGS에 정의되어 있는지
 // 11) 카드 ID가 문서화된 패밀리/접두사 규칙 안에 있는지
 // 12) ESCAPE_NODES choice.to 가 실제 노드 또는 'ENDING' 인지 (Act4 엔딩 분기)
+// 13) index.html 스크립트 순서(app-init→app) + root↔demo 미러 드리프트(태그/?v=/내용)
 
 const fs = require('fs');
 const path = require('path');
@@ -158,6 +159,9 @@ const issues = {
   sessionDeckActLeaks: [],
   nonstandardCardIds: [],
   escapeNodeRefs: [],
+  htmlScriptOrder: [],
+  htmlMirrorDrift: [],
+  fileMirrorDrift: [],
 };
 
 // === 1) 카드 ID 중복 ===
@@ -497,6 +501,73 @@ for (const [nodeId, node] of Object.entries(ESCAPE_NODES)) {
   });
 }
 
+// === 13) index.html 스크립트 순서 + root↔demo 미러 드리프트 ===
+// 배포가 "root 수정 → demo 손 미러링" 프로세스라 사람이 놓친 드리프트가 런타임 회귀의
+// 단골 원인이다(스크립트 순서 붕괴, ?v= 태그 불일치, 파일 내용 불일치). 여기서 기계적으로 잡는다.
+// 줄바꿈(CRLF/LF)만 다른 경우는 동일 취급 — 역사적으로 root는 CRLF, demo는 LF가 섞여 있다.
+function parseHtmlAssets(html) {
+  const out = [];
+  const re = /<(?:script[^>]*src|link[^>]*href)="([^"?]+)(?:\?v=(\d+))?"/g;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    if (/^https?:/.test(m[1]) || /^data:/.test(m[1])) continue;
+    out.push({ file: m[1], v: m[2] || null });
+  }
+  return out;
+}
+// demo에만 있거나 root에만 있는 게 정상인 파일들 (demo 모드 게이트/클라우드 세이브)
+const MIRROR_ONLY_ROOT = new Set(['firebase-config.js', 'cloud-save.js']);
+const MIRROR_ONLY_DEMO = new Set(['demo-mode.js']);
+
+const rootHtmlPath = path.join(ROOT, 'index.html');
+const demoHtmlPath = path.join(ROOT, 'demo', 'index.html');
+if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
+  const rootAssets = parseHtmlAssets(fs.readFileSync(rootHtmlPath, 'utf8'));
+  const demoAssets = parseHtmlAssets(fs.readFileSync(demoHtmlPath, 'utf8'));
+
+  // 12a) app-init.js 는 app.js 보다 반드시 먼저 로드 (전역 SFX/Save/drawCard 정의 순서)
+  for (const [label, assets] of [['index.html', rootAssets], ['demo/index.html', demoAssets]]) {
+    const idxInit = assets.findIndex(a => a.file === 'app-init.js');
+    const idxApp = assets.findIndex(a => a.file === 'app.js');
+    if (idxInit < 0) issues.htmlScriptOrder.push({ where: label, problem: 'app-init.js 스크립트 태그 없음' });
+    if (idxApp < 0) issues.htmlScriptOrder.push({ where: label, problem: 'app.js 스크립트 태그 없음' });
+    if (idxInit >= 0 && idxApp >= 0 && idxInit > idxApp) {
+      issues.htmlScriptOrder.push({ where: label, problem: 'app-init.js 가 app.js 보다 뒤에 로드됨' });
+    }
+  }
+
+  // 12b) root↔demo 스크립트/CSS 목록·순서·?v= 태그 비교
+  const rootSeq = rootAssets.filter(a => !MIRROR_ONLY_ROOT.has(a.file));
+  const demoSeq = demoAssets.filter(a => !MIRROR_ONLY_DEMO.has(a.file));
+  const demoMap = new Map(demoSeq.map(a => [a.file, a]));
+  const rootMap = new Map(rootSeq.map(a => [a.file, a]));
+  for (const a of rootSeq) {
+    const d = demoMap.get(a.file);
+    if (!d) { issues.htmlMirrorDrift.push({ file: a.file, problem: 'demo/index.html 에 태그 없음' }); continue; }
+    if (a.v !== d.v) issues.htmlMirrorDrift.push({ file: a.file, problem: `?v= 불일치 (root=${a.v} demo=${d.v})` });
+  }
+  for (const d of demoSeq) {
+    if (!rootMap.get(d.file)) issues.htmlMirrorDrift.push({ file: d.file, problem: 'index.html 에 태그 없음 (demo 전용?)' });
+  }
+  const rootOrder = rootSeq.filter(a => demoMap.has(a.file)).map(a => a.file).join('|');
+  const demoOrder = demoSeq.filter(a => rootMap.has(a.file)).map(a => a.file).join('|');
+  if (rootOrder !== demoOrder) {
+    issues.htmlMirrorDrift.push({ file: '(순서)', problem: '공통 스크립트 로드 순서가 root/demo 에서 다름' });
+  }
+
+  // 12c) 파일 내용 드리프트 — index.html 이 참조하는 로컬 js/css 를 EOL 무시하고 비교
+  const norm = s => s.replace(/\r\n/g, '\n');
+  for (const a of rootSeq) {
+    const rp = path.join(ROOT, a.file);
+    const dp = path.join(ROOT, 'demo', a.file);
+    if (!fs.existsSync(rp)) { issues.fileMirrorDrift.push({ file: a.file, problem: 'root 파일 없음' }); continue; }
+    if (!fs.existsSync(dp)) { issues.fileMirrorDrift.push({ file: a.file, problem: 'demo 파일 없음' }); continue; }
+    if (norm(fs.readFileSync(rp, 'utf8')) !== norm(fs.readFileSync(dp, 'utf8'))) {
+      issues.fileMirrorDrift.push({ file: a.file, problem: '내용 불일치 (EOL 제외 실제 diff)' });
+    }
+  }
+}
+
 const stats = {
   files: { loaded: DATA_FILES.length - loadErrors.length, failed: loadErrors.length },
   cards: { total: ALL_CARDS.length, uniqueIds: CARD_IDS.size, byArray: Object.fromEntries(Object.entries(cardsByArray).map(([k,v]) => [k, v.length])) },
@@ -553,6 +624,9 @@ warn(issues.cardStructure, '카드 구조 이상', x => x.id + '  [' + x.problem
 
 warn(issues.sessionDeckActLeaks, 'session deck minAct보다 이른 act 포함', x => x.id + ' [' + x.pack + '] act=' + x.act.join(',') + ' minAct=' + x.minAct + ' (' + x.from + ')');
 warn(issues.escapeNodeRefs, 'ESCAPE_NODES choice.to 참조 깨짐', x => x.node + (x.choiceIdx >= 0 ? '[' + x.choiceIdx + ']' : '') + ' → ' + x.to + ' (' + x.reason + ')');
+warn(issues.htmlScriptOrder, 'index.html 스크립트 순서 위반', x => x.where + ' — ' + x.problem);
+warn(issues.htmlMirrorDrift, 'root↔demo index.html 드리프트', x => x.file + ' — ' + x.problem);
+warn(issues.fileMirrorDrift, 'root↔demo 파일 내용 드리프트', x => x.file + ' — ' + x.problem);
 
 const totalIssues = Object.values(issues).reduce((a, b) => a + b.length, 0);
 section(totalIssues === 0 ? '이슈 0건 — 정적 검증 통과' : '총 이슈 ' + totalIssues + '건');
