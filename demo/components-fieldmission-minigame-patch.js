@@ -86,6 +86,8 @@ function FieldMission(p){
       'M-008':IMG.mission_m008,
       'M-009':IMG.mission_m009,
       'M-010':IMG.mission_m010,
+      'M-E01':IMG.card_raid_aftermath,
+      'M-E04':IMG.bg_corridor_b1,
       'MI-01':IMG.incident_mi01,
       'MI-02':IMG.incident_mi02,
       'MI-03':IMG.incident_mi03,

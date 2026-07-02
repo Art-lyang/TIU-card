@@ -23,6 +23,13 @@
     incident_mi05: 'assets/images/missions/incident_mi05_missing_route_hero.jpg',
     // spec_* 키는 images.js가 최종(_hq) 경로를 직접 가리킨다 — 패치 불필요
 
+    // 2026-07 신규 아트 배치 (채팅 업로드분 — 해안기지/복도/관제실/연구원/습격후/침투조)
+    bg_base_coast: 'assets/images/backgrounds/bg_base_coast.jpg',
+    bg_corridor_b1: 'assets/images/backgrounds/bg_corridor_b1.jpg',
+    bg_control_room: 'assets/images/backgrounds/bg_control_room.jpg',
+    card_researcher_lab: 'assets/images/cards/card_researcher_lab.jpg',
+    card_raid_aftermath: 'assets/images/cards/card_raid_aftermath.jpg',
+    card_prometheus_infil: 'assets/images/cards/card_prometheus_infil.jpg',
     card_core_jaehyuk_overnight_data: 'assets/images/cards/core/card_core_jaehyuk_overnight_data.jpg',
     card_core_haeun_usb: 'assets/images/cards/core/card_core_haeun_usb.jpg',
     card_core_haeun_surveillance: 'assets/images/cards/core/card_core_haeun_surveillance.jpg',
@@ -150,6 +157,8 @@
   });
 
   var CARD_IMAGE_PATCHES = {
+    'CE-036': 'card_researcher_lab',      // 윤세진 이변체 샘플 연구
+    'C-052': 'card_prometheus_infil',     // 프로메테우스 정찰 드론 잔해
     'C-001': 'card_core_officers_command_room',
     'C-004': 'card_core_lab_corridor',
     'C-005': 'card_core_oracle_firmware',
