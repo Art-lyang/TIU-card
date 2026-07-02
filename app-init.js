@@ -433,8 +433,13 @@ var clearLocalStoragePrefix=function(prefix){
   }catch(e){}
 };
 
+// 저장 실패 가시화: localStorage 차단/쿼터 초과 시 조용히 유실되는 대신 1회 배너로 알린다 (TWA/웹뷰 대비)
+var __tsSaveFailShown=false;
+var notifySaveFailure=function(){if(__tsSaveFailShown)return;__tsSaveFailShown=true;try{var en=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');var d=document.createElement('div');d.id='ts-save-fail';d.textContent=en?'⚠ SAVE FAILED — progress may not persist on this device':'⚠ 저장 실패 — 이 기기에 진행 상황이 보존되지 않을 수 있습니다';d.style.cssText='position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:99999;background:rgba(60,8,8,.96);color:#ffb0a8;border:1px solid rgba(255,90,72,.6);padding:8px 14px;font:12px sans-serif;border-radius:4px;max-width:92vw;text-align:center';document.body.appendChild(d);setTimeout(function(){try{d.remove()}catch(e){}},9000)}catch(e){}};
+// 손상 세이브 방어: 배열 키가 비배열로 파싱되면 기본값으로 대체 (크래시 루프 차단)
+var arrOr=function(v,def){return Array.isArray(v)?v:def};
 var Save={
-  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));if(typeof CloudSave!=='undefined'&&CloudSave&&typeof CloudSave.markDirty==='function')CloudSave.markDirty(k)}catch(e){}},
+  set:function(k,v){try{localStorage.setItem(k,JSON.stringify(v));if(typeof CloudSave!=='undefined'&&CloudSave&&typeof CloudSave.markDirty==='function')CloudSave.markDirty(k)}catch(e){notifySaveFailure()}},
   get:function(k,def){try{var d=localStorage.getItem(k);if(!d)return def;var parsed=JSON.parse(d);if(k==='ts_game'){var fixed=normalizeGameSave(parsed);if(fixed&&fixed.__normalized){var hardNormalized=fixed.__normalized===true;fixed=cleanGameSaveMeta(fixed);Save.set(k,fixed);try{var fixedLogs=sanitizeSnapshotLogsForGame(Save.get('ts_logs',['LOG-001']),fixed,hardNormalized);Save.saveLogs(ensureProgressLogsForGame(fixedLogs,fixed))}catch(e){}}return fixed}return parsed}catch(e){return def}},
   del:function(k){try{localStorage.removeItem(k);if(typeof CloudSave!=='undefined'&&CloudSave&&typeof CloudSave.markDirty==='function')CloudSave.markDirty(k)}catch(e){}},
   saveGame:function(s,g,a,af,tr,cd,rc,ct,cq,pb,cm,ph){
@@ -453,14 +458,14 @@ var Save={
   },
   clearGame:function(){preserveSnapshotSlots(function(){Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_recentNews');Save.del('ts_recentRewards');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_sessionDeck');Save.del('ts_resourceReserveUsed');Save.del('ts_activeMission');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');Save.del('ts_eveningLineState');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck()})},
   saveLogs:function(ids){Save.set('ts_logs',ids)},
-  getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
-  saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
-  getEndings:function(){return Save.get('ts_endings',[])},
-  getSessions:function(){return Save.get('ts_sessions',0)},
+  getLogs:function(){return arrOr(Save.get('ts_logs',['LOG-001']),['LOG-001'])},
+  saveEnding:function(id){var e=arrOr(Save.get('ts_endings',[]),[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
+  getEndings:function(){return arrOr(Save.get('ts_endings',[]),[])},
+  getSessions:function(){var n=Save.get('ts_sessions',0);return(typeof n==='number'&&isFinite(n))?n:0},
   incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
-  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
-  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])},
-  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return Save.get('ts_seenArchive',[])},
+  saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return arrOr(Save.get('ts_usedDlg',[]),[])},
+  saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return arrOr(Save.get('ts_usedEvening',[]),[])},
+  saveSeenArchive:function(ids){Save.set('ts_seenArchive',ids)},getSeenArchive:function(){return arrOr(Save.get('ts_seenArchive',[]),[])},
   getFacility:function(){return Save.get('ts_facility',null)},
   saveFacility:function(data){Save.set('ts_facility',data)},
   getResearch:function(){return Save.get('ts_research',null)},

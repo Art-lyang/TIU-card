@@ -7,6 +7,7 @@
 
 - 진단 에이전트(`.claude/agents/`)는 코드를 수정하지 않는다. 리포트만 생성한다.
 - 모든 데이터 파일 변경 후 `node tools/validator.js`를 실행한다.
+- 배포 전 캐시 태그는 `node tools/stamp-cache.js`로 일괄 스탬프한다. 개별 `?v=` 수동 범프는 하지 않는다.
 - 커밋 전 `integrity-verifier` 에이전트를 통과해야 한다.
 - 개인 경로, API 키, 계정 정보를 파일에 기록하지 않는다.
 - `_workspace/`는 git에 포함하지 않는다.

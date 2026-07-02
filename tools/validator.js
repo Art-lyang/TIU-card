@@ -557,13 +557,55 @@ if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
 
   // 13c) 파일 내용 드리프트 — index.html 이 참조하는 로컬 js/css 를 EOL 무시하고 비교
   const norm = s => s.replace(/\r\n/g, '\n');
+  const rootSrcCache = new Map(); // 13d 에서 재사용
   for (const a of rootSeq) {
     const rp = path.join(ROOT, a.file);
     const dp = path.join(ROOT, 'demo', a.file);
     if (!fs.existsSync(rp)) { issues.fileMirrorDrift.push({ file: a.file, problem: 'root 파일 없음' }); continue; }
     if (!fs.existsSync(dp)) { issues.fileMirrorDrift.push({ file: a.file, problem: 'demo 파일 없음' }); continue; }
-    if (norm(fs.readFileSync(rp, 'utf8')) !== norm(fs.readFileSync(dp, 'utf8'))) {
+    const rSrc = fs.readFileSync(rp, 'utf8');
+    rootSrcCache.set(a.file, rSrc);
+    if (norm(rSrc) !== norm(fs.readFileSync(dp, 'utf8'))) {
       issues.fileMirrorDrift.push({ file: a.file, problem: '내용 불일치 (EOL 제외 실제 diff)' });
+    }
+  }
+
+  // 13d) data-dialogues-susp.js 는 DIALOGUES 에 push 하는 모든 파일 뒤에 로드
+  // (used-추적이 배열 인덱스 기반이라 순서가 바뀌면 크래시 없이 잘못된 대사가 나오는 침묵형 버그)
+  const SUSP = 'data-dialogues-susp.js';
+  const suspIdx = rootSeq.findIndex(a => a.file === SUSP);
+  if (suspIdx >= 0) {
+    rootSeq.forEach((a, idx) => {
+      if (a.file === SUSP || !a.file.endsWith('.js')) return;
+      const src = rootSrcCache.get(a.file);
+      if (src && /DIALOGUES\.push/.test(src) && idx > suspIdx) {
+        issues.htmlScriptOrder.push({ where: 'index.html', problem: a.file + ' 이 ' + SUSP + ' 보다 뒤에서 DIALOGUES.push (인덱스 추적 붕괴)' });
+      }
+    });
+  }
+
+  // 13e) 런타임 CARDS concat 커버리지 — 카드 배열을 정의해놓고 app-init.js 의
+  // `var CARDS = ...concat(...)` 식에 넣는 걸 잊으면, validator(ALL_CARDS)에는 잡히는데
+  // 실제 게임 덱에는 영영 안 들어간다. 여기서 concat 식에 배열 이름이 등장하는지 대조한다.
+  // concat 에 없어도 정상인 배열(다른 배열로 push 주입되거나 별도 시스템이 소비):
+  const CONCAT_EXEMPT = new Set([
+    'CARDS_ESCAPE_EXTRA',     // data-act4-escape.js 가 CARDS_ACT4 로 push
+    'CARDS_LJC_PROMETHEUS',   // data-cards-prometheus-lee.js 가 CARDS_STORY 로 push
+  ]);
+  const appInitPath = path.join(ROOT, 'app-init.js');
+  if (fs.existsSync(appInitPath)) {
+    const initSrc = fs.readFileSync(appInitPath, 'utf8');
+    const concatMatch = initSrc.match(/var CARDS\s*=\s*[^;]+;/);
+    if (!concatMatch) {
+      issues.htmlScriptOrder.push({ where: 'app-init.js', problem: 'var CARDS = ...concat 식을 찾지 못함 (검사 13e 무력화)' });
+    } else {
+      const concatSrc = concatMatch[0];
+      for (const name of Object.keys(cardsByArray)) {
+        if (CONCAT_EXEMPT.has(name)) continue;
+        if (!new RegExp('\\b' + name + '\\b').test(concatSrc)) {
+          issues.htmlScriptOrder.push({ where: 'app-init.js', problem: '카드 배열 ' + name + ' 이 CARDS concat 식에 없음 (덱 미포함)' });
+        }
+      }
     }
   }
 }

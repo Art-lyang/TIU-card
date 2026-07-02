@@ -27,7 +27,7 @@
 
 | 도구 | 용도 |
 |------|------|
-| `node tools/validator.js` | 정적 무결성 12항목 (모든 데이터 변경 후 필수) |
+| `node tools/validator.js` | 정적 무결성 13항목 (스크립트 순서·root↔demo 미러 드리프트 포함) (모든 데이터 변경 후 필수) |
 | `node tools/i18n-smoke.js` | i18n 키 스모크 |
 | `node tools/check_ending_routes.js` | 엔딩 루트 정적 점검 |
 | `python tools/simulator_v3.py [N] [profile]` | 성격 프로필 시뮬 (all/comply/rebel/careful/explorer/newbie), 결과 `_workspace/sim-results/` |
