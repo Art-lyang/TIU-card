@@ -510,7 +510,7 @@ function parseHtmlAssets(html) {
   const re = /<(?:script[^>]*src|link[^>]*href)="([^"?]+)(?:\?v=(\d+))?"/g;
   let m;
   while ((m = re.exec(html)) !== null) {
-    if (/^https?:/.test(m[1]) || /^data:/.test(m[1])) continue;
+    if (/^(https?:|data:|\/\/)/.test(m[1])) continue;
     out.push({ file: m[1], v: m[2] || null });
   }
   return out;
@@ -525,7 +525,7 @@ if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
   const rootAssets = parseHtmlAssets(fs.readFileSync(rootHtmlPath, 'utf8'));
   const demoAssets = parseHtmlAssets(fs.readFileSync(demoHtmlPath, 'utf8'));
 
-  // 12a) app-init.js 는 app.js 보다 반드시 먼저 로드 (전역 SFX/Save/drawCard 정의 순서)
+  // 13a) app-init.js 는 app.js 보다 반드시 먼저 로드 (전역 SFX/Save/drawCard 정의 순서)
   for (const [label, assets] of [['index.html', rootAssets], ['demo/index.html', demoAssets]]) {
     const idxInit = assets.findIndex(a => a.file === 'app-init.js');
     const idxApp = assets.findIndex(a => a.file === 'app.js');
@@ -536,7 +536,7 @@ if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
     }
   }
 
-  // 12b) root↔demo 스크립트/CSS 목록·순서·?v= 태그 비교
+  // 13b) root↔demo 스크립트/CSS 목록·순서·?v= 태그 비교
   const rootSeq = rootAssets.filter(a => !MIRROR_ONLY_ROOT.has(a.file));
   const demoSeq = demoAssets.filter(a => !MIRROR_ONLY_DEMO.has(a.file));
   const demoMap = new Map(demoSeq.map(a => [a.file, a]));
@@ -555,7 +555,7 @@ if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
     issues.htmlMirrorDrift.push({ file: '(순서)', problem: '공통 스크립트 로드 순서가 root/demo 에서 다름' });
   }
 
-  // 12c) 파일 내용 드리프트 — index.html 이 참조하는 로컬 js/css 를 EOL 무시하고 비교
+  // 13c) 파일 내용 드리프트 — index.html 이 참조하는 로컬 js/css 를 EOL 무시하고 비교
   const norm = s => s.replace(/\r\n/g, '\n');
   for (const a of rootSeq) {
     const rp = path.join(ROOT, a.file);
