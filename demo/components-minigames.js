@@ -216,15 +216,15 @@ var FIELD_MINIGAME_LIBRARY = {
     id: 'strike',
     kind: 'STRIKE DESIGNATION',
     ko: {
-      title: '타격 표적 지정',
-      intro: '드론 판독으로 구획별 신호를 대조해 통신 장비 구획 두 곳을 표적으로 지정한다. 인체 열원 구획은 사격선에서 제외해야 한다.',
-      action: '표적 확정',
+      title: '정밀 타격 통제',
+      intro: '해안 강풍에 표류하는 조준경을 읽는다. 조준경이 통신 장비 구획(◆) 위에 오는 순간 사격한다. 민간인(□) 근처에서는 절대 사격하지 않는다.',
+      action: '사격',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
-      title: 'Strike Designation',
-      intro: 'Cross-read drone returns and designate the two comms-equipment blocks. Blocks with human heat must stay off the firing line.',
-      action: 'Confirm Targets',
+      title: 'Precision Strike Control',
+      intro: 'The reticle drifts in the coastal wind. Fire the moment it crosses a comms block (\u25c6). Never fire near a civilian (\u25a1).',
+      action: 'FIRE',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
   },
@@ -1157,7 +1157,7 @@ var MINI_CONTROLS = {
   reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
   screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'},
-  strike:{ko:'전파 반응이 강한 통신 장비 구획 두 곳을 표시한 뒤 [표적 확정]을 누른다. 열원이 인체인 구획은 피할 것.',en:'Mark the two blocks with strong RF returns, then press [Confirm Targets]. Avoid blocks with human heat.'}
+  strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'}
 };
 function MinigameOnboarding(p){
   var en=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
@@ -1188,84 +1188,83 @@ function MinigameOnboarding(p){
 
 function StrikeMiniGame(p){
   var copy=p.copy;
-  var suites=[
-    { answer:['b2','b4'], blocks:[
-      {id:'b1',nameKo:'구획 A',nameEn:'Block A',rf:'none',heat:'human',vib:'none'},
-      {id:'b2',nameKo:'구획 B',nameEn:'Block B',rf:'strong',heat:'machine',vib:'steady'},
-      {id:'b3',nameKo:'구획 C',nameEn:'Block C',rf:'weak',heat:'none',vib:'none'},
-      {id:'b4',nameKo:'구획 D',nameEn:'Block D',rf:'strong',heat:'machine',vib:'steady'},
-      {id:'b5',nameKo:'구획 E',nameEn:'Block E',rf:'none',heat:'human',vib:'none'}
-    ]},
-    { answer:['b1','b3'], blocks:[
-      {id:'b1',nameKo:'구획 A',nameEn:'Block A',rf:'strong',heat:'machine',vib:'steady'},
-      {id:'b2',nameKo:'구획 B',nameEn:'Block B',rf:'none',heat:'human',vib:'none'},
-      {id:'b3',nameKo:'구획 C',nameEn:'Block C',rf:'strong',heat:'machine',vib:'steady'},
-      {id:'b4',nameKo:'구획 D',nameEn:'Block D',rf:'weak',heat:'none',vib:'none'},
-      {id:'b5',nameKo:'구획 E',nameEn:'Block E',rf:'none',heat:'human',vib:'none'}
-    ]}
-  ];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
   var labels=locale==='en'
-    ? { kind:'STRIKE DESIGNATION', time:'TIME', mark:'TARGET', rf:'RF', heat:'HEAT', vib:'VIB' }
-    : { kind:'타격 표적 지정', time:'시간', mark:'표적', rf:'전파', heat:'열원', vib:'진동' };
-  var valueKo={ strong:'강', weak:'약', none:'없음', human:'인체', machine:'기계', steady:'규칙' };
-  function readingValue(value){
-    return locale==='en'?String(value).toUpperCase():(valueKo[value]||value);
-  }
-  var suiteRef=useRef(null);
-  if(!suiteRef.current)suiteRef.current=suites[Math.floor(Math.random()*suites.length)];
-  var suite=suiteRef.current;
-  var _selected=useState([]),selected=_selected[0],setSelected=_selected[1];
-  var _time=useState(16),time=_time[0],setTime=_time[1];
+    ? { kind:'PRECISION STRIKE', time:'TIME', shots:'ROUNDS', hit:'HIT' }
+    : { kind:'정밀 타격', time:'시간', shots:'탄', hit:'명중' };
+  var targetsRef=useRef([{x:27,y:40,hit:false},{x:73,y:52,hit:false}]);
+  var _tick=useState(0),tick=_tick[0],setTick=_tick[1];
+  var _shots=useState(3),shots=_shots[0],setShots=_shots[1];
+  var _flash=useState(null),flash=_flash[0],setFlash=_flash[1];
   var finished=useRef(false);
-
-  useEffect(function(){
-    if(finished.current)return;
-    if(time<=0){ finished.current=true; finalize(selected); return; }
-    var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
-    return function(){clearTimeout(t);};
-  },[time,selected]);
-
-  function toggle(id){
-    if(finished.current)return;
-    setSelected(function(prev){
-      if(prev.indexOf(id)>=0)return prev.filter(function(v){return v!==id;});
-      if(prev.length>=2)return prev;
-      return prev.concat([id]);
-    });
+  var t0Ref=useRef(null);
+  var DUR=20;
+  function retPos(el){
+    return { x:50+34*Math.sin(el*0.9)+8*Math.sin(el*2.3), y:45+24*Math.sin(el*1.25+1.7)+6*Math.cos(el*2.9) };
   }
-
-  function finalize(picks){
-    var chosen=(picks||selected).slice();
-    // 인체 열원 구획을 표적으로 지정 = 즉시 실패 (사격선에 민간인)
-    var humanPick=chosen.some(function(id){var b=null;for(var i=0;i<suite.blocks.length;i++){if(suite.blocks[i].id===id){b=suite.blocks[i];break}}return b&&b.heat==='human';});
-    if(humanPick){ p.onDone('fail'); return; }
-    var hit=chosen.filter(function(id){return suite.answer.indexOf(id)>=0;}).length;
-    if(hit===2&&chosen.length===2)p.onDone(time>=8?'great':'success');
-    else if(hit===1)p.onDone('partial');
+  function civPos(el,i){
+    var t=targetsRef.current[i%2];
+    return { x:t.x+16*Math.sin(el*0.65+i*2.1), y:t.y+11*Math.cos(el*0.8+i*1.3) };
+  }
+  function dist(a,b){var dx=a.x-b.x,dy=a.y-b.y;return Math.sqrt(dx*dx+dy*dy);}
+  function finalize(civFail,elNow){
+    var hits=targetsRef.current.filter(function(t){return t.hit}).length;
+    if(civFail){p.onDone('fail');return;}
+    if(hits===2)p.onDone((DUR-elNow)>=8?'great':'success');
+    else if(hits===1)p.onDone('partial');
     else p.onDone('fail');
   }
-
+  useEffect(function(){
+    t0Ref.current=performance.now();
+    var raf;var loop=function(now){
+      if(finished.current)return;
+      var el=(now-t0Ref.current)/1000;
+      if(el>=DUR){finished.current=true;finalize(false,el);return;}
+      setTick(el);
+      raf=requestAnimationFrame(loop);
+    };
+    raf=requestAnimationFrame(loop);
+    return function(){cancelAnimationFrame(raf);};
+  },[]);
+  function fire(){
+    if(finished.current||shots<=0)return;
+    var elNow=(performance.now()-t0Ref.current)/1000;
+    var r=retPos(elNow);
+    setFlash({x:r.x,y:r.y,k:elNow});
+    var civHit=[civPos(elNow,0),civPos(elNow,1)].some(function(c){return dist(c,r)<10;});
+    if(civHit){finished.current=true;setTimeout(function(){finalize(true,elNow);},380);return;}
+    targetsRef.current=targetsRef.current.map(function(t){
+      if(!t.hit&&dist(t,r)<9)return {x:t.x,y:t.y,hit:true};
+      return t;
+    });
+    var ns=shots-1;setShots(ns);
+    var hits=targetsRef.current.filter(function(t){return t.hit}).length;
+    if(hits===2){finished.current=true;setTimeout(function(){finalize(false,elNow);},420);return;}
+    if(ns<=0){finished.current=true;setTimeout(function(){finalize(false,elNow);},420);}
+  }
+  var el=tick,remain=Math.max(0,Math.ceil(DUR-el));
+  var ret=retPos(el);
+  var civs=[civPos(el,0),civPos(el,1)];
+  var targets=targetsRef.current;
+  var bg=(typeof MISSIONS!=='undefined'&&MISSIONS['M-007']&&MISSIONS['M-007'].hero)||null;
   return h(FieldTerminalShell,{
     code:'M-007',kind:labels.kind,title:copy.title,intro:copy.intro,
-    status:[{k:labels.time,v:time+'s',cls:time<=2?'is-bad':''},{k:labels.mark,v:selected.length+'/2'}]
+    status:[{k:labels.time,v:remain+'s',cls:remain<=3?'is-bad':''},{k:labels.shots,v:String(shots)},{k:labels.hit,v:targets.filter(function(t){return t.hit}).length+'/2'}]
   },
-    h('div',{className:'fm-term-stage',style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:12,padding:'16px',alignContent:'start'}},
-      suite.blocks.map(function(block){
-        var active=selected.indexOf(block.id)>=0;
-        return h('button',{
-          key:block.id,className:'btn',onClick:function(){toggle(block.id);},
-          style:{minHeight:110,borderRadius:'16px',padding:'12px 14px',textAlign:'left',background:active?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.92)',border:'1px solid '+(active?'rgba(120,255,190,0.5)':'rgba(122,255,198,0.18)'),color:'rgba(210,235,220,0.86)',fontSize:13,lineHeight:1.55}
-        },
-          h('div',{style:{fontSize:15,fontWeight:'700',marginBottom:6,color:active?'#ecfff4':'#78ffbe'}},locale==='en'?block.nameEn:block.nameKo),
-          h('div',null,labels.rf+': '+readingValue(block.rf)),
-          h('div',null,labels.heat+': '+readingValue(block.heat)),
-          h('div',null,labels.vib+': '+readingValue(block.vib))
-        );
-      })
+    h('div',{className:'fm-term-stage',style:{position:'relative',height:260,overflow:'hidden',cursor:'crosshair'},onClick:fire},
+      bg?h('div',{style:{position:'absolute',inset:0,backgroundImage:'url('+bg+')',backgroundSize:'cover',backgroundPosition:'center',filter:'grayscale(1) brightness(.45)',opacity:.55,pointerEvents:'none'}}):null,
+      h('div',{style:{position:'absolute',inset:0,pointerEvents:'none',background:'repeating-linear-gradient(0deg,transparent 0 23px,rgba(122,255,198,.08) 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,rgba(122,255,198,.08) 23px 24px)'}}),
+      targets.map(function(t,i){return h('div',{key:'t'+i,style:{position:'absolute',left:t.x+'%',top:t.y+'%',width:56,height:56,margin:'-28px 0 0 -28px',pointerEvents:'none',border:'1px dashed '+(t.hit?'rgba(255,90,72,.9)':'rgba(122,255,198,.55)'),borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',color:t.hit?'#ff5a48':'rgba(122,255,198,.85)',fontSize:12,fontFamily:"'Share Tech Mono',monospace"}},t.hit?'✕':'◆');}),
+      civs.map(function(c,i){return h('div',{key:'c'+i,style:{position:'absolute',left:c.x+'%',top:c.y+'%',width:8,height:8,margin:'-4px 0 0 -4px',pointerEvents:'none',background:'rgba(255,255,255,.88)',borderRadius:2,boxShadow:'0 0 6px rgba(255,255,255,.5)'}});}),
+      h('div',{style:{position:'absolute',left:ret.x+'%',top:ret.y+'%',width:34,height:34,margin:'-17px 0 0 -17px',pointerEvents:'none'}},
+        h('div',{style:{position:'absolute',inset:0,border:'1px solid rgba(255,196,90,.95)',borderRadius:'50%',boxShadow:'0 0 10px rgba(255,196,90,.4)'}}),
+        h('div',{style:{position:'absolute',left:'50%',top:-6,bottom:-6,width:1,background:'rgba(255,196,90,.8)'}}),
+        h('div',{style:{position:'absolute',top:'50%',left:-6,right:-6,height:1,background:'rgba(255,196,90,.8)'}})),
+      flash?h('div',{key:'f'+flash.k,style:{position:'absolute',left:flash.x+'%',top:flash.y+'%',width:14,height:14,margin:'-7px 0 0 -7px',pointerEvents:'none',borderRadius:'50%',background:'rgba(255,196,90,.9)',boxShadow:'0 0 20px rgba(255,196,90,.85)'}}):null,
+      h('div',{style:{position:'absolute',left:8,bottom:6,pointerEvents:'none',fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:1,color:'rgba(255,255,255,.6)'}},locale==='en'?'\u25a1 CIVILIAN — DO NOT FIRE NEAR':'\u25a1 민간인 — 근처 사격 금지')
     ),
     h('div',{className:'fm-term-actions'},
-      h('button',{className:'fm-term-btn is-amber',disabled:selected.length===0,onClick:function(){if(!finished.current){finished.current=true;finalize(selected);}}},copy.action))
+      h('button',{className:'fm-term-btn is-amber',onClick:function(e){e.stopPropagation();fire();}},copy.action))
   );
 }
 
