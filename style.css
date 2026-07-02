@@ -1331,3 +1331,15 @@ b.fm-rk--info{color:#caa14a}
 
 /* 화면효과 끔: 상시 풀스크린 블렌드 레이어(스캔라인/오버레이)도 끈다 — 저사양 GPU 합성 부담 제거 */
 #root.fx-off ~ .screen-overlay,#root.fx-off ~ .scanline{display:none}
+
+/* ── 아카이브 개편: 카테고리 2열 그리드 + 전체 해금 진행바 (페이저 제거) ── */
+.vw-prog{height:5px;border:1px solid rgba(var(--ui-rgb),.22);border-radius:99px;background:rgba(3,8,10,.6);overflow:hidden;margin:0 0 11px}
+.vw-prog-fill{height:100%;background:linear-gradient(90deg,rgba(var(--ui-rgb),.55),var(--ui));border-radius:99px;transition:width .4s ease}
+.vw-cat-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.vw-cat-cell{display:flex;flex-direction:column;gap:5px;padding:10px 11px;border:1px solid rgba(var(--ui-rgb),.18);border-radius:var(--r-sm);background:linear-gradient(180deg,rgba(var(--ui-rgb),.06),rgba(4,9,11,.3));cursor:pointer;min-height:56px;justify-content:center;transition:border-color .15s ease,background .15s ease,transform .15s ease}
+.vw-cat-cell:hover{border-color:rgba(var(--ui-rgb),.5);background:linear-gradient(180deg,rgba(var(--ui-rgb),.12),rgba(4,9,11,.35));transform:translateY(-1px)}
+.vw-cat-cell.is-empty{opacity:.42;cursor:default;border-style:dashed}
+.vw-cat-cell.is-new{border-left:2px solid var(--ui)}
+.vw-cat-cell-name{font-size:12.5px;font-weight:700;color:var(--ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vw-cat-cell.is-empty .vw-cat-cell-name{color:rgba(var(--ui-rgb),.35);font-weight:400}
+.vw-cat-cell-meta{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:9.5px;color:rgba(var(--ui-rgb),.5)}
