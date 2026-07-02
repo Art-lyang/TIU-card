@@ -69,6 +69,64 @@ function renderEvidenceInsights(unlocked, compact) {
     }));
 }
 
+// ── 수사 보드 뷰 — 증거를 핀으로 배치하고 조합을 선으로 연결 ──
+// 완성된 통찰(unlocked combo) = 앰버 실선, 현재 선택 중 = 점선(--ui).
+// 사용(비활성) 증거도 흐리게 남겨 보드의 누적감을 유지한다. 표시 전용 SVG — 판정 로직 불관여.
+function evidenceBoardHash(s){var x=0;for(var i=0;i<s.length;i++)x=(x*31+s.charCodeAt(i))>>>0;return x}
+function EvidenceBoard(p){
+  var items=p.items||[];            // allCollected (활성+사용)
+  var activeIds=p.activeIds||[];    // 선택 가능한 활성 증거 id
+  var selected=p.selected||[];
+  var unlockedCombos=p.unlockedCombos||[];
+  var catColor=p.catColor||{};
+  if(!items.length)return null;
+  var cols=3,rows=Math.max(1,Math.ceil(items.length/cols));
+  var H=Math.max(240,rows*92+24);
+  // 결정적 배치: 수집 순서 그리드 + id 해시 지터 (같은 세션에선 항상 같은 자리)
+  var pos={};
+  items.forEach(function(ev,i){
+    var col=i%cols,row=Math.floor(i/cols);
+    var jx=(evidenceBoardHash(ev.id)%11)-5, jy=(evidenceBoardHash(ev.id+'y')%9)-4;
+    var x=Math.max(10,Math.min(90,col*33.3+16.7+jx));
+    var y=Math.max(7,Math.min(93,((row+0.5)/rows)*100+jy));
+    pos[ev.id]={x:x,y:y};
+  });
+  var linePairs=function(ids){var out=[];for(var i=0;i<ids.length;i++)for(var j=i+1;j<ids.length;j++)out.push([ids[i],ids[j]]);return out};
+  var comboLines=[];
+  (typeof EVIDENCE_COMBOS!=='undefined'?EVIDENCE_COMBOS:[]).forEach(function(c){
+    if(unlockedCombos.indexOf(c.id)<0)return;
+    linePairs(c.combo||[]).forEach(function(pr){
+      if(pos[pr[0]]&&pos[pr[1]])comboLines.push(pr);
+    });
+  });
+  var selLines=linePairs(selected).filter(function(pr){return pos[pr[0]]&&pos[pr[1]]});
+  return h('div',{className:'evb-board',style:{height:H}},
+    h('svg',{className:'evb-lines',width:'100%',height:'100%','aria-hidden':true},
+      comboLines.map(function(pr,i){
+        var a=pos[pr[0]],b=pos[pr[1]];
+        return h('line',{key:'c'+i,x1:a.x+'%',y1:a.y+'%',x2:b.x+'%',y2:b.y+'%',stroke:'rgba(240,160,48,.5)',strokeWidth:1.5});
+      }),
+      selLines.map(function(pr,i){
+        var a=pos[pr[0]],b=pos[pr[1]];
+        return h('line',{key:'s'+i,x1:a.x+'%',y1:a.y+'%',x2:b.x+'%',y2:b.y+'%',stroke:'rgba(var(--ui-rgb),.75)',strokeWidth:1.5,strokeDasharray:'5 4',className:'evb-line-sel'});
+      })),
+    items.map(function(ev){
+      var pt=pos[ev.id];
+      var isActive=activeIds.indexOf(ev.id)>=0;
+      var isSel=selected.indexOf(ev.id)>=0;
+      var cc=catColor[ev.cat]||'var(--ui)';
+      return h('div',{key:ev.id,className:'evb-pin'+(isSel?' is-sel':'')+(isActive?'':' is-used'),
+          style:{left:pt.x+'%',top:pt.y+'%'},
+          onClick:isActive?function(){p.onToggle(ev.id)}:undefined},
+        h('span',{className:'evb-dot',style:{background:cc,boxShadow:isSel?'0 0 10px '+cc:'none'}}),
+        h('span',{className:'evb-name'},ev.name),
+        !isActive&&h('span',{className:'evb-done'},'✓'));
+    }),
+    h('div',{className:'evb-legend'},
+      h('span',null,h('i',{className:'evb-lg evb-lg--combo'}),evidenceText('통찰','INSIGHT')),
+      h('span',null,h('i',{className:'evb-lg evb-lg--sel'}),evidenceText('선택 중','SELECTING'))));
+}
+
 function EvidenceTable(p) {
   var logs = p.logs || [];
   var allCollected = getCollectedEvidence(logs).map(localizeEvidenceRecord);
@@ -77,6 +135,7 @@ function EvidenceTable(p) {
   var s1 = useState([]), selected = s1[0], setSelected = s1[1];
   var s2 = useState(null), result = s2[0], setResult = s2[1];
   var s3 = useState(!!p.forceOpen), show = s3[0], setShow = s3[1];
+  var s4 = useState((function(){try{return localStorage.getItem('ts_evidenceView')||'board'}catch(e){return 'board'}})()), viewMode = s4[0], setViewMode = s4[1];
   var activeIds = collected.map(function(ev) { return ev.id; }).join('|');
 
   useEffect(function() {
@@ -180,16 +239,25 @@ function EvidenceTable(p) {
     h('div', { style: { display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 } },
       h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
         color: 'var(--ui)', letterSpacing: 2 } }, evidenceText('조사테이블 ', 'EVIDENCE TABLE ') + '(' + collected.length + '/' + allCollected.length + ')'),
-      h('div', { onClick: function() { setShow(false) }, style: { cursor: 'pointer',
+      h('div', { style: { display: 'flex', gap: 6 } },
+        h('div', { onClick: function() { var nm = viewMode === 'board' ? 'list' : 'board'; setViewMode(nm); try { localStorage.setItem('ts_evidenceView', nm) } catch (e) {} }, style: { cursor: 'pointer',
+          padding: '4px 10px', border: '1px solid rgba(var(--ui-rgb),.25)',
+          borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
+          fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
+          color: 'var(--ui)', letterSpacing: 1 } }, viewMode === 'board' ? evidenceText('목록', 'LIST') : evidenceText('보드', 'BOARD')),
+        h('div', { onClick: function() { setShow(false) }, style: { cursor: 'pointer',
         padding: '4px 12px', border: '1px solid rgba(var(--ui-rgb),.25)',
         borderRadius: 2, background: 'rgba(var(--ui-rgb),.04)',
         fontFamily: "'Share Tech Mono',monospace", fontSize: 10,
-        color: 'rgba(var(--ui-rgb),.6)', letterSpacing: 1 } }, '\u25B2 ' + evidenceText('닫기', 'CLOSE'))),
+        color: 'rgba(var(--ui-rgb),.6)', letterSpacing: 1 } }, '\u25B2 ' + evidenceText('닫기', 'CLOSE')))),
 
     // 스크롤 영역 (증거 카드 + 결과)
     h('div', { style: { maxHeight: 340, overflowY: 'auto', paddingRight: 2 } },
-      // 증거 카드 그리드
-      h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 } },
+      // 보드 뷰 — 핀 + 연결선 (조합 완성=앰버 실선, 선택 중=점선)
+      viewMode==='board' && h(EvidenceBoard, { items: allCollected, activeIds: collected.map(function(e){return e.id}),
+        selected: selected, unlockedCombos: unlocked, catColor: catColor, onToggle: toggle }),
+      // 증거 카드 그리드 (목록 뷰)
+      viewMode!=='board' && h('div', { style: { display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 10 } },
         collected.map(function(ev) {
           var isSel = selected.indexOf(ev.id) >= 0;
           var cc = catColor[ev.cat] || 'var(--ui)';
