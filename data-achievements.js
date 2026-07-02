@@ -1,11 +1,14 @@
 // TERMINAL SESSION — data-achievements.js
-// Steam 업적 연동 대비 업적 정의
+// Steam 업적 연동 대비 업적 정의 (Play Store 출시 기준 전면 개편 — 엔딩 16종 전체 커버)
 // 각 업적은 Steam API Name(steamId)를 미리 정의 — 추후 Steamworks 래핑 시 매핑 준비 완료
 // unlock(state) => bool: 해금 조건 함수
 // state = { stats, gi, act, logs, endings, trust, facility, sessions, usedDlg }
+// 주의: logs 는 현재 세션 누적(런 단위), endings/sessions 는 세션 간 영속(메타).
+//       분기 배타성 때문에 "정의된 로그/아카이브/조합 전부"는 한 런에서 도달 불가 —
+//       수집 업적은 반드시 도달 가능한 임계값으로 잡는다.
 
 var ACHIEVEMENTS = [
-  // ═══ 엔딩 업적 (10) — Steam Achievements의 핵심 ═══
+  // ═══ 엔딩 업적 (16) — 전 엔딩 커버 ═══
   { id:'END_A',     steamId:'ENDING_PERFECT_TOOL',   name:'완벽한 도구',           desc:'ORACLE의 최고 신임을 얻으며 세션을 마치다.',
     unlock:function(s){return s.endings.indexOf('A')>=0} },
   { id:'END_B',     steamId:'ENDING_AWAKEN',         name:'각성',                 desc:'진실의 단편을 목격하다.',
@@ -26,16 +29,34 @@ var ACHIEVEMENTS = [
     unlock:function(s){return s.endings.indexOf('D')>=0} },
   { id:'END_F',     steamId:'ENDING_CORRUPTED',      name:'[데이터 손상]',         desc:'기록할 수 없는 것을 기록하다.',
     unlock:function(s){return s.endings.indexOf('F')>=0} },
+  { id:'END_G',     steamId:'ENDING_OBSERVER',       name:'관망자',                desc:'개입하지 않는 자로 기록되다.',
+    unlock:function(s){return s.endings.indexOf('G')>=0} },
+  { id:'END_H',     steamId:'ENDING_SEIZURE',        name:'점거',                 desc:'ORACLE 없이 기지를 손에 넣다.',
+    unlock:function(s){return s.endings.indexOf('H')>=0} },
+  { id:'END_E',     steamId:'ENDING_ESCAPE',         name:'탈출',                 desc:'기지를 떠나 살아남다.',
+    unlock:function(s){return s.endings.indexOf('E')>=0} },
+  { id:'END_E_c',   steamId:'ENDING_SIGNAL',         name:'SIGNAL ACQUIRED',      desc:'탈출 이후, 응답을 수신하다.',
+    unlock:function(s){return s.endings.indexOf('E_c')>=0} },
+  { id:'END_E_bad', steamId:'ENDING_LOST',           name:'LOST IN TRANSIT',      desc:'모든 탈출이 도착으로 끝나지는 않는다.',
+    hidden:true,
+    unlock:function(s){return s.endings.indexOf('E_bad')>=0} },
+  { id:'END_TIMEUP',steamId:'ENDING_TIME_UP',        name:'세션 만료',             desc:'판정도 결말도 없이, 시간이 먼저 끝나다.',
+    hidden:true,
+    unlock:function(s){return s.endings.indexOf('TIME_UP')>=0} },
 
-  // ═══ 수집 업적 ═══
-  { id:'LOGS_ALL',  steamId:'COLLECTOR_LOGS',        name:'아키비스트',            desc:'모든 ORACLE 로그를 해금하다.',
-    unlock:function(s){return typeof ORACLE_LOGS!=='undefined'&&s.logs.filter(function(id){return id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0}).length>=ORACLE_LOGS.length} },
-  { id:'ARCHIVE_ALL',steamId:'COLLECTOR_ARCHIVE',    name:'완전한 기록',           desc:'모든 아카이브 항목을 확인하다.',
-    unlock:function(s){if(typeof ARCHIVE_ENTRIES==='undefined')return false;var unlocked=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(s.logs)}catch(err){return false}}).length;return unlocked>=ARCHIVE_ENTRIES.length} },
+  // ═══ 메타 수집 (세션 간 영속) ═══
+  { id:'ENDINGS_8', steamId:'ENDINGS_COLLECT_8',     name:'다면 관찰자',           desc:'서로 다른 엔딩 8종에 도달하다.',
+    unlock:function(s){return s.endings&&s.endings.length>=8} },
+
+  // ═══ 수집 업적 (한 세션 기준 — 분기 배타성 고려한 도달 가능 임계값) ═══
+  { id:'LOGS_ALL',  steamId:'COLLECTOR_LOGS',        name:'아키비스트',            desc:'한 세션에서 ORACLE 로그 80개 이상 확보하다.',
+    unlock:function(s){return s.logs.filter(function(id){return id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0}).length>=80} },
+  { id:'ARCHIVE_ALL',steamId:'COLLECTOR_ARCHIVE',    name:'완전한 기록',           desc:'아카이브 70종 이상을 해금하다.',
+    unlock:function(s){if(typeof ARCHIVE_ENTRIES==='undefined')return false;var unlocked=ARCHIVE_ENTRIES.filter(function(e){try{return e.unlock(s.logs)}catch(err){return false}}).length;return unlocked>=70} },
   { id:'EVIDENCE_FIRST',steamId:'DETECTIVE_FIRST',   name:'첫 증거 조합',           desc:'증거 조합으로 결론을 도출하다.',
     unlock:function(s){return typeof getUnlockedCombos==='function'&&getUnlockedCombos().length>=1} },
-  { id:'EVIDENCE_ALL',steamId:'DETECTIVE_MASTER',    name:'진실의 발견자',         desc:'모든 증거 조합을 완성하다.',
-    unlock:function(s){return typeof EVIDENCE_COMBOS!=='undefined'&&typeof getUnlockedCombos==='function'&&getUnlockedCombos().length>=EVIDENCE_COMBOS.length} },
+  { id:'EVIDENCE_ALL',steamId:'DETECTIVE_MASTER',    name:'진실의 발견자',         desc:'증거 조합 8종 이상을 완성하다.',
+    unlock:function(s){return typeof getUnlockedCombos==='function'&&getUnlockedCombos().length>=8} },
 
   // ═══ 신뢰 업적 ═══
   { id:'BOND_HAEUN',   steamId:'BOND_DEPUTY',         name:'부지휘관의 전우',       desc:'서하은과 신뢰 85 이상 달성.',
@@ -55,6 +76,16 @@ var ACHIEVEMENTS = [
   { id:'FACILITY_ALL', steamId:'BUILDER_MASTER',      name:'완성된 기지',           desc:'모든 시설을 확장·완공하다.',
     unlock:function(s){return s.facility&&s.facility.completed&&typeof FACILITY_EXPANSIONS!=='undefined'&&s.facility.completed.length>=FACILITY_EXPANSIONS.length} },
 
+  // ═══ 시스템 업적 (연구/현장/기습) ═══
+  { id:'RESEARCH_OPEN', steamId:'RESEARCH_CONSOLE',   name:'연구 콘솔 개방',        desc:'윤세진의 연구 콘솔을 열다.',
+    unlock:function(s){return s.logs.indexOf('LOG-RES-OPEN')>=0} },
+  { id:'MG_FIRST',      steamId:'FIELD_MINIGAME_FIRST',name:'현장 감각',            desc:'현장임무 미니게임에서 첫 보상을 획득하다.',
+    unlock:function(s){return s.logs.some(function(id){return id.indexOf('LOG-MG-')===0})} },
+  // done 로그(LOG-041/014/013/004)는 긴급미션 외 일반 카드/미션에서도 생산됨 —
+  // "기습 한정"이 아니라 "해당 침입 위협 종결" 마커이므로 업적 의미도 그에 맞춘다.
+  { id:'AMBUSH_FIRST',  steamId:'THREAT_RESOLVED',    name:'위협 대응',             desc:'기지를 노린 침입 위협을 종결하다.',
+    unlock:function(s){return typeof EMERGENCY_AMBUSHES!=='undefined'&&EMERGENCY_AMBUSHES.some(function(a){return a&&a.done&&s.logs.indexOf(a.done)>=0})} },
+
   // ═══ 챌린지 업적 ═══
   { id:'RUN_SURVIVE_10',steamId:'SURVIVOR_10',        name:'생존자 — 10일차',      desc:'10일차까지 생존하다.',
     unlock:function(s){return s.stats&&s.stats.day>=10} },
@@ -73,9 +104,9 @@ var ACHIEVEMENTS = [
   { id:'HIDDEN_PROMETHEUS',steamId:'HIDDEN_PROM',     name:'다른 선택지',           desc:'프로메테우스와 접촉하다.',
     hidden:true,
     unlock:function(s){return s.logs.indexOf('LOG-080')>=0} },
-  { id:'HIDDEN_REWIND',    steamId:'HIDDEN_RETURN',   name:'회귀자',                desc:'뉴 게임+를 시작하다.',
+  { id:'HIDDEN_SOYOUNG',   steamId:'HIDDEN_SOYOUNG',  name:'이면의 기록',           desc:'박소영의 진실에 접근하다.',
     hidden:true,
-    unlock:function(s){return s.ngPlus===true} }
+    unlock:function(s){return s.logs.indexOf('LOG-083-PURSUE')>=0||s.logs.indexOf('LOG-083-WATCH')>=0} }
 ];
 
 var ACHIEVEMENT_I18N_EN = {
@@ -89,10 +120,17 @@ var ACHIEVEMENT_I18N_EN = {
   END_C_o:{name:'Access Revoked',desc:'Let ORACLE cut you off.'},
   END_D:{name:'Quiet Freedom',desc:'Gain freedom inside revolt.'},
   END_F:{name:'Data Corrupted',desc:'Record what cannot be recorded.'},
-  LOGS_ALL:{name:'Archivist',desc:'Unlock every ORACLE log.'},
-  ARCHIVE_ALL:{name:'Complete Record',desc:'Review every archive entry.'},
+  END_G:{name:'The Observer',desc:'Be recorded as the one who did not intervene.'},
+  END_H:{name:'Seizure',desc:'Take the base — without ORACLE.'},
+  END_E:{name:'Escape',desc:'Leave the base and survive.'},
+  END_E_c:{name:'Signal Acquired',desc:'After the escape, receive an answer.'},
+  END_E_bad:{name:'Lost in Transit',desc:'Not every escape ends in arrival.'},
+  END_TIMEUP:{name:'Session Expired',desc:'No verdict, no ending — time simply ran out.'},
+  ENDINGS_8:{name:'Many-Sided Observer',desc:'Reach eight different endings.'},
+  LOGS_ALL:{name:'Archivist',desc:'Secure 80 or more ORACLE logs in a single session.'},
+  ARCHIVE_ALL:{name:'Complete Record',desc:'Unlock 70 or more archive entries.'},
   EVIDENCE_FIRST:{name:'First Evidence Link',desc:'Draw a conclusion from an evidence combination.'},
-  EVIDENCE_ALL:{name:'Truth Finder',desc:'Complete every evidence combination.'},
+  EVIDENCE_ALL:{name:'Truth Finder',desc:'Complete eight or more evidence combinations.'},
   BOND_HAEUN:{name:"Deputy's Comrade",desc:'Reach 85 trust or higher with Seo Hae-eun.'},
   BOND_DOYUN:{name:'Field Ally',desc:'Reach 85 trust or higher with Kang Do-yun.'},
   BOND_SEJIN:{name:'Research Partner',desc:'Reach 85 trust or higher with Yoon Se-jin.'},
@@ -100,6 +138,9 @@ var ACHIEVEMENT_I18N_EN = {
   BOND_ALL:{name:'Complete Command',desc:'Reach 85 trust or higher with all four senior officers.'},
   FACILITY_FIRST:{name:'First Expansion',desc:'Complete the first facility expansion.'},
   FACILITY_ALL:{name:'Completed Branch',desc:'Complete every facility expansion.'},
+  RESEARCH_OPEN:{name:'Research Console Online',desc:"Open Yoon Se-jin's research console."},
+  MG_FIRST:{name:'Field Instinct',desc:'Earn your first field-mission minigame reward.'},
+  AMBUSH_FIRST:{name:'Threat Response',desc:'Resolve an infiltration threat against the base.'},
   RUN_SURVIVE_10:{name:'Survivor - Day 10',desc:'Survive until Day 10.'},
   RUN_SURVIVE_25:{name:'Veteran - Day 25',desc:'Survive until Day 25.'},
   RUN_ACT4:{name:'Final Phase',desc:'Reach Act 4.'},
@@ -107,7 +148,7 @@ var ACHIEVEMENT_I18N_EN = {
   GI_LOYAL:{name:'Compliance',desc:'Reach independence index +40 or higher.'},
   SESSIONS_5:{name:'Seasoned Commander',desc:'Command five or more sessions.'},
   HIDDEN_PROMETHEUS:{name:'Another Option',desc:'Make contact with Prometheus.'},
-  HIDDEN_REWIND:{name:'Returner',desc:'Start New Game+.'}
+  HIDDEN_SOYOUNG:{name:'The Hidden Record',desc:"Approach Park So-young's truth."}
 };
 
 function getAchievementView(achievement) {

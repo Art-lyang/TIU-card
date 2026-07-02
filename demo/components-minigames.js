@@ -1224,7 +1224,10 @@ function StrikeMiniGame(p){
       raf=requestAnimationFrame(loop);
     };
     raf=requestAnimationFrame(loop);
-    return function(){cancelAnimationFrame(raf);};
+    // 백그라운드 전환 시 벽시계가 계속 흘러 복귀 즉시 시간초과되는 것을 방지 — 숨김 시간만큼 t0 를 뒤로 민다
+    var hidAt=0;var onVis=function(){if(document.visibilityState==='hidden'){hidAt=performance.now()}else if(hidAt){t0Ref.current+=performance.now()-hidAt;hidAt=0}};
+    document.addEventListener('visibilitychange',onVis);
+    return function(){cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',onVis)};
   },[]);
   function fire(){
     if(finished.current||shots<=0)return;

@@ -1328,3 +1328,6 @@ b.fm-rk--info{color:#caa14a}
 .ev2-detail-src{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1px;color:rgba(240,160,48,.72);margin-bottom:5px}
 .ev2-detail-title{font-size:11px;color:#e6ede9;font-weight:500;margin-bottom:5px;line-height:1.4}
 .ev2-detail-body{font-size:10px;line-height:1.6;color:rgba(190,206,200,.66);white-space:pre-line}
+
+/* 화면효과 끔: 상시 풀스크린 블렌드 레이어(스캔라인/오버레이)도 끈다 — 저사양 GPU 합성 부담 제거 */
+#root.fx-off ~ .screen-overlay,#root.fx-off ~ .scanline{display:none}

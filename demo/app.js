@@ -291,6 +291,29 @@ function App(){
   var _showFacility=useState(false),showFacility=_showFacility[0],setShowFacility=_showFacility[1];
   var _showResearch=useState(false),showResearch=_showResearch[0],setShowResearch=_showResearch[1];
   var _showEvidence=useState(false),showEvidence=_showEvidence[0],setShowEvidence=_showEvidence[1];
+  // ── 안드로이드 백 버튼 (TWA): 백 = 즉시 종료 방지. 오버레이가 열려 있으면 닫고, 없으면 2초 내 재입력 시 종료 ──
+  var backArmRef=useRef(0);
+  useEffect(function(){try{history.pushState({ts:1},'')}catch(e){}},[]);
+  useEffect(function(){
+    var onPop=function(){
+      try{
+        var closed=false;
+        if(showDevPanel){setShowDevPanel(false);closed=true}
+        else if(showSettings){setShowSettings(false);closed=true}
+        else if(showEvidence){setShowEvidence(false);closed=true}
+        else if(showResearch){setShowResearch(false);closed=true}
+        else if(showFacility){setShowFacility(false);closed=true}
+        if(closed){history.pushState({ts:1},'');return}
+        var now=Date.now();
+        if(now-backArmRef.current<2000){history.back();return}
+        backArmRef.current=now;
+        setToastType('');setToast(getLocale()==='en'?'Press back again to exit':'뒤로 버튼을 한 번 더 누르면 종료됩니다');clearToastAfter(2000);
+        history.pushState({ts:1},'');
+      }catch(e){}
+    };
+    window.addEventListener('popstate',onPop);
+    return function(){window.removeEventListener('popstate',onPop)};
+  },[showSettings,showFacility,showResearch,showEvidence,showDevPanel]);
   var _orov=useState(null),orov=_orov[0],setOrov=_orov[1];var orovTimerRef=useRef(null); // ORACLE 개입 오버레이 (표시 전용)
   var orovEl=function(){return h('div',{className:'oracle-ov'+(fxMode==='reduced'?' oracle-ov--reduced':''),'aria-hidden':true},h('div',{className:'oracle-ov-box'},h('div',{className:'oracle-ov-t'},'[ORACLE OVERRIDE]'),h('div',{className:'oracle-ov-m'},orov)))};
   var previewOracleOv=function(){try{SFX.play('warn')}catch(e){}if(orovTimerRef.current)clearTimeout(orovTimerRef.current);setOrov('[ORACLE: 해당 명령은 승인되지 않았습니다 — 연출 프리뷰]');orovTimerRef.current=setTimeout(function(){setOrov(null)},1200)}; // DEV 프리뷰 (fxMode 무시하고 강제 표시)

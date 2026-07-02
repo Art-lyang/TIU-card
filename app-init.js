@@ -548,7 +548,7 @@ var Save={
 
 var SFX={
   ctx:null,masterGain:null,vol:0.5,muted:false,_cache:{},
-  init:function(){if(!this.ctx)try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this.masterGain=this.ctx.createGain();this.masterGain.connect(this.ctx.destination);var sv=Save.get('ts_sfxVol',null);if(sv!==null)this.vol=sv/100}catch(e){}},
+  init:function(){if(!this.ctx)try{this.ctx=new(window.AudioContext||window.webkitAudioContext)();this.masterGain=this.ctx.createGain();this.masterGain.connect(this.ctx.destination);var sv=Save.get('ts_sfxVol',null);if(sv!==null)this.vol=sv/100}catch(e){}if(this.ctx&&this.ctx.state==='suspended'){try{this.ctx.resume()}catch(e){}}},
   _out:function(){return this.masterGain||this.ctx.destination},
   tone:function(freq,dur,type,vol){this.init();if(!this.ctx||this.muted)return;var o=this.ctx.createOscillator(),g=this.ctx.createGain();o.type=type||'sine';o.frequency.value=freq;var v=(vol||0.15)*this.vol;g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);o.connect(g);g.connect(this._out());o.start();o.stop(this.ctx.currentTime+dur)},
   noise:function(dur,vol){this.init();if(!this.ctx||this.muted)return;var buf=this.ctx.createBuffer(1,this.ctx.sampleRate*dur,this.ctx.sampleRate),d=buf.getChannelData(0);var v=(vol||0.08)*this.vol;for(var i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*v;var s=this.ctx.createBufferSource();s.buffer=buf;var g=this.ctx.createGain();g.gain.setValueAtTime(v,this.ctx.currentTime);g.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+dur);s.connect(g);g.connect(this._out());s.start()},
@@ -574,3 +574,23 @@ var SFX={
     case'warn':self.tone(230,0.11,'square',0.06);setTimeout(function(){self.tone(230,0.11,'square',0.06)},150);break;
   }}catch(e){}}
 };
+
+// ── 백그라운드 전환 처리 (안드로이드/TWA): 숨김 시 BGM 일시정지, 복귀 시 AudioContext resume + BGM 재개 ──
+// 안드로이드는 백그라운드에서 AudioContext 를 suspend 하며, resume 없이는 복귀 후 SFX 가 영구 무음이 된다.
+try{document.addEventListener('visibilitychange',function(){
+  try{
+    if(document.visibilityState==='hidden'){
+      if(typeof BGM!=='undefined'&&BGM.tracks){
+        if(BGM.current&&BGM.tracks[BGM.current]&&!BGM.tracks[BGM.current].paused){BGM.__bgPausedTrack=BGM.current;try{BGM.tracks[BGM.current].pause()}catch(e){}}
+        if(BGM.bootAudio&&!BGM.bootAudio.paused){BGM.__bgPausedBoot=true;try{BGM.bootAudio.pause()}catch(e){}}
+      }
+    }else{
+      if(SFX.ctx&&SFX.ctx.state==='suspended'){try{SFX.ctx.resume()}catch(e){}}
+      if(typeof BGM!=='undefined'&&!BGM.muted){
+        if(BGM.__bgPausedTrack&&BGM.tracks&&BGM.tracks[BGM.__bgPausedTrack]){try{BGM.tracks[BGM.__bgPausedTrack].play().catch(function(){})}catch(e){}}
+        if(BGM.__bgPausedBoot&&BGM.bootAudio){try{BGM.bootAudio.play().catch(function(){})}catch(e){}}
+      }
+      if(typeof BGM!=='undefined'){BGM.__bgPausedTrack=null;BGM.__bgPausedBoot=false}
+    }
+  }catch(e){}
+})}catch(e){}
