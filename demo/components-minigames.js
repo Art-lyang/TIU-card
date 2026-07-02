@@ -228,6 +228,22 @@ var FIELD_MINIGAME_LIBRARY = {
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
   },
+  crawler: {
+    id: 'crawler',
+    kind: 'INFILTRATION WORM',
+    ko: {
+      title: '침투 웜 주입',
+      intro: '백도어 채널에 역침투 웜을 주입한다. 데이터 그리드를 기동하며 인증 패킷(녹색)을 수집하고, 감시 프로세스(적색)에 닿지 않는다. 그리드 가장자리는 순환한다.',
+      action: '방향 전환',
+      resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
+    },
+    en: {
+      title: 'Infiltration Worm',
+      intro: 'Inject a counter-worm into the backdoor channel. Steer through the data grid, collect auth packets (green), avoid watchdog processes (red). Edges wrap around.',
+      action: 'TURN',
+      resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
+    }
+  },
   screening: {
     id: 'screening',
     kind: 'LATENT SCREEN',
@@ -1157,7 +1173,8 @@ var MINI_CONTROLS = {
   reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
   screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'},
-  strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'}
+  strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'},
+  crawler:{ko:'화면을 스와이프(또는 방향 버튼)해 웜의 진행 방향을 바꾼다. 녹색 패킷을 모두 수집하면 성공, 적색 감시 프로세스에 닿으면 즉시 실패.',en:'Swipe (or use the arrows) to steer the worm. Collect every green packet to succeed; touching a red watchdog fails instantly.'}
 };
 function MinigameOnboarding(p){
   var en=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
@@ -1289,6 +1306,7 @@ function FieldMiniGameOverlay(p){
   if(p.game.type==='statement')return h(StatementMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:p.onDone});
   if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:p.onDone});
+  if(p.game.type==='crawler')return h(CrawlerMiniGame,{copy:copy,onDone:p.onDone});
   return null;
 }
 
@@ -1400,4 +1418,116 @@ function MiniGameGuide(p){
 
 if(typeof window!=='undefined'){
   window.MiniGameGuide = MiniGameGuide;
+}
+
+// ── INFILTRATION WORM — 그리드 크롤러 (역침투 웜 주입, MI-04 trap) ──
+// 실시간 스텝 이동(0.24s/칸). 스와이프/방향버튼/화살표키로 조향. 가장자리 순환.
+// 패킷 6개 전부 수집: 잔여 9s+ great / 성공. 시간초과: 5+ success, 3+ partial. 감시 접촉 즉시 fail.
+function CrawlerMiniGame(p){
+  var wrapRef=useRef(null),cvRef=useRef(null);
+  var doneRef=useRef(false);
+  var s1=useState(0),tick=s1[0],setTick=s1[1];
+  var stateRef=useRef(null);
+  var DUR=26,STEP=0.24;
+  function initState(w,h){
+    var cols=Math.max(12,Math.floor(w/20)),rows=Math.max(9,Math.floor(h/20));
+    var cells={};
+    function freeCell(){var c,r,k,guard=0;do{c=2+Math.floor(Math.random()*(cols-4));r=1+Math.floor(Math.random()*(rows-2));k=c+':'+r;guard++}while(cells[k]&&guard<200);cells[k]=1;return{c:c,r:r}}
+    var worm=[];var wc=Math.floor(cols/2),wr=Math.floor(rows/2);
+    for(var i=0;i<5;i++){worm.push({c:wc-i,r:wr});cells[(wc-i)+':'+wr]=1}
+    var packets=[];for(var pn=0;pn<6;pn++)packets.push(freeCell());
+    var sensors=[];
+    for(var sn=0;sn<3;sn++){var sc=freeCell();sensors.push({c:sc.c,r:sc.r,patrol:sn===2,dir:1})}
+    return{cols:cols,rows:rows,worm:worm,dir:{x:1,y:0},nextDir:null,packets:packets,sensors:sensors,eaten:0,t0:performance.now(),last:0,sensStep:0};
+  }
+  function finish(rank){if(doneRef.current)return;doneRef.current=true;setTimeout(function(){p.onDone(rank)},420)}
+  useEffect(function(){
+    var cv=cvRef.current,wrap=wrapRef.current;if(!cv||!wrap)return;
+    var ctx=cv.getContext('2d');var DPR=Math.min(2,window.devicePixelRatio||1);
+    var W=wrap.clientWidth,H=Math.min(320,Math.max(220,Math.floor(window.innerHeight*0.34)));
+    cv.width=W*DPR;cv.height=H*DPR;cv.style.width=W+'px';cv.style.height=H+'px';ctx.setTransform(DPR,0,0,DPR,0,0);
+    var st=stateRef.current=initState(W,H);
+    var cw=W/st.cols,chh=H/st.rows;
+    var raf,hidAt=0;
+    var onVis=function(){if(document.visibilityState==='hidden'){hidAt=performance.now()}else if(hidAt){st.t0+=performance.now()-hidAt;hidAt=0}};
+    document.addEventListener('visibilitychange',onVis);
+    function loop(now){
+      if(doneRef.current)return;
+      var el=(now-st.t0)/1000;
+      if(el>=DUR){finish(st.eaten>=5?'success':st.eaten>=3?'partial':'fail');return}
+      // 스텝 이동
+      if(el-st.last>=STEP){
+        st.last=el;
+        if(st.nextDir){st.dir=st.nextDir;st.nextDir=null}
+        var hd=st.worm[0];
+        var nc=(hd.c+st.dir.x+st.cols)%st.cols,nr=(hd.r+st.dir.y+st.rows)%st.rows;
+        st.worm.unshift({c:nc,r:nr});
+        // 패킷 섭취
+        var ate=-1;
+        for(var i=0;i<st.packets.length;i++){if(st.packets[i].c===nc&&st.packets[i].r===nr){ate=i;break}}
+        if(ate>=0){st.packets.splice(ate,1);st.eaten++;if(typeof SFX!=='undefined')SFX.play('tab');
+          if(st.eaten>=6){finish((DUR-el)>=9?'great':'success');return}}
+        else if(st.worm.length>5+st.eaten)st.worm.pop();
+        // 센서 순찰 (2스텝마다)
+        st.sensStep++;
+        if(st.sensStep%2===0)st.sensors.forEach(function(sn){if(!sn.patrol)return;sn.c+=sn.dir;if(sn.c<=1||sn.c>=st.cols-2)sn.dir*=-1});
+        // 감시 접촉 (머리 기준)
+        for(var j=0;j<st.sensors.length;j++){if(st.sensors[j].c===nc&&st.sensors[j].r===nr){if(typeof SFX!=='undefined')SFX.play('warn');finish('fail');return}}
+      }
+      // ── 렌더 ──
+      ctx.clearRect(0,0,W,H);
+      ctx.fillStyle='rgba(3,8,8,0.92)';ctx.fillRect(0,0,W,H);
+      for(var r=0;r<st.rows;r++)for(var c=0;c<st.cols;c++){
+        ctx.fillStyle='rgba(80,255,150,0.05)';
+        ctx.fillRect(c*cw+1.5,r*chh+1.5,cw-3,chh-3);
+      }
+      var pulse=(Math.sin(now/240)+1)/2;
+      st.packets.forEach(function(pk){
+        ctx.fillStyle='rgba(110,255,170,'+(0.6+pulse*0.4)+')';
+        ctx.fillRect(pk.c*cw+2.5,pk.r*chh+2.5,cw-5,chh-5);
+      });
+      st.sensors.forEach(function(sn){
+        var blink=sn.patrol?1:(Math.sin(now/300+sn.c)>-0.3?1:0.25);
+        ctx.fillStyle='rgba(255,84,64,'+(0.75*blink)+')';
+        ctx.fillRect(sn.c*cw+2,sn.r*chh+2,cw-4,chh-4);
+      });
+      st.worm.forEach(function(seg,i){
+        var a=i===0?1:Math.max(0.25,1-i*0.11);
+        ctx.fillStyle=i===0?'rgba(214,196,255,'+a+')':'rgba(165,140,255,'+a+')';
+        ctx.fillRect(seg.c*cw+2,seg.r*chh+2,cw-4,chh-4);
+      });
+      // HUD: 시간바 + 패킷 카운트
+      var tk=1-el/DUR;
+      ctx.fillStyle='rgba(80,255,150,0.25)';ctx.fillRect(0,H-3,W,3);
+      ctx.fillStyle=tk>0.3?'rgba(80,255,150,0.85)':'rgba(255,150,60,0.9)';ctx.fillRect(0,H-3,W*tk,3);
+      ctx.font='10px "Share Tech Mono",monospace';ctx.fillStyle='rgba(110,255,170,0.9)';
+      ctx.fillText('PKT '+st.eaten+'/6',8,14);
+      raf=requestAnimationFrame(loop);
+      setTick(function(t){return t+1});
+    }
+    raf=requestAnimationFrame(loop);
+    // 입력: 스와이프
+    var ts=null;
+    var onTS=function(e){var t=e.touches[0];ts={x:t.clientX,y:t.clientY}};
+    var onTE=function(e){if(!ts)return;var t=e.changedTouches[0];var dx=t.clientX-ts.x,dy=t.clientY-ts.y;ts=null;
+      if(Math.abs(dx)<18&&Math.abs(dy)<18)return;
+      steer(Math.abs(dx)>Math.abs(dy)?{x:dx>0?1:-1,y:0}:{x:0,y:dy>0?1:-1});};
+    var onKey=function(e){var m={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}}[e.key];if(m){e.preventDefault();steer(m)}};
+    wrap.addEventListener('touchstart',onTS,{passive:true});
+    wrap.addEventListener('touchend',onTE,{passive:true});
+    window.addEventListener('keydown',onKey);
+    return function(){doneRef.current=true;cancelAnimationFrame(raf);document.removeEventListener('visibilitychange',onVis);
+      wrap.removeEventListener('touchstart',onTS);wrap.removeEventListener('touchend',onTE);window.removeEventListener('keydown',onKey)};
+  },[]);
+  function steer(d){var st=stateRef.current;if(!st)return;
+    if(d.x===-st.dir.x&&d.y===-st.dir.y)return; // 역방향 금지
+    st.nextDir=d;}
+  var btn=function(label,d){return h('button',{type:'button',onClick:function(){steer(d)},
+    style:{flex:1,minHeight:40,font:'14px monospace',color:'#b9a6ff',background:'rgba(30,20,50,.5)',border:'1px solid rgba(185,166,255,.4)',borderRadius:3,cursor:'pointer'}},label)};
+  return h('div',{ref:wrapRef,style:{userSelect:'none',WebkitUserSelect:'none',touchAction:'none'}},
+    h('canvas',{ref:cvRef,style:{display:'block',width:'100%',borderRadius:3,border:'1px solid rgba(185,166,255,.25)'}}),
+    h('div',{style:{display:'flex',gap:6,marginTop:8}},
+      btn('◀',{x:-1,y:0}),btn('▲',{x:0,y:-1}),btn('▼',{x:0,y:1}),btn('▶',{x:1,y:0})),
+    h('div',{style:{marginTop:6,font:'9px "Share Tech Mono",monospace',color:'rgba(110,255,170,.55)',letterSpacing:1,textAlign:'center'}},
+      (typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'SWIPE OR ARROWS TO STEER — EDGES WRAP':'스와이프 또는 버튼으로 조향 — 가장자리는 순환'));
 }

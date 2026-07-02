@@ -15,7 +15,7 @@
     "MI-04": {
       start: {
         remove: { key: "authority_trace", type: "breach" },
-        trap: { key: "authority_trace", type: "breach" },
+        trap: { key: "worm_inject", type: "crawler" },   // 감시 트랩 전환 = 역침투 웜 주입 (그리드 크롤러)
         oracle: { key: "authority_trace", type: "breach" }
       }
     }

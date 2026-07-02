@@ -474,6 +474,21 @@
       },
       fx: { left: { t: 1, o: -1 }, right: { c: 1, o: 1 } }
     },
+    crawler: {
+      ko: {
+        title: '역침투 웜 사후 운용',
+        prompt: '수집한 인증 패킷을 즉시 분석에 투입할지, 웜을 백도어 채널에 상주시켜 감시를 계속할지 결정한다.',
+        left: '패킷 즉시 분석',
+        right: '웜 상주 감시'
+      },
+      en: {
+        title: 'Counter-Worm Follow-Up',
+        prompt: 'Decide whether the captured auth packets go straight to analysis, or the worm stays resident in the backdoor channel as a watch.',
+        left: 'Analyze packets now',
+        right: 'Keep worm resident'
+      },
+      fx: { left: { t: 1, o: -1 }, right: { c: 1, o: 1 } }
+    },
     screening: {
       ko: {
         title: '잠복 노출자 처리안',
