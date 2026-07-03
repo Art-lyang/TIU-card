@@ -187,7 +187,7 @@ function BriefingScreen(p){
   var heroSrc=bi.show||bi.a||null;
   var heroImg=heroSrc?h('img',{src:heroSrc,alt:'Act '+act,className:'bf-hero-img'}):null;
   return h('div',{className:'screen bf-screen'},
-    (typeof IMG!=='undefined'&&IMG.bg_base_coast)?h('div',{className:'bg-overlay','aria-hidden':true,style:{backgroundImage:'url('+IMG.bg_base_coast+')',opacity:0.14}}):null,
+    (typeof IMG!=='undefined'&&IMG.bg_base_coast)?h('div',{className:'bg-overlay','aria-hidden':true,style:{backgroundImage:'url('+IMG.bg_base_coast+')',opacity:0.06}}):null,
     h('div',{className:'bf-wrap'},
       h('div',{className:'bf-head'},
         h('div',{className:'bf-head-side'},'ORACLE',h('br'),'// TRANSITION',h('br'),'ENCRYPTED'),

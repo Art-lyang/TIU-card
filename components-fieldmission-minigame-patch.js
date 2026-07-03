@@ -409,7 +409,7 @@ function FieldMission(p){
       );
 
   return h('div',{ref:rootRef,className:'screen fm-screen'+(isStart?' fm-screen--brief':' fm-screen--node')+(fxOff?' fm-no-anim':''),style:{'--fm-accent':actAccent(act)}},
-    IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.04}}),
+    IMG.bg_restricted&&h('div',{className:'bg-overlay',style:{backgroundImage:'url('+IMG.bg_restricted+')',opacity:0.06}}),
     h('div',{className:'fm-wrap'},
       fmHeader(),
       fmThreat(),
