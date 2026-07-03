@@ -121,13 +121,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ROUTE EVADE',
     ko: {
       title: '수로 추적 우회 경로',
-      intro: '정해진 이동 횟수 안에 위험 구역을 피해 목표 지점에 도달한다.',
+      intro: '침수된 지하 수로를 따라 이동한다. 격벽과 순찰을 피해 배수구(OUT)까지 물길을 뚫어라.',
       action: '이동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Drainage Route Intercept',
-      intro: 'Reach the target within the fixed move count while avoiding the danger zone.',
+      intro: 'Navigate the flooded underground channel. Slip past bulkheads and patrols to reach the outlet (OUT).',
       action: 'Move',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -897,6 +897,9 @@ function RouteMiniGame(p){
     return cand.length?cand[Math.floor(Math.random()*cand.length)]:-1;
   })();
   var _hz=useState(hazardInit),hazard=_hz[0],setHazard=_hz[1];
+  // 항적(지나온 물길) — 지나간 물 셀은 밝은 물살로 남아 경로를 보여준다
+  var trailRef=useRef(null);
+  if(!trailRef.current){trailRef.current={};trailRef.current[sheet.pos]=1;}
   var posRef=useRef(pos);posRef.current=pos;
   var hazardRef=useRef(hazard);hazardRef.current=hazard;
   useEffect(function(){
@@ -938,6 +941,7 @@ function RouteMiniGame(p){
     }
     var cost=sheet.jammer.indexOf(idx)>=0?2:1;
     var nextMoves=moves-cost;
+    trailRef.current[idx]=1;
     setPos(idx);
     setMoves(nextMoves);
     if(idx===sheet.goal){
@@ -953,7 +957,10 @@ function RouteMiniGame(p){
     }
   }
 
-  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'RED=FAIL / AMBER=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'6px 12px'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(6, minmax(0, 1fr))',gap:5,width:'min(100%, 56vh)',margin:'0 auto'}},Array.from({length:42}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isHazard=idx===hazard&&!isPlayer;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var bg='rgba(6,18,11,0.96)';var border='1px solid rgba(122,255,198,0.16)';if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isHazard){bg='rgba(120,10,10,0.97)';border='2px solid rgba(255,90,72,1)';}if(isBlock){bg='rgba(55,55,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(135,86,16,0.96)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}return h('button',{key:idx,className:'btn',disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'7px',padding:0,minHeight:0,background:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isHazard?'0 0 16px rgba(255,60,44,0.65)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isHazard?'#ffdcd6':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,fontWeight:700,cursor:isBlock?'default':'pointer'}},isPlayer?'IN':isGoal?'OUT':isHazard?'✕':isDanger?'X':isBlock?'■':isJammer?'~':'·');}))));
+  // 물결 셀 글리프 지연(결정적 의사난수) — 셀마다 위상이 어긋난 수면 흔들림
+  function waveDelay(idx){return (((idx*7)%10)/10*2.8).toFixed(2)+'s';}
+
+  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'X=FAIL / ≋=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'6px 12px'}},h('div',{className:'route-channel',style:{width:'min(100%, 56vh)',margin:'0 auto',boxSizing:'border-box'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(6, minmax(0, 1fr))',gap:5}},Array.from({length:42}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isHazard=idx===hazard&&!isPlayer;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var isWake=!!trailRef.current[idx]&&!isPlayer&&!isGoal&&!isDanger&&!isHazard&&!isBlock&&!isJammer;var cls='btn';var bg='rgba(4,18,30,0.95)';var border='1px solid rgba(110,200,240,0.16)';if(!isPlayer&&!isGoal&&!isDanger&&!isHazard&&!isBlock&&!isJammer){cls+=isWake?' route-cell-wake':' route-cell-water';}if(isWake){bg='rgba(8,30,46,0.95)';border='1px solid rgba(140,225,255,0.3)';}if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isHazard){bg='rgba(120,10,10,0.97)';border='2px solid rgba(255,90,72,1)';}if(isBlock){cls+=' route-cell-wall';bg='rgba(52,54,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(120,78,14,0.95)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}var glyph;if(isPlayer)glyph='IN';else if(isGoal)glyph='OUT';else if(isHazard)glyph='✕';else if(isDanger)glyph='X';else if(isBlock)glyph='▦';else if(isJammer)glyph=h('span',{className:'route-surge'},'≋');else if(isWake)glyph='·';else glyph=h('span',{className:'route-wave',style:{animationDelay:waveDelay(idx)}},'≈');return h('button',{key:idx,className:cls,disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'7px',padding:0,minHeight:0,backgroundColor:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isHazard?'0 0 16px rgba(255,60,44,0.65)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isHazard?'#ffdcd6':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':isWake?'rgba(175,230,255,0.6)':'rgba(150,210,240,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,fontWeight:700,cursor:isBlock?'default':'pointer'}},glyph);})))));
 }
 
 function EvidenceMiniGame(p){
@@ -1469,7 +1476,7 @@ var MINI_CONTROLS = {
   signal:{ko:'세 주파수 채널을 위에서부터 차례로 고정한다. 커서가 황색 띠 안일 때 [정렬 고정] — 아래 채널일수록 빠르고 좁으며, HIGH 띠는 흔들린다. 오조준 3회면 실패.',en:'Lock the three channels top to bottom. Press [LOCK] while the cursor is inside the amber band — lower channels are faster and narrower, and the HIGH band drifts. Three misses fail the run.'},
   sequence:{ko:'패널에 표시된 순서 그대로 봉인 버튼을 누른다.',en:'Press the seal buttons in the exact order shown on the panel.'},
   breach:{ko:'이웃한 노드로만 이동해 KEY 2개를 모은 뒤 EXIT로 나온다. 붉은 노드는 노출을 올린다.',en:'Move only to adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
-  route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력 2 소모. 배회하는 ✕ 순찰도 밟으면 즉시 실패 — 지나갈 때를 기다려라.',en:'Move one tile at a time. Red tiles fail instantly; amber costs 2 moves. The wandering ✕ patrol also fails you on contact — wait for it to pass.'},
+  route:{ko:'물길(≈)을 따라 상하좌우 한 칸씩 이동한다. 붉은 X 구역은 즉시 실패, 황색 ≋ 역류는 이동력 2 소모, ▦ 격벽은 통과 불가. 배회하는 ✕ 순찰도 밟으면 즉시 실패 — 지나갈 때를 기다려라.',en:'Follow the water (≈) one tile at a time. Red X zones fail instantly; amber ≋ backflow costs 2 moves; ▦ bulkheads are impassable. The wandering ✕ patrol also fails you on contact — wait for it to pass.'},
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
   scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
   evidence:{ko:'수거물이 한 점씩 들어온다. 상단 판독 기준에 맞으면 [채증], 아니면 [폐기] — 제한시간 안에 판정한다. 미판정은 자동 폐기.',en:'Items arrive one at a time. [COLLECT] if it matches the rule, [DISCARD] if not — decide before the timer runs out. No decision = auto-discard.'},
