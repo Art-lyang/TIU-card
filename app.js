@@ -722,7 +722,10 @@ function App(){
     setResearch({});Save.del('ts_research');
     // Reset archive read markers for a clean campaign.
     setSeenArchive([]);Save.del('ts_seenArchive');
-    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_act2_reached');clearResumeCheckpoint();initActiveSpecs();if(typeof initSessionDeck==='function')initSessionDeck(Save.getSessions());setShowEvidence(false);
+    Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_act2_reached');
+    // 회차 오염 방지: 이전 회차 잔존 시 새 회차에서 옛 미션 강제 진입/부당 보상(activeMission), 중복 회피 편향(recent*), 휴면 게이트(reserve)
+    Save.del('ts_activeMission');Save.del('ts_recentRewards');Save.del('ts_recentNews');Save.del('ts_resourceReserveUsed');
+    clearResumeCheckpoint();initActiveSpecs();if(typeof initSessionDeck==='function')initSessionDeck(Save.getSessions());setShowEvidence(false);
     var rl=resetSessionLogs(logs);
     if(Save.getSessions()>0&&rl.indexOf('META-SESSION-RESET')<0)rl.push('META-SESSION-RESET');
     setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();

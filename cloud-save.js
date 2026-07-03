@@ -5,13 +5,13 @@
   var SDK_BASE='https://www.gstatic.com/firebasejs/'+SDK_VERSION+'/';
   var CURRENT_KEYS=[
     'ts_game','ts_logs','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility',
-    'ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_onceShown','ts_activeSpecs',
+    'ts_research','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_onceShown','ts_activeSpecs',
     'ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_activeMission','ts_resumePhase',
     'ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState',
     'ts_act2_reached','ts_observer_proto'
   ];
   var SNAP_KEYS=['ts_snap_1','ts_snap_2','ts_snap_3'];
-  var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements'];
+  var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen'];
   var SETTINGS_KEYS=['ts_locale','ts_muted','ts_volume','ts_sfxVol','ts_fontSize','ts_fxMode'];
   var WATCH_PREFIXES=['ts_observer_proto_roll_'];
   var WATCH_KEYS={};
