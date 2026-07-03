@@ -51,12 +51,23 @@ function DayCutOverlay(p){
   var reduced=fxMode==='reduced';
   var _stage=useState(reduced?2:0),stage=_stage[0],setStage=_stage[1];
   var _mi=useState(0),mi=_mi[0],setMi=_mi[1];
+  var stageTimersRef=useRef([]);
   useEffect(function(){
     if(reduced)return;
     var t1=setTimeout(function(){setStage(1)},850);
     var t2=setTimeout(function(){setStage(2)},2500);
+    stageTimersRef.current=[t1,t2];
     return function(){clearTimeout(t1);clearTimeout(t2)};
   },[]);
+  // 탭 동작: 리포트 전(0·1단계)에는 리포트로 즉시 건너뛰기 — 일일 리포트는 항상 표시. 리포트에서 탭하면 닫기.
+  var handleTap=function(){
+    if(stage<2){
+      stageTimersRef.current.forEach(function(t){clearTimeout(t)});
+      setStage(2);
+      return;
+    }
+    if(p.onSkip)p.onSkip();
+  };
   useEffect(function(){
     if(stage!==1)return;
     var iv=setInterval(function(){setMi(function(v){return v+1})},520);
@@ -123,16 +134,16 @@ function DayCutOverlay(p){
   var loadMsg=loadMsgs[mi%loadMsgs.length];
   var row=function(i,cls,children){return h('div',{className:'dc-row '+cls,style:{animationDelay:(0.2+i*0.18)+'s'}},children)};
   // ── 1단계: 업무 종료 + 2단계: 리포트 생성 로딩 ──
-  if(stage<2)return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
+  if(stage<2)return h('div',{className:'daycut',onClick:handleTap},
     h('div',{className:'daycut-pre'},
       h('div',{className:'daycut-pre-t'},isEn?'END OF DUTY':'업무 종료'),
       h('div',{className:'daycut-pre-d'},'DAY '+(day-1)),
       stage===1?h('div',{className:'daycut-load'},
         h('div',{className:'daycut-load-bar'},h('i')),
         h('div',{key:mi,className:'daycut-load-msg'},(isEn?loadMsg[1]:loadMsg[0]))):null),
-    h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
+    h('div',{className:'daycut-skip'},isEn?'TAP TO VIEW REPORT':'탭하여 리포트 표시'));
   // ── 3단계: 일일 리포트 + DAY 개시 스탬프 ──
-  return h('div',{className:'daycut daycut-s2',onClick:function(){if(p.onSkip)p.onSkip()}},
+  return h('div',{className:'daycut daycut-s2',onClick:handleTap},
     h('div',{className:'daycut-panel'+panelCls},
       h('span',{className:'dc-br dc-br-tl'}),h('span',{className:'dc-br dc-br-tr'}),h('span',{className:'dc-br dc-br-bl'}),h('span',{className:'dc-br dc-br-br'}),
       h('div',{className:'daycut-panel-h'},
