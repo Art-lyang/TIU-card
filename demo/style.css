@@ -724,7 +724,7 @@ b.fm-rk--info{color:#caa14a}
 .main-terminal-button:hover,.main-terminal-button:focus-visible{outline:none}
 .main-terminal-row.is-selected .main-terminal-button,.main-terminal-row .main-terminal-button:hover,.main-terminal-row .main-terminal-button:focus-visible,.main-terminal-row .main-terminal-button:active{color:var(--mt-orange);border-color:var(--mt-orange);background:rgba(28,10,0,.55);box-shadow:inset 0 0 0 1px rgba(255,122,0,.16)}
 .main-terminal-button.is-glitching{animation:mainTerminalClickGlitch .15s steps(2,end)}
-.main-terminal-icon{position:relative;display:block;width:38px;height:38px;margin:auto;background-color:transparent;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:.95;filter:drop-shadow(0 0 8px rgba(108,255,170,.28))}
+.main-terminal-icon{position:relative;display:block;width:38px;height:38px;margin:auto;background-color:transparent;background-position:center;background-size:contain;background-repeat:no-repeat;opacity:1;filter:drop-shadow(0 0 4px rgba(108,255,170,.3))}
 .main-terminal-icon--command,.main-terminal-icon--resume{background-image:url('assets/main-menu/icons/menu-command.svg')}
 .main-terminal-icon--archive{background-image:url('assets/main-menu/icons/menu-archive.svg')}
 .main-terminal-icon--log{background-image:url('assets/main-menu/icons/menu-log.svg')}
