@@ -948,38 +948,51 @@ function EvidenceMiniGame(p){
 }
 
 function ReconstructionMiniGame(p){
+  // v2: 정지 버튼 4개 → 흐르는 데이터 스트림 캐치.
+  // 손상 로그 조각들이 잡음 라인과 함께 콘솔처럼 위로 흘러가고,
+  // 시간 순서대로 탭해 상단 복원 슬롯에 잠근다. 놓치면 다음 순환을 기다려야 한다.
   var copy=p.copy;
   var sequences=[
-    { leadKo:'CCTV 공백 4조각을 시간 순서대로 이어 붙인다.', leadEn:'Rebuild the CCTV blackout in chronological order.', steps:[
+    { leadKo:'CCTV 공백 4조각을 시간 순서대로 잡아낸다.', leadEn:'Catch the CCTV blackout fragments in chronological order.', steps:[
       {id:'a',ko:'02:47 / B1 서버실 출입',en:'02:47 / B1 server entry'},
       {id:'b',ko:'02:49 / 통로 센서 비활성',en:'02:49 / transit sensor disabled'},
       {id:'c',ko:'02:51 / B2 접근 로그 공백',en:'02:51 / B2 access gap'},
       {id:'d',ko:'02:53 / 복귀 흔적 소실',en:'02:53 / return trace erased'}
     ]},
-    { leadKo:'오염 보고 로그를 초기 발생부터 정렬한다.', leadEn:'Order the contamination report from first trigger onward.', steps:[
+    { leadKo:'오염 보고 로그를 초기 발생부터 잡아낸다.', leadEn:'Catch the contamination report from first trigger onward.', steps:[
       {id:'a',ko:'배양기 내부 열 상승',en:'Internal chamber heat rise'},
       {id:'b',ko:'표본 격벽 점액화',en:'Sample partition liquefaction'},
       {id:'c',ko:'변이 구조 자가 형성',en:'Self-mutating structure formed'},
       {id:'d',ko:'관찰실 경보 기록',en:'Observation room alert logged'}
     ]},
-    { leadKo:'보안구역 출입 위조 흔적을 복원한다.', leadEn:'Restore the forged security-access sequence.', steps:[
+    { leadKo:'보안구역 출입 위조 흔적을 순서대로 잡아낸다.', leadEn:'Catch the forged security-access traces in order.', steps:[
       {id:'a',ko:'허위 권한 요청 생성',en:'Spoofed authority request created'},
       {id:'b',ko:'출입 로그 해시 변조',en:'Access-log hash altered'},
       {id:'c',ko:'백도어 경로 삽입',en:'Backdoor route inserted'},
       {id:'d',ko:'감시 태그 자동 삭제',en:'Surveillance tag auto-purged'}
     ]}
   ];
+  var JUNK=['0x3F8A ▒▒ CRC FAIL','SEG //-- NULL 0x00','▒ 74 6B 09 FE ▒▒','TRACE LOST ······','0xB2C4 ██ REDACTED','SYNC DRIFT +0.4s'];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
   var seqRef=useRef(null);
-  if(!seqRef.current)seqRef.current=sequences[Math.floor(Math.random()*sequences.length)];
-  var seq=seqRef.current;
-  var shuffledRef=useRef(null);
-  if(!shuffledRef.current)shuffledRef.current=seq.steps.slice().sort(function(){return Math.random()-0.5;});
-  var items=shuffledRef.current;
+  if(!seqRef.current){
+    var sq=sequences[Math.floor(Math.random()*sequences.length)];
+    // 스트림 등장 순서는 셔플 + 개별 사이클 오프셋
+    var lanes=sq.steps.slice().sort(function(){return Math.random()-0.5;}).map(function(st,i){
+      return {step:st,off:i*1.45+Math.random()*0.5,x:8+Math.random()*32};
+    });
+    seqRef.current={seq:sq,lanes:lanes};
+  }
+  var seq=seqRef.current.seq,lanes=seqRef.current.lanes;
   var _step=useState(0),step=_step[0],setStep=_step[1];
   var _errors=useState(0),errors=_errors[0],setErrors=_errors[1];
-  var _time=useState(16),time=_time[0],setTime=_time[1];
+  var _time=useState(22),time=_time[0],setTime=_time[1];
+  var _flash=useState(false),errFlash=_flash[0],setErrFlash=_flash[1];
   var finished=useRef(false);
+  var stepRef=useRef(0);stepRef.current=step;
+  var errRef=useRef(0);errRef.current=errors;
+  var fragRefs=useRef({});
+  var junkRefs=useRef({});
 
   useEffect(function(){
     if(finished.current)return;
@@ -988,36 +1001,89 @@ function ReconstructionMiniGame(p){
     return function(){clearTimeout(t);};
   },[time,step,p]);
 
-  function selectItem(item){
+  // 스트림 루프 — 조각/잡음 라인을 아래→위로 순환 (DOM transform 직접 갱신)
+  useEffect(function(){
+    var raf=0,killed=false,t0=performance.now();
+    var CYCLE=6.2,TRAVEL=4.6; // 등장 후 4.6s 동안 통과, 나머지는 대기
+    function drive(now){
+      if(killed)return;
+      var tSec=(now-t0)/1000;
+      lanes.forEach(function(ln){
+        var el=fragRefs.current[ln.step.id];if(!el)return;
+        if(el.__locked){el.style.display='none';return;}
+        var local=(tSec+ln.off)%CYCLE;
+        if(local>TRAVEL){el.style.display='none';return;}
+        var prog=local/TRAVEL;
+        var stage=el.parentNode;var Hs=stage?stage.clientHeight:240;
+        el.style.display='block';
+        el.style.transform='translate(0,'+Math.round(Hs*(1.02-prog*1.14))+'px)';
+        el.style.opacity=prog<0.06?String(prog/0.06):(prog>0.94?String((1-prog)/0.06):'1');
+      });
+      JUNK.forEach(function(_,i){
+        var el=junkRefs.current[i];if(!el)return;
+        var local=(tSec*1.15+i*1.05)%4.4;
+        var stage=el.parentNode;var Hs=stage?stage.clientHeight:240;
+        el.style.transform='translate(0,'+Math.round(Hs*(1.02-(local/4.4)*1.14))+'px)';
+      });
+      raf=requestAnimationFrame(drive);
+    }
+    raf=requestAnimationFrame(drive);
+    return function(){killed=true;cancelAnimationFrame(raf);};
+  },[]);
+
+  function grab(item){
     if(finished.current)return;
-    var expected=seq.steps[step];
+    var expected=seq.steps[stepRef.current];
     if(item.id===expected.id){
-      var nextStep=step+1;
+      if(typeof SFX!=='undefined')SFX.play('tab');
+      var el=fragRefs.current[item.id];if(el)el.__locked=true;
+      var nextStep=stepRef.current+1;
       setStep(nextStep);
-      if(nextStep>=seq.steps.length){ finished.current=true; p.onDone(errors===0&&time>=7?'great':(errors<=1?'success':'partial')); }
+      if(nextStep>=seq.steps.length){ finished.current=true; p.onDone(errRef.current===0&&time>=8?'great':(errRef.current<=1?'success':'partial')); }
       return;
     }
+    if(typeof SFX!=='undefined')SFX.play('warn');
+    setErrFlash(true);setTimeout(function(){setErrFlash(false);},350);
     setErrors(function(v){return v+1;});
-    if(errors+1>=3){ finished.current=true; p.onDone(step>=2?'partial':'fail'); }
+    if(errRef.current+1>=3){ finished.current=true; p.onDone(stepRef.current>=2?'partial':'fail'); }
   }
 
   return h(FieldTerminalShell,{
     code:'MI-02',kind:'LOG RECONSTRUCTION',title:copy.title,intro:copy.intro,
-    status:[{k:'TIME',v:time+'s',cls:time<=3?'is-bad':''},{k:'RESTORED',v:step+'/4'},{k:'ERROR',v:errors+'',cls:errors>0?'is-warn':''}],
+    status:[{k:'TIME',v:time+'s',cls:time<=4?'is-bad':''},{k:'RESTORED',v:step+'/4'},{k:'ERROR',v:errors+'',cls:errors>0?'is-warn':''}],
     progress:Math.round((step/4)*100)
   },
-    h('div',{className:'fm-term-stage'},
-      h('div',{style:{padding:'14px 16px',marginBottom:14,border:'1px solid rgba(74,170,238,0.35)',borderRadius:'16px',background:'rgba(7,18,26,0.45)',color:'#8ad7ff',fontSize:14,lineHeight:1.6}},
+    h('div',{className:'fm-term-stage',style:{display:'flex',flexDirection:'column',gap:8,padding:'10px 12px'}},
+      h('div',{style:{padding:'8px 12px',border:'1px solid rgba(74,170,238,0.35)',borderRadius:12,background:'rgba(7,18,26,0.45)',color:'#8ad7ff',fontSize:12,lineHeight:1.5}},
         locale==='en'?seq.leadEn:seq.leadKo),
-      h('div',{style:{display:'grid',gap:10}},
-        items.map(function(item){
-          var done=seq.steps.slice(0,step).some(function(s){return s.id===item.id;});
-          return h('button',{
-            key:item.id,className:'btn',disabled:done,onClick:function(){selectItem(item);},
-            style:{minHeight:58,borderRadius:'14px',padding:'12px 14px',textAlign:'left',background:done?'rgba(120,255,190,0.12)':'rgba(5,18,11,0.92)',border:'1px solid '+(done?'rgba(120,255,190,0.45)':'rgba(122,255,198,0.18)'),color:done?'#78ffbe':'rgba(210,235,220,0.84)',fontSize:14}
-          },(done?'[OK] ':'')+(locale==='en'?item.en:item.ko));
-        })
-      )
+      // 복원 슬롯 — 잠긴 조각이 순서대로 채워진다
+      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:5}},
+        seq.steps.map(function(st,i){
+          var filled=i<step;
+          return h('div',{key:st.id,style:{minHeight:34,borderRadius:8,padding:'4px 6px',fontSize:8.5,lineHeight:1.35,overflow:'hidden',
+            border:'1px '+(filled?'solid rgba(120,255,190,0.5)':'dashed rgba(122,255,198,0.2)'),
+            background:filled?'rgba(120,255,190,0.1)':'rgba(3,10,6,0.5)',
+            color:filled?'#78ffbe':'rgba(122,255,198,0.3)',fontFamily:"'Share Tech Mono',monospace"}},
+            filled?(locale==='en'?st.en:st.ko):('SLOT '+(i+1)));
+        })),
+      // 데이터 스트림 — 조각이 잡음과 함께 위로 흐른다
+      h('div',{style:{position:'relative',flex:1,minHeight:230,overflow:'hidden',borderRadius:12,
+        border:'1px solid '+(errFlash?'rgba(255,90,72,0.7)':'rgba(122,255,198,0.16)'),
+        background:'linear-gradient(180deg,rgba(3,10,6,0.9),rgba(5,16,10,0.95))',transition:'border-color .1s'}},
+        JUNK.map(function(j,i){
+          return h('div',{key:'junk'+i,ref:function(el){if(el)junkRefs.current[i]=el;},
+            style:{position:'absolute',left:(6+((i*23)%55))+'%',top:0,willChange:'transform',pointerEvents:'none',
+              fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:1,color:'rgba(122,255,198,0.18)',whiteSpace:'nowrap'}},j);
+        }),
+        lanes.map(function(ln){
+          return h('button',{key:ln.step.id,ref:function(el){if(el)fragRefs.current[ln.step.id]=el;},
+            onClick:function(){grab(ln.step);},
+            style:{position:'absolute',left:ln.x+'%',top:0,display:'none',willChange:'transform',cursor:'pointer',
+              maxWidth:'72%',textAlign:'left',padding:'7px 10px',borderRadius:9,fontSize:11.5,lineHeight:1.35,
+              background:'rgba(10,26,32,0.94)',border:'1px solid rgba(138,215,255,0.55)',color:'#bfe9ff',
+              boxShadow:'0 0 10px rgba(74,170,238,0.25)',fontFamily:"'Share Tech Mono',monospace"}},
+            locale==='en'?ln.step.en:ln.step.ko);
+        }))
     )
   );
 }
@@ -1241,7 +1307,7 @@ var MINI_CONTROLS = {
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
   scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
   evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
-  reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
+  reconstruction:{ko:'스트림에 흘러가는 로그 조각을 가장 이른 것부터 순서대로 탭한다. 놓치면 다시 흘러올 때까지 기다린다.',en:'Tap the log fragments drifting in the stream, earliest first. Missed one? Wait for it to cycle back.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
   screening:{ko:'생체 파형을 관찰한다. 정상 인원도 가끔 잔떨림을 보인다 — 파형이 황색으로 변하며 BPM이 크게 튀는 쪽이 진짜다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Normal staff also show minor stutters — the real carriers flash amber with a sharp BPM spike. Mark two, then press [Confirm Read].'},
   strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'},
