@@ -504,10 +504,18 @@ function DayObjective(p){
   var critical=['c','r','t','o'].filter(function(k){return (st[k]||0)<=25});
   var weakStats=['c','r','t','o'].filter(function(k){var v=st[k];return typeof v==='number'&&v<=40&&v>25});
   var weakSub=weakStats.length?((isEn?'Weak metric trending down: ':'주의 지표: ')+weakStats.map(function(k){return statNames[k]}).join(', ')):'';
-  var key=critical.length?'critical':(day<=1?'day1':('act'+act));
+  // 첫날 목표 고정: 간부진 4인 첫 면담이 끝나기 전에는 스탯 권고가 목표를 덮어쓰지 않는다
+  // (day 1 시작 평가 40이 권고선(≤40)에 걸려 스와이프마다 목표가 바뀌는 문제 방지).
+  // 서하은은 LOG-050(사망 분기 대체 기록)도 면담 완료로 인정 — app-logic introsDone과 동일 규칙.
+  var introSets=[['LOG-INTRO-SH','LOG-050'],['LOG-INTRO-KD'],['LOG-INTRO-YS'],['LOG-INTRO-IJ']];
+  var introN=introSets.filter(function(ids){return ids.some(function(id){return logs.indexOf(id)>=0})}).length;
+  var introPending=act===1&&day<=3&&introN<4;
+  var key=critical.length?'critical':(introPending?'day1':('act'+act));
   var sub='';
   if(critical.length){
     sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return statNames[k]}).join(', ');
+  }else if(introPending){
+    sub=(isEn?'Officer interviews: ':'간부 면담: ')+introN+'/4';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
     sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
@@ -558,7 +566,7 @@ function DayObjective(p){
   //    검열(corruption>=2) 전까지만. 평가(o, ORACLE 충성) 최우선, 그 외 가장 낮은 c/r/t.
   //    ≤35(o)·≤30(c/r/t)=firm(지시), 그보다 높고 ≤40=advisory(권고)로 두 단계.
   //    권고(oSub)는 진행 안내(sub)를 덮어쓰되, 조사테이블 미해금 안내(subLocked)는 진행 필수라 보존.
-  if(corruption<2){
+  if(corruption<2&&!introPending){
     var subLocked=(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0)||(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0);
     var oDir=null,oSub=null;
     if(typeof st.o==='number'&&st.o<=40){

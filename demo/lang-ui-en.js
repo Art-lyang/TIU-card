@@ -117,7 +117,7 @@ window.TS_I18N.mergeUI('en', {
   },
   objective:{
     label:'DAY OBJECTIVE',
-    day1:'Complete Korea Branch initial stabilization.',
+    day1:'Complete first interviews with all four staff officers.',
     act1:'Stabilize branch operations while preserving containment, resources, and trust.',
     act2:'Monitor external threats and balance ORACLE advisories with field judgment.',
     act3:'Trace nonstandard signals and secure critical evidence.',
