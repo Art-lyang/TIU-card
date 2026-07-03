@@ -245,6 +245,17 @@ function EveningChat2(p){
   var s3=useState(false),done=s3[0],setDone=s3[1];
   var _doneToday=useState({}),doneToday=_doneToday[0],setDoneToday=_doneToday[1];
   var _skipC=useState(false),showSkipConfirm=_skipC[0],setShowSkipConfirm=_skipC[1];
+  // 첫 도달 안내 — 연구/시설/조사 탭과 동일한 패턴 (ts_eveningHelpSeen, ? 버튼으로 재열람)
+  var help=useRlabHelp('ts_eveningHelpSeen',false);
+  var _isEnH=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  var LH=function(ko,en){return _isEnH?en:ko};
+  var helpRows=[
+    [LH('야간 통신','COMMS'),LH('하루의 판단이 끝난 밤, 간부 1인과 대화할 수 있습니다. 대화는 하루 한 번뿐입니다.','After the day\'s decisions, you may speak with one officer. One conversation per night.')],
+    [LH('신뢰','TRUST'),LH('응답 선택에 따라 그 간부의 신뢰가 오르내립니다. 신뢰는 인물 사건과 엔딩 분기에 영향을 줍니다.','Your replies raise or lower that officer\'s trust. Trust shapes personal arcs and ending branches.')],
+    [LH('단서','LEADS'),LH('특정 대화에서 조사테이블·연구 콘솔이 해금되고, 새 기록과 증거가 열립니다.','Certain conversations unlock the evidence table and research console, plus new records.')],
+    [LH('조합','COMBINE'),LH('조사테이블 해금 후에는 이 화면의 [조사 테이블] 버튼으로 증거를 조합할 수 있습니다.','Once unlocked, use the EVIDENCE TABLE button here to combine records.')],
+    [LH('건너뛰기','SKIP'),LH('대화를 건너뛰면 다음 날로 넘어갑니다. 그날의 신뢰 기회는 사라집니다.','Skipping moves to the next day — that night\'s trust opportunity is lost.')]
+  ];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];
   var INTRO_LOG_BY_CONTACT_KEY={haeun:'LOG-INTRO-SH',doyun:'LOG-INTRO-KD',sejin:'LOG-INTRO-YS',jaehyuk:'LOG-INTRO-IJ'};
   var available=chars.filter(function(c){var reqIntro=INTRO_LOG_BY_CONTACT_KEY[c.key];if(reqIntro&&p.logs.indexOf(reqIntro)<0&&p.act<2)return false;if(isEveningContactUnavailableByLogs(c,p.logs))return false;if(c.key==='haeun'&&p.logs.indexOf('LOG-050')>=0)return false;if(c.key==='doyun'&&p.logs.indexOf('LOG-075')>=0)return false;if(c.key==='weber'&&(p.logs.indexOf('LOG-080')<0||p.act<4||p.day<29))return false;if(c.key==='foster'&&(p.day<27||p.act<3||(p.logs.indexOf('LOG-081')<0&&p.logs.indexOf('LOG-080')<0)))return false;if(c.key==='soyoung'&&(p.logs.indexOf('LOG-082')<0||p.logs.indexOf('LOG-INTRO-SY')<0||p.act<4||p.day<29))return false;return true});
@@ -465,6 +476,8 @@ function EveningChat2(p){
   if(!selChar)return h(React.Fragment,null,
     h('div',{className:'screen'},
       h('div',{className:'title-frame'},h('span',null,'ORACLE // EVENING')),
+      h('span',{style:{position:'absolute',right:14,top:'max(10px, env(safe-area-inset-top))',zIndex:5}},h(RlabHelpButton,{onClick:help.show,title:LH('야간 통신 안내','Night comms guide')})),
+      h(RlabHelpOverlay,{open:help.open,onClose:help.close,title:LH('야간 통신 안내','NIGHT COMMS'),ok:LH('확인','GOT IT'),rows:helpRows}),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:16,color:'rgba(var(--ui-rgb),.9)',textAlign:'center',margin:'12px 0 4px',letterSpacing:1}},'DAY '+p.day+' '+tt('evening.dayEnd',null,'END')),
       h('div',{style:{fontSize:13,color:'rgba(var(--ui-rgb),.6)',textAlign:'center',marginBottom:20}},tt('evening.selectChar',null,'You can speak with one senior officer.')),
       !showSkipConfirm&&h('button',{className:'btn',style:{display:'block',order:20,margin:'18px auto 0',fontSize:11,padding:'8px 20px',opacity:Object.keys(doneToday).length>0?0.85:0.5},onClick:function(){setShowSkipConfirm(true)}},'[ '+(Object.keys(doneToday).length>0?tt('evening.proceedNextDay',null,'다음 DAY 진행'):tt('evening.skip',null,'SKIP'))+' ]'),
