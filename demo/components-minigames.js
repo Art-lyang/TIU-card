@@ -854,96 +854,148 @@ function RouteMiniGame(p){
 }
 
 function EvidenceMiniGame(p){
+  // v2: 정지 목록 3택 → 컨베이어 신속 분류. 단서가 한 장씩 들어오고
+  // 상단 고정 '판독 기준'을 근거로 제한시간 내 [채증]/[폐기] 즉결 판정.
+  // 판정 직후 정답/오답 + 이유 피드백. 미판정은 자동 폐기 처리.
   var copy=p.copy;
   var cases=[
-    { leadKo:'각인된 해안 좌표와 장비 흔적을 검토한다.', leadEn:'Review the engraved coastline coordinates and equipment traces.', correct:['coord','salt','boot'],
-      hintKo:'판독 기준: 장소를 특정하는 좌표, 해안 접근 흔적, 비규격 이동 흔적처럼 “어디서 들어왔고 어떻게 움직였는지”를 증명하는 단서를 고르세요.',
-      hintEn:'Sorting rule: choose evidence that proves where the subject entered and how they moved, such as location marks, coastal residue, and non-standard tracks.',
+    { briefKo:'판독 기준: 침입 경로·이동·장비 흔적만 채증한다. 생활 집기와 낡은 잔해는 폐기.',
+      briefEn:'Rule: collect only entry-route, movement, and equipment traces. Discard household items and old debris.',
       items:[
-      {id:'coord',ko:'해안 좌표 각인',en:'Coastline coordinates'},
-      {id:'salt',ko:'염분 묻은 통신 케이블',en:'Salt-stained comm cable'},
-      {id:'cup',ko:'뒤집힌 금속 컵',en:'Overturned metal cup'},
-      {id:'boot',ko:'비규격 전술화 자국',en:'Non-standard boot marks'},
-      {id:'dust',ko:'먼지 낀 램프 파편',en:'Dusty lamp shard'},
-      {id:'ash',ko:'식은 화로 재',en:'Cold brazier ash'}
-    ]},
-    { leadKo:'CCTV 공백 구간과 내부 로그를 대조한다.', leadEn:'Compare the CCTV blackout against internal logs.', correct:['time','route','patch'],
-      hintKo:'판독 기준: 영상 공백을 만든 시간 반복, 층간 이동 패턴, 승인 없는 시스템 변경처럼 기록 조작과 직접 이어지는 단서를 고르세요.',
-      hintEn:'Sorting rule: choose traces directly tied to log manipulation: repeated time, cross-floor movement, and unauthorized system changes.',
+        {ko:'해안 좌표 각인',en:'Coastline coordinates',rel:true,whyKo:'침입 지점 특정',whyEn:'pins the entry point'},
+        {ko:'뒤집힌 금속 컵',en:'Overturned metal cup',rel:false,whyKo:'생활 집기 — 무관',whyEn:'household item'},
+        {ko:'염분 묻은 통신 케이블',en:'Salt-stained comm cable',rel:true,whyKo:'해안 반입 장비',whyEn:'sea-carried equipment'},
+        {ko:'식은 화로 재',en:'Cold brazier ash',rel:false,whyKo:'오래된 생활 흔적',whyEn:'old living trace'},
+        {ko:'비규격 전술화 자국',en:'Non-standard boot marks',rel:true,whyKo:'외부 인원 이동 흔적',whyEn:'outsider movement'},
+        {ko:'먼지 낀 램프 파편',en:'Dusty lamp shard',rel:false,whyKo:'낡은 잔해 — 무관',whyEn:'old debris'},
+        {ko:'방수 포장 절단 파편',en:'Cut waterproof wrap',rel:true,whyKo:'장비 반입 포장재',whyEn:'gear delivery wrap'},
+        {ko:'오래된 순찰 낙서',en:'Old patrol graffiti',rel:false,whyKo:'과거 기록 — 무관',whyEn:'past-era mark'},
+        {ko:'갯벌 흙 전이 흔적',en:'Tidal-mud transfer',rel:true,whyKo:'해안→내부 이동 증거',whyEn:'coast-to-site movement'}
+      ]},
+    { briefKo:'판독 기준: 기록 조작과 직결된 흔적만 채증한다. 일상 로그와 설비 잡음은 폐기.',
+      briefEn:'Rule: collect only traces tied to log manipulation. Discard routine logs and facility noise.',
       items:[
-      {id:'time',ko:'02:47 반복 타임코드',en:'02:47 repeating timestamp'},
-      {id:'route',ko:'B1-B2 이동 흔적',en:'B1-B2 transit pattern'},
-      {id:'food',ko:'식당 출입 기록',en:'Cafeteria access log'},
-      {id:'patch',ko:'비인가 패치 해시',en:'Unauthorized patch hash'},
-      {id:'light',ko:'형광등 점멸 기록',en:'Fluorescent flicker log'},
-      {id:'temp',ko:'서버실 온도 편차',en:'Server room heat drift'}
-    ]},
-    { leadKo:'현장 샘플 보고와 오염 흔적을 추린다.', leadEn:'Sift the field sample report for contamination traces.', correct:['spike','resin','tag'],
-      hintKo:'판독 기준: 검체 상태 변화, 응고/잔류 물질, 오염 표식 이상처럼 샘플 오염을 직접 설명하는 단서를 고르세요.',
-      hintEn:'Sorting rule: choose clues that directly explain sample contamination: specimen-state change, residue/coagulation, and missing contamination markings.',
+        {ko:'02:47 반복 타임코드',en:'02:47 repeating timestamp',rel:true,whyKo:'영상 공백 조작 흔적',whyEn:'blackout manipulation'},
+        {ko:'식당 출입 기록',en:'Cafeteria access log',rel:false,whyKo:'일상 로그 — 무관',whyEn:'routine log'},
+        {ko:'B1-B2 이동 흔적',en:'B1-B2 transit pattern',rel:true,whyKo:'공백 시간대 동선',whyEn:'movement in the gap'},
+        {ko:'형광등 점멸 기록',en:'Fluorescent flicker log',rel:false,whyKo:'설비 잡음 — 무관',whyEn:'facility noise'},
+        {ko:'비인가 패치 해시',en:'Unauthorized patch hash',rel:true,whyKo:'승인 없는 시스템 변경',whyEn:'unapproved change'},
+        {ko:'서버실 온도 편차',en:'Server room heat drift',rel:false,whyKo:'환경 수치 — 무관',whyEn:'environment metric'},
+        {ko:'삭제된 세션 토큰',en:'Deleted session token',rel:true,whyKo:'접속 흔적 인멸',whyEn:'erased access trace'},
+        {ko:'정기 백업 완료 로그',en:'Scheduled backup log',rel:false,whyKo:'정상 운영 기록',whyEn:'normal operations'},
+        {ko:'우회 프록시 설정 잔재',en:'Bypass proxy residue',rel:true,whyKo:'경유 조작 흔적',whyEn:'relay manipulation'}
+      ]},
+    { briefKo:'판독 기준: 샘플 오염을 직접 설명하는 흔적만 채증한다. 단순 파손물·소모품은 폐기.',
+      briefEn:'Rule: collect only traces that directly explain contamination. Discard mere breakage and consumables.',
       items:[
-      {id:'spike',ko:'급상승 포자 밀도',en:'Spore density spike'},
-      {id:'resin',ko:'응고 수지 흔적',en:'Coagulated resin trace'},
-      {id:'glass',ko:'깨진 슬라이드 파편',en:'Broken slide fragments'},
-      {id:'tag',ko:'오염 표식 누락 구간',en:'Missing contamination tag'},
-      {id:'glove',ko:'찢어진 장갑 조각',en:'Torn glove scrap'},
-      {id:'cart',ko:'빈 운반 카트',en:'Empty transport cart'}
-    ]}
+        {ko:'급상승 포자 밀도',en:'Spore density spike',rel:true,whyKo:'오염 진행 수치',whyEn:'contamination metric'},
+        {ko:'깨진 슬라이드 파편',en:'Broken slide fragments',rel:false,whyKo:'단순 파손 — 무관',whyEn:'mere breakage'},
+        {ko:'응고 수지 흔적',en:'Coagulated resin trace',rel:true,whyKo:'검체 상태 변화',whyEn:'specimen change'},
+        {ko:'찢어진 장갑 조각',en:'Torn glove scrap',rel:false,whyKo:'소모품 잔재',whyEn:'consumable scrap'},
+        {ko:'오염 표식 누락 구간',en:'Missing contamination tag',rel:true,whyKo:'표식 관리 이상',whyEn:'tagging anomaly'},
+        {ko:'빈 운반 카트',en:'Empty transport cart',rel:false,whyKo:'집기 — 무관',whyEn:'equipment item'},
+        {ko:'밀봉 파손 검체 용기',en:'Breached sample vial',rel:true,whyKo:'직접 오염 경로',whyEn:'direct exposure path'},
+        {ko:'야간 조명 오류 보고',en:'Night lighting fault',rel:false,whyKo:'설비 보고 — 무관',whyEn:'facility report'},
+        {ko:'여과 필터 변색',en:'Discolored filter',rel:true,whyKo:'오염 물질 통과 흔적',whyEn:'contaminant passage'}
+      ]}
   ];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+  var L=function(ko,en){return locale==='en'?en:ko};
+  var ITEM_SEC=4.5;
   var caseRef=useRef(null);
-  if(!caseRef.current)caseRef.current=cases[Math.floor(Math.random()*cases.length)];
+  if(!caseRef.current){
+    var c=cases[Math.floor(Math.random()*cases.length)];
+    caseRef.current={brief:locale==='en'?c.briefEn:c.briefKo,items:c.items.slice().sort(function(){return Math.random()-0.5;})};
+  }
   var active=caseRef.current;
-  var _selected=useState([]),selected=_selected[0],setSelected=_selected[1];
-  var _time=useState(18),time=_time[0],setTime=_time[1];
+  var _idx=useState(0),idx=_idx[0],setIdx=_idx[1];
+  var _errors=useState(0),errors=_errors[0],setErrors=_errors[1];
+  var _fb=useState(null),feedback=_fb[0],setFeedback=_fb[1];   // {ok,text}
+  var _pct=useState(0),pct=_pct[0],setPct=_pct[1];             // 아이템 제한시간 진행률
   var finished=useRef(false);
+  var judgedRef=useRef(false);
+  var errRef=useRef(0);errRef.current=errors;
 
+  // 아이템 제한시간 — 만료 시 자동 폐기 판정
   useEffect(function(){
-    if(finished.current)return;
-    if(time<=0){ finished.current=true; finalize(selected); return; }
-    var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
-    return function(){clearTimeout(t);};
-  },[time,selected]);
+    if(finished.current||idx>=active.items.length)return;
+    judgedRef.current=false;
+    setPct(0);
+    var t0=performance.now();
+    var iv=setInterval(function(){
+      var el=(performance.now()-t0)/1000;
+      setPct(Math.min(1,el/ITEM_SEC));
+      if(el>=ITEM_SEC&&!judgedRef.current){clearInterval(iv);judge(false,true);}
+    },80);
+    return function(){clearInterval(iv);};
+  },[idx]);
 
-  function toggle(id){
-    if(finished.current)return;
-    setSelected(function(prev){
-      if(prev.indexOf(id)>=0)return prev.filter(function(v){return v!==id;});
-      if(prev.length>=3)return prev;
-      return prev.concat([id]);
-    });
+  function judge(collect,auto){
+    if(finished.current||judgedRef.current)return;
+    judgedRef.current=true;
+    var item=active.items[idx];
+    var correct=(collect===item.rel);
+    var why=locale==='en'?item.whyEn:item.whyKo;
+    if(correct){
+      if(typeof SFX!=='undefined')SFX.play('tab');
+      setFeedback({ok:true,text:(item.rel?L('채증 완료 — ','COLLECTED — '):L('폐기 적절 — ','DISCARDED — '))+why});
+    }else{
+      if(typeof SFX!=='undefined')SFX.play('warn');
+      setErrors(function(v){return v+1;});
+      var reason=item.rel?(auto?L('핵심 단서 유실 — ','KEY CLUE LOST — '):L('핵심 단서 폐기 — ','KEY CLUE DISCARDED — ')):L('무관물 채증 — ','JUNK COLLECTED — ');
+      setFeedback({ok:false,text:reason+why});
+    }
+    setTimeout(function(){
+      setFeedback(null);
+      var next=idx+1;
+      if(next>=active.items.length){
+        finished.current=true;
+        var finalErr=correct?errRef.current:errRef.current+1; // errRef는 setErrors 반영 전 값이라 이번 판정 보정
+
+        if(finalErr===0)p.onDone('great');
+        else if(finalErr<=1)p.onDone('success');
+        else if(finalErr<=3)p.onDone('partial');
+        else p.onDone('fail');
+        return;
+      }
+      setIdx(next);
+    },820);
   }
 
-  function finalize(picks){
-    var chosen=(picks||selected).slice();
-    var hit=chosen.filter(function(id){return active.correct.indexOf(id)>=0;}).length;
-    if(hit===3)p.onDone(time>=9?'great':'success');
-    else if(hit===2)p.onDone('partial');
-    else p.onDone('fail');
-  }
-
+  var item=active.items[idx];
+  var timeLeft=Math.ceil(ITEM_SEC*(1-pct));
   return h(FieldTerminalShell,{
     code:'M-003',kind:'EVIDENCE SORT',title:copy.title,intro:copy.intro,
-    status:[{k:'TIME',v:time+'s',cls:time<=3?'is-bad':''},{k:'PICKS',v:selected.length+'/3'}]
+    status:[{k:L('단서','ITEM'),v:(Math.min(idx+1,active.items.length))+'/'+active.items.length},{k:L('오류','ERR'),v:errors+'',cls:errors>0?'is-warn':''}],
+    progress:Math.round((idx/active.items.length)*100)
   },
-    h('div',{className:'fm-term-stage'},
-      h('div',{style:{padding:'10px 13px',marginBottom:9,border:'1px solid rgba(245,188,64,0.35)',borderRadius:'16px',background:'rgba(32,24,8,0.35)',color:'#f3c35b',fontSize:14,lineHeight:1.6}},
-        locale==='en'?active.leadEn:active.leadKo),
-      h('div',{style:{padding:'8px 12px',marginBottom:9,border:'1px solid rgba(122,255,198,0.22)',borderRadius:'12px',background:'rgba(5,18,11,0.74)',color:'rgba(210,235,220,0.84)',fontSize:13,lineHeight:1.65}},
-        h('b',{style:{display:'block',fontFamily:"'Share Tech Mono',monospace",fontSize:10,letterSpacing:1.4,color:'#7affc6',marginBottom:4}},locale==='en'?'SORTING RULE':'판독 기준'),
-        locale==='en'?active.hintEn:active.hintKo),
-      h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:8,marginBottom:11}},
-        active.items.map(function(item){
-          var isOn=selected.indexOf(item.id)>=0;
-          return h('button',{
-            key:item.id,className:'btn',onClick:function(){toggle(item.id);},
-            style:{minHeight:64,borderRadius:'14px',padding:'9px 12px',textAlign:'left',background:isOn?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.9)',border:'1px solid '+(isOn?'rgba(120,255,190,0.55)':'rgba(122,255,198,0.18)'),color:isOn?'#ecfff4':'rgba(210,235,220,0.82)',fontSize:14,lineHeight:1.5}
-          },locale==='en'?item.en:item.ko);
-        })
+    h('div',{className:'fm-term-stage',style:{display:'flex',flexDirection:'column',gap:10,padding:'12px 14px'}},
+      // 고정 판독 기준
+      h('div',{style:{padding:'9px 12px',border:'1px solid rgba(245,188,64,0.4)',borderRadius:12,background:'rgba(32,24,8,0.4)',color:'#f3c35b',fontSize:12.5,lineHeight:1.6}},
+        active.brief),
+      // 컨베이어 카드
+      item&&h('div',{key:idx,style:{position:'relative',padding:'22px 16px 18px',borderRadius:14,textAlign:'center',
+        border:'1px solid '+(feedback?(feedback.ok?'rgba(120,255,190,0.6)':'rgba(255,90,72,0.65)'):'rgba(122,255,198,0.3)'),
+        background:'rgba(5,18,11,0.92)',animation:'fadeIn .18s ease',transition:'border-color .12s'}},
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:2,color:'rgba(122,255,198,0.45)',marginBottom:8}},
+          L('수거물 #','ITEM #')+(idx+1)),
+        h('div',{style:{fontSize:17,fontWeight:'700',color:'#ecfff4',lineHeight:1.5,minHeight:44}},L(item.ko,item.en)),
+        // 제한시간 바
+        h('div',{style:{height:4,borderRadius:2,background:'rgba(122,255,198,0.12)',marginTop:14,overflow:'hidden'}},
+          h('div',{style:{height:'100%',width:Math.round((1-pct)*100)+'%',borderRadius:2,transition:'width .09s linear',
+            background:pct>0.72?'#ff5a48':(pct>0.5?'#f0a030':'#78ffbe')}})),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:1.5,marginTop:5,color:pct>0.72?'#ff8d78':'rgba(122,255,198,0.5)'}},timeLeft+'s'),
+        // 판정 피드백 오버레이
+        feedback&&h('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',padding:'0 12px',
+          borderRadius:14,background:'rgba(3,8,5,0.82)'}},
+          h('div',{style:{fontSize:13,lineHeight:1.5,fontFamily:"'Share Tech Mono',monospace",letterSpacing:0.5,
+            color:feedback.ok?'#78ffbe':'#ff8d78'}},(feedback.ok?'✓ ':'✕ ')+feedback.text))
       )
     ),
-    h('div',{className:'fm-term-actions'},
-      h('button',{className:'fm-term-btn is-amber',disabled:selected.length!==3,onClick:function(){if(!finished.current){finished.current=true;finalize(selected);}}},copy.action))
+    h('div',{className:'fm-term-actions',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}},
+      h('button',{className:'fm-term-btn',disabled:!!feedback||!item,onClick:function(){judge(false,false);},
+        style:{opacity:feedback?0.5:1}},L('폐기','DISCARD')),
+      h('button',{className:'fm-term-btn is-amber',disabled:!!feedback||!item,onClick:function(){judge(true,false);}},L('채증','COLLECT')))
   );
 }
 
@@ -1317,7 +1369,7 @@ var MINI_CONTROLS = {
   route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력을 2 소모한다.',en:'Move one tile up, down, left, or right. Red tiles fail instantly; amber tiles cost 2 moves.'},
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
   scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
-  evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
+  evidence:{ko:'수거물이 한 점씩 들어온다. 상단 판독 기준에 맞으면 [채증], 아니면 [폐기] — 제한시간 안에 판정한다. 미판정은 자동 폐기.',en:'Items arrive one at a time. [COLLECT] if it matches the rule, [DISCARD] if not — decide before the timer runs out. No decision = auto-discard.'},
   reconstruction:{ko:'스트림의 기록을 시각이 이른 것부터 순서대로 탭한다. 사건과 무관한 기록·깨진 기록이 섞여 있다 — 탭하면 오류. 놓치면 다시 흘러올 때까지 기다린다.',en:'Tap records earliest-first by timestamp. Unrelated and corrupted entries are mixed in — tapping them counts as an error. Missed one? Wait for it to cycle back.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
   screening:{ko:'생체 파형을 관찰한다. 정상 인원도 가끔 잔떨림을 보인다 — 파형이 황색으로 변하며 BPM이 크게 튀는 쪽이 진짜다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Normal staff also show minor stutters — the real carriers flash amber with a sharp BPM spike. Mark two, then press [Confirm Read].'},
