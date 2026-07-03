@@ -288,38 +288,100 @@ function FieldTerminalShell(p){
 }
 
 function SignalMiniGame(p){
+  // v2: 단발 타이밍 → 3채널 주파수 정렬. LOW/MID/HIGH 커서가 서로 다른 속도로
+  // 왕복하고, 위에서부터 차례로 [정렬 고정]. 아래 채널일수록 빠르고 띠가 좁으며
+  // HIGH 채널은 띠 중심이 흔들리는 이동 표적. 오조준 3회 실패, 총 14초.
   var copy=p.copy;
-  var startBand=0.45+Math.random()*0.1;
-  var bandWidth=0.08;
-  var partialWidth=0.03;
-  var _cursor=useState(0.18+Math.random()*0.12),cursor=_cursor[0],setCursor=_cursor[1];
-  var _dir=useState(1),dir=_dir[0],setDir=_dir[1];
-  var _time=useState(8),time=_time[0],setTime=_time[1];
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+  var L=function(ko,en){return locale==='en'?en:ko};
+  var chRef=useRef(null);
+  if(!chRef.current){
+    chRef.current=[
+      {name:'LOW', speed:0.38, phase:Math.random()*2, bandC:0.35+Math.random()*0.3, bandW:0.11, drift:0},
+      {name:'MID', speed:0.55, phase:Math.random()*2, bandC:0.35+Math.random()*0.3, bandW:0.085, drift:0},
+      {name:'HIGH',speed:0.78, phase:Math.random()*2, bandC:0.4+Math.random()*0.2,  bandW:0.07, drift:0.07}
+    ];
+  }
+  var CH=chRef.current;
+  var PARTIAL=0.035;
+  var _locked=useState([]),locked=_locked[0],setLocked=_locked[1];   // [{pos,perfect}]
+  var _errors=useState(0),errors=_errors[0],setErrors=_errors[1];
+  var _time=useState(14),time=_time[0],setTime=_time[1];
   var finished=useRef(false);
-  var bandRef=useRef({start:startBand,end:startBand+bandWidth,partial:partialWidth});
+  var lockedRef=useRef(locked);lockedRef.current=locked;
+  var errRef=useRef(errors);errRef.current=errors;
+  var t0Ref=useRef(performance.now());
+  var cursorRefs=useRef({});
+  var bandRefs=useRef({});
 
-  useEffect(function(){
-    var moveTimer=setInterval(function(){
-      setCursor(function(prev){
-        var next=prev+(dir*0.025);
-        if(next>=0.95){setDir(-1);return 0.95;}
-        if(next<=0.05){setDir(1);return 0.05;}
-        return next;
-      });
-    },40);
-    return function(){clearInterval(moveTimer);};
-  },[dir]);
+  function tri(x){x=x%2;return x<1?x:2-x;}                            // 0..1 삼각파
+  function cursorPos(i,tSec){return 0.06+tri(tSec*CH[i].speed+CH[i].phase)*0.88;}
+  function bandCenter(i,tSec){return CH[i].bandC+(CH[i].drift?Math.sin(tSec*0.9+i)*CH[i].drift:0);}
 
   useEffect(function(){
     if(finished.current)return;
     if(time<=0){
       finished.current=true;
-      p.onDone('fail');
+      p.onDone(lockedRef.current.length>=2?'partial':'fail');
       return;
     }
     var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
     return function(){clearTimeout(t);};
   },[time,p]);
+
+  // 커서/이동 띠 렌더 루프 — DOM 직접 갱신
+  useEffect(function(){
+    var raf=0,killed=false;
+    function drive(now){
+      if(killed)return;
+      var tSec=(now-t0Ref.current)/1000;
+      for(var i=0;i<3;i++){
+        var lk=lockedRef.current[i];
+        var cEl=cursorRefs.current[i];
+        if(cEl){
+          var pos=lk?lk.pos:cursorPos(i,tSec);
+          cEl.style.left=(pos*100)+'%';
+        }
+        var bEl=bandRefs.current[i];
+        if(bEl){
+          var bc=bandCenter(i,tSec);
+          bEl.style.left=((bc-CH[i].bandW/2)*100)+'%';
+          bEl.style.width=(CH[i].bandW*100)+'%';
+        }
+      }
+      raf=requestAnimationFrame(drive);
+    }
+    raf=requestAnimationFrame(drive);
+    return function(){killed=true;cancelAnimationFrame(raf);};
+  },[]);
+
+  function confirmHit(){
+    if(finished.current)return;
+    var i=lockedRef.current.length;
+    if(i>=3)return;
+    var tSec=(performance.now()-t0Ref.current)/1000;
+    var pos=cursorPos(i,tSec);
+    var bc=bandCenter(i,tSec);
+    var half=CH[i].bandW/2;
+    var inCore=Math.abs(pos-bc)<=half;
+    var inPartial=Math.abs(pos-bc)<=half+PARTIAL;
+    if(inCore||inPartial){
+      if(typeof SFX!=='undefined')SFX.play('tab');
+      var nl=lockedRef.current.concat([{pos:pos,perfect:inCore}]);
+      setLocked(nl);
+      if(nl.length>=3){
+        finished.current=true;
+        var perfects=nl.filter(function(x){return x.perfect;}).length;
+        if(perfects===3&&time>=5)p.onDone('great');
+        else if(perfects>=2)p.onDone('success');
+        else p.onDone('partial');
+      }
+      return;
+    }
+    if(typeof SFX!=='undefined')SFX.play('warn');
+    setErrors(function(v){return v+1;});
+    if(errRef.current+1>=3){finished.current=true;p.onDone(lockedRef.current.length>=2?'partial':'fail');}
+  }
 
   useEffect(function(){
     var onKey=function(e){
@@ -329,34 +391,37 @@ function SignalMiniGame(p){
     return function(){window.removeEventListener('keydown',onKey);};
   });
 
-  function confirmHit(){
-    if(finished.current)return;
-    finished.current=true;
-    var band=bandRef.current;
-    var rank='fail';
-    if(cursor>=band.start&&cursor<=band.end)rank=(time>=5?'great':'success');
-    else if(cursor>=band.start-band.partial&&cursor<=band.end+band.partial)rank='partial';
-    p.onDone(rank);
-  }
-
-  var pct=Math.round((time/8)*100);
+  var pct=Math.round((locked.length/3)*100);
   return h(FieldTerminalShell,{
     code:'M-002',kind:'SIGNAL ALIGNMENT',title:copy.title,intro:copy.intro,
-    status:[{k:'TIME',v:time+'s',cls:time<=3?'is-bad':''},{k:'PARTIAL',v:'\u00b11 CELL'}],
+    status:[{k:'TIME',v:time+'s',cls:time<=4?'is-bad':''},{k:L('고정','LOCK'),v:locked.length+'/3'},{k:L('오차','ERR'),v:errors+'',cls:errors>0?'is-warn':''}],
     footL:'SIGNAL LOCK',progress:pct,footR:pct+'%'
   },
-    h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center'}},
-      h('div',{style:{position:'relative',height:150,borderRadius:'10px',overflow:'hidden',background:'linear-gradient(180deg, rgba(9,36,28,0.95), rgba(4,18,13,0.95))'}},
-        h('div',{style:{position:'absolute',inset:0,backgroundImage:'linear-gradient(90deg, rgba(91,255,122,0.06) 1px, transparent 1px), linear-gradient(180deg, rgba(91,255,122,0.04) 1px, transparent 1px)',backgroundSize:'22px 22px'}}),
-        h('div',{style:{position:'absolute',left:'0',right:'0',top:'49%',height:'2px',background:'rgba(91,255,122,0.5)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.start*100)+'%',width:((bandRef.current.end-bandRef.current.start)*100)+'%',background:'rgba(255,211,63,0.15)',borderLeft:'2px solid rgba(255,211,63,0.9)',borderRight:'2px solid rgba(255,211,63,0.9)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:((bandRef.current.start-bandRef.current.partial)*100)+'%',width:(bandRef.current.partial*100)+'%',borderRight:'1px dashed rgba(255,211,63,0.6)'}}),
-        h('div',{style:{position:'absolute',top:'0',bottom:'0',left:(bandRef.current.end*100)+'%',width:(bandRef.current.partial*100)+'%',borderLeft:'1px dashed rgba(255,211,63,0.6)'}}),
-        h('div',{style:{position:'absolute',top:'10px',bottom:'10px',left:(cursor*100)+'%',width:'8px',transform:'translateX(-50%)',borderRadius:'999px',background:'#5bff7a',boxShadow:'0 0 16px rgba(91,255,122,0.95), 0 0 40px rgba(91,255,122,0.35)'}})
-      )
+    h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',gap:10,padding:'0 12px'}},
+      CH.map(function(ch,i){
+        var isLocked=!!locked[i];
+        var isActive=locked.length===i&&!finished.current;
+        return h('div',{key:ch.name,style:{opacity:isLocked?0.9:(isActive?1:0.4),transition:'opacity .2s'}},
+          h('div',{style:{display:'flex',justifyContent:'space-between',fontFamily:"'Share Tech Mono',monospace",fontSize:9,letterSpacing:1.5,marginBottom:4,
+            color:isLocked?'#78ffbe':(isActive?'#f3c35b':'rgba(122,255,198,0.4)')}},
+            h('span',null,ch.name+(ch.drift?' ~':'')),
+            h('span',null,isLocked?(locked[i].perfect?L('고정 — 정밀','LOCKED — CLEAN'):L('고정 — 근사','LOCKED — DRIFT')):(isActive?L('정렬 중','ALIGNING'):L('대기','STANDBY')))),
+          h('div',{style:{position:'relative',height:44,borderRadius:9,overflow:'hidden',
+            background:'linear-gradient(180deg, rgba(9,36,28,0.95), rgba(4,18,13,0.95))',
+            border:'1px solid '+(isActive?'rgba(245,188,64,0.4)':(isLocked?'rgba(120,255,190,0.35)':'rgba(122,255,198,0.12)'))}},
+            h('div',{style:{position:'absolute',inset:0,backgroundImage:'linear-gradient(90deg, rgba(91,255,122,0.06) 1px, transparent 1px)',backgroundSize:'18px 18px'}}),
+            // 안정 띠 (HIGH는 흔들림)
+            h('div',{ref:function(el){if(el)bandRefs.current[i]=el;},
+              style:{position:'absolute',top:0,bottom:0,background:isLocked?'rgba(120,255,190,0.18)':'rgba(245,188,64,0.22)',
+                borderLeft:'1px solid rgba(245,188,64,0.6)',borderRight:'1px solid rgba(245,188,64,0.6)'}}),
+            // 커서
+            h('div',{ref:function(el){if(el)cursorRefs.current[i]=el;},
+              style:{position:'absolute',top:0,bottom:0,width:3,marginLeft:-1.5,
+                background:isLocked?'#78ffbe':'#5bff7a',boxShadow:'0 0 8px '+(isLocked?'rgba(120,255,190,0.8)':'rgba(91,255,122,0.7)')}})));
+      })
     ),
     h('div',{className:'fm-term-actions'},
-      h('button',{className:'fm-term-btn is-amber',onClick:confirmHit},copy.action))
+      h('button',{className:'fm-term-btn is-amber',disabled:finished.current,onClick:confirmHit},L('정렬 고정','LOCK')))
   );
 }
 
@@ -1399,7 +1464,7 @@ function ScreeningMiniGame(p){
 
 // 미니게임 시작 게이트 — 플레이 방법 안내 후 [시작]을 눌러야 타이머/모션 작동(게임은 START 후 마운트되므로 타이머 자동 정지)
 var MINI_CONTROLS = {
-  signal:{ko:'초록 커서가 황색 안정 띠 안에 들어온 순간 [판정 확정]을 누른다.',en:'Press [Confirm] the moment the green cursor is inside the amber band.'},
+  signal:{ko:'세 주파수 채널을 위에서부터 차례로 고정한다. 커서가 황색 띠 안일 때 [정렬 고정] — 아래 채널일수록 빠르고 좁으며, HIGH 띠는 흔들린다. 오조준 3회면 실패.',en:'Lock the three channels top to bottom. Press [LOCK] while the cursor is inside the amber band — lower channels are faster and narrower, and the HIGH band drifts. Three misses fail the run.'},
   sequence:{ko:'패널에 표시된 순서 그대로 봉인 버튼을 누른다.',en:'Press the seal buttons in the exact order shown on the panel.'},
   breach:{ko:'이웃한 노드로만 이동해 KEY 2개를 모은 뒤 EXIT로 나온다. 붉은 노드는 노출을 올린다.',en:'Move only to adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
   route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력 2 소모. 배회하는 ✕ 순찰도 밟으면 즉시 실패 — 지나갈 때를 기다려라.',en:'Move one tile at a time. Red tiles fail instantly; amber costs 2 moves. The wandering ✕ patrol also fails you on contact — wait for it to pass.'},
