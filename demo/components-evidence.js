@@ -366,7 +366,8 @@ function EvidencePanel(p) {
   var helpRows = [
     [L('수집','COLLECT'), L('현장·임무·로그에서 확보한 증거가 분류별로 정리됩니다. 상단 ‘수집’ 카운터로 전체 확보량을 봅니다.','Evidence gathered from field ops, missions and logs is sorted by category. The COLLECTED counter shows your total.')],
     [L('분류','FILTER'), L('상단 분류 칩(ORACLE·현장·외부·사건·내부)으로 원하는 계열만 모아 볼 수 있습니다.','Use the category chips (ORACLE/FIELD/EXTERNAL/INCIDENT/INTERNAL) to view one line at a time.')],
-    [L('조합','COMBINE'), L('증거 2~3개를 맞물리면 새 통찰이 열립니다. 조합은 이브닝 챗에서 하고, 해금된 통찰은 이 목록 하단에 보존됩니다.','Link 2–3 records to unlock a new insight. Combine during Evening Chat; unlocked insights stay at the bottom of this list.')]
+    [L('조합','COMBINE'), L('증거 여러 개를 맞물리면 새 통찰이 열립니다. 조합은 이브닝 챗의 [증거 조합] 탭에서 하고, 해금된 통찰은 이 목록 하단에 보존됩니다.','Link multiple records to unlock a new insight. Combine in the COMBINE tab during Evening Chat; unlocked insights stay at the bottom of this list.')],
+    [L('보기','VIEW'), L('조합 화면은 [목록]과 [보드] 두 형식으로 전환할 수 있습니다. 보드에서는 증거가 핀으로 배치되고, 해금된 통찰이 증거 사이 연결선으로 표시됩니다.','The combine view can be toggled between LIST and BOARD. On the board, records appear as pins and unlocked insights are drawn as connecting lines.')]
   ];
 
   var evCard = function(ev){
