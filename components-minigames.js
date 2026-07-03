@@ -953,23 +953,32 @@ function ReconstructionMiniGame(p){
   // 시간 순서대로 탭해 상단 복원 슬롯에 잠근다. 놓치면 다음 순환을 기다려야 한다.
   var copy=p.copy;
   var sequences=[
-    { leadKo:'CCTV 공백 4조각을 시간 순서대로 잡아낸다.', leadEn:'Catch the CCTV blackout fragments in chronological order.', steps:[
+    { leadKo:'CCTV 공백 기록을 시각 순서대로 잡아낸다. 무관한 기록은 무시.', leadEn:'Catch the CCTV blackout records in time order. Ignore unrelated entries.', steps:[
       {id:'a',ko:'02:47 / B1 서버실 출입',en:'02:47 / B1 server entry'},
       {id:'b',ko:'02:49 / 통로 센서 비활성',en:'02:49 / transit sensor disabled'},
       {id:'c',ko:'02:51 / B2 접근 로그 공백',en:'02:51 / B2 access gap'},
       {id:'d',ko:'02:53 / 복귀 흔적 소실',en:'02:53 / return trace erased'}
+    ], decoys:[
+      {id:'x1',ko:'02:41 / 식당 구역 조명 점검',en:'02:41 / cafeteria light check'},
+      {id:'x2',ko:'02:5▒ / ██ 데이터 손상',en:'02:5▒ / ██ data corrupted'}
     ]},
-    { leadKo:'오염 보고 로그를 초기 발생부터 잡아낸다.', leadEn:'Catch the contamination report from first trigger onward.', steps:[
-      {id:'a',ko:'배양기 내부 열 상승',en:'Internal chamber heat rise'},
-      {id:'b',ko:'표본 격벽 점액화',en:'Sample partition liquefaction'},
-      {id:'c',ko:'변이 구조 자가 형성',en:'Self-mutating structure formed'},
-      {id:'d',ko:'관찰실 경보 기록',en:'Observation room alert logged'}
+    { leadKo:'오염 보고 기록을 시각 순서대로 잡아낸다. 무관한 기록은 무시.', leadEn:'Catch the contamination records in time order. Ignore unrelated entries.', steps:[
+      {id:'a',ko:'03:02 / 배양기 내부 열 상승',en:'03:02 / chamber heat rise'},
+      {id:'b',ko:'03:05 / 표본 격벽 점액화',en:'03:05 / partition liquefaction'},
+      {id:'c',ko:'03:08 / 변이 구조 자가 형성',en:'03:08 / mutation self-formed'},
+      {id:'d',ko:'03:11 / 관찰실 경보 기록',en:'03:11 / observation alert'}
+    ], decoys:[
+      {id:'x1',ko:'02:58 / 야간 환기 팬 정지',en:'02:58 / night vent fan stop'},
+      {id:'x2',ko:'03:0▒ / ▒▒▒ 판독 불가',en:'03:0▒ / ▒▒▒ unreadable'}
     ]},
-    { leadKo:'보안구역 출입 위조 흔적을 순서대로 잡아낸다.', leadEn:'Catch the forged security-access traces in order.', steps:[
-      {id:'a',ko:'허위 권한 요청 생성',en:'Spoofed authority request created'},
-      {id:'b',ko:'출입 로그 해시 변조',en:'Access-log hash altered'},
-      {id:'c',ko:'백도어 경로 삽입',en:'Backdoor route inserted'},
-      {id:'d',ko:'감시 태그 자동 삭제',en:'Surveillance tag auto-purged'}
+    { leadKo:'출입 위조 흔적을 시각 순서대로 잡아낸다. 무관한 기록은 무시.', leadEn:'Catch the forged-access traces in time order. Ignore unrelated entries.', steps:[
+      {id:'a',ko:'23:14 / 허위 권한 요청 생성',en:'23:14 / spoofed authority request'},
+      {id:'b',ko:'23:18 / 출입 로그 해시 변조',en:'23:18 / access-log hash altered'},
+      {id:'c',ko:'23:22 / 백도어 경로 삽입',en:'23:22 / backdoor route inserted'},
+      {id:'d',ko:'23:26 / 감시 태그 자동 삭제',en:'23:26 / surveillance tag purged'}
+    ], decoys:[
+      {id:'x1',ko:'23:10 / 정기 백업 완료',en:'23:10 / scheduled backup done'},
+      {id:'x2',ko:'23:2▒ / ██ 해시 파손',en:'23:2▒ / ██ hash broken'}
     ]}
   ];
   var JUNK=['0x3F8A ▒▒ CRC FAIL','SEG //-- NULL 0x00','▒ 74 6B 09 FE ▒▒','TRACE LOST ······','0xB2C4 ██ REDACTED','SYNC DRIFT +0.4s'];
@@ -978,8 +987,10 @@ function ReconstructionMiniGame(p){
   if(!seqRef.current){
     var sq=sequences[Math.floor(Math.random()*sequences.length)];
     // 스트림 등장 순서는 셔플 + 개별 사이클 오프셋
-    var lanes=sq.steps.slice().sort(function(){return Math.random()-0.5;}).map(function(st,i){
-      return {step:st,off:i*1.45+Math.random()*0.5,x:8+Math.random()*32};
+    var pool=sq.steps.map(function(st){return {step:st,decoy:false};})
+      .concat((sq.decoys||[]).map(function(st){return {step:st,decoy:true};}));
+    var lanes=pool.sort(function(){return Math.random()-0.5;}).map(function(en,i){
+      return {step:en.step,decoy:en.decoy,off:i*1.15+Math.random()*0.5,x:8+Math.random()*32};
     });
     seqRef.current={seq:sq,lanes:lanes};
   }
@@ -1031,10 +1042,10 @@ function ReconstructionMiniGame(p){
     return function(){killed=true;cancelAnimationFrame(raf);};
   },[]);
 
-  function grab(item){
+  function grab(item,isDecoy){
     if(finished.current)return;
     var expected=seq.steps[stepRef.current];
-    if(item.id===expected.id){
+    if(!isDecoy&&item.id===expected.id){
       if(typeof SFX!=='undefined')SFX.play('tab');
       var el=fragRefs.current[item.id];if(el)el.__locked=true;
       var nextStep=stepRef.current+1;
@@ -1077,7 +1088,7 @@ function ReconstructionMiniGame(p){
         }),
         lanes.map(function(ln){
           return h('button',{key:ln.step.id,ref:function(el){if(el)fragRefs.current[ln.step.id]=el;},
-            onClick:function(){grab(ln.step);},
+            onClick:function(){grab(ln.step,ln.decoy);},
             style:{position:'absolute',left:ln.x+'%',top:0,display:'none',willChange:'transform',cursor:'pointer',
               maxWidth:'72%',textAlign:'left',padding:'7px 10px',borderRadius:9,fontSize:11.5,lineHeight:1.35,
               background:'rgba(10,26,32,0.94)',border:'1px solid rgba(138,215,255,0.55)',color:'#bfe9ff',
@@ -1307,7 +1318,7 @@ var MINI_CONTROLS = {
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
   scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
   evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
-  reconstruction:{ko:'스트림에 흘러가는 로그 조각을 가장 이른 것부터 순서대로 탭한다. 놓치면 다시 흘러올 때까지 기다린다.',en:'Tap the log fragments drifting in the stream, earliest first. Missed one? Wait for it to cycle back.'},
+  reconstruction:{ko:'스트림의 기록을 시각이 이른 것부터 순서대로 탭한다. 사건과 무관한 기록·깨진 기록이 섞여 있다 — 탭하면 오류. 놓치면 다시 흘러올 때까지 기다린다.',en:'Tap records earliest-first by timestamp. Unrelated and corrupted entries are mixed in — tapping them counts as an error. Missed one? Wait for it to cycle back.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
   screening:{ko:'생체 파형을 관찰한다. 정상 인원도 가끔 잔떨림을 보인다 — 파형이 황색으로 변하며 BPM이 크게 튀는 쪽이 진짜다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Normal staff also show minor stutters — the real carriers flash amber with a sharp BPM spike. Mark two, then press [Confirm Read].'},
   strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'},
