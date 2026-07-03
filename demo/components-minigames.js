@@ -1082,47 +1082,103 @@ function StatementMiniGame(p){
 }
 
 function ScreeningMiniGame(p){
+  // v2: 정적 수치 읽기 → 라이브 생체 모니터 관찰 게임.
+  // 5인의 심전도 파형이 실시간으로 흐르고, 잠복 반응자 2명은 3~5초 주기로
+  // 파형이 불규칙하게 터진다(부정맥 스파이크 + BPM 급등). 버스트 순간을 포착해 표시.
   var copy=p.copy;
-  var suites=[
-    { answer:['p2','p4'], people:[
-      {id:'p1',nameKo:'근무자 A',nameEn:'Operator A',pulse:44,pupil:'stable',tremor:'none'},
-      {id:'p2',nameKo:'근무자 B',nameEn:'Operator B',pulse:91,pupil:'dilated',tremor:'micro'},
-      {id:'p3',nameKo:'연구원 C',nameEn:'Researcher C',pulse:58,pupil:'stable',tremor:'none'},
-      {id:'p4',nameKo:'보안요원 D',nameEn:'Security D',pulse:97,pupil:'lagged',tremor:'micro'},
-      {id:'p5',nameKo:'의무요원 E',nameEn:'Medic E',pulse:61,pupil:'stable',tremor:'none'}
-    ]},
-    { answer:['p1','p5'], people:[
-      {id:'p1',nameKo:'기술관 A',nameEn:'Technician A',pulse:88,pupil:'lagged',tremor:'micro'},
-      {id:'p2',nameKo:'근무자 B',nameEn:'Operator B',pulse:55,pupil:'stable',tremor:'none'},
-      {id:'p3',nameKo:'연구원 C',nameEn:'Researcher C',pulse:63,pupil:'stable',tremor:'none'},
-      {id:'p4',nameKo:'보안요원 D',nameEn:'Security D',pulse:52,pupil:'stable',tremor:'none'},
-      {id:'p5',nameKo:'의무요원 E',nameEn:'Medic E',pulse:93,pupil:'dilated',tremor:'micro'}
-    ]}
-  ];
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
   var labels=locale==='en'
-    ? { kind:'LATENT SCREEN', time:'TIME', mark:'MARK', pulse:'PULSE', pupil:'PUPIL', tremor:'TREMOR' }
-    : { kind:'잠복 반응 선별', time:'시간', mark:'표시', pulse:'맥박', pupil:'동공', tremor:'떨림' };
-  var valueKo={ stable:'안정', dilated:'확대', lagged:'지연', micro:'미세', none:'없음' };
-  function readingValue(value){
-    return locale==='en'?String(value).toUpperCase():(valueKo[value]||value);
+    ? { kind:'LATENT SCREEN', time:'TIME', mark:'MARK', bpm:'BPM' }
+    : { kind:'잠복 반응 선별', time:'시간', mark:'표시', bpm:'BPM' };
+  var NAMES=[['근무자 A','Operator A'],['근무자 B','Operator B'],['연구원 C','Researcher C'],['보안요원 D','Security D'],['의무요원 E','Medic E']];
+  var setupRef=useRef(null);
+  if(!setupRef.current){
+    var order=[0,1,2,3,4].sort(function(){return Math.random()-0.5});
+    var anomSet={};anomSet[order[0]]=true;anomSet[order[1]]=true;
+    var people=NAMES.map(function(n,i){
+      return { id:'p'+(i+1), ko:n[0], en:n[1], anom:!!anomSet[i],
+        phase:Math.random()*6.28, rate:0.9+Math.random()*0.25,          // 개인별 기본 심박 주기
+        burstCycle:3.2+Math.random()*1.8, burstOff:1.2+Math.random()*2.2, // 버스트 주기/최초 지연
+        baseBpm:54+Math.floor(Math.random()*12) };
+    });
+    setupRef.current={ people:people, answer:people.filter(function(pp){return pp.anom}).map(function(pp){return pp.id}) };
   }
-  var suiteRef=useRef(null);
-  if(!suiteRef.current)suiteRef.current=suites[Math.floor(Math.random()*suites.length)];
-  var suite=suiteRef.current;
+  var setup=setupRef.current;
   var _selected=useState([]),selected=_selected[0],setSelected=_selected[1];
-  var _time=useState(16),time=_time[0],setTime=_time[1];
+  var _time=useState(24),time=_time[0],setTime=_time[1];
   var finished=useRef(false);
+  var canvasRefs=useRef({});
+  var bpmRefs=useRef({});
+  var selRef=useRef(selected);selRef.current=selected;
 
   useEffect(function(){
     if(finished.current)return;
-    if(time<=0){ finished.current=true; finalize(selected); return; }
+    if(time<=0){ finished.current=true; finalize(selRef.current); return; }
     var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
     return function(){clearTimeout(t);};
-  },[time,selected]);
+  },[time]);
+
+  // 파형 렌더 루프 — 캔버스 직접 드로잉(React 상태 미경유)
+  useEffect(function(){
+    var raf=0,killed=false,t0=performance.now();
+    var W=0,H=0;
+    function wave(person,tSec,burstK){
+      // 기본 ECG: 완만한 기저 + 주기적 스파이크. 버스트 시 주기 요동 + 잡음 + 이중 스파이크.
+      var period=person.rate*(burstK>0?(0.55+0.25*Math.sin(tSec*7+person.phase)):1);
+      var ph=((tSec+person.phase)%period)/period;
+      var spike=Math.exp(-Math.pow((ph-0.5)*14,2));
+      var second=burstK>0?0.7*Math.exp(-Math.pow((ph-0.72)*16,2)):0;
+      var noise=burstK>0?(Math.sin(tSec*53+person.phase*9)*0.16+Math.sin(tSec*91)*0.08)*burstK:0;
+      var base=Math.sin(tSec*2.2+person.phase)*0.05;
+      return base+spike*(0.85+(burstK>0?0.35*Math.sin(tSec*23):0))+second+noise;
+    }
+    function burstFactor(person,tSec){
+      if(!person.anom)return 0;
+      var local=(tSec-person.burstOff)%person.burstCycle;
+      if(local<0)return 0;
+      return (local<0.95)?Math.sin((local/0.95)*Math.PI):0; // 0→1→0 엔벨로프
+    }
+    function draw(now){
+      if(killed)return;
+      var tSec=(now-t0)/1000;
+      setup.people.forEach(function(person){
+        var cv=canvasRefs.current[person.id];if(!cv)return;
+        var ctx=cv.getContext('2d');
+        if(!W){var r=cv.getBoundingClientRect();W=Math.max(80,Math.floor(r.width));H=Math.max(30,Math.floor(r.height));}
+        if(cv.width!==W){cv.width=W;cv.height=H;}
+        ctx.clearRect(0,0,W,H);
+        var bk=burstFactor(person,tSec);
+        // 스크롤 파형: 오른쪽이 현재
+        ctx.beginPath();
+        ctx.strokeStyle=bk>0.15?'rgba(255,176,72,'+(0.75+bk*0.25)+')':'rgba(122,255,198,0.8)';
+        ctx.lineWidth=1.4;
+        var span=2.6; // 화면에 보이는 시간 폭(초)
+        for(var x=0;x<W;x++){
+          var tt=tSec-(W-x)*(span/W);
+          var bb=burstFactor(person,tt);
+          var v=wave(person,tt,bb);
+          var y=H*0.72-v*H*0.5;
+          if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+        }
+        ctx.stroke();
+        // BPM 숫자 갱신 (DOM 텍스트 — 0.25s 간격 정도로만)
+        var bpmEl=bpmRefs.current[person.id];
+        if(bpmEl&&(now-(bpmEl.__t||0))>250){
+          bpmEl.__t=now;
+          var bpm=person.baseBpm+Math.round(Math.sin(tSec*1.3+person.phase)*3)+(bk>0?Math.round(34+14*bk):0);
+          bpmEl.textContent=bpm;
+          bpmEl.style.color=bk>0.15?'#ffb048':'rgba(122,255,198,0.85)';
+        }
+      });
+      raf=requestAnimationFrame(draw);
+    }
+    raf=requestAnimationFrame(draw);
+    return function(){killed=true;cancelAnimationFrame(raf);};
+  },[]);
 
   function toggle(id){
     if(finished.current)return;
+    if(typeof SFX!=='undefined')SFX.play('tab');
     setSelected(function(prev){
       if(prev.indexOf(id)>=0)return prev.filter(function(v){return v!==id;});
       if(prev.length>=2)return prev;
@@ -1131,33 +1187,39 @@ function ScreeningMiniGame(p){
   }
 
   function finalize(picks){
-    var chosen=(picks||selected).slice();
-    var hit=chosen.filter(function(id){return suite.answer.indexOf(id)>=0;}).length;
-    if(hit===2&&chosen.length===2)p.onDone(time>=8?'great':'success');
+    var chosen=(picks||selRef.current).slice();
+    var hit=chosen.filter(function(id){return setup.answer.indexOf(id)>=0;}).length;
+    if(hit===2&&chosen.length===2)p.onDone(time>=10?'great':'success');
     else if(hit===1)p.onDone('partial');
     else p.onDone('fail');
   }
 
   return h(FieldTerminalShell,{
     code:'M-007',kind:labels.kind,title:copy.title,intro:copy.intro,
-    status:[{k:labels.time,v:time+'s',cls:time<=2?'is-bad':''},{k:labels.mark,v:selected.length+'/2'}]
+    status:[{k:labels.time,v:time+'s',cls:time<=4?'is-bad':''},{k:labels.mark,v:selected.length+'/2'}]
   },
-    h('div',{className:'fm-term-stage',style:{display:'grid',gridTemplateColumns:'repeat(2, minmax(0,1fr))',gap:12,padding:'16px',alignContent:'start'}},
-      suite.people.map(function(person){
+    h('div',{className:'fm-term-stage',style:{display:'flex',flexDirection:'column',gap:8,padding:'12px 14px',alignContent:'start'}},
+      setup.people.map(function(person){
         var active=selected.indexOf(person.id)>=0;
-        return h('button',{
-          key:person.id,className:'btn',onClick:function(){toggle(person.id);},
-          style:{minHeight:110,borderRadius:'16px',padding:'12px 14px',textAlign:'left',background:active?'rgba(120,255,190,0.14)':'rgba(5,18,11,0.92)',border:'1px solid '+(active?'rgba(120,255,190,0.5)':'rgba(122,255,198,0.18)'),color:'rgba(210,235,220,0.86)',fontSize:13,lineHeight:1.55}
+        return h('div',{
+          key:person.id,onClick:function(){toggle(person.id);},
+          style:{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',cursor:'pointer',borderRadius:10,
+            background:active?'rgba(120,255,190,0.12)':'rgba(5,18,11,0.92)',
+            border:'1px solid '+(active?'rgba(120,255,190,0.55)':'rgba(122,255,198,0.16)'),
+            transition:'border-color .15s, background .15s'}
         },
-          h('div',{style:{fontSize:15,fontWeight:'700',marginBottom:6,color:active?'#ecfff4':'#78ffbe'}},locale==='en'?person.nameEn:person.nameKo),
-          h('div',null,labels.pulse+': '+person.pulse),
-          h('div',null,labels.pupil+': '+readingValue(person.pupil)),
-          h('div',null,labels.tremor+': '+readingValue(person.tremor))
+          h('div',{style:{width:86,flexShrink:0}},
+            h('div',{style:{fontSize:12,fontWeight:'700',color:active?'#ecfff4':'#78ffbe',lineHeight:1.3}},locale==='en'?person.en:person.ko),
+            h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'rgba(122,255,198,0.5)',letterSpacing:1,marginTop:2}},
+              labels.bpm+' ',h('span',{ref:function(el){if(el)bpmRefs.current[person.id]=el;},style:{fontSize:11}},person.baseBpm))),
+          h('canvas',{ref:function(el){if(el)canvasRefs.current[person.id]=el;},
+            style:{flex:1,height:38,minWidth:0,display:'block',background:'rgba(3,10,6,0.6)',borderRadius:6}}),
+          h('div',{style:{width:18,flexShrink:0,textAlign:'center',fontSize:14,color:active?'#78ffbe':'rgba(122,255,198,0.25)'}},active?'\u25C9':'\u25CB')
         );
       })
     ),
     h('div',{className:'fm-term-actions'},
-      h('button',{className:'fm-term-btn is-amber',disabled:selected.length===0,onClick:function(){if(!finished.current){finished.current=true;finalize(selected);}}},copy.action))
+      h('button',{className:'fm-term-btn is-amber',disabled:selected.length===0,onClick:function(){if(!finished.current){finished.current=true;finalize(selRef.current);}}},copy.action))
   );
 }
 
@@ -1172,7 +1234,7 @@ var MINI_CONTROLS = {
   evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
   reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
-  screening:{ko:'이상 반응을 보이는 인원 두 명을 표시한 뒤 [판독 확정]을 누른다.',en:'Mark the two personnel with abnormal readings, then press [Confirm Read].'},
+  screening:{ko:'생체 파형을 관찰한다. 잠복 반응자는 몇 초마다 파형이 황색으로 흐트러지고 BPM이 튄다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Latent carriers show amber waveform bursts and BPM spikes every few seconds. Mark two, then press [Confirm Read].'},
   strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'},
   crawler:{ko:'화면을 스와이프(또는 방향 버튼)해 웜의 진행 방향을 바꾼다. 녹색 패킷을 모두 수집하면 성공, 적색 감시 프로세스에 닿으면 즉시 실패.',en:'Swipe (or use the arrows) to steer the worm. Collect every green packet to succeed; touching a red watchdog fails instantly.'}
 };
