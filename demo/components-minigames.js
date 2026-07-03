@@ -121,13 +121,13 @@ var FIELD_MINIGAME_LIBRARY = {
     kind: 'ROUTE EVADE',
     ko: {
       title: '수로 추적 우회 경로',
-      intro: '침수된 지하 수로를 따라 이동한다. 격벽과 순찰을 피해 배수구(OUT)까지 물길을 뚫어라.',
+      intro: '침수된 지하 수로를 따라 이동한다. 위험구역을 피해 배수구(OUT)까지 물길을 뚫어라.',
       action: '이동',
       resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
     },
     en: {
       title: 'Drainage Route Intercept',
-      intro: 'Navigate the flooded underground channel. Slip past bulkheads and patrols to reach the outlet (OUT).',
+      intro: 'Navigate the flooded underground channel. Avoid the danger zones to reach the outlet (OUT).',
       action: 'Move',
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
@@ -1163,7 +1163,8 @@ function ReconstructionMiniGame(p){
   if(!seqRef.current){
     var sq=sequences[Math.floor(Math.random()*sequences.length)];
     // 스트림 등장 순서는 셔플 + 개별 사이클 오프셋
-    var pool=sq.steps.map(function(st){return {step:st,decoy:false};})
+    // 첫 조각은 이미 복원된 상태로 시작 — 시간축 기준점을 제공해 난이도를 낮춘다
+    var pool=sq.steps.slice(1).map(function(st){return {step:st,decoy:false};})
       .concat((sq.decoys||[]).map(function(st){return {step:st,decoy:true};}));
     var lanes=pool.sort(function(){return Math.random()-0.5;}).map(function(en,i){
       return {step:en.step,decoy:en.decoy,off:i*1.15+Math.random()*0.5,x:8+Math.random()*32};
@@ -1171,12 +1172,12 @@ function ReconstructionMiniGame(p){
     seqRef.current={seq:sq,lanes:lanes};
   }
   var seq=seqRef.current.seq,lanes=seqRef.current.lanes;
-  var _step=useState(0),step=_step[0],setStep=_step[1];
+  var _step=useState(1),step=_step[0],setStep=_step[1]; // 슬롯 1은 선복원
   var _errors=useState(0),errors=_errors[0],setErrors=_errors[1];
   var _time=useState(22),time=_time[0],setTime=_time[1];
   var _flash=useState(false),errFlash=_flash[0],setErrFlash=_flash[1];
   var finished=useRef(false);
-  var stepRef=useRef(0);stepRef.current=step;
+  var stepRef=useRef(1);stepRef.current=step;
   var errRef=useRef(0);errRef.current=errors;
   var fragRefs=useRef({});
   var junkRefs=useRef({});
