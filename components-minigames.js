@@ -816,6 +816,41 @@ function RouteMiniGame(p){
   var _pos=useState(sheet.pos),pos=_pos[0],setPos=_pos[1];
   var _moves=useState(sheet.moves),moves=_moves[0],setMoves=_moves[1];
   var finished=useRef(false);
+  // 순찰 X: 무작위로 배회하는 즉사 칸. 단, 플레이어 칸으로는 절대 이동하지 않는다
+  // (플레이어가 '밟아서' 죽는 것만 허용 — 하자드가 걸어와 죽이는 억울한 실패 방지).
+  var hazardInit=(function(){
+    var px=sheet.pos%5,py=Math.floor(sheet.pos/5);
+    var cand=[];
+    for(var i=0;i<25;i++){
+      if(i===sheet.pos||i===sheet.goal)continue;
+      if(sheet.block.indexOf(i)>=0||sheet.danger.indexOf(i)>=0||(sheet.jammer||[]).indexOf(i)>=0)continue;
+      var d=Math.abs(i%5-px)+Math.abs(Math.floor(i/5)-py);
+      if(d>=3)cand.push(i);
+    }
+    return cand.length?cand[Math.floor(Math.random()*cand.length)]:-1;
+  })();
+  var _hz=useState(hazardInit),hazard=_hz[0],setHazard=_hz[1];
+  var posRef=useRef(pos);posRef.current=pos;
+  var hazardRef=useRef(hazard);hazardRef.current=hazard;
+  useEffect(function(){
+    if(hazardInit<0)return;
+    var iv=setInterval(function(){
+      if(finished.current)return;
+      var hp=hazardRef.current;if(hp<0)return;
+      var hx=hp%5,hy=Math.floor(hp/5);
+      var opts=[[hx+1,hy],[hx-1,hy],[hx,hy+1],[hx,hy-1]].map(function(c){return c[0]<0||c[0]>4||c[1]<0||c[1]>4?-1:c[1]*5+c[0]})
+        .filter(function(i){
+          if(i<0)return false;
+          if(i===posRef.current)return false;                 // 플레이어 칸 금지
+          if(i===sheet.goal)return false;                     // 출구 점거 금지
+          if(sheet.block.indexOf(i)>=0)return false;
+          if(sheet.danger.indexOf(i)>=0)return false;
+          return true;
+        });
+      if(opts.length)setHazard(opts[Math.floor(Math.random()*opts.length)]);
+    },1100);
+    return function(){clearInterval(iv);};
+  },[]);
 
   function rankForSuccess(remaining){
     return remaining>=Math.ceil(sheet.moves/2)?'great':'success';
@@ -827,9 +862,10 @@ function RouteMiniGame(p){
     var tx=idx%5,ty=Math.floor(idx/5);
     if(Math.abs(px-tx)+Math.abs(py-ty)!==1)return;
     if(sheet.block.indexOf(idx)>=0)return;
-    if(sheet.danger.indexOf(idx)>=0){
+    if(sheet.danger.indexOf(idx)>=0||idx===hazardRef.current){
       finished.current=true;
       setPos(idx);
+      if(typeof SFX!=='undefined')SFX.play('warn');
       p.onDone('fail');
       return;
     }
@@ -850,7 +886,7 @@ function RouteMiniGame(p){
     }
   }
 
-  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'RED=FAIL / AMBER=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 12px'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5, minmax(0, 1fr))',gap:8}},Array.from({length:25}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var bg='rgba(6,18,11,0.96)';var border='1px solid rgba(122,255,198,0.16)';if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isBlock){bg='rgba(55,55,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(135,86,16,0.96)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}return h('button',{key:idx,className:'btn',disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'8px',padding:0,background:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:15,fontWeight:700,cursor:isBlock?'default':'pointer'}},isPlayer?'IN':isGoal?'OUT':isDanger?'X':isBlock?'■':isJammer?'~':'·');}))));
+  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'RED=FAIL / AMBER=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 12px'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5, minmax(0, 1fr))',gap:8}},Array.from({length:25}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isHazard=idx===hazard&&!isPlayer;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var bg='rgba(6,18,11,0.96)';var border='1px solid rgba(122,255,198,0.16)';if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isHazard){bg='rgba(120,10,10,0.97)';border='2px solid rgba(255,90,72,1)';}if(isBlock){bg='rgba(55,55,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(135,86,16,0.96)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}return h('button',{key:idx,className:'btn',disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'8px',padding:0,background:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isHazard?'0 0 16px rgba(255,60,44,0.65)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isHazard?'#ffdcd6':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:15,fontWeight:700,cursor:isBlock?'default':'pointer'}},isPlayer?'IN':isGoal?'OUT':isHazard?'✕':isDanger?'X':isBlock?'■':isJammer?'~':'·');}))));
 }
 
 function EvidenceMiniGame(p){
@@ -1366,7 +1402,7 @@ var MINI_CONTROLS = {
   signal:{ko:'초록 커서가 황색 안정 띠 안에 들어온 순간 [판정 확정]을 누른다.',en:'Press [Confirm] the moment the green cursor is inside the amber band.'},
   sequence:{ko:'패널에 표시된 순서 그대로 봉인 버튼을 누른다.',en:'Press the seal buttons in the exact order shown on the panel.'},
   breach:{ko:'이웃한 노드로만 이동해 KEY 2개를 모은 뒤 EXIT로 나온다. 붉은 노드는 노출을 올린다.',en:'Move only to adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
-  route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력을 2 소모한다.',en:'Move one tile up, down, left, or right. Red tiles fail instantly; amber tiles cost 2 moves.'},
+  route:{ko:'상하좌우 한 칸씩 이동한다. 붉은 칸은 즉시 실패, 황색 칸은 이동력 2 소모. 배회하는 ✕ 순찰도 밟으면 즉시 실패 — 지나갈 때를 기다려라.',en:'Move one tile at a time. Red tiles fail instantly; amber costs 2 moves. The wandering ✕ patrol also fails you on contact — wait for it to pass.'},
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고, 샘플에 겹친 상태를 유지해 회수율을 채운다.',en:'Press and hold to raise the probe, and stay overlapped with the sample to fill recovery.'},
   scan:{ko:'화면을 문질러 스캐너를 옮기고 진짜 반응 위에 머문다. 가짜 반응은 신호를 깎는다.',en:'Drag to move the scanner and hold over the true signal. Decoys drain the lock.'},
   evidence:{ko:'수거물이 한 점씩 들어온다. 상단 판독 기준에 맞으면 [채증], 아니면 [폐기] — 제한시간 안에 판정한다. 미판정은 자동 폐기.',en:'Items arrive one at a time. [COLLECT] if it matches the rule, [DISCARD] if not — decide before the timer runs out. No decision = auto-discard.'},
