@@ -41,8 +41,10 @@ function BriefingImage(p){
 
 // DAY 전환 컷 — 하루가 넘어갈 때 게임 화면 위에 1회 표시. 수명은 app.js가 관리(표시 전용), 탭=스킵.
 // v3: 전국 → 강원 동해안 기지(37.52N 129.11E ≈ 이미지 82.5%,21%)로 줌인 후 마커 등장. 상황(봉쇄/이벤트/day)에 따라 표시 변화.
+// v4: 야간 보고 2줄 로테이션 — 평시 풀 + 상태 라인(경보/지표 저하/연구동) + Act3+ 불온 징후.
+//     관측 채널(카메라 라벨)도 day 기반 로테이션. 매일 같은 컷 반복으로 몰입 깨지는 문제 대응.
 function DayCutOverlay(p){
-  var st=p.stats||{},day=p.day||st.day||1,logs=p.logs||[];
+  var st=p.stats||{},day=p.day||st.day||1,logs=p.logs||[],act=p.act||1;
   var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
   var ev='idle';try{if(typeof computeMapEvent==='function')ev=computeMapEvent(st,logs)}catch(e){}
   var c=st.c||0;var ringCls=c<=25?' is-danger':c<=45?' is-warn':'';
@@ -54,6 +56,41 @@ function DayCutOverlay(p){
   var pt1={left:(40+((day*7)%10))+'%',top:(48+((day*5)%8))+'%'};
   var pt2={left:(52+((day*3)%8))+'%',top:(56+((day*11)%8))+'%'};
   var xPos=ev==='attack'?{left:'43%',top:'35%'}:{left:'27%',top:'29%'};
+  // ── 야간 보고 라인 (day 기반 결정적 로테이션 — 같은 날은 항상 같은 보고) ──
+  var hsh=function(a,b){var x=(a*2654435761+b*97+13)>>>0;x=(x^(x>>>13))*1274126177>>>0;return (x^(x>>>16))>>>0};
+  var pool=[
+    ['해안선 순찰 — 이상 무','Coastline patrol — all clear'],
+    ['국경선 침범 징후 없음','No border incursion detected'],
+    ['북부 능선 초소 교대 완료','North ridge post rotation complete'],
+    ['야간 열원 스캔 — 신규 반응 0건','Night thermal scan — 0 new signatures'],
+    ['위성 링크 재동기화 완료','Satellite link resynchronized'],
+    ['B1 발전기 출력 정상','B1 generator output nominal'],
+    ['적설 관측 — 새벽 제설조 배치','Snowfall logged — dawn crew assigned'],
+    ['연안 어선 식별 신호 3건 — 전 건 등록 선박','3 vessel pings — all registered']
+  ];
+  var late=[
+    ['미상 열원 1건 — 기록 직후 소실','1 unknown heat source — lost after logging'],
+    ['통신 잡음 구간 반복 — 원인 미상','Recurring comm static — cause unknown'],
+    ['감시 §4 카메라 프레임 결손 12초','CCTV §4 frame gap: 12s'],
+    ['외곽 초소 무전 응답 지연','Outer post radio response delayed']
+  ];
+  var lines=[];
+  if(ev==='attack')lines.push(['봉쇄선 외곽 다중 열원 — 대응반 출동','Multiple heat sources at perimeter — team deployed']);
+  else if(ev==='lockdown')lines.push(['봉쇄 프로토콜 유지 — 민간 통행 통제','Lockdown held — civilian transit restricted']);
+  else if(ev==='warn')lines.push(['동부 감시망 이상 신호 — 추적 중','East grid anomaly signal — tracking']);
+  if(lines.length<2&&typeof st.r==='number'&&st.r<=40)lines.push(['보급 재고 감소 — 배급 조정 검토','Supply reserves low — ration review']);
+  if(lines.length<2&&typeof st.t==='number'&&st.t<=40)lines.push(['야간 점호 결원 발생 — 동요 징후','Absences at night muster — unrest signs']);
+  if(lines.length<2&&resOn&&day%3===0)lines.push(['연구동 야간 가동 — 전력 우선 배분','Research wing night ops — power prioritized']);
+  var tries=0;
+  while(lines.length<2&&tries<12){
+    var src=(act>=3&&hsh(day,tries)%4===0)?late:pool;
+    var cand=src[hsh(day,tries*31+5)%src.length];
+    var dup=false;for(var q=0;q<lines.length;q++)if(lines[q][0]===cand[0])dup=true;
+    if(!dup)lines.push(cand);
+    tries++;
+  }
+  var cams=[['위성 // 강원 동해안','SAT // GANGWON COAST'],['드론 R-2 // 봉쇄선 북측','DRONE R-2 // PERIMETER N'],['초소 CCTV // 해안 §7','POST CCTV // COAST §7'],['위성 // 태백 능선 감시대','SAT // TAEBAEK RIDGE']];
+  var cam=day<=2?cams[0]:cams[hsh(day,3)%cams.length];
   return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
     h('div',{className:'daycut-frame'},
       h('span',{className:'dc-br dc-br-tl'}),h('span',{className:'dc-br dc-br-tr'}),h('span',{className:'dc-br dc-br-bl'}),h('span',{className:'dc-br dc-br-br'}),
@@ -68,12 +105,15 @@ function DayCutOverlay(p){
           h('span',{className:'daycut-patrol',style:pt2}),
           (ev==='attack'||ev==='warn')?h('span',{className:'daycut-x'+(ev==='attack'?' is-hot':''),style:xPos},'✕'):null,
           resOn?h('span',{className:'daycut-lamp'}):null),
-        h('div',{className:'daycut-cam'},isEn?'SAT // GANGWON COAST':'위성 // 강원 동해안'),
+        h('div',{className:'daycut-cam'},isEn?cam[1]:cam[0]),
         h('div',{className:'daycut-rec'},'● LIVE')),
       h('div',{className:'daycut-tele'},'37.52N 129.11E — '+(isEn?'SYNC ':'동기화 ')+sync+'%')),
     h('div',{className:'daycut-day'},'DAY '+day),
     h('div',{className:'daycut-stats'},sm.map(function(s2){var low=(s2[1]||0)<=25;return h('span',{key:s2[0],className:'daycut-st'+(low?' is-low':'')},s2[0]+' '+(s2[1]||0))})),
     h('div',{className:'daycut-sub'},sub),
+    h('div',{className:'daycut-report'},lines.map(function(l,i){
+      return h('div',{key:i,className:'daycut-rep',style:{animationDelay:(1.15+i*0.4)+'s'}},'▸ '+(isEn?l[1]:l[0]));
+    })),
     h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
 }
 function BriefingScreen(p){

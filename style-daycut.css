@@ -2,10 +2,10 @@
    day+1 시 게임 화면 위 ~2.8s, 표시 전용/탭 스킵.
    지도 기하: 기지 = 좌상단 미니맵 핀과 동일 좌표(이미지 71.9%,23.0% — km-wrap 역산).
    최종 프레임 background-size:200% / position:89% 15% → 기지가 박스 (55%,43%)에 위치.
-   튜닝 지점: 홀드=dcOut delay(2.35s)+app.js 타이머(2800ms), 줌 속도=dcZoom(1.25s). */
+   튜닝 지점: 홀드=dcOut delay(3.15s)+app.js 타이머(3600ms), 줌 속도=dcZoom(1.25s). */
 .daycut{position:fixed;inset:0;z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;cursor:pointer;
   background:rgba(3,7,8,.94);font-family:'Share Tech Mono',monospace;
-  animation:dcIn .25s ease both,dcOut .45s ease 2.35s both}
+  animation:dcIn .25s ease both,dcOut .45s ease 3.15s both}
 .daycut-frame{position:relative;padding:10px 10px 6px}
 .dc-br{position:absolute;width:14px;height:14px;border:1px solid rgba(var(--ui-rgb),.8)}
 .dc-br-tl{left:0;top:0;border-right:none;border-bottom:none}
@@ -46,6 +46,10 @@
 .daycut-stats{display:flex;gap:14px;font-size:10px;letter-spacing:1px;color:rgba(var(--ui-rgb),.8)}
 .daycut-st.is-low{color:#ff4444;text-shadow:0 0 6px rgba(255,68,68,.4)}
 .daycut-sub{font-size:11px;letter-spacing:2px;color:rgba(var(--ui-rgb),.75)}
+/* 야간 보고 라인 — 줌 완료 후 한 줄씩 페이드 인 (delay는 인라인 스타일) */
+.daycut-report{display:flex;flex-direction:column;gap:4px;align-items:center;min-height:28px}
+.daycut-rep{font-size:10px;letter-spacing:1.2px;color:rgba(var(--ui-rgb),.6);animation:dcRepIn .4s ease both}
+@keyframes dcRepIn{from{opacity:0;transform:translateY(4px)}}
 .daycut-skip{position:absolute;bottom:26px;font-size:9px;letter-spacing:2px;color:rgba(var(--ui-rgb),.4)}
 @keyframes dcIn{from{opacity:0}to{opacity:1}}
 @keyframes dcOut{from{opacity:1}to{opacity:0}}
@@ -56,5 +60,6 @@
 .fx-reduced .daycut-day{animation:none}
 .fx-reduced .daycut-map-img,.fx-reduced .daycut-sweep,.fx-reduced .daycut-mark{animation:none}
 .fx-reduced .daycut-ring,.fx-reduced .daycut-x,.fx-reduced .daycut-lamp,.fx-reduced .daycut-patrol,.fx-reduced .daycut-rec{animation:none}
+.fx-reduced .daycut-rep{animation:none}
 /* off는 app.js에서 미세팅 — CSS 이중 안전망 */
 .fx-off .daycut{display:none}
