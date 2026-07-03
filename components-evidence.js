@@ -355,6 +355,8 @@ function EvidencePanel(p) {
 
   // 상단 카테고리 필터 — 'all'이면 전체, 아니면 해당 분류만.
   var _ac = useState('all'), activeCat = _ac[0], setActiveCat = _ac[1];
+  // 조합 모드 — 이브닝 챗에서 열었을 때(canCombine)만 노출. 조합 UI(EvidenceTable)를 전체 폭으로 표시.
+  var _md = useState(p.canCombine ? 'combine' : 'browse'), mode = _md[0], setMode = _md[1];
   var _exp = useState({}), expanded = _exp[0], setExpanded = _exp[1];  // 카드별 상세(근거 원본) 펼침
   var showFilter = collected.length > 0 && availCats.length >= 2;
   // 칩이 숨겨졌거나(분류<2) 활성 분류가 사라지면 전체로 폴백 → 통찰·전체 콘텐츠가 다시 보이고 막다른 상태가 없다.
@@ -402,14 +404,23 @@ function EvidencePanel(p) {
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('활성','ACTIVE')), h('div', { className: 'rlab-res-v' }, collected.length)),
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('수집','COLLECTED')), h('div', { className: 'rlab-res-v' }, allCollected.length + '/' + EVN)),
         h('div', { className: 'rlab-res-item' }, h('div', { className: 'rlab-res-k' }, L('통찰','INSIGHTS')), h('div', { className: 'rlab-res-v' }, unlocked.length + '/' + EVC))),
-      showFilter && h('div', { className: 'ev2-filter' },
+      p.canCombine && h('div', { className: 'ev2-filter' },
+        h('button', { type: 'button', className: 'ev2-chip' + (mode === 'combine' ? ' is-active' : ''), style: { '--chipcol': '#f0a030' }, onClick: function(){ setMode('combine'); } },
+          h('span', { className: 'ev2-chip-dot' }), L('증거 조합','COMBINE'), h('span', { className: 'ev2-chip-n' }, unlocked.length + '/' + EVC)),
+        h('button', { type: 'button', className: 'ev2-chip' + (mode === 'browse' ? ' is-active' : ''), style: { '--chipcol': 'var(--ui)' }, onClick: function(){ setMode('browse'); } },
+          h('span', { className: 'ev2-chip-dot' }), L('열람','BROWSE'), h('span', { className: 'ev2-chip-n' }, allCollected.length))),
+      showFilter && mode === 'browse' && h('div', { className: 'ev2-filter' },
         h('button', { type: 'button', className: 'ev2-chip' + (effCat === 'all' ? ' is-active' : ''), style: { '--chipcol': 'var(--ui)' }, onClick: function(){ setActiveCat('all'); } },
           h('span', { className: 'ev2-chip-dot' }), L('전체','ALL'), h('span', { className: 'ev2-chip-n' }, collected.length)),
         availCats.map(function(c){
           return h('button', { key: c, type: 'button', className: 'ev2-chip' + (effCat === c ? ' is-active' : ''), style: { '--chipcol': catColor[c] }, onClick: function(){ setActiveCat(c); } },
             h('span', { className: 'ev2-chip-dot' }), catName[c], h('span', { className: 'ev2-chip-n' }, groups[c].length));
         })),
-      h('div', { className: 'rlab-body' },
+      (p.canCombine && mode === 'combine')
+        ? h('div', { className: 'rlab-body' },
+            typeof EvidenceTable === 'function' && h(EvidenceTable, { logs: p.logs, unlocked: true, forceOpen: true, onTrust: p.onTrust, onGi: p.onGi, onLog: p.onLog }),
+            h('div', { className: 'rlab-foot' }, L('※ 증거를 연결해 통찰을 해금하십시오. 목록/보드 뷰는 우측 상단에서 전환합니다.','※ Link records to unlock insights. Toggle list/board view at the top right.')))
+        : h('div', { className: 'rlab-body' },
         collected.length === 0
           ? h('div', { className: 'rlab-empty' }, allCollected.length === 0
               ? L('수집된 증거가 없습니다.','No evidence records collected.')
@@ -423,7 +434,9 @@ function EvidencePanel(p) {
                 groups[c].map(evCard));
             }),
         effCat === 'all' && renderEvidenceInsights(unlocked, false),
-        h('div', { className: 'rlab-foot' }, L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.'))),
+        h('div', { className: 'rlab-foot' }, p.canCombine
+          ? L('※ 상단 [증거 조합] 탭에서 증거를 연결할 수 있습니다.','※ Use the COMBINE tab above to link records.')
+          : L('※ 증거 조합은 이브닝 챗에서 가능합니다.','※ Evidence combination is available during Evening Chat.'))),
       h(RlabHelpOverlay, { open: help.open, onClose: help.close, title: L('조사 테이블 안내','EVIDENCE TABLE'), ok: L('확인','GOT IT'), rows: helpRows })
     )
   );

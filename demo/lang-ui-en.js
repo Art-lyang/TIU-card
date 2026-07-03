@@ -254,6 +254,7 @@ window.TS_I18N.mergeUI('en', {
     factions:'FACTION RELATIONS',
     liveMatrix:'LIVE MATRIX',
     skip:'SKIP',
+    openEvidence:"▸ EVIDENCE TABLE — COMBINE",
     skipConfirm:"Skip tonight's conversation?",
     noAvailableChat:'No additional conversation record is available tonight.',
     completedRole:'Conversation complete for today',

@@ -280,6 +280,7 @@ window.TS_I18N.mergeUI('ko', {
     factions:'세력 관계도',
     liveMatrix:'실시간 관계망',
     skip:'건너뛰기',
+    openEvidence:'▸ 조사 테이블 — 증거 조합',
     skipConfirm:'대화를 건너뛰시겠습니까?',
     noAvailableChat:'오늘은 추가 대화 기록이 없습니다.',
     completedRole:'오늘 대화 완료했습니다',
