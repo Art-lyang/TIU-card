@@ -1090,15 +1090,16 @@ function ScreeningMiniGame(p){
   var labels=locale==='en'
     ? { kind:'LATENT SCREEN', time:'TIME', mark:'MARK', bpm:'BPM' }
     : { kind:'잠복 반응 선별', time:'시간', mark:'표시', bpm:'BPM' };
-  var NAMES=[['근무자 A','Operator A'],['근무자 B','Operator B'],['연구원 C','Researcher C'],['보안요원 D','Security D'],['의무요원 E','Medic E']];
+  var NAMES=[['근무자 A','Operator A'],['근무자 B','Operator B'],['연구원 C','Researcher C'],['보안요원 D','Security D'],['의무요원 E','Medic E'],['기술관 F','Technician F']];
   var setupRef=useRef(null);
   if(!setupRef.current){
-    var order=[0,1,2,3,4].sort(function(){return Math.random()-0.5});
+    var order=[0,1,2,3,4,5].sort(function(){return Math.random()-0.5});
     var anomSet={};anomSet[order[0]]=true;anomSet[order[1]]=true;
     var people=NAMES.map(function(n,i){
       return { id:'p'+(i+1), ko:n[0], en:n[1], anom:!!anomSet[i],
         phase:Math.random()*6.28, rate:0.9+Math.random()*0.25,          // 개인별 기본 심박 주기
-        burstCycle:3.2+Math.random()*1.8, burstOff:1.2+Math.random()*2.2, // 버스트 주기/최초 지연
+        burstCycle:4.2+Math.random()*2.3, burstOff:1.5+Math.random()*2.5, // 버스트 주기/최초 지연 (드물고 짧게)
+        decoyCycle:5+Math.random()*3, decoyOff:2+Math.random()*3,        // 정상 인원 잔떨림(페이크) 스케줄
         baseBpm:54+Math.floor(Math.random()*12) };
     });
     setupRef.current={ people:people, answer:people.filter(function(pp){return pp.anom}).map(function(pp){return pp.id}) };
@@ -1136,7 +1137,14 @@ function ScreeningMiniGame(p){
       if(!person.anom)return 0;
       var local=(tSec-person.burstOff)%person.burstCycle;
       if(local<0)return 0;
-      return (local<0.95)?Math.sin((local/0.95)*Math.PI):0; // 0→1→0 엔벨로프
+      return (local<0.7)?Math.sin((local/0.7)*Math.PI):0; // 0→1→0 엔벨로프 (짧게)
+    }
+    function decoyFactor(person,tSec){
+      // 정상 인원의 무해한 잔떨림 — 진짜 버스트보다 약하고 짧다. 색은 초록 유지.
+      if(person.anom)return 0;
+      var local=(tSec-person.decoyOff)%person.decoyCycle;
+      if(local<0)return 0;
+      return (local<0.35)?Math.sin((local/0.35)*Math.PI)*0.4:0;
     }
     function draw(now){
       if(killed)return;
@@ -1148,14 +1156,14 @@ function ScreeningMiniGame(p){
         if(cv.width!==W){cv.width=W;cv.height=H;}
         ctx.clearRect(0,0,W,H);
         var bk=burstFactor(person,tSec);
-        // 스크롤 파형: 오른쪽이 현재
+        // 스크롤 파형: 오른쪽이 현재. 황색 변색은 버스트 정점에서만 — 색만 보고 못 맞히게.
         ctx.beginPath();
-        ctx.strokeStyle=bk>0.15?'rgba(255,176,72,'+(0.75+bk*0.25)+')':'rgba(122,255,198,0.8)';
+        ctx.strokeStyle=bk>0.45?'rgba(255,176,72,'+(0.7+bk*0.3)+')':'rgba(122,255,198,0.8)';
         ctx.lineWidth=1.4;
         var span=2.6; // 화면에 보이는 시간 폭(초)
         for(var x=0;x<W;x++){
           var tt=tSec-(W-x)*(span/W);
-          var bb=burstFactor(person,tt);
+          var bb=Math.max(burstFactor(person,tt),decoyFactor(person,tt));
           var v=wave(person,tt,bb);
           var y=H*0.72-v*H*0.5;
           if(x===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
@@ -1165,9 +1173,10 @@ function ScreeningMiniGame(p){
         var bpmEl=bpmRefs.current[person.id];
         if(bpmEl&&(now-(bpmEl.__t||0))>250){
           bpmEl.__t=now;
-          var bpm=person.baseBpm+Math.round(Math.sin(tSec*1.3+person.phase)*3)+(bk>0?Math.round(34+14*bk):0);
+          var dk=decoyFactor(person,tSec);
+          var bpm=person.baseBpm+Math.round(Math.sin(tSec*1.3+person.phase)*4)+(bk>0?Math.round(18+12*bk):0)+(dk>0?Math.round(9*dk):0);
           bpmEl.textContent=bpm;
-          bpmEl.style.color=bk>0.15?'#ffb048':'rgba(122,255,198,0.85)';
+          bpmEl.style.color=bk>0.45?'#ffb048':'rgba(122,255,198,0.85)';
         }
       });
       raf=requestAnimationFrame(draw);
@@ -1189,7 +1198,7 @@ function ScreeningMiniGame(p){
   function finalize(picks){
     var chosen=(picks||selRef.current).slice();
     var hit=chosen.filter(function(id){return setup.answer.indexOf(id)>=0;}).length;
-    if(hit===2&&chosen.length===2)p.onDone(time>=10?'great':'success');
+    if(hit===2&&chosen.length===2)p.onDone(time>=8?'great':'success');
     else if(hit===1)p.onDone('partial');
     else p.onDone('fail');
   }
@@ -1203,7 +1212,7 @@ function ScreeningMiniGame(p){
         var active=selected.indexOf(person.id)>=0;
         return h('div',{
           key:person.id,onClick:function(){toggle(person.id);},
-          style:{display:'flex',alignItems:'center',gap:10,padding:'8px 10px',cursor:'pointer',borderRadius:10,
+          style:{display:'flex',alignItems:'center',gap:10,padding:'6px 10px',cursor:'pointer',borderRadius:10,
             background:active?'rgba(120,255,190,0.12)':'rgba(5,18,11,0.92)',
             border:'1px solid '+(active?'rgba(120,255,190,0.55)':'rgba(122,255,198,0.16)'),
             transition:'border-color .15s, background .15s'}
@@ -1234,7 +1243,7 @@ var MINI_CONTROLS = {
   evidence:{ko:'실제 단서 세 개를 슬롯에 채운 뒤 [판독 확정]을 누른다.',en:'Fill the slots with the three real clues, then press [Confirm Read].'},
   reconstruction:{ko:'가장 이른 시각의 조각부터 차례로 고른다.',en:'Pick the fragments in order, starting from the earliest timestamp.'},
   statement:{ko:'기록과 모순되는 진술 하나를 고른다.',en:'Select the one statement that contradicts the record.'},
-  screening:{ko:'생체 파형을 관찰한다. 잠복 반응자는 몇 초마다 파형이 황색으로 흐트러지고 BPM이 튄다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Latent carriers show amber waveform bursts and BPM spikes every few seconds. Mark two, then press [Confirm Read].'},
+  screening:{ko:'생체 파형을 관찰한다. 정상 인원도 가끔 잔떨림을 보인다 — 파형이 황색으로 변하며 BPM이 크게 튀는 쪽이 진짜다. 두 명을 표시한 뒤 [판독 확정].',en:'Watch the vitals. Normal staff also show minor stutters — the real carriers flash amber with a sharp BPM spike. Mark two, then press [Confirm Read].'},
   strike:{ko:'조준경이 ◆ 구획 위에 온 순간 화면을 탭(또는 [사격])한다. 탄은 3발. 민간인 □ 근처 사격은 즉시 실패.',en:'Tap the screen (or [FIRE]) the moment the reticle crosses a \u25c6 block. 3 rounds. Firing near a civilian \u25a1 fails instantly.'},
   crawler:{ko:'화면을 스와이프(또는 방향 버튼)해 웜의 진행 방향을 바꾼다. 녹색 패킷을 모두 수집하면 성공, 적색 감시 프로세스에 닿으면 즉시 실패.',en:'Swipe (or use the arrows) to steer the worm. Collect every green packet to succeed; touching a red watchdog fails instantly.'}
 };
