@@ -61,6 +61,7 @@ function App(){
   var _ct=useState(0),ct=_ct[0],setCt=_ct[1];
   var _nh=useState([]),nh=_nh[0],setNh=_nh[1];
   var _gor=useState(''),gor=_gor[0],setGor=_gor[1];
+  var _goSum=useState(null),goSummary=_goSum[0],setGoSummary=_goSum[1]; // 회차 요약 — clearGame 전에 캡처
   var _goday=useState(null),goDay=_goday[0],setGoDay=_goday[1];
   var _en=useState(null),endNarr=_en[0],setEndNarr=_en[1];
   var _eid=useState(null),endId=_eid[0],setEndId=_eid[1];
@@ -392,7 +393,7 @@ function App(){
     if(rewardTuned&&rewardTuned.stats)next=rewardTuned.stats;
     return previewDelta(stats,next);
   };
-  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();
+  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());setGoSummary({logs:goLogs.length,combos:(Save.get('ts_combos',[])||[]).length,gi:(typeof ng==='number'?ng:gi),day:(ns.day||stats.day)});Save.clearGame();
     // 엔딩 전환 연출 — 히든(F/B)은 글리치L3, 일반은 페이드아웃
     var goDelay=500;
     if((eid==='F'||eid==='B')&&fxMode!=='off'){triggerGlitch(3);goDelay=3800}
@@ -927,7 +928,7 @@ function App(){
   }
   if(phase==='go'){
     var goBack=debugGO?function(){setDebugGO(false);setPhase('menu')}:null;
-    return withOracleLink(h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,endImg:endImg,resultDay:goDay,onRestart:goBack||restart,onMainMenu:goBack||returnToMainMenu,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')},onAchievements:function(){setRet('go');setPhase('achievements')}}));
+    return withOracleLink(h(GameOver,{stats:stats,reason:gor,gi:gi,sessions:sessions,endNarr:endNarr,endId:endId,endImg:endImg,resultDay:goDay,runSummary:goSummary,endings:endings,logs:logs,onRestart:goBack||restart,onMainMenu:goBack||returnToMainMenu,onLogs:function(){setRet('go');setPhase('logs')},onArchive:function(){setRet('go');setPhase('archive')},onEndings:function(){setRet('go');setPhase('endings')},onAchievements:function(){setRet('go');setPhase('achievements')}}));
   }
   if(phase==='news')return withOracleLink(h('div',{className:'screen'},h(NewsReport3,{headlines:nh,day:stats.day,stats:stats,prevStats:prevStats,gi:gi,act:act,facility:facility,onContinue:function(){Save.set('ts_resumePhase','reward');setPhase('reward')}})));
   if(phase==='reward')return withOracleLink(h(RewardScreen,{stats:stats,onPick:hReward,facility:facility,getRewardPreviewDelta:getRewardPreviewDelta,initialRewards:Save.get('ts_resumeRewards',null),onRewardsReady:function(items){Save.set('ts_resumeRewards',items)}}));

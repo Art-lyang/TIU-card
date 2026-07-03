@@ -276,7 +276,23 @@ function MainMenu(p){
         h('div',{className:'main-terminal-log-copy'},
           h('p',null,tt('menu.systemRestored',null,'SYSTEM RESTORED')),
           h('p',null,tt('menu.operatorAuth',null,'OPERATOR AUTHENTICATION REQUIRED')),
-          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION COMMAND')))),
+          h('p',null,tt('menu.selectRoute',null,'SELECT SESSION COMMAND')),
+          (function(){
+            // 진행 각인 — 2회차부터: 세션 번호 / 엔딩 도감 / 아카이브 완성률
+            try{
+              var sess=Save.getSessions();if(!sess)return null;
+              var ends=Save.getEndings();var lg=Save.getLogs();
+              var vis=(typeof ENDING_CATALOG!=='undefined')?ENDING_CATALOG.filter(function(e){return !(e.hidden&&ends.indexOf(e.id)<0)}):[];
+              var got=vis.filter(function(e){return ends.indexOf(e.id)>=0}).length;
+              var seg='SESSION '+String(sess+1).padStart(2,'0');
+              if(vis.length)seg+=' | ENDINGS '+got+'/'+vis.length;
+              if(typeof ARCHIVE_ENTRIES!=='undefined'&&ARCHIVE_ENTRIES.length){
+                var au=0;ARCHIVE_ENTRIES.forEach(function(en){try{if(en.unlock&&en.unlock(lg))au++}catch(e2){}});
+                seg+=' | ARCHIVE '+Math.round(au/ARCHIVE_ENTRIES.length*100)+'%';
+              }
+              return h('p',{className:'main-terminal-progress'},seg);
+            }catch(e){return null}
+          })())),
       h('nav',{className:'main-terminal-menu-list'+(menuItems.length>5?' is-dense':''),'data-count':menuItems.length,'aria-label':'session route menu'},
         menuItems.map(function(item,index){return h('div',{key:item.key,className:'main-terminal-row'+(item.primary?' is-primary':'')+(selectedIndex===index?' is-selected':''),onMouseMove:function(){setSelectedIndex(index)}},
           h('span',{className:'main-terminal-cursor','aria-hidden':true},'>'),
@@ -1265,10 +1281,47 @@ function GameOver(p){
       h('div',{className:'go-msg'},'"'+msg+'"'),
       h('div',{className:'go-grant'},tt('gameOver.grant',null,'GRANT: ACTIVE — RENEWAL AVAILABLE')));
   }
+  // ── SESSION LEDGER — 회차 요약 + 도감 진행 + 미도달 기록 티저 (다회차 유인)
+  var _sum=p.runSummary||null;
+  var _ends=p.endings||[];
+  var _codex=null;
+  if(typeof ENDING_CATALOG!=='undefined'){
+    var _un={};_ends.forEach(function(id){_un[id]=1});
+    var _vis=ENDING_CATALOG.filter(function(e){return !(e.hidden&&!_un[e.id])});
+    var _got=_vis.filter(function(e){return _un[e.id]}).length;
+    // 미도달 티저 — 최종 지표 기준 '가장 가까웠던' 축의 잠긴 엔딩 1건
+    var _locked=_vis.filter(function(e){return !_un[e.id]&&e.category!=='failure'&&e.category!=='timeout'});
+    var _gi=_sum?_sum.gi:(p.gi||0);var _st=p.stats||{};
+    var _score=function(e){switch(e.id){case 'A':return _gi;case 'C_cs':case 'C_cst':return _st.c||0;case 'G':return 40-Math.abs(_gi-25);case 'H':return _st.t||0;case 'B':case 'D':case 'E':return 55-_gi;default:return 5}};
+    _locked.sort(function(a,b){return _score(b)-_score(a)});
+    _codex={total:_vis.length,got:_got,next:_locked[0]||null,lockedN:_vis.length-_got};
+  }
+  var _arch=null;
+  if(typeof ARCHIVE_ENTRIES!=='undefined'&&Array.isArray(p.logs)){
+    var _au=0;ARCHIVE_ENTRIES.forEach(function(en){try{if(en.unlock&&en.unlock(p.logs))_au++}catch(err){}});
+    _arch={total:ARCHIVE_ENTRIES.length,got:_au};
+  }
+  var _nextHint=null;
+  if(_codex&&_codex.next){
+    var _nv=(typeof tc==='function')?tc('endings',_codex.next.id,_codex.next):_codex.next;
+    _nextHint=(_nv&&_nv.hint)||_codex.next.hint;
+  }
+  var ledger=(_sum||_codex||_arch)&&h('div',{className:'bf-panel go-ledger'},
+    h('div',{className:'bf-panel-h'},'// SESSION LEDGER',h('span',null,tt('gameOver.carryOver',null,'기록 이월'))),
+    _sum&&h('div',{className:'go-ledger-strip'},
+      h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'DAY'),h('span',{className:'go-ledger-v'},String(_sum.day))),
+      h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'GI'),h('span',{className:'go-ledger-v'},String(_sum.gi))),
+      h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'LOG'),h('span',{className:'go-ledger-v'},String(_sum.logs))),
+      h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},tt('gameOver.combos',null,'조합')),h('span',{className:'go-ledger-v'},String(_sum.combos)))),
+    (_codex||_arch)&&h('div',{className:'go-codex-row'},
+      _codex&&h('span',null,tt('gameOver.endingCodex',null,'엔딩 도감')+' '+_codex.got+'/'+_codex.total),
+      _arch&&h('span',null,tt('gameOver.archiveRate',null,'아카이브')+' '+Math.round(_arch.got/Math.max(1,_arch.total)*100)+'%')),
+    _nextHint&&h('div',{className:'go-next-hint',onClick:p.onEndings,style:{cursor:p.onEndings?'pointer':'default'}},
+      '▸ '+tt('gameOver.nextRecord',{n:_codex.lockedN},'미도달 기록 '+_codex.lockedN+'건')+' — "'+_nextHint+'"'));
   var btns=h('div',{className:'go-btns'},
     h('button',{className:'btn bf-enter',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
     h('div',{className:'go-btnrow'},p.onMainMenu&&h('button',{className:'btn',onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',onClick:p.onEndings},tt('gameOver.endings',null,'엔딩')),p.onAchievements&&h('button',{className:'btn',onClick:p.onAchievements},tt('gameOver.achievements',null,'업적'))));
-  return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,btns));
+  return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,ledger,btns));
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];

@@ -258,6 +258,7 @@ window.TS_I18N.mergeUI('ko', {
     ngPlus:'[ NEW GAME+ — 강화 시작 ]',
     logs:'기록', archive:'아카이브', endings:'엔딩',
     grant:'GRANT: ACTIVE — RENEWAL AVAILABLE',
+    carryOver:'기록 이월', combos:'조합', endingCodex:'엔딩 도감', archiveRate:'아카이브', nextRecord:'미도달 기록 {n}건',
     msgHigh:'요원의 헌신적 복무에 감사드립니다.',
     msgMid:'세션이 종료됩니다. 결과가 기록되었습니다.',
     msgLow:'비표준 운영 패턴 감지. 세션 데이터 분석 중...',

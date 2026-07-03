@@ -1301,6 +1301,15 @@ b.fm-rk--info{color:#caa14a}
 .fm-term-footer span{white-space:nowrap}
 .fm-term-progress{height:5px;background:rgba(91,255,122,.12);overflow:hidden}
 .fm-term-progress i{display:block;height:100%;background:#5bff7a;box-shadow:0 0 8px rgba(91,255,122,.6);transition:width .2s ease}
+/* ── 엔딩 리절트: SESSION LEDGER(회차 요약·도감 진행·미도달 티저) ── */
+.go-ledger{margin-top:10px}
+.go-ledger-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:2px 0 8px}
+.go-ledger-cell{border:1px solid rgba(var(--ui-rgb),.18);border-radius:6px;padding:6px 4px;text-align:center;background:rgba(0,0,0,.25)}
+.go-ledger-k{display:block;font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1px;color:rgba(var(--ui-rgb),.55)}
+.go-ledger-v{display:block;font-family:'Share Tech Mono',monospace;font-size:15px;font-weight:700;color:var(--ui);margin-top:2px}
+.go-codex-row{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;font-family:'Share Tech Mono',monospace;font-size:10.5px;color:rgba(var(--ui-rgb),.8);padding:6px 2px 2px;border-top:1px dashed rgba(var(--ui-rgb),.2)}
+.go-next-hint{margin-top:6px;padding:7px 9px;border:1px dashed rgba(240,160,48,.4);border-radius:6px;font-size:10.5px;line-height:1.5;color:#f0c070;background:rgba(240,160,48,.05)}
+.main-terminal-progress{color:#f0a030 !important;font-family:'Share Tech Mono',monospace;letter-spacing:1px}
 /* ── 수로 추적 우회 경로: 침수 수로 테마 ─────────────────────────────
    물(≈) 셀은 물결 글리프 흔들림, 벽(▦)은 콘크리트 해칭, 역류(≋)는 요동.
    셀 배경 줄무늬는 레이어 겹침 문제로 제거. fx-reduced에서 전부 정지. */
