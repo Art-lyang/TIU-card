@@ -42,9 +42,26 @@ function BriefingImage(p){
 // DAY 전환 컷 — 하루가 넘어갈 때 게임 화면 위에 1회 표시. 수명은 app.js가 관리(표시 전용), 탭=스킵.
 // v5: 지도 줌 → '업무 종료' 일일 보고 패널로 교체. 헤더/야간 보고 2줄/지표/상태 → 'DAY N 개시' 스탬프.
 //     야간 보고는 day 기반 결정적 로테이션(평시 풀 + 상태 라인 + Act3+ 불온 징후), 관측 채널 라벨 로테이션 유지.
+// v6: 3단계 시퀀스 — ① '업무 종료' 단독 → ② 리포트 생성 로딩(메시지 로테이션+진행 바) → ③ 일일 리포트+개시 스탬프.
+//     fx 축소 모드는 로딩 연출 없이 곧장 리포트. 총 홀드 ~5.2s(app.js), 탭 스킵 유지.
 function DayCutOverlay(p){
   var st=p.stats||{},day=p.day||st.day||1,logs=p.logs||[],act=p.act||1;
   var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  var fxMode='full';try{fxMode=JSON.parse(localStorage.getItem('ts_fxMode'))||'full'}catch(e){}
+  var reduced=fxMode==='reduced';
+  var _stage=useState(reduced?2:0),stage=_stage[0],setStage=_stage[1];
+  var _mi=useState(0),mi=_mi[0],setMi=_mi[1];
+  useEffect(function(){
+    if(reduced)return;
+    var t1=setTimeout(function(){setStage(1)},850);
+    var t2=setTimeout(function(){setStage(2)},2500);
+    return function(){clearTimeout(t1);clearTimeout(t2)};
+  },[]);
+  useEffect(function(){
+    if(stage!==1)return;
+    var iv=setInterval(function(){setMi(function(v){return v+1})},520);
+    return function(){clearInterval(iv)};
+  },[stage]);
   var ev='idle';try{if(typeof computeMapEvent==='function')ev=computeMapEvent(st,logs)}catch(e){}
   var c=st.c||0;var panelCls=c<=25?' is-danger':c<=45?' is-warn':'';
   if(ev==='lockdown')panelCls=' is-lock';else if(ev==='attack')panelCls=' is-danger';else if(ev==='warn'&&!panelCls)panelCls=' is-warn';
@@ -88,8 +105,34 @@ function DayCutOverlay(p){
   }
   var cams=[['위성 // 강원 동해안','SAT // GANGWON COAST'],['드론 R-2 // 봉쇄선 북측','DRONE R-2 // PERIMETER N'],['초소 CCTV // 해안 §7','POST CCTV // COAST §7'],['위성 // 태백 능선 감시대','SAT // TAEBAEK RIDGE']];
   var cam=day<=2?cams[0]:cams[hsh(day,3)%cams.length];
-  var row=function(i,cls,children){return h('div',{className:'dc-row '+cls,style:{animationDelay:(0.25+i*0.22)+'s'}},children)};
-  return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
+  // 리포트 생성 로딩 메시지 — day 기반으로 3개 선별, 0.52s 간격 로테이션
+  var loadPool=[
+    ['리포트 작성 중…','Compiling report…'],
+    ['수치 계산 중…','Calculating metrics…'],
+    ['데이터 모델 정리 중…','Organizing data model…'],
+    ['야간 관측 로그 취합 중…','Collecting night logs…'],
+    ['지표 편차 검증 중…','Verifying metric variance…'],
+    ['보안 채널 암호화 중…','Encrypting secure channel…']
+  ];
+  var loadMsgs=[];
+  for(var lm=0;lm<6&&loadMsgs.length<3;lm++){
+    var lc=loadPool[hsh(day,lm*17+3)%loadPool.length];
+    var ldup=false;for(var lq=0;lq<loadMsgs.length;lq++)if(loadMsgs[lq][0]===lc[0])ldup=true;
+    if(!ldup)loadMsgs.push(lc);
+  }
+  var loadMsg=loadMsgs[mi%loadMsgs.length];
+  var row=function(i,cls,children){return h('div',{className:'dc-row '+cls,style:{animationDelay:(0.2+i*0.18)+'s'}},children)};
+  // ── 1단계: 업무 종료 + 2단계: 리포트 생성 로딩 ──
+  if(stage<2)return h('div',{className:'daycut',onClick:function(){if(p.onSkip)p.onSkip()}},
+    h('div',{className:'daycut-pre'},
+      h('div',{className:'daycut-pre-t'},isEn?'END OF DUTY':'업무 종료'),
+      h('div',{className:'daycut-pre-d'},'DAY '+(day-1)),
+      stage===1?h('div',{className:'daycut-load'},
+        h('div',{className:'daycut-load-bar'},h('i')),
+        h('div',{key:mi,className:'daycut-load-msg'},(isEn?loadMsg[1]:loadMsg[0]))):null),
+    h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
+  // ── 3단계: 일일 리포트 + DAY 개시 스탬프 ──
+  return h('div',{className:'daycut daycut-s2',onClick:function(){if(p.onSkip)p.onSkip()}},
     h('div',{className:'daycut-panel'+panelCls},
       h('span',{className:'dc-br dc-br-tl'}),h('span',{className:'dc-br dc-br-tr'}),h('span',{className:'dc-br dc-br-bl'}),h('span',{className:'dc-br dc-br-br'}),
       h('div',{className:'daycut-panel-h'},
@@ -100,7 +143,7 @@ function DayCutOverlay(p){
       h('div',{className:'daycut-div'}),
       row(2,'',h('div',{className:'daycut-sec'},(isEn?'NIGHT REPORT — ':'야간 보고 — ')+(isEn?cam[1]:cam[0]))),
       h('div',{className:'daycut-report'},lines.map(function(l,i){
-        return h('div',{key:i,className:'daycut-rep',style:{animationDelay:(0.75+i*0.3)+'s'}},'▸ '+(isEn?l[1]:l[0]));
+        return h('div',{key:i,className:'daycut-rep',style:{animationDelay:(0.62+i*0.28)+'s'}},'▸ '+(isEn?l[1]:l[0]));
       })),
       h('div',{className:'daycut-div'}),
       row(5,'',h('div',{className:'daycut-stats'},sm.map(function(s2){var low=(s2[1]||0)<=25;return h('span',{key:s2[0],className:'daycut-st'+(low?' is-low':'')},s2[0]+' '+(s2[1]||0))}))),

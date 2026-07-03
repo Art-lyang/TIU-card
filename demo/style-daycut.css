@@ -1,11 +1,22 @@
-/* style-daycut.css — DAY 전환 컷 v5 (업무 종료 일일 보고 패널 + DAY 개시 스탬프)
-   day+1 시 게임 화면 위 ~3.6s, 표시 전용/탭 스킵.
-   구성: 보고 패널(헤더/업무종료/야간 보고 2줄/지표/상태) → 하단 'DAY N 개시' 스탬프.
-   행 등장은 .dc-row/.daycut-rep 의 인라인 animationDelay(0.25s 간격), 스탬프는 1.35s.
-   튜닝 지점: 홀드=dcOut delay(3.15s)+app.js 타이머(3600ms). */
+/* style-daycut.css — DAY 전환 컷 v6 (업무 종료 → 리포트 생성 로딩 → 일일 보고 패널 + DAY 개시 스탬프)
+   day+1 시 게임 화면 위 ~5.2s, 표시 전용/탭 스킵.
+   시퀀스(components-briefing.js stage): 0=업무 종료(0~.85s) → 1=로딩(.85~2.5s) → 2=리포트 패널.
+   패널 행 등장은 .dc-row/.daycut-rep 의 인라인 animationDelay, 스탬프는 패널 마운트 후 1.15s.
+   튜닝 지점: 홀드=dcOut delay(4.75s)+app.js 타이머(5200ms), 단계 전환=stage 타이머(850/2500ms). */
 .daycut{position:fixed;inset:0;z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;
   background:rgba(3,7,8,.94);font-family:'Share Tech Mono',monospace;
-  animation:dcIn .25s ease both,dcOut .45s ease 3.15s both}
+  animation:dcIn .25s ease both,dcOut .45s ease 4.75s both}
+/* ── 1·2단계: 업무 종료 + 리포트 생성 로딩 ── */
+.daycut-pre{display:flex;flex-direction:column;align-items:center;gap:10px}
+.daycut-pre-t{font-size:26px;letter-spacing:10px;color:var(--ui);text-shadow:0 0 14px var(--ui-glow);
+  animation:dcDayIn .3s ease both,glitchText .18s ease 2}
+.daycut-pre-d{font-size:12px;letter-spacing:5px;color:rgba(var(--ui-rgb),.65);animation:dcLineIn .3s ease .2s both}
+.daycut-load{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:14px;animation:dcLineIn .25s ease both}
+.daycut-load-bar{width:176px;height:3px;border:1px solid rgba(var(--ui-rgb),.35);background:rgba(var(--ui-rgb),.07)}
+.daycut-load-bar i{display:block;height:100%;background:var(--ui);box-shadow:0 0 8px var(--ui-glow);
+  animation:dcLoad 1.55s linear both}
+@keyframes dcLoad{from{width:4%}55%{width:52%}75%{width:64%}to{width:97%}}
+.daycut-load-msg{font-size:10px;letter-spacing:1.5px;color:rgba(var(--ui-rgb),.6);animation:dcRepIn .2s ease both}
 /* ── 보고 패널 ── */
 .daycut-panel{position:relative;width:292px;max-width:86vw;padding:13px 16px 12px;
   border:1px solid rgba(var(--ui-rgb),.4);
@@ -44,7 +55,7 @@
 .daycut-sub.is-lock{color:#9adfff;text-shadow:0 0 7px rgba(154,223,255,.4)}
 /* ── DAY 개시 스탬프 ── */
 .daycut-day{font-size:30px;letter-spacing:8px;color:var(--ui);text-shadow:0 0 14px var(--ui-glow);
-  animation:dcDayIn .3s ease 1.35s both,glitchText .18s ease 1.35s 2}
+  animation:dcDayIn .3s ease 1.15s both,glitchText .18s ease 1.15s 2}
 @keyframes dcDayIn{from{opacity:0;transform:scale(1.12)}}
 .daycut-day-suf{font-size:11px;letter-spacing:4px;margin-left:12px;vertical-align:3px;color:rgba(var(--ui-rgb),.65)}
 .daycut-skip{position:absolute;bottom:26px;font-size:9px;letter-spacing:2px;color:rgba(var(--ui-rgb),.4)}
@@ -53,5 +64,6 @@
 @keyframes dcBlink{50%{opacity:.25}}
 .fx-reduced .daycut-panel,.fx-reduced .dc-row,.fx-reduced .daycut-rep,.fx-reduced .daycut-day{animation:none}
 .fx-reduced .daycut-rec,.fx-reduced .daycut-sub.is-hot{animation:none}
+.fx-reduced .daycut-pre-t,.fx-reduced .daycut-pre-d,.fx-reduced .daycut-load,.fx-reduced .daycut-load-bar i,.fx-reduced .daycut-load-msg{animation:none}
 /* off는 app.js에서 미세팅 — CSS 이중 안전망 */
 .fx-off .daycut{display:none}
