@@ -146,11 +146,14 @@ function EvidenceTable(p) {
 
   if (!p.unlocked) return null;
 
+  // 선택 상한 = 조합 최대 멤버 수 (CMB-12 '4인 의심 축'이 4멤버 — 고정 3이면 영구 해금 불가)
+  var maxSel = 3;
+  try { if (typeof EVIDENCE_COMBOS !== 'undefined') maxSel = EVIDENCE_COMBOS.reduce(function(m, c) { return Math.max(m, (c.combo || []).length); }, 3); } catch (e) {}
   var toggle = function(evId) {
     if (result) return;
     setSelected(function(prev) {
       if (prev.indexOf(evId) >= 0) return prev.filter(function(id) { return id !== evId; });
-      if (prev.length >= 3) return prev;
+      if (prev.length >= maxSel) return prev;
       return prev.concat([evId]);
     });
   };
@@ -275,7 +278,21 @@ function EvidenceTable(p) {
               lineHeight: 1.4 } }, ev.name),
             h('div', { style: { fontSize: 9, color: 'rgba(var(--ui-rgb),.3)',
               marginTop: 2, lineHeight: 1.3 } }, ev.desc));
-        })),
+        }),
+        // 사용(콤보 소진)된 증거 — 보드 뷰와 동일하게 흐리게 누적 표시 (뷰 토글 시 개수 불일치 해소)
+        (function() {
+          var activeIds = collected.map(function(e) { return e.id; });
+          return allCollected.filter(function(e) { return activeIds.indexOf(e.id) < 0; }).map(function(ev) {
+            var cc = catColor[ev.cat] || 'var(--ui)';
+            return h('div', { key: 'used-' + ev.id,
+              style: { flex: '0 0 calc(50% - 3px)', padding: '6px 8px', opacity: 0.4,
+                border: '1px dashed rgba(var(--ui-rgb),.12)', borderRadius: 2 } },
+              h('div', { style: { display: 'flex', alignItems: 'center', gap: 4, marginBottom: 2 } },
+                h('span', { style: { width: 6, height: 6, borderRadius: '50%', background: 'rgba(var(--ui-rgb),.2)', flexShrink: 0 } }),
+                h('span', { style: { fontFamily: "'Share Tech Mono',monospace", fontSize: 8, color: cc, letterSpacing: 0.5 } }, (catName[ev.cat] || '') + ' ✓')),
+              h('div', { style: { fontSize: 11, color: 'var(--ui-text)', lineHeight: 1.4 } }, ev.name));
+          });
+        })()),
 
       // 결과 표시
       result && result.success && h('div', { style: { marginTop: 4, padding: '10px 12px',
@@ -313,7 +330,7 @@ function EvidenceTable(p) {
       borderTop: '1px solid rgba(var(--ui-rgb),.08)' } },
       h('span', { style: { fontSize: 10, color: 'rgba(var(--ui-rgb),.4)',
         fontFamily: "'Share Tech Mono',monospace" } },
-        evidenceText('선택: ', 'SELECTED: ') + selected.length + '/3'),
+        evidenceText('선택: ', 'SELECTED: ') + selected.length + '/' + maxSel),
       selected.length >= 2 && h('div', { onClick: submit,
         style: { padding: '6px 14px', cursor: 'pointer',
           border: '1px solid rgba(var(--ui-rgb),.3)', background: 'rgba(var(--ui-rgb),.05)',

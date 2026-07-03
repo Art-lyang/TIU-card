@@ -109,7 +109,8 @@ function App(){
   var _af=useState({prom_met:false,mission_done:false,chain_done:false,prom_mission:false}),actFlags=_af[0],setActFlags=_af[1];
   var _tr2=useState(''),transRoute=_tr2[0],setTransRoute=_tr2[1];
   var _fac=useState({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]}),facility=_fac[0],setFacility=_fac[1];
-  var _fot=useState(false),facOfferedToday=_fot[0],setFacOfferedToday=_fot[1];
+  // 시설 제안 1일 1회 가드 — FP-* 카드가 표시된 day를 기록, drawCard(app-init.js)가 같은 day 재제안을 차단.
+  // (기존 facOfferedToday state는 선언만 있고 배선이 없던 죽은 가드라 window 마커로 대체)
   var _res=useState({}),research=_res[0],setResearch=_res[1];
   var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
   var _cil=useState(false),cardInputLocked=_cil[0],setCardInputLocked=_cil[1];
@@ -318,6 +319,7 @@ function App(){
   var _orov=useState(null),orov=_orov[0],setOrov=_orov[1];var orovTimerRef=useRef(null); // ORACLE 개입 오버레이 (표시 전용)
   var orovEl=function(){return h('div',{className:'oracle-ov'+(fxMode==='reduced'?' oracle-ov--reduced':''),'aria-hidden':true},h('div',{className:'oracle-ov-box'},h('div',{className:'oracle-ov-t'},'[ORACLE OVERRIDE]'),h('div',{className:'oracle-ov-m'},orov)))};
   var previewOracleOv=function(){try{SFX.play('warn')}catch(e){}if(orovTimerRef.current)clearTimeout(orovTimerRef.current);setOrov('[ORACLE: 해당 명령은 승인되지 않았습니다 — 연출 프리뷰]');orovTimerRef.current=setTimeout(function(){setOrov(null)},1200)}; // DEV 프리뷰 (fxMode 무시하고 강제 표시)
+  useEffect(function(){if(curCard&&curCard.isFacilityProposal&&stats&&typeof window!=='undefined')window.__ts_facPropDay=stats.day},[curCard]); // 시설 제안 1일 1회 마커
   var _daycut=useState(null),daycut=_daycut[0],setDaycut=_daycut[1];var prevDayRef=useRef(null);var daycutTimerRef=useRef(null); // DAY 전환 컷 (표시 전용)
   // 실플레이 진행(정확히 +1 증가)일 때만 발동 — 세이브 복원/클라우드 동기화로 day가 점프하는 경우와
   // 메뉴 화면에서는 미발동 (새로고침 직후 메뉴 위에 '업무 종료'가 뜨던 오발 방지).
@@ -718,7 +720,7 @@ function App(){
     setActFlags({prom_met:false,mission_done:false,chain_done:false,prom_mission:false});
     setChainQueue([]);setPendingBonus(null);setCurMission(null);setCurDlg(null);setPreview(null);setNh([]);
     setGor('');setGoDay(null);setEndNarr(null);setEndId(null);setCAlertDay(-1);setAct2Reached(false);
-    setFacility({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]});setFacOfferedToday(false);setPrevStats(null);
+    setFacility({approved:[],pending:[],completed:[],proposed:[],rewardOff:[]});if(typeof window!=='undefined')window.__ts_facPropDay=null;setPrevStats(null);
     setResearch({});Save.del('ts_research');
     // Reset archive read markers for a clean campaign.
     setSeenArchive([]);Save.del('ts_seenArchive');

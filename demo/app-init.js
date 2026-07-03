@@ -220,7 +220,12 @@ var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute,facility)
   var facComp=(facility&&facility.completed)||[];
   var facAll=[].concat((facility&&facility.approved)||[],(facility&&facility.pending)||[],facComp,(facility&&facility.proposed)||[]);
   var feProposeAvailable=function(c){var ids=cardFeProposeIds(c);for(var i=0;i<ids.length;i++)if(facAll.indexOf(ids[i])>=0)return false;return true};
-  var facilityProposalAvailable=function(c){return !(c&&c.isFacilityProposal&&c.feId&&facAll.indexOf(c.feId)>=0)};
+  var facilityProposalAvailable=function(c){
+    if(!(c&&c.isFacilityProposal))return true;
+    // 1일 1회: 오늘 이미 시설 제안 카드가 표시됐으면(app.js 마커) 다른 FE 제안도 차단
+    if(typeof window!=='undefined'&&window.__ts_facPropDay===day)return false;
+    return !(c.feId&&facAll.indexOf(c.feId)>=0);
+  };
   var deckAvailable=function(c){return (typeof sessionDeckOk!=='function')?true:sessionDeckOk(c,stats,gi,logs,ca,facility)};
   // 첫날 첫 카드 강제: 1회차=CA-001, 2회차+=CA-001B
   // (localStorage를 직접 조회 — React closure stale logs 회피)
