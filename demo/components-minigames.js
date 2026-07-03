@@ -870,10 +870,12 @@ function ScanMiniGame(p){
 
 function RouteMiniGame(p){
   var copy=p.copy;
+  // 6x7 격자 (idx = y*6+x). 각 시트는 다익스트라(자머=2)로 풀이 가능성 검증됨 — 최단비용 12~13, moves = 최단+3.
+  var GC=6,GR=7;
   var sheets=[
-    { pos:20, goal:4, moves:9, danger:[7,12,17], block:[1,6,16], jammer:[13] },
-    { pos:24, goal:0, moves:10, danger:[8,13,18], block:[3,4,14], jammer:[11,17] },
-    { pos:22, goal:2, moves:8, danger:[6,7,18], block:[10,15,20], jammer:[12] }
+    { pos:36, goal:1, moves:16, danger:[5,34,40,17,37,0], block:[23,12,7,22,25,8], jammer:[16,15,9] },
+    { pos:38, goal:4, moves:15, danger:[1,40,6,19,10,3], block:[33,7,20,9,14,12], jammer:[31,27,17] },
+    { pos:41, goal:0, moves:15, danger:[26,23,9,15,5,31], block:[29,17,39,2,37,12], jammer:[10,30,21] }
   ];
   var sheetRef=useRef(null);
   if(!sheetRef.current)sheetRef.current=sheets[Math.floor(Math.random()*sheets.length)];
@@ -884,12 +886,12 @@ function RouteMiniGame(p){
   // 순찰 X: 무작위로 배회하는 즉사 칸. 단, 플레이어 칸으로는 절대 이동하지 않는다
   // (플레이어가 '밟아서' 죽는 것만 허용 — 하자드가 걸어와 죽이는 억울한 실패 방지).
   var hazardInit=(function(){
-    var px=sheet.pos%5,py=Math.floor(sheet.pos/5);
+    var px=sheet.pos%GC,py=Math.floor(sheet.pos/GC);
     var cand=[];
-    for(var i=0;i<25;i++){
+    for(var i=0;i<GC*GR;i++){
       if(i===sheet.pos||i===sheet.goal)continue;
       if(sheet.block.indexOf(i)>=0||sheet.danger.indexOf(i)>=0||(sheet.jammer||[]).indexOf(i)>=0)continue;
-      var d=Math.abs(i%5-px)+Math.abs(Math.floor(i/5)-py);
+      var d=Math.abs(i%GC-px)+Math.abs(Math.floor(i/GC)-py);
       if(d>=3)cand.push(i);
     }
     return cand.length?cand[Math.floor(Math.random()*cand.length)]:-1;
@@ -902,8 +904,8 @@ function RouteMiniGame(p){
     var iv=setInterval(function(){
       if(finished.current)return;
       var hp=hazardRef.current;if(hp<0)return;
-      var hx=hp%5,hy=Math.floor(hp/5);
-      var opts=[[hx+1,hy],[hx-1,hy],[hx,hy+1],[hx,hy-1]].map(function(c){return c[0]<0||c[0]>4||c[1]<0||c[1]>4?-1:c[1]*5+c[0]})
+      var hx=hp%GC,hy=Math.floor(hp/GC);
+      var opts=[[hx+1,hy],[hx-1,hy],[hx,hy+1],[hx,hy-1]].map(function(c){return c[0]<0||c[0]>=GC||c[1]<0||c[1]>=GR?-1:c[1]*GC+c[0]})
         .filter(function(i){
           if(i<0)return false;
           if(i===posRef.current)return false;                 // 플레이어 칸 금지
@@ -923,8 +925,8 @@ function RouteMiniGame(p){
 
   function moveTo(idx){
     if(finished.current)return;
-    var px=pos%5,py=Math.floor(pos/5);
-    var tx=idx%5,ty=Math.floor(idx/5);
+    var px=pos%GC,py=Math.floor(pos/GC);
+    var tx=idx%GC,ty=Math.floor(idx/GC);
     if(Math.abs(px-tx)+Math.abs(py-ty)!==1)return;
     if(sheet.block.indexOf(idx)>=0)return;
     if(sheet.danger.indexOf(idx)>=0||idx===hazardRef.current){
@@ -945,13 +947,13 @@ function RouteMiniGame(p){
     }
     if(nextMoves<=0){
       finished.current=true;
-      var gx=sheet.goal%5,gy=Math.floor(sheet.goal/5);
+      var gx=sheet.goal%GC,gy=Math.floor(sheet.goal/GC);
       if(Math.abs(tx-gx)+Math.abs(ty-gy)===1)p.onDone('partial');
       else p.onDone('fail');
     }
   }
 
-  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'RED=FAIL / AMBER=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'center',padding:'0 12px'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(5, minmax(0, 1fr))',gap:8}},Array.from({length:25}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isHazard=idx===hazard&&!isPlayer;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var bg='rgba(6,18,11,0.96)';var border='1px solid rgba(122,255,198,0.16)';if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isHazard){bg='rgba(120,10,10,0.97)';border='2px solid rgba(255,90,72,1)';}if(isBlock){bg='rgba(55,55,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(135,86,16,0.96)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}return h('button',{key:idx,className:'btn',disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'8px',padding:0,background:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isHazard?'0 0 16px rgba(255,60,44,0.65)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isHazard?'#ffdcd6':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:15,fontWeight:700,cursor:isBlock?'default':'pointer'}},isPlayer?'IN':isGoal?'OUT':isHazard?'✕':isDanger?'X':isBlock?'■':isJammer?'~':'·');}))));
+  return h(FieldTerminalShell,{code:'M-010',kind:'ROUTE EVADE',title:copy.title,intro:copy.intro,status:[{k:'MOVES',v:moves+'',cls:moves<=2?'is-bad':''},{k:'RULE',v:'RED=FAIL / AMBER=-2'}]},h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'flex-start',padding:'6px 12px'}},h('div',{style:{display:'grid',gridTemplateColumns:'repeat(6, minmax(0, 1fr))',gap:5,width:'min(100%, 56vh)',margin:'0 auto'}},Array.from({length:42}).map(function(_,idx){var isPlayer=idx===pos;var isGoal=idx===sheet.goal;var isDanger=sheet.danger.indexOf(idx)>=0;var isHazard=idx===hazard&&!isPlayer;var isBlock=sheet.block.indexOf(idx)>=0;var isJammer=sheet.jammer.indexOf(idx)>=0;var bg='rgba(6,18,11,0.96)';var border='1px solid rgba(122,255,198,0.16)';if(isDanger){bg='rgba(165,22,22,0.96)';border='1px solid rgba(255,120,120,0.9)';}if(isHazard){bg='rgba(120,10,10,0.97)';border='2px solid rgba(255,90,72,1)';}if(isBlock){bg='rgba(55,55,60,0.95)';border='1px solid rgba(195,195,200,0.45)';}if(isJammer){bg='rgba(135,86,16,0.96)';border='1px solid rgba(252,200,88,0.85)';}if(isGoal){bg='rgba(14,76,100,0.96)';border='1px solid rgba(146,224,255,0.9)';}if(isPlayer){bg='rgba(18,86,48,0.97)';border='2px solid rgba(130,255,196,1)';}return h('button',{key:idx,className:'btn',disabled:isBlock||finished.current,onClick:function(){moveTo(idx);},style:{aspectRatio:'1 / 1',borderRadius:'7px',padding:0,minHeight:0,background:bg,border:border,boxShadow:isPlayer?'0 0 14px rgba(120,255,190,0.45)':isHazard?'0 0 16px rgba(255,60,44,0.65)':isDanger?'0 0 10px rgba(255,80,80,0.3)':isGoal?'0 0 10px rgba(120,210,255,0.3)':isJammer?'0 0 8px rgba(245,188,64,0.25)':'none',color:isGoal?'#b9e9ff':isHazard?'#ffdcd6':isDanger?'#ffd6d6':isJammer?'#ffe2a8':isBlock?'rgba(225,225,230,0.6)':isPlayer?'#eafff4':'rgba(210,235,220,0.5)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,fontWeight:700,cursor:isBlock?'default':'pointer'}},isPlayer?'IN':isGoal?'OUT':isHazard?'✕':isDanger?'X':isBlock?'■':isJammer?'~':'·');}))));
 }
 
 function EvidenceMiniGame(p){
