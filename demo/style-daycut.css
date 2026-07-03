@@ -1,11 +1,12 @@
 /* style-daycut.css — DAY 전환 컷 v6 (업무 종료 → 리포트 생성 로딩 → 일일 보고 패널 + DAY 개시 스탬프)
    day+1 시 게임 화면 위 ~5.2s, 표시 전용/탭 스킵.
-   시퀀스(components-briefing.js stage): 0=업무 종료(0~.85s) → 1=로딩(.85~2.5s) → 2=리포트 패널.
+   시퀀스(components-briefing.js stage): 0=업무 종료(0~1.4s) → 1=로딩(1.4~4.2s) → 2=리포트 패널.
    패널 행 등장은 .dc-row/.daycut-rep 의 인라인 animationDelay, 스탬프는 패널 마운트 후 1.15s.
-   튜닝 지점: 홀드=dcOut delay(4.75s)+app.js 타이머(5200ms), 단계 전환=stage 타이머(850/2500ms). */
+   탭: 리포트 전=리포트로 속행 / 리포트=닫기 — 느긋한 자동 진행은 탭 스킵 전제.
+   튜닝 지점: 홀드=dcOut delay(7.85s)+app.js 타이머(8600ms), 단계 전환=stage 타이머(1400/4200ms). */
 .daycut{position:fixed;inset:0;z-index:220;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;cursor:pointer;
   background:rgba(3,7,8,.94);font-family:'Share Tech Mono',monospace;
-  animation:dcIn .25s ease both,dcOut .45s ease 4.75s both}
+  animation:dcIn .25s ease both,dcOut .45s ease 7.85s both}
 /* ── 1·2단계: 업무 종료 + 리포트 생성 로딩 ── */
 .daycut-pre{display:flex;flex-direction:column;align-items:center;gap:10px}
 .daycut-pre-t{font-size:26px;letter-spacing:10px;color:var(--ui);text-shadow:0 0 14px var(--ui-glow);
@@ -14,7 +15,7 @@
 .daycut-load{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:14px;animation:dcLineIn .25s ease both}
 .daycut-load-bar{width:176px;height:3px;border:1px solid rgba(var(--ui-rgb),.35);background:rgba(var(--ui-rgb),.07)}
 .daycut-load-bar i{display:block;height:100%;background:var(--ui);box-shadow:0 0 8px var(--ui-glow);
-  animation:dcLoad 1.55s linear both}
+  animation:dcLoad 2.65s linear both}
 @keyframes dcLoad{from{width:4%}55%{width:52%}75%{width:64%}to{width:97%}}
 .daycut-load-msg{font-size:10px;letter-spacing:1.5px;color:rgba(var(--ui-rgb),.6);animation:dcRepIn .2s ease both}
 /* ── 보고 패널 ── */

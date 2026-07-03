@@ -318,8 +318,8 @@ function App(){
   var orovEl=function(){return h('div',{className:'oracle-ov'+(fxMode==='reduced'?' oracle-ov--reduced':''),'aria-hidden':true},h('div',{className:'oracle-ov-box'},h('div',{className:'oracle-ov-t'},'[ORACLE OVERRIDE]'),h('div',{className:'oracle-ov-m'},orov)))};
   var previewOracleOv=function(){try{SFX.play('warn')}catch(e){}if(orovTimerRef.current)clearTimeout(orovTimerRef.current);setOrov('[ORACLE: 해당 명령은 승인되지 않았습니다 — 연출 프리뷰]');orovTimerRef.current=setTimeout(function(){setOrov(null)},1200)}; // DEV 프리뷰 (fxMode 무시하고 강제 표시)
   var _daycut=useState(null),daycut=_daycut[0],setDaycut=_daycut[1];var prevDayRef=useRef(null);var daycutTimerRef=useRef(null); // DAY 전환 컷 (표시 전용)
-  useEffect(function(){var d=stats&&stats.day;if(prevDayRef.current===null){prevDayRef.current=d;return}if(typeof d==='number'&&d>prevDayRef.current&&d>1&&fxMode!=='off'){setDaycut(d);if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);daycutTimerRef.current=setTimeout(function(){setDaycut(null)},5200)}prevDayRef.current=d},[stats&&stats.day]);
-  var previewDayCut=function(){setDaycut(stats&&stats.day||12);if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);daycutTimerRef.current=setTimeout(function(){setDaycut(null)},5200)}; // DEV 프리뷰
+  useEffect(function(){var d=stats&&stats.day;if(prevDayRef.current===null){prevDayRef.current=d;return}if(typeof d==='number'&&d>prevDayRef.current&&d>1&&fxMode!=='off'){setDaycut(d);if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);daycutTimerRef.current=setTimeout(function(){setDaycut(null)},8600)}prevDayRef.current=d},[stats&&stats.day]);
+  var previewDayCut=function(){setDaycut(stats&&stats.day||12);if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);daycutTimerRef.current=setTimeout(function(){setDaycut(null)},8600)}; // DEV 프리뷰
   var _achievements=useState(function(){return Save.getAchievements()}),achievements=_achievements[0],setAchievements=_achievements[1];
   var _glitch=useState(0),glitchLevel=_glitch[0],setGlitchLevel=_glitch[1];
   var _fxMode=useState(function(){return Save.get('ts_fxMode','full')}),fxMode=_fxMode[0],setFxMode=_fxMode[1];

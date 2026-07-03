@@ -54,8 +54,8 @@ function DayCutOverlay(p){
   var stageTimersRef=useRef([]);
   useEffect(function(){
     if(reduced)return;
-    var t1=setTimeout(function(){setStage(1)},850);
-    var t2=setTimeout(function(){setStage(2)},2500);
+    var t1=setTimeout(function(){setStage(1)},1400);
+    var t2=setTimeout(function(){setStage(2)},4200);
     stageTimersRef.current=[t1,t2];
     return function(){clearTimeout(t1);clearTimeout(t2)};
   },[]);
@@ -70,7 +70,7 @@ function DayCutOverlay(p){
   };
   useEffect(function(){
     if(stage!==1)return;
-    var iv=setInterval(function(){setMi(function(v){return v+1})},520);
+    var iv=setInterval(function(){setMi(function(v){return v+1})},650);
     return function(){clearInterval(iv)};
   },[stage]);
   var ev='idle';try{if(typeof computeMapEvent==='function')ev=computeMapEvent(st,logs)}catch(e){}
