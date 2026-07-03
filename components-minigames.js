@@ -1619,19 +1619,29 @@ function FieldMiniGameOverlay(p){
   var game=FIELD_MINIGAME_LIBRARY[p.game.type];
   if(!game)return null;
   var copy=getMiniLocaleCopy(game);
+  // 결과 랭크별 진동 피드백 — 전 미니게임 공통 지점
+  var onDone=function(rank){
+    if(typeof Haptics!=='undefined'){
+      if(rank==='fail')Haptics.fail();
+      else if(rank==='partial')Haptics.warn();
+      else if(rank==='great')Haptics.great();
+      else Haptics.success();
+    }
+    p.onDone(rank);
+  };
   if(!started)return h(MinigameOnboarding,{game:game,copy:copy,type:p.game.type,onStart:function(){setStarted(true);}});
-  if(p.game.type==='signal')return h(SignalMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='sequence')return h(SequenceMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='breach')return h(BreachMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='sample')return h(SampleMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='scan')return h(ScanMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='route')return h(RouteMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='evidence')return h(EvidenceMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='reconstruction')return h(ReconstructionMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='statement')return h(StatementMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:p.onDone});
-  if(p.game.type==='crawler')return h(CrawlerMiniGame,{copy:copy,onDone:p.onDone});
+  if(p.game.type==='signal')return h(SignalMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='sequence')return h(SequenceMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='breach')return h(BreachMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='sample')return h(SampleMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='scan')return h(ScanMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='route')return h(RouteMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='evidence')return h(EvidenceMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='reconstruction')return h(ReconstructionMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='statement')return h(StatementMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='crawler')return h(CrawlerMiniGame,{copy:copy,onDone:onDone});
   return null;
 }
 

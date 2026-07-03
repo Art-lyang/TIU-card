@@ -392,7 +392,7 @@ function App(){
     if(rewardTuned&&rewardTuned.stats)next=rewardTuned.stats;
     return previewDelta(stats,next);
   };
-  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();
+  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());Save.clearGame();
     // 엔딩 전환 연출 — 히든(F/B)은 글리치L3, 일반은 페이드아웃
     var goDelay=500;
     if((eid==='F'||eid==='B')&&fxMode!=='off'){triggerGlitch(3);goDelay=3800}
@@ -528,7 +528,7 @@ function App(){
     lockCardInput();
     freshCardRef.current=false; // 현재 카드 소비 시작 — 다음 카드는 새로 결정된다
     SFX.play('swipe');setToast('');
-    try{if(navigator.vibrate)navigator.vibrate(15)}catch(e){}
+    if(typeof Haptics!=='undefined')Haptics.swipe();
     var pendingBonusForSave=pendingBonus||null;
     // 카드 글리치 트리거 — 스와이프 시작 시점에 발동 (글리치 연출은 2회차부터)
     if(curCard&&curCard.glitch&&sessions>0)triggerGlitch(curCard.glitch);

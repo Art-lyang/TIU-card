@@ -315,6 +315,7 @@ window.TS_I18N.mergeUI('ko', {
     mainMenu:'MENU',
     tabs:{ sound:'SOUND', save:'SAVE', display:'DISPLAY', guide:'PROTOCOL', info:'INFO' },
     sound:'사운드',
+    haptics:'진동 피드백 (모바일)',
     bgm:'배경음악',
     sfx:'효과음',
     fontSize:'글자 크기',

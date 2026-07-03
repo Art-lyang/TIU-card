@@ -106,6 +106,16 @@ var SFX={
     case'btn_off':self.tone(200,0.06,'square',0.04);break;
   }}catch(e){}}
 };
+// ═══ Haptics — 모바일 진동 피드백. 설정 SOUND 탭 토글(ts_haptics)로 on/off ═══
+var Haptics={
+  enabled:function(){try{return Save.get('ts_haptics','on')!=='off'}catch(e){return true}},
+  fire:function(pat){if(!this.enabled())return;try{if(navigator.vibrate)navigator.vibrate(pat)}catch(e){}},
+  swipe:function(){this.fire(15)},
+  warn:function(){this.fire(60)},
+  success:function(){this.fire([25,45,55])},
+  great:function(){this.fire([25,45,25,45,90])},
+  fail:function(){this.fire([90,60,90])}
+};
 // ═══ Delta float text — shows +/- values rising from gauges after swipe ═══
 var showDeltaFloats=function(before,after){
   var keys=['c','r','t','o'];

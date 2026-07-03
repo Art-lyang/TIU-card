@@ -285,7 +285,7 @@ window.TS_I18N.mergeUI('en', {
   },
   settings:{
     title:'SETTINGS', close:'ESC', mainMenu:'MENU', tabs:{ sound:'SOUND', save:'SAVE', display:'DISPLAY', guide:'PROTOCOL', info:'INFO' },
-    sound:'Sound', bgm:'Background Music', sfx:'Sound Effects', fontSize:'Text Size', visualFx:'Screen Effects', language:'Language',
+    sound:'Sound', bgm:'Background Music', sfx:'Sound Effects', haptics:'Haptics (Mobile)', fontSize:'Text Size', visualFx:'Screen Effects', language:'Language',
     langKo:'한국어', langEn:'English', sizeSmall:'Small', sizeNormal:'Normal', sizeLarge:'Large', fxFull:'Full', fxReduced:'Reduced', fxOff:'Off',
     fxWarning:'⚠ If you are sensitive to flashes or screen shake, choose [Reduced] or [Off].', preview:'Preview: ORACLE TERMINAL SESSION sample text.',
     sessions:'Sessions', unlockedLogs:'Unlocked Logs', endingsFound:'Endings Found', snapshotSlots:'SNAPSHOT SLOTS', snapshotHelp:'Save at a desired day and reload later to compare different branching choices.',

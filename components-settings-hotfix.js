@@ -126,6 +126,7 @@
     var _muted=useState(typeof BGM!=='undefined'?BGM.muted:false),muted=_muted[0],setMuted=_muted[1];
     var _vol=useState(function(){return Save.get('ts_volume',10)}),vol=_vol[0],setVol=_vol[1];
     var _sfxVol=useState(function(){return Save.get('ts_sfxVol',50)}),sfxVol=_sfxVol[0],setSfxVol=_sfxVol[1];
+    var _hap=useState(function(){return typeof Haptics!=='undefined'?Haptics.enabled():true}),hap=_hap[0],setHap=_hap[1];
     var _currentLang=useState(function(){return(window.TS_I18N&&window.TS_I18N.getLocale())||'ko'}),currentLang=_currentLang[0];
     var _pendingLang=useState(currentLang),pendingLang=_pendingLang[0],setPendingLang=_pendingLang[1];
     var _restarting=useState(false),restarting=_restarting[0],setRestarting=_restarting[1];var _langCfm=useState(null),langCfm=_langCfm[0],setLangCfm=_langCfm[1];
@@ -166,9 +167,13 @@
       var nv=Math.max(0,Math.min(100,v));setSfxVol(nv);
       if(typeof SFX!=='undefined'){SFX.vol=nv/100;Save.set('ts_sfxVol',nv)}
     };
+    var toggleHaptics=function(){
+      var nv=!hap;setHap(nv);Save.set('ts_haptics',nv?'on':'off');
+      if(nv&&typeof Haptics!=='undefined')Haptics.fire(20); // 켤 때 짧은 확인 진동
+    };
 
     var content=null;
-    if(tab==='sound') content=h(SettingsSoundTab,{muted:muted,vol:vol,sfxVol:sfxVol,onToggleMute:toggleMute,onVolChange:changeVol,onSfxVolChange:changeSfxVol});
+    if(tab==='sound') content=h(SettingsSoundTab,{muted:muted,vol:vol,sfxVol:sfxVol,onToggleMute:toggleMute,onVolChange:changeVol,onSfxVolChange:changeSfxVol,haptics:hap,onToggleHaptics:toggleHaptics});
     if(tab==='save') content=h(SettingsSaveTab,{onReset:p.onReset,onFullReset:p.onFullReset,onClose:closePanel,onSaveSnap:p.onSaveSnap,onLoadSnap:p.onLoadSnap});
     if(tab==='display') content=h(SettingsDisplayTab,{onFxModeChange:p.onFxModeChange,currentLang:currentLang,pendingLang:pendingLang,onLanguageSelect:setPendingLang});
     if(tab==='guide') content=h(SettingsProtocolTab);
