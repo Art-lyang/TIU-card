@@ -30,6 +30,10 @@
   animation:cardFlashIn .2s ease both, cardFlashOut .4s ease 1.2s both;
 }
 
+/* DEV 프리뷰: 카드 컨텍스트 밖(메뉴/게임 어디서든) 풀스크린 고정으로 재생 */
+.card-flash--dev{ position:fixed; z-index:230; }
+.card-flash-devid{ position:absolute; bottom:9%; font:10px monospace; letter-spacing:2px; color:#b9a6ff; text-shadow:0 0 6px rgba(185,166,255,.5); }
+
 /* off는 컴포넌트 미마운트가 1차, CSS 이중 안전망 */
 .fx-off .card-flash{ display:none; }
 @media (prefers-reduced-motion: reduce){
