@@ -238,7 +238,7 @@ function EscapeGameScreen(p){
   if (phase === 'minigame' && typeof ShellBreakMiniGame === 'function') {
     var sbLib = (typeof FIELD_MINIGAME_LIBRARY !== 'undefined' && FIELD_MINIGAME_LIBRARY.shellbreak) || null;
     var sbCopy = sbLib ? (locale === 'en' ? sbLib.en : sbLib.ko) : { title: '침묵 통과', intro: '', action: '전진' };
-    return h(ShellBreakMiniGame, { copy: sbCopy, known: logs.indexOf('LOG-SHELLTALKER-CAP') >= 0, onDone: onShellbreakDone });
+    return h(ShellBreakMiniGame, { copy: sbCopy, known: logs.indexOf('LOG-SHELLTALKER-CAP') >= 0, allies: (state.companions||[]).map(function(c){return c.id;}), onDone: onShellbreakDone });
   }
 
   // 시간 포맷

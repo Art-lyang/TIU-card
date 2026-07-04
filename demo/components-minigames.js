@@ -1790,11 +1790,20 @@ function ShellBreakMiniGame(p){
   var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
   var L=function(ko,en){return locale==='en'?en:ko};
   var CALLSIGN=L('남십자','SOUTHERN CROSS');
-  var REAL=[
-    {ko:'[서하은] 남십자. 동쪽 셔터 열려 있어요.',en:'[HAEUN] Southern Cross. East shutter is open.'},
-    {ko:'[강도윤] 남십자 확인. 통로 이상 없습니다.',en:'[DOYUN] Southern Cross confirmed. Corridor clear.'},
-    {ko:'[임재혁] 남십자! 카메라 30초 죽였습니다.',en:'[JAEHYUK] Southern Cross! Cameras are down for thirty seconds.'}
-  ];
+  // 진짜 무전은 '지금 함께 탈출 중인(생존) 동행자'만 보낸다 — p.allies(간부 id 배열).
+  // 죽은/부재 간부의 목소리는 FAKE(모방) 풀에서만 나온다 — 그게 쉘 토커다.
+  var REAL_BY_ALLY={
+    haeun:{ko:'[서하은] 남십자. 동쪽 셔터 열려 있어요.',en:'[HAEUN] Southern Cross. East shutter is open.'},
+    doyun:{ko:'[강도윤] 남십자 확인. 통로 이상 없습니다.',en:'[DOYUN] Southern Cross confirmed. Corridor clear.'},
+    jaehyuk:{ko:'[임재혁] 남십자! 카메라 30초 죽였습니다.',en:'[JAEHYUK] Southern Cross! Cameras are down for thirty seconds.'},
+    sejin:{ko:'[윤세진] 남십자예요. 환풍구 쪽은 조용해요.',en:'[SEJIN] Southern Cross. The vents are quiet.'}
+  };
+  var allies=Array.isArray(p.allies)?p.allies.filter(function(id){return REAL_BY_ALLY[id]}):null;
+  var REAL=(allies&&allies.length)
+    ?allies.map(function(id){return REAL_BY_ALLY[id]})
+    :(allies&&allies.length===0)
+    ?[{ko:'[협력 회선] 남십자. 외곽 경로 이상 없다.',en:'[SUPPORT LINE] Southern Cross. Outer route clear.'}] // 동행 전원 낙오 — 외부 협력 회선만 남는다
+    :[REAL_BY_ALLY.haeun,REAL_BY_ALLY.doyun,REAL_BY_ALLY.jaehyuk]; // 가이드 연습 모드 기본 풀
   var FAKE=[
     {ko:'[서하은?] 이쪽이에요, 지휘관님. 빨리요.',en:'[HAEUN?] This way, Commander. Hurry.'},
     {ko:'[강도윤?] 괜찮습니다. 나오셔도 됩니다.',en:'[DOYUN?] It is safe. You can come out now.'},
@@ -1980,7 +1989,7 @@ function FieldMiniGameOverlay(p){
   if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:onDone});
   if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:onDone});
   if(p.game.type==='crawler')return h(CrawlerMiniGame,{copy:copy,onDone:onDone});
-  if(p.game.type==='shellbreak')return h(ShellBreakMiniGame,{copy:copy,known:!!p.game.known,onDone:onDone});
+  if(p.game.type==='shellbreak')return h(ShellBreakMiniGame,{copy:copy,known:!!p.game.known,allies:p.game.allies,onDone:onDone});
   return null;
 }
 
