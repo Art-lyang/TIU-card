@@ -253,7 +253,7 @@ function EveningChat2(p){
     [LH('야간 통신','COMMS'),LH('하루의 판단이 끝난 밤, 간부 1인과 대화할 수 있습니다. 대화는 하루 한 번뿐입니다.','After the day\'s decisions, you may speak with one officer. One conversation per night.')],
     [LH('신뢰','TRUST'),LH('응답 선택에 따라 그 간부의 신뢰가 오르내립니다. 신뢰는 인물 사건과 엔딩 분기에 영향을 줍니다.','Your replies raise or lower that officer\'s trust. Trust shapes personal arcs and ending branches.')],
     [LH('단서','LEADS'),LH('특정 대화에서 조사테이블·연구 콘솔이 해금되고, 새 기록과 증거가 열립니다.','Certain conversations unlock the evidence table and research console, plus new records.')],
-    [LH('조합','COMBINE'),LH('조사테이블 해금 후에는 이 화면의 [조사 테이블] 버튼으로 증거를 조합할 수 있습니다.','Once unlocked, use the EVIDENCE TABLE button here to combine records.')],
+    [LH('조합','COMBINE'),LH('증거 조합은 야간 통신에서만 가능합니다. 아래 [조사 테이블 — 증거 조합] 버튼을 눌러 [증거 조합] 탭에서 증거 여러 개를 선택해 교차 분석하세요. 보드/목록 보기 전환도 가능합니다.','Evidence can only be combined during night comms. Tap the EVIDENCE TABLE button below, then pick multiple records in the COMBINE tab for cross-analysis. Board/list views are toggleable.')],
     [LH('건너뛰기','SKIP'),LH('대화를 건너뛰면 다음 날로 넘어갑니다. 그날의 신뢰 기회는 사라집니다.','Skipping moves to the next day — that night\'s trust opportunity is lost.')]
   ];
   var chars=[{name:'서하은',key:'haeun',role:'부지휘관 / 데이터분석관'},{name:'강도윤',key:'doyun',role:'전술지휘관'},{name:'윤세진',key:'sejin',role:'연구원 / 의료관'},{name:'임재혁',key:'jaehyuk',role:'정보분석관 / 기술관'},{name:'마르쿠스 베버',key:'weber',role:'프로메테우스'},{name:'닉 포스터',key:'foster',role:'프로메테우스'},{name:'박소영',key:'soyoung',role:'분석관'}];

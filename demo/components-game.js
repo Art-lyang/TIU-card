@@ -1313,9 +1313,9 @@ function GameOver(p){
   }
   var ledger=(_sum||_codex||_arch)&&h('div',{className:'bf-panel go-ledger'},
     h('div',{className:'bf-panel-h'},'// SESSION LEDGER',h('span',null,tt('gameOver.carryOver',null,'기록 이월'))),
-    _sum&&h('div',{className:'go-ledger-strip'},
+    _sum&&h('div',{className:'go-ledger-strip',style:{gridTemplateColumns:'repeat(3,1fr)'}},
+      /* GI는 숨김 수치 — 레저에 노출하지 않는다 (내부 미도달 티저 휴리스틱에만 사용) */
       h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'DAY'),h('span',{className:'go-ledger-v'},String(_sum.day))),
-      h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'GI'),h('span',{className:'go-ledger-v'},String(_sum.gi))),
       h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},'LOG'),h('span',{className:'go-ledger-v'},String(_sum.logs))),
       h('div',{className:'go-ledger-cell'},h('span',{className:'go-ledger-k'},tt('gameOver.combos',null,'조합')),h('span',{className:'go-ledger-v'},String(_sum.combos)))),
     (_codex||_arch)&&h('div',{className:'go-codex-row'},
