@@ -10,7 +10,8 @@ var CARDS_LJC_PROMETHEUS = [
     tag: "prometheus-lee",
     once: true,
     cond: function(s, g, logs) {
-      return s.day >= 9 && logs.indexOf("LOG-LJC-PROM-01") < 0;
+      // 고순응(GI>30) 회차엔 접선 자체가 오지 않는다 — 상반 덱 동시 노출 방지
+      return s.day >= 9 && g <= 30 && logs.indexOf("LOG-LJC-PROM-01") < 0;
     },
     msg: "프로메테우스 관련 녹취 파일이 도착했습니다.\n\n파일명: GANGWON-OLD / COASTAL-MIRROR / VOICELOSS\n\n이중철은 확인 버튼 위에서 손을 멈춥니다.\n\n강원도 동부 작전. 통신 두절. 박상훈 중위. 구조 요청처럼 들렸던 마지막 음성.\n\nORACLE은 그 사건을 '비협조 민간 세력 개입 가능성'으로 정리했지만, 이중철은 다른 이름을 기억합니다.\n\n프로메테우스.",
     left: {

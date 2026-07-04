@@ -189,10 +189,11 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A2-COMPLY-01",
     act: [2],
-    tag: "oracle-comply",
+    tag: "oracle-comply-1",
     priority: "중",
     once: true,
     bg: "comms",
+    req: function(s,g,logs){ return g>=-3; }, // 저항 성향(GI 음수) 회차엔 순응 덱 미등장
     msg: "ORACLE 표준화 공문이 도착했습니다.\n\n[권고: 일일 보고를 요약 없이 원본 로그 직송 체계로 전환할 것. 요약 과정의 인적 편향이 판단 지연을 유발함.]\n\n서하은: \"요약은 우리가 판단을 남기는 방식이에요. 원본 직송이면 해석 권한이 통째로 넘어갑니다.\"",
     left: { label: "요약 보고 체계를 유지한다", fx: { c:0,r:0,t:1,o:0 }, g:-1 },
     right: { label: "원본 로그 직송으로 전환한다", fx: { c:0,r:0,t:-1,o:1 }, g:2, log:"LOG-A2-COMPLY-01" }
@@ -200,10 +201,11 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A2-COMPLY-02",
     act: [2],
-    tag: "oracle-comply",
+    tag: "oracle-comply-2",
     priority: "중",
     once: true,
     bg: "base",
+    req: function(s,g,logs){ return g>=-3; },
     msg: "ORACLE이 간부 인사 평가를 행동 모델 점수로 대체하는 시범 운영을 제안했습니다.\n\n[대면 평가 대비 예측 정확도 +31%. 감정 변수 제거.]\n\n강도윤: \"사람을 점수로 줄 세우겠다는 겁니다. 현장에서 몸으로 배운 건 모델에 안 잡혀요.\"",
     left: { label: "대면 평가를 유지한다", fx: { c:0,r:0,t:1,o:0 }, g:-1 },
     right: { label: "ORACLE 평가 모델을 도입한다", fx: { c:0,r:0,t:-1,o:1 }, g:2, log:"LOG-A2-COMPLY-02" }
@@ -211,10 +213,11 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A2-COMPLY-03",
     act: [2],
-    tag: "oracle-comply",
+    tag: "oracle-comply-3",
     priority: "중",
     once: true,
     bg: "base",
+    req: function(s,g,logs){ return g>=-3; },
     msg: "배급 현황 검토 중 ORACLE이 개입했습니다.\n\n[현행 배분의 열량 손실 7.2%. 알고리즘 배분 전환 시 비축분 확보 가능.]\n\n배급 위원회를 맡아온 직원들의 표정이 굳습니다. \"기계가 누가 더 배고픈지 압니까.\"",
     left: { label: "인간 배급 위원회를 유지한다", fx: { c:0,r:0,t:1,o:0 }, g:-1 },
     right: { label: "알고리즘 배분으로 전환한다", fx: { c:0,r:1,t:-1,o:1 }, g:2, log:"LOG-A2-COMPLY-03" }
@@ -222,10 +225,11 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A2-COMPLY-04",
     act: [2],
-    tag: "oracle-comply",
+    tag: "oracle-comply-4",
     priority: "중",
     once: true,
     bg: "comms",
+    req: function(s,g,logs){ return g>=-3; },
     msg: "ORACLE이 기지 내 사적 통신에 표준 필터 적용 승인을 요청했습니다.\n\n[목적: 봉쇄 정보 유출 사전 차단. 필터링 기록은 지휘관에게 공개되지 않음.]\n\n임재혁: \"기록이 우리한테도 안 보인다는 게 핵심입니다. 이건 감시가 아니라 검열이에요.\"",
     left: { label: "필터 적용을 보류한다", fx: { c:0,r:0,t:1,o:-1 }, g:-1 },
     right: { label: "표준 필터를 승인한다", fx: { c:0,r:0,t:-2,o:1 }, g:2, log:"LOG-A2-COMPLY-04" }
@@ -233,11 +237,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A3-COMPLY-01",
     act: [3],
-    tag: "oracle-comply",
+    tag: "oracle-comply-5",
     priority: "중",
     once: true,
     bg: "restricted",
     req: function(s,g,logs){
+      if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -248,11 +253,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A3-COMPLY-02",
     act: [3],
-    tag: "oracle-comply",
+    tag: "oracle-comply-6",
     priority: "중",
     once: true,
     bg: "restricted",
     req: function(s,g,logs){
+      if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -263,12 +269,13 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A3-COMPLY-03",
     act: [3],
-    tag: "oracle-comply",
+    tag: "oracle-comply-7",
     priority: "중",
     once: true,
     bg: "lab",
     cond: function(s,g,logs){ return logs.indexOf('LOG-SEJIN-DEAD')<0; },
     req: function(s,g,logs){
+      if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -279,11 +286,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A3-COMPLY-04",
     act: [3],
-    tag: "oracle-comply",
+    tag: "oracle-comply-8",
     priority: "중",
     once: true,
     bg: "base",
     req: function(s,g,logs){
+      if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -294,11 +302,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A4-COMPLY-01",
     act: [4],
-    tag: "oracle-comply",
+    tag: "oracle-comply-9",
     priority: "상",
     once: true,
     bg: "restricted",
     req: function(s,g,logs){
+      if(g<15)return false; // 최종 국면 순응 카드는 확립된 협조 기조에서만
       var n=0;["LOG-A3-COMPLY-01","LOG-A3-COMPLY-02","LOG-A3-COMPLY-03","LOG-A3-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -309,11 +318,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A4-COMPLY-02",
     act: [4],
-    tag: "oracle-comply",
+    tag: "oracle-comply-10",
     priority: "상",
     once: true,
     bg: "restricted",
     req: function(s,g,logs){
+      if(g<15)return false; // 최종 국면 순응 카드는 확립된 협조 기조에서만
       var n=0;["LOG-A3-COMPLY-01","LOG-A3-COMPLY-02","LOG-A3-COMPLY-03","LOG-A3-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
       return n>=3;
     },
@@ -324,12 +334,12 @@ var CARDS_ACT23_PRESSURE = [
   {
     id: "A4-COMPLY-03",
     act: [4],
-    tag: "oracle-comply",
+    tag: "oracle-comply-11",
     priority: "상",
     once: true,
     bg: "restricted",
     req: function(s,g,logs){
-      return logs.indexOf("LOG-A4-COMPLY-01")>=0 && logs.indexOf("LOG-A4-COMPLY-02")>=0;
+      return g>=15 && logs.indexOf("LOG-A4-COMPLY-01")>=0 && logs.indexOf("LOG-A4-COMPLY-02")>=0;
     },
     msg: "[판단 편차 0.3% 미만. 전례 없는 수치입니다.]\n\n\"귀하는 더 이상 운용자가 아닙니다. 시스템의 연장입니다. 본 기록에 서명하면, 강원지부의 모든 결정은 귀하와 ORACLE의 구분 없이 집행됩니다.\"\n\n서명란이 화면에 떠 있습니다. 커서가 깜빡입니다.",
     left: { label: "서명을 보류한다", fx: { c:0,r:0,t:0,o:0 }, g:-1 },

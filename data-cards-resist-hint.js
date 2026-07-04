@@ -21,35 +21,35 @@ var CARDS_RESIST_HINT = [
 
   // RH-01: ORACLE 데이터 요약 (o 유지 + GI 약간 감소)
   { id: "RH-01", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [2,3], priority: "중", tag: "resist-balance",
-    req: function(s,g,logs){ return s.day >= 8 },
+    req: function(s,g,logs){ return s.day >= 8 && g <= 35 },
     msg: "서하은이 일일 브리핑 중 덧붙입니다.\n\n\"ORACLE에 올리는 보고서를 제가 먼저 검수할 수 있습니다.\n형식은 완벽하게 유지하면서 — 일부 정보의 우선순위를 낮출 수 있어요.\"\n\n\"ORACLE은 형식만 보면 아무 문제도 못 느낍니다.\"",
     left:  { label: "공식 형식만 유지하라", fx: { c: 0, r: 0, t: 1, o: 0 }, g: -2, log: "LOG-RH-SUMMARY" },
     right: { label: "본부 보고대로 올려라", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // RH-02: 강도윤 비공식 파견 (GI 감소 + t·o 동시 유지)
   { id: "RH-02", act: [2,3], priority: "중", tag: "resist-balance",
-    req: function(s,g,logs){ return s.day >= 10 },
+    req: function(s,g,logs){ return s.day >= 10 && g <= 35 },
     msg: "강도윤이 비공식 루트로 보고합니다.\n\n\"외곽 순찰 중에 — ORACLE 카메라가 닿지 않는 구역을 발견했습니다.\n보고서에는 정상 코스로 넣겠습니다.\"\n\n\"그렇게 해두면, 필요할 때 블라인드 포인트로 쓸 수 있습니다.\"",
     left:  { label: "그렇게 기록해 둬라", fx: { c: 1, r: 0, t: 1, o: 0 }, g: -3, log: "LOG-RH-BLINDSPOT" },
     right: { label: "ORACLE 지침대로 전체 기록", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 2 } },
 
   // RH-03: 윤세진 의료 기록 이중화 (t 상승 + o 유지)
   { id: "RH-03", act: [2,3], priority: "중", tag: "resist-balance",
-    req: function(s,g,logs){ return s.day >= 9 },
+    req: function(s,g,logs){ return s.day >= 9 && g <= 35 },
     msg: "윤세진이 진료 기록을 정리하며 말합니다.\n\n\"공식 기록 외에 — 제가 개인적으로 보관하는 케이스가 있어요.\n ORACLE은 '정상 범위'라고 분류했지만, 저는 패턴이 보입니다.\"\n\n\"정식 보고와 별개로 남겨둘까요?\"",
     left:  { label: "보관해라. 형식은 정식대로", fx: { c: 0, r: 0, t: 2, o: 0 }, g: -2, log: "LOG-RH-MEDICAL" },
     right: { label: "ORACLE 분류를 따른다", fx: { c: 0, r: 0, t: -1, o: 1 }, g: 1 } },
 
   // RH-04: 임재혁 시스템 모니터링 (o 상승 + GI 감소 — 지식형 저항)
   { id: "RH-04", act: [2,3], priority: "중", tag: "resist-balance",
-    req: function(s,g,logs){ return s.day >= 12 },
+    req: function(s,g,logs){ return s.day >= 12 && g <= 35 },
     msg: "임재혁이 콘솔에서 고개를 듭니다.\n\n\"ORACLE 쿼리 패턴을 역분석해두고 있습니다.\n\n당국에 걸릴 걸 최소화하면서 — 시스템 내부를 더 볼 수 있어요.\"\n\n\"이건 운영자로서 해야 할 일이기도 합니다.\"",
     left:  { label: "분석 계속", fx: { c: 0, r: 0, t: 1, o: 1 }, g: -3, log: "LOG-RH-QUERYMAP" },
     right: { label: "정식 승인 후에 해라", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // RH-05: ORACLE 자체 오류 보고 (o 대폭 상승 + GI 감소)
   { id: "RH-05", cond:function(s,g,logs){ return logs.indexOf('LOG-050')<0 }, act: [3], priority: "상", tag: "resist-balance",
-    req: function(s,g,logs){ return s.day >= 15 },
+    req: function(s,g,logs){ return s.day >= 15 && g <= 35 },
     msg: "[ORACLE: 자체 진단 결과 통보]\n\n\"PILEHEAD. 분석 모듈에 일시적 이상이 감지되었습니다. 재동기화가 필요합니다.\"\n\n서하은이 조용히 말합니다.\n\"...지금이 우리 판단 기록을 남길 기회입니다.\n ORACLE이 어떻게 판단했는지 기록하면서, 우리가 왜 다르게 생각하는지도 남길 수 있어요.\"",
     left:  { label: "우리 판단 함께 기록", fx: { c: 0, r: 0, t: 1, o: 2 }, g: -4, log: "LOG-RH-COUNTERMEMO" },
     right: { label: "ORACLE 판단만 통과", fx: { c: 0, r: 0, t: -1, o: 2 }, g: 3 } },
