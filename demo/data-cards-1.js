@@ -31,7 +31,17 @@ var CARDS_BASE = [
       return "ORACLE 권고: 기지 운영 효율 향상을 위해 의사결정 프로토콜을 ORACLE 자동화로 전환할 것을 제안합니다.";
     },
     left:  { label: "거절: 수동 유지",  fx: { c: 0, r: 1, t: 1, o: -2 }, g: -4 },
-    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4 } },
+    right: { label: function(){ return (typeof Save!=='undefined'?Save.getSessions():0)>=5 ? "자동화 승인" : "부분 자동화 승인" }, fx: { c: 1, r: 1, t: -1, o: 3 }, g: 4, automation: "on" } },
+  // 자동화 해제 이벤트 — 승인(LOG-AUTO-ON) 후에만 등장, 아직 해제 전(LOG-AUTO-OFF 없음)일 때.
+  { id: "C-280", act: [2,3,4], priority: "상", once: true,
+    req: function(s,g,logs){ return logs.indexOf("LOG-AUTO-ON")>=0 && logs.indexOf("LOG-AUTO-OFF")<0; },
+    msg: function(){
+      var n=(typeof Save!=='undefined'?Save.getSessions():0);
+      if(n>=2) return "임재혁이 늦은 밤 콘솔 앞에서 지휘관을 부릅니다.\n\n\"자동 승인 큐를 우회하는 경로를 찾았습니다. 지금이면 수동 통제를 되찾을 수 있어요.\"\n\n서하은: \"이 창은 곧 닫힙니다. 결정하셔야 합니다.\"";
+      return "임재혁이 조용히 다가옵니다.\n\n\"의사결정 자동화... 되돌릴 방법을 찾았습니다. 다만 ORACLE 평가에는 이탈로 기록될 겁니다.\"\n\n\"그래도, 지휘관님 손으로 결정하시겠습니까?\"";
+    },
+    left:  { label: "수동 통제를 복원한다", fx: { c: 0, r: 0, t: 2, o: -3 }, g: -4, automation: "off" },
+    right: { label: "자동화를 유지한다",   fx: { c: 1, r: 1, t: -1, o: 2 }, g: 3 } },
   // 조건부 카드
   { id: "C-016", act: [2,3], priority: "상", req: (s, g) => g <= 40, msg: "[미분류 통신] ORACLE 데이터 링크 일시적 불안정. 미확인 암호화 통신(소바리 발신 추정)이 수신되었습니다.", left: { label: "무시 (권장)", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 2 }, right: { label: "독자 해독 시도", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
   { id: "C-017", act: [3], priority: "중", req: (s, g, logs) => logs.includes("LOG-003"), msg: "이전 수집된 프로메테우스 통신 패턴을 기반으로 인근의 은신처를 특정했습니다.", left: { label: "ORACLE 보고", fx: { c: 1, r: 0, t: 0, o: 2 }, g: 3 }, right: { label: "비공식 접촉", fx: { c: -1, r: 0, t: 2, o: -2 }, g: -4 } },

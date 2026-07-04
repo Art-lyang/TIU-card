@@ -369,7 +369,7 @@ for (const chains of [CHAINS, CHAINS_INCIDENT]) {
 // ORACLE_LOGS가 있으면 그 id도 "정의됨"으로 간주 (자연 해금 가능성)
 const ORACLE_LOGS = sandbox.ORACLE_LOGS || [];
 const definedLogIds = new Set(ORACLE_LOGS.map(x => x && x.id).filter(Boolean));
-const internalProgressLogs = new Set(['LOG-ACT1-SKIP', 'LOG-ACT2', 'LOG-ACT3', 'LOG-ACT4']);
+const internalProgressLogs = new Set(['LOG-ACT1-SKIP', 'LOG-ACT2', 'LOG-ACT3', 'LOG-ACT4', 'LOG-AUTO-ON', 'LOG-AUTO-OFF']);
 
 for (const file of ['app-logic.js', 'app.js']) {
   try {

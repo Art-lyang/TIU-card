@@ -2572,6 +2572,15 @@ window.TS_I18N.mergeContent('en', {
         leftLabel: "Raise perimeter alert",
         rightLabel: "Allow solo pursuit"
       },
+      "C-280": {
+        msg: function(){
+          var n=(typeof Save!=='undefined'?Save.getSessions():0);
+          if(n>=2) return "Lim Jae-hyeok calls you over to the console late at night.\n\n\"I found a way to bypass the auto-approval queue. Right now, you can take back manual control.\"\n\nSeo Hae-eun: \"This window closes soon. You have to decide.\"";
+          return "Lim Jae-hyeok approaches quietly.\n\n\"Decision automation... I found a way to reverse it. It'll be logged as a deviation on your ORACLE evaluation, though.\"\n\n\"Even so — will you decide with your own hand?\"";
+        },
+        leftLabel: "Restore manual control",
+        rightLabel: "Keep automation"
+      },
       "C-020": {
         msg: function(){
           var n=(typeof Save!=='undefined'?Save.getSessions():0);

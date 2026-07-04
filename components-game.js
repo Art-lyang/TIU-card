@@ -642,6 +642,12 @@ function CardC(p){
   // 동적 속성 지원 — timer/label이 함수면 호출해서 세션 횟수 등 반영
   var resolveVal=function(v){return typeof v==='function'?v():v};
   var timerTotal=resolveVal(card.timer)||0;
+  // 자동화 승인(LOG-AUTO-ON) 상태면 자체 타이머 없는 카드에도 자동 타이머 주입.
+  var AUTO_TIMER=8;
+  var effTimer=timerTotal||(p.autoComply?AUTO_TIMER:0);
+  var autoInjected=!timerTotal&&effTimer>0;
+  // 만료 시 자동 스와이프 방향 — ORACLE 순응(=GI 이득 큰) 쪽.
+  var complyDir=((card.right&&resolveVal(card.right.g))||0)>=((card.left&&resolveVal(card.left.g))||0)?'right':'left';
   var cardLoc=(typeof tc==='function')?tc('cards',card.id,null):null;
   var leftLabel=resolveVal((cardLoc&&cardLoc.leftLabel!=null)?cardLoc.leftLabel:(card.left&&card.left.label))||'';
   var rightLabel=resolveVal((cardLoc&&cardLoc.rightLabel!=null)?cardLoc.rightLabel:(card.right&&card.right.label))||'';
@@ -660,7 +666,7 @@ function CardC(p){
   var s8=useState(null),choiceCue=s8[0],setChoiceCue=s8[1];
   var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null),choiceCueTimer=useRef(null);
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
-  var s7=useState(timerTotal),remaining=s7[0],setRemaining=s7[1];
+  var s7=useState(effTimer),remaining=s7[0],setRemaining=s7[1];
   // ── 이미지 플래시 연출 (opt-in card.flashImg · fxMode 존중 · 카드당 1회) ──
   var _fxMode=(typeof Save!=='undefined'&&Save.get)?Save.get('ts_fxMode','full'):'full';
   var flashSrc=(card.flashImg&&typeof IMG!=='undefined'&&IMG[card.flashImg])?IMG[card.flashImg]:null;
@@ -696,16 +702,16 @@ function CardC(p){
   };
   var _ent=useState(false),entering=_ent[0],setEntering=_ent[1];
   useEffect(function(){return function(){clearHoldPreview();clearChoiceCue()}},[]);
-  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(timerTotal);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);setEntering(true);var _et=setTimeout(function(){setEntering(false)},340);return function(){clearTimeout(_et)}},[card.id]);
+  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(effTimer);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);setEntering(true);var _et=setTimeout(function(){setEntering(false)},340);return function(){clearTimeout(_et)}},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
-  var performSwipe=function(kdir){
+  var performSwipe=function(kdir,isAuto){
     var branch=card[kdir];
     var replyKey=kdir==='left'?'leftReplyMsg':'rightReplyMsg';
     var replyMsg=(cardLoc&&cardLoc[replyKey])||(branch&&branch.replyMsg);
     if(replyMsg&&p.onReply){p.onReply(replyMsg)}
     setChosen(kdir);
     setChoiceCue(kdir);
-    setTimeout(function(){p.onSwipe(kdir);setDx(0);setChosen(null);setChoiceCue(null)},replyMsg?1500:300);
+    setTimeout(function(){p.onSwipe(kdir,!!isAuto);setDx(0);setChosen(null);setChoiceCue(null)},replyMsg?1500:300);
   };
   var requestChoice=function(kdir){
     if(p.disabled||chosen||shaking||entering)return;
@@ -725,8 +731,8 @@ function CardC(p){
   };
   // 타이머 카운트다운
   useEffect(function(){
-    if(!timerTotal||p.disabled||chosen||shaking)return;
-    if(remaining<=0){performSwipe('right');return}
+    if(!effTimer||p.disabled||chosen||shaking)return;
+    if(remaining<=0){performSwipe(complyDir,true);return}
     var t=setTimeout(function(){setRemaining(function(r){return Math.max(0,r-0.1)})},100);
     return function(){clearTimeout(t)};
   },[remaining,card.id,p.disabled,chosen,shaking]);
@@ -820,10 +826,10 @@ function CardC(p){
       specBg?h('div',{className:'card-img-bg'+(bgFeature?' is-feature':''),style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
       glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease 3'}},'SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
-      timerTotal>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
-        h('span',{style:{flexShrink:0}},'⚠ AUTO-OVERRIDE'),
+      effTimer>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
+        h('span',{style:{flexShrink:0}},autoInjected?((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())==='en'?'⚙ AUTO-COMPLY':'⚙ 자동 순응'):'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
-          h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(timerTotal||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
+          h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(effTimer||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
         h('span',{style:{flexShrink:0,fontVariantNumeric:'tabular-nums'}},Math.ceil(remaining)+'s')
       ),
       h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},function(){
