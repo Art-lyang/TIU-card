@@ -105,9 +105,9 @@ def parse_end_trigger(body):
     m = re.search(r'\bendTrigger:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
-def _extract_fn_body(body):
+def _extract_fn_body(body, kw=r'(?:req|cond)'):
     """req/cond: function(...){...} 본문을 중괄호 균형으로 추출 (중첩 forEach 등 안전)."""
-    m = re.search(r'\b(?:req|cond):\s*function\s*\([^)]*\)\s*\{', body)
+    m = re.search(r'\b' + kw + r':\s*function\s*\([^)]*\)\s*\{', body)
     if not m: return None
     i = m.end() - 1
     depth = 0
@@ -121,8 +121,16 @@ def _extract_fn_body(body):
     return None
 
 def parse_req_or_cond(body):
-    """req / cond 함수 본문을 Python eval 가능한 식으로 변환."""
-    fn_body = _extract_fn_body(body)
+    """req와 cond를 각각 변환해 AND 결합 (둘 다 있으면 게임과 동일하게 모두 통과해야 함)."""
+    parts = []
+    for kw in ('req', 'cond'):
+        e = _parse_one_fn(body, kw)
+        if e: parts.append('(' + e + ')')
+    if parts: return ' and '.join(parts)
+    return _parse_one_fn(body, r'(?:req|cond)')
+
+def _parse_one_fn(body, kw):
+    fn_body = _extract_fn_body(body, kw)
     if fn_body is not None:
         # forEach 카운트 관용구: var n=0;[...].forEach(function(l){if(logs.indexOf(l)>=0)n++});return n>=K
         # (선행 GI 가드 if(g<K)return false; 는 not-조건으로 결합)
@@ -138,7 +146,7 @@ def parse_req_or_cond(body):
         m = None
         body_src = fn_body.strip()
     else:
-        m = re.search(r'\b(?:req|cond):\s*\([^)]*\)\s*=>\s*(?:\{([^}]*?)\}|([^,\n]+))', body, re.S)
+        m = re.search(r'\b' + kw + r':\s*\([^)]*\)\s*=>\s*(?:\{([^}]*?)\}|([^,\n]+))', body, re.S)
         if not m: return None
         body_src = (m.group(1) or (m.group(2) if m.lastindex >= 2 else '') or '').strip()
     body_src = re.sub(r'^\s*return\s+', '', body_src)
@@ -197,6 +205,7 @@ for f in CARD_FILES:
             'act': act,
             'tag': parse_tag(body),
             'once': parse_once(body),
+            'forceFlow': bool(re.search(r'\bforceFlow:\s*true', body)),
             'bg': parse_bg(body),
             'sessionPack': parse_session_pack(body),
             'priority': parse_priority(body),
@@ -229,6 +238,7 @@ def build_facility_proposal_cards():
             'act': acts,
             'tag': 'facility-proposal-' + fe_id,
             'once': False,
+            'forceFlow': False,
             'bg': None,
             'sessionPack': None,
             'priority': '중',

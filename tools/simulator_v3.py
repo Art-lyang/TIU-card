@@ -91,6 +91,8 @@ CHAR_KEYS = ['haeun', 'doyun', 'sejin', 'jaehyuk']
 
 def chk_special_ending(s, gi, act, trust, logs):
     if act < 4: return None
+    # 엔딩 A 서명형 — 순응 체인 완주(LOG-A4-COMPLY-03) 시 확정 (data-endings.js 미러)
+    if 'LOG-A4-COMPLY-03' in logs: return 'A'
     def t(v): return 1 if v >= 65 else 0
     def m(v): return 1 if v >= 60 else 0
     high = t(trust['haeun']) + t(trust['doyun']) + t(trust['sejin']) + t(trust['jaehyuk'])
@@ -891,7 +893,9 @@ def simulate_one(profile):
                 null_draw_days.append(s['day'])
                 break
 
-            c = weighted_card_choice(pool, logs, act, session_deck, s)
+            # forceFlow 카드는 등장 조건 충족 시 우선 드로우 (게임 flow 스케줄러 미러)
+            _ff = [x for x in pool if x.get('forceFlow')]
+            c = weighted_card_choice(_ff, logs, act, session_deck, s) if _ff else weighted_card_choice(pool, logs, act, session_deck, s)
             drew_any = True
 
             # 연속 중복 감지: REPEAT_WINDOW 내 같은 카드 재등장
