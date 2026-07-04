@@ -832,6 +832,12 @@ function CardC(p){
           h('div',{style:{height:'100%',width:Math.max(0,Math.min(100,(remaining/(effTimer||1))*100))+'%',background:remaining<=2?'#ff4444':'#f0a030',transition:'width 0.1s linear, background 0.2s'}})),
         h('span',{style:{flexShrink:0,fontVariantNumeric:'tabular-nums'}},Math.ceil(remaining)+'s')
       ),
+      effTimer>0&&!chosen&&(function(){
+        var isEnT=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())==='en';
+        var clbl=(complyDir==='right'?rightLabel:leftLabel)||'';
+        return h('div',{style:{color:'#ff4444',fontFamily:"'Share Tech Mono',monospace",fontSize:9.5,letterSpacing:0.5,textAlign:'center',marginBottom:6,lineHeight:1.4,textShadow:'0 0 6px rgba(255,68,68,.4)'}},
+          '\u26a0 '+(isEnT?('No response \u2192 ORACLE auto-approves: "'+clbl+'"'):('\ubbf8\uc120\ud0dd \uc2dc ORACLE\uc774 \uc790\ub3d9 \uc2b9\uc778\ud569\ub2c8\ub2e4 \u2192 "'+clbl+'"')));
+      })(),
       h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},function(){
         var rawMsg=(cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')));var paras=String(rawMsg||'').split('\n\n');
         return paras.map(function(para,pi){
