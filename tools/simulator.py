@@ -105,13 +105,42 @@ def parse_end_trigger(body):
     m = re.search(r'\bendTrigger:\s*[\'"]([^\'"]+)[\'"]', body)
     return m.group(1) if m else None
 
+def _extract_fn_body(body):
+    """req/cond: function(...){...} 본문을 중괄호 균형으로 추출 (중첩 forEach 등 안전)."""
+    m = re.search(r'\b(?:req|cond):\s*function\s*\([^)]*\)\s*\{', body)
+    if not m: return None
+    i = m.end() - 1
+    depth = 0
+    for j in range(i, len(body)):
+        c = body[j]
+        if c == '{': depth += 1
+        elif c == '}':
+            depth -= 1
+            if depth == 0:
+                return body[i+1:j]
+    return None
+
 def parse_req_or_cond(body):
     """req / cond 함수 본문을 Python eval 가능한 식으로 변환."""
-    m = re.search(r'\b(?:req|cond):\s*function\s*\([^)]*\)\s*\{([^}]*?)\}', body, re.S)
-    if not m:
+    fn_body = _extract_fn_body(body)
+    if fn_body is not None:
+        # forEach 카운트 관용구: var n=0;[...].forEach(function(l){if(logs.indexOf(l)>=0)n++});return n>=K
+        # (선행 GI 가드 if(g<K)return false; 는 not-조건으로 결합)
+        mc = re.search(r'var\s+n=0;\s*\[([^\]]+)\]\.forEach\(function\([a-z]\)\{if\(logs\.indexOf\([a-z]\)>=0\)n\+\+\}\);\s*return\s+n>=(\d+)', fn_body)
+        if mc:
+            # eval 샌드박스에 빌트인이 없으므로(sum/len 불가) 불리언 덧셈식으로 전개
+            ids = re.findall(r'["\']([^"\']+)["\']', mc.group(1))
+            expr = '(' + '+'.join('("%s" in logs)' % i for i in ids) + ')>=' + mc.group(2)
+            mg = re.search(r'if\(\s*(g\s*[<>=!]+\s*-?\d+)\s*\)\s*return\s+false;', fn_body)
+            if mg:
+                expr = '(not (' + re.sub(r'\bg\b', 'gi', mg.group(1)) + ')) and ' + expr
+            return expr
+        m = None
+        body_src = fn_body.strip()
+    else:
         m = re.search(r'\b(?:req|cond):\s*\([^)]*\)\s*=>\s*(?:\{([^}]*?)\}|([^,\n]+))', body, re.S)
-    if not m: return None
-    body_src = (m.group(1) or (m.group(2) if m.lastindex >= 2 else '') or '').strip()
+        if not m: return None
+        body_src = (m.group(1) or (m.group(2) if m.lastindex >= 2 else '') or '').strip()
     body_src = re.sub(r'^\s*return\s+', '', body_src)
     body_src = body_src.rstrip(';').strip()
     # JS → Python 변환

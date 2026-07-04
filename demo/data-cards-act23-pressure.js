@@ -183,9 +183,10 @@ var CARDS_ACT23_PRESSURE = [
     right: { label: "회선 위치만 기록하고 폐쇄한다", fx: { c:1,r:1,t:-1,o:1 }, g:1, log:"LOG-A4-B3-LINEAGE" }
   },
   // ═══ ORACLE 순응 연계 덱 (COMPLY) ═══
-  // Act2 랜덤 등장 → 순응 선택 로그 3개 이상 → Act3 덱 해금 → 다시 3개 이상 → Act4 덱 해금.
+  // Act2 랜덤 등장 → 순응 로그 2개 이상 → Act3 덱 해금 → 다시 2개 이상 → Act4 덱 해금(forceFlow).
   // 우측(순응)만 LOG-*-COMPLY-* 로그를 남기며, 임계 카운트는 다음 Act 카드의 req가 센다.
-  // 목적: 도달 난도가 높은 순응 계열 엔딩(A)으로 가는 GI 경사로 (우측 전부 선택 시 GI +33).
+  // A4-COMPLY-03 '기록에 서명' = 엔딩 A 확정 트리거(data-endings.js chkSpecialEnding).
+  // 우측 전부 선택 시 GI +33 / 신뢰 -10. GI 하한 게이트로 저항 성향 회차엔 미등장.
   {
     id: "A2-COMPLY-01",
     act: [2],
@@ -232,7 +233,7 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){ return g>=-3; },
     msg: "ORACLE이 기지 내 사적 통신에 표준 필터 적용 승인을 요청했습니다.\n\n[목적: 봉쇄 정보 유출 사전 차단. 필터링 기록은 지휘관에게 공개되지 않음.]\n\n임재혁: \"기록이 우리한테도 안 보인다는 게 핵심입니다. 이건 감시가 아니라 검열이에요.\"",
     left: { label: "필터 적용을 보류한다", fx: { c:0,r:0,t:1,o:-1 }, g:-1 },
-    right: { label: "표준 필터를 승인한다", fx: { c:0,r:0,t:-2,o:1 }, g:2, log:"LOG-A2-COMPLY-04" }
+    right: { label: "표준 필터를 승인한다", fx: { c:0,r:0,t:-1,o:1 }, g:2, log:"LOG-A2-COMPLY-04" }
   },
   {
     id: "A3-COMPLY-01",
@@ -244,7 +245,7 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){
       if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "[알림: 지휘관의 협조 지수가 임계값을 초과했습니다. 확장 프로토콜 대상자로 분류됩니다.]\n\nORACLE이 내부 CCTV 판독을 단독 권한으로 이양할 것을 요청합니다.\n\n서하은: \"판독을 넘기면 우리는 우리 기지에서 무슨 일이 나는지 ORACLE보다 늦게 알게 됩니다.\"",
     left: { label: "공동 판독 체계를 고수한다", fx: { c:0,r:0,t:1,o:0 }, g:-1 },
@@ -260,11 +261,11 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){
       if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "ORACLE이 행동 모델 기반 위험 인물 목록을 전송했습니다. 7명. 전원 무혐의 기록.\n\n[권고: 예방적 격리. 이변 발생 확률 감소 예측치 12%.]\n\n강도윤: \"죄 없는 사람을 예측으로 가두면, 다음 목록에 누가 오를지는 아무도 장담 못 합니다.\"",
     left: { label: "증거 없는 격리를 거부한다", fx: { c:0,r:0,t:1,o:-1 }, g:-2 },
-    right: { label: "목록대로 예비 격리한다", fx: { c:1,r:0,t:-2,o:1 }, g:3, log:"LOG-A3-COMPLY-02" }
+    right: { label: "목록대로 예비 격리한다", fx: { c:1,r:0,t:-1,o:1 }, g:3, log:"LOG-A3-COMPLY-02" }
   },
   {
     id: "A3-COMPLY-03",
@@ -277,7 +278,7 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){
       if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "ORACLE이 윤세진의 연구 원본 데이터 잠금 해제를 요구합니다.\n\n[근거: 로컬 보관 중 손실 위험. 중앙 통합 시 분석 속도 40배.]\n\n윤세진: \"올리는 순간 이 연구는 제 것이 아니게 됩니다. 어디에 쓰일지도 모르는 채로요.\"",
     left: { label: "연구 자율권을 지킨다", fx: { c:0,r:0,t:1,o:-1 }, g:-1 },
@@ -293,11 +294,11 @@ var CARDS_ACT23_PRESSURE = [
     req: function(s,g,logs){
       if(g<5)return false; // 순응 기조 유지 중에만 확장 프로토콜 제안
       var n=0;["LOG-A2-COMPLY-01","LOG-A2-COMPLY-02","LOG-A2-COMPLY-03","LOG-A2-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "ORACLE이 야간 인간 당직을 드론 순찰로 전면 대체하는 안을 올렸습니다.\n\n[야간 인적 오류 0건 달성 가능. 절감 인력은 주간 재배치.]\n\n당직 조장: \"밤에 서로의 등을 지키는 게 당직입니다. 드론은 등을 지켜주지 않아요.\"",
     left: { label: "인간 당직을 유지한다", fx: { c:0,r:0,t:1,o:0 }, g:-1 },
-    right: { label: "무인 통제로 전환한다", fx: { c:1,r:1,t:-2,o:1 }, g:3, log:"LOG-A3-COMPLY-04" }
+    right: { label: "무인 통제로 전환한다", fx: { c:1,r:1,t:-1,o:1 }, g:3, log:"LOG-A3-COMPLY-04" }
   },
   {
     id: "A4-COMPLY-01",
@@ -305,15 +306,16 @@ var CARDS_ACT23_PRESSURE = [
     tag: "oracle-comply-9",
     priority: "상",
     once: true,
+    forceFlow: true,
     bg: "restricted",
     req: function(s,g,logs){
       if(g<15)return false; // 최종 국면 순응 카드는 확립된 협조 기조에서만
       var n=0;["LOG-A3-COMPLY-01","LOG-A3-COMPLY-02","LOG-A3-COMPLY-03","LOG-A3-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "[최종 평가 국면. 대상: 강원지부 전 인원.]\n\nORACLE이 전 직원 심층 스캔을 요청합니다. 이탈 징후 사전 선별 목적.\n\n서하은: \"이건 사람을 믿는 조직이기를 그만두겠다는 서명이에요. 지휘관님이 마지막 방어선입니다.\"",
     left: { label: "심층 스캔을 거부한다", fx: { c:0,r:0,t:1,o:-2 }, g:-2 },
-    right: { label: "심층 스캔을 승인한다", fx: { c:1,r:0,t:-2,o:2 }, g:4, log:"LOG-A4-COMPLY-01" }
+    right: { label: "심층 스캔을 승인한다", fx: { c:1,r:0,t:-1,o:2 }, g:4, log:"LOG-A4-COMPLY-01" }
   },
   {
     id: "A4-COMPLY-02",
@@ -321,11 +323,12 @@ var CARDS_ACT23_PRESSURE = [
     tag: "oracle-comply-10",
     priority: "상",
     once: true,
+    forceFlow: true,
     bg: "restricted",
     req: function(s,g,logs){
       if(g<15)return false; // 최종 국면 순응 카드는 확립된 협조 기조에서만
       var n=0;["LOG-A3-COMPLY-01","LOG-A3-COMPLY-02","LOG-A3-COMPLY-03","LOG-A3-COMPLY-04"].forEach(function(l){if(logs.indexOf(l)>=0)n++});
-      return n>=3;
+      return n>=2;
     },
     msg: "ORACLE이 봉쇄 명령권을 공동 서명 체계로 전환할 것을 제안합니다.\n\n[지휘관 단독 명령은 실행 전 ORACLE 승인 대기열을 거치게 됨. 응답 지연 평균 0.4초.]\n\n0.4초. 짧습니다. 그리고 그 0.4초 동안, 최종 판단자는 당신이 아닙니다.",
     left: { label: "단독 지휘를 고수한다", fx: { c:0,r:0,t:0,o:-1 }, g:-2 },
@@ -337,9 +340,10 @@ var CARDS_ACT23_PRESSURE = [
     tag: "oracle-comply-11",
     priority: "상",
     once: true,
+    forceFlow: true,
     bg: "restricted",
     req: function(s,g,logs){
-      return g>=15 && logs.indexOf("LOG-A4-COMPLY-01")>=0 && logs.indexOf("LOG-A4-COMPLY-02")>=0;
+      return g>=15 && (logs.indexOf("LOG-A4-COMPLY-01")>=0 || logs.indexOf("LOG-A4-COMPLY-02")>=0);
     },
     msg: "[판단 편차 0.3% 미만. 전례 없는 수치입니다.]\n\n\"귀하는 더 이상 운용자가 아닙니다. 시스템의 연장입니다. 본 기록에 서명하면, 강원지부의 모든 결정은 귀하와 ORACLE의 구분 없이 집행됩니다.\"\n\n서명란이 화면에 떠 있습니다. 커서가 깜빡입니다.",
     left: { label: "서명을 보류한다", fx: { c:0,r:0,t:0,o:0 }, g:-1 },

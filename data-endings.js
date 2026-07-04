@@ -307,6 +307,12 @@ function chkSpecialEnding(stats, gi, act, trust, logs, actFlags, facility) {
   var hasObsApproved = logs.indexOf('LOG-OBSERVER-APPROVED') >= 0;
   var hasQuietFreedom = logs.indexOf('LOG-RH-QUIET-FREEDOM') >= 0;
 
+  // ═══ 엔딩 A 서명형 — 순응 연계 덱 완주(A4-COMPLY-03 '기록에 서명') 시 확정 ═══
+  // 서명은 GI 임계와 무관하게 A를 보장한다. 순응 체인의 대가(신뢰 희생)에 대한 확정 보상.
+  if (logs.indexOf('LOG-A4-COMPLY-03') >= 0) {
+    return 'A';
+  }
+
   // ═══ 엔딩 A 정상형 (신규) — 이상적 운용자 완주 ═══
   // Act4 + day≥30 + GI≥55 + c≥70 + o≥60
   // 파탄형(c≥100+GI≥60)은 doGO에서 기존대로 처리
