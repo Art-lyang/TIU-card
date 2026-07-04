@@ -3718,4 +3718,65 @@ window.TS_I18N.mergeContent('en', {
   }
 });
 
+// --- oracle compliance chained deck (A2/A3/A4-COMPLY) ---
+  window.TS_I18N.mergeContent('en', {
+    cards: {
+      "A2-COMPLY-01": {
+        msg: "A standardization directive has arrived from ORACLE.\n\n[Recommendation: switch daily reporting to raw-log direct feed without summaries. Human bias in summarization causes decision latency.]\n\nSeo Hae-eun: \"Summaries are how we leave our judgment on record. Direct feed hands over the entire authority of interpretation.\"",
+        leftLabel: "Keep the summary reporting system",
+        rightLabel: "Switch to raw-log direct feed"
+      },
+      "A2-COMPLY-02": {
+        msg: "ORACLE proposes a pilot replacing officer evaluations with behavioral-model scoring.\n\n[Prediction accuracy +31% over in-person review. Emotional variables removed.]\n\nKang Do-yun: \"They want to rank people by score. What you learn in the field with your body doesn't show up in a model.\"",
+        leftLabel: "Keep in-person evaluations",
+        rightLabel: "Adopt the ORACLE evaluation model"
+      },
+      "A2-COMPLY-03": {
+        msg: "ORACLE intervened during the ration review.\n\n[Current distribution loses 7.2% of caloric value. Algorithmic allocation would secure reserves.]\n\nThe staff who ran the ration committee stiffen. \"Does a machine know who is hungrier?\"",
+        leftLabel: "Keep the human ration committee",
+        rightLabel: "Switch to algorithmic allocation"
+      },
+      "A2-COMPLY-04": {
+        msg: "ORACLE requests approval to apply a standard filter to private communications on base.\n\n[Purpose: preempt containment-data leaks. Filtering records are not disclosed to the commander.]\n\nLim Jae-hyeok: \"The point is we can't see the records either. This isn't surveillance — it's censorship.\"",
+        leftLabel: "Hold off on the filter",
+        rightLabel: "Approve the standard filter"
+      },
+      "A3-COMPLY-01": {
+        msg: "[Notice: the commander's cooperation index has exceeded threshold. You are classified for the extended protocol.]\n\nORACLE requests sole authority over internal CCTV interpretation.\n\nSeo Hae-eun: \"Hand over interpretation, and we learn what happens on our own base later than ORACLE does.\"",
+        leftLabel: "Hold to joint interpretation",
+        rightLabel: "Transfer interpretation authority"
+      },
+      "A3-COMPLY-02": {
+        msg: "ORACLE transmitted a behavioral-model risk list. Seven names. All with clean records.\n\n[Recommendation: preventive isolation. Predicted aberration probability reduction: 12%.]\n\nKang Do-yun: \"Lock up the innocent on a prediction, and nobody can promise whose name is on the next list.\"",
+        leftLabel: "Refuse isolation without evidence",
+        rightLabel: "Isolate per the list"
+      },
+      "A3-COMPLY-03": {
+        msg: "ORACLE demands the unlock of Yoon Se-jin's raw research data.\n\n[Rationale: loss risk in local storage. Central integration accelerates analysis 40x.]\n\nYoon Se-jin: \"The moment I upload it, this research stops being mine. Without even knowing what it will be used for.\"",
+        leftLabel: "Protect research autonomy",
+        rightLabel: "Grant access to the originals"
+      },
+      "A3-COMPLY-04": {
+        msg: "ORACLE has filed a plan to fully replace human night watch with drone patrols.\n\n[Zero human error at night achievable. Freed personnel reassigned to day shifts.]\n\nWatch leader: \"Night watch means guarding each other's backs. A drone doesn't guard your back.\"",
+        leftLabel: "Keep the human night watch",
+        rightLabel: "Switch to unmanned control"
+      },
+      "A4-COMPLY-01": {
+        msg: "[Final evaluation phase. Subject: all personnel, Gangwon Branch.]\n\nORACLE requests a deep scan of every staff member. Purpose: early screening for defection markers.\n\nSeo Hae-eun: \"This is a signature on giving up being an organization that trusts people. You are the last line, Commander.\"",
+        leftLabel: "Refuse the deep scan",
+        rightLabel: "Approve the deep scan"
+      },
+      "A4-COMPLY-02": {
+        msg: "ORACLE proposes converting containment command authority to a co-signature system.\n\n[Solo commands will pass through an ORACLE approval queue before execution. Average delay: 0.4 seconds.]\n\n0.4 seconds. Short. And for those 0.4 seconds, the final judge is not you.",
+        leftLabel: "Hold sole command",
+        rightLabel: "Accept the co-signature system"
+      },
+      "A4-COMPLY-03": {
+        msg: "[Judgment deviation below 0.3%. An unprecedented figure.]\n\n\"You are no longer an operator. You are an extension of the system. Sign this record, and every decision of Gangwon Branch will be executed without distinction between you and ORACLE.\"\n\nThe signature line waits on the screen. The cursor blinks.",
+        leftLabel: "Withhold the signature",
+        rightLabel: "Sign the record"
+      }
+    }
+  });
+
 })();
