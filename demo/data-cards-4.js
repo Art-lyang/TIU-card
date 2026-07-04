@@ -6,31 +6,31 @@ var CARDS_INVESTIGATE = [
   // ═══ 관찰 / 연구 (미션 없음) ═══
 
   { id: "C-091", act: [2,3], priority: "상", tag: "spec-012", once: true,
-    req: function(s,g,logs){ return logs.includes("LOG-005") && !logs.includes("LOG-020") },
+    req: function(s,g,logs){ return (logs.includes("LOG-005") || s.day>=10) && !logs.includes("LOG-020") }, // 폴백: 힌트 미션 미수행이어도 day10+ 관측 보고로 진입
     msg: "윤세진이 Blood Pit 원격 채취 표본을 분석했습니다.\n\n\"점액질 내부에 소화 효소가 포함되어 있습니다. 유기물을 녹여서 흡수합니다.\"\n\n\"웅덩이가 지하 수로를 통해 확장 중입니다. 범위 특정이 필요합니다.\"",
     left: { label: "위성 데이터로 추적", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 1 },
     right: { label: "현장 계측 장비 설치", fx: { c: 0, r: -1, t: 0, o: 0 }, g: 0 } },
 
   { id: "C-092", act: [2,3], priority: "상", tag: "spec-011", once: true,
-    req: function(s,g,logs){ return logs.includes("LOG-004") && !logs.includes("LOG-021") },
+    req: function(s,g,logs){ return (logs.includes("LOG-004") || s.day>=11) && !logs.includes("LOG-021") },
     msg: "임재혁이 Shell Talker 음성 녹음을 재분석했습니다.\n\n\"음성의 주인을 특정했습니다. 3년 전 실종된 한동혁 일병입니다.\"\n\"지휘관님의 전임 부대 소속이었습니다.\"\n\n윤세진: \"음성을 모방한다면, 한동혁 일병은 이미 포식당한 겁니다.\"\n\n\"행동 패턴을 더 수집해야 대응책을 만들 수 있습니다.\"",
     left: { label: "원격 음파 센서 배치", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "감시 드론 투입", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
 
   { id: "C-093", act: [3,4], priority: "상", tag: "spec-001", once: true,
-    req: function(s,g,logs){ return logs.includes("LOG-013") && !logs.includes("LOG-022") },
+    req: function(s,g,logs){ return (logs.includes("LOG-013") || s.day>=16) && !logs.includes("LOG-022") },
     msg: "윤세진이 감염체 마네킹 열감지 데이터를 분석했습니다.\n\n\"평소 체온 없음. 인간 3m 이내 접근 시 0.8초 만에 37도 도달.\"\n\n\"능동적 사냥꾼입니다. 행동 범위와 이동 패턴 파악이 시급합니다.\"",
     left: { label: "원격 카메라 추가 설치", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 },
     right: { label: "미끼 실험 (인형 투입)", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-094", act: [3,4], priority: "상", tag: "spec-003", once: true,
-    req: function(s,g,logs){ return logs.includes("LOG-014") && !logs.includes("LOG-023") },
+    req: function(s,g,logs){ return (logs.includes("LOG-014") || s.day>=17) && !logs.includes("LOG-023") },
     msg: "강도윤이 Brood Drone 편대를 72시간 추적했습니다.\n\n\"이동 패턴이 한 곳으로 수렴합니다. 지하 배수로 인근.\"\n\n윤세진: \"지휘 개체가 있다면 둥지에 있을 겁니다. 더 조사해봐야 합니다.\"",
     left: { label: "항공 열감지 스캔", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "외곽 잠복 관찰조", fx: { c: 0, r: -1, t: 1, o: 0 }, g: 0 } },
 
   { id: "C-095", act: [3,4], priority: "상", tag: "spec-008", once: true,
-    req: function(s,g,logs){ return logs.includes("LOG-015") && !logs.includes("LOG-024") },
+    req: function(s,g,logs){ return (logs.includes("LOG-015") || s.day>=18) && !logs.includes("LOG-024") },
     msg: "윤세진 보고: 포자 성분 분석 완료.\n\n\"포자는 단독으로 무해합니다. 밀도가 임계치를 넘으면 집합체 — Spore Phantom이 형성됩니다.\"\n\n\"발생원을 찾아야 합니다. 바람 패턴으로 위치 추정이 가능합니다.\"",
     left: { label: "공기 샘플링 확대", fx: { c: 0, r: -1, t: 0, o: 1 }, g: 1 },
     right: { label: "바람 패턴 역추적", fx: { c: 1, r: -1, t: 0, o: 0 }, g: 0 } },
@@ -89,7 +89,7 @@ var CARDS_INVESTIGATE = [
   // ═══ SPEC-004 Seed Spreader 연쇄 ═══
 
   { id: "C-271", act: [3,4], priority: "상", tag: "spec-004",
-    req: function(s,g,logs){ return logs.includes("LOG-015") && !logs.includes("LOG-025") },
+    req: function(s,g,logs){ return (logs.includes("LOG-015") || s.day>=16) && !logs.includes("LOG-025") },
     msg: "윤세진 긴급 보고.\n\n\"포자 지대 조사 데이터를 분석했습니다.\"\n\"포자의 원천 — SPEC-004, Seed Spreader를 식별했습니다.\"\n\n\"이건 단순한 이변체가 아닙니다. EV-Σ 바이러스를 퍼뜨리는 산포체예요.\"\n\"다른 이변체를 만드는 근원입니다.\"\n\n\"봉쇄선 안쪽에서 발견됐다는 건... 이미 침투했다는 뜻입니다.\"",
     left: { label: "즉시 위치 특정", fx: { c: 1, r: -1, t: 0, o: 0 }, g: -1, log: "LOG-025" },
     right: { label: "ORACLE에 분석 요청", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1, log: "LOG-025" } },
