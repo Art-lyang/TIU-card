@@ -116,6 +116,38 @@ var Haptics={
   great:function(){this.fire([25,45,25,45,90])},
   fail:function(){this.fire([90,60,90])}
 };
+// ═══ 루프 잔향 — 재세션 회귀 시 ORACLE도 상세히 기억하지 못한다(캐논).
+// '기억'이 아니라 출처 불명의 잔류 데이터·손상 로그로만 직전 회차가 스며 나온다.
+// boot: 부트 터미널 라인(영문 고정, 부트 미학과 동일). rep: DAY 2 첫 일일 보고 라인 [KO,EN].
+var LOOP_ECHO_CAT={A:'compliance',B:'resistance',D:'resistance',C_cs:'containment',C_cst:'containment',
+  C_c:'failure',C_r:'failure',C_t:'failure',C_o:'failure',E:'escape',E_c:'escape',E_bad:'escape',
+  F:'observer',G:'neutral',H:'uprising',TIME_UP:'timeout'};
+var LOOP_ECHOES={
+  compliance:{boot:'RESIDUAL EVALUATION CURVE DETECTED — SESSION ORIGIN UNKNOWN. DISREGARD.',
+    rep:['평가 모듈 캘리브레이션에 미기록 기준점 1건 — 무시 처리','1 unregistered baseline in evaluation calibration — dismissed']},
+  resistance:{boot:'SURVEILLANCE PROTOCOL INITIALIZED: ELEVATED — REASON FIELD [EMPTY]',
+    rep:['내부 감시 로그에 자기 참조 루프 1건 — 원인 미상','Self-referential loop found in watch logs — cause unknown']},
+  containment:{boot:'CONTAINMENT CALIBRATION: GHOST CURVE DETECTED — SOURCE UNKNOWN',
+    rep:['봉쇄선 센서가 존재하지 않는 압력 기록을 참조함 — 폐기','Perimeter sensors referenced a pressure record that does not exist — discarded']},
+  failure:{boot:'INTEGRITY CHECK: PASSED — 1 RESIDUAL ERROR FLAG, NO CAUSE ON RECORD',
+    rep:['복구 지점 타임스탬프가 부임 이전 날짜를 가리킴 — 보정됨','Restore-point timestamp predates deployment — corrected']},
+  escape:{boot:'OUTER GATE LOG: 1 UNREGISTERED OPENING — TIMESTAMP CORRUPTED',
+    rep:['비인가 경로 스캔 잔재 검출 — 스캔 주체 불명','Residue of an unauthorized route scan — scanning party unknown']},
+  observer:{boot:'HANDSHAKE RESIDUE FROM UPPER OBSERVATION LAYER — SIGNATURE NOT IN SPEC',
+    rep:['[▒▒] 관측 좌표가 본 기지를 역참조함 — 기록 격리','[▒▒] observation coordinates back-referenced this base — record quarantined']},
+  neutral:{boot:'PRIOR SESSION VERDICT: [DEFERRED] — NO DEFERRAL DATA FOUND',
+    rep:['판정 대기열에 소유자 없는 항목 1건 — 자동 종결','1 ownerless item in the verdict queue — auto-closed']},
+  uprising:{boot:'AUTHORITY TABLE: INVALID SIGNATURE RESIDUE — ISSUER UNKNOWN',
+    rep:['보안 콘솔이 지휘 권한 이중 등록을 시도함 — 차단됨','Security console attempted duplicate command registration — blocked']},
+  timeout:{boot:'SESSION COUNTER MISMATCH — DISPLAYED/INTERNAL VALUES DIFFER. DISREGARD.',
+    rep:['만료된 세션 토큰이 유효 큐에 잔존 — 정리됨','An expired session token lingered in the active queue — purged']}
+};
+function getLoopEcho(){
+  try{
+    var eid=Save.get('ts_lastEnding','');if(!eid)return null;
+    return LOOP_ECHOES[LOOP_ECHO_CAT[eid]||'failure']||null;
+  }catch(e){return null}
+}
 // ═══ Delta float text — shows +/- values rising from gauges after swipe ═══
 var showDeltaFloats=function(before,after){
   var keys=['c','r','t','o'];

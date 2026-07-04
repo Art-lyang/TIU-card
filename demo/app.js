@@ -393,7 +393,7 @@ function App(){
     if(rewardTuned&&rewardTuned.stats)next=rewardTuned.stats;
     return previewDelta(stats,next);
   };
-  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);setEndings(Save.getEndings());setSessions(Save.incSession());setGoSummary({logs:goLogs.length,combos:(Save.get('ts_combos',[])||[]).length,gi:(typeof ng==='number'?ng:gi),day:(ns.day||stats.day)});Save.clearGame();
+  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);Save.set('ts_lastEnding',eid||'');setEndings(Save.getEndings());setSessions(Save.incSession());setGoSummary({logs:goLogs.length,combos:(Save.get('ts_combos',[])||[]).length,gi:(typeof ng==='number'?ng:gi),day:(ns.day||stats.day)});Save.clearGame();
     // 엔딩 전환 연출 — 히든(F/B)은 글리치L3, 일반은 페이드아웃
     var goDelay=500;
     if((eid==='F'||eid==='B')&&fxMode!=='off'){triggerGlitch(3);goDelay=3800}
@@ -711,7 +711,7 @@ function App(){
     // 버퍼가 없을 때(미션/복원 등 예외)만 새 카드를 뽑는다.
     if(freshCardRef.current){setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_lastEnding','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
@@ -733,6 +733,17 @@ function App(){
     if(Save.getSessions()>0&&rl.indexOf('META-SESSION-RESET')<0)rl.push('META-SESSION-RESET');
     setLogs(rl);Save.saveLogs(rl);if(typeof window!=='undefined')window.__ts_liveLogs=rl.slice();
     setCurCard(drawCard(ns,0,rl,{},[],1));
+    // 이월 안내 — 2회차부터: '지는 게 아니라 쌓인다'는 신호. 아카이브/엔딩/LOG는 회귀 후에도 유지된다.
+    if(Save.getSessions()>0){
+      try{
+        var _en=(typeof getLocale==='function'&&getLocale()==='en');
+        var _co=[];
+        if(typeof ARCHIVE_ENTRIES!=='undefined'){var _au=0;ARCHIVE_ENTRIES.forEach(function(en2){try{if(en2.unlock&&en2.unlock(rl))_au++}catch(e3){}});if(_au>0)_co.push((_en?'ARCHIVE ':'아카이브 ')+_au+(_en?'':'건'))}
+        var _eds=Save.getEndings();if(_eds.length)_co.push((_en?'ENDINGS ':'엔딩 인장 ')+_eds.length);
+        if(rl.length)_co.push('LOG '+rl.length+(_en?'':'건'));
+        if(_co.length){setToastType('');setToast((_en?'CARRIED OVER — ':'이월된 기록 — ')+_co.join(' · '));clearToastAfter(4200)}
+      }catch(e4){}
+    }
     setFp(!!showTutorial);
     setPhase(showTutorial?'tutorial':'game');
     if(typeof BGM!=='undefined'&&BGM.start){BGM.start();if(BGM.playAct)BGM.playAct(1);}

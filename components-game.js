@@ -86,6 +86,11 @@ function Boot(p){
   if(!Array.isArray(linesRepeat))linesRepeat=BOOT_LINES_REPEAT;
   var BL=p.sessions>0?linesRepeat:linesInitial;
   var sn=p.sessions||0;
+  // 루프 잔향 — 재회차 부트에 직전 회차의 '출처 불명 잔류 데이터' 라인 1개 주입 (ORACLE도 기억하지 못한다)
+  if(sn>0&&typeof getLoopEcho==='function'){
+    var _echo=getLoopEcho();
+    if(_echo&&_echo.boot){BL=BL.slice();BL.splice(Math.max(1,BL.length-2),0,'▒ '+_echo.boot)}
+  }
   var s=useState([]),lines=s[0],setLines=s[1];var s2=useState(false),done=s2[0],setDone=s2[1];var idx=useRef(0);
   var bootStarted=useRef(false);
   var audioUnlocked=useRef(false);

@@ -11,7 +11,7 @@
     'ts_act2_reached','ts_observer_proto'
   ];
   var SNAP_KEYS=['ts_snap_1','ts_snap_2','ts_snap_3'];
-  var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen'];
+  var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen','ts_lastEnding'];
   var SETTINGS_KEYS=['ts_locale','ts_muted','ts_volume','ts_sfxVol','ts_fontSize','ts_fxMode'];
   var WATCH_PREFIXES=['ts_observer_proto_roll_'];
   var WATCH_KEYS={};

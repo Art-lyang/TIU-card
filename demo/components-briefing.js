@@ -100,6 +100,8 @@ function DayCutOverlay(p){
     ['외곽 초소 무전 응답 지연','Outer post radio response delayed']
   ];
   var lines=[];
+  // 루프 잔향 — 회귀 첫 보고(DAY 2)에만: ORACLE이 설명하지 못하는 직전 회차의 잔재 1건
+  if(day===2){try{if(Save.getSessions()>0&&typeof getLoopEcho==='function'){var _le=getLoopEcho();if(_le&&_le.rep)lines.push(_le.rep)}}catch(_e){}}
   if(ev==='attack')lines.push(['봉쇄선 외곽 다중 열원 — 대응반 출동','Multiple heat sources at perimeter — team deployed']);
   else if(ev==='lockdown')lines.push(['봉쇄 프로토콜 유지 — 민간 통행 통제','Lockdown held — civilian transit restricted']);
   else if(ev==='warn')lines.push(['동부 감시망 이상 신호 — 추적 중','East grid anomaly signal — tracking']);
