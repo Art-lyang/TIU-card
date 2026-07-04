@@ -3776,6 +3776,19 @@ window.TS_I18N.mergeContent('en', {
         leftLabel: "Withhold the signature",
         rightLabel: "Sign the record"
       }
+    },
+    oracleLogs: {
+      "LOG-A2-COMPLY-01": { title: "Raw-Log Direct Feed", content: "Daily reporting was switched to direct ORACLE feed without summaries. Authority of interpretation was transferred to central." },
+      "LOG-A2-COMPLY-02": { title: "Evaluation Model Adopted", content: "Officer evaluations were replaced with ORACLE behavioral-model scoring. Emotional variables were removed from the criteria." },
+      "LOG-A2-COMPLY-03": { title: "Algorithmic Rationing", content: "Base rationing was switched to ORACLE algorithmic allocation. The ration committee was dissolved." },
+      "LOG-A2-COMPLY-04": { title: "Standard Comm Filter", content: "A standard filter was applied to private communications on base. Filtering records are not disclosed even to the commander." },
+      "LOG-A3-COMPLY-01": { title: "Interpretation Authority Transferred", content: "Internal CCTV interpretation was transferred to ORACLE as sole authority. The order in which the base learns of its own incidents was inverted." },
+      "LOG-A3-COMPLY-02": { title: "Preventive Isolation Executed", content: "Seven individuals designated by the behavioral model were preventively isolated despite clean records. The predicted reduction in aberration probability was attached to the report." },
+      "LOG-A3-COMPLY-03": { title: "Research Originals Integrated", content: "Yoon Se-jin's raw research data was transferred to central integrated storage. Local copies were destroyed per policy." },
+      "LOG-A3-COMPLY-04": { title: "Unmanned Night Control", content: "Human night watch was fully replaced by drone patrols. Zero human error at night was achieved." },
+      "LOG-A4-COMPLY-01": { title: "Full Deep Scan", content: "A deep scan of all Gangwon Branch personnel was executed. Defection-marker screening results were reported to central only." },
+      "LOG-A4-COMPLY-02": { title: "Co-Signature System", content: "Containment command authority was converted to an ORACLE co-signature system. Solo commands pass through an approval queue." },
+      "LOG-A4-COMPLY-03": { title: "Extension of the System", content: "The commander signed the final record. Decisions of Gangwon Branch are executed without distinction between the commander and ORACLE." }
     }
   });
 

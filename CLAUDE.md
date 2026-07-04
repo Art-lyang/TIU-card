@@ -73,6 +73,8 @@
 
 `report`는 EN 없으면 KO 원본을 그대로 노출한다(안전망 없음). dossier 누락 시 영어 모드 "ANALYSIS REPORT"에 한국어가 보이므로 두 파일을 항상 같이 본다. `intel`(grid/depth/env)은 원본을 영문으로 쓰면 별도 번역 불필요.
 
+같은 원칙이 **신규 LOG에도** 적용된다: `ORACLE_LOGS`에 로그를 추가하면 카드 EN과 **같은 커밋에서** `oracleLogs` EN 오버레이(`lang-content-en-all.js` 또는 `lang-cards-flow-en.js`)를 짝으로 추가한다. 로그 뷰어·증거 근거 화면은 EN 없으면 KO를 그대로 노출한다(폴백이 조용해서 QA에서 놓치기 쉬움).
+
 ## CCTV Sting / 돌발 기습 (CT-30x → M-E0x)
 
 - 기습 게이트는 `app-init.js`의 `EMERGENCY_AMBUSHES`(spec/mission/done 레지스트리) + `ambushPending()`/`anyAmbushPending()` 공용 헬퍼가 단일 소스. 트리거 카드 `req`와 미니맵 사전경보(`app.js` `computeMapEvent`)가 이걸 공유하므로, 조건 변경 시 헬퍼 한 곳만 수정한다.
