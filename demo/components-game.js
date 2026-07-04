@@ -1387,7 +1387,12 @@ function RewardScreen(p){
         if(fac.completed.indexOf(feId)>=0)return;
         var fe=FACILITY_EXPANSIONS.filter(function(f){return f.id===feId})[0];
         if(fe){var feView=typeof getFacilityExpansionView==='function'?getFacilityExpansionView(fe):fe;feRewards.push({id:'R-'+fe.id,feId:fe.id,title:feView.rewardTitle,desc:feView.rewardDesc,benefit:feView.rewardBenefit,cost:feView.rewardCost,fx:fe.rewardFx})}});
-      if(feRewards.length>0){var keepBase=Math.max(0,count-Math.min(feRewards.length,count));pool=pool.slice(0,keepBase).concat(feRewards.slice(0,count))}
+      if(feRewards.length>0){
+        // 저스탯(슬롯 2개 이하)에서 시설 보상이 기본 생존 보상을 전부 밀어내지 않도록,
+        // 슬롯이 2개 이상이면 기본 풀 1개를 항상 보장한다.
+        var keepBase=Math.max(count>=2?1:0,count-Math.min(feRewards.length,count));
+        pool=pool.slice(0,keepBase).concat(feRewards.slice(0,Math.max(0,count-keepBase)));
+      }
     }
     return pool;
   };
