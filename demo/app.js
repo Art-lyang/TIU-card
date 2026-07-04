@@ -37,6 +37,8 @@ function DevMissionLauncher(p){
     p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?CARDS.filter(function(c){return (c.left&&c.left.mission)||(c.right&&c.right.mission)}).map(function(c){var mid=(c.left&&c.left.mission)||(c.right&&c.right.mission);return h('button',{key:'trig-'+c.id,onClick:function(){p.onLaunchTriggerCard(c.id)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(6,18,26,.9)',color:'#7fd0ff',border:'1px solid rgba(127,208,255,.4)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:8}},'['+c.id+']'),'→ '+mid);}):null,
     p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?lbl('▓ 이미지·CCTV 카드 (확인용 · ●=CCTV)','#c79bff'):null,
     p.onLaunchTriggerCard&&typeof CARDS!=='undefined'?(function(){var pat=(typeof window!=='undefined'&&window.TIU_P1_CARD_IMAGE_PATCHES)||{};var seen={};return CARDS.filter(function(c){if(!c||!c.id||seen[c.id])return false;if(!(c.cctv||c.img))return false;if(pat[c.id])return false;seen[c.id]=1;return true;}).sort(function(a,b){var av=a.cctv?0:1,bv=b.cctv?0:1;return av!==bv?av-bv:(a.id<b.id?-1:1);}).map(function(c){var cc=!!c.cctv;var s=(typeof c.msg==='string'?c.msg:'').replace(/\n/g,' ').slice(0,20);return h('button',{key:'imgc-'+c.id,onClick:function(){p.onLaunchTriggerCard(c.id)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(16,10,26,.9)',color:'#c79bff',border:'1px solid rgba(199,155,255,.4)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:6}},'['+c.id+']'),cc?h('span',{style:{color:'#ff5a5a',marginRight:5}},'●'):null,s);});})():null,
+    p.onLaunchTimerCard&&typeof CARDS!=='undefined'?lbl('▓ 타이머 카드 (다회차 — 세션3 기준 강제 표시)','#ffcf4a'):null,
+    p.onLaunchTimerCard&&typeof CARDS!=='undefined'?CARDS.filter(function(c){return c&&c.timer!=null}).map(function(c){var s=(typeof c.msg==='string'?c.msg:'').replace(/\n/g,' ').slice(0,22);return h('button',{key:'tmr-'+c.id,onClick:function(){p.onLaunchTimerCard(c.id)},style:{display:'block',width:'100%',textAlign:'left',font:'11px monospace',padding:'7px 9px',margin:'3px 0',cursor:'pointer',background:'rgba(26,20,6,.9)',color:'#ffcf4a',border:'1px solid rgba(255,207,74,.45)',borderRadius:3}},h('span',{style:{opacity:.7,marginRight:6}},'['+c.id+']'),h('span',{style:{color:'#ff9a3a',marginRight:5}},'⏱'),s);}):null,
     p.onLaunchBriefing?lbl('▓ ACT 전환 브리핑','#9fb8ff'):null,p.onLaunchBriefing?BRIEF_PRESETS.map(briefRow):null,
     p.onLaunchEnding&&endIds.length?lbl('▓ 엔딩 / 게임오버','#ff8a6a'):null,p.onLaunchEnding?endIds.map(endRow):null,
     fieldIds.length?lbl('▓ 현장임무 (미니게임 포함)','#7fe0c0'):null,fieldIds.map(row),
@@ -644,6 +646,29 @@ function App(){
     setCurCard(card);unlockCardInput();
     setPhase('game');
   };
+  var launchDebugTimerCard=function(cardId){
+    var pool=(typeof CARDS!=='undefined'&&Array.isArray(CARDS))?CARDS:[];
+    var card=pool.filter(function(c){return c.id===cardId})[0];
+    if(!card)return;
+    // 세션 카운트를 임시로 3으로 올려 다회차 변형(타이머·문구·라벨)을 해석한다.
+    var origGet=Save.getSessions;
+    Save.getSessions=function(){return 3};
+    var resolved=Object.assign({},card);
+    try{
+      if(typeof card.timer==='function')resolved.timer=card.timer()||5;
+      if(typeof card.msg==='function')resolved.msg=card.msg();
+      ['left','right'].forEach(function(side){
+        if(card[side]){resolved[side]=Object.assign({},card[side]);
+          if(typeof card[side].label==='function')resolved[side].label=card[side].label();}
+      });
+    }catch(e){}finally{Save.getSessions=origGet;}
+    if(!resolved.timer||typeof resolved.timer!=='number')resolved.timer=5; // 미리보기 — 타이머 강제
+    debugMissionRef.current=true;
+    setShowDevPanel(false);
+    setCurMission(null);setCctvSting(null);setCurDlg(null);
+    setCurCard(resolved);unlockCardInput();
+    setPhase('game');
+  };
   var hMissionDebug=function(o){if(o&&o.gOnly)return;debugMissionRef.current=false;Save.del('ts_activeMission');setCurMission(null);setPhase('menu')};
   var launchDebugBriefing=function(dact,droute){setShowDevPanel(false);setAct(dact);setTransRoute(droute);setDebugBriefing({act:dact,route:droute});setPhase('briefing')};
   var launchDebugEnding=function(eid){var def=(typeof ENDING_DEFS!=='undefined')?ENDING_DEFS[eid]:null;setShowDevPanel(false);setGor((def&&def.name)||eid);setGoDay((stats&&stats.day)||33);setEndImg(null);setEndNarr(def||null);setEndId(eid);setDebugGO(true);setPhase('go')};
@@ -931,7 +956,7 @@ function App(){
   var hasSessionHistory=sessions>0||endings.length>0;
   if(cctvSting)return h(CctvSting,{clipKey:cctvSting,onDone:function(){var _rp=stingPreviewRef.current;stingPreviewRef.current=false;setCctvSting(null);setPhase(_rp||'mission')}});
   if(phase==='boot')return h(Boot,{sessions:sessions,onBoot:function(){BGM.startBootLoop()},onDone:function(){BGM.stopBootLoop();BGM.start();setPhase('menu')}});
-  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onPreviewPanel:function(which){setDevPanel(which)},onPreviewMini:function(){try{var _mids=Object.keys((typeof FIELD_MINIGAME_LIBRARY!=='undefined'&&FIELD_MINIGAME_LIBRARY)||{});localStorage.setItem('ts_minigamesSeen',JSON.stringify(_mids));}catch(e){}setRet(phase);setPhase('miniguide');},onPreviewCctv:previewCctv,onPreviewOracleOv:previewOracleOv,onPreviewDayCut:previewDayCut,onPreviewCardFlash:previewCardFlash}),orov&&orovEl(),flashPrev&&flashPrevEl(),daycut&&typeof DayCutOverlay!=='undefined'&&h(DayCutOverlay,{day:daycut,stats:stats,act:act,logs:[],onSkip:function(){if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);setDaycut(null)}}),DEV&&devPreview());
+  if(phase==='menu')return h(React.Fragment,null,h(MainMenu,{sessions:sessions,hasSave:hasSave,hasSessionHistory:hasSessionHistory,onPlay:function(){startNewCampaign(!hasSessionHistory)},onContinue:continueSavedCampaign,onMainMenu:returnToMainMenu,onReset:restart,onFullReset:fullReset,onLogs:function(){setRet('menu');setPhase('logs')},onArchive:function(){setRet('menu');setPhase('archive')},onEndings:function(){setRet('menu');setPhase('endings')},onAchievements:function(){setRet('menu');setPhase('achievements')},onMiniGuide:function(){setRet('menu');setPhase('miniguide')},onSaveSnap:saveSnapshot,onLoadSnap:loadSnapshot,onFxModeChange:function(mode){setFxMode(mode);Save.set('ts_fxMode',mode)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onLaunchTimerCard:launchDebugTimerCard,onPreviewPanel:function(which){setDevPanel(which)},onPreviewMini:function(){try{var _mids=Object.keys((typeof FIELD_MINIGAME_LIBRARY!=='undefined'&&FIELD_MINIGAME_LIBRARY)||{});localStorage.setItem('ts_minigamesSeen',JSON.stringify(_mids));}catch(e){}setRet(phase);setPhase('miniguide');},onPreviewCctv:previewCctv,onPreviewOracleOv:previewOracleOv,onPreviewDayCut:previewDayCut,onPreviewCardFlash:previewCardFlash}),orov&&orovEl(),flashPrev&&flashPrevEl(),daycut&&typeof DayCutOverlay!=='undefined'&&h(DayCutOverlay,{day:daycut,stats:stats,act:act,logs:[],onSkip:function(){if(daycutTimerRef.current)clearTimeout(daycutTimerRef.current);setDaycut(null)}}),DEV&&devPreview());
   if(phase==='tutorial')return h(Tutorial,{canSkip:sessions>0,onSkip:function(){setFp(false);setPhase('game')},onDone:function(){setFp(false);setPhase('game')}});
   if(phase==='briefing'){
     if(debugBriefing)return h(BriefingScreen,{act:debugBriefing.act,stats:stats,transRoute:debugBriefing.route,onEnter:function(){setDebugBriefing(null);setPhase('menu')}});
@@ -973,6 +998,6 @@ function App(){
     showFacility&&h(FacilityPanel,{facility:facility,onClose:function(){setShowFacility(false)},onApprove:approvePending,onToggleReward:toggleFacilityReward}),
     showResearch&&typeof ResearchPanel!=='undefined'&&h(ResearchPanel,{research:research,stats:stats,day:stats.day,act:act,logs:getLiveLogs(logs),onStart:startResearch,onClose:function(){setShowResearch(false)}}),
     showEvidence&&h(EvidencePanel,{logs:logs,onClose:function(){setShowEvidence(false)}}),
-    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onPreviewPanel:function(which){setDevPanel(which)},onPreviewMini:function(){try{var _mids=Object.keys((typeof FIELD_MINIGAME_LIBRARY!=='undefined'&&FIELD_MINIGAME_LIBRARY)||{});localStorage.setItem('ts_minigamesSeen',JSON.stringify(_mids));}catch(e){}setRet(phase);setPhase('miniguide');},onPreviewCctv:previewCctv,onPreviewOracleOv:previewOracleOv,onPreviewDayCut:previewDayCut,onPreviewCardFlash:previewCardFlash}),DEV&&devPreview()));
+    glitchLevel===3&&fxMode!=='off'&&h(GlitchOverlay,{level:3,fxMode:fxMode,onComplete:function(){setGlitchLevel(0)}}),DEV&&h(DevMissionLauncher,{open:showDevPanel,onToggle:function(){setShowDevPanel(function(v){return !v})},onLaunch:launchDebugMission,onLaunchBriefing:launchDebugBriefing,onLaunchEnding:launchDebugEnding,onLaunchSting:launchDebugSting,onLaunchTriggerCard:launchDebugTriggerCard,onLaunchTimerCard:launchDebugTimerCard,onPreviewPanel:function(which){setDevPanel(which)},onPreviewMini:function(){try{var _mids=Object.keys((typeof FIELD_MINIGAME_LIBRARY!=='undefined'&&FIELD_MINIGAME_LIBRARY)||{});localStorage.setItem('ts_minigamesSeen',JSON.stringify(_mids));}catch(e){}setRet(phase);setPhase('miniguide');},onPreviewCctv:previewCctv,onPreviewOracleOv:previewOracleOv,onPreviewDayCut:previewDayCut,onPreviewCardFlash:previewCardFlash}),DEV&&devPreview()));
 }
 ReactDOM.createRoot(document.getElementById('root')).render(h(App));
