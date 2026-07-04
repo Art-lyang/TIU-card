@@ -62,7 +62,7 @@ var ESCAPE_NODES_EN = {
   b3_quarantine: {
     title: 'Quarantine Ward',
     body: [
-      'The quarantine ward doors are half open.',
+      'The quarantine ward doors are half open — the blackout released the containment seal.',
       'Something is imitating a human voice.',
       'A soft whisper. Record says the entity is here.'
     ],

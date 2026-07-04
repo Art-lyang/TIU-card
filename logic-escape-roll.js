@@ -7,7 +7,10 @@ window.buildEscapeCompanions = function(trust, logs){
     {id:'jaehyuk', name:'임재혁'}
   ];
   var hasAcc = function(id){ return logs.indexOf('ACCOMP-' + id.toUpperCase()) >= 0; };
+  // 사망·이탈 간부는 동행 불가 — 강도윤 사망(LOG-075), 서하은 이탈(LOG-050), 윤세진 사망(LOG-SEJIN-DEAD)
+  var GONE = { doyun:'LOG-075', haeun:'LOG-050', sejin:'LOG-SEJIN-DEAD' };
   var rows = base.filter(function(c){
+    if (GONE[c.id] && logs.indexOf(GONE[c.id]) >= 0) return false;
     if (hasAcc(c.id)) return true;
     var t = trust && trust[c.id];
     return typeof t === 'number' && t >= 65;

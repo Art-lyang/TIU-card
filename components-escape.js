@@ -186,7 +186,10 @@ function EscapeGameScreen(p){
   function onShellbreakDone(rank){
     if (resultSent.current) return;
     if (rank === 'fail') {
-      setState(function(s){ return Object.assign({}, s, { markUnlucky: true, detection: 100 }); });
+      // 기존 주사위 설계와 동일: 쉘 토커를 사전 인지(CAP)한 회차는 '경고 누락' 기습(E_bad)에
+      // 도달할 수 없다 — 인지 회차의 실패는 피탄/포획(fail_normal, E_c)으로 처리.
+      var unlucky = logs.indexOf('LOG-SHELLTALKER-CAP') < 0;
+      setState(function(s){ return Object.assign({}, s, { markUnlucky: unlucky, detection: 100 }); });
       return;
     }
     var eff = rank === 'great' ? { detection: -8 } : rank === 'success' ? { detection: 6 } : { hp: -14, detection: 18 };

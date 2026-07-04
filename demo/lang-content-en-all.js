@@ -2820,7 +2820,7 @@ window.TS_I18N.mergeContent('en', {
       rightLabel: "Hear the result"
     },
     "CH-007-4": {
-      msg: "Operation start time. 03:47.\n\nYour companions are in position.\nYou steady your breathing.\n\nFootsteps. Breath. And the silence beyond them.\n\nNow, it is time to move.",
+      msg: "Operation start time. 03:47.\n\nYour companions are in position.\nThe comm authenticator is 'Southern Cross'. No one answers a voice without it — everyone has agreed.\nYou steady your breathing.\n\nFootsteps. Breath. And the silence beyond them.\n\nNow, it is time to move.",
       leftLabel: "Begin operation",
       rightLabel: "Run one final check"
     },
