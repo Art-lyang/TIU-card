@@ -164,6 +164,22 @@ var FIELD_MINIGAME_LIBRARY = {
       resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
     }
   },
+  shellbreak: {
+    id: 'shellbreak',
+    kind: 'SILENT PASSAGE',
+    ko: {
+      title: '침묵 통과 — 격리동 돌파',
+      intro: '쉘 토커가 듣고 있다. 청음 중에는 멈추고, 들려오는 목소리는 콜사인으로 가려내며 출구까지 전진한다.',
+      action: '숨죽여 전진',
+      resultLabel: { great: '대성공', success: '성공', partial: '부분 성공', fail: '실패' }
+    },
+    en: {
+      title: 'Silent Passage — Quarantine Breakout',
+      intro: 'The Shell Talker is listening. Freeze during its listening phase, verify voices by callsign, and advance to the exit.',
+      action: 'Advance Quietly',
+      resultLabel: { great: 'Great Success', success: 'Success', partial: 'Partial Success', fail: 'Failure' }
+    }
+  },
   evidence: {
     id: 'evidence',
     kind: 'EVIDENCE SORT',
@@ -1642,6 +1658,7 @@ var MINI_CONTROLS = {
   signal:{ko:'세 주파수 채널을 위에서부터 차례로 고정한다. 커서가 황색 띠 안일 때 [정렬 고정] — 아래 채널일수록 빠르고 좁으며, HIGH 띠는 흔들린다. 오조준 3회면 실패.',en:'Lock the three channels top to bottom. Press [LOCK] while the cursor is inside the amber band — lower channels are faster and narrower, and the HIGH band drifts. Three misses fail the run.'},
   sequence:{ko:'브리핑 4초 동안 표시되는 프로토콜을 암기하고, 마스킹된 뒤 순서대로 입력한다. 적색 INTERLOCK 중 입력은 오류 — 잠금이 풀릴 때까지 기다려라. 오류 3회면 실패.',en:'Memorize the protocol shown for 4 seconds, then enter it from memory once masked. Input during the red INTERLOCK counts as an error — wait for it to clear. Three errors fail the run.'},
   breach:{ko:'이웃한 노드로만 이동해 KEY 2개를 모은 뒤 EXIT로 나온다. 붉은 노드는 노출을 올린다.',en:'Move only to adjacent nodes, collect 2 KEYs, then reach EXIT. Red nodes raise exposure.'},
+  shellbreak:{ko:'[전진]을 홀드하면 나아가지만 소음이 쌓인다. ■ 청음(적색) 중 이동은 치명적 — 놓고 기다려라. 목소리가 들리면 콜사인이 포함된 진짜에만 응답하라. 모방 음성에 응답하면 위치가 노출된다.',en:'Hold [ADVANCE] to move — it builds noise. Moving during the red LISTENING phase is fatal; release and wait. When a voice calls, reply only if it carries the callsign. Answering a mimic reveals your position.'},
   route:{ko:'물길(≈)을 따라 상하좌우 한 칸씩 이동한다. 붉은 X 순찰은 수로를 배회한다 — 밟으면 즉시 실패, 길이 열릴 때를 기다려라. 황색 ≋ 역류는 이동력 2 소모, ▦ 격벽은 통과 불가.',en:'Follow the water (≈) one tile at a time. Red X patrols roam the channel — stepping on one fails instantly; wait for an opening. Amber ≋ backflow costs 2 moves; ▦ bulkheads are impassable.'},
   sample:{ko:'버튼을 길게 눌러 탐침을 올리고 샘플에 겹쳐 회수율을 채운다. 회수율이 오를수록 샘플이 빨라지고, 적색 SURGE 중 홀드는 과부하 3배 — 경고가 뜨면 놓아라.',en:'Hold to raise the probe and overlap the sample to fill recovery. The sample speeds up as recovery rises, and holding during a red SURGE triples overload — release when warned.'},
   scan:{ko:'표적은 보이지 않는다 — 신호 강도(%)로 위치를 좁혀라. 기만 반응은 58%에서 정체하다 FALSE ECHO로 판명되어 잠금을 깎는다. 간섭 스윕이 지나는 동안은 판독 불가.',en:'The target is invisible — narrow it down by signal strength (%). Decoys plateau at 58% and resolve as FALSE ECHO, draining your lock. Readings are jammed while the interference sweep passes.'},
@@ -1764,6 +1781,176 @@ function StrikeMiniGame(p){
   );
 }
 
+function ShellBreakMiniGame(p){
+  // 탈출 클라이맥스 전용(ESC-B3): 쉘 토커 격리실 앞 침묵 통과.
+  // 3중 판단 — 홀드 전진(소음), 배회→경청→청음 사이클(타이밍), 목소리 콜사인 판별(진위).
+  // p.known(사전 격리 회차)이면 모방 음성에 ▒ 글리치가 섞여 판별이 쉽다 — 기존 확률표의 '인지 보너스'를 플레이 감각으로 번역.
+  var copy=p.copy;
+  var known=!!p.known;
+  var locale=(window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en')?'en':'ko';
+  var L=function(ko,en){return locale==='en'?en:ko};
+  var CALLSIGN=L('남십자','SOUTHERN CROSS');
+  var REAL=[
+    {ko:'[서하은] 남십자. 동쪽 셔터 열려 있어요.',en:'[HAEUN] Southern Cross. East shutter is open.'},
+    {ko:'[강도윤] 남십자 확인. 통로 이상 없습니다.',en:'[DOYUN] Southern Cross confirmed. Corridor clear.'},
+    {ko:'[임재혁] 남십자! 카메라 30초 죽였습니다.',en:'[JAEHYUK] Southern Cross! Cameras are down for thirty seconds.'}
+  ];
+  var FAKE=[
+    {ko:'[서하은?] 이쪽이에요, 지휘관님. 빨리요.',en:'[HAEUN?] This way, Commander. Hurry.'},
+    {ko:'[강도윤?] 괜찮습니다. 나오셔도 됩니다.',en:'[DOYUN?] It is safe. You can come out now.'},
+    {ko:'[윤세진?] 지휘관님… 도와주세요…',en:'[SEJIN?] Commander… please help me…'}
+  ];
+  var _prog=useState(0),prog=_prog[0],setProg=_prog[1];
+  var _det=useState(0),det=_det[0],setDet=_det[1];
+  var _hold=useState(false),hold=_hold[0],setHold=_hold[1];
+  var _cp=useState('roam'),cphase=_cp[0],setCphase=_cp[1];   // roam|alert|listen
+  var _voice=useState(null),voice=_voice[0],setVoice=_voice[1]; // {real,ko,en}
+  var _fx=useState(null),fx=_fx[0],setFx=_fx[1];               // 판정 피드백
+  var _time=useState(38),time=_time[0],setTime=_time[1];
+  var finished=useRef(false);
+  var holdRef=useRef(false);holdRef.current=hold;
+  var cpRef=useRef('roam');cpRef.current=cphase;
+  var detRef=useRef(0);detRef.current=det;
+  var progRef=useRef(0);progRef.current=prog;
+  var voiceRef=useRef(null);voiceRef.current=voice;
+  var timeRef=useRef(38);timeRef.current=time;
+  var mistakes=useRef(0);
+
+  function done(rank){ if(finished.current)return; finished.current=true; p.onDone(rank); }
+
+  // 크리처 사이클: 배회 2.2~3.4s → 경청 0.8s → 청음 1.3~1.7s
+  useEffect(function(){
+    var killed=false,t;
+    function roam(){ if(killed||finished.current)return; setCphase('roam');
+      t=setTimeout(function(){ if(killed||finished.current)return; setCphase('alert'); if(typeof SFX!=='undefined')SFX.play('btn_off');
+        t=setTimeout(function(){ if(killed||finished.current)return; setCphase('listen');
+          t=setTimeout(roam,1300+Math.random()*400);
+        },800);
+      },2200+Math.random()*1200);
+    }
+    roam();
+    return function(){killed=true;clearTimeout(t);};
+  },[]);
+
+  // 메인 틱(80ms): 전진/소음/탐지
+  useEffect(function(){
+    var iv=setInterval(function(){
+      if(finished.current)return;
+      if(holdRef.current){
+        var np=Math.min(100,progRef.current+1.15);
+        setProg(np);
+        var dd=cpRef.current==='listen'?4.2:cpRef.current==='alert'?1.1:0.32;
+        setDet(function(v){return Math.min(100,v+dd);});
+        if(np>=100){
+          var d=detRef.current;
+          done(d<35&&mistakes.current===0&&timeRef.current>=8?'great':(d<75&&mistakes.current<=1?'success':'partial'));
+          return;
+        }
+      }else{
+        setDet(function(v){return Math.max(0,v-0.38);});
+      }
+      if(detRef.current>=100)done('fail'); // 기습
+    },80);
+    return function(){clearInterval(iv);};
+  },[]);
+
+  // 목소리 스케줄: 3.8~5.3s 간격, 3.6s 응답 창
+  useEffect(function(){
+    var killed=false,t1,t2;
+    function schedule(){
+      if(killed||finished.current)return;
+      t1=setTimeout(function(){
+        if(killed||finished.current)return;
+        var real=Math.random()<0.5;
+        var pool=real?REAL:FAKE;
+        var v=Object.assign({real:real},pool[Math.floor(Math.random()*pool.length)]);
+        setVoice(v);
+        if(typeof SFX!=='undefined')SFX.play('dialogue');
+        t2=setTimeout(function(){ if(killed||finished.current)return; setVoice(null); schedule(); },3600);
+      },3800+Math.random()*1500);
+    }
+    schedule();
+    return function(){killed=true;clearTimeout(t1);clearTimeout(t2);};
+  },[]);
+
+  function respond(reply){
+    var v=voiceRef.current;if(!v||finished.current)return;
+    setVoice(null);
+    if(v.real&&reply){ setDet(function(x){return Math.max(0,x-14);}); setFx({ok:true,t:L('응답 확인 — 경로 정보 수신','Reply confirmed — route intel received')}); if(typeof SFX!=='undefined')SFX.play('check'); }
+    else if(v.real&&!reply){ setFx({ok:true,t:L('…진짜 목소리였다. 정보를 놓쳤다.','…That one was real. Intel missed.')}); }
+    else if(!v.real&&reply){ mistakes.current++; setDet(function(x){return Math.min(100,x+24);}); setFx({ok:false,t:L('모방 음성 — 위치 노출!','MIMIC VOICE — position revealed!')}); if(typeof SFX!=='undefined')SFX.play('warn'); if(typeof Haptics!=='undefined')Haptics.warn(); }
+    else { setDet(function(x){return Math.max(0,x-3);}); setFx({ok:true,t:L('침묵 유지 — 옳은 판단','Silence held — the right call')}); }
+    setTimeout(function(){setFx(null);},1400);
+  }
+
+  // 제한시간
+  useEffect(function(){
+    if(finished.current)return;
+    if(time<=0){ done(progRef.current>=60?'partial':'fail'); return; }
+    var t=setTimeout(function(){setTime(function(v){return Math.max(0,v-1);});},1000);
+    return function(){clearTimeout(t);};
+  },[time]);
+
+  // 키보드: Space 홀드, 1 응답, 2 침묵
+  useEffect(function(){
+    var kd=function(e){
+      if(e.key===' '||e.key==='Enter'){e.preventDefault();setHold(true);}
+      if(e.key==='1'&&voiceRef.current){e.preventDefault();respond(true);}
+      if(e.key==='2'&&voiceRef.current){e.preventDefault();respond(false);}
+    };
+    var ku=function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();setHold(false);} };
+    window.addEventListener('keydown',kd);window.addEventListener('keyup',ku);
+    return function(){window.removeEventListener('keydown',kd);window.removeEventListener('keyup',ku);};
+  },[]);
+
+  function glitchText(s){
+    if(!known)return s;
+    var out='';for(var i=0;i<s.length;i++){out+=(i%7===3)?'▒':s[i];}
+    return out;
+  }
+  var cpView=cphase==='listen'
+    ?{t:L('■ 청음 — 이동 금지','■ LISTENING — DO NOT MOVE'),bg:'rgba(120,10,10,0.92)',bd:'rgba(255,90,72,0.9)',fg:'#ffd6d6'}
+    :cphase==='alert'
+    ?{t:L('▲ 경청 — 정지 준비','▲ ATTENTIVE — PREPARE TO FREEZE'),bg:'rgba(120,78,14,0.9)',bd:'rgba(252,200,88,0.85)',fg:'#ffe2a8'}
+    :{t:L('… 배회음 — 이동 가능','… ROAMING — SAFE TO MOVE'),bg:'rgba(6,24,14,0.85)',bd:'rgba(122,255,198,0.3)',fg:'rgba(170,240,205,0.8)'};
+
+  return h(FieldTerminalShell,{
+    code:'ESC-B3',kind:'SILENT PASSAGE',title:copy.title,intro:copy.intro,
+    status:[{k:'TIME',v:time+'s',cls:time<=5?'is-bad':''},{k:'DETECT',v:Math.round(det)+'%',cls:det>=70?'is-bad':''},{k:'CALLSIGN',v:CALLSIGN}],
+    footL:'B3 QUARANTINE',progress:prog,footR:Math.round(prog)+'%'
+  },
+    h('div',{className:'fm-term-stage',style:{flex:1,display:'flex',flexDirection:'column',justifyContent:'flex-start',gap:10,padding:'8px 12px'}},
+      h('div',{style:{borderRadius:8,padding:'8px 10px',textAlign:'center',fontFamily:"'Share Tech Mono',monospace",fontSize:12,letterSpacing:1,background:cpView.bg,border:'1px solid '+cpView.bd,color:cpView.fg}},cpView.t),
+      // 복도 트랙 — 출구까지의 전진
+      h('div',{style:{position:'relative',height:64,borderRadius:12,overflow:'hidden',border:'1px solid rgba(122,255,198,0.18)',background:'linear-gradient(90deg, rgba(8,22,16,0.95), rgba(4,12,9,0.98))'}},
+        h('div',{style:{position:'absolute',inset:0,backgroundImage:'repeating-linear-gradient(90deg, rgba(122,255,198,0.05) 0 1px, transparent 1px 24px)'}}),
+        h('div',{style:{position:'absolute',right:6,top:'50%',transform:'translateY(-50%)',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'#8ad7ff',border:'1px solid rgba(122,200,255,0.5)',borderRadius:5,padding:'3px 6px'}},'EXIT'),
+        h('div',{style:{position:'absolute',left:'calc('+Math.min(92,prog*0.9)+'% )',top:'50%',transform:'translateY(-50%)',width:14,height:26,borderRadius:4,background:hold?(cphase==='listen'?'#ff8f8f':'#78ffbe'):'rgba(120,255,190,0.55)',boxShadow:hold?'0 0 14px rgba(120,255,190,0.5)':'none',transition:'background .1s'}})),
+      // 탐지 게이지
+      h('div',null,
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(255,160,150,0.75)',marginBottom:4,letterSpacing:1}},'DETECTION'),
+        h('div',{style:{height:10,borderRadius:999,overflow:'hidden',background:'rgba(35,15,15,0.9)'}},
+          h('div',{style:{height:'100%',width:Math.min(100,det)+'%',background:det>=70?'#ff5a48':'#ff8f8f',transition:'width .12s'}}))),
+      // 목소리 카드
+      voice?h('div',{style:{borderRadius:10,padding:'10px 12px',border:'1px dashed rgba(138,215,255,0.5)',background:'rgba(7,18,26,0.75)'}},
+        h('div',{style:{fontSize:12.5,lineHeight:1.5,color:'#bfe6ff',marginBottom:8,fontStyle:'italic'}},'"'+glitchText(L(voice.ko,voice.en))+'"'),
+        h('div',{style:{display:'flex',gap:8}},
+          h('button',{className:'btn',style:{flex:1,fontSize:11,padding:'8px 6px',marginTop:0,minHeight:0},onClick:function(){respond(true);}},L('[1] 응답한다','[1] REPLY')),
+          h('button',{className:'btn',style:{flex:1,fontSize:11,padding:'8px 6px',marginTop:0,minHeight:0},onClick:function(){respond(false);}},L('[2] 침묵한다','[2] STAY SILENT'))))
+      :fx?h('div',{style:{borderRadius:10,padding:'9px 12px',textAlign:'center',fontFamily:"'Share Tech Mono',monospace",fontSize:11,letterSpacing:0.5,border:'1px solid '+(fx.ok?'rgba(120,255,190,0.45)':'rgba(255,90,72,0.7)'),color:fx.ok?'#9df5c8':'#ffd6d6',background:fx.ok?'rgba(10,30,20,0.6)':'rgba(60,10,10,0.6)'}},fx.t)
+      :h('div',{style:{borderRadius:10,padding:'9px 12px',textAlign:'center',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(170,220,195,0.4)',border:'1px dashed rgba(122,255,198,0.14)'}},L('… 통로가 조용하다 …','… the corridor is quiet …'))),
+    h('div',{className:'fm-term-actions'},
+      h('button',{
+        className:'fm-term-btn is-amber'+(hold?' is-held':''),
+        onMouseDown:function(){setHold(true);},
+        onMouseUp:function(){setHold(false);},
+        onMouseLeave:function(){setHold(false);},
+        onTouchStart:function(e){e.preventDefault();setHold(true);},
+        onTouchEnd:function(e){e.preventDefault();setHold(false);}
+      },copy.action))
+  );
+}
+
 function FieldMiniGameOverlay(p){
   var _ob=useState(false),started=_ob[0],setStarted=_ob[1];
   if(!p.game)return null;
@@ -1793,6 +1980,7 @@ function FieldMiniGameOverlay(p){
   if(p.game.type==='screening')return h(ScreeningMiniGame,{copy:copy,onDone:onDone});
   if(p.game.type==='strike')return h(StrikeMiniGame,{copy:copy,onDone:onDone});
   if(p.game.type==='crawler')return h(CrawlerMiniGame,{copy:copy,onDone:onDone});
+  if(p.game.type==='shellbreak')return h(ShellBreakMiniGame,{copy:copy,known:!!p.game.known,onDone:onDone});
   return null;
 }
 

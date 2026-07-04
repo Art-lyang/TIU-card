@@ -67,7 +67,7 @@ var ESCAPE_NODES_EN = {
       'A soft whisper. Record says the entity is here.'
     ],
     choices: [
-      { label:'Pass without responding to the voice', hint:'Evaluation maintained', onSuccess:['You ignore the voice. That may have been the correct answer.'], onFail:['The mannequin notices your hesitation.'] },
+      { label:'Hold your breath and pass through the dark', hint:'Encounter response — silent passage' },
       { label:'Break through with covering fire', hint:'Resource consumption', onSuccess:['Tracer fire cuts across the corridor.'], onFail:['It was too close.'] }
     ]
   },

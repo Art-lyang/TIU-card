@@ -126,6 +126,12 @@ function EscapeGameScreen(p){
     if (!node.choices || !node.choices[idx]) { finalizeEnding(); return; }
     var ch = node.choices[idx];
     setPickedIdx(idx);
+    // 쉘 토커 조우 미니게임 — 주사위 대신 플레이로 판정 (침묵 통과)
+    if (ch.shellbreak) {
+      if (typeof markMinigameSeen === 'function') markMinigameSeen('shellbreak');
+      setPhase('minigame');
+      return;
+    }
     // 롤 없으면 바로 resolve
     if (!ch.roll) { applyChoice(ch, null, true); return; }
     // 롤 수행
@@ -175,6 +181,36 @@ function EscapeGameScreen(p){
     }, 2800);
   }
 
+  // 쉘 토커 미니게임 결과 → 탈출 상태 반영
+  // fail = 기습: markUnlucky+detection 100 → 종료 감시 effect가 fail_unlucky(E_bad)로 처리
+  function onShellbreakDone(rank){
+    if (resultSent.current) return;
+    if (rank === 'fail') {
+      setState(function(s){ return Object.assign({}, s, { markUnlucky: true, detection: 100 }); });
+      return;
+    }
+    var eff = rank === 'great' ? { detection: -8 } : rank === 'success' ? { detection: 6 } : { hp: -14, detection: 18 };
+    setState(function(s){
+      var ns = Object.assign({}, s);
+      if (eff.hp) ns.hp = Math.max(1, Math.min(100, ns.hp + eff.hp)); // 미니게임 부분 성공이 단독 사인이 되지 않게 hp 하한 1
+      if (eff.detection) ns.detection = Math.max(0, Math.min(99, ns.detection + eff.detection));
+      return ns;
+    });
+    var lines = locale === 'en'
+      ? (rank === 'great' ? ['You made no sound at all.', 'The voice recedes behind you, still calling someone else\'s name.']
+        : rank === 'success' ? ['You are through. Your back is soaked.']
+        : ['Your last step caught a pipe.', 'The voice snapped toward you — you threw yourself over the threshold.'])
+      : (rank === 'great' ? ['숨소리 하나 내지 않았다.', '목소리가 등 뒤에서 멀어진다. 아직도 다른 이름을 부르면서.']
+        : rank === 'success' ? ['통과했다. 등줄기가 젖어 있다.']
+        : ['마지막 걸음에서 파이프를 건드렸다.', '목소리가 홱 돌아섰다 — 몸을 던져 문턱을 넘었다.']);
+    setResolveTxt(lines);
+    setPhase('resolving');
+    setTimeout(function(){
+      if (resultSent.current) return;
+      setState(function(s){ return Object.assign({}, s, { nodeId: 'b3_final' }); });
+    }, 2800);
+  }
+
   function finalizeEnding(){
     if (resultSent.current) return;
     resultSent.current = true;
@@ -197,6 +233,13 @@ function EscapeGameScreen(p){
   }
 
   if (!node) return h('div',{className:'escape-text-wrap'}, 'NODE ERROR: '+state.nodeId);
+
+  // 쉘 토커 조우 미니게임 국면 — 탈출 화면을 대체 렌더 (글로벌 타이머는 계속 흐른다)
+  if (phase === 'minigame' && typeof ShellBreakMiniGame === 'function') {
+    var sbLib = (typeof FIELD_MINIGAME_LIBRARY !== 'undefined' && FIELD_MINIGAME_LIBRARY.shellbreak) || null;
+    var sbCopy = sbLib ? (locale === 'en' ? sbLib.en : sbLib.ko) : { title: '침묵 통과', intro: '', action: '전진' };
+    return h(ShellBreakMiniGame, { copy: sbCopy, known: logs.indexOf('LOG-SHELLTALKER-CAP') >= 0, onDone: onShellbreakDone });
+  }
 
   // 시간 포맷
   function fmt(sec){

@@ -84,7 +84,7 @@ var ESCAPE_NODES = {
       '쉘 토커. 기록 속 그 개체가 여기 있다.'
     ],
     choices: [
-      { label:'소리에 반응하지 않고 통과한다', hint:'평정 유지', to:'b3_final', roll:{ stat:'t', base:58, bonusStat:'o', bonusScale:0.12 }, effect:{ detection:8 }, onSuccess:['목소리를 무시했다. 그것이 정답이었다.'], onFail:['망설임이 생겼다.'], failEffect:{ hp:-22, detection:20, markUnlucky:true } },
+      { label:'호흡을 죽이고 어둠 속을 통과한다', hint:'조우 대응 — 침묵 통과', shellbreak:true, to:'b3_final' },
       { label:'교란 사격 후 돌파한다', hint:'자원 소모 큼', to:'b3_final', roll:{ stat:'r', base:55, bonusStat:'c', bonusScale:0.10 }, effect:{ ammo:-3, detection:14 }, onSuccess:['탄환과 금속 파편이 복도를 가른다.'], onFail:['너무 가까웠다.'], failEffect:{ hp:-18, detection:18, ammo:-4, markUnlucky:true } }
     ]
   },
