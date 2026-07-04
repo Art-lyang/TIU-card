@@ -429,3 +429,57 @@ window.TS_I18N.mergeContent('en', {
   }
 });
 })();
+
+// --- route-reactive evening chats (GI/compliance-gated) ---
+window.TS_I18N.mergeContent('en', {
+  eveningChats: {
+    "doyun_route_comply": { lines: [
+      "Commander. The directives coming down lately... they've gotten fast.",
+      "Fast approval is a good thing. But the room for field judgment shrank with it.",
+      "A soldier follows orders. I do — but some days lately, the orders feel like they never passed through human hands.",
+      "...Just saying. That's all the report I have."
+    ] },
+    "haeun_route_comply": { lines: [
+      "My work has gotten smaller lately. Strange, isn't it — less work, heavier heart.",
+      "Summarizing, interpreting, attaching judgment — that was my job. Now the raw feed just goes up.",
+      "A report without interpretation is data. And data never says no.",
+      "Commander. Do you remember the last time we wrote 'no' in a report?"
+    ] },
+    "sejin_route_comply": { lines: [
+      "My desk in the research wing is still there. My research isn't.",
+      "Somewhere on a central server my data is being analyzed. Forty times faster, was it?",
+      "Fast isn't bad. But the results never come back. I don't even know what they're used for.",
+      "...I keep wondering what she would have said. Lately I think about that a lot."
+    ] },
+    "jaehyuk_route_comply": { lines: [
+      "Something I noticed doing comms maintenance. The base has gone quiet lately.",
+      "It's not that the equipment got better — people are holding their words.",
+      "Nobody knows what the filter catches, so everyone filters themselves.",
+      "One thing from a technician's view... the most efficient censorship is the kind people do on their own."
+    ] },
+    "doyun_route_resist": { lines: [
+      "About your recent decisions, Commander.",
+      "They're not the direction the top likes. I have a rough idea how they're being recorded, too.",
+      "But from the field — it's the direction where fewer people die.",
+      "I follow orders. Your orders. I just wanted that order of precedence on the record."
+    ] },
+    "haeun_route_resist": { lines: [
+      "Sorting this week's reports, your approval pattern caught my eye.",
+      "A streak of choices against ORACLE's recommendations. You know all of it gets logged, right?",
+      "...So I added some 'interpretation' at the summary stage on a few. Less conspicuous that way.",
+      "That's my job, after all. Attaching context to data."
+    ] },
+    "sejin_route_resist": { lines: [
+      "This is just between us, Commander.",
+      "Lately I keep a local copy of the research data before it goes to central. I know it's against regulation.",
+      "But after seeing how the uploaded data gets summarized... the originals need to stay here.",
+      "I thought you'd understand. Given the decisions you've been making."
+    ] },
+    "jaehyuk_route_resist": { lines: [
+      "Commander, this is just tech talk.",
+      "The shadow of the east comms tower — satellite blind spot for forty minutes from 2 AM. Orbit correction.",
+      "Whatever anyone does there in that window — it never makes the record.",
+      "Why am I telling you? Well. I figured you're someone who should know."
+    ] }
+  }
+});
