@@ -56,7 +56,16 @@
         var act=s.hasGame?('ACT '+s.act):'';
         var rev=s.revision?('REV '+s.revision):'';
         var when=s.timestampLabel||'';
-        return label+': '+[act,day,rev,when].filter(Boolean).join(' / ');
+        var head=label+': '+[act,day,rev,when].filter(Boolean).join(' / ');
+        // 상세 진행 행 — 어느 기록이 앞서 있는지 판단할 근거 (시설/연구/조합 포함)
+        var det=[];
+        if(s.logs)det.push('LOG '+s.logs);
+        if(s.endings)det.push('END '+s.endings);
+        if(s.facility)det.push('FAC '+s.facility);
+        if(s.research)det.push('RSH '+s.research);
+        if(s.combos)det.push('CMB '+s.combos);
+        if(!det.length)return head;
+        return h(React.Fragment,null,head,h('span',{style:{display:'block',opacity:0.7,fontSize:9,letterSpacing:0.5}},det.join(' · ')));
       };
       var conflictPanel=function(conflict){
         if(!conflict||!conflict.requiresChoice)return null;

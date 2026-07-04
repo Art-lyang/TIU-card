@@ -120,7 +120,11 @@
       timestampLabel:nowLabel(ts),
       sessions:parseInt(data.ts_sessions||0,10)||0,
       logs:Array.isArray(data.ts_logs)?data.ts_logs.length:0,
-      endings:Array.isArray(data.ts_endings)?data.ts_endings.length:0
+      endings:Array.isArray(data.ts_endings)?data.ts_endings.length:0,
+      // 충돌 선택 판단용 상세: 시설(완료+승인)/연구/증거 조합 진행
+      facility:(function(){var f=data.ts_facility||{};var a=Array.isArray(f.completed)?f.completed.length:0;var b=Array.isArray(f.approved)?f.approved.length:0;return a+b})(),
+      research:(function(){var r=data.ts_research;return (r&&typeof r==='object')?Object.keys(r).length:0})(),
+      combos:Array.isArray(data.ts_combos)?data.ts_combos.length:0
     };
   }
   function compareSummaries(local,cloud){
