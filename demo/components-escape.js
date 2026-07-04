@@ -240,7 +240,7 @@ function EscapeGameScreen(p){
   // 쉘 토커 조우 미니게임 국면 — 탈출 화면을 대체 렌더 (글로벌 타이머는 계속 흐른다)
   if (phase === 'minigame' && typeof ShellBreakMiniGame === 'function') {
     var sbLib = (typeof FIELD_MINIGAME_LIBRARY !== 'undefined' && FIELD_MINIGAME_LIBRARY.shellbreak) || null;
-    var sbCopy = sbLib ? (locale === 'en' ? sbLib.en : sbLib.ko) : { title: '침묵 통과', intro: '', action: '전진' };
+    var sbCopy = sbLib ? (locale === 'en' ? sbLib.en : sbLib.ko) : (locale === 'en' ? { title: 'Silent Passage', intro: '', action: 'Advance' } : { title: '침묵 통과', intro: '', action: '전진' });
     return h(ShellBreakMiniGame, { copy: sbCopy, known: logs.indexOf('LOG-SHELLTALKER-CAP') >= 0, allies: (state.companions||[]).map(function(c){return c.id;}), onDone: onShellbreakDone });
   }
 
