@@ -19,8 +19,8 @@ function FacilityPanel(p) {
   var completed = comp.map(getExp).filter(Boolean);
 
   var FDIR = 'assets/images/facility/';
-  var FIMG = { 'FE-001':FDIR+'facility_fe001_cryo_storage.jpg','FE-002':FDIR+'facility_fe002_training_ground.jpg','FE-003':FDIR+'facility_fe003_sensor_array.jpg','FE-004':FDIR+'facility_fe004_medical_bay.jpg','FE-005':FDIR+'facility_fe005_supply_route.jpg','FE-006':FDIR+'facility_fe006_cctv_control.jpg','FE-007':FDIR+'facility_fe007_emergency_bunker.jpg','FE-008':FDIR+'facility_fe008_north_patrol.jpg' };
-  var FALLBACK = FDIR + 'facility_hero.jpg';
+  var FIMG = { 'FE-001':FDIR+'facility_fe001_cryo_storage.webp','FE-002':FDIR+'facility_fe002_training_ground.webp','FE-003':FDIR+'facility_fe003_sensor_array.webp','FE-004':FDIR+'facility_fe004_medical_bay.webp','FE-005':FDIR+'facility_fe005_supply_route.webp','FE-006':FDIR+'facility_fe006_cctv_control.webp','FE-007':FDIR+'facility_fe007_emergency_bunker.webp','FE-008':FDIR+'facility_fe008_north_patrol.webp' };
+  var FALLBACK = FDIR + 'facility_hero.webp';
   var thumbOf = function(fe){ return (FIMG[fe.id] || FALLBACK) + '?v=2'; };
 
   var card = function(fe, kind){
@@ -63,7 +63,7 @@ function FacilityPanel(p) {
   return h('div', { className:'rlab-screen' },
     h('div', { className:'rlab-frame' },
       h('div', { className:'rlab-hero' },
-        h('div',{className:'rlab-hero-img',style:{backgroundImage:'url(assets/images/facility/facility_hero.jpg)'}}),
+        h('div',{className:'rlab-hero-img',style:{backgroundImage:'url(assets/images/facility/facility_hero.webp)'}}),
         h('div',{className:'rlab-hero-top'},
           h('div',{className:'rlab-kicker'}, h('span',{className:'rlab-live'}), L('시설 관리','FACILITY')),
           h('div',{className:'rlab-hero-ctrls'},

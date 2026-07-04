@@ -176,9 +176,9 @@ function main() {
     'assets/field-mission-ui/asset_manifest.json',
     'assets/field-mission-ui/frames/outer_terminal_frame_1080x1700.png',
     'assets/field-mission-ui/icons/clock.png',
-    'assets/images/logos/logo_oracle_hq_v1.png',
-    'assets/images/logos/logo_prometheus_hq_v1.png',
-    'assets/images/characters/char_agent_kang_hq_v1.jpg'
+    'assets/images/logos/logo_oracle_hq_v1.webp',
+    'assets/images/logos/logo_prometheus_hq_v1.webp',
+    'assets/images/characters/char_agent_kang_hq_v1.webp'
   ].forEach((rel) => {
     if (!fs.existsSync(path.join(ROOT, rel))) fail(errors, `expected asset missing: ${rel}`);
   });

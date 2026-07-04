@@ -392,7 +392,7 @@ function EvidencePanel(p) {
   return h('div', { className: 'rlab-screen' },
     h('div', { className: 'rlab-frame' },
       h('div', { className: 'rlab-hero' },
-        h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(assets/images/evidence/evidence_hero.jpg)' } }),
+        h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(assets/images/evidence/evidence_hero.webp)' } }),
         h('div', { className: 'rlab-hero-top' },
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('조사 테이블','EVIDENCE TABLE')),
           h('div', { className: 'rlab-hero-ctrls' },

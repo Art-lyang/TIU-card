@@ -84,7 +84,7 @@
     "M-E03": {
       id: "M-E03", title: "환기구 군체 침입 — 긴급 대응",
       codename: "BROOD DRONE", spec: "SPEC-003", threat: "HIGH",
-      hero: "assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.jpg",
+      hero: "assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.webp",
       intel: { grid: "37.4512 N, 126.8901 E", depth: "SUB-LEVEL +1 m", env: "NIGHT / VENT DUCT" },
       report: [
         { label: "조우 유형", value: "긴급 — 사전 정찰 없음", level: "danger" },
@@ -121,7 +121,7 @@
     "M-E04": {
       id: "M-E04", title: "정지 위장 잠입 — 긴급 대응",
       codename: "MANNEQUIN", spec: "SPEC-001", threat: "HIGH",
-      hero: "assets/images/missions/mission_m004_mannequin_encounter_hero_v2.jpg",
+      hero: "assets/images/missions/mission_m004_mannequin_encounter_hero_v2.webp",
       intel: { grid: "37.5443 N, 127.0557 E", depth: "STORAGE +0 m", env: "NIGHT / SUPPLY STORE" },
       report: [
         { label: "조우 유형", value: "긴급 — 사전 정찰 없음", level: "danger" },

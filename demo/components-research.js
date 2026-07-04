@@ -24,7 +24,7 @@ function ResearchPanel(p) {
   };
 
   var RDIR = 'assets/images/research/';
-  var RP_IMG = { 'RP-SUPPRESS': RDIR + 'research_suppress.jpg', 'RP-SPEC': RDIR + 'research_spec.jpg', 'RP-LIGHT': RDIR + 'research_light.jpg', 'RP-JOINT': RDIR + 'research_joint.jpg' };
+  var RP_IMG = { 'RP-SUPPRESS': RDIR + 'research_suppress.webp', 'RP-SPEC': RDIR + 'research_spec.webp', 'RP-LIGHT': RDIR + 'research_light.webp', 'RP-JOINT': RDIR + 'research_joint.webp' };
 
   var visible = RESEARCH_PROJECTS.filter(function (proj) { return researchVisible(proj, day, act, logs); });
 
@@ -45,7 +45,7 @@ function ResearchPanel(p) {
     var enStages = pen && pen.stages ? pen.stages : null;
     var stageLabel = function (idx) { return (enStages && enStages[idx]) ? enStages[idx].label : proj.stages[idx].label; };
     var total = proj.stages.length;
-    var thumb = RP_IMG[proj.id] || (RDIR + 'research_spec.jpg');
+    var thumb = RP_IMG[proj.id] || (RDIR + 'research_spec.webp');
 
     var progPct = done ? 100 : ((ps.active && stage) ? Math.round(((ps.stage + (ps.prog / stage.days)) / total) * 100) : Math.round((ps.stage / total) * 100));
 
@@ -93,7 +93,7 @@ function ResearchPanel(p) {
   return h('div', { className: 'rlab-screen' },
     h('div', { className: 'rlab-frame' },
       h('div', { className: 'rlab-hero' },
-        h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(' + RDIR + 'research_hero.jpg)' } }),
+        h('div', { className: 'rlab-hero-img', style: { backgroundImage: 'url(' + RDIR + 'research_hero.webp)' } }),
         h('div', { className: 'rlab-hero-top' },
           h('div', { className: 'rlab-kicker' }, h('span', { className: 'rlab-live' }), L('연구 콘솔', 'RESEARCH CONSOLE')),
           h('div', { className: 'rlab-hero-ctrls' },

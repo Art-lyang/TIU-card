@@ -8,11 +8,11 @@
 
   // charKey -> emotion -> 이미지 경로 (모두 흑백 512px, 감시 톤 일치)
   var EMO = {
-    doyun:   { anger:E+'char_doyun_anger_v1.jpg', focus:E+'char_doyun_focus_v1.jpg', pain:E+'char_doyun_pain_v1.jpg' },
-    haeun:   { betrayal:E+'char_haeun_betrayal_v1.jpg', resolve:E+'char_haeun_resolve_v1.jpg', suspicion:E+'char_haeun_suspicion_v1.jpg' },
-    sejin:   { concern:E+'char_sejin_concern_v1.jpg', dread:E+'char_sejin_dread_v1.jpg', hope:E+'char_sejin_hope_v1.jpg' },
-    jaehyuk: { alarm:E+'char_jaehyuk_alarm_v1.jpg', focus:E+'char_jaehyuk_focus_v1.jpg', guilt:E+'char_jaehyuk_guilt_v1.jpg' },
-    soyoung: { exposed:E+'char_soyoung_exposed_v1.jpg', loyalty:E+'char_soyoung_loyalty_v1.jpg', neutral:E+'char_soyoung_neutral_v1.jpg' }
+    doyun:   { anger:E+'char_doyun_anger_v1.webp', focus:E+'char_doyun_focus_v1.webp', pain:E+'char_doyun_pain_v1.webp' },
+    haeun:   { betrayal:E+'char_haeun_betrayal_v1.webp', resolve:E+'char_haeun_resolve_v1.webp', suspicion:E+'char_haeun_suspicion_v1.webp' },
+    sejin:   { concern:E+'char_sejin_concern_v1.webp', dread:E+'char_sejin_dread_v1.webp', hope:E+'char_sejin_hope_v1.webp' },
+    jaehyuk: { alarm:E+'char_jaehyuk_alarm_v1.webp', focus:E+'char_jaehyuk_focus_v1.webp', guilt:E+'char_jaehyuk_guilt_v1.webp' },
+    soyoung: { exposed:E+'char_soyoung_exposed_v1.webp', loyalty:E+'char_soyoung_loyalty_v1.webp', neutral:E+'char_soyoung_neutral_v1.webp' }
   };
 
   // 신뢰도 tier × Act -> 기본 감정

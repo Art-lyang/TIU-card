@@ -112,7 +112,7 @@ function main() {
     assert(ignore.includes('advance_button.png'), 'advance_button.png should be ignored');
     assert(!fs.existsSync(path.join(ROOT, 'TEST')), 'TEST/ should not remain in release root');
     assert(!fs.existsSync(path.join(ROOT, 'advance_button.png')), 'advance_button.png should not remain in release root');
-    assert(fs.existsSync(path.join(ROOT, 'assets/images/characters/char_agent_kang_hq_v1.jpg')), 'char_agent_kang_hq asset is missing');
+    assert(fs.existsSync(path.join(ROOT, 'assets/images/characters/char_agent_kang_hq_v1.webp')), 'char_agent_kang_hq asset is missing');
     assert(read('images_p1.js').includes('char_agent_kang_hq'), 'char_agent_kang_hq mapping is missing');
   });
 

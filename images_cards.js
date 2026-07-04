@@ -7,7 +7,7 @@ IMG.card_oracle_error='assets/images/cards/card_oracle_error.jpg';
 IMG.card_admin_lock='assets/images/cards/card_admin_lock.jpg';
 
 // 폭설·한파 보급로 차단 → C-025 (26KB)
-IMG.card_snow_blockade='assets/images/cards/card_snow_blockade.jpg';
+IMG.card_snow_blockade='assets/images/cards/card_snow_blockade.webp';
 
 // 통신 겹침 → C-011 (16KB)
 IMG.card_signal_overlap='assets/images/cards/card_signal_overlap.jpg';
