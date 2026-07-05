@@ -113,9 +113,7 @@ function Boot(p){
     IMG.title_screen&&h('div',{className:'tb-emblem-bgwrap','aria-hidden':true},h('img',{src:IMG.title_screen,alt:''})),
     h('main',{className:'tb-emblem-stage'+(done?' is-done':''),'aria-label':tt('boot.aria',null,'ORACLE terminal boot sequence')},
       h('div',{className:'tb-corner tb-corner-tl'},tt('boot.sessionId',null,tt('menu.sessionId',null,'SESSION ID: KR-B3-011'))),
-      h('div',{className:'tb-corner tb-corner-tr'},
-        h('div',{className:'terminal-boot-locale','aria-label':tt('boot.language',null,'Language')},
-          ['ko','en'].map(function(l){return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase())}))),
+      h('div',{className:'tb-corner tb-corner-tr'}),
       h('div',{className:'tb-corner tb-corner-bl'},tt('boot.trace',null,'BOOT TRACE:'),' ',String(sn).padStart(2,'0')),
       h('div',{className:'tb-corner tb-corner-br'},tt('boot.feedVersion',null,tt('menu.feedVersion',null,'TERMINAL SESSION v1.11'))),
       h('div',{className:'tb-emblem'},
@@ -252,10 +250,6 @@ function MainMenu(p){
           h('div',{className:'main-terminal-header-tools'},
             h('span',{className:'main-terminal-header-time'},nowText))),
         h('div',{className:'main-terminal-header-status'},
-          h('div',{className:'terminal-boot-locale main-terminal-locale main-terminal-locale--status','aria-label':tt('boot.language',null,'Language')},
-            ['ko','en'].map(function(l){
-              return h('button',{key:l,type:'button',className:'terminal-boot-locale-btn'+(locale===l?' is-active':''),onClick:function(e){e.stopPropagation();switchLocale(l)}},l.toUpperCase());
-            })),
           h('span',{className:'main-terminal-status-left'},h('span',{className:'main-terminal-status-dot','aria-hidden':true}),h('span',null,tt('menu.statusLabel',null,'STATUS:')),h('strong',null,tt('menu.statusUnstable',null,'UNSTABLE CONNECTION'))),
           h('span',{className:'main-terminal-signal','aria-label':'signal strength','aria-hidden':true},h('i'),h('i'),h('i'),h('i')))),
       h('section',{className:'main-terminal-feed','aria-label':'terminal session surveillance feed'},
