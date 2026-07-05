@@ -5,9 +5,20 @@
   var ui = { ko:{}, en:{} };
   var content = { ko:{}, en:{} };
 
+  // 언어 결정 우선순위: 저장된 설정(ts_locale) > 기기 언어 자동 감지 > 기본 ko
   try {
     var saved = localStorage.getItem('ts_locale');
-    if (saved) locale = saved;
+    if (saved) {
+      locale = saved;
+    } else {
+      // 첫 실행 — navigator 언어로 자동 감지 (한국어면 ko, 그 외 전부 en)
+      var sys = '';
+      try {
+        var langs = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || navigator.userLanguage || ''];
+        sys = String(langs[0] || '').toLowerCase();
+      } catch(e2) {}
+      locale = (sys.indexOf('ko') === 0) ? 'ko' : (sys ? 'en' : 'ko');
+    }
   } catch(e) {}
 
   function deepMerge(target, source) {
