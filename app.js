@@ -816,7 +816,7 @@ function App(){
     persistGame(stats,gi,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);Save.saveLogs(logs);
     Save.set('ts_trust',trust);Save.saveUsedDlg(usedDlg);Save.saveUsedEvening(usedEvening);Save.saveSeenArchive(seenArchive);
     Save.saveFacility(facility);
-    Save.saveSnapshot(slot,{day:stats.day,act:act,label:'DAY '+stats.day+' · ACT '+act+' · '+(transRoute||'-'),currentCard:curCard});
+    Save.saveSnapshot(slot,{day:stats.day,act:act,label:'DAY '+stats.day+' · ACT '+act+' · '+(transRoute||'-'),currentCardId:(curCard&&curCard.id)||null,currentCard:curCard});
     setToastType('');setToast(tt('app.snapshotSaved',{slot:slot,day:stats.day},'슬롯 '+slot+' 저장 완료 (DAY '+stats.day+')'));clearToastAfter(2400);
   };
   var loadSnapshot=function(slot){

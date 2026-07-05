@@ -8,7 +8,7 @@
     'ts_research','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_onceShown','ts_activeSpecs',
     'ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_activeMission','ts_resumePhase',
     'ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState',
-    'ts_act2_reached','ts_observer_proto'
+    'ts_act2_reached','ts_observer_proto','ts_curCard'
   ];
   var SNAP_KEYS=['ts_snap_1','ts_snap_2','ts_snap_3'];
   var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen','ts_lastEnding'];
