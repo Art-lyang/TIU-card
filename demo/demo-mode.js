@@ -2,9 +2,10 @@
   var cfg={
     enabled:true,
     storagePrefix:'tiu_demo_',
-    maxAct:2,
-    endDay:10,
-    fullVersionHref:'../index.html',
+    maxAct:2,            // Act 2 종료(→Act 3 전환) 시점에서 컷
+    endDay:13,           // Act 2 마지막 날 (참고용; 실제 컷은 maxAct 경계에서 발생)
+    forceMissionDay:7,   // 이 날 이후 현장임무(C-096→M-001) 1회 강제 노출 보장
+    fullVersionHref:'../index.html', // 출시 시 스토어 리스팅 URL로 교체
     cardsPerDay:{1:3,2:4}
   };
   window.TIU_DEMO=cfg;
