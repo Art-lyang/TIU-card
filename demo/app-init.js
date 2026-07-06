@@ -571,7 +571,7 @@ var SFX={
     case'rifle':self.playFile('rifle',0.7);break;
     case'news':self.playFile('news',0.5);break;
     case'mission':self.playFile('reload',0.7,3);break;
-    case'gameover':self.playFile('rifle',0.8);setTimeout(function(){self.tone(150,0.5,'sawtooth',0.08)},400);break;
+    case'gameover':self.playFile('rifle',0.8);setTimeout(function(){self.playFile('gameover_doom',0.6)},400);break;
     case'dialogue':self.playFile('dialogue',0.5);break;
     case'reward':self.playFile('reward',0.6);break;
     case'glitch':self.playFile('glitch',0.6);break;
