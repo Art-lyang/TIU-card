@@ -102,17 +102,13 @@ var BGM = {
     this._dangerTs = 0;
     this.currentAct = 1;
     this.started = false;
+    this.current = null;
     var self = this;
     Object.keys(this.tracks).forEach(function(k) {
-      self._clearTimer(self.tracks[k]);
-      try {
-        self.tracks[k].volume = 0;
-        self.tracks[k].pause();
-        self.tracks[k].currentTime = 0;
-      } catch(e) {}
+      self._stopOther(self.tracks[k]);
+      try { self.tracks[k].currentTime = 0; } catch(e) {}
     });
     this._stopBootTrack();
-    this.current = null;
   },
 
   // ═══ setDanger: 800ms 디바운스로 빈번한 전환 방지 ═══
@@ -180,19 +176,37 @@ var BGM = {
     var toTrack = this.tracks[toName];
     if (!toTrack) return;
     var self = this;
-    // 진행 중이든 아니든, 타겟 외 모든 트랙 정지
+    this.current = toName; // 먼저 확정 — _stopOther의 "현재 트랙" 판정 기준
+    // 진행 중이든 아니든, 타겟 외 모든 트랙 정지 (모바일 play/pause 레이스까지 방어)
     Object.keys(this.tracks).forEach(function(k) {
-      self._clearTimer(self.tracks[k]);
-      if (k === toName) return;
-      try { self.tracks[k].pause(); self.tracks[k].volume = 0; } catch(e) {}
+      if (k === toName) { self._clearTimer(self.tracks[k]); return; }
+      self._stopOther(self.tracks[k]);
     });
     this._transitioning = true;
     toTrack.volume = 0;
-    try { toTrack.play().catch(function(){}); } catch(e) {}
+    try {
+      var pp = toTrack.play();
+      if (pp && pp.then) { toTrack._pp = pp; pp.catch(function(){}); }
+    } catch(e) {}
     this._fadeIn(toTrack, 3000, undefined, function() {
       self._transitioning = false;
     });
-    this.current = toName;
+  },
+
+  // 이전 트랙 확실 정지. iOS 등 모바일은 audio.volume 을 무시하므로 volume=0 만으로는
+  // 이전 BGM 이 안 꺼진다 → 오직 pause() 로만 정지. 그런데 play() 약속이 미해소인 상태에서
+  // pause() 를 부르면 씹혀서 이전 트랙이 풀볼륨으로 계속 재생 → 두 BGM 겹침.
+  // 재생 약속이 남아 있으면 해소 시점에 (여전히 현재 트랙이 아니면) 다시 pause 해 단일 트랙 보장.
+  _stopOther: function(track) {
+    this._clearTimer(track);
+    var self = this;
+    try { track.pause(); } catch(e) {}
+    try { track.volume = 0; } catch(e) {}
+    if (track._pp && track._pp.then) {
+      track._pp.then(function() {
+        try { if (self.tracks[self.current] !== track) { track.pause(); track.volume = 0; } } catch(e) {}
+      }).catch(function(){});
+    }
   },
   // _fadeIn, _fadeOut, timer 관리 → bgm-fade.js
 

@@ -523,7 +523,7 @@ function SequenceMiniGame(p){
     if(finished.current||phaseRef.current!=='exec')return;
     if(ilkRef.current==='active'){ addError(); return; } // 잠금 중 입력 = 오류
     if(proto.sequence[stepRef.current]===id){
-      if(typeof SFX!=='undefined')SFX.play('tab');
+      if(typeof SFX!=='undefined')SFX.play('seal_btn');
       var nextStep=stepRef.current+1;
       setStep(nextStep);
       if(nextStep>=proto.sequence.length){
@@ -532,6 +532,7 @@ function SequenceMiniGame(p){
         if(errRef.current===0&&timeRef.current>=8)rank='great';
         else if(errRef.current<=1)rank='success';
         else rank='partial';
+        if(typeof SFX!=='undefined')SFX.play('iso_door');
         setTimeout(function(){p.onDone(rank);},120);
       }
       return;
@@ -902,6 +903,14 @@ function ScanMiniGame(p){
   var sweepRef=useRef(null);  // 간섭 스윕 DOM
   var sweepPos=useRef(-20);
   var pingSeq=useRef(0);
+
+  // 스캔 진행 중 신호 체크 앰비언트 루프 (마운트~완료/언마운트)
+  useEffect(function(){
+    if(typeof SFX!=='undefined'&&SFX.playLoop){
+      try{ SFX.playLoop('scan_signal',0.4); }catch(e){}
+      return function(){ try{ if(SFX.stopLoop)SFX.stopLoop('scan_signal'); }catch(e){} };
+    }
+  },[]);
 
   function moveScanner(clientX,clientY,rect){
     var x=((clientX-rect.left)/rect.width)*100;
@@ -1741,6 +1750,7 @@ function StrikeMiniGame(p){
   },[]);
   function fire(){
     if(finished.current||shots<=0)return;
+    if(typeof SFX!=='undefined')SFX.play('blaster');
     var elNow=(performance.now()-t0Ref.current)/1000;
     var r=retPos(elNow);
     setFlash({x:r.x,y:r.y,k:elNow});

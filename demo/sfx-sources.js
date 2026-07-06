@@ -17,5 +17,15 @@ var SFX_PATHS = {
   check:    'audio/check_sound.wav',        // 증거 매칭 성공
   radio:    'audio/radio_static_noise.wav', // 뉴스/브리핑 통신 노이즈
   reload:   'audio/reload_3sec.wav',        // 현장 미션 시작
-  rifle:    'audio/rifle.wav'               // 전투/게임오버
+  rifle:    'audio/rifle.wav',              // 전투/게임오버
+  glitch:   'audio/glitch_noise.wav',       // ORACLE 에러/이상현상/세이프가드/체인
+  reward:   'audio/reward_get.wav',         // 보상 획득
+  dialogue: 'audio/dialogue_blip.wav',      // 이브닝/대사 블립
+  news:     'audio/news_alert.wav',         // 뉴스/알림
+  seal_btn:    'audio/seal_button.wav',     // 미니게임: 격리 봉인 시퀀스 버튼
+  iso_door:    'audio/iso_door.wav',        // 미니게임: 격리 완료(격리실 문)
+  blaster:     'audio/blaster.wav',         // 미니게임: 정밀 타격 통제 발포
+  scan_signal: 'audio/scan_signal.wav',     // 미니게임: 생체 반응 스캔 진행 루프
+  table_open:  'audio/table_open.wav',      // info-bar 시설/연구/조사 테이블 열기
+  creature_amb:'audio/creature_ambient.wav' // 변이체(SPEC) 미션 진입 앰비언트 루프
 };
