@@ -203,6 +203,7 @@ function FieldMission(p){
   }
 
   function handleMiniGameDone(rank){
+    if(rank==='fail'&&typeof SFX!=='undefined'){try{SFX.play('fail')}catch(e){}}
     var assist=getTrustAssist(pendingChoice);
     var finalRank=boostRank(rank,assist);
     var baseReward=getFieldMiniGameReward(mission.id||p.missionId,finalRank)||null;

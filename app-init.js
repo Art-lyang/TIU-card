@@ -583,6 +583,7 @@ var SFX={
     case'stat_down':self.tone(440,0.06,'triangle',0.05);setTimeout(function(){self.tone(300,0.08,'triangle',0.045)},55);break;
     case'tab':self.tone(1300,0.03,'square',0.03);break;
     case'warn':self.tone(230,0.11,'square',0.06);setTimeout(function(){self.tone(230,0.11,'square',0.06)},150);break;
+    case'fail':self.tone(320,0.09,'square',0.07);setTimeout(function(){self.tone(220,0.1,'square',0.065)},100);setTimeout(function(){self.tone(130,0.16,'sawtooth',0.06)},200);break;
   }}catch(e){}}
 };
 
