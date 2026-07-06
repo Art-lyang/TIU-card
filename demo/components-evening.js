@@ -402,6 +402,8 @@ function EveningChat2(p){
     if(ci<curLine.length){var ch=curLine[ci];var spd=(ch==='.'||ch==='!'||ch==='?')?80:35;var t=setTimeout(function(){setCi(function(v){return v+1})},spd);return function(){clearTimeout(t)}}
     else{if(li<chatLines.length-1){var t2=setTimeout(function(){setLi(function(v){return v+1});setCi(0)},500);return function(){clearTimeout(t2)}}
     else{var t3=setTimeout(function(){setDone(true)},400);return function(){clearTimeout(t3)}}}},[li,ci,chat,selChar,chatLines]);
+  // 새 대사 줄 등장(첫 줄 포함) 시 메시지 블립 — 문자 단위(ci)가 아닌 줄 단위(li)에서만 재생해 과도한 반복 방지
+  useEffect(function(){if(!selChar||!chat||chatLines.length===0)return;if(typeof SFX!=='undefined'){try{SFX.play('dialogue')}catch(e){}}},[li,selChar]);
   useEffect(function(){var el=textRef.current;if(el)el.scrollTop=el.scrollHeight},[li,ci,replyLine,done,choiceDone,selChar]);
   var isEveningContactDisabled=function(c){
     if(!c)return true;
