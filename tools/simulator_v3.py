@@ -763,7 +763,7 @@ def choose_reward_profile(options, s, profile):
 
     return max(options, key=score)
 
-def apply_reward(s, reward, act=None, gi=0, trans_route=''):
+def apply_reward(s, reward, act=None, gi=0, trans_route='', logs=None):
     if not reward:
         return s
     ns = dict(s)
@@ -786,7 +786,8 @@ def apply_reward(s, reward, act=None, gi=0, trans_route=''):
             ns['t'] = max(0, min(100, s['t'] + 5))
     if act == 3:
         ns['c'] = max(0, ns['c'] - 5)
-        if gi < 20 and trans_route != 'A4_COMPLY':
+        relief_supplied = bool(logs) and 'LOG-RELIEF-SUPPLY' in logs
+        if gi < 20 and trans_route != 'A4_COMPLY' and not relief_supplied:
             ns['r'] = max(0, ns['r'] - 5)
     elif act == 4:
         loyal_relief = gi >= 40 or trans_route == 'A4_COMPLY'
@@ -1017,7 +1018,7 @@ def simulate_one(profile):
 
         reward_options = random.sample(REWARDS, min(4, len(REWARDS))) if REWARDS else []
         chosen = choose_reward_profile(reward_options, s, profile)
-        s = apply_reward(s, chosen, act, gi, trans_route)
+        s = apply_reward(s, chosen, act, gi, trans_route, logs)
 
         s, gi, safeguarded = apply_route_safeguard(s, gi, logs)
         if safeguarded: note_hidden_logs(logs, hidden_logs_found)

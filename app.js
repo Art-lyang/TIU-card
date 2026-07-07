@@ -388,7 +388,7 @@ function App(){
   };
   var getRewardPreviewDelta=function(r){
     var ns=applyFx(stats,(r&&r.fx)||{});ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
-    if(act===3){var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
+    if(act===3){var reliefSupplied=logs.indexOf('LOG-RELIEF-SUPPLY')>=0;var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY'&&!reliefSupplied;ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
     if(act===4){var loyalRelief=gi>=40||transRoute==='A4_COMPLY';ns.c=Math.max(0,ns.c-10);ns.r=Math.max(0,ns.r-(loyalRelief?5:10));ns.t=Math.max(0,ns.t-(loyalRelief?0:5))}
     var next={c:ns.c,r:ns.r,t:ns.t,o:ns.o,day:stats.day+1},nextGi=gi;
     var rewardTuned=(typeof applyRewardBalanceTuning==='function')?applyRewardBalanceTuning(stats,next,nextGi,r,act):null;
@@ -676,7 +676,7 @@ function App(){
   var launchDebugEnding=function(eid){var def=(typeof ENDING_DEFS!=='undefined')?ENDING_DEFS[eid]:null;setShowDevPanel(false);setGor((def&&def.name)||eid);setGoDay((stats&&stats.day)||33);setEndImg(null);setEndNarr(def||null);setEndId(eid);setDebugGO(true);setPhase('go')};
   var hReward=function(r){SFX.play('reward');if(typeof rememberRewardId==='function')rememberRewardId(rewardMemoryId(r));Save.del('ts_resumeRewards');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
-    if(act===3){var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY';ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
+    if(act===3){var reliefSupplied=logs.indexOf('LOG-RELIEF-SUPPLY')>=0;var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY'&&!reliefSupplied;ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
     if(act===4){
       var loyalRelief=gi>=40||transRoute==='A4_COMPLY';
       ns.c=Math.max(0,ns.c-10);

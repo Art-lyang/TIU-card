@@ -69,6 +69,9 @@ function genChoiceReactionNews(s,g,logs){
   if(has('LOG-ORACLE-SAFEGUARD'))pool.push("[분류 보류] 강원지부 긴급 안정화 패키지 승인 — 본부 보급, 봉쇄 자동 보정, 현장 명령 철회가 동시에 기록됨");
   if(has('LOG-RH-SAFEGUARD'))pool.push("[내부] 강원지부 수동 비상망 가동 — 비공식 협조 명단과 현장 기록 묶음으로 최소 생존선 재정렬");
   if(has('LOG-CB-SUSTAINED'))pool.push("[국내] 중앙 자동화와 현장 설명 절차를 병행한 지부, 봉쇄 효율과 내부 신뢰 동시 개선");
+  if(has('LOG-RELIEF-SUPPLY'))pool.push("[분류 보류] 지속 운영 실적 기지에 본부 추가 보급 승인 — 정규 배정 외 물자 투입으로 자원 압박 완화");
+  if(has('LOG-RELIEF-INSPECT'))pool.push("[내부] 정기 시설 점검 자동 보정 + 노후 설비 본부 예산 교체 — 현장 개입 감소로 요원 피로 하락");
+  if(has('LOG-RELIEF-MORALE'))pool.push("[국내] 요원 처우·시설 불만 개선안 본부 승인 — 교대 인력 배정 및 급식·휴게·의무 지원 확충");
   if(g<=-15&&s.o<=40)pool.push("[내부] ORACLE 평가 지표 하락 경보 발령 — 비공식 기록 보존 요청이 내부 채널에서 증가 추세");
   if(g>=15&&(s.r<=40||s.t<=40))pool.push("[내부] ORACLE 순응 절차가 안정성을 높였지만, 보급·신뢰 완충 계획 없이는 현장 피로가 누적될 수 있음");
   if(s.c<=30||s.r<=30||s.t<=30||s.o<=30)pool.push("[경고] 일일 결산에서 위험 지표 하락 원인이 표시됨 — 야간 보정 회의 및 보급 재배치 검토 필요");

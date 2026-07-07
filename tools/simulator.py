@@ -32,6 +32,7 @@ CARD_FILES = [
     'data-cards-prometheus-lee.js',
     'data-cards-act4.js', 'data-cards-act4-ext.js', 'data-cards-act4-hazard.js',
     'data-cards-act23-pressure.js', 'data-cards-resist-hint.js',
+    'data-cards-relief.js',
     'data-cards-crisis.js', 'data-cards-neutral.js',
     'data-cards-korea-civilian.js',
     'data-cards-dg-meridian.js',
