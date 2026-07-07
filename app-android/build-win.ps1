@@ -24,6 +24,10 @@ $dst = 'C:\dev\tiu-app'
 Write-Host "[1/2] 미러링: $src → $dst (www 제외)"
 robocopy $src $dst /E /XD www /NFL /NDL /NJH | Out-Null
 if ($LASTEXITCODE -ge 8) { Write-Error "robocopy 실패 (code $LASTEXITCODE)"; exit 1 }
+# app\src 트리는 삭제 동기화(/MIR) — 단순 /E 복사는 리포에서 지운 파일(구 개별 JS, splash.png 등)을
+# 미러에서 못 지워 APK에 죽은 파일이 섞인다. src는 전부 리포 결정 소스라 /MIR 안전 (build 산출물 없음)
+robocopy "$src\android\app\src" "$dst\android\app\src" /MIR /NFL /NDL /NJH | Out-Null
+if ($LASTEXITCODE -ge 8) { Write-Error "robocopy app\src 미러 실패 (code $LASTEXITCODE)"; exit 1 }
 
 Write-Host "[2/2] Gradle $Task 실행"
 Set-Location (Join-Path $dst 'android')

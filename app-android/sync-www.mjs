@@ -63,5 +63,50 @@ for (const d of ASSET_DIRS) {
   cpSync(src, join(OUT, d), { recursive: true });
 }
 
+// 4) 스크립트 번들 병합 — WebView의 150+회 개별 fetch+파싱 오버헤드 제거 (콜드 스타트 단축)
+//    연속된 로컬 <script src> 블록을 그룹 단위로 한 파일로 합친다. 인라인 스크립트 경계·속성 있는 태그는 보존.
+//    파일 사이는 '\n;\n' 구분자 — 세미콜론 없이 끝나는 파일이 다음 파일과 이어붙는 사고 방지.
+let bundleStat = '';
+{
+  let outHtml = readFileSync(join(OUT, 'index.html'), 'utf8');
+  const tagRe = /<script\s+src="([^"]+)"\s*><\/script>/g;
+  const tags = [];
+  let m;
+  while ((m = tagRe.exec(outHtml)) !== null) {
+    if (/^https?:/.test(m[1])) continue;
+    tags.push({ tag: m[0], src: m[1].split('?')[0], idx: m.index });
+  }
+  // 연속 그룹 묶기: 태그 사이가 공백/HTML주석뿐이면 같은 그룹 (섹션 주석은 무해 — 병합 시 제거됨)
+  const inert = /^(\s|<!--[\s\S]*?-->)*$/;
+  const groups = [];
+  let cur = [];
+  for (const t of tags) {
+    if (cur.length && !inert.test(outHtml.slice(cur[cur.length - 1].idx + cur[cur.length - 1].tag.length, t.idx))) {
+      groups.push(cur); cur = [];
+    }
+    cur.push(t);
+  }
+  if (cur.length) groups.push(cur);
+  let bundled = 0, bundleFiles = 0;
+  // 역순 처리 — 앞쪽 치환이 뒤쪽 인덱스를 흔들지 않게
+  for (let gi = groups.length - 1; gi >= 0; gi--) {
+    const g = groups[gi];
+    if (g.length < 2) continue;
+    const name = `game-bundle-${gi}.js`;
+    const parts = g.map(t => {
+      const p = join(OUT, t.src);
+      const code = readFileSync(p, 'utf8');
+      rmSync(p, { force: true });
+      return `// ══ ${t.src}\n` + code;
+    });
+    writeFileSync(join(OUT, name), parts.join('\n;\n'));
+    const start = g[0].idx, end = g[g.length - 1].idx + g[g.length - 1].tag.length;
+    outHtml = outHtml.slice(0, start) + `<script src="${name}"></script>` + outHtml.slice(end);
+    bundled += g.length; bundleFiles++;
+  }
+  writeFileSync(join(OUT, 'index.html'), outHtml);
+  bundleStat = `스크립트 ${bundled}개 → 번들 ${bundleFiles}개`;
+}
+
 console.log(`✔ www/ 구성 완료 — 참조 파일 ${fileCount}개 + 자산 디렉토리 ${ASSET_DIRS.join(', ')}`);
-console.log('  (firebase-config.js → 스텁 / sw.js 제외 / back-trap 주입)');
+console.log(`  (firebase-config.js → 스텁 / sw.js 제외 / back-trap 주입 / ${bundleStat})`);

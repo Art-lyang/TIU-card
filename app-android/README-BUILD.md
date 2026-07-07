@@ -42,6 +42,13 @@ npx cap sync android # www/ → 네이티브 assets 반영
 | capacitor-android 변형 없음 | 미러에서 node_modules 제외했었음 | node_modules 포함 미러 |
 | invalid source release: 21 | JDK 17 사용 | JDK 21 (`C:\dev\jdk-21`) |
 | ic_launcher_background not found | @capacitor/assets 어댑티브 아이콘 quirk | 배경을 `@color/` 참조로 수정 |
+| 지운 파일이 APK에 잔존 | robocopy /E는 삭제 미동기화 | `app\src`는 /MIR로 퍼지 동기화 (반영됨) |
+
+## 앱 전용 최적화 (sync-www.mjs / 네이티브)
+- **JS 번들 병합**: index.html의 연속 로컬 스크립트 157개 → `game-bundle-0.js` 1개.
+  WebView의 개별 fetch+파싱 오버헤드를 제거해 콜드 스타트 단축. 웹 버전은 무번들 유지.
+- **스플래시 제거**: 런치 테마가 무지 다크(#04090B)+투명 아이콘 — 게임 부트 화면과 이어져 보임.
+  `capacitor.config.json`의 `backgroundColor`도 동일색(흰 플래시 방지).
 
 ## 기타
 - `www/`·`node_modules/`·`local.properties`·서명키는 gitignore 대상.

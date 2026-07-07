@@ -2,6 +2,7 @@
   "appId": "io.github.artlyang.tiucard",
   "appName": "TERMINAL SESSION",
   "webDir": "www",
+  "backgroundColor": "#04090B",
   "server": {
     "androidScheme": "https"
   },

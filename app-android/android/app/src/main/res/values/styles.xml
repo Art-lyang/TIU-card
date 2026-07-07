@@ -16,7 +16,13 @@
     </style>
 
 
+    <!-- 스플래시 이미지 제거: 게임 부트 화면(#04090B)과 동일한 무지 다크 —
+         런치가 곧바로 게임 인트로로 이어져 보이게 한다. API 31+ 시스템 스플래시는
+         아이콘을 투명 처리해 다크 화면만 남긴다. -->
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
-        <item name="android:background">@drawable/splash</item>
+        <item name="windowSplashScreenBackground">#04090B</item>
+        <item name="windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+        <item name="postSplashScreenTheme">@style/AppTheme.NoActionBar</item>
+        <item name="android:background">#04090B</item>
     </style>
 </resources>
