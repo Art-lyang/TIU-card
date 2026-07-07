@@ -322,11 +322,11 @@ function MainMenu(p){
 // ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
   brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
-  blood_pit:     {img:'assets/images/missions/mission_m001_blood_pit_clean.webp',            cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
+  blood_pit:     {src:'assets/video/bloodpit-cctv.mp4',start:0.3,end:4.6,                     cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
   shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_cctv_med.webp?v=1',pos:'50% 30%',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
-  shell_gate:    {img:'assets/images/missions/mission_m002_shell_talker_cctv_med.webp?v=1',pos:'50% 30%',         cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
-  mannequin:     {img:'assets/images/missions/mission_m004_mannequin_encounter_hero_v2.webp', cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
-  brood_drone:   {img:'assets/images/missions/mission_m005_brood_drone_corridor_hero_v2.webp',cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
+  shell_gate:    {src:'assets/video/shellgate-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
+  mannequin:     {src:'assets/video/mannequin-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
+  brood_drone:   {src:'assets/video/brood-cctv.mp4',start:0.3,end:4.6,                        cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
   spore_phantom: {img:'assets/images/missions/mission_m006_spore_phantom_clean.webp',        cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
   seed_spreader: {img:'assets/images/missions/mission_m009_seed_spreader_clean.webp',        cam:'CCTV // BLIGHT SECTOR 5', warn:{ko:'포자 살포 개체 감지',    en:'SEEDING ENTITY DETECTED'}},
   sample_contam: {img:'assets/images/missions/incident_mi03_sample_contamination_hero.webp',  cam:'CCTV // LAB CONTAINMENT 3',warn:{ko:'샘플 오염 — 격리 경보',  en:'SAMPLE CONTAMINATION'}}
