@@ -74,7 +74,7 @@
     card_foster_sighting: 'assets/images/cards/card_foster_sighting.webp',
     card_foster_sighting_cctv: 'assets/video/navcam_foster.mp4',
     card_mannequin_sighting: 'assets/images/cards/card_mannequin_sighting.webp',
-    card_mannequin_sighting_cctv: 'assets/video/navcam_mannequin.mp4',
+    card_mannequin_sighting_cctv: 'assets/video/navcam_mannequin.mp4?v=2',
     card_brainseeker_breach: 'assets/images/cards/card_brainseeker_breach.webp',
     card_brainseeker_breach_cctv: 'assets/video/navcam_brainseeker.mp4',
     card_breach_horde: 'assets/images/cards/card_breach_horde.webp',
