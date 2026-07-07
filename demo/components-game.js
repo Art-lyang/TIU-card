@@ -323,13 +323,13 @@ function MainMenu(p){
 var CCTV_CLIPS={
   brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
   blood_pit:     {src:'assets/video/bloodpit-cctv.mp4',start:0.3,end:4.6,                     cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
-  shell_talker:  {img:'assets/images/missions/mission_m002_shell_talker_cctv_med.webp?v=1',pos:'50% 30%',         cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
+  shell_talker:  {src:'assets/video/shelltalker-cctv.mp4',start:0.3,end:4.6,                cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
   shell_gate:    {src:'assets/video/shellgate-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
   mannequin:     {src:'assets/video/mannequin-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
   brood_drone:   {src:'assets/video/brood-cctv.mp4',start:0.3,end:4.6,                        cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
-  spore_phantom: {img:'assets/images/missions/mission_m006_spore_phantom_clean.webp',        cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
-  seed_spreader: {img:'assets/images/missions/mission_m009_seed_spreader_clean.webp',        cam:'CCTV // BLIGHT SECTOR 5', warn:{ko:'포자 살포 개체 감지',    en:'SEEDING ENTITY DETECTED'}},
-  sample_contam: {img:'assets/images/missions/incident_mi03_sample_contamination_hero.webp',  cam:'CCTV // LAB CONTAINMENT 3',warn:{ko:'샘플 오염 — 격리 경보',  en:'SAMPLE CONTAMINATION'}}
+  spore_phantom: {src:'assets/video/spore-cctv.mp4',start:0.3,end:4.6,                      cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
+  seed_spreader: {src:'assets/video/seed-cctv.mp4',start:0.3,end:4.6,                       cam:'CCTV // BLIGHT SECTOR 5', warn:{ko:'포자 살포 개체 감지',    en:'SEEDING ENTITY DETECTED'}},
+  sample_contam: {src:'assets/video/samplecontam-cctv.mp4',start:0.3,end:4.6,               cam:'CCTV // LAB CONTAINMENT 3',warn:{ko:'샘플 오염 — 격리 경보',  en:'SAMPLE CONTAMINATION'}}
 };
 var MISSION_CCTV={
   'M-001':'blood_pit','M-002':'shell_talker','M-004':'mannequin','M-005':'brood_drone',
@@ -347,6 +347,7 @@ function CctvSting(p){
       var onTime=function(){if(clip.end&&v.currentTime>=clip.end)fin()};
       var seek=function(){try{if(clip.start)v.currentTime=clip.start}catch(e){}};
       v.muted=true;v.addEventListener('loadedmetadata',seek);if(v.readyState>=1)seek();
+      v.addEventListener('canplay',function(){if(v.paused){try{var p2=v.play();if(p2&&p2.catch)p2.catch(function(){})}catch(e){}}}); // 첫 로드 레이스로 play()가 중단되면 재시도
       v.addEventListener('timeupdate',onTime);v.addEventListener('ended',fin);
       try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
       var cap=setTimeout(fin,p.duration||9000); // 영상 안전 캡: end/ended가 먼저 발생
