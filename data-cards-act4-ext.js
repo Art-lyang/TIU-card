@@ -50,11 +50,13 @@ var CARDS_ACT4_EXT = [
     right:{ label:"지휘소 유지 명령", fx:{c:0,r:0,t:-1,o:1}, g:2, trust:-10 } },
 
   { id:"CA4-CH-03", act:[4], tag:"endgame-char", priority:"중",
+    cond:function(s,g,logs){ return logs.indexOf('LOG-SEJIN-DEAD')<0 },
     msg:"윤세진이 연구실에서 밤을 새우고 있습니다.\n\n\"표본 마지막 반응이에요. EV-Σ의 진짜 행동 메커니즘 — 지금 아니면 기록 못 해요.\"\n\n그녀의 결론은 곧 세상에 남을 유일한 기록일지도.",
     left:{ label:"연구를 끝까지 지원한다", fx:{c:0,r:-1,t:1,o:-1}, g:-2, trust:8 },
     right:{ label:"데이터만 수집 후 철수", fx:{c:0,r:0,t:-1,o:1}, g:1, trust:-5 } },
 
   { id:"CA4-CH-04", act:[4], tag:"endgame-char", priority:"중",
+    cond:function(s,g,logs){ return logs.indexOf('LOG-IJ-DEFECT')<0 },
     msg:"임재혁이 조용히 단말기를 건넵니다.\n\n\"...로그에 제가 덮어쓰지 않은 기록이 있습니다. 제가 하지 않은 접근. 다른 누군가가 — 이 기지에 있거나, 없거나.\"\n\n그는 답을 기다리지 않고 사라집니다.",
     left:{ label:"함께 추적한다", fx:{c:0,r:-1,t:1,o:-2}, g:-3, trust:10 },
     right:{ label:"기록만 남기고 묵인", fx:{c:0,r:0,t:0,o:1}, g:1, trust:-5 } },
