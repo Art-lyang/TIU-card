@@ -1404,7 +1404,8 @@ b.fm-rk--info{color:#caa14a}
 :root{--sigph:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Ctext x='160' y='86' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='rgba%28122,168,204,.55%29'%3E%28%28 %ED%86%B5%EC%8B%A0 %EB%B6%88%EC%95%88%EC%A0%95 %29%29%3C/text%3E%3Ctext x='160' y='106' text-anchor='middle' font-family='monospace' font-size='9' letter-spacing='3' fill='rgba%28122,168,204,.32%29'%3ESIGNAL RESYNC%3C/text%3E%3C/svg%3E")}
 html[data-ts-locale="en"]{--sigph:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Ctext x='160' y='86' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='rgba%28122,168,204,.55%29'%3E%28%28 SIGNAL UNSTABLE %29%29%3C/text%3E%3Ctext x='160' y='106' text-anchor='middle' font-family='monospace' font-size='9' letter-spacing='3' fill='rgba%28122,168,204,.32%29'%3ERESYNC IN PROGRESS%3C/text%3E%3C/svg%3E")}
 .bf-hero-img,.fm-hero-img,.mission-img,.rlab-hero-img,.escape-node-visual-img,.comm-panel__portrait img{background-color:#0a1016;background-image:var(--sigph);background-repeat:no-repeat;background-position:center;background-size:contain}
-img.sig-in{animation:sigIn .3s ease}
+/* sig-in은 플레이스홀더 대상 클래스에만 — 전역 img.sig-in은 자체 animation(forwards) 이미지(부트 오라클 로고)를 가로채 opacity:0 회귀 유발 (BUILD 431) */
+.bf-hero-img.sig-in,.fm-hero-img.sig-in,.mission-img.sig-in,.rlab-hero-img.sig-in,.escape-node-visual-img.sig-in,.comm-panel__portrait img.sig-in{animation:sigIn .3s ease}
 @keyframes sigIn{from{opacity:.35}to{opacity:1}}
 
 /* ═══ 연결 인터스티셜 — 신호 수신 중 (BUILD 428) ═══ */
