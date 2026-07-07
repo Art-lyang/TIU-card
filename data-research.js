@@ -168,7 +168,10 @@ function researchCurrentStage(p, ps) {
 }
 
 // 자원 충분 여부(현재 단계 cost 기준)
+// 예비 자원 게이트: 자원 25 이하면 연구 착수 불가 — cost만 검사하면 r=5, cost=5 같은 정확 지불로
+// 자원이 0까지 고갈되는 함정이 생긴다(실기기 QA). 버튼은 기존 '자원 부족' 라벨로 비활성화된다.
 function researchAffordable(stage, stats) {
+  if ((stats.r || 0) <= 25) return false;
   if (!stage || !stage.cost) return true;
   var k; for (k in stage.cost) { if (!stage.cost.hasOwnProperty(k)) continue; if ((stats[k] || 0) < stage.cost[k]) return false; }
   return true;

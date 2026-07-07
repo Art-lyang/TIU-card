@@ -166,3 +166,7 @@ var showDeltaFloats=function(before,after){
     setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},1600);
   });
 };
+
+// 이미지 로드 완료 페이드인 — '통신 불안정' 플레이스홀더에서 매끄럽게 전환.
+// img의 load는 버블되지 않으므로 캡처 단계 단일 리스너로 전역 처리 (컴포넌트 무수정).
+if(typeof document!=='undefined'){document.addEventListener('load',function(e){var t=e.target;if(t&&t.tagName==='IMG'&&t.classList)t.classList.add('sig-in')},true)}

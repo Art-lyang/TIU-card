@@ -1,5 +1,5 @@
 /* TERMINAL SESSION — style.css (Asset-based UI) */
-*{margin:0;padding:0;box-sizing:border-box;word-break:keep-all;-webkit-user-drag:none}
+*{margin:0;padding:0;box-sizing:border-box;word-break:keep-all;-webkit-user-drag:none;-webkit-tap-highlight-color:transparent}
 /* 전역 텍스트 선택/드래그 차단 — 게임 전반(메뉴·카드·미니게임 등). 입력 요소는 예외 */
 html,body,#root{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;-webkit-touch-callout:none}
 input,textarea{-webkit-user-select:text;user-select:text}
@@ -33,7 +33,7 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .oracle-link-time{font-size:12px;color:rgba(var(--ui-card-rgb),.94);text-shadow:0 0 9px rgba(var(--ui-card-rgb),.34);white-space:nowrap}
 .oracle-link-date{font-size:10px;color:rgba(var(--ui-green-dim-rgb),.7);white-space:nowrap}
 .screen{display:flex;flex-direction:column;align-items:center;height:100%;overflow-y:auto;overflow-x:hidden;position:relative;padding:0 12px;padding-top:max(4px,env(safe-area-inset-top));padding-bottom:max(4px,env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
-.oracle-link-active .screen{padding-bottom:max(calc(var(--oracle-link-h) + 44px),env(safe-area-inset-bottom))}
+.oracle-link-active .screen{padding-bottom:calc(var(--oracle-link-h) + 44px + env(safe-area-inset-bottom))}
 .screen::-webkit-scrollbar{width:3px}
 .screen::-webkit-scrollbar-track{background:transparent}
 .screen::-webkit-scrollbar-thumb{background:var(--ui-scroll);border-radius:var(--r-sm)}
@@ -221,7 +221,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 .dialogue-reply--evening{font-size:13px;font-style:italic}
 .dialogue-choices{width:100%;max-width:440px;flex-shrink:0;display:flex;flex-direction:column;gap:8px;padding:8px 0 0;margin:0 auto}
 .dialogue-choice-btn{background:linear-gradient(180deg,rgba(var(--ui-rgb),.1),rgba(var(--ui-rgb),.025));border:1px solid rgba(var(--ui-rgb),.5);border-radius:var(--r-sm);color:var(--ui);font-family:inherit;font-size:14px;font-weight:500;letter-spacing:.3px;padding:10px 20px;cursor:pointer;text-align:center;min-height:44px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06);transition:border-color .18s ease,background .18s ease,box-shadow .18s ease,transform .12s ease}.dialogue-choice-btn:hover{border-color:rgba(var(--ui-rgb),.85);background:linear-gradient(180deg,rgba(var(--ui-rgb),.17),rgba(var(--ui-rgb),.05));box-shadow:inset 0 1px 0 rgba(255,255,255,.09),0 5px 16px rgba(0,0,0,.4);transform:translateY(-1px)}.dialogue-choice-btn.is-picked{border-color:rgba(var(--ui-rgb),.9);background:linear-gradient(180deg,rgba(var(--ui-rgb),.22),rgba(var(--ui-rgb),.07));box-shadow:0 0 14px rgba(var(--ui-rgb),.24),inset 0 1px 0 rgba(255,255,255,.09);transform:scale(1.015)}.dialogue-choice-btn.is-dimmed{opacity:.16}.dialogue-choice-btn.is-picked,.dialogue-choice-btn.is-dimmed{pointer-events:none}
-.dialogue-screen{padding-top:max(12px,env(safe-area-inset-top));padding-bottom:max(calc(var(--oracle-link-h) + 28px),env(safe-area-inset-bottom))}
+.dialogue-screen{padding-top:max(12px,env(safe-area-inset-top));padding-bottom:calc(var(--oracle-link-h) + 28px + env(safe-area-inset-bottom))}
 .dialogue-screen .title-frame{max-width:440px;margin-bottom:2px}
 .dialogue-screen .comm-panel{margin:10px 0 14px;padding:12px 14px}
 .dialogue-screen .dialogue-card{flex:1 1 auto;min-height:310px;max-height:none;padding:24px 26px;margin:0 auto}
@@ -241,7 +241,7 @@ button,.btn,.card-msg,.oracle-card__title,.oracle-card__desc,.oracle-card__effec
 /* ═══ FIELD MISSION — HUD dossier (BUILD 265) ═══ */
 .fm-screen{justify-content:flex-start;padding-top:6px}
 /* 스크롤 영역을 고정 ORACLE 바 위에서 끝내 콘텐츠가 바 아래로 깔리지 않게 한다 */
-.oracle-link-active .fm-screen.fm-screen{height:calc(100% - var(--oracle-link-h,64px) - 12px);min-height:0;padding-bottom:6px}
+.oracle-link-active .fm-screen.fm-screen{height:calc(100% - var(--oracle-link-h,64px) - 12px - env(safe-area-inset-bottom));min-height:0;padding-bottom:6px}
 .fm-wrap{position:relative;z-index:1;width:100%;max-width:464px;margin:0 auto;display:flex;flex-direction:column;gap:8px;padding:2px 0 10px}
 .fm-screen .bg-overlay{position:fixed;inset:0;background-size:cover;background-position:center;pointer-events:none;z-index:0}
 .fm-head{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:6px;padding:6px 2px 8px;border-bottom:1px solid rgba(var(--ui-rgb),.18);position:relative}
@@ -373,7 +373,7 @@ b.fm-rk--info{color:#caa14a}
   :root{--oracle-link-h:54px}
   .main-terminal-header-status .main-terminal-session{display:none}
   .screen{padding:0 8px;padding-bottom:max(4px,env(safe-area-inset-bottom))}
-  .oracle-link-active .screen{padding-bottom:max(calc(var(--oracle-link-h) + 20px),env(safe-area-inset-bottom))}
+  .oracle-link-active .screen{padding-bottom:calc(var(--oracle-link-h) + 20px + env(safe-area-inset-bottom))}
   .title-frame{height:36px;margin-bottom:0}
   .title-frame span{font-size:10px;letter-spacing:2px}
   .section-hdr{height:22px;margin:1px 0}
@@ -432,7 +432,7 @@ b.fm-rk--info{color:#caa14a}
   .comm-panel__bars{font-size:9px;letter-spacing:1.4px}
   .dialogue-card{max-width:352px;padding:14px 16px}
   .dialogue-choices{max-width:352px}
-  .dialogue-screen{padding:8px 14px max(calc(var(--oracle-link-h) + 22px),env(safe-area-inset-bottom))}
+  .dialogue-screen{padding:8px 14px calc(var(--oracle-link-h) + 22px + env(safe-area-inset-bottom))}
   .dialogue-screen .title-frame,.dialogue-screen .comm-panel,.dialogue-screen .dialogue-card,.dialogue-screen .dialogue-choices{max-width:360px}
   .dialogue-screen .comm-panel{grid-template-columns:96px minmax(0,1fr);gap:12px;margin:8px 0 12px;padding:10px 12px}
   .dialogue-screen .comm-panel__portrait{height:100px}
@@ -1397,3 +1397,12 @@ b.fm-rk--info{color:#caa14a}
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%);mask-image:linear-gradient(180deg,transparent 0,#000 30%)}
 .obsgrid canvas{display:block;width:100%;height:100%}
 .main-terminal-feed{position:relative}
+
+/* ═══ 이미지 로딩 플레이스홀더 — 통신 불안정 (BUILD 427) ═══
+   이미지 픽셀이 그려지기 전(로딩 중/실패)에는 배경의 안내 문구가 보이고, 로드되면 이미지가 덮는다.
+   대상은 불투명(jpg/webp) 대형 슬롯만 — 투명 PNG에 적용하면 문구가 비쳐 보이니 추가 시 주의. */
+:root{--sigph:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Ctext x='160' y='86' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='rgba%28122,168,204,.55%29'%3E%28%28 %ED%86%B5%EC%8B%A0 %EB%B6%88%EC%95%88%EC%A0%95 %29%29%3C/text%3E%3Ctext x='160' y='106' text-anchor='middle' font-family='monospace' font-size='9' letter-spacing='3' fill='rgba%28122,168,204,.32%29'%3ESIGNAL RESYNC%3C/text%3E%3C/svg%3E")}
+html[data-ts-locale="en"]{--sigph:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='180' viewBox='0 0 320 180'%3E%3Ctext x='160' y='86' text-anchor='middle' font-family='monospace' font-size='13' letter-spacing='2' fill='rgba%28122,168,204,.55%29'%3E%28%28 SIGNAL UNSTABLE %29%29%3C/text%3E%3Ctext x='160' y='106' text-anchor='middle' font-family='monospace' font-size='9' letter-spacing='3' fill='rgba%28122,168,204,.32%29'%3ERESYNC IN PROGRESS%3C/text%3E%3C/svg%3E")}
+.bf-hero-img,.fm-hero-img,.mission-img,.rlab-hero-img,.escape-node-visual-img,.comm-panel__portrait img{background-color:#0a1016;background-image:var(--sigph);background-repeat:no-repeat;background-position:center;background-size:contain}
+img.sig-in{animation:sigIn .3s ease}
+@keyframes sigIn{from{opacity:.35}to{opacity:1}}

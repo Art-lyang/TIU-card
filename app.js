@@ -357,7 +357,7 @@ function App(){
     if(typeof window!=='undefined')window.__ts_liveLogs=n.slice();
     Save.saveLogs(n);
     setLogs(n);
-    if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&!SESSION_SCOPED_LOGS[id]&&typeof SFX!=='undefined')SFX.play('alarm');
+    if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&!SESSION_SCOPED_LOGS[id]&&!window.__ts_muteLogSfx&&typeof SFX!=='undefined')SFX.play('alarm');
     if(typeof CHAINS!=='undefined'){
       Object.keys(CHAINS).forEach(function(k){
         var ch=CHAINS[k];
@@ -631,7 +631,7 @@ function App(){
     // 결과 서사 텍스트 or 자원 리스크 토스트
     if(typeof getResultText==='function'){var rt=getResultText(curCard.id,dir);if(rt){setTimeout(function(){setToastType('result');setToast(rt);clearToastAfter(2400)},400)}}
   };
-  var hMission=function(o){if(o.gOnly){setGi(function(g){var ng0=g+(o.g||0);persistGame(stats,ng0,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng0});return}Save.del('ts_activeMission');SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return}nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
+  var hMission=function(o){if(o.gOnly){setGi(function(g){var ng0=g+(o.g||0);persistGame(stats,ng0,act,actFlags,transRoute,cooldowns,recentCards,ct,chainQueue);return ng0});return}Save.del('ts_activeMission');SFX.play('reward');var ns=applyFx(stats,o.result||{}),ng=gi+(o.g||0);ns.c=act>=2?Math.max(0,Math.min(100,ns.c)):Math.max(0,Math.min(95,ns.c));ns.r=Math.max(0,Math.min(95,ns.r));ns.t=Math.max(0,Math.min(95,ns.t));ns.o=Math.max(0,Math.min(95,ns.o));setStats(ns);setGi(ng);if(o.log){window.__ts_muteLogSfx=true;try{if(Array.isArray(o.log)){o.log.forEach(function(l){tryUnlock(l)})}else{tryUnlock(o.log)}}finally{window.__ts_muteLogSfx=false}}var missionLogs=getLiveLogs(logs);var nextQueue=chainQueue;var followCard=(o.miniGame&&typeof createFieldMiniGameFollowupCard==='function')?createFieldMiniGameFollowupCard(o.miniGame):null;if(followCard){nextQueue=[followCard].concat(chainQueue||[]);setToastType('');setTimeout(function(){setToast(tt('app.followupCardAdded',{id:followCard.id},'[후속 카드 추가] '+followCard.id));clearToastAfter(2200)},280)}var nextActFlags=updateActFlags(null,curMission,false);persistGame(ns,ng,act,nextActFlags,transRoute,cooldowns,recentCards,ct,nextQueue);setCurMission(null);var goM=chkGameOver(ns);if(goM){SFX.play('gameover');doGO(goM,ns,ng);return}nextCard(ns,ng,missionLogs,nextQueue);setPhase('game')};
   // DEV 런처로 발동한 임무는 캠페인을 진행시키지 않고 메뉴로 복귀한다 (gOnly 중간 GI 업데이트는 무시).
   var launchDebugMission=function(id){if(typeof MISSIONS==='undefined'||!MISSIONS[id])return;debugMissionRef.current=true;setShowDevPanel(false);setCurMission(id);setPhase('mission')};
   var launchDebugSting=function(mid,key){if(typeof MISSIONS==='undefined'||!MISSIONS[mid])return;debugMissionRef.current=true;setShowDevPanel(false);setCurMission(mid);setCctvSting(key||(typeof MISSION_CCTV!=='undefined'&&MISSION_CCTV[mid])||'brainseeker')};
@@ -674,7 +674,7 @@ function App(){
   var hMissionDebug=function(o){if(o&&o.gOnly)return;debugMissionRef.current=false;Save.del('ts_activeMission');setCurMission(null);setPhase('menu')};
   var launchDebugBriefing=function(dact,droute){setShowDevPanel(false);setAct(dact);setTransRoute(droute);setDebugBriefing({act:dact,route:droute});setPhase('briefing')};
   var launchDebugEnding=function(eid){var def=(typeof ENDING_DEFS!=='undefined')?ENDING_DEFS[eid]:null;setShowDevPanel(false);setGor((def&&def.name)||eid);setGoDay((stats&&stats.day)||33);setEndImg(null);setEndNarr(def||null);setEndId(eid);setDebugGO(true);setPhase('go')};
-  var hReward=function(r){SFX.play('reward');if(typeof rememberRewardId==='function')rememberRewardId(rewardMemoryId(r));Save.del('ts_resumeRewards');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
+  var hReward=function(r){if(typeof rememberRewardId==='function')rememberRewardId(rewardMemoryId(r));Save.del('ts_resumeRewards');var ns=applyFx(stats,r.fx);ns.c=Math.max(0,ns.c);ns.r=Math.max(0,ns.r);ns.t=Math.max(0,ns.t);ns.o=Math.max(0,ns.o);
     // Act별 일일 감쇠
     if(act===3){var reliefSupplied=logs.indexOf('LOG-RELIEF-SUPPLY')>=0;var act3ResourcePressure=gi<20&&transRoute!=='A4_COMPLY'&&!reliefSupplied;ns.c=Math.max(0,ns.c-5);ns.r=Math.max(0,ns.r-(act3ResourcePressure?5:0))}
     if(act===4){

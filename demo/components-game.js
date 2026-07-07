@@ -1385,6 +1385,13 @@ function RewardScreen(p){
     // 기본 풀 + 시설 완료 보너스 합산 후 랜덤 추출
     var basePool=REWARDS.slice();
     if(p.facility&&typeof REWARDS_FACILITY_BONUS!=='undefined'){var fac=p.facility;var rwOff=fac.rewardOff||[];REWARDS_FACILITY_BONUS.forEach(function(r){if(fac.completed.indexOf(r.feReq)>=0&&rwOff.indexOf(r.feReq)<0)basePool.push(r)})}
+    // 캡 무효화 보상 제외: 스탯 만렙(100)으로 +효과가 전부 0이 되고 -만 남는 보상은 순손실 카드가 되므로 풀에서 뺀다 (예: 신뢰 100에서 RF-004 '격리동 의료 보고')
+    var capFiltered=basePool.filter(function(r){
+      if(!r.fx)return true;var pos=false,neg=false;
+      ['c','r','t','o'].forEach(function(k){var v=(r.fx[k]||0)*5;if(v>0&&(p.stats[k]||0)<100)pos=true;if(v<0&&(p.stats[k]||0)>0)neg=true});
+      return pos||!neg;
+    });
+    if(capFiltered.length>=count)basePool=capFiltered;
     var pool=pickRewardsUnique(basePool,count);
     // 시설 확장 리워드 삽입 (승인됨 & 미완료, 1회성)
     if(p.facility&&typeof FACILITY_EXPANSIONS!=='undefined'){
