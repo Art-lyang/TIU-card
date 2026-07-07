@@ -37,6 +37,22 @@ function CharacterCommPanel(p){
         h('div',{className:'comm-panel__code'},'ID: '+info.code),
         h('div',{className:'comm-panel__bars'},info.bars))))
 }
+// 연결 인터스티셜 — 대화/현장 진입 전 짧은 '신호 수신' 연출 (BUILD 428)
+// 게이트가 떠 있는 동안 preload URL을 미리 당겨 이미지 로드 시간을 벌고,
+// 무거운 자식 트리 마운트도 게이트 뒤로 미뤄 저사양 기기 프레임 드랍을 가린다.
+function ConnectingGate(p){
+  var _on=useState(true),on=_on[0],setOn=_on[1];
+  useEffect(function(){
+    (p.preload||[]).forEach(function(u){if(u){try{var im=new Image();im.src=u}catch(e){}}});
+    var t=setTimeout(function(){setOn(false)},p.ms||850);
+    return function(){clearTimeout(t)};
+  },[]);
+  if(!on)return p.children||null;
+  return h('div',{className:'screen'},
+    h('div',{className:'conn-gate'},
+      h('span',{className:'conn-gate-txt'},p.label||'[ 신호 수신 중 ... ]'),
+      h('span',{className:'conn-gate-bar','aria-hidden':true})));
+}
 function Dialogue(p){
   var d=p.dialogue,overlay=getDialogueOverlay(d);
   var lines=(overlay&&overlay.lines)||d.lines;

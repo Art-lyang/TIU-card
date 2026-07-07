@@ -1406,3 +1406,11 @@ html[data-ts-locale="en"]{--sigph:url("data:image/svg+xml,%3Csvg xmlns='http://w
 .bf-hero-img,.fm-hero-img,.mission-img,.rlab-hero-img,.escape-node-visual-img,.comm-panel__portrait img{background-color:#0a1016;background-image:var(--sigph);background-repeat:no-repeat;background-position:center;background-size:contain}
 img.sig-in{animation:sigIn .3s ease}
 @keyframes sigIn{from{opacity:.35}to{opacity:1}}
+
+/* ═══ 연결 인터스티셜 — 신호 수신 중 (BUILD 428) ═══ */
+.conn-gate{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;min-height:62vh;width:100%}
+.conn-gate-txt{font-family:'Share Tech Mono',monospace;font-size:13px;letter-spacing:2.5px;color:rgba(var(--ui-rgb),.8);animation:connPulse 1.15s ease-in-out infinite}
+.conn-gate-bar{width:132px;height:2px;background:linear-gradient(90deg,transparent,rgba(var(--ui-rgb),.75),transparent);background-size:60% 100%;background-repeat:no-repeat;animation:connSweep 1.2s linear infinite}
+@keyframes connPulse{0%,100%{opacity:.45}50%{opacity:1}}
+@keyframes connSweep{0%{background-position:-70% 0}100%{background-position:170% 0}}
+.fx-off .conn-gate-txt,.fx-off .conn-gate-bar{animation:none}
