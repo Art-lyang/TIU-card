@@ -168,7 +168,7 @@ function DayCutOverlay(p){
 function DemoEndScreen(p){
   var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
   var st=p.stats||{};
-  var itchUrl='https://artlyang.itch.io/tiu-card';
+  var itchUrl='https://tiu-art.itch.io/terminal-session';
   useEffect(function(){if(typeof SFX!=='undefined')SFX.play('radio')},[]);
   return h('div',{className:'screen bf-screen demo-end-screen'},
     h('div',{className:'bf-wrap'},
