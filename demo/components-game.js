@@ -400,7 +400,7 @@ function Stats(p){
   return h('div',{className:'hud-top'},
     h('div',{className:'hud-map'+(lowCount>=2?' is-glitch':'')+(cctv?' has-cctv':''),'data-ev':mapEv},
       h('div',{className:'km-wrap'},h('div',{className:'km-img'}),h('div',{className:'km-tint'})),
-      cctv?h('div',{className:'km-cctv',style:{backgroundImage:'url('+cctv+')'}}):null,
+      cctv?(/\.mp4($|\?)/.test(cctv)?h('div',{className:'km-cctv'},h('video',{src:cctv,muted:true,loop:true,autoPlay:true,playsInline:true,ref:function(v){if(!v)return;v.muted=true;var pr=v.play();if(pr&&pr.catch)pr.catch(function(){});v.oncanplay=function(){if(v.paused){try{var p2=v.play();if(p2&&p2.catch)p2.catch(function(){})}catch(e){}}}}})):h('div',{className:'km-cctv',style:{backgroundImage:'url('+cctv+')'}})):null,
       h('div',{className:'km-grid'}),h('div',{className:'km-scan'}),
       h('div',{className:'km-lines'}),h('div',{className:'km-noise'}),
       h('div',{className:'km-ov km-ov-attack'}),h('div',{className:'km-ov km-ov-research'}),h('div',{className:'km-ov km-ov-lockdown'}),
