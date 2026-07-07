@@ -1414,3 +1414,9 @@ img.sig-in{animation:sigIn .3s ease}
 @keyframes connPulse{0%,100%{opacity:.45}50%{opacity:1}}
 @keyframes connSweep{0%{background-position:-70% 0}100%{background-position:170% 0}}
 .fx-off .conn-gate-txt,.fx-off .conn-gate-bar{animation:none}
+
+/* ═══ 데모 엔드 스크린 (BUILD 429) ═══ */
+.demo-end-title{font-family:'Share Tech Mono',monospace;font-size:17px;letter-spacing:2px;color:var(--ui);margin:10px 0 8px;text-shadow:0 0 10px var(--ui-glow)}
+.demo-end-body{line-height:1.7}
+.demo-end-btn{display:block;width:100%;max-width:464px;margin:10px auto 0}
+.demo-end-btn--ghost{opacity:.62;background:none;border:1px solid rgba(var(--ui-rgb),.35)}

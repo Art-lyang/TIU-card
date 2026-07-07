@@ -45,6 +45,11 @@ let fileCount = 1; // index.html
 for (const p of refs) {
   const dst = join(OUT, p);
   mkdirSync(dirname(dst), { recursive: true });
+  if (p === 'demo-flag.js') {
+    writeFileSync(dst, 'window.TS_DEMO=false; // app build: full version\n');
+    fileCount++;
+    continue;
+  }
   if (p === 'firebase-config.js') {
     writeFileSync(dst, '// TIU app build: cloud save disabled (no Firebase config — zero data collection)\n');
     fileCount++;

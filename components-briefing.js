@@ -164,6 +164,29 @@ function DayCutOverlay(p){
     h('div',{className:'daycut-day'},'DAY '+day,h('span',{className:'daycut-day-suf'},isEn?'START':'개시')),
     h('div',{className:'daycut-skip'},isEn?'TAP TO SKIP':'탭하여 건너뛰기'));
 }
+// 데모 종료 화면 — Act 3 진입 관문에서 표시 (window.TS_DEMO, app.js doBriefing 게이트). itch 본편 유도.
+function DemoEndScreen(p){
+  var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  var st=p.stats||{};
+  var itchUrl='https://artlyang.itch.io/tiu-card';
+  useEffect(function(){if(typeof SFX!=='undefined')SFX.play('radio')},[]);
+  return h('div',{className:'screen bf-screen demo-end-screen'},
+    h('div',{className:'bf-wrap'},
+      h('div',{className:'bf-head'},
+        h('div',{className:'bf-head-side'},'ORACLE',h('br'),'// ACCESS',h('br'),'RESTRICTED'),
+        h('div',{className:'bf-head-c'},
+          h('div',{className:'bf-head-tag'},'DEMO BUILD'),
+          h('div',{className:'bf-head-acts'},'ACT 02',h('span',{className:'bf-head-arrow'},' ▸▸ '),h('b',{style:{opacity:.45}},'LOCKED'))),
+        h('div',{className:'bf-head-side bf-head-r'},h('div',{className:'bf-head-prio'},'CLEARANCE',h('br'),h('b',null,'LV-2 MAX')))),
+      h('div',{className:'bf-panel'},
+        h('div',{className:'bf-panel-h'},'// TRANSMISSION LOCKED',h('span',null,'DAY '+(st.day||'-'))),
+        h('div',{className:'demo-end-title'},isEn?'FREE DEMO ENDS HERE':'무료 데모는 여기까지입니다'),
+        h('div',{className:'bf-analysis demo-end-body'},isEn
+          ?'ACT 3 clearance requires the full build. Act 3–4 escalation, 16 endings, 19 field missions and the complete archive are waiting on the other side.'
+          :'ACT 3 이후 구역은 본편에서 개방됩니다. Act 3~4의 위기, 엔딩 16종, 현장임무 19종, 전체 아카이브가 그 너머에 있습니다.')),
+      h('button',{className:'btn bf-enter demo-end-btn',onClick:function(){try{window.open(itchUrl,'_blank')}catch(e){location.href=itchUrl}}},isEn?'[ CONTINUE IN FULL VERSION — itch.io ]':'[ 본편에서 계속 — itch.io ]'),
+      h('button',{className:'btn demo-end-btn demo-end-btn--ghost',onClick:function(){if(p.onMenu)p.onMenu()}},isEn?'[ MAIN MENU ]':'[ 메인 메뉴 ]')));
+}
 function BriefingScreen(p){
   var act=p.act,stats=p.stats,transRoute=p.transRoute,onEnter=p.onEnter;
   useEffect(function(){if(typeof SFX!=='undefined')SFX.play('radio');},[]);
