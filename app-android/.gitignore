@@ -1,0 +1,15 @@
+# 빌드 산출물·로컬 전용 (커밋 금지)
+node_modules/
+www/
+android/app/build/
+android/build/
+android/.gradle/
+android/.idea/
+android/local.properties
+android/app/release/
+android/app/debug/
+
+# 서명 키 — 절대 커밋 금지 (유출 시 앱 탈취 가능)
+*.keystore
+*.jks
+keystore.properties

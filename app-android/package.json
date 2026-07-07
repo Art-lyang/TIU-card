@@ -1,0 +1,18 @@
+{
+  "name": "tiu-card-android",
+  "private": true,
+  "version": "1.0.0",
+  "description": "TERMINAL SESSION — Capacitor Android wrapper (game bundled inside the app, no public hosting required)",
+  "scripts": {
+    "sync:www": "node sync-www.mjs",
+    "sync": "node sync-www.mjs && npx cap sync android",
+    "open": "npx cap open android"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0"
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/android": "^7.0.0"
+  }
+}

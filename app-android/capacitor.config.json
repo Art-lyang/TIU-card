@@ -1,0 +1,11 @@
+{
+  "appId": "io.github.artlyang.tiucard",
+  "appName": "TERMINAL SESSION",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  }
+}
