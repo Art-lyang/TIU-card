@@ -23,10 +23,10 @@ var BRIEFING_TEXT = {
 };
 
 var BRIEFING_IMG={
-  1:{a:'img/act1.png', show:'img/act1.png'},
-  2:{a:'img/act2a.png',b:'img/act2b.png', show:'img/act2b.png'},
-  3:{a:'img/act3a.png',b:'img/act3b.png', show:'img/act3b.png'},
-  4:{a:'img/act4a.png',b:'img/act4b.png', show:'img/act4a.png'}
+  1:{a:'img/act1.webp', show:'img/act1.webp'},
+  2:{a:'img/act2a.webp',b:'img/act2b.webp', show:'img/act2b.webp'},
+  3:{a:'img/act3a.webp',b:'img/act3b.webp', show:'img/act3b.webp'},
+  4:{a:'img/act4a.webp',b:'img/act4b.webp', show:'img/act4a.webp'}
 };
 
 function BriefingImage(p){

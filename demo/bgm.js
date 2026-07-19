@@ -20,7 +20,7 @@ var BGM = {
       var main = new Audio(BGM_MAIN);
       main.loop = true;
       main.volume = 0;
-      main.preload = 'auto';
+      main.preload = 'none'; // BGM_ACT1 존재 시 사실상 도달 불가한 폴백 — 매 세션 다운로드 방지
       this.tracks.main = main;
 
       var tension = new Audio(BGM_TENSION);

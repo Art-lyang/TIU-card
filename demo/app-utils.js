@@ -164,6 +164,9 @@ var showDeltaFloats=function(before,after){
     parent.style.position='relative';
     parent.appendChild(el);
     setTimeout(function(){if(el.parentNode)el.parentNode.removeChild(el)},1600);
+    var hitClass=d>0?'cg-hit-up':'cg-hit-down';
+    parent.classList.add(hitClass);
+    setTimeout(function(){parent.classList.remove(hitClass)},600);
   });
 };
 

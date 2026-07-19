@@ -321,15 +321,15 @@ function MainMenu(p){
 }
 // ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
-  brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=2',start:6.5,end:9.0,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
-  blood_pit:     {src:'assets/video/bloodpit-cctv.mp4',start:0.3,end:4.6,                     cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
+  brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=3',start:0.3,end:2.8,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
+  blood_pit:     {src:'assets/video/bloodpit-cctv.mp4?v=1',start:0.3,end:4.6,                     cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
   shell_talker:  {src:'assets/video/shelltalker-cctv.mp4',start:0.3,end:4.6,                cam:'CCTV // FOREST LINE 7',   warn:{ko:'음성 모방 개체 감지',    en:'VOICE-MIMIC ENTITY DETECTED'}},
-  shell_gate:    {src:'assets/video/shellgate-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
-  mannequin:     {src:'assets/video/mannequin-cctv.mp4',start:0.3,end:4.6,                    cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
-  brood_drone:   {src:'assets/video/brood-cctv.mp4',start:0.3,end:4.6,                        cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
+  shell_gate:    {src:'assets/video/shellgate-cctv.mp4?v=1',start:0.3,end:4.6,                    cam:'CCTV // PERIMETER GATE B',warn:{ko:'봉쇄선 침입 감지',      en:'PERIMETER BREACH DETECTED'}},
+  mannequin:     {src:'assets/video/mannequin-cctv.mp4?v=1',start:0.3,end:4.6,                    cam:'CCTV // NEST DORMANT 4',  warn:{ko:'정지 위장 개체 감지',    en:'STILL-CAMOUFLAGE ENTITY'}},
+  brood_drone:   {src:'assets/video/brood-cctv.mp4?v=1',start:0.3,end:4.6,                        cam:'CCTV // SWARM ZONE C',    warn:{ko:'군체 드론 활동 감지',    en:'SWARM DRONE ACTIVITY'}},
   spore_phantom: {src:'assets/video/spore-cctv.mp4',start:0.3,end:4.6,                      cam:'CCTV // SPORE FOG 2',     warn:{ko:'포자 농도 급상승',      en:'SPORE DENSITY SPIKING'}},
-  seed_spreader: {src:'assets/video/seed-cctv.mp4',start:0.3,end:4.6,                       cam:'CCTV // BLIGHT SECTOR 5', warn:{ko:'포자 살포 개체 감지',    en:'SEEDING ENTITY DETECTED'}},
-  sample_contam: {src:'assets/video/samplecontam-cctv.mp4',start:0.3,end:4.6,               cam:'CCTV // LAB CONTAINMENT 3',warn:{ko:'샘플 오염 — 격리 경보',  en:'SAMPLE CONTAMINATION'}}
+  seed_spreader: {src:'assets/video/seed-cctv.mp4?v=1',start:0.3,end:4.6,                       cam:'CCTV // BLIGHT SECTOR 5', warn:{ko:'포자 살포 개체 감지',    en:'SEEDING ENTITY DETECTED'}},
+  sample_contam: {src:'assets/video/samplecontam-cctv.mp4?v=1',start:0.3,end:4.6,               cam:'CCTV // LAB CONTAINMENT 3',warn:{ko:'샘플 오염 — 격리 경보',  en:'SAMPLE CONTAMINATION'}}
 };
 var MISSION_CCTV={
   'M-001':'blood_pit','M-002':'shell_talker','M-004':'mannequin','M-005':'brood_drone',
@@ -349,9 +349,10 @@ function CctvSting(p){
       v.muted=true;v.addEventListener('loadedmetadata',seek);if(v.readyState>=1)seek();
       v.addEventListener('canplay',function(){if(v.paused){try{var p2=v.play();if(p2&&p2.catch)p2.catch(function(){})}catch(e){}}}); // 첫 로드 레이스로 play()가 중단되면 재시도
       v.addEventListener('timeupdate',onTime);v.addEventListener('ended',fin);
+      v.addEventListener('error',fin); // 로드/디코딩 실패 시 안전 캡까지 기다리지 않고 즉시 종료(웹 배포 느린 회선 대응)
       try{var pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}catch(e){}
       var cap=setTimeout(fin,p.duration||9000); // 영상 안전 캡: end/ended가 먼저 발생
-      return function(){clearTimeout(cap);v.removeEventListener('ended',fin);v.removeEventListener('loadedmetadata',seek);v.removeEventListener('timeupdate',onTime);};
+      return function(){clearTimeout(cap);v.removeEventListener('ended',fin);v.removeEventListener('loadedmetadata',seek);v.removeEventListener('timeupdate',onTime);v.removeEventListener('error',fin);};
     }
     var cap2=setTimeout(fin,p.duration||2800); // 정지 이미지 스팅 표시 시간
     return function(){clearTimeout(cap2)};
@@ -659,7 +660,7 @@ function CardC(p){
   var s1=useState(0),dx=s1[0],setDx=s1[1];var s2=useState(false),dragging=s2[0],setDragging=s2[1];var s3=useState(0),sx=s3[0],setSx=s3[1];var s4=useState(null),chosen=s4[0],setChosen=s4[1];
   var s5=useState(0),blockCount=s5[0],setBlockCount=s5[1];var s6=useState(false),shaking=s6[0],setShaking=s6[1];
   var s8=useState(null),choiceCue=s8[0],setChoiceCue=s8[1];
-  var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null),choiceCueTimer=useRef(null);
+  var cardRef=useRef(null),sxRef=useRef(0),dragActiveRef=useRef(false),holdPreviewTimer=useRef(null),holdPreviewDir=useRef(null),choiceCueTimer=useRef(null),armedDirRef=useRef(null),previewDirRef=useRef(null);
   // ═══ 카드 타이머 (card.timer 초 단위) — 만료 시 오른쪽 자동 선택 ═══
   var s7=useState(effTimer),remaining=s7[0],setRemaining=s7[1];
   // ── 이미지 플래시 연출 (opt-in card.flashImg · fxMode 존중 · 카드당 1회) ──
@@ -687,6 +688,10 @@ function CardC(p){
   };
   var previewChoice=function(kdir){
     if(!kdir||!card[kdir]||!p.onPreview)return;
+    // preview 델타는 방향에만 의존(드래그 거리 무관) → 방향 안 바뀌면 App 리렌더 생략.
+    // 매 pointermove마다 setPreview로 App 전체(아카이브 해금 스캔 등)가 재조정되던 것을 방향 전환 시로 한정.
+    if(previewDirRef.current===kdir)return;
+    previewDirRef.current=kdir;
     p.onPreview(p.getPreviewDelta?p.getPreviewDelta(card,kdir):(card[kdir].fx||null));
   };
   var choiceDirFromX=function(x){
@@ -697,7 +702,7 @@ function CardC(p){
   };
   var _ent=useState(false),entering=_ent[0],setEntering=_ent[1];
   useEffect(function(){return function(){clearHoldPreview();clearChoiceCue()}},[]);
-  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(effTimer);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;if(p.onPreview)p.onPreview(null);setEntering(true);var _et=setTimeout(function(){setEntering(false)},340);return function(){clearTimeout(_et)}},[card.id]);
+  useEffect(function(){setDx(0);setChosen(null);setBlockCount(0);setShaking(false);setRemaining(effTimer);clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;previewDirRef.current=null;if(p.onPreview)p.onPreview(null);setEntering(true);var _et=setTimeout(function(){setEntering(false)},340);return function(){clearTimeout(_et)}},[card.id]);
   // 선택지 확정 시(매뉴얼/오라클차단 아님) + replyMsg 있으면 토스트 호출 후 onSwipe
   var performSwipe=function(kdir,isAuto){
     var branch=card[kdir];
@@ -752,13 +757,16 @@ function CardC(p){
   var curDir=Math.abs(dx)>20?(dx<0?'left':'right'):null;
   var hS=function(x){
     if(p.disabled||entering)return;
-    sxRef.current=x;setSx(x);setDragging(true);dragActiveRef.current=true;holdPreviewDir.current=choiceDirFromX(x);clearHoldPreview();
+    sxRef.current=x;setSx(x);setDragging(true);dragActiveRef.current=true;armedDirRef.current=null;previewDirRef.current=null;holdPreviewDir.current=choiceDirFromX(x);clearHoldPreview();
     holdPreviewTimer.current=setTimeout(function(){if(dragActiveRef.current&&Math.abs(dx)<8)previewChoice(holdPreviewDir.current)},180);
   };
   var hM=function(x){
     if(p.disabled)return;
     if(dragging||dragActiveRef.current){
       var nd=x-sxRef.current;setDx(nd);
+      // 방향 확정 임계점(±80px) 통과/해제 순간 짧은 햅틱 틱 — '손 떼면 이 방향' 확정감.
+      var armed=nd>80?'right':nd<-80?'left':null;
+      if(armed!==armedDirRef.current){armedDirRef.current=armed;if(armed&&typeof Haptics!=='undefined')Haptics.fire(10);}
       if(p.onPreview){
         var d=Math.abs(nd)>8?(nd<0?'left':'right'):holdPreviewDir.current;
         if(d)setChoiceCue(d);
@@ -808,10 +816,11 @@ function CardC(p){
   var _mLen=String((cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')))||'');
   var msgDense=_mLen.length>=210||_mLen.split('\n\n').length>=6;
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
+    h('div',{className:'card-stack-dummy','aria-hidden':true}),
     (flashOn&&flashSrc)?h('div',{className:'card-flash'+(_fxMode==='reduced'?' card-flash--reduced':''),onClick:dismissFlash},h('div',{className:'card-flash-img',style:{backgroundImage:'url('+flashSrc+')'}})):null,
     h('div',{style:{position:'absolute',top:'50%',left:4,fontSize:11,color:'var(--ui)',opacity:dx<-30?Math.min(0.8,Math.abs(dx)/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',pointerEvents:'none',zIndex:2}},'← '+leftLabel),
     h('div',{style:{position:'absolute',top:'50%',right:4,fontSize:11,color:'var(--ui)',opacity:dx>30?Math.min(0.8,dx/th):0,transition:'opacity 0.1s',fontFamily:"'Share Tech Mono',monospace",transform:'translateY(-50%)',textAlign:'right',pointerEvents:'none',zIndex:2}},rightLabel+' →'),
-    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass+(entering?' is-entering':''),style:{transform:shaking?'none':(chosen?('translateX('+(chosen==='left'?-480:480)+'px) rotate('+(chosen==='left'?-14:14)+'deg)'):('translateX('+tx+'px) rotate('+(tx*0.04)+'deg)')),animation:shaking?'oracleShake 0.6s ease':undefined,transition:dragging||shaking?'none':'transform 0.32s cubic-bezier(0.4,0,0.6,1), opacity 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
+    h('div',{ref:cardRef,className:'card-panel'+pcClass+cueClass+(entering?' is-entering':'')+(dragging?' is-dragging':''),style:{transform:shaking?'none':(chosen?('translateX('+(chosen==='left'?-480:480)+'px) rotate('+(chosen==='left'?-14:14)+'deg)'):('translateX('+tx+'px) rotate('+(tx*0.032)+'deg)')),animation:shaking?'oracleShake 0.6s ease':undefined,transition:dragging||shaking?'none':'transform 0.32s cubic-bezier(0.4,0,0.6,1), opacity 0.3s ease',opacity:chosen?0:1,touchAction:'none',WebkitUserSelect:'none',userSelect:'none',pointerEvents:p.disabled?'none':'auto'},
       onMouseDown:function(e){hS(e.clientX)},onMouseMove:function(e){hM(e.clientX)},onMouseUp:hE,onMouseLeave:function(){if(dragging)hE()},
       onTouchStart:function(e){hS(e.touches[0].clientX)},onTouchMove:function(e){hM(e.touches[0].clientX)},onTouchEnd:hE,onTouchCancel:function(){clearHoldPreview();clearChoiceCue();setChoiceCue(null);dragActiveRef.current=false;setDragging(false);setDx(0);if(p.onPreview)p.onPreview(null)}},
       h('span',{className:'card-corner-node card-corner-node--tl','aria-hidden':true}),
@@ -863,10 +872,10 @@ function CardC(p){
           h('div',{style:{display:'flex',gap:6,rowGap:3,flexWrap:'wrap',alignItems:'center',justifyContent:'flex-end',textAlign:'right',opacity:0.86}},rightFx||h('span',{style:{color:'rgba(var(--ui-rgb),.3)'}},'—'),h('span',{style:{color:'rgba(var(--ui-rgb),.5)',fontSize:9,flexShrink:0}},'→')))),
       h('div',{style:{display:'grid',gridTemplateColumns:'minmax(0,1fr) minmax(0,1fr)',paddingTop:14,paddingBottom:8,borderTop:'1px solid rgba(var(--ui-rgb),.1)',fontFamily:"'Share Tech Mono',monospace",fontSize:'var(--fs-choice)',lineHeight:1.55,pointerEvents:'none',columnGap:16,alignItems:'start'}},
         h('div',{style:{minWidth:0,textAlign:'left'}},
-          h('span',{style:{color:'rgba(var(--ui-rgb),.5)',display:'block',lineHeight:1.55}},'← '+leftLabel),
+          h('span',{style:{color:choiceCue==='left'?'var(--ui)':'rgba(var(--ui-rgb),.5)',textShadow:choiceCue==='left'?'0 0 8px var(--ui-glow)':'none',display:'block',lineHeight:1.55,transition:'color 0.12s,text-shadow 0.12s'}},'← '+leftLabel),
           leftTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:5,marginTop:7,opacity:.72}},leftTrace)),
         h('div',{style:{minWidth:0,textAlign:'right'}},
-          h('span',{style:{color:'rgba(var(--ui-rgb),.5)',display:'block',width:'100%',justifySelf:'end',lineHeight:1.55}},rightLabel+' →'),
+          h('span',{style:{color:choiceCue==='right'?'var(--ui)':'rgba(var(--ui-rgb),.5)',textShadow:choiceCue==='right'?'0 0 8px var(--ui-glow)':'none',display:'block',width:'100%',justifySelf:'end',lineHeight:1.55,transition:'color 0.12s,text-shadow 0.12s'}},rightLabel+' →'),
           rightTrace&&h('div',{style:{display:'flex',flexWrap:'wrap',gap:5,marginTop:7,justifyContent:'flex-end',opacity:.72}},rightTrace)))
     ));
 }
