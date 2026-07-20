@@ -101,15 +101,6 @@ function journalEventKey(id){
   if(String(id).indexOf('LOG-SEJIN-DELAY')===0)return 'SEJIN-DELAY';
   return null;
 }
-// 세션 덱 성향 헤더 — 이번 회차의 관측 기류(파견 브리핑 메모 톤). 팩 id → 짧은 성향 문구.
-var JOURNAL_DECK_PHRASES={
-  DG_MERIDIAN:['외부 자본의 접촉','outside capital making contact'],
-  B3_PREDECESSOR:['전임 지휘관의 흔적','traces of the previous commander'],
-  PROMETHEUS_TENSION:['프로메테우스 방면의 긴장','tension on the Prometheus side'],
-  UPRISING_INFRA:['폐쇄 구획 시설 문제','closed-section facility issues'],
-  MUTANT_SURGE:['이변체 다발 조우','dense variant encounters'],
-  GOV_ORACLE_SUSPICION:['정부와 지부 사이의 기류','currents between government and branch']
-};
 
 // ── DEV 전용: ✎ 무드 코멘트 전체 프리뷰 (?dev=1 런처에서 호출) ──
 // Act별 4줄 KO/EN 전량을 한 화면에서 검수. day 해시 선택이라 실플레이 없이 여기서 전문 확인.
@@ -183,13 +174,8 @@ function CommanderJournal(p){
       btn(isEn?'NEXT':'다음',safePage>=totalPages-1,Math.min(totalPages-1,safePage+1)));
   };
   if(days.length===0)return h('div',{className:'vw-note',style:{marginTop:14}},tt('journal.empty',null,isEn?'No entries yet. The journal fills in as the session proceeds.':'아직 기록이 없습니다. 세션이 진행되면 일지가 채워집니다.'));
-  // 세션 덱 성향 헤더 — 이번 회차 관측 기류 (파견 브리핑 메모)
-  var deckLine=null;
-  try{
-    var _dk=(typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null;
-    var _ps=((_dk&&_dk.packs)||[]).map(function(id){var ph=JOURNAL_DECK_PHRASES[id];return ph?(isEn?ph[1]:ph[0]):null}).filter(Boolean);
-    if(_ps.length)deckLine=(isEn?'✱ Posting note — this term\'s currents: ':'✱ 부임 메모 — 이번 임기의 기류: ')+_ps.join(isEn?' / ':' · ');
-  }catch(_de){}
+  // 일지 안내 — 지휘관이 임기 중 직접 남기는 사적 메모라는 간단한 설명 한 줄
+  var deckLine=isEn?'✱ Personal notes the commander keeps through this term.':'✱ 지휘관이 임기 중 직접 남기는 개인 메모입니다.';
   var moodFor=function(d,evs,act){
     // 1순위: 그날 해금 로그의 아크 이벤트 (간부 상실·세진 지연)
     for(var i=0;i<evs.length;i++){
