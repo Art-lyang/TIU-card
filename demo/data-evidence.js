@@ -16,7 +16,7 @@ var EVIDENCE = [
   { id: "EV-10", name: "서하은 USB 데이터", desc: "ORACLE 삭제 로그 + GRANT 단편", src: "LOG-055", cat: "internal" },
   { id: "EV-11", name: "02:47 데이터 펄스", desc: "ORACLE 정기 전송과 격리실 이상의 연관성", src: "LOG-INC-01-ORACLE", cat: "incident" },
   { id: "EV-12", name: "은폐 프로토콜", desc: "미등록 열원 감지 시 CCTV 비활성화 스크립트", src: "LOG-INC-02-SCRIPT", cat: "incident" },
-  { id: "EV-13", name: "자체 변이 샘플", desc: "SPEC-012 초기 형태와 동일한 배양기 변이체", src: "LOG-INC-03-SEED", cat: "incident" },
+  { id: "EV-13", name: "자체 변이 샘플", desc: "SPEC-012 초기 형태와 동일한 배양기 이변체", src: "LOG-INC-03-SEED", cat: "incident" },
   { id: "EV-14", name: "하드웨어 백도어", desc: "기지 건설 시 매립된 물리적 인증 우회장치", src: "LOG-INC-04-BACKDOOR", cat: "incident" },
   { id: "EV-15", name: "미등록 통로", desc: "시설 도면에 없는 B2 방향 공간", src: "LOG-INC-05-PASSAGE", cat: "incident" },
   { id: "EV-16", name: "B2 하부 진동", desc: "격리실 아래에서 올라오는 전자기 간섭", src: "LOG-INC-01-DEEP", cat: "incident" },

@@ -28,6 +28,14 @@
         title: "EV-Sigma (Evolution Acceleration Medium)",
         content: "A biological evolution-acceleration medium. It is not a simple virus.\n\nCurrently available information is limited to infection stages and field-response standards.\n\nProgression model:\n- Phase 0: early infection. The only stage where treatment remains possible.\n- Phase 1: humanoid mutation. Suppression or delay research may be possible, but this is not a recovery stage.\n- Phase 2+: full mutation. Human bodily continuity is heavily damaged and control is no longer viable.\n\nAdditional biological records require related logs."
       },
+      "ARC-BIO-CLASSIFY": {
+        title: "Aberrant Classification System - EV-Sigma / SPEC / Aberrant",
+        content: "Anything infected by the unknown virus EV-Sigma mutates into an aberrant.\n\nORACLE catalogs confirmed aberrants under SPEC-### codes. Each is assigned an individual code and codename by form, behavior, and threat level (e.g., SPEC-011 / Shell Talker).\n\nOutside agencies and public records use the blanket term 'Aberrant.' SPEC designations and classification data are readable only within clearance, and the system itself is never disclosed to civilians.\n\nDetailed stage-by-stage biological records unlock after lab approval."
+      },
+      "ARC-SYS-METRICS": {
+        title: "Branch Operations Metrics - KR-INIT-001",
+        content: "The KR-INIT-001 (Gangwon) branch is governed by four core gauges.\n\n- Containment - integrity of the containment line. Zero collapses the perimeter; reaching 100 also ends the assignment.\n- Resources - stock of food, medicine, and equipment.\n- Trust - the base personnel's confidence in the commander.\n- Evaluation - ORACLE's assessment of the commander.\n\nIf any gauge reaches zero, the assignment is logged as failed. The gauges shift with every decision."
+      },
       "ARC-SPEC-002": {
         title: "SPEC-002 - Hardened Variant",
         content: "M-TYPE / EV-Sigma Phase 2 variant.\n\nThe entire body hardens into a gray-brown keratin layer. Body mass increases to three or four times the original weight.\n\nStandard firearms are ineffective. Wall and vehicle breach cases have been reported.\n\nIt moves slowly, but it has never been recorded coming to a halt. Slow doesn't mean it can be stopped.\n\nResponse protocol: avoid physical engagement. High-temperature incineration or acidic solvent is required."

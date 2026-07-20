@@ -2357,7 +2357,7 @@ window.TS_I18N.mergeContent('en', {
         rightLabel: "Accept the normal-range classification"
       },
       "CA-012": {
-        msg: "Yoon Se-jin compiled this week's EV-Σ observation data.\n\n\"The threat level is low, but... the activity radius is narrower than usual. That still feels strange.\"\n\n[ORACLE: Within normal seasonal variance. No further action required.]",
+        msg: "Yoon Se-jin compiled this week's aberrant observation data.\n\n\"The threat level is low, but... the activity radius is narrower than usual. That still feels strange.\"\n\n[ORACLE: Within normal seasonal variance. No further action required.]",
         leftLabel: "Allow an extended observation window",
         rightLabel: "Follow ORACLE's judgment"
       },

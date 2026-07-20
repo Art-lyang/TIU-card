@@ -10,7 +10,7 @@
     // ── 설비 증설 요청 (승인/보류) ──
     { id:"C-YS-EQUIP", act:[2,3], priority:"중", once:true, bg:"lab", img:"char_sejin",
       req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && s.day>=11 && !dead(logs); },
-      msg:"윤세진이 분석 장비 목록을 내밉니다.\n\n\"격리 용기와 분석기가 한계입니다. 지금 장비로는 변이체 표본을 오래 유지하지 못해요.\"\n\n\"연구실 설비 증설을 승인해 주세요. 자원이 들지만… 이걸 미루면 언젠가 사고가 납니다.\"",
+      msg:"윤세진이 분석 장비 목록을 내밉니다.\n\n\"격리 용기와 분석기가 한계입니다. 지금 장비로는 이변체 표본을 오래 유지하지 못해요.\"\n\n\"연구실 설비 증설을 승인해 주세요. 자원이 들지만… 이걸 미루면 언젠가 사고가 납니다.\"",
       left:{ label:"설비 증설 승인", fx:{ c:0, r:-8, t:2, o:-1 }, g:-1, log:'LOG-SEJIN-EQUIP-OK' },
       right:{ label:"지금은 보류", fx:{ c:0, r:0, t:-3, o:0 }, g:1, log:'LOG-SEJIN-DELAY-EQUIP' } },
 

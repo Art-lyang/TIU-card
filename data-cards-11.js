@@ -25,7 +25,7 @@ var CARDS_CHAINS = [
     left: { label: "책임은 나에게 있다", fx: { c: -1, r: -1, t: 1, o: -2 }, g: -2 },
     right: { label: "보고서 작성해라", fx: { c: -1, r: 0, t: -1, o: 0 }, g: 0 } },
 
-  // 실패 후 변이체 습격: LOG-065 → C-182
+  // 실패 후 이변체 습격: LOG-065 → C-182
   { id: "C-182", act: [2,3], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return logs.includes("LOG-065") && !logs.includes("LOG-065-ATK") },
     msg: "야간 경보.\n\n이전 임무 실패 지점 반경 500m에서 이변체 반응 감지. 피냄새를 따라온 것으로 추정.\n\n강도윤 부상으로 현장 지휘 불가. 대체 요원 부족.\n\n\"봉쇄선 2구역 이상 진동 감지!\"",
@@ -67,7 +67,7 @@ var CARDS_CHAINS = [
     left: { label: "개선 계획서 제출", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 },
     right: { label: "현장 판단을 존중해라", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 } },
 
-  // ═══ 체인 3: 야간 변이체 습격 + 강도윤 생존/사망 ═══
+  // ═══ 체인 3: 야간 이변체 습격 + 강도윤 생존/사망 ═══
   // 조건: LOG-070(미휴식) + LOG-071(미개편) + LOG-072(ORACLE 의존) 중 2개 이상
   // C-187 is intentionally unused; the night-assault route starts at C-188 after earlier gap-preserving content moves.
   // C-188: 야간 습격 전조

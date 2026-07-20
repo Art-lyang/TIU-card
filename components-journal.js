@@ -158,7 +158,7 @@ function CommanderJournal(p){
         var m=(typeof MISSIONS!=='undefined')?MISSIONS[e.id]:null;
         if(!m)return null;
         // SPEC 단일 표기(캐논): spec 필드 우선, 없으면 제목(EN 오버레이 폴백)
-        if(m.spec)return '· '+(isEn?('Field response — '+m.spec):('현장 대응 — '+m.spec));
+        if(m.spec)return '· '+(isEn?('Field response — '+m.spec+(m.codename?' ('+m.codename+')':'')):('현장 대응 — '+m.spec+(m.codename?' ('+m.codename+')':'')));
         var mov=(isEn&&typeof tc==='function')?tc('missions',e.id,null):null;
         return '· '+(isEn?'Field response — ':'현장 대응 — ')+((mov&&mov.title)||m.title);
       }

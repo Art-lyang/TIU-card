@@ -39,6 +39,51 @@ function BriefingImage(p){
       h('img',{src:bi.b,alt:'Act '+p.act+' B',style:{width:'100%',display:'block',borderRadius:4,border:'1px solid rgba(var(--ui-rgb),.2)',boxShadow:'0 0 20px rgba(var(--ui-rgb),.1)',position:'absolute',top:0,left:0,animation:'bfFlicker 3s ease-in-out infinite',animationDelay:'1.5s',opacity:0}})));
 }
 
+// ── 운영 브리핑 (온보딩) — 간부 면담 4/4 완료 시 1회. '절차상 재확인' 프레이밍으로
+//    신규 플레이어에게만 기본 정보(지표·개체 분류 체계·ORACLE 연동·봉쇄선)를 전달한다.
+//    이중철은 베테랑이라 이미 알지만 플레이어는 모름 → 디제틱 인포덤프. 캐논: 개체=내부 SPEC/대외 '아베란트',
+//    ORACLE의 '기밀성'은 미노출(운영 시스템으로만 소개), 옵저버 등 후반 미스터리는 건드리지 않는다.
+var COMMAND_BRIEF=[
+  {char:'서하은', name:['서하은','Seo Ha-eun'], role:['부지휘관 · 데이터분석','Deputy Commander · Data'], lines:[
+    ['부임 전 3개월간, 지부는 ORACLE 지시만으로 운영됐습니다.','For three months before your posting, the branch ran on ORACLE directives alone.'],
+    ['기지 상태는 네 지표로 관리합니다 — 봉쇄, 자원, 신뢰, 평가.','The base is tracked by four gauges — Containment, Resources, Trust, Evaluation.'],
+    ['어느 하나라도 0이 되면, 봉쇄가 100까지 차올라도 임무는 종료됩니다.','If any of them hits zero — or Containment climbs to 100 — the assignment ends.']
+  ]},
+  {char:'윤세진', name:['윤세진','Yoon Se-jin'], role:['연구 · 의료','Research · Medical'], lines:[
+    ['EV-Σ에 감염된 개체는 이변체로 변이합니다.','Anything infected by EV-Σ mutates into an aberrant.'],
+    ['ORACLE은 이들을 SPEC-### 코드로 분류·관리합니다. 대외 기관엔 \'아베란트\'로 통합니다.','ORACLE classifies them under SPEC-### codes; outside agencies only ever hear \'Aberrant.\''],
+    ['SPEC 명칭은 인가자 외엔 알 수 없어요. 지휘관님은 인가자세요.','The SPEC designations are for cleared personnel only. You are cleared.']
+  ]},
+  {char:'임재혁', name:['임재혁','Lim Jae-hyuk'], role:['정보 · 기술','Intel · Systems'], lines:[
+    ['기지의 모든 정보는 ORACLE 단말기를 통해 들어옵니다.','Every piece of intel reaches this base through the ORACLE terminal.'],
+    ['판단 근거도, 권고도, 경보도 전부 이 체계를 거칩니다.','Rationale, recommendations, alerts — all of it passes through that system.'],
+    ['시스템 이상 징후는 제가 실시간으로 감시합니다.','I watch that system for anomalies, around the clock.']
+  ]},
+  {char:'강도윤', name:['강도윤','Kang Do-yun'], role:['전술 · 현장','Tactical · Field'], lines:[
+    ['봉쇄선은 감염 확산을 막는 최전선입니다. 현장 대응은 제 담당입니다.','The containment line is the front that holds the spread. Field response is mine to run.'],
+    ['ORACLE은 프로메테우스를 적대 세력으로 분류합니다.','ORACLE classifies Prometheus as a hostile faction.'],
+    ['접촉 정황이 잡히면, 교전보다 보고가 먼저입니다.','If contact surfaces, report before you engage.']
+  ]}
+];
+function CommandBrief(p){
+  var isEn=(typeof window!=='undefined'&&window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale()==='en');
+  return h('div',{className:'screen cbrief-screen'},
+    h('div',{className:'cbrief-wrap'},
+      h('div',{className:'cbrief-head'},
+        h('div',{className:'cbrief-head-t'},isEn?'[ OPERATIONS BRIEFING — PROCEDURAL REVIEW ]':'[ 운영 브리핑 — 절차상 재확인 ]'),
+        h('div',{className:'cbrief-head-s'},isEn?'You already know all of this, Commander. Per intake procedure, each section restates the essentials once.':'지휘관님도 숙지하신 내용이나, 취임 절차에 따라 각 부서가 한 번 더 정리해 드립니다.')),
+      COMMAND_BRIEF.map(function(sec,i){
+        var portrait=(typeof CHAR_IMG!=='undefined')?CHAR_IMG[sec.char]:null;
+        return h('div',{className:'cbrief-sec',key:i},
+          portrait?h('div',{className:'cbrief-portrait',style:{backgroundImage:'url('+portrait+')'}}):h('div',{className:'cbrief-portrait cbrief-portrait-empty'}),
+          h('div',{className:'cbrief-body'},
+            h('div',{className:'cbrief-name'},(isEn?sec.name[1]:sec.name[0])+' — '+(isEn?sec.role[1]:sec.role[0])),
+            sec.lines.map(function(l,j){return h('div',{className:'cbrief-line',key:j},isEn?l[1]:l[0])})));
+      }),
+      h('div',{className:'cbrief-foot'},isEn?'Full references have been filed to the Archive.':'상세 자료는 아카이브에 등록해두었습니다.'),
+      h('button',{className:'btn bf-enter',style:{margin:'8px auto 0'},onClick:p.onDone},isEn?'[ Acknowledged ]':'[ 확인 ]')));
+}
+
 // DAY 전환 컷 — 하루가 넘어갈 때 게임 화면 위에 1회 표시. 수명은 app.js가 관리(표시 전용), 탭=스킵.
 // v5: 지도 줌 → '업무 종료' 일일 보고 패널로 교체. 헤더/야간 보고 2줄/지표/상태 → 'DAY N 개시' 스탬프.
 //     야간 보고는 day 기반 결정적 로테이션(평시 풀 + 상태 라인 + Act3+ 불온 징후), 관측 채널 라벨 로테이션 유지.
@@ -78,7 +123,7 @@ function DayCutOverlay(p){
   if(ev==='lockdown')panelCls=' is-lock';else if(ev==='attack')panelCls=' is-danger';else if(ev==='warn'&&!panelCls)panelCls=' is-warn';
   var resOn=logs.indexOf('LOG-RES-OPEN')>=0;
   var sync=(90+Math.round(c/12))+'.'+(day%10);
-  var sub=ev==='lockdown'?(isEn?'LOCKDOWN ACTIVE':'봉쇄선 가동'):ev==='attack'?(isEn?'⚠ ABERRANT ACTIVITY':'⚠ 변이체 활동 감지'):ev==='warn'?(isEn?'ABERRANT ACTIVITY RISING':'변이체 활동 증가'):(isEn?'SECTOR SYNC STABLE':'구역 동기화 안정');
+  var sub=ev==='lockdown'?(isEn?'LOCKDOWN ACTIVE':'봉쇄선 가동'):ev==='attack'?(isEn?'⚠ ABERRANT ACTIVITY':'⚠ 이변체 활동 감지'):ev==='warn'?(isEn?'ABERRANT ACTIVITY RISING':'이변체 활동 증가'):(isEn?'SECTOR SYNC STABLE':'구역 동기화 안정');
   var subCls=ev==='attack'?' is-hot':ev==='warn'?' is-warn':ev==='lockdown'?' is-lock':'';
   var sm=[[isEn?'CNT':'봉쇄',st.c],[isEn?'RES':'자원',st.r],[isEn?'TRS':'신뢰',st.t],[isEn?'EVL':'평가',st.o]];
   // ── 야간 보고 라인 (day 기반 결정적 로테이션 — 같은 날은 항상 같은 보고) ──

@@ -19,7 +19,7 @@ function FieldMission(p){
   var sRoll=useState(null),lastRoll=sRoll[0],setLastRoll=sRoll[1]; // 직전 판정 결과 배너용
   // 미니게임 진입 시 화면을 상단으로 스냅 — 절대배치 오버레이가 직전 스크롤 위치에 가려지지 않게(몰입도)
   useEffect(function(){ if(activeMiniGame&&rootRef.current){ rootRef.current.scrollTop=0; } },[activeMiniGame]);
-  // 변이체(SPEC 연계) 미션 진입 시 앰비언트 베드 재생, 이탈(언마운트) 시 정지
+  // 이변체(SPEC 연계) 미션 진입 시 앰비언트 베드 재생, 이탈(언마운트) 시 정지
   useEffect(function(){
     if(mission&&mission.spec&&typeof SFX!=='undefined'&&SFX.playLoop){
       try{ SFX.playLoop('creature_amb',0.3); }catch(e){}

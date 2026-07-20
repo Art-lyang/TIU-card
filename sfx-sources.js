@@ -27,6 +27,6 @@ var SFX_PATHS = {
   blaster:     'audio/blaster.mp3',         // 미니게임: 정밀 타격 통제 발포
   scan_signal: 'audio/scan_signal.mp3',     // 미니게임: 생체 반응 스캔 진행 루프
   table_open:  'audio/table_open.mp3',      // info-bar 시설/연구/조사 테이블 열기
-  creature_amb:'audio/creature_ambient.mp3',// 변이체(SPEC) 미션 진입 앰비언트 루프
+  creature_amb:'audio/creature_ambient.mp3',// 이변체(SPEC) 미션 진입 앰비언트 루프
   gameover_doom:'audio/gameover_doom.mp3'   // 게임오버 — 총성 뒤 이어지는 무거운 드론 스팅
 };

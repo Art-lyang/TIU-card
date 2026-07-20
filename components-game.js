@@ -319,7 +319,7 @@ function MainMenu(p){
             })),
           h('button',{type:'button',className:'main-terminal-save-auto',onClick:function(){setShowSnapshotSelect(false);if(p.onContinue)p.onContinue()}},tt('menu.savePicker.auto',null,'CONTINUE CURRENT AUTO SAVE'))))));
 }
-// ===== 변이체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
+// ===== 이변체 조우 직전 CCTV 트리거 스팅 (침입형 미션 한정) =====
 var CCTV_CLIPS={
   brainseeker:   {src:'assets/video/brainseeker-cctv.mp4?v=3',start:0.3,end:2.8,cam:'CCTV // SEWER LINE 3',   warn:{ko:'하수도 침입 감지',      en:'SEWER BREACH DETECTED'}},
   blood_pit:     {src:'assets/video/bloodpit-cctv.mp4?v=1',start:0.3,end:4.6,                     cam:'CCTV // ORGANIC TRAP B2', warn:{ko:'다량 혈흔 반응 감지',    en:'MASS BLOOD TRACE DETECTED'}},
@@ -334,7 +334,7 @@ var CCTV_CLIPS={
 var MISSION_CCTV={
   'M-001':'blood_pit','M-002':'shell_talker','M-004':'mannequin','M-005':'brood_drone',
   'M-006':'spore_phantom','M-009':'seed_spreader','M-010':'brainseeker','M-E01':'shell_gate','M-E02':'brainseeker','M-E03':'brood_drone','M-E04':'mannequin','MI-03':'sample_contam'
-}; // 변이체 조우 미션 → CCTV 클립(영상 src / 정지 img). 매핑 없으면 스팅 없이 바로 미션
+}; // 이변체 조우 미션 → CCTV 클립(영상 src / 정지 img). 매핑 없으면 스팅 없이 바로 미션
 function CctvSting(p){
   var clip=CCTV_CLIPS[p.clipKey]||CCTV_CLIPS.brainseeker;
   var isKo=((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())||'ko')==='ko';
@@ -382,7 +382,7 @@ function Stats(p){
   var lowCount=['c','r','t','o'].filter(function(k){return p.stats[k]!=null&&p.stats[k]<25}).length;
   // 실제 긴급 카드(alert)가 화면에 있으면 'attack'(빨간 경고), 없으면 computeMapEvent 결과('warn' 사전경보 등)
   var mapEv=p.mutantAlert?'attack':(p.mapEvent||'idle');
-  var mapStatLabel=mapEv==='attack'?(isKo?'! 변이체 활동 감지':'! ABERRANT'):mapEv==='warn'?(isKo?'변이체 활동 증가':'ABERRANT ↑'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
+  var mapStatLabel=mapEv==='attack'?(isKo?'! 이변체 활동 감지':'! ABERRANT'):mapEv==='warn'?(isKo?'이변체 활동 증가':'ABERRANT ↑'):mapEv==='research'?(isKo?'연구 진척 +':'RESEARCH +'):mapEv==='lockdown'?(isKo?'봉쇄선 가동':'LOCKDOWN'):(isKo?'동기화 안정':'SYNC OK');
   // idle 앰비언트: 텔레메트리 readout를 천천히 순환 + 순찰 블립 + 드문 비미션 목격 핑
   var _tk=useState(0),tick=_tk[0],setTick=_tk[1];
   useEffect(function(){

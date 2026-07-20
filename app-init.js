@@ -18,7 +18,7 @@ var _introMsgText=function(c,stats,gi,logs){
   }catch(e){return ''}
 };
 var introOk=function(c,logs,stats,gi){var txt=_introMsgText(c,stats,gi,logs);for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&txt.indexOf(f.name)>=0)return false}return true};
-// ═══ 세션별 변이체 체인 제한 (2종 고정) ═══
+// ═══ 세션별 이변체 체인 제한 (2종 고정) ═══
 var ALL_SPEC_TAGS=['spec-001','spec-003','spec-004','spec-008','spec-011','spec-012','spec-015'];
 var ACTIVE_SPECS=[];
 var ACTIVE_SPEC_COUNT=3;

@@ -1,4 +1,4 @@
-// components-research.js — 연구 콘솔 UI (윤세진 변이체/바이러스 연구)
+// components-research.js — 연구 콘솔 UI (윤세진 이변체/바이러스 연구)
 // ResearchPanel: 이미지 중심 연구 대시보드 — 연구실 히어로 + 프로젝트 미디어 카드 (.rlab-*)
 
 function ResearchPanel(p) {
@@ -30,7 +30,7 @@ function ResearchPanel(p) {
 
   var help = useRlabHelp('ts_researchHelpSeen', p.devPreview);
   var helpRows = [
-    [L('착수', 'BEGIN'), L('윤세진 연구관의 변이체·바이러스 연구입니다. 단계마다 자원을 들여 ‘단계 착수’로 시작합니다.', "Yoon Se-jin's aberrant/virus research. Each stage costs resources — start it with 'Begin Stage'.")],
+    [L('착수', 'BEGIN'), L('윤세진 연구관의 이변체·바이러스 연구입니다. 단계마다 자원을 들여 ‘단계 착수’로 시작합니다.', "Yoon Se-jin's aberrant/virus research. Each stage costs resources — start it with 'Begin Stage'.")],
     [L('진행', 'PROGRESS'), L('착수한 단계는 매일 진행되고, 하루 마감 시 성공·실패가 판정됩니다. 성공률은 카드에 표시됩니다.', 'An active stage advances every day and resolves (success/fail) at day end. The success rate is shown on each card.')],
     [L('완료', 'COMPLETE'), L('모든 단계를 마치면 완료 보상이 적용됩니다. 자원이 부족하면 착수 버튼이 비활성화됩니다.', 'Finishing all stages applies the completion reward. If resources run short, the begin button is disabled.')]
   ];

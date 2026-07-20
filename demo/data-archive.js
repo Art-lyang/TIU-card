@@ -6,7 +6,7 @@ var ARCHIVE_ENTRIES = [
   // ═══ 카테고리: 이변체 (SPEC) ═══
   { id: "ARC-SPEC-001", cat: "이변체", title: "SPEC-001 — 감염체 마네킹",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
-    content: "M-TYPE / EV-Σ Phase 1 변이체.\n\n인간형 감염체. 자극이 없으면 완전히 정지 상태를 유지하나, 반경 3m 이내 생체 반응 감지 시 0.3초 이내에 공격 상태로 전환.\n\n피부 표면이 플라스틱과 유사한 광택. 동공 완전 확장 고정. 호흡은 감지 불가 수준.\n\n열감지 스캐너로 생체 반응 확인 필수. 시각적 구분이 어려움 — 정지 상태에서는 일반 인체와 구분 불가." },
+    content: "M-TYPE / EV-Σ Phase 1 이변체.\n\n인간형 감염체. 자극이 없으면 완전히 정지 상태를 유지하나, 반경 3m 이내 생체 반응 감지 시 0.3초 이내에 공격 상태로 전환.\n\n피부 표면이 플라스틱과 유사한 광택. 동공 완전 확장 고정. 호흡은 감지 불가 수준.\n\n열감지 스캐너로 생체 반응 확인 필수. 시각적 구분이 어려움 — 정지 상태에서는 일반 인체와 구분 불가." },
 
   { id: "ARC-SPEC-003", cat: "이변체", title: "SPEC-003 — Brood Drone",
     unlock: function(logs){ return logs.indexOf("LOG-014")>=0 },
@@ -18,11 +18,11 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SPEC-011", cat: "이변체", title: "SPEC-011 — Shell Talker",
     unlock: function(logs){ return logs.indexOf("LOG-004")>=0 },
-    content: "음성 모방형 변이체.\n\n피해자의 음성 패턴을 저장 및 복제. 저장 기간 불명 (추정 수년).\n\n육안 식별 어려움. 음성으로 접근 유도 후 공격.\n\n대응: 음성 확인 시 반드시 시각적 확인 병행. 단독 대응 금지." },
+    content: "음성 모방형 이변체.\n\n피해자의 음성 패턴을 저장 및 복제. 저장 기간 불명 (추정 수년).\n\n육안 식별 어려움. 음성으로 접근 유도 후 공격.\n\n대응: 음성 확인 시 반드시 시각적 확인 병행. 단독 대응 금지." },
 
   { id: "ARC-SPEC-012", cat: "이변체", title: "SPEC-012 — Blood Pit",
     unlock: function(logs){ return logs.indexOf("LOG-005")>=0 },
-    content: "환경 오염형 변이체.\n\n붉은 점액질 웅덩이. 소화 효소를 포함하여 유기물을 용해 흡수.\n\n지하 수로를 통해 확장. 토양/수질 변이 확인.\n\n접촉 시 방호복 외층 부식. 소각으로 제거 가능하나, 생체 표본은 연구 가치가 높음." },
+    content: "환경 오염형 이변체.\n\n붉은 점액질 웅덩이. 소화 효소를 포함하여 유기물을 용해 흡수.\n\n지하 수로를 통해 확장. 토양/수질 변이 확인.\n\n접촉 시 방호복 외층 부식. 소각으로 제거 가능하나, 생체 표본은 연구 가치가 높음." },
 
   { id: "ARC-EVS", cat: "이변체", title: "EV-Σ (진화 가속 매개체)",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 },
@@ -30,7 +30,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SPEC-002", cat: "이변체", title: "SPEC-002 — 경질화 개체",
     unlock: function(logs){ return logs.indexOf("LOG-013")>=0 && logs.indexOf("LOG-017")>=0 },
-    content: "M-TYPE / EV-Σ Phase 2 변이체.\n\n전신이 회색~갈색 각질층으로 경질화. 체중이 원래의 3~4배로 증가.\n\n통상 화기 무효. 벽과 차량을 관통하는 사례 보고.\n\n이동 속도 저하. 단, 정지 기록 없음 — 느리지만 절대 멈추지 않는다.\n\n대응: 물리 공격 무효. 도주 우선. 고온 소각 또는 산성 용제로만 제거 가능.\n\n참고: Phase 0에서 Phase 1 완료까지 약 6~12시간 소요." },
+    content: "M-TYPE / EV-Σ Phase 2 이변체.\n\n전신이 회색~갈색 각질층으로 경질화. 체중이 원래의 3~4배로 증가.\n\n통상 화기 무효. 벽과 차량을 관통하는 사례 보고.\n\n이동 속도 저하. 단, 정지 기록 없음 — 느리지만 절대 멈추지 않는다.\n\n대응: 물리 공격 무효. 도주 우선. 고온 소각 또는 산성 용제로만 제거 가능.\n\n참고: Phase 0에서 Phase 1 완료까지 약 6~12시간 소요." },
 
   { id: "ARC-SPEC-004", cat: "이변체", title: "SPEC-004 — Seed Spreader",
     unlock: function(logs){ return logs.indexOf("LOG-015")>=0 },
@@ -42,7 +42,7 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SPEC-007", cat: "이변체", title: "SPEC-007 — Phase 3 터미널",
     unlock: function(logs){ return logs.indexOf("LOG-017")>=0 && (logs.indexOf("LOG-015")>=0 || logs.indexOf("LOG-014")>=0) },
-    content: "M-TYPE / EV-Σ Phase 3 최종 변이체.\n\n원래 종(인간/동물)의 흔적 완전 소실.\n\n세포 특성: HeLa 세포주형 무한 증식. 비가역.\n\n환경에 따라 신체 구조를 실시간 변형. 사격으로 관통된 몸통이 3초 내 재생.\n\n300m 이내 접근 금지. 생포 시도 절대 금지.\n\n한국 봉쇄선 내 출현 기록: 0건. ORACLE 경고 등급: CRITICAL." },
+    content: "M-TYPE / EV-Σ Phase 3 최종 이변체.\n\n원래 종(인간/동물)의 흔적 완전 소실.\n\n세포 특성: HeLa 세포주형 무한 증식. 비가역.\n\n환경에 따라 신체 구조를 실시간 변형. 사격으로 관통된 몸통이 3초 내 재생.\n\n300m 이내 접근 금지. 생포 시도 절대 금지.\n\n한국 봉쇄선 내 출현 기록: 0건. ORACLE 경고 등급: CRITICAL." },
 
   { id: "ARC-SPEC-009", cat: "이변체", title: "TS-Ω Core",
     unlock: function(logs){ return logs.indexOf("LOG-INTRO-KD")>=0 },
@@ -50,7 +50,15 @@ var ARCHIVE_ENTRIES = [
 
   { id: "ARC-SPEC-010", cat: "이변체", title: "SPEC-010 — Infiltrator Scale",
     unlock: function(logs){ return logs.indexOf("LOG-016")>=0 },
-    content: "M-TYPE / 침투형 변이체.\n\n인간 외형 완벽 위장. 사회에 동화된 상태로 활동.\n\n식별: 체온 2~3℃ 저하, 특정 광원하 동공 수직 수축.\n\n서울 외곽에서 White Shield가 식별. 6개월간 민간인으로 생활하며 군사 시설 정보를 수집.\n\n체포 시도 시 전투 형태로 전환 — 비늘 돌출, 근력 3배 상승.\n\n열 감지 및 DNA 검사로만 확인 가능." },
+    content: "M-TYPE / 침투형 이변체.\n\n인간 외형 완벽 위장. 사회에 동화된 상태로 활동.\n\n식별: 체온 2~3℃ 저하, 특정 광원하 동공 수직 수축.\n\n서울 외곽에서 White Shield가 식별. 6개월간 민간인으로 생활하며 군사 시설 정보를 수집.\n\n체포 시도 시 전투 형태로 전환 — 비늘 돌출, 근력 3배 상승.\n\n열 감지 및 DNA 검사로만 확인 가능." },
+
+  { id: "ARC-BIO-CLASSIFY", cat: "과학", title: "이변체 분류 체계 — EV-Σ / SPEC / 아베란트",
+    unlock: function(logs){ return (logs.indexOf("LOG-INTRO-SH")>=0||logs.indexOf("LOG-050")>=0)&&logs.indexOf("LOG-INTRO-KD")>=0&&logs.indexOf("LOG-INTRO-YS")>=0&&logs.indexOf("LOG-INTRO-IJ")>=0 },
+    content: "미지의 바이러스 EV-Σ에 감염된 개체는 이변체로 변이한다.\n\nORACLE은 확인된 이변체를 SPEC-### 코드로 분류·관리한다. 형태·행동·위협도에 따라 개별 코드와 코드네임이 부여된다 (예: SPEC-011 / Shell Talker).\n\n대외 기관 및 공문서에서는 통칭 '아베란트'로 표기한다. SPEC 명칭과 분류 데이터는 인가 등급 내에서만 열람 가능하며, 민간에는 체계 자체가 공개되지 않는다.\n\n감염 단계별 상세 생물학 기록은 분석실 승인 이후 순차 열람됩니다." },
+
+  { id: "ARC-SYS-METRICS", cat: "시스템", title: "지부 운영 지표 — KR-INIT-001",
+    unlock: function(logs){ return (logs.indexOf("LOG-INTRO-SH")>=0||logs.indexOf("LOG-050")>=0)&&logs.indexOf("LOG-INTRO-KD")>=0&&logs.indexOf("LOG-INTRO-YS")>=0&&logs.indexOf("LOG-INTRO-IJ")>=0 },
+    content: "KR-INIT-001(강원) 지부는 네 개의 핵심 지표로 상태를 관리한다.\n\n· 봉쇄 — 봉쇄선 유지도. 0이면 방어선이 붕괴하고, 100에 도달해도 임무가 종료된다.\n· 자원 — 식량·의약품·장비 재고.\n· 신뢰 — 기지 인원의 지휘관 신뢰도.\n· 평가 — ORACLE의 지휘관 운영 평가.\n\n어느 지표든 0에 도달하면 임무는 실패로 기록된다. 지표는 매 판단의 결과로 변동한다." },
 
   // ═══ 카테고리: 인물 ═══
   { id: "ARC-CHAR-JUNGCHEOL", cat: "인물", title: "이중철 — PILEHEAD / 지휘관",
