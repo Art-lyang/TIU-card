@@ -112,6 +112,15 @@ function LogViewer(p){
   var s1=useState(null),sel=s1[0],setSel=s1[1];
   var s2=useState(0),page=s2[0],setPage=s2[1];
   var s3=useState('all'),topic=s3[0],setTopic=s3[1];
+  var sm=useState('db'),vmode=sm[0],setVmode=sm[1]; // 'db'=ORACLE 공식 기록 | 'journal'=지휘관 사적 메모
+  // 초회 온보딩 — 시설/연구 탭과 동일 패턴(초회 자동 표시, 닫으면 ts_journalHelpSeen, ? 재열람)
+  var help=useRlabHelp('ts_journalHelpSeen',false);
+  var LJ=function(ko,en){return isEn?en:ko};
+  var helpRows=[
+    [LJ('공식 기록','DATABASE'),LJ('ORACLE 데이터베이스에 동기화된 공식 기록입니다. 해금된 LOG를 열람합니다.','Official records synced to the ORACLE database. Browse unlocked logs here.')],
+    [LJ('지휘관 메모','JOURNAL'),LJ('ORACLE에 동기화되지 않는 사적 일지입니다. 선택·기록 갱신·현장 대응이 DAY별로 쌓이고, 하루 끝에 짧은 소회가 남습니다.','A private journal never synced to ORACLE. Choices, record updates, and field responses stack by day, each closed with a short note.')],
+    [LJ('방향','DIRECTION'),LJ('이번 임기의 기류(부임 메모)와 루트·사건에 따라 일지의 결이 달라집니다. 회차가 끝난 뒤에도 남아 지난 세션을 돌아볼 수 있습니다.','The posting note, your route, and events shift the journal\'s tone. It survives the run\'s end so you can look back.')]
+  ];
   var vLogs=ORACLE_LOGS.filter(function(l){return !(l.hidden&&p.unlockedIds.indexOf(l.id)<0)});var ulAll=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=vLogs.length-ulAll.length;
   var LOG_TOPICS=[{k:'all',ko:'전체',en:'ALL'},{k:'spec',ko:'이변체',en:'SPECIMENS'},{k:'prom',ko:'프로메테우스',en:'PROMETHEUS'},{k:'oracle',ko:'ORACLE',en:'ORACLE'},{k:'people',ko:'인물',en:'PERSONNEL'},{k:'etc',ko:'기타',en:'OTHER'}];
   var SPEC_K=['SPEC-','이변체','CODENAME','관측 기록','마네킹','군체','포자','Brood','Spore','Shell Talker','Blood Pit'];
@@ -154,18 +163,26 @@ function LogViewer(p){
           h('button',{className:'btn bf-enter',onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기')))
       ));
   }
+  var isJr=vmode==='journal'&&typeof CommanderJournal==='function';
+  var modeTabs=h('div',{className:'vw-tabs',style:{marginBottom:6,alignItems:'center'}},
+    h('button',{className:'vw-tab'+(vmode==='db'?' active':''),onClick:function(){setVmode('db')}},isEn?'ORACLE DATABASE':'공식 기록'),
+    h('button',{className:'vw-tab'+(vmode==='journal'?' active':''),onClick:function(){setVmode('journal')}},isEn?'COMMANDER\'S JOURNAL':'지휘관 메모'),
+    h('span',{style:{marginLeft:'auto'}},h(RlabHelpButton,{onClick:help.show,title:LJ('기록 화면 안내','Records guide')})));
   return h('div',{className:'screen vw-screen'},
     bgOverlay,
+    h(RlabHelpOverlay,{open:help.open,onClose:help.close,title:LJ('기록 — 공식 기록과 지휘관 메모','RECORDS — DATABASE & JOURNAL'),ok:LJ('확인','GOT IT'),rows:helpRows}),
     h('div',{className:'vw-wrap'},
       h('div',{className:'vw-panel'},
-        h('div',{className:'vw-panel-h'},'// ORACLE DATABASE',h('span',null,ulAll.length+'/'+vLogs.length+(isEn?' UNLOCKED':' 해금'))),
-        h('div',{className:'vw-tabs'},LOG_TOPICS.filter(function(tp){return tp.k==='all'||topicCount(tp.k)>0;}).map(function(tp){var c=topicCount(tp.k);return h('button',{key:tp.k,className:'vw-tab'+(topic===tp.k?' active':''),onClick:function(){setTopic(tp.k);setPage(0);}},(isEn?tp.en:tp.ko)+(c>0?(' '+c):''))})),
-        pager(),
-        pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,className:'vw-row vw-row-entry',onClick:function(){setSel(l.id)}},
-          h('span',{className:'vw-row-name'},text.title),
-          h('span',{className:'vw-row-meta'},l.id))}),
-        pager(),
-        lk>0&&h('div',{className:'vw-note'},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다')))),
+        h('div',{className:'vw-panel-h'},isJr?'// PRIVATE MEMO — L4 CLEARANCE':'// ORACLE DATABASE',h('span',null,isJr?(isEn?'NOT SYNCED TO ORACLE':'ORACLE 미동기화'):(ulAll.length+'/'+vLogs.length+(isEn?' UNLOCKED':' 해금')))),
+        modeTabs,
+        isJr?h(CommanderJournal,{}):h(React.Fragment,null,
+          h('div',{className:'vw-tabs'},LOG_TOPICS.filter(function(tp){return tp.k==='all'||topicCount(tp.k)>0;}).map(function(tp){var c=topicCount(tp.k);return h('button',{key:tp.k,className:'vw-tab'+(topic===tp.k?' active':''),onClick:function(){setTopic(tp.k);setPage(0);}},(isEn?tp.en:tp.ko)+(c>0?(' '+c):''))})),
+          pager(),
+          pageLogs.map(function(l){var text=getLogText(l);return h('div',{key:l.id,className:'vw-row vw-row-entry',onClick:function(){setSel(l.id)}},
+            h('span',{className:'vw-row-name'},text.title),
+            h('span',{className:'vw-row-meta'},l.id))}),
+          pager(),
+          lk>0&&h('div',{className:'vw-note'},tt('logs.locked',{count:lk},isEn?(lk+' records remain locked'):(lk+'건의 기록이 잠겨 있습니다'))))),
       h('div',{className:'vw-buttons'},
         h('button',{className:'btn bf-enter',onClick:p.onClose},tt('logs.close',null,isEn?'Close':'닫기')))
     ));

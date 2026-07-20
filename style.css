@@ -1374,6 +1374,14 @@ b.fm-rk--info{color:#caa14a}
 .ev2-detail-title{font-size:11px;color:#e6ede9;font-weight:500;margin-bottom:5px;line-height:1.4}
 .ev2-detail-body{font-size:10px;line-height:1.6;color:rgba(190,206,200,.66);white-space:pre-line}
 
+/* ── 지휘관 일지 (LOG 뷰어 '지휘관 메모' 탭) — .vw-* 계열 위 최소 확장 ── */
+.jr-deck{font-family:'Share Tech Mono',monospace;font-size:10.5px;line-height:1.6;letter-spacing:.5px;color:rgba(240,160,48,.78);border:1px dashed rgba(240,160,48,.3);border-radius:var(--r-sm);padding:7px 10px;margin:8px 0 4px;background:rgba(240,160,48,.04)}
+.jr-day{margin:10px 0 14px;padding:10px 12px;border:1px solid rgba(var(--ui-rgb),.14);border-radius:var(--r-sm);background:rgba(var(--ui-rgb),.03)}
+.jr-day-h{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1.5px;color:var(--ui);margin-bottom:7px;padding-bottom:5px;border-bottom:1px solid rgba(var(--ui-rgb),.12)}
+.jr-line{font-size:12px;line-height:1.65;color:rgba(var(--ui-rgb),.82);padding:1px 0}
+.jr-line-dim{color:rgba(var(--ui-rgb),.38)}
+.jr-mood{margin-top:7px;padding-top:6px;border-top:1px dashed rgba(var(--ui-rgb),.14);font-size:12px;line-height:1.6;color:#d8c9a0;font-style:italic}
+
 /* 화면효과 끔: 상시 풀스크린 블렌드 레이어(스캔라인/오버레이)도 끈다 — 저사양 GPU 합성 부담 제거 */
 #root.fx-off ~ .screen-overlay,#root.fx-off ~ .scanline{display:none}
 #root.fx-off .card-panel.is-dragging{filter:drop-shadow(0 14px 22px rgba(0,0,0,.45))}

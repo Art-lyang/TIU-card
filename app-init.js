@@ -500,6 +500,7 @@ var Save={
       recentRewards:arrOr(Save.get('ts_recentRewards',[]),[]),
       activeSpecs:(typeof normalizeActiveSpecs==='function'?normalizeActiveSpecs(Save.get('ts_activeSpecs',ACTIVE_SPECS||[])):Save.get('ts_activeSpecs',null)),
       sessionDeck:Save.get('ts_sessionDeck',null)||((typeof getActiveSessionDeck==='function')?getActiveSessionDeck():null),
+      journal:arrOr(Save.get('ts_journal',[]),[]), // 지휘관 일지 — 로드 시 시점 정합 복원(app.js loadSnapshot)
       currentCardId:curCardId,
       currentCard:staticCard?null:curCard,
       label:data&&data.label||('DAY '+((data&&data.day)||'?')+' · ACT '+((data&&data.act)||'?'))
