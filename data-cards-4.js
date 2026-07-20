@@ -127,7 +127,7 @@ var CARDS_INVESTIGATE = [
   // 이번 세션 비활성 종에서만 발동 → 조사 루트와 상호배타(같은 종 이중 조우 없음).
   // tag 미부여(specOk 우회) + req로 휴면 판정. once + day 게이트로 드물게.
 
-  { id: "CT-301", act: [2,3], priority: "상", alert: true, bg: "forest", once: true,
+  { id: "CT-301", act: [2,3], priority: "상", alert: true, bg: "forest", once: true, cctv: "card_shelltalker_breach_cctv",
     req: function(s,g,logs){
       return typeof ambushPending==='function' && ambushPending('spec-011','LOG-004',s,logs);
     },

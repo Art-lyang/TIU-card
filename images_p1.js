@@ -77,6 +77,7 @@
     card_mannequin_sighting_cctv: 'assets/video/navcam_mannequin.mp4?v=2',
     card_brainseeker_breach: 'assets/images/cards/card_brainseeker_breach.webp',
     card_brainseeker_breach_cctv: 'assets/video/navcam_brainseeker.mp4',
+    card_shelltalker_breach_cctv: 'assets/video/navcam_shelltalker.mp4',
     card_breach_horde: 'assets/images/cards/card_breach_horde.webp',
     card_breach_horde_cctv: 'assets/video/navcam_breach_horde.mp4',
     card_feed_gap: 'assets/images/cards/card_feed_gap.webp',
