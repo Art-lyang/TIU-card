@@ -105,6 +105,17 @@ function DayCutOverlay(p){
   if(ev==='attack')lines.push(['봉쇄선 외곽 다중 열원 — 대응반 출동','Multiple heat sources at perimeter — team deployed']);
   else if(ev==='lockdown')lines.push(['봉쇄 프로토콜 유지 — 민간 통행 통제','Lockdown held — civilian transit restricted']);
   else if(ev==='warn')lines.push(['동부 감시망 이상 신호 — 추적 중','East grid anomaly signal — tracking']);
+  // 스토리 표면화 — 어제 해금된 기록 제목 1줄(필러보다 우선, 이벤트 경보보다는 후순위). 히든 로그 은닉.
+  if(lines.length<2){try{
+    var _ll=(typeof Save!=='undefined'&&Save.get)?Save.get('ts_lastLog',null):null;
+    if(_ll&&_ll.id&&_ll.day>=day-1&&typeof ORACLE_LOGS!=='undefined'){
+      var _lld=ORACLE_LOGS.filter(function(l){return l.id===_ll.id})[0];
+      if(_lld&&!_lld.hidden&&_lld.title){
+        var _lov=(typeof tc==='function')?tc('oracleLogs',_lld.id,null):null;
+        lines.push(['기록 갱신 — '+_lld.title,'Record updated — '+((_lov&&_lov.title)||_lld.title)]);
+      }
+    }
+  }catch(_le2){}}
   if(lines.length<2&&typeof st.r==='number'&&st.r<=40)lines.push(['보급 재고 감소 — 배급 조정 검토','Supply reserves low — ration review']);
   if(lines.length<2&&typeof st.t==='number'&&st.t<=40)lines.push(['야간 점호 결원 발생 — 동요 징후','Absences at night muster — unrest signs']);
   if(lines.length<2&&resOn&&day%3===0)lines.push(['연구동 야간 가동 — 전력 우선 배분','Research wing night ops — power prioritized']);

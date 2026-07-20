@@ -884,7 +884,7 @@ function News(p){
   var headlines=uniqueHeadlines(p.headlines);
   useEffect(function(){if(shown<headlines.length){var t=setTimeout(function(){setShown(function(v){return v+1})},500);return function(){clearTimeout(t)}}},[shown,headlines.length]);
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
-  var parseHL=function(raw){var s=String(raw||'');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false}}return{tag:'INTEL-01',text:s,gl:false}};
+  var parseHL=function(raw){var s=String(raw||'');var fu=s.indexOf('[후속]')===0;if(fu)s=s.replace('[후속]','');var isGl=s.indexOf('분류 오류')>=0;var isDel=s.indexOf('삭제됨')>=0;if(isGl||isDel)return{tag:'REDACTED',text:s,gl:true,fu:false};if(s.indexOf('[해외]')>=0){fIdx++;return{tag:fu?'FOLLOW-UP':'FOREIGN-0'+fIdx,text:s.replace('[해외] ',''),gl:false,fu:fu}}if(s.indexOf('[국내]')>=0){dIdx++;return{tag:fu?'FOLLOW-UP':'DOMESTIC-0'+dIdx,text:s.replace('[국내] ',''),gl:false,fu:fu}}return{tag:fu?'FOLLOW-UP':'INTEL-01',text:s,gl:false,fu:fu}};
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={h:["운영 효율 양호. 현행 유지 권고.","ORACLE 권고 이행률 우수. 한국 지부 성과 상위권.","지휘관 판단 신뢰도 높음. 현 운영 방침 유지.","기지 안정성 확인. 추가 권한 부여 검토 중."],m:["운영 안정. 일부 비표준 패턴 감지.","전반적 안정. 독립적 판단 빈도 소폭 증가.","기지 운영 정상 범위. 일부 지표 변동 주시 중.","ORACLE 권고 이행률 보통. 관찰 지속."],l:["비표준 판단 빈도 증가. 모니터링 강화.","독자적 의사결정 패턴 감지. 분석 중.","ORACLE 권고 이탈 빈도 상승. 기록 중.","운영 데이터 분석 — 비표준 항목 다수 확인."],v:["비표준 운영 패턴 다수 감지. 주의 요망.","지휘관 신뢰 지표 하락 중. 재평가 예정.","ORACLE 권고 무시 빈도 위험 수준 접근.","운영 이상 감지. 본부 보고 검토 중."]};
   var aPool=gi>=40?AP.h:gi>=10?AP.m:gi>=0?AP.l:AP.v;var assess=stablePickFromPool(aPool,[p.day,act,gi,st.c,st.r,st.t,st.o,headlines.join('|')].join('|'));
@@ -913,7 +913,7 @@ function News(p){
       })(),
       h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:'rgba(var(--ui-rgb),.62)',letterSpacing:1,marginBottom:6}},'[INTEL BRIEFING]'),
       headlines.slice(0,shown).map(function(l,i){var hl=parseHL(l);return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
-        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+        h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':hl.fu?'#f0a030':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'+(hl.fu?' ▸':'')),
         h('div',{style:{fontSize:12,lineHeight:1.5,color:hl.gl?'#ff4444':'var(--ui-text)'}},hl.text))}),
       shown>=headlines.length&&typeof FacilityStatusSection==='function'&&h(FacilityStatusSection,{stats:p.stats,facility:p.facility})),
     shown>=headlines.length&&h('div',{style:{textAlign:'center',marginTop:14,paddingTop:10,borderTop:'1px solid rgba(var(--ui-rgb),.12)',flexShrink:0}},
@@ -927,15 +927,16 @@ function NewsReport(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
+    var fu=s.indexOf('[후속]')===0;if(fu)s=s.replace('[후속]',''); // 선택 반응형 표식 — EN 조회 키·프리픽스 판정 전에 스트립
     var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
     var isDel=s.indexOf('삭제됨')>=0;
-    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true};
-    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}}
-    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}}
-    return{tag:'INTEL-01',text:body,gl:false}
+    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true,fu:false};
+    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:fu?'FOLLOW-UP':'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false,fu:fu}}
+    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:fu?'FOLLOW-UP':'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false,fu:fu}}
+    return{tag:fu?'FOLLOW-UP':'INTEL-01',text:body,gl:false,fu:fu}
   };
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={
@@ -1035,15 +1036,16 @@ function NewsReport2(p){
   useEffect(function(){var onKey=function(e){if(shown>=headlines.length&&(e.key==='Enter'||e.key===' ')){e.preventDefault();p.onContinue()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[shown,headlines.length]);
   var parseHL=function(raw){
     var s=String(raw||'');
+    var fu=s.indexOf('[후속]')===0;if(fu)s=s.replace('[후속]',''); // 선택 반응형 표식 — EN 조회 키·프리픽스 판정 전에 스트립
     var view=(locale==='en'&&typeof tc==='function')?((typeof NEWS_ID_BY_TEXT!=='undefined'&&NEWS_ID_BY_TEXT[s]?tc('newsItems',NEWS_ID_BY_TEXT[s],null):null)||tc('newsItems',s,null)):null;
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=s.indexOf('분류 오류')>=0;
     var isDel=s.indexOf('삭제됨')>=0;
-    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true};
-    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false}};
-    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false}};
-    return{tag:'INTEL-01',text:body,gl:false};
+    if(isGl||isDel||type==='redacted')return{tag:'REDACTED',text:body,gl:true,fu:false};
+    if(type==='foreign'||s.indexOf('[해외]')>=0){fIdx++;return{tag:fu?'FOLLOW-UP':'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace('[OVERSEAS] ',''),gl:false,fu:fu}};
+    if(type==='domestic'||s.indexOf('[국내]')>=0){dIdx++;return{tag:fu?'FOLLOW-UP':'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace('[DOMESTIC] ',''),gl:false,fu:fu}};
+    return{tag:fu?'FOLLOW-UP':'INTEL-01',text:body,gl:false,fu:fu};
   };
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var AP={
@@ -1161,17 +1163,20 @@ function NewsReport3(p){
   };
   var parseHL=function(raw){
     var s=String(raw||'');
+    var fu=s.indexOf('[후속]')===0;if(fu)s=s.replace('[후속]',''); // 선택 반응형 표식 — resolveNewsView 키·프리픽스 판정 전에 스트립
     var view=resolveNewsView(s);
     var body=view&&view.text?view.text:s;
     var type=view&&view.type?view.type:null;
     var isGl=type==='redacted'||s.indexOf('분류 오류')>=0||s.indexOf('[삭제됨]')>=0||s.indexOf('[DELETED]')>=0;
-    if(isGl)return{tag:'REDACTED',text:body,gl:true};
-    if(s.indexOf('[CLASSIFICATION HOLD]')===0)return{tag:'CLASSIFIED',text:body.replace('[CLASSIFICATION HOLD] ',''),gl:false};
-    if(s.indexOf('[INTERNAL]')===0)return{tag:'INTERNAL',text:body.replace('[INTERNAL] ',''),gl:false};
-    if(s.indexOf('[WARNING]')===0)return{tag:'WARNING',text:body.replace('[WARNING] ',''),gl:false};
-    if(type==='foreign'||s.indexOf('[해외]')===0||/^\[overseas\]/i.test(s)){fIdx++;return{tag:'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace(/^\[overseas\]\s*/i,''),gl:false}};
-    if(type==='domestic'||s.indexOf('[국내]')===0||/^\[domestic\]/i.test(s)){dIdx++;return{tag:'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace(/^\[domestic\]\s*/i,''),gl:false}};
-    return{tag:'INTEL-01',text:body,gl:false};
+    if(isGl)return{tag:'REDACTED',text:body,gl:true,fu:false};
+    // 기밀 등급 태그는 [후속]보다 우선(캐논: ORACLE 은닉 신호) — fu는 색·▸ 표식으로만 반영.
+    // KO 원문 프리픽스([분류 보류]/[내부]) 분기 추가: 기존엔 EN 리터럴만 검사해 한글 플레이어에게 태그 미표시+대괄호 노출.
+    if(type==='classified'||s.indexOf('[CLASSIFICATION HOLD]')===0||s.indexOf('[분류 보류]')===0)return{tag:'CLASSIFIED',text:body.replace('[CLASSIFICATION HOLD] ','').replace('[분류 보류] ',''),gl:false,fu:fu};
+    if(type==='internal'||s.indexOf('[INTERNAL]')===0||s.indexOf('[내부]')===0)return{tag:'INTERNAL',text:body.replace('[INTERNAL] ','').replace('[내부] ',''),gl:false,fu:fu};
+    if(s.indexOf('[WARNING]')===0)return{tag:'WARNING',text:body.replace('[WARNING] ',''),gl:false,fu:false};
+    if(type==='foreign'||s.indexOf('[해외]')===0||/^\[overseas\]/i.test(s)){fIdx++;return{tag:fu?'FOLLOW-UP':'FOREIGN-0'+fIdx,text:body.replace('[해외] ','').replace(/^\[overseas\]\s*/i,''),gl:false,fu:fu}};
+    if(type==='domestic'||s.indexOf('[국내]')===0||/^\[domestic\]/i.test(s)){dIdx++;return{tag:fu?'FOLLOW-UP':'DOMESTIC-0'+dIdx,text:body.replace('[국내] ','').replace(/^\[domestic\]\s*/i,''),gl:false,fu:fu}};
+    return{tag:fu?'FOLLOW-UP':'INTEL-01',text:body,gl:false,fu:fu};
   };
   var st=p.stats||{};var gi=p.gi||0;var act=p.act||1;
   var reportMono="'Share Tech Mono','Noto Sans KR',monospace";
@@ -1255,7 +1260,7 @@ function NewsReport3(p){
       headlines.slice(0,shown).map(function(l,i){
         var hl=parseHL(l);
         return h('div',{key:i,style:{padding:'6px 0',borderBottom:'1px solid rgba(var(--ui-rgb),.13)',animation:'fadeIn 0.4s ease'}},
-          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'),
+          h('div',{style:{fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:hl.gl?'#ff6644':hl.fu?'#f0a030':'rgba(var(--ui-rgb),.55)',letterSpacing:1,marginBottom:2}},'['+hl.tag+']'+(hl.fu?' ▸':'')),
           h('div',{style:Object.assign({},reportBody,{color:hl.gl?'#ff6644':'rgba(var(--ui-rgb),.86)'})},hl.text))
       }),
       shown>=headlines.length&&facilitySection),

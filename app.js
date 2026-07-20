@@ -357,7 +357,20 @@ function App(){
     if(typeof window!=='undefined')window.__ts_liveLogs=n.slice();
     Save.saveLogs(n);
     setLogs(n);
-    if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&!SESSION_SCOPED_LOGS[id]&&!window.__ts_muteLogSfx&&typeof SFX!=='undefined')SFX.play('alarm');
+    if(id.indexOf('LOG-')===0&&id.indexOf('LOG-INTRO-')!==0&&!SESSION_SCOPED_LOGS[id]&&!window.__ts_muteLogSfx){
+      if(typeof SFX!=='undefined')SFX.play('alarm');
+      // [ 기록 갱신 ] 토스트 — 알람음만으로는 기록 축적이 안 보임(스토리 표면화). 히든 로그는 은닉 유지,
+      // 결과 토스트(+400ms·2400ms)와 겹치지 않게 3600ms 후행 표시.
+      try{
+        var _ld=(typeof ORACLE_LOGS!=='undefined')?ORACLE_LOGS.filter(function(l){return l.id===id})[0]:null;
+        if(_ld&&!_ld.hidden&&_ld.title){
+          try{Save.set('ts_lastLog',{id:id,day:(stats&&stats.day)||0})}catch(_se){} // DayCut 야간보고 '기록 갱신' 라인용 스탬프
+          var _ov=(typeof getLocale==='function'&&getLocale()==='en'&&typeof tc==='function')?tc('oracleLogs',id,null):null;
+          var _lt=(_ov&&_ov.title)||_ld.title;
+          setTimeout(function(){setToastType('result');setToast(tt('app.logUnlocked',{title:_lt},'[ 기록 갱신 ] '+_lt));clearToastAfter(2200)},3600);
+        }
+      }catch(e){}
+    }
     if(typeof CHAINS!=='undefined'){
       Object.keys(CHAINS).forEach(function(k){
         var ch=CHAINS[k];
@@ -739,7 +752,7 @@ function App(){
     // 버퍼가 없을 때(미션/복원 등 예외)만 새 카드를 뽑는다.
     if(freshCardRef.current){setPhase('game');return}
     nextCard(ns,ng,dlgLogs,chainQueue);setPhase('game')};
-  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_lastEnding','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
+  var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_lastEnding','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_lastLog','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
   var startNewCampaign=function(showTutorial){
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
@@ -755,7 +768,7 @@ function App(){
     setSeenArchive([]);Save.del('ts_seenArchive');
     Save.clearGame();Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');Save.del('ts_combos');Save.del('ts_evidence_used');Save.del('ts_act2_reached');
     // 회차 오염 방지: 이전 회차 잔존 시 새 회차에서 옛 미션 강제 진입/부당 보상(activeMission), 중복 회피 편향(recent*), 휴면 게이트(reserve)
-    Save.del('ts_activeMission');Save.del('ts_recentRewards');Save.del('ts_recentNews');Save.del('ts_resourceReserveUsed');
+    Save.del('ts_activeMission');Save.del('ts_recentRewards');Save.del('ts_recentNews');Save.del('ts_resourceReserveUsed');Save.del('ts_lastLog');
     clearResumeCheckpoint();initActiveSpecs();if(typeof initSessionDeck==='function')initSessionDeck(Save.getSessions());setShowEvidence(false);
     var rl=resetSessionLogs(logs);
     if(Save.getSessions()>0&&rl.indexOf('META-SESSION-RESET')<0)rl.push('META-SESSION-RESET');

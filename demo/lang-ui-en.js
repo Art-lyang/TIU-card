@@ -260,6 +260,7 @@ window.TS_I18N.mergeUI('en', {
     noAvailableChat:'No additional conversation record is available tonight.',
     completedRole:'Conversation complete for today',
     lockedRole:'Unavailable for the rest of today',
+    channelLost:'// CHANNEL NO RESPONSE',
     completeNote:"Today's conversation is complete. You can review the Evidence Table, then proceed to the next DAY.",
     completeNoteNoEvidence:"Today's conversation is complete. You can proceed to the next DAY.",
     proceedNextDay:'Proceed to Next DAY',
@@ -357,6 +358,6 @@ window.TS_I18N.mergeUI('en', {
     fallbackCardRight:'Retry connection',
     facilityAdded:'Facility expansion added to the reward pool', facilityPending:'Facility proposal moved to the pending list', facilityRegistered:'Facility expansion registered to the reward pool', facilityRewardOff:'Reward card removed from the reward pool', facilityRewardOn:'Reward card added back to the reward pool', facilityComplete:'[{title}] construction complete{suffix}', facilityDefault:'Facility', uprisingSuffix:' | internal record updated',
     observerError:'[ORACLE: System error — ERR:0x8F2A UNHANDLED EXCEPTION]', followupCardAdded:'[Follow-up card added] {id}',
-    cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]', resourceReserveUsed:'[Emergency supplies found] Unregistered emergency stock was pulled from the rear storage bay. The job is done — and resource depletion has been offset, this once, for the session.'
+    cStabilityAlert:'[ORACLE: KR-INIT-001 containment integrity {value}% — Korean branch stabilization is near]', snapshotSaved:'Slot {slot} saved (DAY {day})', snapshotEmpty:'Slot {slot} is empty', snapshotLoaded:'Slot {slot} loaded (DAY {day})', achievement:'[ Achievement ] {name}', logUnlocked:'[ Record updated ] {title}', companionsLost:'[Officers unable to join this operation: {names}]', companionsAll:'[All senior officers confirmed for deployment]', resourceReserveUsed:'[Emergency supplies found] Unregistered emergency stock was pulled from the rear storage bay. The job is done — and resource depletion has been offset, this once, for the session.'
   }
 });

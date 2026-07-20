@@ -420,8 +420,11 @@ function EveningChat2(p){
     var ec2=function(ec){if(!ec.condFn)return true;try{return ec.condFn(eveningContext())}catch(e){return true}};
     var dc2=function(ec){try{return (typeof sessionDeckEveningOk!=='function')||sessionDeckEveningOk(ec,eveningContext())}catch(e){return true}};
     var m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&p.day<=ec.dayMax&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
+    // urgent > event > 일반 — 렌더 경로(EveningChat2 상단 chat 선택)와 동일 우선순위.
+    // urgent 누락 시 세진 불안·임재혁 붕괴 등 아크 계단 대화가 일반 잡담에 밀리는 회귀(BUILD 440 수정).
+    var ur2=m2.filter(function(ec){return ec.priority==='urgent'});
     var ev2=m2.filter(function(ec){return ec.priority==='event'});
-    var chosen=ev2.length>0?ev2[0]:(m2.length>0?m2[0]:null);
+    var chosen=ur2.length>0?ur2[0]:(ev2.length>0?ev2[0]:(m2.length>0?m2[0]:null));
     if(!chosen){
       m2=EVENING_CHATS.filter(function(ec){return ec.char===c.name&&ec.act.indexOf(p.act)>=0&&p.day>=ec.dayMin&&ec.dayMin<=dayCap2&&!ecUsed(ec)&&si2(ec)&&ec2(ec)&&dc2(ec)}).sort(sortD);
       if(m2.length>0)chosen=m2[0];
@@ -488,7 +491,15 @@ function EveningChat2(p){
           h('span',{className:'evening-contact-index'},'0'+(idx+1)),
           portrait?h('img',{src:portrait,className:'evening-contact-portrait'}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
           h('div',{className:'evening-contact-name'},localizeCharName(c)),
-          h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,'오늘 대화 완료했습니다'):(locked?tt('evening.lockedRole',null,'오늘은 대화 불가'):localizeCharRole(c))))})),
+          h('div',{className:'evening-contact-role'},completed?tt('evening.completedRole',null,'오늘 대화 완료했습니다'):(locked?tt('evening.lockedRole',null,'오늘은 대화 불가'):localizeCharRole(c))))}),
+        // 상실 간부는 무언의 증발 대신 '응답 없는 채널'로 표시 — 최대 서사 이벤트(사망/전향/전출)의 잔향.
+        // 사유는 중립 문구로 통일(스포일러·히든 은닉 안전). 소개 이전(intro log 미보유)엔 표시하지 않음.
+        chars.filter(function(c){var il=INTRO_LOG_BY_CONTACT_KEY[c.key];return il&&p.logs.indexOf(il)>=0&&isEveningContactUnavailableByLogs(c,p.logs)}).map(function(c){
+          return h('div',{key:'lost_'+c.name,className:'evening-contact-card is-locked','aria-disabled':'true',style:{opacity:.42,pointerEvents:'none'}},
+            h('span',{className:'evening-contact-index',style:{color:'rgba(255,90,90,.7)'}},'--'),
+            CHAR_IMG[c.name]?h('img',{src:CHAR_IMG[c.name],className:'evening-contact-portrait',style:{filter:'grayscale(1) brightness(.5)'}}):h('div',{className:'evening-contact-portrait evening-contact-portrait-empty'}),
+            h('div',{className:'evening-contact-name',style:{color:'rgba(255,255,255,.5)'}},localizeCharName(c)),
+            h('div',{className:'evening-contact-role',style:{color:'rgba(255,90,90,.62)',fontFamily:"'Share Tech Mono',monospace"}},tt('evening.channelLost',null,'// 채널 응답 없음')))})),
       evidenceUnlocked&&h('button',{className:'btn evening-evidence-open',onClick:function(){if(p.onOpenEvidence)p.onOpenEvidence()},style:{display:'block',margin:'16px auto 0',fontSize:12,padding:'10px 24px',letterSpacing:1.5}},tt('evening.openEvidence',null,'▸ 조사 테이블 — 증거 조합')),
       Object.keys(doneToday).length>0&&h('div',{className:'evening-complete-note'},evidenceUnlocked?tt('evening.completeNote',null,'오늘 대화를 완료했습니다. 조사테이블을 확인한 뒤 다음 DAY로 진행할 수 있습니다.'):tt('evening.completeNoteNoEvidence',null,'오늘 대화를 완료했습니다. 다음 DAY로 진행할 수 있습니다.'))),
     showSkipConfirm&&h('div',{style:{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,.5)',zIndex:9998},onClick:function(){setShowSkipConfirm(false)}}),

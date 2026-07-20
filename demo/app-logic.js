@@ -152,8 +152,11 @@ function genNews(s,g,logs){var l=[],recent=getRecentNewsItems(),lg=logs||[];if(s
   // v1.2: DG/Meridian 뉴스 — 관련 LOG 획득 후 또는 특정 day 이후 30% 확률로 추가 노출
   if(NP.dg&&(lg.indexOf('LOG-DG-CONTACT')>=0||s.day>=10)&&Math.random()<0.3)pushNewsPick(l,NP.dg,recent);
   if(NP.md&&(lg.indexOf('LOG-MD-CONTACT')>=0||s.day>=14)&&Math.random()<0.3)pushNewsPick(l,NP.md,recent);
-  genChoiceReactionNews(s,g,lg,recent).forEach(function(item){pushUniqueNews(l,item)});
-  var out=uniqueNewsItems(l);rememberNewsItems(out);return out}
+  // 선택 반응형 뉴스는 [후속] 표식을 달아 랜덤 필러와 구분(스토리 표면화) — 표식은 반환 사본에만 붙여
+  // recent 중복 방지 메모리(rememberNewsItems)와 dedupe는 무표식 원문 기준을 유지한다.
+  var rx={};genChoiceReactionNews(s,g,lg,recent).forEach(function(item){rx[item]=1;pushUniqueNews(l,item)});
+  var out=uniqueNewsItems(l);rememberNewsItems(out);
+  return out.map(function(it){return rx[it]?'[후속]'+it:it})}
 
 function isIntroDlg(d,i){var chars=['\uc11c\ud558\uc740','\uac15\ub3c4\uc724','\uc724\uc138\uc9c4','\uc784\uc7ac\ud601'];var ci=chars.indexOf(d.char);if(ci<0)return false;return i===ci}
 
