@@ -159,7 +159,9 @@
   var CARD_IMAGE_PATCHES = {
     'CE-036': 'card_researcher_lab',      // 윤세진 이변체 샘플 연구
     'C-052': 'card_prometheus_infil',     // 프로메테우스 정찰 드론 잔해
-    'C-001': 'card_core_officers_command_room',
+    // 'C-001' 미지정: 간부 4인 단체 포트레이트(카운트다운·부상)는 클라이맥스 구도라
+    //   '신규 요원 배치 승인' 같은 일상 카드에 깔리면 엔딩 아트로 읽힌다. 기본 워터마크 사용.
+    //   card_core_officers_command_room은 FE-015(차폐 회의실=간부 회의) 계열에서만 유지.
     'C-004': 'card_core_lab_corridor',
     'C-005': 'card_core_oracle_firmware',
     'C-007': 'card_core_road_collapse',
