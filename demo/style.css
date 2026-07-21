@@ -128,7 +128,26 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-speaker-row--head{align-items:center}
 .card-speaker-lead{flex:1;min-width:0;padding-top:2px}
 .card-speaker-row--head .card-speaker-lead{padding-top:0}
-.card-speaker-img{width:118px;aspect-ratio:1/1;flex:none;object-fit:cover;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:3px;filter:grayscale(1);display:block;background:rgba(0,0,0,.24);padding:4px}
+.card-speaker-visual{position:relative;width:118px;flex:none;padding:4px;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:3px;background:rgba(0,0,0,.24);overflow:hidden}
+.card-speaker-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:2px;filter:grayscale(1);display:block;animation:spkGlitch 7.4s steps(1,end) infinite}
+/* 그린 스캔 스윕 — CRT 주사선이 위→아래로 흐르는 느낌 */
+.card-speaker-visual::before{content:'';position:absolute;left:4px;right:4px;top:4px;height:44%;background:linear-gradient(180deg,transparent,rgba(96,255,176,.26),transparent);mix-blend-mode:screen;pointer-events:none;z-index:2;animation:spkScan 3.6s linear infinite}
+/* 정적 스캔라인 + 포스포 그린 틴트 */
+.card-speaker-visual::after{content:'';position:absolute;inset:4px;background:repeating-linear-gradient(180deg,rgba(0,0,0,.15) 0 1px,transparent 1px 3px),rgba(96,255,176,.06);pointer-events:none;z-index:1;border-radius:2px}
+@keyframes spkScan{0%{transform:translateY(-120%)}100%{transform:translateY(340%)}}
+@keyframes spkGlitch{
+  0%,91.4%{transform:none;clip-path:none;filter:grayscale(1)}
+  91.5%{transform:translateX(1.6px);filter:grayscale(1) contrast(1.3) brightness(1.18)}
+  92.6%{transform:translateX(-2px);clip-path:inset(12% 0 56% 0);filter:grayscale(.2) hue-rotate(80deg) saturate(2.2) contrast(1.2)}
+  93.7%{transform:translateX(1.2px);clip-path:inset(52% 0 10% 0);filter:grayscale(.4) hue-rotate(110deg) saturate(1.8)}
+  94.6%,100%{transform:none;clip-path:none;filter:grayscale(1)}
+}
+/* 모션 설정 존중 */
+.fx-reduced .card-speaker-img{animation:none}
+.fx-reduced .card-speaker-visual::before{animation-duration:7.5s}
+.fx-off .card-speaker-img{animation:none}
+.fx-off .card-speaker-visual::before{display:none}
+@media(prefers-reduced-motion:reduce){.card-speaker-img{animation:none}.card-speaker-visual::before{display:none}}
 .card-speaker-id{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-family:'Share Tech Mono',monospace;letter-spacing:.8px;min-width:0}
 .card-speaker-name{font-size:13px;color:var(--ui-card);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-speaker-sep{font-size:11px;color:rgba(var(--ui-card-rgb),.4);flex:none}
@@ -137,9 +156,9 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-msg--dense .card-speaker-headline{font-size:18px}
 .card-speaker--glitch .card-speaker-name{color:#ff6b6b}
 .card-speaker--glitch .card-speaker-img{border-color:rgba(255,60,60,.4)}
-.fs-small .card-speaker-img{width:104px}
+.fs-small .card-speaker-visual{width:104px}
 .fs-small .card-speaker-headline{font-size:17px}
-@media(min-width:768px){.card-speaker-img{width:132px}.card-speaker-headline{font-size:22px}}
+@media(min-width:768px){.card-speaker-visual{width:132px}.card-speaker-headline{font-size:22px}}
 .card-p-high .card-hdr-r{color:#ff4444}
 .card-p-mid .card-hdr-r{color:#f0a030}
 .card-p-low .card-hdr-r{color:var(--ui-dim)}

@@ -878,7 +878,8 @@ function CardC(p){
           h('span',{className:'card-speaker-role'},sp.role));
         return [
           h('div',{key:'spkrow',className:'card-speaker-row'+(isHeadline?' card-speaker-row--head':'')+(sp.key==='glitch'?' card-speaker--glitch':'')},
-            h('img',{className:'card-speaker-img',src:sp.img,alt:'','aria-hidden':true}),
+            h('div',{className:'card-speaker-visual','aria-hidden':true},
+              h('img',{className:'card-speaker-img',src:sp.img,alt:''})),
             h('div',{className:'card-speaker-lead'},
               idEl,
               isHeadline?h('div',{className:'card-speaker-headline'},p0):renderPara(paras[0],0,true))),
