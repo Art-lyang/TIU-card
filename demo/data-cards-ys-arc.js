@@ -8,14 +8,14 @@
 
   var C = [
     // ── 설비 증설 요청 (승인/보류) ──
-    { id:"C-YS-EQUIP", act:[2,3], priority:"중", once:true, bg:"lab", img:"char_sejin",
+    { id:"C-YS-EQUIP", act:[2,3], priority:"중", once:true, bg:"lab", img:"card_ys_equip",
       req:function(s,g,logs){ return logs.indexOf('LOG-INTRO-YS')>=0 && s.day>=11 && !dead(logs); },
       msg:"윤세진이 분석 장비 목록을 내밉니다.\n\n\"격리 용기와 분석기가 한계입니다. 지금 장비로는 이변체 표본을 오래 유지하지 못해요.\"\n\n\"연구실 설비 증설을 승인해 주세요. 자원이 들지만… 이걸 미루면 언젠가 사고가 납니다.\"",
       left:{ label:"설비 증설 승인", fx:{ c:0, r:-8, t:2, o:-1 }, g:-1, log:'LOG-SEJIN-EQUIP-OK' },
       right:{ label:"지금은 보류", fx:{ c:0, r:0, t:-3, o:0 }, g:1, log:'LOG-SEJIN-DELAY-EQUIP' } },
 
     // ── 사망 이벤트 (지연 4회 이상) ──
-    { id:"C-YS-DEATH", act:[3,4], priority:"상", once:true, alert:true, bg:"lab",
+    { id:"C-YS-DEATH", act:[3,4], priority:"상", once:true, alert:true, bg:"lab", flashImg:"card_ys_death",
       req:function(s,g,logs){ return ysDelay(logs)>=4 && logs.indexOf('LOG-INTRO-YS')>=0 && !dead(logs); },
       msg:"연구실 격리 용기가 굉음과 함께 균열. 노후된 냉각·봉인 장비가 동시에 오류를 냈습니다.\n\n윤세진: \"봉쇄선까지 번지기 전에 여기서 끊어야 해요. 데이터는… 마지막까지 저장하겠습니다.\"\n\n임재혁: \"윤세진! 지금 나와요!\"\n\n격벽이 내려오고, 안쪽 바이탈 신호가 하나씩 꺼집니다.",
       left:{ label:"자료 저장을 우선 — 그녀의 선택을 존중", fx:{ c:0, r:0, t:-6, o:-2 }, g:-3, log:['LOG-SEJIN-DEAD','LOG-SEJIN-DATA-SAVED'] },
@@ -76,7 +76,7 @@
       right:{ label:"추가 재평가 수용", fx:{ c:0, r:-1, t:-1, o:3 }, g:2 } },
 
     // ── 추모 / 여파 (자료 보존 여부로 분기) ──
-    { id:"C-YS-MEMORIAL", act:[3,4], priority:"중", once:true, bg:"lab",
+    { id:"C-YS-MEMORIAL", act:[3,4], priority:"중", once:true, bg:"lab", img:"card_ys_memorial", flashImg:"card_ys_memorial",
       req:function(s,g,logs){ return dead(logs) && logs.indexOf('LOG-IJ-DEFECT')<0; },
       msg:function(){ try{ var L=(typeof window!=='undefined'&&window.__ts_liveLogs)||[];
         if(L.indexOf('LOG-SEJIN-DATA-SAVED')>=0)

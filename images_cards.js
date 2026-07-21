@@ -29,3 +29,13 @@ IMG.card_water_damage='assets/images/cards/card_water_damage.jpg';
 
 // 상하수도 오염 → C-023 alt (21KB)
 IMG.card_water_contaminate='assets/images/cards/card_water_contaminate.jpg';
+
+// 강도윤 추모/공백/메아리 아크 → C-KD-* (BUILD 460)
+IMG.card_kd_memorial='assets/images/cards/card_kd_memorial.webp';
+IMG.card_kd_vacuum='assets/images/cards/card_kd_vacuum.webp';
+IMG.card_kd_echo='assets/images/cards/card_kd_echo.webp';
+
+// 윤세진 장비노후/사망/추모 아크 → C-YS-* (BUILD 460)
+IMG.card_ys_equip='assets/images/cards/card_ys_equip.webp';
+IMG.card_ys_death='assets/images/cards/card_ys_death.webp';
+IMG.card_ys_memorial='assets/images/cards/card_ys_memorial.webp';
