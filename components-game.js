@@ -844,21 +844,10 @@ function CardC(p){
       })(),
       h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},
       (function(){
-        // 화자 배지: 본문 첫 요소로 float — 텍스트가 이미지 옆에서 시작해 아래로 자연스럽게 랩된다
-        if(typeof resolveCardSpeaker!=='function')return null;
-        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}
-        if(!sp||!sp.img)return null;
-        return h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
-          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
-          h('div',{className:'card-speaker-meta'},
-            h('span',{className:'card-speaker-name'},sp.name),
-            h('span',{className:'card-speaker-role'},sp.role)));
-      })(),
-      function(){
         var rawMsg=(cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')));var paras=String(rawMsg||'').split('\n\n');
-        return paras.map(function(para,pi){
+        var renderPara=function(para,pi,isLast){
           var lines=para.split('\n');
-          return h('div',{key:pi,className:'card-msg-para',style:{marginBottom:pi<paras.length-1?10:0}},
+          return h('div',{key:pi,className:'card-msg-para',style:{marginBottom:isLast?0:10}},
             lines.map(function(line,li){
               var s=line.trim();if(!s)return null;
               // [ORACLE ...] 대괄호 스타일
@@ -872,8 +861,24 @@ function CardC(p){
               // 일반 텍스트
               return h('div',{key:li,style:{padding:'1px 0'}},s);
             }));
-        });
-      }()),
+        };
+        var sp=null;
+        if(typeof resolveCardSpeaker==='function'){try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}}
+        if(!sp||!sp.img)return paras.map(function(para,pi){return renderPara(para,pi,pi===paras.length-1)});
+        // 화자 행: [포트레잇 | 첫 문단] 고정 2열 — 나머지 문단은 그 아래 전폭.
+        // float 랩과 달리 문단 폭이 시작 위치에 따라 흔들리지 않아 정렬이 항상 균일하다.
+        var spkEl=h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
+          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
+          h('div',{className:'card-speaker-meta'},
+            h('span',{className:'card-speaker-name'},sp.name),
+            h('span',{className:'card-speaker-role'},sp.role)));
+        return [
+          h('div',{key:'spkrow',className:'card-speaker-row'},
+            spkEl,
+            h('div',{className:'card-speaker-lead'},renderPara(paras[0],0,true))),
+          paras.slice(1).map(function(para,pi){return renderPara(para,pi+1,pi+1===paras.length-1)})
+        ];
+      })()),
       inlineCardHint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(var(--ui-rgb),.06)',borderLeft:'2px solid rgba(var(--ui-rgb),.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:0.5}},inlineCardHint),
       card.isFacilityProposal&&h('div',{style:{marginTop:'auto',padding:'7px 10px',background:'rgba(var(--ui-rgb),.055)',border:'1px solid rgba(var(--ui-rgb),.28)',fontFamily:"'Share Tech Mono',monospace",color:'var(--ui)',letterSpacing:1.2,textTransform:'uppercase'}},
         h('div',{style:{fontSize:9,letterSpacing:2,textAlign:'center'}},'FACILITY PROPOSAL'),
