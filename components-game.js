@@ -830,6 +830,16 @@ function CardC(p){
       specBg?h('div',{className:'card-img-bg'+(bgFeature?' is-feature':''),style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
       glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease 3'}},'SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
+      (function(){
+        if(typeof resolveCardSpeaker!=='function')return null;
+        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,glitch:!!glitchOn})}catch(e){}
+        if(!sp||!sp.img)return null;
+        return h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
+          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
+          h('div',{className:'card-speaker-meta'},
+            h('span',{className:'card-speaker-name'},sp.name),
+            h('span',{className:'card-speaker-role'},sp.role)));
+      })(),
       effTimer>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},autoInjected?((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())==='en'?'⚙ AUTO-COMPLY':'⚙ 자동 순응'):'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},

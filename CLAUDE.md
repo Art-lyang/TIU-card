@@ -14,7 +14,7 @@
 
 ## Authoritative Sources
 
-- 세계관/톤 규칙: `-setup/GDD/TIU-GAME-GDD-v11.md`
+- 세계관/톤 규칙: `-setup/GDD/TIU-GAME-GDD-v12.md` (현행 델타, 상세 규칙은 v11)
 - 캐논 스토리라인: `-setup/MD/storyline/TIU-CANON-STORYLINE.md`, `TIU-CANON-STORYLINE-2.md`
 - 캐릭터 바이블: `-setup/MD/ABERRANT+CHARACTER+KARUNTAL+SOVARI/TIU-CHARACTER-BIBLE.md`
 - 한국 설정: `-setup/MD/TIU-KOREA-COMPLETE-2026/` 디렉토리 전체
@@ -28,7 +28,7 @@
 1. `-setup/LORE-ROUTER.md`를 먼저 읽어 주제 → 파일을 찾는다.
 2. 그 파일을 `Grep`(키워드 / `^#` 헤딩)으로 좁힌 뒤, **매칭 섹션만** `Read`한다. 특별한 이유 없이 전체를 읽지 않는다.
 3. 라우터에 없으면 마스터 vault(`../TIU/1. 세계관/`) 브리지로 grep하고, 찾으면 라우터에 한 줄 추가한다.
-4. 캐논 충돌 시 우선순위: 런타임 코드 > `GDD/TIU-GAME-GDD-v11.md` > 캐논 1/2 > 캐릭터 바이블 > 마스터 vault.
+4. 캐논 충돌 시 우선순위: 런타임 코드 > `GDD/TIU-GAME-GDD-v12.md`(+v11) > 캐논 1/2 > 캐릭터 바이블 > 마스터 vault.
 
 출력은 **간결하게**: 결론 먼저, 근거는 요청 시. 카드/대사 작성 시 Act 색상·ORACLE 톤만 지키고 메타 설명은 최소화한다.
 

@@ -8,8 +8,8 @@
 
   // charKey -> emotion -> 이미지 경로 (모두 흑백 512px, 감시 톤 일치)
   var EMO = {
-    doyun:   { anger:E+'char_doyun_anger_v1.webp', focus:E+'char_doyun_focus_v1.webp', pain:E+'char_doyun_pain_v1.webp' },
-    haeun:   { betrayal:E+'char_haeun_betrayal_v1.webp', resolve:E+'char_haeun_resolve_v1.webp', suspicion:E+'char_haeun_suspicion_v1.webp' },
+    doyun:   { anger:E+'char_doyun_anger_v2.webp', focus:E+'char_doyun_focus_v2.webp', pain:E+'char_doyun_pain_v2.webp' },
+    haeun:   { betrayal:E+'char_haeun_betrayal_v2.webp', resolve:E+'char_haeun_resolve_v2.webp', suspicion:E+'char_haeun_suspicion_v2.webp' },
     sejin:   { concern:E+'char_sejin_concern_v1.webp', dread:E+'char_sejin_dread_v1.webp', hope:E+'char_sejin_hope_v1.webp' },
     jaehyuk: { alarm:E+'char_jaehyuk_alarm_v1.webp', focus:E+'char_jaehyuk_focus_v1.webp', guilt:E+'char_jaehyuk_guilt_v1.webp' },
     soyoung: { exposed:E+'char_soyoung_exposed_v1.webp', loyalty:E+'char_soyoung_loyalty_v1.webp', neutral:E+'char_soyoung_neutral_v1.webp' }

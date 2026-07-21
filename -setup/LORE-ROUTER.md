@@ -22,7 +22,8 @@ updated: 2026-05-31
 
 | 용도 | 경로 | 비고 |
 |---|---|---|
-| 톤/규칙(현재 델타) | [`GDD/TIU-GAME-GDD-v11.md`](GDD/TIU-GAME-GDD-v11.md) | RC Delta. 짧음, 규칙만 |
+| 톤/규칙(현재 델타) | [`GDD/TIU-GAME-GDD-v12.md`](GDD/TIU-GAME-GDD-v12.md) | BUILD 452 델타. 짧음, 규칙+변경사 |
+| 직전 델타(상세 규칙 본문) | [`GDD/TIU-GAME-GDD-v11.md`](GDD/TIU-GAME-GDD-v11.md) | v12가 참조하는 상세 규칙 |
 | 전체 시스템 스냅샷 | [`GDD/TIU-GAME-GDD-v10.md`](GDD/TIU-GAME-GDD-v10.md) | 큰 문서 — 섹션만 grep |
 | 캐논 줄거리 1부 | [`MD/storyline/TIU-CANON-STORYLINE.md`](MD/storyline/TIU-CANON-STORYLINE.md) | 배경·인물·4Act·진실·엔딩·용어 |
 | 캐논 줄거리 2부 | [`MD/storyline/TIU-CANON-STORYLINE-2.md`](MD/storyline/TIU-CANON-STORYLINE-2.md) | 규칙·엔딩 8종·이변체·용어·지역 |
@@ -39,7 +40,7 @@ updated: 2026-05-31
 
 | 주제/키워드 | 파일 |
 |---|---|
-| 톤·넘버링·리소스·메뉴·메타진행 규칙 | `GDD/TIU-GAME-GDD-v11.md` (§C 섹션맵 참조) |
+| 톤·넘버링·리소스·메뉴·메타진행 규칙 | `GDD/TIU-GAME-GDD-v12.md` + 상세는 `v11.md` (§C 섹션맵 참조) |
 | 4-Act 흐름, ORACLE의 진실, 엔딩 8종, 용어 | `MD/storyline/TIU-CANON-STORYLINE.md` / `-2.md` |
 | 프로메테우스·관측자·쉐드오더·TS-Ω·빌런·민간 | `MD/ABERRANT+CHARACTER+KARUNTAL+SOVARI/TIU-CHARACTER-BIBLE.md` |
 | 이변체 등급(H/M/S/X)·SPEC 목록 | `…/TIU-ABERRANT-{INDEX,H,M,S,X}.md`, 캐논2 §7 |
@@ -60,7 +61,10 @@ updated: 2026-05-31
 
 ## C. 핫 문서 섹션 앵커 (섹션만 읽기용)
 
-**GDD v11** (`GDD/TIU-GAME-GDD-v11.md`)
+**GDD v12** (`GDD/TIU-GAME-GDD-v12.md`) — BUILD 452 현행 델타
+`1` Current Scope · `2` Changes Since v11 (239→452) · `3` Rule Amendments · `4` QA Baseline · `5` Watch Items
+
+**GDD v11** (`GDD/TIU-GAME-GDD-v11.md`) — 상세 규칙 본문(여전히 유효, v12가 일부 수정)
 `1` Current Scope · `2` Session Deck-Pack · `3` Public Lore Visibility · `4` Numeric Text Rule · `5` Resource Pressure/Character-State · `6` Mobile Menu/Modal · `7` Meta-Progression · `8` QA Baseline · `9` Watch Items · `10` External Packaging · `11` Standalone Demo
 
 **캐논 1부** (`MD/storyline/TIU-CANON-STORYLINE.md`)
@@ -100,7 +104,7 @@ updated: 2026-05-31
 | 캐논 레이어(BLACK-OBSERVER 색인 등) | `16. CANON-LAYERS/` |
 | 컨셉 이미지(webp) | `17. IMAGE/` |
 
-> 캐논 충돌 시 우선순위: **런타임 코드 > `GDD/TIU-GAME-GDD-v11.md` > 캐논 스토리라인 1/2 > 캐릭터 바이블 > 마스터 vault**.
+> 캐논 충돌 시 우선순위: **런타임 코드 > `GDD/TIU-GAME-GDD-v12.md`(+v11) > 캐논 스토리라인 1/2 > 캐릭터 바이블 > 마스터 vault**.
 
 ---
 
