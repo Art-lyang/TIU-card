@@ -832,7 +832,7 @@ function CardC(p){
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
       (function(){
         if(typeof resolveCardSpeaker!=='function')return null;
-        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,glitch:!!glitchOn})}catch(e){}
+        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}
         if(!sp||!sp.img)return null;
         return h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
           h('img',{className:'card-speaker-img',src:sp.img,alt:''}),

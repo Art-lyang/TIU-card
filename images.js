@@ -60,6 +60,7 @@ const CHAR_IMG = {
   "서하은": IMG.char_haeun,
   "서하은_긴장": IMG.char_haeun_tense,
   "강도윤": IMG.char_doyun,
+  "강도윤_부상": 'assets/images/characters/emotions/char_doyun_wounded_v1.webp',
   "윤세진": IMG.char_sejin,
   "임재혁": IMG.char_jaehyuk,
   "임재혁_실망": IMG.char_jaehyuk_sad,

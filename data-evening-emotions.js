@@ -8,7 +8,7 @@
 
   // charKey -> emotion -> 이미지 경로 (모두 흑백 512px, 감시 톤 일치)
   var EMO = {
-    doyun:   { anger:E+'char_doyun_anger_v2.webp', focus:E+'char_doyun_focus_v2.webp', pain:E+'char_doyun_pain_v2.webp' },
+    doyun:   { anger:E+'char_doyun_anger_v2.webp', focus:E+'char_doyun_focus_v2.webp', pain:E+'char_doyun_pain_v2.webp', wounded:E+'char_doyun_wounded_v1.webp' },
     haeun:   { betrayal:E+'char_haeun_betrayal_v2.webp', resolve:E+'char_haeun_resolve_v2.webp', suspicion:E+'char_haeun_suspicion_v2.webp' },
     sejin:   { concern:E+'char_sejin_concern_v1.webp', dread:E+'char_sejin_dread_v1.webp', hope:E+'char_sejin_hope_v1.webp' },
     jaehyuk: { alarm:E+'char_jaehyuk_alarm_v1.webp', focus:E+'char_jaehyuk_focus_v1.webp', guilt:E+'char_jaehyuk_guilt_v1.webp' },
@@ -63,9 +63,13 @@
   window.EVENING_EMOTION_MATRIX = MATRIX;
   window.EVENING_EMOTION_OVERRIDES = OVERRIDE;
 
-  // 해석기: charKey + {tier, act, chatKey} -> 이미지 경로(없으면 null -> 기존 포트레잇 유지)
+  // 해석기: charKey + {tier, act, chatKey, logs} -> 이미지 경로(없으면 null -> 기존 포트레잇 유지)
   window.resolveEveningEmotionImg = function(charKey, ctx){
     if(!charKey || !EMO[charKey] || !ctx) return null;
+    // 캐릭터 상태 우선: 강도윤 중상(LOG-074-DONE) 생존 시 부상 포트레잇 고정
+    if(charKey === 'doyun' && ctx.logs && ctx.logs.indexOf && ctx.logs.indexOf('LOG-074-DONE') >= 0 && EMO.doyun.wounded){
+      return EMO.doyun.wounded;
+    }
     var emo = (ctx.chatKey && OVERRIDE[ctx.chatKey]) || null;
     if(!emo){
       var tierMap = MATRIX[charKey] && MATRIX[charKey][ctx.tier || 'mid'];

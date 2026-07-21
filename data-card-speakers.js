@@ -87,7 +87,7 @@
       var p = PERSONS[key], img = null;
       if(typeof resolveEveningEmotionImg === 'function'){
         var tier = (typeof getTrustTier === 'function' && ctx.trust) ? getTrustTier(ctx.trust, key) : 'mid';
-        img = resolveEveningEmotionImg(key, { tier: tier, act: ctx.act || 1 });
+        img = resolveEveningEmotionImg(key, { tier: tier, act: ctx.act || 1, logs: ctx.logs });
       }
       if(!img && typeof CHAR_IMG !== 'undefined') img = CHAR_IMG[p.charName] || null;
       if(!img){ var o = FACTIONS.oracle; return { key:'oracle', name:pickName(o), role:pickRole(o), img:o.img }; }
