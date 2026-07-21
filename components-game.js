@@ -830,16 +830,6 @@ function CardC(p){
       specBg?h('div',{className:'card-img-bg'+(bgFeature?' is-feature':''),style:{backgroundImage:'url('+specBg+')'}}):h('div',{className:'card-default-wm','aria-hidden':true}),
       glitchOn&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid rgba(255,60,60,.25)',padding:'3px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:9,color:'#ff4444',letterSpacing:2,textAlign:'center',marginBottom:4,textTransform:'uppercase',animation:'glitchText 0.15s ease 3'}},'SYSTEM ERROR — UNREGISTERED PROTOCOL'),
       h('div',{className:'card-hdr'},h('span',{className:'card-hdr-l'},glitchOn?'ERR:0x8F2A':card.isFacilityProposal?tt('card.facilityExpansion',null,'시설 확장'):tt('card.oracleComm',null,'ORACLE 통신')),h('span',{className:'card-hdr-r'},glitchOn?'██████':tt('card.priority',{priority:plbl},'우선순위: '+plbl))),
-      (function(){
-        if(typeof resolveCardSpeaker!=='function')return null;
-        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}
-        if(!sp||!sp.img)return null;
-        return h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
-          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
-          h('div',{className:'card-speaker-meta'},
-            h('span',{className:'card-speaker-name'},sp.name),
-            h('span',{className:'card-speaker-role'},sp.role)));
-      })(),
       effTimer>0&&!chosen&&h('div',{style:{background:'rgba(255,60,60,.08)',border:'1px solid '+(remaining<=2?'rgba(255,60,60,.8)':'rgba(240,160,48,.4)'),padding:'4px 8px',fontFamily:"'Share Tech Mono',monospace",fontSize:10,color:remaining<=2?'#ff4444':'#f0a030',letterSpacing:1.5,textAlign:'center',marginBottom:4,textTransform:'uppercase',display:'flex',alignItems:'center',gap:8}},
         h('span',{style:{flexShrink:0}},autoInjected?((window.TS_I18N&&window.TS_I18N.getLocale&&window.TS_I18N.getLocale())==='en'?'⚙ AUTO-COMPLY':'⚙ 자동 순응'):'⚠ AUTO-OVERRIDE'),
         h('div',{style:{flex:1,height:6,background:'rgba(0,0,0,.4)',borderRadius:2,overflow:'hidden'}},
@@ -852,11 +842,23 @@ function CardC(p){
         return h('div',{style:{color:'#ff4444',fontFamily:"'Share Tech Mono',monospace",fontSize:9.5,letterSpacing:0.5,textAlign:'center',marginBottom:6,lineHeight:1.4,textShadow:'0 0 6px rgba(255,68,68,.4)'}},
           '\u26a0 '+(isEnT?('No response \u2192 ORACLE auto-approves: "'+clbl+'"'):('\ubbf8\uc120\ud0dd \uc2dc ORACLE\uc774 \uc790\ub3d9 \uc2b9\uc778\ud569\ub2c8\ub2e4 \u2192 "'+clbl+'"')));
       })(),
-      h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},function(){
+      h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},
+      (function(){
+        // 화자 배지: 본문 첫 요소로 float — 텍스트가 이미지 옆에서 시작해 아래로 자연스럽게 랩된다
+        if(typeof resolveCardSpeaker!=='function')return null;
+        var sp=null;try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}
+        if(!sp||!sp.img)return null;
+        return h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
+          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
+          h('div',{className:'card-speaker-meta'},
+            h('span',{className:'card-speaker-name'},sp.name),
+            h('span',{className:'card-speaker-role'},sp.role)));
+      })(),
+      function(){
         var rawMsg=(cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')));var paras=String(rawMsg||'').split('\n\n');
         return paras.map(function(para,pi){
           var lines=para.split('\n');
-          return h('div',{key:pi,style:{marginBottom:pi<paras.length-1?10:0}},
+          return h('div',{key:pi,className:'card-msg-para',style:{marginBottom:pi<paras.length-1?10:0}},
             lines.map(function(line,li){
               var s=line.trim();if(!s)return null;
               // [ORACLE ...] 대괄호 스타일

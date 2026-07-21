@@ -41,11 +41,37 @@ function CharacterCommPanel(p){
 // 게이트가 떠 있는 동안 preload URL을 미리 당겨 이미지 로드 시간을 벌고,
 // 무거운 자식 트리 마운트도 게이트 뒤로 미뤄 저사양 기기 프레임 드랍을 가린다.
 function ConnectingGate(p){
-  var _on=useState(true),on=_on[0],setOn=_on[1];
+  // ms가 명시된 게이트(미션 등 의도적 연출)는 기존 고정 시간 유지.
+  // ms 미지정 게이트(대화)는 프리로드 이미지가 전부 캐시 상태면 즉시 통과하고,
+  // 아니면 로드 완료 시점에 해제한다(상한 850ms, 떴을 때 최소 260ms로 플래시 방지).
+  var preload=(p.preload||[]).filter(Boolean);
+  var fixed=!!p.ms;
+  var _on=useState(function(){
+    if(fixed)return true;
+    var cached=preload.every(function(u){try{var im=new Image();im.src=u;return im.complete&&im.naturalWidth>0}catch(e){return true}});
+    return !cached;
+  }),on=_on[0],setOn=_on[1];
   useEffect(function(){
-    (p.preload||[]).forEach(function(u){if(u){try{var im=new Image();im.src=u}catch(e){}}});
-    var t=setTimeout(function(){setOn(false)},p.ms||850);
-    return function(){clearTimeout(t)};
+    if(!on)return;
+    var timers=[];
+    if(fixed){
+      preload.forEach(function(u){try{var im=new Image();im.src=u}catch(e){}});
+      timers.push(setTimeout(function(){setOn(false)},p.ms));
+      return function(){timers.forEach(clearTimeout)};
+    }
+    var done=false,shownAt=Date.now();
+    var finish=function(){if(done)return;done=true;setOn(false)};
+    timers.push(setTimeout(finish,850));
+    var left=preload.length;
+    if(!left){finish();return function(){timers.forEach(clearTimeout)}}
+    preload.forEach(function(u){
+      try{
+        var im=new Image();
+        var onDone=function(){left--;if(left<=0){var wait=Math.max(0,260-(Date.now()-shownAt));timers.push(setTimeout(finish,wait))}};
+        im.onload=onDone;im.onerror=onDone;im.src=u;
+      }catch(e){left--;}
+    });
+    return function(){timers.forEach(clearTimeout)};
   },[]);
   if(!on)return p.children||null;
   return h('div',{className:'screen'},
