@@ -123,20 +123,23 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-hdr,.card-msg{position:relative;z-index:1}
 .card-hdr-l{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui-card);letter-spacing:1px;text-shadow:0 0 10px rgba(var(--ui-card-rgb),.44)}
 .card-hdr-r{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px}
-/* 화자 행: [포트레잇|첫 문단] 고정 2열 — 문단 폭이 흔들리지 않아 정렬 균일. 나머지 문단은 전폭 */
-.card-speaker-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:12px;margin:2px 0 12px}
-.card-speaker-lead{padding-top:2px}
-.card-speaker{width:118px;flex:none;display:flex;flex-direction:column;gap:5px;padding:6px;border:1px solid rgba(var(--ui-card-rgb),.22);border-radius:var(--r-sm);background:rgba(0,0,0,.24)}
-.card-speaker-lead{flex:1;min-width:0}
-.card-speaker-img{width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:2px;filter:grayscale(1);display:block}
-.card-speaker-meta{display:flex;flex-direction:column;gap:1px;min-width:0;text-align:center}
-.card-speaker-name{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.6px;color:var(--fg);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-speaker-role{font-family:'Share Tech Mono',monospace;font-size:8.5px;letter-spacing:1.4px;color:var(--ui-card);opacity:.75;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-speaker--glitch{border-color:rgba(255,60,60,.3)}
+/* 화자 행: [포트레잇 | 명패(이름|직책)+첫 문단] — 나머지 문단은 전폭. 짧은 첫 문단은 헤드라인 확대 */
+.card-speaker-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:14px;margin:2px 0 12px}
+.card-speaker-row--head{align-items:center}
+.card-speaker-lead{flex:1;min-width:0;padding-top:2px}
+.card-speaker-row--head .card-speaker-lead{padding-top:0}
+.card-speaker-img{width:118px;aspect-ratio:1/1;flex:none;object-fit:cover;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:3px;filter:grayscale(1);display:block;background:rgba(0,0,0,.24);padding:4px}
+.card-speaker-id{display:flex;align-items:center;gap:8px;margin-bottom:4px;font-family:'Share Tech Mono',monospace;letter-spacing:.8px;min-width:0}
+.card-speaker-name{font-size:13px;color:var(--ui-card);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-speaker-sep{font-size:11px;color:rgba(var(--ui-card-rgb),.4);flex:none}
+.card-speaker-role{font-size:11px;color:rgba(var(--ui-rgb),.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-speaker-headline{font-size:20px;line-height:1.32;font-weight:600;color:var(--fg);letter-spacing:-.2px;margin-top:2px;word-break:keep-all}
+.card-msg--dense .card-speaker-headline{font-size:18px}
 .card-speaker--glitch .card-speaker-name{color:#ff6b6b}
 .card-speaker--glitch .card-speaker-img{border-color:rgba(255,60,60,.4)}
-.fs-small .card-speaker{width:104px}
-@media(min-width:768px){.card-speaker{width:132px}}
+.fs-small .card-speaker-img{width:104px}
+.fs-small .card-speaker-headline{font-size:17px}
+@media(min-width:768px){.card-speaker-img{width:132px}.card-speaker-headline{font-size:22px}}
 .card-p-high .card-hdr-r{color:#ff4444}
 .card-p-mid .card-hdr-r{color:#f0a030}
 .card-p-low .card-hdr-r{color:var(--ui-dim)}

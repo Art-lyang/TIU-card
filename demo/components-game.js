@@ -865,17 +865,23 @@ function CardC(p){
         var sp=null;
         if(typeof resolveCardSpeaker==='function'){try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}}
         if(!sp||!sp.img)return paras.map(function(para,pi){return renderPara(para,pi,pi===paras.length-1)});
-        // 화자 행: [포트레잇 | 첫 문단] 고정 2열 — 나머지 문단은 그 아래 전폭.
-        // float 랩과 달리 문단 폭이 시작 위치에 따라 흔들리지 않아 정렬이 항상 균일하다.
-        var spkEl=h('div',{className:'card-speaker'+(sp.key==='glitch'?' card-speaker--glitch':''),'aria-hidden':true},
-          h('img',{className:'card-speaker-img',src:sp.img,alt:''}),
-          h('div',{className:'card-speaker-meta'},
-            h('span',{className:'card-speaker-name'},sp.name),
-            h('span',{className:'card-speaker-role'},sp.role)));
+        // 화자 행: [포트레잇 | 명패(이름|직책) + 첫 문단] — 나머지 문단은 그 아래 전폭.
+        // 짧은 한 줄 첫 문단(특수 라인 아님)은 헤드라인으로 확대해 도입부에 무게를 준다.
+        var p0=(paras[0]||'').trim();
+        var isHeadline=p0.length>0&&p0.length<=26&&p0.indexOf('\n')<0
+          &&!p0.match(/^\[?ORACLE[\s:：]/)
+          &&!p0.match(/^(서하은|강도윤|윤세진|임재혁|박소영|마르쿠스 베버|닉 포스터|포스터)([\s ][가-힣A-Za-z\s]*)?[：:]/)
+          &&!p0.match(/^["“「]/);
+        var idEl=h('div',{className:'card-speaker-id'},
+          h('span',{className:'card-speaker-name'},sp.name),
+          h('span',{className:'card-speaker-sep','aria-hidden':true},'|'),
+          h('span',{className:'card-speaker-role'},sp.role));
         return [
-          h('div',{key:'spkrow',className:'card-speaker-row'},
-            spkEl,
-            h('div',{className:'card-speaker-lead'},renderPara(paras[0],0,true))),
+          h('div',{key:'spkrow',className:'card-speaker-row'+(isHeadline?' card-speaker-row--head':'')+(sp.key==='glitch'?' card-speaker--glitch':'')},
+            h('img',{className:'card-speaker-img',src:sp.img,alt:'','aria-hidden':true}),
+            h('div',{className:'card-speaker-lead'},
+              idEl,
+              isHeadline?h('div',{className:'card-speaker-headline'},p0):renderPara(paras[0],0,true))),
           paras.slice(1).map(function(para,pi){return renderPara(para,pi+1,pi+1===paras.length-1)})
         ];
       })()),
