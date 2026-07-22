@@ -75,3 +75,27 @@ BGM._removeTimer = function(audio, iv) {
   var k = this._timerKey(audio);
   if (this._timers[k] === iv) delete this._timers[k];
 };
+
+// fadeVol: 현재 트랙 볼륨을 target까지 부드럽게 램프(상하 양방향). 정지 없이 페이드-덕/복귀용.
+BGM.fadeVol = function(target, dur, onDone) {
+  if (this.muted) { if (onDone) onDone(); return; }
+  var audio = this.current && this.tracks[this.current];
+  if (!audio) { if (onDone) onDone(); return; }
+  dur = dur || 1400;
+  this._clearTimer(audio);
+  var self = this, start = audio.volume, tgt = Math.min(target, this.vol);
+  var step = 30, totalSteps = Math.max(1, dur / step), curStep = 0, delta = tgt - start;
+  var iv = setInterval(function() {
+    if (self.muted) { clearInterval(iv); self._removeTimer(audio, iv); return; }
+    curStep++;
+    var nv = start + delta * (curStep / totalSteps);
+    nv = Math.max(0, Math.min(self.vol, nv));
+    try { audio.volume = nv; } catch(e) { clearInterval(iv); self._removeTimer(audio, iv); return; }
+    if (curStep >= totalSteps) {
+      try { audio.volume = tgt; } catch(e) {}
+      clearInterval(iv); self._removeTimer(audio, iv);
+      if (onDone) onDone();
+    }
+  }, step);
+  this._setTimer(audio, iv);
+};
