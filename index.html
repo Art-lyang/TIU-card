@@ -10,220 +10,220 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#04090b">
   <!-- 폰트 셀프호스트 (Google Fonts CDN 의존 제거 — TWA 오프라인 대비) -->
-  <link rel="stylesheet" href="fonts/fonts.css?v=469">
-  <link rel="stylesheet" href="style.css?v=469">
-  <link rel="stylesheet" href="style-glitch.css?v=469">
-  <link rel="stylesheet" href="style-cardflash.css?v=469">
-  <link rel="stylesheet" href="style-oracle-override.css?v=469">
-  <link rel="stylesheet" href="style-daycut.css?v=469">
-  <link rel="stylesheet" href="style-tactical.css?v=469">
-  <link rel="stylesheet" href="style-escape.css?v=469">
-  <link rel="stylesheet" href="style-i18n-hotfix.css?v=469">
-  <link rel="stylesheet" href="style-i18n-locale-hotfix.css?v=469">
+  <link rel="stylesheet" href="fonts/fonts.css?v=470">
+  <link rel="stylesheet" href="style.css?v=470">
+  <link rel="stylesheet" href="style-glitch.css?v=470">
+  <link rel="stylesheet" href="style-cardflash.css?v=470">
+  <link rel="stylesheet" href="style-oracle-override.css?v=470">
+  <link rel="stylesheet" href="style-daycut.css?v=470">
+  <link rel="stylesheet" href="style-tactical.css?v=470">
+  <link rel="stylesheet" href="style-escape.css?v=470">
+  <link rel="stylesheet" href="style-i18n-hotfix.css?v=470">
+  <link rel="stylesheet" href="style-i18n-locale-hotfix.css?v=470">
 </head>
 <body>
   <div id="root"></div>
   <div class="screen-overlay"></div>
   <div class="scanline"></div>
   <!-- BUILD_VER: node tools/stamp-cache.js 실행 시 +1 되며 모든 ?v= 태그가 이 값으로 스탬프된다. 개별 수동 범프 불필요. -->
-<script>var BUILD_VER=469;</script>
-  <script src="crash-guard.js?v=469"></script>
+<script>var BUILD_VER=470;</script>
+  <script src="crash-guard.js?v=470"></script>
   <!-- React 로컬 번들 (CDN 장애/오프라인에도 부팅) -->
-  <script src="vendor/react.production.min.js?v=469"></script>
-  <script src="vendor/react-dom.production.min.js?v=469"></script>
+  <script src="vendor/react.production.min.js?v=470"></script>
+  <script src="vendor/react-dom.production.min.js?v=470"></script>
 
   <!-- i18n Runtime -->
-  <script src="i18n-runtime.js?v=469"></script>
-  <script src="lang-ui-ko.js?v=469"></script>
-  <script src="lang-ui-en.js?v=469"></script>
-  <script src="lang-content-en-all.js?v=469"></script>
-  <script src="lang-evidence-hidden-en.js?v=469"></script>
-  <script src="lang-archive-en.js?v=469"></script>
-  <script src="lang-content-en-dialogues.js?v=469"></script>
-  <script src="lang-dialogues-susp-en.js?v=469"></script>
-  <script src="lang-fieldmission-dossier-en.js?v=469"></script>
-  <script src="lang-evening-extra-en.js?v=469"></script>
-  <script src="lang-evening-extra3-en.js?v=469"></script>
-  <script src="lang-cards-ce-en.js?v=469"></script>
-  <script src="lang-cards-ca4-en.js?v=469"></script>
-  <script src="lang-cards-ct-en.js?v=469"></script>
-  <script src="lang-cards-cs-en.js?v=469"></script>
-  <script src="lang-cards-side-en.js?v=469"></script>
-  <script src="lang-cards-c-en.js?v=469"></script>
-  <script src="lang-cards-flow-en.js?v=469"></script>
+  <script src="i18n-runtime.js?v=470"></script>
+  <script src="lang-ui-ko.js?v=470"></script>
+  <script src="lang-ui-en.js?v=470"></script>
+  <script src="lang-content-en-all.js?v=470"></script>
+  <script src="lang-evidence-hidden-en.js?v=470"></script>
+  <script src="lang-archive-en.js?v=470"></script>
+  <script src="lang-content-en-dialogues.js?v=470"></script>
+  <script src="lang-dialogues-susp-en.js?v=470"></script>
+  <script src="lang-fieldmission-dossier-en.js?v=470"></script>
+  <script src="lang-evening-extra-en.js?v=470"></script>
+  <script src="lang-evening-extra3-en.js?v=470"></script>
+  <script src="lang-cards-ce-en.js?v=470"></script>
+  <script src="lang-cards-ca4-en.js?v=470"></script>
+  <script src="lang-cards-ct-en.js?v=470"></script>
+  <script src="lang-cards-cs-en.js?v=470"></script>
+  <script src="lang-cards-side-en.js?v=470"></script>
+  <script src="lang-cards-c-en.js?v=470"></script>
+  <script src="lang-cards-flow-en.js?v=470"></script>
 
   <!-- Data: Core & Tags -->
-  <script src="data-core.js?v=469"></script>
-  <script src="data-status-tags.js?v=469"></script>
+  <script src="data-core.js?v=470"></script>
+  <script src="data-status-tags.js?v=470"></script>
   <!-- Act2/Act3 카드 중간 간부진 대화 확장 (DIALOGUES push, data-core.js 뒤 로드) -->
-  <script src="data-dialogues-extra.js?v=469"></script>
+  <script src="data-dialogues-extra.js?v=470"></script>
 
   <!-- Data: Cards -->
-  <script src="data-cards-prologue.js?v=469"></script>
-  <script src="data-cards-prologue-2.js?v=469"></script>
-  <script src="data-cards-1.js?v=469"></script>
-  <script src="data-cards-2.js?v=469"></script>
-  <script src="data-cards-ys-arc.js?v=469"></script>
-  <script src="data-cards-kd-arc.js?v=469"></script>
-  <script src="data-cards-ij-arc.js?v=469"></script>
-  <script src="data-cards-3.js?v=469"></script>
-  <script src="data-cards-4.js?v=469"></script>
-  <script src="data-cards-5.js?v=469"></script>
-  <script src="data-cards-6.js?v=469"></script>
-  <script src="data-cards-7.js?v=469"></script>
-  <script src="data-cards-8.js?v=469"></script>
-  <script src="data-cards-9.js?v=469"></script>
-  <script src="data-cards-10.js?v=469"></script>
-  <script src="data-cards-11.js?v=469"></script>
-  <script src="data-cards-12.js?v=469"></script>
-  <script src="data-cards-13.js?v=469"></script>
-  <script src="data-cards-14.js?v=469"></script>
-  <script src="data-cards-15.js?v=469"></script>
-  <script src="data-cards-16.js?v=469"></script>
-  <script src="data-cards-prometheus-lee.js?v=469"></script>
-  <script src="data-cards-act4.js?v=469"></script>
-  <script src="data-cards-act4-ext.js?v=469"></script>
-  <script src="data-cards-act23-pressure.js?v=469"></script>
-  <script src="data-cards-resist-hint.js?v=469"></script>
-  <script src="data-cards-relief.js?v=469"></script>
-  <script src="data-cards-crisis.js?v=469"></script>
-  <script src="data-cards-neutral.js?v=469"></script>
-  <script src="data-cards-korea-civilian.js?v=469"></script>
-  <script src="data-cards-dg-meridian.js?v=469"></script>
-  <script src="data-cards-session-packs.js?v=469"></script>
+  <script src="data-cards-prologue.js?v=470"></script>
+  <script src="data-cards-prologue-2.js?v=470"></script>
+  <script src="data-cards-1.js?v=470"></script>
+  <script src="data-cards-2.js?v=470"></script>
+  <script src="data-cards-ys-arc.js?v=470"></script>
+  <script src="data-cards-kd-arc.js?v=470"></script>
+  <script src="data-cards-ij-arc.js?v=470"></script>
+  <script src="data-cards-3.js?v=470"></script>
+  <script src="data-cards-4.js?v=470"></script>
+  <script src="data-cards-5.js?v=470"></script>
+  <script src="data-cards-6.js?v=470"></script>
+  <script src="data-cards-7.js?v=470"></script>
+  <script src="data-cards-8.js?v=470"></script>
+  <script src="data-cards-9.js?v=470"></script>
+  <script src="data-cards-10.js?v=470"></script>
+  <script src="data-cards-11.js?v=470"></script>
+  <script src="data-cards-12.js?v=470"></script>
+  <script src="data-cards-13.js?v=470"></script>
+  <script src="data-cards-14.js?v=470"></script>
+  <script src="data-cards-15.js?v=470"></script>
+  <script src="data-cards-16.js?v=470"></script>
+  <script src="data-cards-prometheus-lee.js?v=470"></script>
+  <script src="data-cards-act4.js?v=470"></script>
+  <script src="data-cards-act4-ext.js?v=470"></script>
+  <script src="data-cards-act23-pressure.js?v=470"></script>
+  <script src="data-cards-resist-hint.js?v=470"></script>
+  <script src="data-cards-relief.js?v=470"></script>
+  <script src="data-cards-crisis.js?v=470"></script>
+  <script src="data-cards-neutral.js?v=470"></script>
+  <script src="data-cards-korea-civilian.js?v=470"></script>
+  <script src="data-cards-dg-meridian.js?v=470"></script>
+  <script src="data-cards-session-packs.js?v=470"></script>
 
   <!-- Data: Rewards (감시→정보해금, ORACLE거절→간접보상) -->
-  <script src="data-rewards.js?v=469"></script>
+  <script src="data-rewards.js?v=470"></script>
 
   <!-- Data: Chains, Archive, Missions, Endings -->
-  <script src="data-chains.js?v=469"></script>
-  <script src="data-chains-incident.js?v=469"></script>
-  <script src="data-chains-incident2.js?v=469"></script>
-  <script src="data-chains-branch.js?v=469"></script>
-  <script src="data-archive.js?v=469"></script>
-  <script src="data-minigame-rewards.js?v=469"></script>
-  <script src="data-archive-expansion.js?v=469"></script>
-  <script src="data-minigame-expansion.js?v=469"></script>
-  <script src="data-missions.js?v=469"></script>
-  <script src="data-missions-2.js?v=469"></script>
-  <script src="data-missions-3.js?v=469"></script>
-  <script src="data-missions-incident.js?v=469"></script>
-  <script src="data-missions-4.js?v=469"></script>
-  <script src="data-missions-5.js?v=469"></script>
-  <script src="data-missions-variants.js?v=469"></script>
-  <script src="data-missions-emergency.js?v=469"></script>
-  <script src="data-logs-integrity.js?v=469"></script>
-  <script src="data-cards-act4-hazard.js?v=469"></script>
-  <script src="data-endings.js?v=469"></script>
-  <script src="data-act4-escape.js?v=469"></script>
-  <script src="logic-act4-escape.js?v=469"></script>
+  <script src="data-chains.js?v=470"></script>
+  <script src="data-chains-incident.js?v=470"></script>
+  <script src="data-chains-incident2.js?v=470"></script>
+  <script src="data-chains-branch.js?v=470"></script>
+  <script src="data-archive.js?v=470"></script>
+  <script src="data-minigame-rewards.js?v=470"></script>
+  <script src="data-archive-expansion.js?v=470"></script>
+  <script src="data-minigame-expansion.js?v=470"></script>
+  <script src="data-missions.js?v=470"></script>
+  <script src="data-missions-2.js?v=470"></script>
+  <script src="data-missions-3.js?v=470"></script>
+  <script src="data-missions-incident.js?v=470"></script>
+  <script src="data-missions-4.js?v=470"></script>
+  <script src="data-missions-5.js?v=470"></script>
+  <script src="data-missions-variants.js?v=470"></script>
+  <script src="data-missions-emergency.js?v=470"></script>
+  <script src="data-logs-integrity.js?v=470"></script>
+  <script src="data-cards-act4-hazard.js?v=470"></script>
+  <script src="data-endings.js?v=470"></script>
+  <script src="data-act4-escape.js?v=470"></script>
+  <script src="logic-act4-escape.js?v=470"></script>
 
   <!-- B안 탈출 모드 (텍스트 어드벤처 + d100 롤) -->
-  <script src="data-escape-nodes.js?v=469"></script>
-  <script src="data-escape-nodes-2.js?v=469"></script>
-  <script src="logic-escape-roll.js?v=469"></script>
+  <script src="data-escape-nodes.js?v=470"></script>
+  <script src="data-escape-nodes-2.js?v=470"></script>
+  <script src="logic-escape-roll.js?v=470"></script>
 
   <!-- Data: Achievements (Steam prep) -->
-  <script src="data-achievements.js?v=469"></script>
+  <script src="data-achievements.js?v=470"></script>
 
   <!-- Data: Evidence, Facility, Hidden -->
-  <script src="data-evidence.js?v=469"></script>
-  <script src="data-facility.js?v=469"></script>
-  <script src="data-research.js?v=469"></script>
-  <script src="data-facility-2.js?v=469"></script>
-  <script src="data-facility-uprising-a.js?v=469"></script>
-  <script src="data-facility-uprising-b.js?v=469"></script>
+  <script src="data-evidence.js?v=470"></script>
+  <script src="data-facility.js?v=470"></script>
+  <script src="data-research.js?v=470"></script>
+  <script src="data-facility-2.js?v=470"></script>
+  <script src="data-facility-uprising-a.js?v=470"></script>
+  <script src="data-facility-uprising-b.js?v=470"></script>
   <!-- 시설 제안 카드 자동 생성 (FACILITY_EXPANSIONS 로드 후) -->
-  <script src="data-cards-facility-propose.js?v=469"></script>
-  <script src="data-session-decks.js?v=469"></script>
+  <script src="data-cards-facility-propose.js?v=470"></script>
+  <script src="data-session-decks.js?v=470"></script>
 
   <!-- Data: Evening & Trust -->
-  <script src="data-evening-trust-1.js?v=469"></script>
-  <script src="data-evening-trust-1b.js?v=469"></script>
-  <script src="data-evening-trust-2.js?v=469"></script>
-  <script src="data-evening-trust-3.js?v=469"></script>
-  <script src="data-evening-responses.js?v=469"></script>
-  <script src="data-evening-extra.js?v=469"></script>
-  <script src="data-evening-extra-2a.js?v=469"></script>
-  <script src="data-evening-extra-2b.js?v=469"></script>
-  <script src="data-evening-extra-2c.js?v=469"></script>
-  <script src="data-evening-extra-2d.js?v=469"></script>
-  <script src="data-evening-responses-2.js?v=469"></script>
-  <script src="data-evening-responses-3.js?v=469"></script>
-  <script src="data-evening-extra-3.js?v=469"></script>
-  <script src="data-evening-ys-arc.js?v=469"></script>
-  <script src="data-evening-ij-arc.js?v=469"></script>
-  <script src="data-evening-emotions.js?v=469"></script>
-  <script src="data-card-speakers.js?v=469"></script>
-  <script src="data-hidden-story.js?v=469"></script>
-  <script src="data-character-arcs.js?v=469"></script>
+  <script src="data-evening-trust-1.js?v=470"></script>
+  <script src="data-evening-trust-1b.js?v=470"></script>
+  <script src="data-evening-trust-2.js?v=470"></script>
+  <script src="data-evening-trust-3.js?v=470"></script>
+  <script src="data-evening-responses.js?v=470"></script>
+  <script src="data-evening-extra.js?v=470"></script>
+  <script src="data-evening-extra-2a.js?v=470"></script>
+  <script src="data-evening-extra-2b.js?v=470"></script>
+  <script src="data-evening-extra-2c.js?v=470"></script>
+  <script src="data-evening-extra-2d.js?v=470"></script>
+  <script src="data-evening-responses-2.js?v=470"></script>
+  <script src="data-evening-responses-3.js?v=470"></script>
+  <script src="data-evening-extra-3.js?v=470"></script>
+  <script src="data-evening-ys-arc.js?v=470"></script>
+  <script src="data-evening-ij-arc.js?v=470"></script>
+  <script src="data-evening-emotions.js?v=470"></script>
+  <script src="data-card-speakers.js?v=470"></script>
+  <script src="data-hidden-story.js?v=470"></script>
+  <script src="data-character-arcs.js?v=470"></script>
   <!-- 간부 의심 대화: DIALOGUES used-추적이 인덱스 기반이라 반드시 모든 대화 push 이후(맨 끝)에 로드 -->
-  <script src="data-dialogues-susp.js?v=469"></script>
-  <script src="evening-lines.js?v=469"></script>
+  <script src="data-dialogues-susp.js?v=470"></script>
+  <script src="evening-lines.js?v=470"></script>
 
   <!-- Images -->
   <!-- Image load order matters: images.js defines IMG, images_bg/images_cards extend it, images_p1.js applies late P1 patches. -->
-  <script src="images.js?v=469"></script>
-  <script src="images_bg.js?v=469"></script>
-  <script src="images_cards.js?v=469"></script>
-  <script src="images_p1.js?v=469"></script>
+  <script src="images.js?v=470"></script>
+  <script src="images_bg.js?v=470"></script>
+  <script src="images_cards.js?v=470"></script>
+  <script src="images_p1.js?v=470"></script>
 
   <!-- BGM -->
-  <script src="sfx-sources.js?v=469"></script>
-  <script src="bgm_main.js?v=469"></script>
-  <script src="bgm_tension.js?v=469"></script>
-  <script src="bgm_boot.js?v=469"></script>
-  <script src="bgm.js?v=469"></script>
-  <script src="bgm-fade.js?v=469"></script>
-  <script src="bgm-act.js?v=469"></script>
+  <script src="sfx-sources.js?v=470"></script>
+  <script src="bgm_main.js?v=470"></script>
+  <script src="bgm_tension.js?v=470"></script>
+  <script src="bgm_boot.js?v=470"></script>
+  <script src="bgm.js?v=470"></script>
+  <script src="bgm-fade.js?v=470"></script>
+  <script src="bgm-act.js?v=470"></script>
 
   <!-- Data: Result Text (서사 결과) -->
-  <script src="data-result-text.js?v=469"></script>
-  <script src="data-result-story-1.js?v=469"></script>
-  <script src="data-result-story-2.js?v=469"></script>
-  <script src="data-result-story-3.js?v=469"></script>
+  <script src="data-result-text.js?v=470"></script>
+  <script src="data-result-story-1.js?v=470"></script>
+  <script src="data-result-story-2.js?v=470"></script>
+  <script src="data-result-story-3.js?v=470"></script>
 
   <!-- Utils & Logic -->
-  <script src="demo-flag.js?v=469"></script>
-  <script src="app-utils.js?v=469"></script>
-  <script src="app-bgm.js?v=469"></script>
-  <script src="app-logic.js?v=469"></script>
-  <script src="logic-session-pack-news.js?v=469"></script>
-  <script src="balance-tuning.js?v=469"></script>
-  <script src="logic-act-flow-balance.js?v=469"></script>
+  <script src="demo-flag.js?v=470"></script>
+  <script src="app-utils.js?v=470"></script>
+  <script src="app-bgm.js?v=470"></script>
+  <script src="app-logic.js?v=470"></script>
+  <script src="logic-session-pack-news.js?v=470"></script>
+  <script src="balance-tuning.js?v=470"></script>
+  <script src="logic-act-flow-balance.js?v=470"></script>
 
   <!-- Components -->
-  <script src="components.js?v=469"></script>
-  <script src="components-archive.js?v=469"></script>
-  <script src="components-journal.js?v=469"></script>
-  <script src="components-dialogue.js?v=469"></script>
-  <script src="components-endings.js?v=469"></script>
-  <script src="components-achievements.js?v=469"></script>
-  <script src="components-evening.js?v=469"></script>
-  <script src="components-briefing.js?v=469"></script>
-  <script src="components-evidence.js?v=469"></script>
-  <script src="components-facility.js?v=469"></script>
-  <script src="components-research.js?v=469"></script>
-  <script src="components-game.js?v=469"></script>
-  <script src="components-oracle-link.js?v=469"></script>
-  <script src="components-minigames.js?v=469"></script>
-  <script src="components-settings.js?v=469"></script>
-<script src="components-settings-2.js?v=469"></script>
-  <script src="components-settings-hotfix.js?v=469"></script>
-  <script src="components-glitch.js?v=469"></script>
-  <script src="components-escape-roll.js?v=469"></script>
-  <script src="components-escape.js?v=469"></script>
-  <script src="components-fieldmission-tactical.js?v=469"></script>
-  <script src="components-obsgrid.js?v=469"></script>
-  <script src="components-fieldmission-minigame-patch.js?v=469"></script>
+  <script src="components.js?v=470"></script>
+  <script src="components-archive.js?v=470"></script>
+  <script src="components-journal.js?v=470"></script>
+  <script src="components-dialogue.js?v=470"></script>
+  <script src="components-endings.js?v=470"></script>
+  <script src="components-achievements.js?v=470"></script>
+  <script src="components-evening.js?v=470"></script>
+  <script src="components-briefing.js?v=470"></script>
+  <script src="components-evidence.js?v=470"></script>
+  <script src="components-facility.js?v=470"></script>
+  <script src="components-research.js?v=470"></script>
+  <script src="components-game.js?v=470"></script>
+  <script src="components-oracle-link.js?v=470"></script>
+  <script src="components-minigames.js?v=470"></script>
+  <script src="components-settings.js?v=470"></script>
+<script src="components-settings-2.js?v=470"></script>
+  <script src="components-settings-hotfix.js?v=470"></script>
+  <script src="components-glitch.js?v=470"></script>
+  <script src="components-escape-roll.js?v=470"></script>
+  <script src="components-escape.js?v=470"></script>
+  <script src="components-fieldmission-tactical.js?v=470"></script>
+  <script src="components-obsgrid.js?v=470"></script>
+  <script src="components-fieldmission-minigame-patch.js?v=470"></script>
 
   <!-- App -->
-  <script src="firebase-config.js?v=469"></script>
-  <script src="cloud-save.js?v=469"></script>
+  <script src="firebase-config.js?v=470"></script>
+  <script src="cloud-save.js?v=470"></script>
 
-  <script src="app-init.js?v=469"></script>
-  <script src="app.js?v=469"></script>
+  <script src="app-init.js?v=470"></script>
+  <script src="app.js?v=470"></script>
   <!-- 서비스워커: 오프라인 부팅 + 캐시. ?v=(BUILD_VER)가 캐시 키 — stamp-cache 가 배포마다 갱신 -->
-  <script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js?v=469").catch(function(){})})}</script>
+  <script>if("serviceWorker" in navigator){addEventListener("load",function(){navigator.serviceWorker.register("sw.js?v=470").catch(function(){})})}</script>
 </body>
 </html>

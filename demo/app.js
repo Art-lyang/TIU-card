@@ -281,7 +281,7 @@ function App(){
   useEffect(function(){ if(typeof window!=='undefined')window.__ts_liveLogs=(logs||['LOG-001']).slice(); },[logs]);
   // 현재 표시 중인 카드 id를 저장 — 리로드/재개 시 동일 카드 복원용(once 카드 재등장 중복 방지). SYS-FALLBACK 등 비정형 카드는 제외.
   useEffect(function(){ if(phase==='game'&&curCard&&curCard.id&&curCard.id!=='SYS-FALLBACK'){try{Save.set('ts_curCard',curCard.id)}catch(e){}} },[curCard,phase]);
-  useEffect(function(){if(typeof BGM==='undefined')return;if(phase==='news'||phase==='reward'||phase==='evening'){if(BGM.started&&BGM.fadeVol)BGM.fadeVol(0.04,1400);}else if(phase==='game'){if(!BGM.started){BGM.currentAct=act;BGM.start();}else if(BGM.fadeVol&&BGM.current&&BGM.tracks[BGM.current]&&BGM.tracks[BGM.current].volume<BGM.vol-0.005){BGM.fadeVol(BGM.vol,1400);}}},[phase]);
+  useEffect(function(){if(typeof BGM==='undefined')return;if(phase==='news'||phase==='reward'){if(BGM.started&&BGM.fadeVol)BGM.fadeVol(0.04,1400);}else if(phase==='evening'){if(BGM.started&&BGM.fadeVol)BGM.fadeVol(0.065,1400);}else if(phase==='game'){if(!BGM.started){BGM.currentAct=act;BGM.start();}else if(BGM.fadeVol&&BGM.current&&BGM.tracks[BGM.current]&&BGM.tracks[BGM.current].volume<BGM.vol-0.005){BGM.fadeVol(BGM.vol,1400);}}},[phase]);
   // 가이드 힌트 — phase 진입형 (첫 카드 / 첫 야간통신 / 첫 현장임무)
   useEffect(function(){
     if(phase==='game')fireGuideHint('h1',tt('guide.h1',null,'[ORACLE: 카드를 기울이면 판단 결과 예측치가 표시됩니다]'));
