@@ -281,6 +281,7 @@ function App(){
   useEffect(function(){ if(typeof window!=='undefined')window.__ts_liveLogs=(logs||['LOG-001']).slice(); },[logs]);
   // 현재 표시 중인 카드 id를 저장 — 리로드/재개 시 동일 카드 복원용(once 카드 재등장 중복 방지). SYS-FALLBACK 등 비정형 카드는 제외.
   useEffect(function(){ if(phase==='game'&&curCard&&curCard.id&&curCard.id!=='SYS-FALLBACK'){try{Save.set('ts_curCard',curCard.id)}catch(e){}} },[curCard,phase]);
+  useEffect(function(){if(typeof BGM==='undefined')return;if(phase==='news'||phase==='reward'||phase==='evening'){if(BGM.started)BGM.stop();}else if(phase==='game'){if(!BGM.started){BGM.currentAct=act;BGM.start();}}},[phase]);
   // 가이드 힌트 — phase 진입형 (첫 카드 / 첫 야간통신 / 첫 현장임무)
   useEffect(function(){
     if(phase==='game')fireGuideHint('h1',tt('guide.h1',null,'[ORACLE: 카드를 기울이면 판단 결과 예측치가 표시됩니다]'));
@@ -639,6 +640,7 @@ function App(){
     var triggerKey=curCard.id+'-'+dir;var chain=null;
     Object.keys(CHAINS).forEach(function(k){if(CHAINS[k].trigger===triggerKey)chain=CHAINS[k]});
     var cq=chainQueue;if(chain){SFX.play('glitch');cq=chain.cards;setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext,pendingBonusForSave)}
+    var _MUT_OBS2DEC={'C-091':'C-096','C-092':'C-097','C-093':'C-098','C-094':'C-099','C-095':'C-100'};var _mdec=_MUT_OBS2DEC[curCard.id];if(_mdec&&typeof CARD_BY_ID!=='undefined'&&CARD_BY_ID[_mdec]&&nextLogs.indexOf('ONCE-'+_mdec)<0){cq=(cq||[]).concat([CARD_BY_ID[_mdec]]);setChainQueue(cq);persistGame(ns,ng,act,nextActFlags,transRoute,ncd,recentCards,nct,cq,facilityForNext,pendingBonusForSave)}
     // 체인 큐에 카드가 남아 있으면 DAY 종료보다 우선 처리 (서사 연속성 보장)
     if(cq&&cq.length>0){nextCard(ns,ng,nextLogs,cq,act,ncd,recentCards,transRoute,facilityForNext)}
     else if(nct>=cpd){SFX.play('news');var dayNews=genNewsHeadlines(ns,ng,nextLogs);setNh(dayNews);Save.set('ts_resumePhase','news');Save.set('ts_resumeHeadlines',dayNews);setTimeout(function(){setPhase('news')},400)}
