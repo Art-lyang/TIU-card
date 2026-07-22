@@ -145,7 +145,7 @@ function LogViewer(p){
   var helpRows=[
     [LJ('공식 기록','DATABASE'),LJ('ORACLE 데이터베이스에 동기화된 공식 기록입니다. 해금된 LOG를 열람합니다.','Official records synced to the ORACLE database. Browse unlocked logs here.')],
     [LJ('지휘관 메모','JOURNAL'),LJ('ORACLE에 동기화되지 않는 사적 일지입니다. 선택·기록 갱신·현장 대응이 DAY별로 쌓이고, 하루 끝에 짧은 소회가 남습니다.','A private journal never synced to ORACLE. Choices, record updates, and field responses stack by day, each closed with a short note.')],
-    [LJ('방향','DIRECTION'),LJ('이번 임기의 기류(부임 메모)와 루트·사건에 따라 일지의 결이 달라집니다. 회차가 끝난 뒤에도 남아 지난 세션을 돌아볼 수 있습니다.','The posting note, your route, and events shift the journal\'s tone. It survives the run\'s end so you can look back.')]
+    [LJ('방향','DIRECTION'),LJ('부임 메모·루트·사건, 그리고 이브닝 대화에서 누구와 어떻게 지냈는지에 따라 일지의 결이 달라집니다. 회차가 끝난 뒤에도 남아 지난 세션을 돌아볼 수 있습니다.','The posting note, your route, events, and who you connect with on evening calls all shift the journal\'s tone. It survives the run\'s end so you can look back.')]
   ];
   var vLogs=ORACLE_LOGS.filter(function(l){return !(l.hidden&&p.unlockedIds.indexOf(l.id)<0)});var ulAll=ORACLE_LOGS.filter(function(l){return p.unlockedIds.indexOf(l.id)>=0}),lk=vLogs.length-ulAll.length;
   var LOG_TOPICS=[{k:'all',ko:'전체',en:'ALL'},{k:'spec',ko:'이변체',en:'SPECIMENS'},{k:'prom',ko:'프로메테우스',en:'PROMETHEUS'},{k:'oracle',ko:'ORACLE',en:'ORACLE'},{k:'people',ko:'인물',en:'PERSONNEL'},{k:'etc',ko:'기타',en:'OTHER'}];

@@ -96,6 +96,36 @@ var JOURNAL_MOODS_EVENT={
   'LOG-075':['강도윤의 채널이 응답하지 않는다. 현장은 아직 그의 동선을 따라 돈다.','Do-yun\'s channel has gone silent. The field still runs along the routes he drew.'],
   'SEJIN-DELAY':['연구동 불이 늦게까지 켜져 있다. 윤세진의 보고가 또 밀렸다. 장비 탓이라고 했지만, 눈은 다른 말을 하고 있었다.','The research wing\'s lights stayed on late. Se-jin\'s report slipped again. She blamed the equipment — her eyes said otherwise.']
 };
+// ── 이브닝/대화 유대 무드 ── 그날 누구와 어떤 톤(warm/cold)으로 교감했는지에 따라 소회가 달라진다.
+// 캐넌 키: doyun/sejin/haeun/jaehyuk/soyoung (modTrust 정규화 키와 동일). [KO,EN] 쌍 배열.
+var JOURNAL_MOODS_BOND={
+  doyun:{
+    warm:[["강도윤과 오래 이야기했다. 현장의 언어는 늘 나보다 정직하다.","Talked with Do-yun a long while. The field’s language is always more honest than mine."],
+          ["강도윤은 위험을 축소해 말한다. 그 버릇이 나를 안심시키고, 그래서 더 걱정된다.","Do-yun downplays the danger. The habit reassures me — which is exactly why it worries me."]],
+    cold:[["강도윤이 말수를 줄였다. 명령만 받는 사람의 얼굴을 나는 안다 — 거울에서 봤다.","Do-yun’s gone quiet. I know the face of a man who only takes orders — I’ve seen it in the mirror."],
+          ["오늘 강도윤에게 설명 대신 지시를 내렸다. 편했다. 편했다는 게 오래 남는다.","Today I handed Do-yun an order instead of an explanation. It was easy. The ease is what lingers."]]},
+  sejin:{
+    warm:[["윤세진이 오늘은 데이터 뒤의 말을 조금 흘렸다. 신뢰는 그런 틈으로 샌다.","Se-jin let slip a little of what lies behind the data tonight. Trust leaks through gaps like that."],
+          ["윤세진의 노트에 오늘은 여백이 적었다. 말하기 시작했다는 뜻일까.","Fewer blanks in Se-jin’s notes today. Does that mean the talking has started."]],
+    cold:[["윤세진의 보고는 정확했고, 정확한 만큼 비어 있었다. 무엇을 안 적었는지가 궁금하다.","Se-jin’s report was precise — and as precise as it was, hollow. I wonder what went unwritten."],
+          ["연구동 불이 또 늦게 꺼졌다. 오늘은 이유를 묻지 않았다. 물었어야 했나.","The research wing’s lights went out late again. I didn’t ask why tonight. Should I have."]]},
+  haeun:{
+    warm:[["서하은과 늦게까지 이야기했다. 이 기지를 혼자 지킨 석 달의 무게가 목소리에 아직 남아 있다.","Stayed up talking with Ha-eun. Three months holding this base alone still weighs in her voice."],
+          ["서하은은 요원들 이름을 하나도 빼먹지 않는다. 나는 몇을 잊었다. 부끄러웠다.","Ha-eun forgets none of the agents’ names. I’ve forgotten a few. It shamed me."]],
+    cold:[["서하은이 원칙을 다시 꺼냈다. 나는 숫자를 꺼냈다. 오늘은 둘 다 지지 않았다.","Ha-eun brought up principle again. I brought up the numbers. Tonight neither of us gave."],
+          ["서하은의 눈이 오늘은 나를 지휘관이 아니라 문제로 봤다. 틀린 눈은 아니었다.","Tonight Ha-eun looked at me not as a commander but as a problem. She wasn’t wrong to."]]},
+  jaehyuk:{
+    warm:[["임재혁과 콘솔 앞에서 한참을 보냈다. 그는 파일명 하나에도 사람의 흔적을 남긴다.","Spent a while with Jaehyuk at the console. He leaves a human trace even in a file name."],
+          ["임재혁이 농담을 하나 던졌다. 이 기지에서 농담은 생존 신호다.","Jaehyuk cracked a joke. On this base, a joke is a survival signal."]],
+    cold:[["임재혁이 화면만 봤다. 나도 그 편이 편했다. 편한 침묵이 제일 위험하다.","Jaehyuk kept his eyes on the screen. I preferred it that way too. Comfortable silence is the most dangerous kind."],
+          ["임재혁에게 오늘은 승인만 전달했다. 그의 콘솔은 대답하지 않았다.","Passed Jaehyuk only approvals today. His console didn’t answer back."]]},
+  soyoung:{
+    warm:[["박소영과의 대화는 늘 한 겹 더 있다. 오늘은 그 겹을 굳이 들추지 않았다.","There’s always one more layer to talking with So-young. Tonight I chose not to lift it."],
+          ["박소영이 유용한 말을 정확한 때에 건넸다. 정확한 타이밍은 언제나 조금 무서운 법이다.","So-young offered something useful at exactly the right moment. Perfect timing is always a little unnerving."]],
+    cold:[["박소영이 웃었다. 그 웃음이 어디까지 진심인지, 세는 습관이 생겼다.","So-young smiled. I’ve picked up the habit of measuring how far that smile goes."],
+          ["박소영에게 오늘은 아무것도 내주지 않았다. 그쪽도 마찬가지였을 것이다.","Gave So-young nothing today. I expect the favor was returned."]]}
+};
+
 function journalEventKey(id){
   if(JOURNAL_MOODS_EVENT[id])return id;
   if(String(id).indexOf('LOG-SEJIN-DELAY')===0)return 'SEJIN-DELAY';
@@ -181,12 +211,14 @@ function CommanderJournal(p){
     for(var i=0;i<evs.length;i++){
       if(evs[i].t==='log'){var ek=journalEventKey(evs[i].id);if(ek)return JOURNAL_MOODS_EVENT[ek]}
     }
-    // 2순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
+    // 2순위: 이브닝/대화 유대 — 그날 누구와 어떤 톤으로 교감했는지(플레이어 선택 반영). day 해시로 루트/Act 풀과 교대.
+    for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%2===0){ return barr[journalHash(d,evs[bi].id+tone)%barr.length]; } break; } }
+    // 3순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
     var route=(evs.filter(function(e){return e.r})[0]||{}).r||'';
     if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(d,'alt')%2===0){
       var rp=JOURNAL_MOODS_ROUTE[route];return rp[journalHash(d,route)%rp.length];
     }
-    // 3순위: Act 기본 풀
+    // 4순위: Act 기본 풀
     var ap=JOURNAL_MOODS[act]||JOURNAL_MOODS[1];return ap[journalHash(d,act)%ap.length];
   };
   return h(React.Fragment,null,
