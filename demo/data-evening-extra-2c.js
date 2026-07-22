@@ -175,3 +175,34 @@ EVENING_CHATS.push(
       "왜 말씀드리냐고요? 글쎄요. 지휘관님은 알아두시는 게 좋을 것 같아서요."
     ] }
 );
+
+EVENING_CHATS.push(
+  { char: '강도윤', act: [2], dayMin: 8, dayMax: 14, responseKey: 'doyun_route_comply_a2',
+    condFn: function(ctx){ return (ctx.gi||0)>=8; },
+    lines: [
+      "지휘관님. 요즘 승인이 빨라졌다는 얘기, 현장에서도 돕니다.",
+      "빠른 게 나쁘진 않죠. 다만 — 예전엔 제 보고가 한 번은 걸렸는데, 요즘은 그냥 통과됩니다.",
+      "누가 읽긴 읽는 겁니까? ...아닙니다. 보고 끝입니다."
+    ] },
+  { char: '강도윤', act: [2], dayMin: 8, dayMax: 14, responseKey: 'doyun_route_resist_a2',
+    condFn: function(ctx){ return (ctx.gi||0)<=-6; },
+    lines: [
+      "지휘관님, 이번 건 위 권고랑 다르게 가셨더군요.",
+      "현장 사람들은 압니다. 누가 자기들 편에서 한 번 더 생각했는지.",
+      "말은 안 합니다. 그냥 — 알아두시라고요."
+    ] },
+  { char: '서하은', act: [2], dayMin: 8, dayMax: 14, responseKey: 'haeun_route_comply_a2',
+    condFn: function(ctx){ return (ctx.gi||0)>=8 || ctx.logs.indexOf('LOG-A2-COMPLY-01')>=0; },
+    lines: [
+      "요즘 제 요약본이 그대로 안 올라가고, 원본이 같이 올라가요.",
+      "처음엔 편하다 했는데... 제 해석이 빠진 보고는, 좀 다른 물건이더라고요.",
+      "아직은 괜찮아요. 아직은요."
+    ] },
+  { char: '서하은', act: [2], dayMin: 8, dayMax: 14, responseKey: 'haeun_route_resist_a2',
+    condFn: function(ctx){ return (ctx.gi||0)<=-6; },
+    lines: [
+      "지휘관님이 오늘 판단을 하나 남기셨죠. 권고를 그대로 안 받고요.",
+      "그 한 줄이 뭐라고, 저는 좀 안심이 됐어요.",
+      "부임 전 석 달, 저 혼자 '예'만 적던 때가 있었거든요. 그때 생각이 나서요."
+    ] }
+);

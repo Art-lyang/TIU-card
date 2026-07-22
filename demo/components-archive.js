@@ -9,6 +9,9 @@ function ArchiveViewer(p) {
   var s3 = useState(null), newUnlock = s3[0], setNewUnlock = s3[1];
   var locale = getLocale();
   var isKo = locale === 'ko';
+  var _help = useRlabHelp('ts_archiveHelpSeen', false);
+  var _AJ = function(ko,en){ return isKo ? ko : en; };
+  var _archiveHelpRows = [[_AJ('아카이브','ARCHIVE'), _AJ('플레이 중 해금되는 세계관 기록 모음입니다. 이변체·인물·조직·지역·기술·사건이 카테고리별로 쌓입니다.','Worldbuilding records unlocked through play. Anomalies, personnel, organizations, regions, tech, and incidents stack by category.')],[_AJ('해금','UNLOCK'), _AJ('특정 LOG를 확보하거나 사건을 처리하면 관련 항목이 열립니다. 잠긴 항목은 회색으로 남습니다.','Securing certain logs or resolving incidents opens related entries. Locked ones stay greyed out.')],[_AJ('유지','PERSISTS'), _AJ('해금 기록은 회차가 끝난 뒤에도 남아, 여러 세션에 걸쳐 세계를 채워갑니다.','Unlocks persist after a run ends, filling in the world across many sessions.')]];
   var catLabelMapEn = {
     '이변체': 'Anomalies',
     '인물': 'Personnel',
@@ -104,9 +107,10 @@ function ArchiveViewer(p) {
   var pct = vEntries.length > 0 ? Math.round(unlocked.length / vEntries.length * 100) : 0;
   return h('div', { className: 'screen vw-screen' },
     bgOverlay,
+    h(RlabHelpOverlay, { open: _help.open, onClose: _help.close, title: _AJ('아카이브 — 세계관 기록', 'ARCHIVE — WORLDBUILDING RECORDS'), ok: _AJ('확인','GOT IT'), rows: _archiveHelpRows }),
     h('div', { className: 'vw-wrap' },
       h('div', { className: 'vw-panel' },
-        h('div', { className: 'vw-panel-h' }, '// ORACLE ARCHIVE', h('span', null, unlocked.length + '/' + vEntries.length + (isKo ? ' 해금' : ' UNLOCKED'))),
+        h('div', { className: 'vw-panel-h' }, '// ORACLE ARCHIVE', h(RlabHelpButton, { onClick: _help.show, title: _AJ('아카이브 안내','Archive guide') }), h('span', null, unlocked.length + '/' + vEntries.length + (isKo ? ' 해금' : ' UNLOCKED'))),
         h('div', { className: 'vw-prog', 'aria-hidden': true }, h('div', { className: 'vw-prog-fill', style: { width: pct + '%' } })),
         h('div', { className: 'vw-cat-grid' },
           ARCHIVE_CATEGORIES.map(function(cat) {

@@ -433,6 +433,26 @@ window.TS_I18N.mergeContent('en', {
 // --- route-reactive evening chats (GI/compliance-gated) ---
 window.TS_I18N.mergeContent('en', {
   eveningChats: {
+    "doyun_route_comply_a2": { lines: [
+      "Commander. Word is going around the field too — approvals have gotten faster lately.",
+      "Fast is not bad. Only — my reports used to get held up once. Now they just pass straight through.",
+      "Someone is still reading them, right? ...Never mind. End of report."
+    ] },
+    "doyun_route_resist_a2": { lines: [
+      "Commander, you went against the recommendation on this one.",
+      "The field notices. Who stopped to think once more on their side.",
+      "Nobody says it out loud. Just — figured you should know."
+    ] },
+    "haeun_route_comply_a2": { lines: [
+      "Lately my summaries do not go up alone — the raw data goes with them.",
+      "At first I called it convenient... but a report without my read on it is a different thing.",
+      "It is fine for now. For now."
+    ] },
+    "haeun_route_resist_a2": { lines: [
+      "You left a judgment of your own today. You did not just take the recommendation.",
+      "One line, and somehow it put me at ease.",
+      "For three months before you came, there was a time I wrote only yes, alone. It reminded me of that."
+    ] },
     "doyun_route_comply": { lines: [
       "Commander. The directives coming down lately... they've gotten fast.",
       "Fast approval is a good thing. But the room for field judgment shrank with it.",
