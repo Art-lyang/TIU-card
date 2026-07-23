@@ -212,7 +212,7 @@ function CommanderJournal(p){
       if(evs[i].t==='log'){var ek=journalEventKey(evs[i].id);if(ek)return JOURNAL_MOODS_EVENT[ek]}
     }
     // 2순위: 이브닝/대화 유대 — 그날 누구와 어떤 톤으로 교감했는지(플레이어 선택 반영). day 해시로 루트/Act 풀과 교대.
-    for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%2===0){ return barr[journalHash(d,evs[bi].id+tone)%barr.length]; } break; } }
+    for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%3===0){ return barr[journalHash(d,evs[bi].id+tone)%barr.length]; } break; } }
     // 3순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
     var route=(evs.filter(function(e){return e.r})[0]||{}).r||'';
     if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(d,'alt')%2===0){
