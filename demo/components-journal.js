@@ -144,7 +144,27 @@ var MEMO_BY_CHOICE={
   'C-090|left':["강도윤의 긴급 호출에 먼저 움직였다. ORACLE 보고는 뒤로 미뤘다. 현장이 먼저인지 절차가 먼저인지 — 오늘의 답은 현장이었다.","I moved on Do-yun's emergency call first. The report to ORACLE waited. Field first or procedure first — today the answer was the field."],
   'C-090|right':["강도윤이 직접 보라고 했지만, 나는 ORACLE에 먼저 보고했다. 절차대로였다. 강도윤은 아무 말도 하지 않았고, 그 침묵이 오래 남았다.","Do-yun said to see it myself, but I reported to ORACLE first. By the book. He said nothing, and the silence stayed."],
   'C-019|left':["미분류 흔적에 경계만 강화했다. 성급하게 쫓지 않았다. 신중한 건지 겁이 난 건지, 나도 아직 구분이 안 된다.","I only tightened watch over the unclassified traces. I did not chase. Cautious or afraid, I still cannot tell the two apart."],
-  'C-019|right':["미분류 흔적을 단독으로 추적하기로 했다. 보고 체계 밖으로 한 발 내디뎠다. 그 한 발이 어디까지 이어질지는 아직 모른다.","I chose to track the unclassified traces alone. One step outside the reporting chain. Where that step leads, I do not yet know."]
+  'C-019|right':["미분류 흔적을 단독으로 추적하기로 했다. 보고 체계 밖으로 한 발 내디뎠다. 그 한 발이 어디까지 이어질지는 아직 모른다.","I chose to track the unclassified traces alone. One step outside the reporting chain. Where that step leads, I do not yet know."],
+  'CA-001|left':["부임 첫날, 나는 보고서부터 폈다. 사람보다 숫자를 먼저 본 셈이다. 습관은 이렇게 첫날부터 자리를 잡는다.","My first day, and I opened the reports first. Numbers before faces. Habits take their seat on day one, just like this."],
+  'CA-001|right':["부임 첫날, 나는 기지부터 걸었다. 보고서는 기다릴 수 있지만 사람 얼굴은 그날만의 것이라서.","My first day, and I walked the base first. Reports can wait; a person's face belongs only to that day."],
+  'CA-002|left':["석 달치 보류 항목을 ORACLE 분류 그대로 결재했다. 빠르고 깔끔했다. 빠르고 깔끔한 결재가 늘 좋은 결재는 아니다.","I cleared three months of held items exactly as ORACLE sorted them. Fast and clean. Fast and clean is not always good."],
+  'CA-002|right':["보류 항목을 부지휘관과 하나씩 다시 봤다. 오래 걸렸다. 그중 둘은 ORACLE 분류와 달랐고, 그 둘이 오래 마음에 남았다.","I went through the held items with my deputy, one by one. It took long. Two of them did not match ORACLE's sorting, and those two stayed with me."],
+  'CA-006|left':["오늘도 ORACLE 권고대로 움직였다. 이유는 서로 다른데 결론이 늘 같다. 편한 일치가 제일 무섭다.","Again today I moved as ORACLE recommended. Different reasons, always the same conclusion. Convenient agreement is what frightens me most."],
+  'CA-006|right':["ORACLE 권고를 한 번 접고 내 판단을 얹었다. 별일 아닌 결정이었지만, 내 손으로 한 결정이었다.","I set ORACLE's recommendation aside once and put my own judgment on top. A small call, but mine."],
+  'CA-009|left':["첫 훈련을 강도윤 방식대로 뒀다. 실전 기준이라 거칠었다. 요원들 눈빛이 달라졌다 — 그게 이 기지엔 필요했다.","I let Do-yun run the first drill his way. Combat standard, rough. The agents' eyes changed, and this base needed that."],
+  'CA-009|right':["첫 훈련은 ORACLE 프로토콜대로, 부상 위험 최소로 갔다. 안전했다. 안전한 훈련이 실전에서 사람을 지켜주는지는, 아직 모른다.","The first drill went by ORACLE protocol, injury risk minimized. Safe. Whether a safe drill protects anyone in the field, I do not yet know."],
+  'CA-011|left':["고라니 떼였다. 대응은 불필요했지만, 나는 기록을 남겼다. 아무것도 아닌 걸 적어두는 습관이 언젠가 나를 살릴지도 모른다.","It was just deer. No response needed, but I logged it anyway. The habit of recording nothing-much may save me one day."],
+  'CA-011|right':["고라니 떼였고, ORACLE 분류대로 넘겼다. 맞는 판단이었다. 맞는 판단만 쌓다 보면 언젠가 틀린 것도 맞다고 넘기게 된다.","Just deer, filed as ORACLE classified. The right call. Stack up only right calls, and one day you wave a wrong one through as right too."],
+  'CA-012|left':["윤세진이 이상하다고 했고, 나는 관찰 기간을 더 줬다. 확신은 없었다. 확신 없이 그의 편을 든 건, 그를 믿기 때문이었다.","Se-jin said something felt off, so I extended the observation. No certainty. I took his side without it, because I trust him."],
+  'CA-012|right':["윤세진의 찜찜함보다 ORACLE의 '정상 범주'를 택했다. 데이터가 그렇다니까. 그런데 사람의 찜찜함도 데이터의 일종 아닌가.","I chose ORACLE's within-normal-range over Se-jin's unease. The data said so. But is a person's unease not a kind of data too."],
+  'CA-016|left':["서하은이 요약본과 원본의 수치가 다르다고 했다. 우리는 같이 다시 봤다. ORACLE 평가는 떨어졌지만, 나는 내 사람의 눈을 믿었다.","Ha-eun said the summary and the raw numbers did not match. We checked again, together. My ORACLE score dropped, but I trusted my own people's eyes."],
+  'CA-016|right':["서하은이 수치가 다르다고 했지만, 재확인은 불필요하다고 넘겼다. 그가 '제가 잘못 봤겠죠'라고 했다. 나는 그 말을 정정하지 않았다.","Ha-eun said the numbers differed, but I called a recheck unnecessary. She said she must have misread. I did not correct her."],
+  'CA-017|left':["센서 이상값을 ORACLE이 자동 보정했지만, 나는 수동 점검을 지시했다. 임재혁이 오래 화면을 봤다. 나도 그 화면을 오래 봤다.","ORACLE auto-corrected the sensor glitch, but I ordered a manual check anyway. Jaehyuk stared at the screen a while. So did I."],
+  'CA-017|right':["센서는 ORACLE이 알아서 처리했다. 넘어갔다. 임재혁이 화면을 조금 오래 바라봤는데, 나는 그 시선의 의미를 묻지 않았다.","ORACLE handled the sensor. I let it go. Jaehyuk looked at the screen a beat too long, and I did not ask what the look meant."],
+  'CA-018|left':["화면 하단에 뭔가 깜박였다 사라졌다. 0.3초. 나는 그걸 기록했다. 단말기 너머에 층이 하나 더 있다는 걸, 그날 처음 적었다.","Something flickered at the bottom of the screen and vanished. Three-tenths of a second. I logged it. That was the day I first wrote down that there is another layer behind the terminal."],
+  'CA-018|right':["화면에 뭔가 깜박였지만, 잔상으로 처리했다. ORACLE 평가는 올랐다. 못 본 걸로 하면 편하다. 편한 건 늘 대가가 있다.","Something flickered on the screen, but I filed it as an afterimage. My ORACLE score rose. Choosing not to have seen it is easy. Easy always has a price."],
+  'CA-014|left':["ORACLE 응답이 0.8초 늦었다. 처음 있는 일이라고 했다. 서버 부하겠지. 그래도 나는 기록해두라고 했다 — 처음이라는 말이 걸려서.","ORACLE answered 0.8 seconds late. First time on record, they said. Server load, probably. Still I had it logged, because the word first snagged on me."],
+  'CA-014|right':["ORACLE의 0.8초 지연을 정상 범주로 넘겼다. 별거 아닐 것이다. 별거 아닌 것들이 며칠 뒤 겹치기 시작하면, 그때는 이미 늦다.","I waved off ORACLE's 0.8-second lag as normal. Probably nothing. When the nothings start stacking days later, it is already too late."]
 };
 
 
