@@ -123,6 +123,13 @@ var CARDS_INVESTIGATE = [
     left: { label: "제거 작전 — 하수구 소탕", fx: { c: 1, r: -1, t: 0, o: 1 }, g: 1, mission: "M-010" },
     right: { label: "생포 작전 — 미끼 유인 포획", fx: { c: 0, r: -2, t: 1, o: -1 }, g: -1, mission: "M-010" } },
 
+    // 재추적 — LOG-041-PARTIAL(부상만 입힘) 후 spec-015 스레드 완결. 두 선택 모두 LOG-041 발급으로 dead-state 차단.
+  { id: "C-278", act: [3,4], priority: "상", tag: "spec-015", once: true,
+    req: function(s,g,logs){ return logs.includes("LOG-041-PARTIAL") && !logs.includes("LOG-041"); },
+    msg: "강도윤 재보고.\n\n\"BS-GANGWON-01 흔적을 다시 잡았습니다. 부상은 아물었고 — 매복 위치를 전부 바꿨습니다.\"\n\"지난번 우리 사격 각도를 기억하고 있습니다. 이번엔 정면을 안 줍니다.\"\n\n윤세진: \"한 번 놓친 학습형 개체는 재추적이 더 어려워요. 더 조심스러워졌을 겁니다.\"\n\"두개골 측면은 두껍지만 — 정수리와 척추 접합부는 여전히 노출돼 있습니다.\"\n\n강도윤: \"이번엔 끝을 봅니다. 방식만 정해 주십시오.\"",
+    left: { label: "재추적 소탕 — 척추 접합부 직격", fx: { c: 1, r: -1, t: 1, o: 1 }, g: 1, log: "LOG-041" },
+    right: { label: "학습엔 학습 — 예상 경로 함정 설계", fx: { c: 1, r: -2, t: 2, o: 0 }, g: 0, log: "LOG-041" } },
+
   // ═══ 긴급 현장임무 (파일럿) — 비활성(휴면) 이변체 긴급 조우 ═══
   // 이번 세션 비활성 종에서만 발동 → 조사 루트와 상호배타(같은 종 이중 조우 없음).
   // tag 미부여(specOk 우회) + req로 휴면 판정. once + day 게이트로 드물게.

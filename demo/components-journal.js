@@ -75,21 +75,29 @@ function journalHash(a,b){var h=2166136261;var s=String(a)+'|'+String(b);for(var
 // 루트 무드 — transRoute별(Act3 A~D / Act4 4루트). 카드 엔트리의 r 필드에서 그날의 루트를 읽는다.
 var JOURNAL_MOODS_ROUTE={
   A:[['지표가 버텨준다. 버티는 동안 무엇을 준비하느냐가 문제다.','The numbers are holding. The question is what we build while they hold.'],
-     ['숫자는 안정을 말한다. 현장의 얼굴들은 조금 다른 말을 한다.','The figures say stable. The faces in the field say something slightly different.']],
+     ['숫자는 안정을 말한다. 현장의 얼굴들은 조금 다른 말을 한다.','The figures say stable. The faces in the field say something slightly different.'],
+     ['안정은 준비할 시간을 준다. 준비를 미루면, 안정은 그냥 유예일 뿐이다.','Stability buys time to prepare. Put the preparing off, and stability is just a stay of execution.']],
   B:[['사람이 모자라다. 명령서는 그 사실을 모르는 것처럼 도착한다.','We are short on people. The directives arrive as if they don\'t know that.'],
-     ['현장이 얇아지고 있다. 서류 위에서는 아직 두껍다.','The field is wearing thin. On paper it still looks thick.']],
+     ['현장이 얇아지고 있다. 서류 위에서는 아직 두껍다.','The field is wearing thin. On paper it still looks thick.'],
+     ['보급은 늘 하루 늦게 온다. 하루가 쌓이면 봉쇄선보다 사람이 먼저 무너진다.','Supplies always arrive a day late. Stack the days and people break before the line does.']],
   C:[['정보가 무기가 된 지는 오래다. 요즘은 침묵도 무기다.','Information became a weapon long ago. These days, silence is one too.'],
-     ['누가 무엇을 아는지가 전선이 됐다. 나는 어느 쪽 참호에 있나.','Who knows what has become the front line. Which trench am I in.']],
+     ['누가 무엇을 아는지가 전선이 됐다. 나는 어느 쪽 참호에 있나.','Who knows what has become the front line. Which trench am I in.'],
+     ['무엇을 아는지 들키지 않는 것도 하루 일과가 됐다.','Not letting on what I know has become part of the daily routine.']],
   D:[['나쁜 소식이 겹치는 날이 잦아졌다. 겹침에는 보통 이유가 있다.','Bad news keeps arriving in pairs. Coincidence usually has a reason.'],
-     ['하루를 막으면 이틀이 무너져 들어온다.','Hold one day together and two more collapse into it.']],
+     ['하루를 막으면 이틀이 무너져 들어온다.','Hold one day together and two more collapse into it.'],
+     ['좋은 소식이 오면 먼저 의심한다. 요즘은 그게 더 정확하다.','When good news comes I doubt it first. Lately that reads truer.']],
   A4_COMPLY:[['승인란에 서명하는 손이 빨라졌다. 빨라진 것을 자각하는 동안은, 아직 내 손이다.','My signing hand has gotten faster. As long as I notice that, it\'s still my hand.'],
-     ['지시와 판단의 경계가 흐려진다. 이렇게 적어두는 것은 그래서다.','The line between orders and judgment is blurring. That is exactly why I write this down.']],
+     ['지시와 판단의 경계가 흐려진다. 이렇게 적어두는 것은 그래서다.','The line between orders and judgment is blurring. That is exactly why I write this down.'],
+     ['시키는 대로 하는 날이 늘었다. 아직은 왜인지 묻는 나도 남아 있다.','More days pass doing as told. For now, the part of me that asks why is still here.']],
   A4_GREY:[['어느 쪽에도 온전히 서지 않기로 했다. 그 자리가 제일 좁다.','I chose to stand fully on neither side. It is the narrowest place to stand.'],
-     ['양쪽 모두 나를 자기편으로 센다. 둘 다 틀렸다.','Both sides count me as theirs. Both are wrong.']],
+     ['양쪽 모두 나를 자기편으로 센다. 둘 다 틀렸다.','Both sides count me as theirs. Both are wrong.'],
+     ['어느 편도 아니라는 건, 양쪽 모두에게 표적이 된다는 뜻이다.','Belonging to neither side means being a target for both.']],
   A4_RESIST:[['거절을 다시 배우고 있다. 군에서 못 배운 유일한 기술이다.','Relearning how to refuse. The one skill the army never taught me.'],
-     ['명령서 위에 내 판단을 겹쳐 쓴다. 대가는 언젠가 온다. 그때 계산하겠다.','I write my own judgment over the directives. The bill will come. I\'ll settle it then.']],
+     ['명령서 위에 내 판단을 겹쳐 쓴다. 대가는 언젠가 온다. 그때 계산하겠다.','I write my own judgment over the directives. The bill will come. I\'ll settle it then.'],
+     ['한 번 아니오라고 하면, 다음 아니오는 조금 쉬워진다. 대가만 빼면.','Say no once and the next no comes a little easier. The cost aside.']],
   A4_OBSERVER:[['기록되지 않는 무언가가 기록을 보고 있다. 문장이 이상하지만 고치지 않겠다.','Something unrecorded is reading the records. Strange sentence. I\'m not fixing it.'],
-     ['단말기 너머에 층이 하나 더 있다. 증명은 못 한다. 감각은 확실하다.','There is one more layer behind the terminal. I can\'t prove it. I can feel it.']]
+     ['단말기 너머에 층이 하나 더 있다. 증명은 못 한다. 감각은 확실하다.','There is one more layer behind the terminal. I can\'t prove it. I can feel it.'],
+     ['보는 것과 보이는 것의 구분이 흐려진다. 오늘은 어느 쪽이었나.','The line between watching and being watched blurs. Which was I today.']]
 };
 // 아크 이벤트 무드 — 그날 해금 로그에 매칭되면 최우선. 간부 상실·세진 지연 계열.
 var JOURNAL_MOODS_EVENT={
@@ -331,7 +339,7 @@ function CommanderJournal(p){
   if(days.length===0)return h('div',{className:'vw-note',style:{marginTop:14}},tt('journal.empty',null,isEn?'No entries yet. The journal fills in as the session proceeds.':'아직 기록이 없습니다. 세션이 진행되면 일지가 채워집니다.'));
   // 일지 안내 — 지휘관이 임기 중 직접 남기는 사적 메모라는 간단한 설명 한 줄
   var deckLine=isEn?'✱ Personal notes the commander keeps through this term.':'✱ 지휘관이 임기 중 직접 남기는 개인 메모입니다.';
-  var moodFor=function(d,evs,act,bondIdx){
+  var moodFor=function(d,evs,act,bondIdx,routeIdx,actIdx){
     // 1순위: 그날 해금 로그의 아크 이벤트 (간부 상실·세진 지연)
     for(var i=0;i<evs.length;i++){
       if(evs[i].t==='log'){var ek=journalEventKey(evs[i].id);if(ek)return JOURNAL_MOODS_EVENT[ek]}
@@ -343,21 +351,24 @@ function CommanderJournal(p){
     // 4순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
     var route=(evs.filter(function(e){return e.r})[0]||{}).r||'';
     if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(d,'alt')%2===0){
-      var rp=JOURNAL_MOODS_ROUTE[route];return rp[journalHash(d,route)%rp.length];
+      var rp=JOURNAL_MOODS_ROUTE[route];return rp[(typeof routeIdx==='number'?routeIdx:journalHash(d,route))%rp.length];
     }
     // 5순위: Act 기본 풀
-    var ap=JOURNAL_MOODS[act]||JOURNAL_MOODS[1];return ap[journalHash(d,act)%ap.length];
+    var ap=JOURNAL_MOODS[act]||JOURNAL_MOODS[1];return ap[(typeof actIdx==='number'?actIdx:journalHash(d,act))%ap.length];
   };
   // 유대 소회 반복 방지: 게이트 통과하는 유대일을 시간순으로 세어 (인물+톤)별 변형을 순환시킨다.
   var _bondSeq={},_bondCnt={};
   days.slice().sort(function(a,b){return a-b}).forEach(function(dd){var de=byDay[dd]||[];for(var i=0;i<de.length;i++){if(de[i].t==='bond'&&de[i].id&&JOURNAL_MOODS_BOND[de[i].id]){if(journalHash(dd,'bond')%3===0){var k=de[i].id+(de[i].d==='cold'?'cold':'warm');_bondSeq[dd]=_bondCnt[k]||0;_bondCnt[k]=(_bondCnt[k]||0)+1;}break;}}});
+  // route/act 소회 반복 방지: event/memo/bond로 선점되지 않는 날에 한해 pool-key별 등장순 인덱스로 순환(인접 반복 제거).
+  var _routeSeq={},_actSeq={},_rCnt={},_aCnt={};
+  days.slice().sort(function(a,b){return a-b}).forEach(function(dd){var de=byDay[dd]||[],pre=false,i;for(i=0;i<de.length;i++){if(de[i].t==='log'&&journalEventKey(de[i].id)){pre=true;break;}}if(!pre)for(i=0;i<de.length;i++){if(de[i].t==='card'&&de[i].id&&MEMO_BY_CHOICE[de[i].id+'|'+(de[i].d||'')]){pre=true;break;}}if(!pre)for(i=0;i<de.length;i++){if(de[i].t==='bond'&&de[i].id&&JOURNAL_MOODS_BOND[de[i].id]&&journalHash(dd,'bond')%3===0){pre=true;break;}}if(pre)return;var route=(de.filter(function(e){return e.r})[0]||{}).r||'';if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(dd,'alt')%2===0){_routeSeq[dd]=_rCnt[route]||0;_rCnt[route]=(_rCnt[route]||0)+1;}else{var ac=(de.filter(function(e){return e.act})[0]||{}).act||1;_actSeq[dd]=_aCnt[ac]||0;_aCnt[ac]=(_aCnt[ac]||0)+1;}});
   return h(React.Fragment,null,
     deckLine&&h('div',{className:'jr-deck'},deckLine),
     pager(),
     pageDays.map(function(d){
       var evs=byDay[d];
       var act=(evs.filter(function(e){return e.act})[0]||{}).act||1;
-      var mood=moodFor(d,evs,act,_bondSeq[d]);
+      var mood=moodFor(d,evs,act,_bondSeq[d],_routeSeq[d],_actSeq[d]);
       var lines=evs.map(lineFor).filter(Boolean);
       return h('div',{key:'jd'+d,className:'jr-day'},
         h('div',{className:'jr-day-h'},'DAY '+d+' — ACT '+act),

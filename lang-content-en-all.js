@@ -284,6 +284,11 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         msg: "ORACLE urgent notice.\n\n[SPEC-015 threat rating changed: HIGH → CRITICAL]\n[NAMED SPECIMEN registered: BS-GANGWON-01]\n[Estimated cumulative predation: 12+. Entry into learning stage confirmed]\n\nKang Do-yun: \"The longer this survives, the stronger it gets. We need to take it now.\"\n\nYoon Se-jin: \"The brain-consumption mechanism has high research value.\"\n\"Without a shell, a direct spinal strike can disable it.\"\n\"But if we fight it in the water, we'll be the disadvantaged side.\"\n\nYou need to decide.",
         leftLabel: "Removal operation — sewer purge",
         rightLabel: "Capture operation — bait and live restraint"
+      },
+      "C-278": {
+        msg: "Kang Do-yun follow-up report.\n\n\"We've picked up BS-GANGWON-01's trail again. The wound has healed — and it's moved every one of its ambush positions.\"\n\"It remembers our firing angles from last time. It won't give us the front anymore.\"\n\nYoon Se-jin: \"A learning-type specimen that slipped away once is harder to re-track. It'll be more cautious now.\"\n\"The side of the skull is thick — but the crown and the spinal junction are still exposed.\"\n\nKang Do-yun: \"This time we finish it. Just tell me how.\"",
+        leftLabel: "Re-track and purge — strike the spinal junction",
+        rightLabel: "Learning for learning — trap the predicted path"
       }
     }
   });
