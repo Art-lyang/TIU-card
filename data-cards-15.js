@@ -14,7 +14,7 @@ var CARDS_EXTERNAL = [
   { id: "C-248", act: [3,4], priority: "상", bg: "forest",
     cond: function(s,g,logs){ return s.day>=27 && logs.indexOf('LOG-080')>=0 && logs.indexOf('LOG-FOSTER-CASE')>=0 && logs.indexOf('LOG-081')<0 },
     msg: "기지 외곽 감시 카메라. 닉 포스터가 다시 잡혔습니다.\n\n이번엔 담배도 없습니다. 손을 들어 보이고 있습니다.\n\n임재혁: \"접근 의사를 표시하는 겁니다. 비무장이에요.\"\n\n... 그 얼굴을 보면 옛 기억이 떠오릅니다.",
-    left: { label: "만난다 — 과거는 묻는다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
+    left: { label: "만난다 — 과거는 묻는다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 },
     right: { label: "무시한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
   { id: "C-249", act: [3,4], priority: "상", bg: "forest",
@@ -85,7 +85,7 @@ var CARDS_EXTERNAL = [
   { id: "C-256", act: [3], priority: "하", bg: "restricted",
     cond: function(s,g,logs){ return s.day>=16 },
     msg: "서버실 접근 로그에 이상 기록.\n\n임재혁: \"02:41. 인식 불가 세션이 0.3초 접속했습니다.\"\n\n인증 토큰이 없습니다. 하지만 차단되지도 않았습니다.\n\n\"마치... 시스템이 이 접근을 허용한 것처럼 보입니다.\"\n\n[ORACLE: 정기 자가 진단 세션입니다. 이상 없음.]",
-    left: { label: "ORACLE 설명을 의심한다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -3 },
+    left: { label: "ORACLE 설명을 의심한다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -3 },
     right: { label: "ORACLE 설명을 받아들인다", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   { id: "C-257", act: [3], priority: "하", bg: "forest",
@@ -110,7 +110,7 @@ var CARDS_EXTERNAL = [
   { id: "C-276", act: [4], priority: "하", bg: "base",
     cond: function(s,g,logs){ return s.day>=30 },
     msg: "아침 점검. 지휘관실 책상 위에 놓인 종이 한 장.\n\n어젯밤 누구도 이 방에 들어온 기록이 없습니다.\n\n메모:\n\"당신은 올바른 질문을 하고 있습니다.\n계속하십시오.\n— 強\"",
-    left: { label: "필적을 분석한다", fx: { c: 0, r: 0, t: 0, o: -1 }, g: -2 },
+    left: { label: "필적을 분석한다", fx: { c: 0, r: 0, t: 1, o: -1 }, g: -2 },
     right: { label: "메모를 보관한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
 
 ];

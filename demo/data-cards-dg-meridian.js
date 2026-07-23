@@ -35,7 +35,7 @@ var CARDS_DG_MERIDIAN = [
   { id: "DG-04", act: [3], priority: "상", bg: "restricted",
     cond: function(s,g,logs){ return logs.indexOf('LOG-DG-DEAL')>=0 && logs.indexOf('LOG-DG-HISTORY')<0 && s.day>=18 },
     msg: "DG 측이 봉인된 사내 자료 일부를 보내왔습니다.\n\n\"우리가 한국 정부와 1960년대부터 맺어온 비공개 계약 목록입니다. 당신이 알아야 할 부분만 추렸습니다.\"\n\n임재혁: \"...서론만 봐도 알 수 있습니다. 한국 안보 기간망의 절반 이상이 DG 인프라 위에 올라가 있습니다.\"\n\n읽으면 봉쇄 작전의 의미가 달라집니다.",
-    left: { label: "전부 읽는다", fx: { c: 0, r: 0, t: 0, o: -2 }, g: -4 },
+    left: { label: "전부 읽는다", fx: { c: 0, r: 0, t: 1, o: -2 }, g: -4 },
     right: { label: "요약만 보고 봉인", fx: { c: 0, r: 0, t: 0, o: 1 }, g: 1 } },
 
   // ═══════════════════════════════════════════════════════════
@@ -62,7 +62,7 @@ var CARDS_DG_MERIDIAN = [
     cond: function(s,g,logs){ return logs.indexOf('LOG-MD-INTEL')>=0 && logs.indexOf('LOG-MD-REJECT')<0 },
     msg: "메리디안 측이 본격적인 요청을 올렸습니다.\n\n\"한국지부 관할 봉쇄 구역 내 임시 관측 인력 4명 파견을 허가해주십시오. 비무장. 데이터 공유 의무 부과.\"\n\n강도윤: \"외국 PMC 인력을 봉쇄 구역에 들이는 겁니다. 정부 심의 이미 거부된 곳이에요.\"\n\n임재혁: \"하지만 그쪽이 가진 위성 자산이 우리한테 없는 건 사실입니다.\"",
     left: { label: "직접 거절한다", fx: { c: 1, r: 0, t: 0, o: 1 }, g: 2 },
-    right: { label: "조건부로 보류한다", fx: { c: 0, r: 0, t: 0, o: 0 }, g: 0 } },
+    right: { label: "조건부로 보류한다", fx: { c: 0, r: 0, t: 1, o: 0 }, g: 0 } },
 
   // MD-04 — DG vs MD (좌선택 시 DG 편 들기 — LOG-DG-VS-MD)
   { id: "MD-04", act: [3,4], priority: "상", bg: "restricted",
