@@ -44,7 +44,7 @@ var _introMsgText=function(c,stats,gi,logs){
 };
 var introOk=function(c,logs,stats,gi){var txt=_introMsgText(c,stats,gi,logs);for(var fi=0;fi<INTRO_FILTER.length;fi++){var f=INTRO_FILTER[fi];if(logs.indexOf(f.log)<0&&txt.indexOf(f.name)>=0)return false}return true};
 var cardWeight=function(c){var w=1;if(!c)return w;if(c.priority==='상')w+=5;else if(c.priority==='중')w+=2;else if(c.priority==='event')w+=6;if(c.once)w+=2;if(c.transReq)w+=4;if(c.glitch)w+=1;return w};
-var _onceShown=(function(){try{var d=localStorage.getItem('ts_onceShown');return d?JSON.parse(d):[]}catch(e){return[]}})();
+var _onceShown=(function(){try{var d=localStorage.getItem('ts_onceShown');var p=d?JSON.parse(d):[];return Array.isArray(p)?p:[]}catch(e){return[]}})();
 var markOnce=function(id){if(_onceShown.indexOf(id)<0){_onceShown.push(id);try{localStorage.setItem('ts_onceShown',JSON.stringify(_onceShown))}catch(e){}}};
 var drawCard=function(stats,gi,logs,cooldowns,recent,currentAct,tRoute){
   var day=stats.day||1;var cd=cooldowns||{};var rec=recent||[];var ca=currentAct||1;var tr=tRoute||'';
@@ -73,14 +73,14 @@ var Save={
   clearGame:function(){
     var snapshots={};
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{snapshots[k]=localStorage.getItem(k)}catch(e){snapshots[k]=null}});
-    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_curCard');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');_onceShown.length=0;
+    Save.del('ts_game');Save.del('ts_onceShown');Save.del('ts_curCard');Save.del('ts_resumePhase');Save.del('ts_pendingBriefing');Save.del('ts_resumeHeadlines');Save.del('ts_resumeRewards');Save.del('ts_resumeDialogueIndex');Save.del('ts_trust');Save.del('ts_usedDlg');Save.del('ts_usedEvening');Save.del('ts_facility');_onceShown.length=0;
     ['ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){try{if(snapshots[k]!==null&&localStorage.getItem(k)===null)localStorage.setItem(k,snapshots[k])}catch(e){}});
   },
   saveLogs:function(ids){Save.set('ts_logs',ids)},
   getLogs:function(){return Save.get('ts_logs',['LOG-001'])},
   saveEnding:function(id){var e=Save.get('ts_endings',[]);if(e.indexOf(id)<0){e.push(id);Save.set('ts_endings',e)}},
   getEndings:function(){return Save.get('ts_endings',[])},
-  getSessions:function(){return Save.get('ts_sessions',0)},
+  getSessions:function(){var n=Save.get('ts_sessions',0);return(typeof n==='number'&&isFinite(n))?n:0},
   incSession:function(){var c=Save.getSessions()+1;Save.set('ts_sessions',c);return c},
   saveUsedDlg:function(ids){Save.set('ts_usedDlg',ids)},getUsedDlg:function(){return Save.get('ts_usedDlg',[])},
   saveUsedEvening:function(ids){Save.set('ts_usedEvening',ids)},getUsedEvening:function(){return Save.get('ts_usedEvening',[])},

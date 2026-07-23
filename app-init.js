@@ -312,7 +312,7 @@ function normalizeGameSave(game){
   // (외부 편집·전송 손상 값이 그대로 들어오면 Day 1 즉시 게임오버 등 비정상 시작)
   var st=game.stats;
   var cl=function(v,def){v=parseInt(v,10);if(isNaN(v))v=def;return Math.max(0,Math.min(100,v))};
-  game.stats={c:cl(st.c,50),r:cl(st.r,65),t:cl(st.t,50),o:cl(st.o,40),day:parseInt(st.day||1,10)||1};
+  game.stats={c:cl(st.c,50),r:cl(st.r,65),t:cl(st.t,50),o:cl(st.o,40),day:Math.max(1,parseInt(st.day||1,10)||1)};
   if(typeof game.gi!=='undefined'){var giV=parseInt(game.gi,10);if(isNaN(giV))giV=0;game.gi=Math.max(-100,Math.min(100,giV))}
   // schemaVersion 체크: 현재는 1만 지원. 미래 버전 세이브가 들어오면 로깅만 하고 그대로 진행.
   if(typeof game.schemaVersion==='number'&&game.schemaVersion>TS_GAME_SCHEMA_VERSION){

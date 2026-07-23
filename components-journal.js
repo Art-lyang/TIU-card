@@ -8,12 +8,15 @@
 //  - 히든 로그는 수집 시점에 이미 제외(tryUnlock 가시 분기만 훅). GI 수치는 어떤 형태로도 기록하지 않는다.
 
 var Journal={
-  _cap:400,
+  _cap:1000,
   read:function(){try{var a=Save.get('ts_journal',[]);return Array.isArray(a)?a:[]}catch(e){return[]}},
   push:function(e){
     if(!e||!e.t)return;
     try{
       var a=this.read();
+      // 중복 방지: 같은 날 같은 이벤트(t+id+day+d)는 1회만 — 이브닝 유대 누적·같은 카드 재등장 라인 중복 차단
+      var ek=e.t+'|'+(e.id||'')+'|'+(e.day||0)+'|'+(e.d||'');
+      for(var i=a.length-1;i>=0;i--){var x=a[i];if(x&&(x.t+'|'+(x.id||'')+'|'+(x.day||0)+'|'+(x.d||''))===ek)return;}
       a.push(e);
       if(a.length>this._cap)a=a.slice(a.length-this._cap);
       Save.set('ts_journal',a);

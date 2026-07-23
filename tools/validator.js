@@ -537,6 +537,15 @@ if (fs.existsSync(rootHtmlPath) && fs.existsSync(demoHtmlPath)) {
     }
   }
 
+  // 13a-2) app-utils.js 는 app-init.js 보다 먼저 로드 (Save 이중정의 — app-init 판이 최종 승리)
+  for (const [label, assets] of [['index.html', rootAssets], ['demo/index.html', demoAssets]]) {
+    const idxUtils = assets.findIndex(a => a.file === 'app-utils.js');
+    const idxInit2 = assets.findIndex(a => a.file === 'app-init.js');
+    if (idxUtils >= 0 && idxInit2 >= 0 && idxUtils > idxInit2) {
+      issues.htmlScriptOrder.push({ where: label, problem: 'app-utils.js 가 app-init.js 보다 뒤에 로드됨 (Save 정의 뒤집힘)' });
+    }
+  }
+
   // 13b) root↔demo 스크립트/CSS 목록·순서·?v= 태그 비교
   const rootSeq = rootAssets.filter(a => !MIRROR_ONLY_ROOT.has(a.file));
   const demoSeq = demoAssets.filter(a => !MIRROR_ONLY_DEMO.has(a.file));

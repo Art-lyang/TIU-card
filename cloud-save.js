@@ -8,7 +8,7 @@
     'ts_research','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_onceShown','ts_activeSpecs',
     'ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_activeMission','ts_resumePhase',
     'ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState',
-    'ts_act2_reached','ts_observer_proto','ts_curCard'
+    'ts_act2_reached','ts_observer_proto','ts_curCard','ts_journal'
   ];
   var SNAP_KEYS=['ts_snap_1','ts_snap_2','ts_snap_3'];
   var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen','ts_lastEnding'];
@@ -134,17 +134,17 @@
     if(local.hasData&&!cloud.hasData)return {type:'cloud_empty',recommendation:'local',requiresChoice:false};
     if(!local.hasData&&cloud.hasData)return {type:'local_empty',recommendation:'cloud',requiresChoice:true};
     if(local.revision&&cloud.revision&&local.revision===cloud.revision&&local.timestamp===cloud.timestamp)return {type:'synced',recommendation:'none',requiresChoice:false};
+    if(local.day!==cloud.day||local.act!==cloud.act){
+      return {type:'progress_mismatch',recommendation:(local.act>cloud.act||(local.act===cloud.act&&local.day>cloud.day))?'local':'cloud',requiresChoice:true};
+    }
+    if(local.logs!==cloud.logs||local.endings!==cloud.endings||local.sessions!==cloud.sessions){
+      return {type:'meta_mismatch',recommendation:(local.sessions>cloud.sessions||local.endings>cloud.endings||local.logs>cloud.logs)?'local':'cloud',requiresChoice:true};
+    }
     if(local.revision!==cloud.revision){
       return {type:'revision_mismatch',recommendation:local.revision>cloud.revision?'local':'cloud',requiresChoice:true};
     }
     if(local.timestamp!==cloud.timestamp){
       return {type:'timestamp_mismatch',recommendation:local.timestamp>cloud.timestamp?'local':'cloud',requiresChoice:true};
-    }
-    if(local.day!==cloud.day||local.act!==cloud.act){
-      return {type:'progress_mismatch',recommendation:(local.act>cloud.act||(local.act===cloud.act&&local.day>cloud.day))?'local':'cloud',requiresChoice:true};
-    }
-    if(local.logs!==cloud.logs||local.endings!==cloud.endings||local.sessions!==cloud.sessions){
-      return {type:'meta_mismatch',recommendation:(local.sessions>cloud.sessions||local.endings>cloud.endings)?'local':'cloud',requiresChoice:true};
     }
     return {type:'synced',recommendation:'none',requiresChoice:false};
   }

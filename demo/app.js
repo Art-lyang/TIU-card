@@ -118,7 +118,7 @@ function App(){
   var _res=useState({}),research=_res[0],setResearch=_res[1];
   var _pb=useState(null),pendingBonus=_pb[0],setPendingBonus=_pb[1];
   var _cil=useState(false),cardInputLocked=_cil[0],setCardInputLocked=_cil[1];
-  var cardInputLockedRef=useRef(false);
+  var cardInputLockedRef=useRef(false);var goingRef=useRef(false);
   var _cal=useState(-1),cAlertDay=_cal[0],setCAlertDay=_cal[1];
   var _a2r=useState(Save.get('ts_act2_reached',false)),act2Reached=_a2r[0],setAct2Reached=_a2r[1];
   // 신뢰도 변화는 플레이어에게 표시하지 않음 (GI처럼 숨김)
@@ -412,7 +412,7 @@ function App(){
     if(rewardTuned&&rewardTuned.stats)next=rewardTuned.stats;
     return previewDelta(stats,next);
   };
-  var doGO=function(reason,ns,ng,specialId,endImgKey){ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);Save.set('ts_lastEnding',eid||'');setEndings(Save.getEndings());setSessions(Save.incSession());setGoSummary({logs:goLogs.length,combos:(Save.get('ts_combos',[])||[]).length,gi:(typeof ng==='number'?ng:gi),day:(ns.day||stats.day)});Save.clearGame();
+  var doGO=function(reason,ns,ng,specialId,endImgKey){if(goingRef.current)return;goingRef.current=true;ns=ns||stats;BGM.stop();if(typeof Haptics!=='undefined')Haptics.fail();setGor(reason);setGoDay(ns.day||stats.day);setEndImg(endImgKey||null);var eid=specialId||null;var goLogs=getLiveLogs(logs);if(!eid){if(ns.c<=0)eid='C_c';else if(ns.c>=100)eid=(goLogs.indexOf('LOG-050')>=0&&goLogs.indexOf('LOG-082')>=0)?'C_cst':'C_cs';else if(ns.r<=0)eid='C_r';else if(ns.t<=0)eid='C_t';else if(ns.o<=0)eid='C_o';else if(ng>=60)eid='A'}if(eid&&ENDING_DEFS[eid])setEndNarr(ENDING_DEFS[eid]);else setEndNarr(null);setEndId(eid);if(eid)Save.saveEnding(eid);Save.set('ts_lastEnding',eid||'');setEndings(Save.getEndings());setSessions(Save.incSession());setGoSummary({logs:goLogs.length,combos:(Save.get('ts_combos',[])||[]).length,gi:(typeof ng==='number'?ng:gi),day:(ns.day||stats.day)});Save.clearGame();
     // 엔딩 전환 연출 — 히든(F/B)은 글리치L3, 일반은 페이드아웃
     var goDelay=500;
     if((eid==='F'||eid==='B')&&fxMode!=='off'){triggerGlitch(3);goDelay=3800}
@@ -761,7 +761,7 @@ function App(){
     try{if(act<=1&&typeof isIntrosDone==='function'&&isIntrosDone(dlgLogs)&&!Save.get('ts_onboardBriefDone',false)){setPhase('onboard');return}}catch(_ob){}
     setPhase('game')};
   var fullReset=function(){BGM.stop();BGM.started=false;['ts_game','ts_logs','ts_endings','ts_sessions','ts_trust','ts_usedDlg','ts_usedEvening','ts_seenArchive','ts_facility','ts_muted','ts_volume','ts_fontSize','ts_act2_reached','ts_observer_proto','ts_minigamesSeen','ts_lastEnding','ts_activeSpecs','ts_sessionDeck','ts_recentNews','ts_recentRewards','ts_combos','ts_evidence_used','ts_resourceReserveUsed','ts_activeMission','ts_lastLog','ts_journal','ts_onboardBriefDone','ts_resumePhase','ts_pendingBriefing','ts_resumeHeadlines','ts_resumeRewards','ts_resumeDialogueIndex','ts_eveningLineState','ts_research','ts_snap_1','ts_snap_2','ts_snap_3'].forEach(function(k){Save.del(k)});if(typeof clearLocalStoragePrefix==='function')clearLocalStoragePrefix('ts_observer_proto_roll_');if(typeof clearSessionDeck==='function')clearSessionDeck();window.location.reload()};
-  var startNewCampaign=function(showTutorial){
+  var startNewCampaign=function(showTutorial){goingRef.current=false;
     if(typeof BGM!=='undefined'){BGM.stop();BGM.started=false;BGM.currentAct=1;}
     var ns={c:50,r:65,t:50,o:40,day:1};
     setStats(ns);setGi(0);setCt(0);setUsedDlg([]);setUsedEvening([]);
@@ -798,7 +798,7 @@ function App(){
     if(typeof BGM!=='undefined'&&BGM.start){BGM.start();if(BGM.playAct)BGM.playAct(1);}
   };
   var restart=function(){BGM.stop();BGM.started=false;startNewCampaign(false)};
-  var continueSavedCampaign=function(){
+  var continueSavedCampaign=function(){goingRef.current=false;
     var active=curMission||Save.get('ts_activeMission',null);
     if(active&&typeof MISSIONS!=='undefined'&&MISSIONS[active]){setCurMission(active);setPhase('mission');return}
     if(active)Save.del('ts_activeMission');
