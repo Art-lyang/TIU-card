@@ -470,7 +470,7 @@ function App(){
       ?(route==='A4_COMPLY'?0:5)
       :(newAct===3?((route==='A'||route==='B'||route==='C')?5:10):(route==='A'?0:5));
     var bs=s;
-    if(statPenalty>0){bs={c:clamp(s.c-statPenalty),r:clamp(s.r-statPenalty),t:clamp(s.t-statPenalty),o:clamp(s.o-statPenalty),day:s.day};setStats(bs)}
+    if(statPenalty>0){bs={c:Math.max(5,clamp(s.c-statPenalty)),r:Math.max(5,clamp(s.r-statPenalty)),t:Math.max(5,clamp(s.t-statPenalty)),o:Math.max(5,clamp(s.o-statPenalty)),day:s.day};setStats(bs)}
     Save.set('ts_resumePhase','briefing');Save.set('ts_pendingBriefing',{act:newAct,route:route});
     persistGame(bs,gi,newAct,flagsOverride||actFlags,route,cooldowns,recentCards,0,[],facility,pendingBonus);
     if(typeof BGM!=='undefined'&&BGM.playAct)BGM.playAct(newAct);

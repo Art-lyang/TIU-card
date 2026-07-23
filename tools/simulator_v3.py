@@ -157,7 +157,7 @@ def apply_transition_penalty(s, new_act, route):
         return s
     ns = dict(s)
     for k in 'crto':
-        ns[k] = max(0, min(100, ns[k] - penalty))
+        ns[k] = max(5, min(100, ns[k] - penalty))  # 전환 비살상화 미러 (app.js Math.max(5,...))
     return ns
 
 def resistance_safeguard_eligible(s, gi, logs):
