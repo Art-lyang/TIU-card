@@ -126,6 +126,28 @@ var JOURNAL_MOODS_BOND={
           ["박소영에게 오늘은 아무것도 내주지 않았다. 그쪽도 마찬가지였을 것이다.","Gave So-young nothing today. I expect the favor was returned."]]}
 };
 
+
+// ── 선택 기반 소회 ── 임팩트 있는 카드 선택(카드ID|방향)에 붙는 전용 메모. 플레이어 선택이 일지에 그대로 남는다. [KO,EN].
+var MEMO_BY_CHOICE={
+  'C-096|left':["Blood Pit을 태웠다. 확산은 멈췄고, 표본은 재가 됐다. 옳은 결정이라고 적어둔다 — 적어두면 옳은 게 되기라도 할 것처럼.","We burned the Blood Pit. The spread stopped, the specimen turned to ash. I write that it was the right call — as if writing it makes it so."],
+  'C-096|right':["Blood Pit을 살려 가뒀다. 윤세진은 만족했고, 나는 밤새 그 웅덩이가 숨 쉬는 상상을 했다.","We caged the Blood Pit alive. Se-jin was satisfied. I spent the night imagining that pit breathing."],
+  'C-097|left':["한동혁 일병이었던 것을 제거했다. 음성은 그쳤다. 그의 이름은 보고서 어디에도 남기지 않았다.","We put down what used to be Private Han. The voice went quiet. I left his name off every line of the report."],
+  'C-097|right':["한동혁이었던 것을 산 채로 이송했다. 연구 가치가 있다고 했다. 가치라는 단어를 사람에게 쓰는 데 익숙해지고 있다.","We shipped what used to be Han away alive. They said it held research value. I am getting used to using the word value for a person."],
+  'C-098|left':["감염체 마네킹을 원거리에서 정리했다. 접촉은 없었다. 접촉이 없으면 죄책감도 덜한지, 요즘 시험해보는 중이다.","We cleared the mannequin from a distance. No contact. Lately I test whether less contact means less guilt."],
+  'C-098|right':["마네킹을 격리로 확보했다. Phase 1이라 예측은 가능하다고 했다. 예측 가능한 것과 안전한 것은 다르다.","We contained the mannequin. Phase 1, so it is predictable, they said. Predictable and safe are not the same thing."],
+  'C-099|left':["Brood Drone 둥지를 태웠다. 편대는 와해됐다. 통신 메커니즘은 재와 함께 사라졌고, 윤세진은 아무 말도 하지 않았다.","We torched the Brood Drone nest. The swarm collapsed. The comms mechanism went up with the ash, and Se-jin said nothing."],
+  'C-099|right':["지휘 개체를 산 채로 잡았다. 연구는 계속되고, 우리는 그것이 무엇과 통신하는지 아직 모른다.","We took the command unit alive. The research continues, and we still do not know what it talks to."],
+  'C-100|left':["포자 발생원을 태웠다. 집합체는 형성되지 못했다. 방독면 너머로 본 것은, 그냥 곰팡이 슨 지하실이었다.","We burned the spore source. No aggregate formed. Behind the gas mask, it was just a mold-choked basement."],
+  'C-100|right':["포자를 먼저 채취하고 태웠다. 차단제 연구가 가능하다고 했다. 무언가를 남기려 잠깐 멈추는 그 순간이, 늘 제일 위험하다.","We sampled the spores first, then burned them. A blocker might be possible, they said. That pause to keep something is always the most dangerous moment."],
+  'C-089|left':["ORACLE의 선제 타격 권고를 받아들여 작전을 검토했다. 권고와 내 판단이 또 일치했다. 편한 일치일수록 오래 들여다봐야 한다.","I took up ORACLE's strike recommendation and began planning. Its counsel and my judgment aligned again. The more convenient the agreement, the longer I should stare at it."],
+  'C-089|right':["ORACLE의 선제 타격 권고를 거부했다. 기록에 남을 것이다. 거부는 군에서 못 배운 유일한 기술인데, 늦게라도 배우는 중이다.","I refused ORACLE's pre-emptive strike. It will go on the record. Refusal is the one skill the army never taught me — I am learning it late."],
+  'C-090|left':["강도윤의 긴급 호출에 먼저 움직였다. ORACLE 보고는 뒤로 미뤘다. 현장이 먼저인지 절차가 먼저인지 — 오늘의 답은 현장이었다.","I moved on Do-yun's emergency call first. The report to ORACLE waited. Field first or procedure first — today the answer was the field."],
+  'C-090|right':["강도윤이 직접 보라고 했지만, 나는 ORACLE에 먼저 보고했다. 절차대로였다. 강도윤은 아무 말도 하지 않았고, 그 침묵이 오래 남았다.","Do-yun said to see it myself, but I reported to ORACLE first. By the book. He said nothing, and the silence stayed."],
+  'C-019|left':["미분류 흔적에 경계만 강화했다. 성급하게 쫓지 않았다. 신중한 건지 겁이 난 건지, 나도 아직 구분이 안 된다.","I only tightened watch over the unclassified traces. I did not chase. Cautious or afraid, I still cannot tell the two apart."],
+  'C-019|right':["미분류 흔적을 단독으로 추적하기로 했다. 보고 체계 밖으로 한 발 내디뎠다. 그 한 발이 어디까지 이어질지는 아직 모른다.","I chose to track the unclassified traces alone. One step outside the reporting chain. Where that step leads, I do not yet know."]
+};
+
+
 function journalEventKey(id){
   if(JOURNAL_MOODS_EVENT[id])return id;
   if(String(id).indexOf('LOG-SEJIN-DELAY')===0)return 'SEJIN-DELAY';
@@ -211,14 +233,16 @@ function CommanderJournal(p){
     for(var i=0;i<evs.length;i++){
       if(evs[i].t==='log'){var ek=journalEventKey(evs[i].id);if(ek)return JOURNAL_MOODS_EVENT[ek]}
     }
-    // 2순위: 이브닝/대화 유대 — 그날 누구와 어떤 톤으로 교감했는지(플레이어 선택 반영). day 해시로 루트/Act 풀과 교대.
+    // 2순위: 선택 기반 메모 — 임팩트 있는 카드 선택(카드ID|방향)에 붙인 전용 소회. 플레이어 선택이 일지에 남는 체감.
+    for(var ci=0;ci<evs.length;ci++){ if(evs[ci].t==='card'&&evs[ci].id){ var _mc=MEMO_BY_CHOICE[evs[ci].id+'|'+(evs[ci].d||'')]; if(_mc)return _mc; } }
+    // 3순위: 이브닝/대화 유대 — 그날 누구와 어떤 톤으로 교감했는지(플레이어 선택 반영). day 해시로 루트/Act 풀과 교대.
     for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%3===0){ return barr[(typeof bondIdx==='number'?bondIdx:journalHash(d,evs[bi].id+tone))%barr.length]; } break; } }
-    // 3순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
+    // 4순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
     var route=(evs.filter(function(e){return e.r})[0]||{}).r||'';
     if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(d,'alt')%2===0){
       var rp=JOURNAL_MOODS_ROUTE[route];return rp[journalHash(d,route)%rp.length];
     }
-    // 4순위: Act 기본 풀
+    // 5순위: Act 기본 풀
     var ap=JOURNAL_MOODS[act]||JOURNAL_MOODS[1];return ap[journalHash(d,act)%ap.length];
   };
   // 유대 소회 반복 방지: 게이트 통과하는 유대일을 시간순으로 세어 (인물+톤)별 변형을 순환시킨다.
