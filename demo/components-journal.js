@@ -101,19 +101,19 @@ var JOURNAL_MOODS_EVENT={
 var JOURNAL_MOODS_BOND={
   doyun:{
     warm:[["강도윤과 오래 이야기했다. 현장의 언어는 늘 나보다 정직하다.","Talked with Do-yun a long while. The field’s language is always more honest than mine."],
-          ["강도윤은 위험을 축소해 말한다. 그 버릇이 나를 안심시키고, 그래서 더 걱정된다.","Do-yun downplays the danger. The habit reassures me — which is exactly why it worries me."]],
+          ["강도윤은 위험을 축소해 말한다. 그 버릇이 나를 안심시키고, 그래서 더 걱정된다.","Do-yun downplays the danger. The habit reassures me — which is exactly why it worries me."],["강도윤은 늘 결론부터 말한다. 오늘은 결론 앞의 침묵이 더 길었다.","Do-yun always leads with the conclusion. Tonight the silence before it ran longer."]],
     cold:[["강도윤이 말수를 줄였다. 명령만 받는 사람의 얼굴을 나는 안다 — 거울에서 봤다.","Do-yun’s gone quiet. I know the face of a man who only takes orders — I’ve seen it in the mirror."],
-          ["오늘 강도윤에게 설명 대신 지시를 내렸다. 편했다. 편했다는 게 오래 남는다.","Today I handed Do-yun an order instead of an explanation. It was easy. The ease is what lingers."]]},
+          ["오늘 강도윤에게 설명 대신 지시를 내렸다. 편했다. 편했다는 게 오래 남는다.","Today I handed Do-yun an order instead of an explanation. It was easy. The ease is what lingers."],["강도윤에게 이유를 묻지 않았다. 물으면 대답할 사람이라, 그래서 안 물었다.","I didn’t ask Do-yun why. He’s the kind who would answer — which is exactly why I didn’t."]]},
   sejin:{
     warm:[["윤세진이 오늘은 데이터 뒤의 말을 조금 흘렸다. 신뢰는 그런 틈으로 샌다.","Se-jin let slip a little of what lies behind the data tonight. Trust leaks through gaps like that."],
-          ["윤세진의 노트에 오늘은 여백이 적었다. 말하기 시작했다는 뜻일까.","Fewer blanks in Se-jin’s notes today. Does that mean the talking has started."]],
+          ["윤세진의 노트에 오늘은 여백이 적었다. 말하기 시작했다는 뜻일까.","Fewer blanks in Se-jin’s notes today. Does that mean the talking has started."],["윤세진이 오늘은 커피를 두 잔 탔다. 한 잔을 내 앞에 두기까지 걸린 시간을 나는 셌다.","Se-jin made two coffees tonight. I counted the seconds it took to set one down in front of me."]],
     cold:[["윤세진의 보고는 정확했고, 정확한 만큼 비어 있었다. 무엇을 안 적었는지가 궁금하다.","Se-jin’s report was precise — and as precise as it was, hollow. I wonder what went unwritten."],
-          ["연구동 불이 또 늦게 꺼졌다. 오늘은 이유를 묻지 않았다. 물었어야 했나.","The research wing’s lights went out late again. I didn’t ask why tonight. Should I have."]]},
+          ["연구동 불이 또 늦게 꺼졌다. 오늘은 이유를 묻지 않았다. 물었어야 했나.","The research wing’s lights went out late again. I didn’t ask why tonight. Should I have."],["윤세진의 대답이 오늘은 전부 괜찮다였다. 괜찮다가 세 번을 넘으면 나는 그 말을 믿지 않는다.","Every answer from Se-jin tonight was fine, fine, fine. Past the third fine, I stop believing it."]]},
   haeun:{
     warm:[["서하은과 늦게까지 이야기했다. 이 기지를 혼자 지킨 석 달의 무게가 목소리에 아직 남아 있다.","Stayed up talking with Ha-eun. Three months holding this base alone still weighs in her voice."],
-          ["서하은은 요원들 이름을 하나도 빼먹지 않는다. 나는 몇을 잊었다. 부끄러웠다.","Ha-eun forgets none of the agents’ names. I’ve forgotten a few. It shamed me."]],
+          ["서하은은 요원들 이름을 하나도 빼먹지 않는다. 나는 몇을 잊었다. 부끄러웠다.","Ha-eun forgets none of the agents’ names. I’ve forgotten a few. It shamed me."],["서하은이 오래된 근무일지를 꺼내 보였다. 종이의 손때가 말보다 많은 걸 말했다.","Ha-eun pulled out an old duty log to show me. The worn paper said more than her words did."]],
     cold:[["서하은이 원칙을 다시 꺼냈다. 나는 숫자를 꺼냈다. 오늘은 둘 다 지지 않았다.","Ha-eun brought up principle again. I brought up the numbers. Tonight neither of us gave."],
-          ["서하은의 눈이 오늘은 나를 지휘관이 아니라 문제로 봤다. 틀린 눈은 아니었다.","Tonight Ha-eun looked at me not as a commander but as a problem. She wasn’t wrong to."]]},
+          ["서하은의 눈이 오늘은 나를 지휘관이 아니라 문제로 봤다. 틀린 눈은 아니었다.","Tonight Ha-eun looked at me not as a commander but as a problem. She wasn’t wrong to."],["서하은과 오늘은 서로 예의만 지켰다. 예의는 거리의 다른 이름이다.","Ha-eun and I kept only courtesy tonight. Courtesy is another name for distance."]]},
   jaehyuk:{
     warm:[["임재혁과 콘솔 앞에서 한참을 보냈다. 그는 파일명 하나에도 사람의 흔적을 남긴다.","Spent a while with Jaehyuk at the console. He leaves a human trace even in a file name."],
           ["임재혁이 농담을 하나 던졌다. 이 기지에서 농담은 생존 신호다.","Jaehyuk cracked a joke. On this base, a joke is a survival signal."]],
@@ -206,13 +206,13 @@ function CommanderJournal(p){
   if(days.length===0)return h('div',{className:'vw-note',style:{marginTop:14}},tt('journal.empty',null,isEn?'No entries yet. The journal fills in as the session proceeds.':'아직 기록이 없습니다. 세션이 진행되면 일지가 채워집니다.'));
   // 일지 안내 — 지휘관이 임기 중 직접 남기는 사적 메모라는 간단한 설명 한 줄
   var deckLine=isEn?'✱ Personal notes the commander keeps through this term.':'✱ 지휘관이 임기 중 직접 남기는 개인 메모입니다.';
-  var moodFor=function(d,evs,act){
+  var moodFor=function(d,evs,act,bondIdx){
     // 1순위: 그날 해금 로그의 아크 이벤트 (간부 상실·세진 지연)
     for(var i=0;i<evs.length;i++){
       if(evs[i].t==='log'){var ek=journalEventKey(evs[i].id);if(ek)return JOURNAL_MOODS_EVENT[ek]}
     }
     // 2순위: 이브닝/대화 유대 — 그날 누구와 어떤 톤으로 교감했는지(플레이어 선택 반영). day 해시로 루트/Act 풀과 교대.
-    for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%3===0){ return barr[journalHash(d,evs[bi].id+tone)%barr.length]; } break; } }
+    for(var bi=0;bi<evs.length;bi++){ if(evs[bi].t==='bond'&&evs[bi].id&&JOURNAL_MOODS_BOND[evs[bi].id]){ var bp=JOURNAL_MOODS_BOND[evs[bi].id]; var tone=(evs[bi].d==='cold')?'cold':'warm'; var barr=bp[tone]||bp.warm||bp.cold; if(barr&&barr.length&&journalHash(d,'bond')%3===0){ return barr[(typeof bondIdx==='number'?bondIdx:journalHash(d,evs[bi].id+tone))%barr.length]; } break; } }
     // 3순위: 그날의 루트(r) — 매일 반복되지 않게 day 해시로 Act 풀과 교대
     var route=(evs.filter(function(e){return e.r})[0]||{}).r||'';
     if(route&&JOURNAL_MOODS_ROUTE[route]&&journalHash(d,'alt')%2===0){
@@ -221,13 +221,16 @@ function CommanderJournal(p){
     // 4순위: Act 기본 풀
     var ap=JOURNAL_MOODS[act]||JOURNAL_MOODS[1];return ap[journalHash(d,act)%ap.length];
   };
+  // 유대 소회 반복 방지: 게이트 통과하는 유대일을 시간순으로 세어 (인물+톤)별 변형을 순환시킨다.
+  var _bondSeq={},_bondCnt={};
+  days.slice().sort(function(a,b){return a-b}).forEach(function(dd){var de=byDay[dd]||[];for(var i=0;i<de.length;i++){if(de[i].t==='bond'&&de[i].id&&JOURNAL_MOODS_BOND[de[i].id]){if(journalHash(dd,'bond')%3===0){var k=de[i].id+(de[i].d==='cold'?'cold':'warm');_bondSeq[dd]=_bondCnt[k]||0;_bondCnt[k]=(_bondCnt[k]||0)+1;}break;}}});
   return h(React.Fragment,null,
     deckLine&&h('div',{className:'jr-deck'},deckLine),
     pager(),
     pageDays.map(function(d){
       var evs=byDay[d];
       var act=(evs.filter(function(e){return e.act})[0]||{}).act||1;
-      var mood=moodFor(d,evs,act);
+      var mood=moodFor(d,evs,act,_bondSeq[d]);
       var lines=evs.map(lineFor).filter(Boolean);
       return h('div',{key:'jd'+d,className:'jr-day'},
         h('div',{className:'jr-day-h'},'DAY '+d+' — ACT '+act),
