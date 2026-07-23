@@ -187,7 +187,14 @@ def parse_side(body, side):
     trust_val = None
     tm = re.search(r'\btrust:\s*(-?\d+)', b)
     if tm: trust_val = int(tm.group(1))
-    return {'fx': fx, 'g': g, 'logs': logs, 'mission': mission.group(1) if mission else None, 'trust': trust_val}
+    # floor / floorCriticalOnly (릴리프·세이프가드 사망방지 메커니즘 — v3 apply 코드가 side['floor']를 읽는다)
+    floor = {}
+    flm = re.search(r'floor:\s*\{([^}]*)\}', b)
+    if flm:
+        for fm in re.finditer(r'([crto]):\s*(-?\d+)', flm.group(1)):
+            floor[fm.group(1)] = int(fm.group(2))
+    floor_critical = bool(re.search(r'floorCriticalOnly:\s*true', b))
+    return {'fx': fx, 'g': g, 'logs': logs, 'mission': mission.group(1) if mission else None, 'trust': trust_val, 'floor': floor, 'floorCriticalOnly': floor_critical}
 
 # ═══════════ 카드 로드 ═══════════
 
