@@ -609,3 +609,120 @@
     }
   });
 })();
+(function(){
+  if(typeof window==='undefined')return;
+  var narratives=window.FIELD_MINIGAME_NARRATIVES||(window.FIELD_MINIGAME_NARRATIVES={});
+  // M-002 (SPEC-011 Shelltalker 현장임무) / MI-01 (격리실 봉인 인시던트) 결과 서사 EN 오버레이 — 이전 패치 사이클 누락분 보강.
+  narratives["M-002"]=Object.assign({},narratives["M-002"]||{},{
+    eliminate: {
+      great: {
+        ko: { textSuffix: "[신호 정렬: 대성공]\n정렬된 파형 위로 실제 발성 지점이 하나만 또렷하게 떠오른다.\n강도윤은 망설이지 않고 그 지점을 향해 사격한다.\n총성이 멎은 뒤에도 잔향은 남지만, 적어도 지금 방금 쓰러진 것이 무엇인지는 분명하다.", endLabel: "[ 기지 귀환 — 핵심 발성원 제거 ]" },
+        en: { textSuffix: "[Signal Alignment: Great Success]\nOn the aligned waveform, a single true source of the voice rises clearly.\nDo-yun fires at that point without hesitation.\nThe echo lingers after the gunshot fades, but at least it is clear what just went down.", endLabel: "[ Return to Base — Primary Voice Source Eliminated ]" }
+      },
+      success: {
+        ko: { textSuffix: "[신호 정렬: 성공]\n발성 지점이 좁혀진다. 강도윤은 지체 없이 사격하고 숲은 다시 조용해진다.\n다만 마지막에 들린 목소리가 진짜였는지는 끝내 확신할 수 없다.", endLabel: "[ 기지 귀환 — 제거 완료 ]" },
+        en: { textSuffix: "[Signal Alignment: Success]\nThe source of the voice narrows down. Do-yun fires without delay and the woods fall quiet again.\nStill, whether the last voice you heard was real, you can never quite be sure.", endLabel: "[ Return to Base — Elimination Complete ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[신호 정렬: 부분 성공]\n신호는 맞췄지만 잡음이 끝까지 남는다.\n강도윤은 위협을 제거했지만, 당신의 귀에는 부하의 목소리와 비명이 겹친 채 남아 있다.", endLabel: "[ 기지 귀환 — 제거 완료 / 음성 잔향 지속 ]" },
+        en: { textSuffix: "[Signal Alignment: Partial Success]\nThe signal is found, but the noise never fully clears.\nDo-yun removes the threat, yet in your ears the voice of your subordinate and a scream remain overlaid.", endLabel: "[ Return to Base — Elimination Complete / Voice Echo Persists ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[신호 정렬: 실패]\n판형 정렬에 실패한 채 진입한다. 강도윤은 결국 가장 위험한 지점을 먼저 쏘는 수밖에 없다.\n위협은 멎었지만, 방금 제거한 것이 진짜 발성원이었는지는 끝내 검증하지 못한다.", endLabel: "[ 기지 귀환 — 제거 완료 / 발성 검증 실패 ]" },
+        en: { textSuffix: "[Signal Alignment: Failure]\nYou go in with the waveform alignment failed. In the end Do-yun has no choice but to fire on the most dangerous point first.\nThe threat stops, but whether what you just removed was the true voice source is never verified.", endLabel: "[ Return to Base — Elimination Complete / Voice Verification Failed ]" }
+      }
+    },
+    capture: {
+      great: {
+        ko: { textSuffix: "[신호 정렬: 대성공]\n정렬된 파형 덕분에 격리 상자를 투입할 타이밍이 정확해진다.\n개체 반응은 거칠지만, 살아 있는 표본과 명확한 발성 패턴이 함께 확보된다.", endLabel: "[ 기지 귀환 — 표본 확보 / 발성 패턴 완비 ]" },
+        en: { textSuffix: "[Signal Alignment: Great Success]\nThe aligned waveform makes the timing to deploy the containment box exact.\nThe specimen reacts violently, but a live sample and a clear vocalization pattern are secured together.", endLabel: "[ Return to Base — Sample Secured / Vocal Pattern Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[신호 정렬: 성공]\n격리 시점이 맞아떨어진다. 표본은 확보됐고, 발성 패턴 일부도 기록된다.", endLabel: "[ 기지 귀환 — 표본 확보 ]" },
+        en: { textSuffix: "[Signal Alignment: Success]\nThe containment timing lands. The sample is secured, and part of the vocal pattern is recorded.", endLabel: "[ Return to Base — Sample Secured ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[신호 정렬: 부분 성공]\n포획은 성공하지만 발성 데이터 일부가 잡음에 묻힌다.\n표본은 남았으나 분석 가치는 예상보다 낮다.", endLabel: "[ 기지 귀환 — 표본 확보 / 데이터 불완전 ]" },
+        en: { textSuffix: "[Signal Alignment: Partial Success]\nThe capture succeeds, but part of the vocal data is buried in noise.\nThe sample remains, though its analytical value is lower than expected.", endLabel: "[ Return to Base — Sample Secured / Data Incomplete ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[신호 정렬: 실패]\n포획 절차는 유지했지만 발성 정렬이 틀어진다.\n표본은 확보됐으나 핵심 패턴은 놓쳤고, 격리 비용만 커진다.", endLabel: "[ 기지 귀환 — 표본 확보 / 핵심 패턴 누락 ]" },
+        en: { textSuffix: "[Signal Alignment: Failure]\nThe capture procedure holds, but the vocal alignment slips.\nThe sample is secured, yet the core pattern is lost, and only the containment cost grows.", endLabel: "[ Return to Base — Sample Secured / Core Pattern Missing ]" }
+      }
+    },
+    analyze: {
+      great: {
+        ko: { textSuffix: "[신호 정렬: 대성공]\n윤세진의 분석과 현장 정렬값이 정확히 겹친다.\n부하의 음성층과 개체 고유 파형이 분리되며, ORACLE 보고서보다 한 단계 선명한 결론이 남는다.", endLabel: "[ 기지 귀환 — 정밀 분석 완료 ]" },
+        en: { textSuffix: "[Signal Alignment: Great Success]\nYoon Se-jin's analysis and the field alignment values line up exactly.\nThe subordinate's voice layer separates from the creature's own waveform, leaving a conclusion one step sharper than ORACLE's report.", endLabel: "[ Return to Base — Precise Analysis Complete ]" }
+      },
+      success: {
+        ko: { textSuffix: "[신호 정렬: 성공]\n분석값이 안정되고 ORACLE 결론을 현장 기준으로 보강한다.\n의미 있는 교차검증이 남는다.", endLabel: "[ 기지 귀환 — 분석 완료 ]" },
+        en: { textSuffix: "[Signal Alignment: Success]\nThe analysis values stabilize and reinforce ORACLE's conclusion against field data.\nA meaningful cross-check remains.", endLabel: "[ Return to Base — Analysis Complete ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[신호 정렬: 부분 성공]\n분석은 끝났지만 신호층이 완전히 분리되지는 않는다.\n결론은 확보됐으나, 기록엔 잡음이 남는다.", endLabel: "[ 기지 귀환 — 분석 완료 / 기록 불안정 ]" },
+        en: { textSuffix: "[Signal Alignment: Partial Success]\nThe analysis is done, but the signal layers do not fully separate.\nA conclusion is secured, though noise remains in the record.", endLabel: "[ Return to Base — Analysis Complete / Record Unstable ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[신호 정렬: 실패]\nORACLE 분석은 받았지만 현장 교차검증은 무너진다.\n보고서는 남지만, 당신은 그 결론을 완전히 믿지 못한다.", endLabel: "[ 기지 귀환 — ORACLE 분석 수신 ]" },
+        en: { textSuffix: "[Signal Alignment: Failure]\nYou receive ORACLE's analysis, but the field cross-check falls apart.\nThe report remains, yet you cannot fully believe its conclusion.", endLabel: "[ Return to Base — ORACLE Analysis Received ]" }
+      }
+    }
+  });
+  narratives["MI-01"]=Object.assign({},narratives["MI-01"]||{},{
+    shield: {
+      great: {
+        ko: { textSuffix: "[봉인 시퀀스: 대성공]\n차단 순서가 완벽하게 맞아떨어진다.\n잔류 진동도 빠르게 가라앉고, 임재혁은 이번엔 제대로 막았다고 짧게 중얼거린다.", endLabel: "[ 처리 완료 — 증상 차단 안정화 ]" },
+        en: { textSuffix: "[Seal Sequence: Great Success]\nThe blocking order falls perfectly into place.\nThe residual tremors subside quickly, and Jae-hyeok mutters that this time it was sealed properly.", endLabel: "[ Resolution Complete — Symptom Containment Stabilized ]" }
+      },
+      success: {
+        ko: { textSuffix: "[봉인 시퀀스: 성공]\n증상은 차단되고 격리실은 다시 안정권에 들어간다.", endLabel: "[ 처리 완료 — 증상 차단 ]" },
+        en: { textSuffix: "[Seal Sequence: Success]\nThe symptoms are contained and the isolation room returns to a stable range.", endLabel: "[ Resolution Complete — Symptom Contained ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[봉인 시퀀스: 부분 성공]\n차단은 됐지만 보조 잠금이 늦게 걸린다.\n당장 위험하진 않지만, 아래층 잔류 반응은 완전히 죽지 않는다.", endLabel: "[ 처리 완료 — 증상 차단 / 잔류 반응 경고 ]" },
+        en: { textSuffix: "[Seal Sequence: Partial Success]\nThe block holds, but the secondary lock engages late.\nThere is no immediate danger, yet the residual reaction on the lower floor never fully dies.", endLabel: "[ Resolution Complete — Symptom Contained / Residual Reaction Warning ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[봉인 시퀀스: 실패]\n차단 절차가 꼬이며 격리실이 한 차례 더 흔들린다.\n현 상황은 수습했지만, 원인부 차단에는 실패했다는 인상이 짙게 남는다.", endLabel: "[ 처리 완료 — 임시 차단 / 원인 미확인 ]" },
+        en: { textSuffix: "[Seal Sequence: Failure]\nThe blocking procedure tangles and the isolation room shakes once more.\nThe situation is handled, but the strong impression remains that the root cause was not sealed.", endLabel: "[ Resolution Complete — Temporary Block / Cause Unidentified ]" }
+      }
+    },
+    seal: {
+      great: {
+        ko: { textSuffix: "[봉인 시퀀스: 대성공]\n봉인 절차가 정확히 들어맞으며 B2 하부가 영구 차단 상태로 넘어간다.\n임재혁도 이 정도면 다시 열릴 가능성이 낮다고 판단한다.", endLabel: "[ 처리 완료 — 영구 봉인 확정 ]" },
+        en: { textSuffix: "[Seal Sequence: Great Success]\nThe seal procedure fits exactly, and the lower B2 crosses into a permanently sealed state.\nEven Jae-hyeok judges that at this level it is unlikely to open again.", endLabel: "[ Resolution Complete — Permanent Seal Confirmed ]" }
+      },
+      success: {
+        ko: { textSuffix: "[봉인 시퀀스: 성공]\n하부 구역은 예정대로 영구 봉인된다.", endLabel: "[ 처리 완료 — 영구 봉인 ]" },
+        en: { textSuffix: "[Seal Sequence: Success]\nThe lower zone is permanently sealed as planned.", endLabel: "[ Resolution Complete — Permanent Seal ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[봉인 시퀀스: 부분 성공]\n봉인은 완료됐지만 일부 절차를 수동 보정으로 메웠다.\n겉으로는 닫혔지만, 구조적 불안은 조금 남는다.", endLabel: "[ 처리 완료 — 영구 봉인 / 수동 보정 ]" },
+        en: { textSuffix: "[Seal Sequence: Partial Success]\nThe seal is complete, but some steps were filled in by manual correction.\nOn the surface it is closed, though a bit of structural instability remains.", endLabel: "[ Resolution Complete — Permanent Seal / Manual Correction ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[봉인 시퀀스: 실패]\n예정된 절차대로는 닫지 못해 강제 차단으로 마무리한다.\n외형상 봉인은 됐지만, 당신은 이걸 완전한 봉인으로 부르지 못한다.", endLabel: "[ 처리 완료 — 강제 봉인 / 불완전 ]" },
+        en: { textSuffix: "[Seal Sequence: Failure]\nIt cannot be closed by the planned procedure, so you finish with a forced shutdown.\nOutwardly it is sealed, but you cannot call this a complete seal.", endLabel: "[ Resolution Complete — Forced Seal / Incomplete ]" }
+      }
+    },
+    oracle: {
+      great: {
+        ko: { textSuffix: "[봉인 시퀀스: 대성공]\nORACLE 자동 판단과 현장 입력값이 정확히 맞물린다.\n이번엔 기계 판단이 아니라, 기계 판단을 검증한 결과처럼 보인다.", endLabel: "[ 처리 완료 — ORACLE 판단 수용 / 검증 완료 ]" },
+        en: { textSuffix: "[Seal Sequence: Great Success]\nORACLE's automated judgment meshes exactly with the field inputs.\nThis time it looks less like a machine's verdict than a machine's verdict verified.", endLabel: "[ Resolution Complete — ORACLE Judgment Accepted / Verified ]" }
+      },
+      success: {
+        ko: { textSuffix: "[봉인 시퀀스: 성공]\nORACLE 판단은 무리 없이 적용된다.", endLabel: "[ 처리 완료 — ORACLE 판단 수용 ]" },
+        en: { textSuffix: "[Seal Sequence: Success]\nORACLE's judgment is applied without issue.", endLabel: "[ Resolution Complete — ORACLE Judgment Accepted ]" }
+      },
+      partial: {
+        ko: { textSuffix: "[봉인 시퀀스: 부분 성공]\nORACLE 조치는 수행됐지만 현장 체감은 완전히 따라오지 않는다.\n정리는 됐으나 찝찝함이 남는다.", endLabel: "[ 처리 완료 — ORACLE 조치 완료 ]" },
+        en: { textSuffix: "[Seal Sequence: Partial Success]\nORACLE's measures are carried out, but the feel on the ground doesn't fully follow.\nIt is tidied up, yet an unease remains.", endLabel: "[ Resolution Complete — ORACLE Measures Complete ]" }
+      },
+      fail: {
+        ko: { textSuffix: "[봉인 시퀀스: 실패]\nORACLE 조치를 그대로 따랐지만 입력값 교차확인에 실패한다.\n조치는 끝났어도, 정말 정리된 건지 누구도 단언하지 못한다.", endLabel: "[ 처리 완료 — ORACLE 조치 / 현장 검증 실패 ]" },
+        en: { textSuffix: "[Seal Sequence: Failure]\nYou follow ORACLE's measures exactly, but the input cross-check fails.\nThe measures are done, yet no one can say for certain it was truly resolved.", endLabel: "[ Resolution Complete — ORACLE Measures / Field Verification Failed ]" }
+      }
+    }
+  });
+})();

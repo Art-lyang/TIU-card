@@ -8,13 +8,13 @@
   // 간부/인물 화자: charKey -> 표시명/직책/기본 포트레잇 이름(CHAR_IMG 키)
   var PERSONS = {
     doyun:    { name:'강도윤',        nameEn:'Kang Do-yun',  role:'야전지휘', roleEn:'FIELD',   charName:'강도윤' },
-    haeun:    { name:'서하은',        nameEn:'Seo Ha-eun',   role:'분석',     roleEn:'ANALYST', charName:'서하은' },
+    haeun:    { name:'서하은',        nameEn:'Seo Hae-eun',   role:'분석',     roleEn:'ANALYST', charName:'서하은' },
     sejin:    { name:'윤세진',        nameEn:'Yoon Se-jin',  role:'생물연구', roleEn:'BIO',     charName:'윤세진' },
-    jaehyuk:  { name:'임재혁',        nameEn:'Lim Jae-hyuk', role:'시스템',   roleEn:'SYS',     charName:'임재혁' },
+    jaehyuk:  { name:'임재혁',        nameEn:'Lim Jae-hyeok', role:'시스템',   roleEn:'SYS',     charName:'임재혁' },
     soyoung:  { name:'박소영',        nameEn:'Park So-young',role:'데이터',   roleEn:'DATA',    charName:'박소영' },
-    weber:    { name:'마르쿠스 베버', nameEn:'Marcus Weber', role:'프로메테우스', roleEn:'PROMETHEUS', charName:'마르쿠스 베버' },
+    weber:    { name:'마르쿠스 베버', nameEn:'Markus Weber', role:'프로메테우스', roleEn:'PROMETHEUS', charName:'마르쿠스 베버' },
     foster:   { name:'닉 포스터',     nameEn:'Nick Foster',  role:'프로메테우스', roleEn:'PROMETHEUS', charName:'닉 포스터' },
-    jungchul: { name:'이중철',        nameEn:'Lee Jung-chul',role:'지휘관',   roleEn:'CMD',     charName:'이중철' }
+    jungchul: { name:'이중철',        nameEn:'Lee Jung-cheol',role:'지휘관',   roleEn:'CMD',     charName:'이중철' }
   };
 
   // 진영/시스템 화자: key -> 표시명/이미지

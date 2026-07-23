@@ -41,7 +41,7 @@ if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
         rightLabel: "Block the frequency"
       },
       "C-059": {
-        msg: "Satellite data analysis — an abnormal thermal signature has been detected near the North Hamgyong border region.\n\nSeo Hae-eun: \"This pattern doesn't match EV-Σ spread. The heat source is concentrated underground.\"\n\n[ORACLE: Access to observation data for that sector is restricted.]",
+        msg: "Satellite data analysis — an abnormal thermal signature has been detected near the North Hamgyeong border region.\n\nSeo Hae-eun: \"This pattern doesn't match EV-Σ spread. The heat source is concentrated underground.\"\n\n[ORACLE: Access to observation data for that sector is restricted.]",
         leftLabel: "Demand to know why it's restricted",
         rightLabel: "Follow ORACLE's judgment"
       },
@@ -1344,7 +1344,7 @@ window.TS_I18N.mergeContent('en', {
           choices: ['[ Return to Branch — Higher-Level Authority Confirmed ]']
         },
         comply: {
-          text: '"Understood. We follow headquarters."\n\nKang Do-yun looks at you. Says nothing.\n\nYou withdraw the instruments, leaving the zone untouched.\n\nOn the way back, he finally says,\n"Commander. That zone... it matches the report from North Hamgyong."\n"The one where a person was standing still inside it."',
+          text: '"Understood. We follow headquarters."\n\nKang Do-yun looks at you. Says nothing.\n\nYou withdraw the instruments, leaving the zone untouched.\n\nOn the way back, he finally says,\n"Commander. That zone... it matches the report from North Hamgyeong."\n"The one where a person was standing still inside it."',
           choices: ['[ Return to Branch — ORACLE Directive Followed ]']
         },
         local_save: {
@@ -3140,7 +3140,7 @@ window.TS_I18N.mergeContent('en', {
     "EV-07": { name: "Observer process", desc: "An observation system operating outside the ORACLE architecture." },
     "EV-08": { name: "Proxy protocol document", desc: "Excerpt from the ORACLE proxy network operations manual." },
     "EV-09": { name: "Prometheus intelligence", desc: "Identity of an unclassified signal source at 31% probability." },
-    "EV-10": { name: "Seo Ha-eun USB data", desc: "ORACLE control logs and grant fragments recovered from USB." },
+    "EV-10": { name: "Seo Hae-eun USB data", desc: "ORACLE control logs and grant fragments recovered from USB." },
     "EV-11": { name: "02:47 data noise", desc: "Anomaly connecting ORACLE regular transmission with isolation data." },
     "EV-12": { name: "Access protocol script", desc: "Script for unregistered personnel detection and CCTV deactivation." },
     "EV-13": { name: "Variant cell sample", desc: "Cultured variant matching the initial SPEC-012 morphology." },
@@ -3169,7 +3169,7 @@ window.TS_I18N.mergeContent('en', {
     "CMB-05": { name: "Fusion and proliferation", result: "The internal SPEC-012 proliferation sample and the field variant sample share the same initial form. It was not merely contained. It was already inside." },
     "CMB-06": { name: "Prometheus's truth", result: "The coastal coordinates, unclassified source identity, and proxy protocol show Prometheus knew about Korea. ORACLE was hiding that fact." },
     "CMB-07": { name: "Existence of B2", result: "Vibration rises from below and the passage leads downward. Something unrecorded is operating under B2." },
-    "CMB-08": { name: "Truth of control", result: "ORACLE's data discrepancy and Seo Ha-eun's recovered control log prove the truth is control itself, not merely manipulated data." },
+    "CMB-08": { name: "Truth of control", result: "ORACLE's data discrepancy and Seo Hae-eun's recovered control log prove the truth is control itself, not merely manipulated data." },
     "CMB-09": { name: "Quiet resistance line", result: "The report keeps its format, the patrol route keeps a gap, and the query map stays quiet. It is not public rebellion, but the Korean branch is building a small circuit for judgment without ORACLE." },
     "CMB-10": { name: "Sustainable loyalty", result: "When ORACLE procedure is paired with briefings, retraining, and field appendices, loyalty does not have to mean personnel consumption. This route is recorded as manageable cooperation rather than simple obedience." }
   }
@@ -3529,7 +3529,7 @@ window.TS_I18N.mergeContent('en', {
     "LOG-INC-02": { title: "CCTV Blind Zone", content: "B1 corridor security cameras went offline in sequence. A possible internal command or concealment script was recorded rather than a simple fault." },
     "LOG-INC-03": { title: "Research Wing Sample Contamination", content: "Self-mutating contamination occurred inside sample incubator 3. It is estimated as structural change within the sample, not external inflow." },
     "LOG-INC-04": { title: "Security-zone Authentication Error", content: "A successful biometric authentication record was left in the restricted corridor without an entrant. Possible manipulation of the authentication system or record layer was reported." },
-    "LOG-INC-05": { title: "Staff Missing Incident", content: "Supply agent Lee Su-hyun's route ended after leaving the lounge. An internal search and review of ORACLE location records began." },
+    "LOG-INC-05": { title: "Staff Missing Incident", content: "Supply agent Lee Su-hyeon's route ended after leaving the lounge. An internal search and review of ORACLE location records began." },
     "LOG-INC-01-DEEP": { title: "B2 Lower-level Vibration", content: "Electromagnetic interference and structural vibration were confirmed toward B2 below the isolation room. The isolation-room anomaly may be a symptom from the lower zone." },
     "LOG-INC-01-ORACLE": { title: "02:47 Data Pulse", content: "A data pulse was confirmed at ORACLE's regular processing time, 02:47, toward the lower isolation zone. ORACLE classified it as a diagnostic routine." },
     "LOG-INC-02-SCRIPT": { title: "Concealment Protocol", content: "An automatic script was found that disables specific cameras when unregistered heat sources are detected. Someone, or something, is being excluded from video records." },

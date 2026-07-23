@@ -3,7 +3,7 @@
 if(!window.TS_I18N||typeof window.TS_I18N.mergeContent!=='function')return;
 
 function ceMsg(n){
-  return "The terminal screen goes black for 0.5 seconds.\n\nText appears in an unspecified typeface:\n\n'Observed " + n + " exercises of authority observed. New data acquired each observation cycle.\nObservation continues.'\n\n[ORACLE: Output error - corresponding log entry does not exist. Ignoring is recommended.]";
+  return "The terminal screen goes black for 0.5 seconds.\n\nText appears in an unspecified typeface:\n\n'Observed " + n + " exercises of authority. New data acquired each session.\nObservation continues.'\n\n[ORACLE: Output error - corresponding log entry does not exist. Ignoring is recommended.]";
 }
 
 window.TS_I18N.mergeContent('en', {

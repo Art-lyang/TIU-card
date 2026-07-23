@@ -450,7 +450,7 @@ function DayObjectiveLegacy(p){
   if(critical.length){
     sub=(isEn?'Critical metric: ':'위험 자원: ')+critical.map(function(k){return statNames[k]}).join(', ');
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
-    sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
+    sub=isEn?'Unlock the investigation table through Jae-hyeok evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
     sub=isEn?'Investigation table active. Preserve collected records for later review.':'조사테이블 활성화: 수집 기록을 보존하세요.';
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')<0&&(logs.indexOf('LOG-A2-FORESHADOW-02')>=0||day>=11)){
@@ -458,7 +458,7 @@ function DayObjectiveLegacy(p){
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')>=0){
     sub=isEn?'Act 2 triage complete. Keep the branch stable until Act 3 verification.':'Act2 단서 정리가 완료되었습니다. Act3 검증 전까지 지부 안정화를 유지하세요.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0){
-    sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
+    sub=isEn?'Investigation table missing: Jae-hyeok will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0&&typeof getCollectedEvidence==='function'){
     var evCount=getCollectedEvidence(logs).length;
     if(evCount<2)sub=isEn?'Investigation table active. Preserve incident records as they arrive.':'조사테이블 활성화: 사건 기록을 보존하세요.';
@@ -476,7 +476,7 @@ function DayObjectiveLegacy(p){
     else if(axisCount>=2)sub=(isEn?'Officer suspicion reports collected: ':'간부 의심 보고 수집: ')+axisCount+'/4';
   }
   if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
-    sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
+    sub=isEn?'Resolve Lee Jung-cheol Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
   }
   if(!sub&&act>=4&&logs.indexOf('LOG-A2-TRIAGE-01')>=0&&logs.indexOf('LOG-A4-STAFF-REVIEW')<0){
     sub=isEn?'Use the Act 2 triage list to turn Act 4 pressure into staff assignments.':'Act2 교차검증 목록을 활용해 Act4 압박을 인물별 배치 문제로 전환하세요.';
@@ -534,7 +534,7 @@ function DayObjective(p){
   }else if(introPending){
     sub=(isEn?'Officer interviews: ':'간부 면담: ')+introN+'/4';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')<0){
-    sub=isEn?'Unlock the investigation table through Jaehyuk evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
+    sub=isEn?'Unlock the investigation table through Jae-hyeok evening chat.':'임재혁 이브닝 챗에서 조사테이블을 해금하세요.';
   }else if(act===2&&logs.indexOf('LOG-EV-UNLOCK')>=0&&logs.indexOf('LOG-A2-FORESHADOW-02')<0){
     sub=isEn?'Investigation table active. Preserve collected records.':'조사테이블 활성화: 수집 기록을 보존하세요.';
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')<0&&(logs.indexOf('LOG-A2-FORESHADOW-02')>=0||day>=11)){
@@ -542,7 +542,7 @@ function DayObjective(p){
   }else if(act===2&&logs.indexOf('LOG-A2-TRIAGE-01')>=0){
     sub=isEn?'Investigation record triage complete. Keep the branch stable.':'조사 기록 정리가 완료되었습니다. 지부 안정성을 유지하세요.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')<0){
-    sub=isEn?'Investigation table missing: Jaehyuk will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
+    sub=isEn?'Investigation table missing: Jae-hyeok will force-open it before play continues.':'조사테이블 미해금: 임재혁 대화로 즉시 해금해야 합니다.';
   }else if(act>=3&&logs.indexOf('LOG-EV-UNLOCK')>=0){
     var comboCount=(typeof getUnlockedCombos==='function')?getUnlockedCombos(logs).length:0;
     sub=comboCount>0?(isEn?'Investigation notes recorded: '+comboCount:'조사테이블 통찰 기록: '+comboCount+'건'):(isEn?'Investigation table active. Review records when needed.':'조사테이블 활성화: 필요 시 기록을 확인하세요.');
@@ -559,7 +559,7 @@ function DayObjective(p){
     else if(axisCount>=2)sub=(isEn?'Officer suspicion reports collected: ':'간부 의심 보고 수집: ')+axisCount+'/4';
   }
   if(!sub&&act>=4&&logs.indexOf('LOG-LJC-PROM-03')>=0&&logs.indexOf('LOG-LJC-PROM-04')<0){
-    sub=isEn?'Resolve Lee Jung-chul Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
+    sub=isEn?'Resolve Lee Jung-cheol Prometheus distrust before accepting cooperation.':'프로메테우스 협력 전 이중철의 불신을 확인하세요.';
   }
   if(!sub&&act>=4&&logs.indexOf('LOG-A2-TRIAGE-01')>=0&&logs.indexOf('LOG-A4-STAFF-REVIEW')<0){
     sub=isEn?'Use prior investigation records to adjust final staff assignments.':'이전 조사 기록을 참고해 인물별 배치를 조정하세요.';

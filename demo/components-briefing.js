@@ -44,7 +44,7 @@ function BriefingImage(p){
 //    이중철은 베테랑이라 이미 알지만 플레이어는 모름 → 디제틱 인포덤프. 캐논: 개체=내부 SPEC/대외 '아베란트',
 //    ORACLE의 '기밀성'은 미노출(운영 시스템으로만 소개), 옵저버 등 후반 미스터리는 건드리지 않는다.
 var COMMAND_BRIEF=[
-  {char:'서하은', name:['서하은','Seo Ha-eun'], role:['부지휘관 · 데이터분석','Deputy Commander · Data'], lines:[
+  {char:'서하은', name:['서하은','Seo Hae-eun'], role:['부지휘관 · 데이터분석','Deputy Commander · Data'], lines:[
     ['부임 전 3개월간, 지부는 ORACLE 지시만으로 운영됐습니다.','For three months before your posting, the branch ran on ORACLE directives alone.'],
     ['기지 상태는 네 지표로 관리합니다 — 봉쇄, 자원, 신뢰, 평가.','The base is tracked by four gauges — Containment, Resources, Trust, Evaluation.'],
     ['어느 하나라도 0이 되면, 봉쇄가 100까지 차올라도 임무는 종료됩니다.','If any of them hits zero — or Containment climbs to 100 — the assignment ends.']
@@ -54,7 +54,7 @@ var COMMAND_BRIEF=[
     ['ORACLE은 이들을 SPEC-### 코드로 분류·관리합니다. 대외 기관엔 \'아베란트\'로 통합니다.','ORACLE classifies them under SPEC-### codes; outside agencies only ever hear \'Aberrant.\''],
     ['SPEC 명칭은 인가자 외엔 알 수 없어요. 지휘관님은 인가자세요.','The SPEC designations are for cleared personnel only. You are cleared.']
   ]},
-  {char:'임재혁', name:['임재혁','Lim Jae-hyuk'], role:['정보 · 기술','Intel · Systems'], lines:[
+  {char:'임재혁', name:['임재혁','Lim Jae-hyeok'], role:['정보 · 기술','Intel · Systems'], lines:[
     ['기지의 모든 정보는 ORACLE 단말기를 통해 들어옵니다.','Every piece of intel reaches this base through the ORACLE terminal.'],
     ['판단 근거도, 권고도, 경보도 전부 이 체계를 거칩니다.','Rationale, recommendations, alerts — all of it passes through that system.'],
     ['시스템 이상 징후는 제가 실시간으로 감시합니다.','I watch that system for anomalies, around the clock.']

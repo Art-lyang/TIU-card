@@ -232,7 +232,7 @@
     jaehyuk_tech: {
       great: {
         ko: { textSuffix: "[정밀 스캔: 대성공]\n임재혁의 스캔망이 건물 내부의 이동선을 층별로 분리한다.\n진입팀은 거의 손상 없이 격리 지점을 차례로 닫는다.", endLabel: "[ 기지 귀환 — 정밀 격리 완료 ]" },
-        en: { textSuffix: "[Precision Scan: Great Success]\nJae-hyuk's scan net separates the interior routes by floor.\nThe entry team closes each isolation point with almost no damage.", endLabel: "[ Return to Base — Precision Isolation Complete ]" }
+        en: { textSuffix: "[Precision Scan: Great Success]\nJae-hyeok's scan net separates the interior routes by floor.\nThe entry team closes each isolation point with almost no damage.", endLabel: "[ Return to Base — Precision Isolation Complete ]" }
       },
       success: {
         ko: { textSuffix: "[정밀 스캔: 성공]\n주요 이동선이 드러나며 격리 순서가 잡힌다.\n건물 손상은 제한적이고, 현장팀의 부담도 낮아진다.", endLabel: "[ 기지 귀환 — 정밀 격리 성공 ]" },
@@ -557,7 +557,7 @@
     var en={
       doyun:'Do-yun reviews the field route and reduces the burden of the next move.',
       sejin:'Se-jin checks the field analysis again and narrows the margin of error.',
-      jaehyuk:'Jae-hyuk organizes the equipment logs and links them to the follow-up action.',
+      jaehyuk:'Jae-hyeok organizes the equipment logs and links them to the follow-up action.',
       haeun:'Hae-eun organizes the unofficial clue and closes a gap in the next report.'
     };
     return (locale==='en'?en:ko)[ch]||'';
