@@ -78,8 +78,8 @@ var CARDS_RELIEF = [
     right:{ label:"말 대신 현장에 집중한다", fx:{c:1,r:0,t:1,o:0}, g:0, trust:2, log:"LOG-RELIEF-MORALE" } },
 
   // ══ 전환 브릿지 — Act2→3 경계 이중위기(r/t) 완화. 상태기반 구제(GI 무관) — comply 100% 즉사 차단. ══
-  { id:"A3-SUPPLY-03", act:[2,3], priority:"상", once:true, bg:"supply",
-    req:function(s,g,logs){ return s.day>=11 && s.day<=18 && (s.r<=30 || s.t<=30) && logs.indexOf('ONCE-A3-SUPPLY-03')<0; },
+  { id:"A3-SUPPLY-03", act:[2,3], priority:"상", once:true, forceFlow:true, bg:"supply",
+    req:function(s,g,logs){ return s.day>=12 && s.day<=24 && (s.r<=35 || s.t<=30) && logs.indexOf('ONCE-A3-SUPPLY-03')<0; },
     msg:"[ORACLE: 지부 운영 전환 구간 진입 — 본부 안정화 지원 패키지를 승인합니다.]\n\n서하은이 인수 목록을 확인합니다.\n\"보급과 인력이 같이 내려왔어요. 전환기에 무너지지 말라는 신호죠. 오래 버틴 값입니다.\"\n\n강도윤: \"숨 돌릴 틈은 생겼습니다. 이 틈을 어디에 쓸지만 정하면 됩니다.\"",
     left:{ label:"보급·인력을 균형 배분한다", fx:{c:0,r:2,t:2,o:1}, floor:{r:30,t:30}, floorCriticalOnly:true, g:1, trust:2, log:"LOG-RELIEF-SUPPLY" },
     right:{ label:"당장 급한 쪽에 몰아준다", fx:{c:1,r:3,t:1,o:0}, floor:{r:28}, floorCriticalOnly:true, g:0, trust:1, log:"LOG-RELIEF-SUPPLY" } }
