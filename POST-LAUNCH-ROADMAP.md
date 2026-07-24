@@ -13,7 +13,7 @@
 - 후속 카드 체인: `chainQueue`(즉시)·`req` day 게이트(day≥X)·미션·변이체 관찰→결정 체인
 - 다층 기록 텍스처: 뉴스=공식 / 카드 msg=현장 / LOG(hidden·접근제한)=제한
 - 실패→세계관: 엔딩·상태 기반 LOG
-- 지휘관 일지 무드: 루트(`JOURNAL_MOODS_ROUTE`)·아크이벤트·이브닝/대화 유대(`JOURNAL_MOODS_BOND`)
+- 지휘관 일지 무드: 루트(`JOURNAL_MOODS_ROUTE`)·아크이벤트·이브닝/대화 유대(`JOURNAL_MOODS_BOND`)·**선택 소회**(`MEMO_BY_CHOICE` 116키, 카드ID|방향별 전용 소회 — 전 Act 스토리 척추) — BUILD 483
 
 ## P1 — 출시 후 우선 (게임이 팔리기 시작하면)
 
