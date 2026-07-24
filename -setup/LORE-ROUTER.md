@@ -53,6 +53,7 @@ updated: 2026-05-31
 | 메리디안 그룹 | `…/TIU-MERIDIAN-GROUP.md` |
 | Act 구조 / Act3 미션 / 시설 통합 | `MD/act-structure/{ACT-STRUCTURE-DESIGN,ACT3-MISSIONS-DESIGN,FACILITY-INTEGRATION-DESIGN}.md` |
 | 카드 디자인 가이드 / Act별 배치 / 아프터매스 | `MD/card-design/{TIU-CARD-DESIGN-GUIDE,ACT-CARD-ASSIGNMENT,AFTERMATH-CARDS-DESIGN}.md` |
+| RF-Ω 회수 영상 시리즈 (필라델피아 SPEC 푸티지) | `MD/card-design/RECOVERED-FOOTAGE-DESIGN.md` |
 | L3 결사/종족/기술/언어 | `MD/TIU-WORLDBUILDING/TIU-WORLDBUILDING/TIU-L3-*.md`, `MD/TIU-L3-LANGUAGE{,-NOTES}.md` |
 | 인간 진영 / 회색 경제 / 실패 아카이브 | `…/TIU-HUMAN-FACTIONS.md`, `MD/TIU-GRAY-ECONOMY.md`, `MD/TIU-FAILURE-ARCHIVE.md` |
 | 변경 기록 / 게임성 QA | `MD/TIU-ALPHA-CHANGELOG{,-2026-05-08}.md`, `QA-Review/GAMEPLAY-REVIEW.md` |
