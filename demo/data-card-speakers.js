@@ -17,14 +17,14 @@
     jungchul: { name:'이중철',        nameEn:'Lee Jung-cheol',role:'지휘관',   roleEn:'CMD',     charName:'이중철' }
   };
 
-  // 진영/시스템 화자: key -> 표시명/이미지
+  // 진영/시스템 화자: key -> 표시명/이미지/채널 식별(통신 헤더용)
   var FACTIONS = {
-    oracle:     { name:'ORACLE',      nameEn:'ORACLE',        role:'시스템',   roleEn:'SYSTEM',  img:'assets/images/logos/logo_oracle_hq_v1.webp' },
-    gov:        { name:'정부 연락선', nameEn:'Gov. Liaison',  role:'상부',     roleEn:'COMMAND', img:F+'spk_gov_v1.webp' },
-    prometheus: { name:'프로메테우스', nameEn:'Prometheus',   role:'외부',     roleEn:'EXTERNAL',img:'assets/images/logos/logo_prometheus_hq_v1.webp' },
-    civilian:   { name:'격벽 인근',   nameEn:'Barrier Zone',  role:'민간',     roleEn:'CIVILIAN',img:F+'spk_civilian_v1.webp' },
-    haejin:     { name:'해진회',      nameEn:'Haejinhoe',     role:'감시대상', roleEn:'WATCHED', img:F+'spk_haejin_v1.webp' },
-    glitch:     { name:'████', nameEn:'████', role:'UNREGISTERED', roleEn:'UNREGISTERED', img:F+'spk_glitch_v1.webp' }
+    oracle:     { name:'ORACLE',      nameEn:'ORACLE',        role:'시스템',   roleEn:'SYSTEM',  img:'assets/images/logos/logo_oracle_hq_v1.webp', code:'CH-ORC-KR7A',  bars:'|||| || ||| | ||||| ||' },
+    gov:        { name:'정부 연락선', nameEn:'Gov. Liaison',  role:'상부',     roleEn:'COMMAND', img:F+'spk_gov_v1.webp',                          code:'CH-GOV-KR00',  bars:'|| ||||| | ||| || ||||' },
+    prometheus: { name:'프로메테우스', nameEn:'Prometheus',   role:'외부',     roleEn:'EXTERNAL',img:'assets/images/logos/logo_prometheus_hq_v1.webp', code:'EXT-PROM-NET', bars:'||| | |||| ||||| || |' },
+    civilian:   { name:'격벽 인근',   nameEn:'Barrier Zone',  role:'민간',     roleEn:'CIVILIAN',img:F+'spk_civilian_v1.webp',                     code:'CIV-EDGE-KR',  bars:'| ||| || |||| | ||| ||' },
+    haejin:     { name:'해진회',      nameEn:'Haejinhoe',     role:'감시대상', roleEn:'WATCHED', img:F+'spk_haejin_v1.webp',                       code:'SIG-UNREG-HJ', bars:'||||| | || ||| |||| |' },
+    glitch:     { name:'████', nameEn:'████', role:'UNREGISTERED', roleEn:'UNREGISTERED', img:F+'spk_glitch_v1.webp',                  code:'██████',   bars:'▌| ▌|| ▌ |▌ ||▌' }
   };
 
   function isEn(){ return !!(window.TS_I18N && TS_I18N.getLocale && TS_I18N.getLocale()==='en'); }
@@ -90,11 +90,13 @@
         img = resolveEveningEmotionImg(key, { tier: tier, act: ctx.act || 1, logs: ctx.logs });
       }
       if(!img && typeof CHAR_IMG !== 'undefined') img = CHAR_IMG[p.charName] || null;
-      if(!img){ var o = FACTIONS.oracle; return { key:'oracle', name:pickName(o), role:pickRole(o), img:o.img }; }
-      return { key:key, name:pickName(p), role:pickRole(p), img:img };
+      if(!img){ var o = FACTIONS.oracle; return { key:'oracle', name:pickName(o), role:pickRole(o), img:o.img, code:o.code, bars:o.bars }; }
+      // 통신 헤더용 신원: images.js CHAR_IDENTITY(코드+바코드) 재사용
+      var ident = (typeof CHAR_IDENTITY !== 'undefined' && CHAR_IDENTITY[key]) || { code:'KR-B3-UNREG', bars:'||| || | |||| |||' };
+      return { key:key, name:pickName(p), role:pickRole(p), img:img, code:ident.code, bars:ident.bars };
     }
     var f = FACTIONS[key] || FACTIONS.oracle;
-    return { key:key, name:pickName(f), role:pickRole(f), img:f.img };
+    return { key:key, name:pickName(f), role:pickRole(f), img:f.img, code:f.code, bars:f.bars };
   };
 
   window.CARD_SPEAKER_FACTIONS = FACTIONS;

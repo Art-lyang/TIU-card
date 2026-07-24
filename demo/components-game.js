@@ -865,25 +865,26 @@ function CardC(p){
         var sp=null;
         if(typeof resolveCardSpeaker==='function'){try{sp=resolveCardSpeaker(card,{act:p.act||1,trust:p.trust,logs:p.logs,glitch:!!glitchOn})}catch(e){}}
         if(!sp||!sp.img)return paras.map(function(para,pi){return renderPara(para,pi,pi===paras.length-1)});
-        // 화자 행: [포트레잇 | 명패(이름|직책) + 첫 문단] — 나머지 문단은 그 아래 전폭.
-        // 짧은 한 줄 첫 문단(특수 라인 아님)은 헤드라인으로 확대해 도입부에 무게를 준다.
-        var p0=(paras[0]||'').trim();
-        var isHeadline=p0.length>0&&p0.length<=26&&p0.indexOf('\n')<0
-          &&!p0.match(/^\[?ORACLE[\s:：]/)
-          &&!p0.match(/^(서하은|강도윤|윤세진|임재혁|박소영|마르쿠스 베버|닉 포스터|포스터)([\s ][가-힣A-Za-z\s]*)?[：:]/)
-          &&!p0.match(/^["“「]/);
-        var idEl=h('div',{className:'card-speaker-id'},
-          h('span',{className:'card-speaker-name'},sp.name),
-          h('span',{className:'card-speaker-sep','aria-hidden':true},'|'),
-          h('span',{className:'card-speaker-role'},sp.role));
+        // 화자 행 = 통신 헤더: [포트레잇 | 이름|직책 + 식별코드 + 바코드 + 수신 메타].
+        // 본문은 전부 그 아래 전폭·동일 크기 — 문단 길이와 무관하게 레이아웃이 흔들리지 않는다.
+        var isEnSpk=(window.TS_I18N&&TS_I18N.getLocale&&TS_I18N.getLocale()==='en');
+        var metaTxt=sp.key==='glitch'
+          ?(isEnSpk?'SIGNAL UNVERIFIED':'신원 미확인')
+          :((isEnSpk?'RCVD · DAY ':'수신 · DAY ')+(p.day||1));
         return [
-          h('div',{key:'spkrow',className:'card-speaker-row'+(isHeadline?' card-speaker-row--head':'')+(sp.key==='glitch'?' card-speaker--glitch':'')},
+          h('div',{key:'spkrow',className:'card-speaker-row'+(sp.key==='glitch'?' card-speaker--glitch':'')},
             h('div',{className:'card-speaker-visual','aria-hidden':true},
               h('img',{className:'card-speaker-img',src:sp.img,alt:''})),
             h('div',{className:'card-speaker-lead'},
-              idEl,
-              isHeadline?h('div',{className:'card-speaker-headline'},p0):renderPara(paras[0],0,true))),
-          paras.slice(1).map(function(para,pi){return renderPara(para,pi+1,pi+1===paras.length-1)})
+              h('div',{className:'card-speaker-id'},
+                h('span',{className:'card-speaker-name'},sp.name),
+                h('span',{className:'card-speaker-sep','aria-hidden':true},'|'),
+                h('span',{className:'card-speaker-role'},sp.role)),
+              sp.code?h('div',{className:'card-speaker-code'},sp.code):null,
+              sp.bars?h('div',{className:'card-speaker-bars','aria-hidden':true},sp.bars):null,
+              h('div',{className:'card-speaker-hr','aria-hidden':true}),
+              h('div',{className:'card-speaker-rcvd'},metaTxt))),
+          paras.map(function(para,pi){return renderPara(para,pi,pi===paras.length-1)})
         ];
       })()),
       inlineCardHint&&h('div',{style:{marginTop:8,padding:'6px 10px',background:'rgba(var(--ui-rgb),.06)',borderLeft:'2px solid rgba(var(--ui-rgb),.3)',fontFamily:"'Share Tech Mono',monospace",fontSize:11,color:'var(--ui)',letterSpacing:0.5}},inlineCardHint),

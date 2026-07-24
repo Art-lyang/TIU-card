@@ -123,11 +123,15 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-hdr,.card-msg{position:relative;z-index:1}
 .card-hdr-l{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--ui-card);letter-spacing:1px;text-shadow:0 0 10px rgba(var(--ui-card-rgb),.44)}
 .card-hdr-r{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px}
-/* 화자 행: [포트레잇 | 명패(이름|직책)+첫 문단] — 나머지 문단은 전폭. 짧은 첫 문단은 헤드라인 확대 */
-.card-speaker-row{position:relative;z-index:1;display:flex;align-items:flex-start;gap:14px;margin:2px 0 12px}
-.card-speaker-row--head{align-items:center}
-.card-speaker-lead{flex:1;min-width:0;padding-top:2px}
-.card-speaker-row--head .card-speaker-lead{padding-top:0}
+/* 화자 행 = 통신 헤더: [포트레잇 | 이름|직책+식별코드+바코드+수신 메타] — 본문은 아래 전폭 동일 크기 */
+.card-speaker-row{position:relative;z-index:1;display:flex;align-items:center;gap:14px;margin:2px 0 14px}
+.card-speaker-lead{flex:1;min-width:0}
+.card-speaker-code{font-family:'Share Tech Mono',monospace;font-size:10.5px;color:rgba(var(--ui-rgb),.58);letter-spacing:1.4px;margin-top:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-speaker-bars{font-family:'Share Tech Mono',monospace;font-size:10px;color:rgba(var(--ui-card-rgb),.42);letter-spacing:2px;margin-top:4px;white-space:nowrap;overflow:hidden}
+.card-speaker-hr{height:1px;background:linear-gradient(90deg,rgba(var(--ui-card-rgb),.35),transparent);margin:8px 0 6px}
+.card-speaker-rcvd{font-family:'Share Tech Mono',monospace;font-size:9.5px;color:rgba(var(--ui-rgb),.62);letter-spacing:1.6px}
+.card-speaker--glitch .card-speaker-code{color:rgba(255,107,107,.75)}
+.card-speaker--glitch .card-speaker-rcvd{color:#ff6b6b}
 .card-speaker-visual{position:relative;width:118px;flex:none;padding:4px;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:3px;background:rgba(0,0,0,.24);overflow:hidden}
 .card-speaker-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:2px;filter:grayscale(1);display:block;animation:spkGlitch 7.4s steps(1,end) infinite}
 /* 그린 스캔 스윕 — CRT 주사선이 위→아래로 흐르는 느낌 */
@@ -152,13 +156,10 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-speaker-name{font-size:13px;color:var(--ui-card);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-speaker-sep{font-size:11px;color:rgba(var(--ui-card-rgb),.4);flex:none}
 .card-speaker-role{font-size:11px;color:rgba(var(--ui-rgb),.72);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.card-speaker-headline{font-size:20px;line-height:1.32;font-weight:600;color:var(--fg);letter-spacing:-.2px;margin-top:2px;word-break:keep-all}
-.card-msg--dense .card-speaker-headline{font-size:18px}
 .card-speaker--glitch .card-speaker-name{color:#ff6b6b}
 .card-speaker--glitch .card-speaker-img{border-color:rgba(255,60,60,.4)}
 .fs-small .card-speaker-visual{width:104px}
-.fs-small .card-speaker-headline{font-size:17px}
-@media(min-width:768px){.card-speaker-visual{width:132px}.card-speaker-headline{font-size:22px}}
+@media(min-width:768px){.card-speaker-visual{width:132px}}
 .card-p-high .card-hdr-r{color:#ff4444}
 .card-p-mid .card-hdr-r{color:#f0a030}
 .card-p-low .card-hdr-r{color:var(--ui-dim)}
