@@ -85,12 +85,12 @@ Balance readout — `simulator_v3` (floor-faithful), N=400-500 per profile:
 | careful (resource-aware) | 0% death | **0%** | relief is a crisis-only safety net; skilled play unchanged |
 | comply (pure GI-max) | 100% death | ~100% | pathological single-axis profile; unbreakable by relief |
 
-The `comply` profile picks the resource-destroying option every turn to maximize GI; no safety net can offset a strategy that actively discards resources each card. A resource-aware compliance player is `careful` (0% death). This is treated as intended "single-axis suicide is punished," not a live balance defect — see §5.
+The `comply` profile picks the resource-destroying option every turn to maximize GI; no safety net can offset a strategy that actively discards resources each card. A resource-aware compliance player is `careful` (0% death). **This is a settled non-issue, not an open balance item** (design decision, 2026-07-24): mindless-skip / single-axis-suicide play is not part of any ending's reach condition, so it is not a difficulty metric. The game already makes defeat legible, so a resource death is a learning signal the player corrects next run — (1) the intro tutorial states "any stat reaching 0 fails the mission" and teaches the tilt-to-preview stat delta (`components-game.js` tutorial); (2) live `*Low` critical warnings fire as a stat approaches the threshold (`lang-ui`); (3) the game-over screen names the exact cause (`go-reason`, e.g. "자원 고갈"). No repeatable-safeguard change is warranted.
 
 ## 5. Remaining Watch Items
 
 - Human balance playtest is still the missing calibration (carried from v11 §9 / v12 §5). The simulator floor fix corrects the automated numbers but does not replace real first-session readings.
-- `comply` at ~100% is a design call, not a solved item. The only remaining lever is a repeatable ORACLE safeguard, which removes crisis tension for that route; deferred pending human playtest.
+- `comply` ~100% is **resolved as intended** (see §4), not a watch item: suicide/mindless-skip play is outside ending-reach conditions, and defeat is fully communicated (tutorial + live `*Low` warnings + named game-over cause). No repeatable safeguard will be added — it would only erase crisis tension for legitimate play. The genuine survival concern (casual/newbie) is addressed by the state-based relief pass above.
 - `firebase-config.js` is git-tracked with live web keys (public-by-design per `firestore.rules`, but a project-policy exception). Resolve `.gitignore` + deploy handling before any wider public / Steam distribution.
 - Store packaging (screenshots, copy, version labels) must be re-cut against BUILD 483+.
 - Discoverability remains the dominant commercial risk (unchanged from v12).
