@@ -815,6 +815,10 @@ function CardC(p){
   // dense: 210+ chars or 6+ paragraphs -> card-msg--dense (overflow guard)
   var _mLen=String((cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')))||'');
   var msgDense=_mLen.length>=210||_mLen.split('\n\n').length>=6;
+  // 본문 오버플로 스크롤 큐: 저높이 화면에서 문단이 스크롤 밑으로 내려가면 "사라진 것"처럼 보임 — ▼ 표시로 안내
+  var msgRef=useRef(null);var _mMore=useState(false),msgMore=_mMore[0],setMsgMore=_mMore[1];
+  var updateMsgMore=function(){var el=msgRef.current;if(!el)return;setMsgMore(el.scrollHeight-el.clientHeight>8&&el.scrollTop+el.clientHeight<el.scrollHeight-8)};
+  useEffect(function(){updateMsgMore();var t=setTimeout(updateMsgMore,420);window.addEventListener('resize',updateMsgMore);return function(){clearTimeout(t);window.removeEventListener('resize',updateMsgMore)}},[card.id]);
   return h('div',{style:{flex:1,width:'100%',maxWidth:440,position:'relative',display:'flex',flexDirection:'column',minHeight:0,marginBottom:12}},
     h('div',{className:'card-stack-dummy','aria-hidden':true}),
     (flashOn&&flashSrc)?h('div',{className:'card-flash'+(_fxMode==='reduced'?' card-flash--reduced':''),onClick:dismissFlash},h('div',{className:'card-flash-img',style:{backgroundImage:'url('+flashSrc+')'}})):null,
@@ -842,7 +846,7 @@ function CardC(p){
         return h('div',{style:{color:'#ff4444',fontFamily:"'Share Tech Mono',monospace",fontSize:9.5,letterSpacing:0.5,textAlign:'center',marginBottom:6,lineHeight:1.4,textShadow:'0 0 6px rgba(255,68,68,.4)'}},
           '\u26a0 '+(isEnT?('No response \u2192 ORACLE auto-approves: "'+clbl+'"'):('\ubbf8\uc120\ud0dd \uc2dc ORACLE\uc774 \uc790\ub3d9 \uc2b9\uc778\ud569\ub2c8\ub2e4 \u2192 "'+clbl+'"')));
       })(),
-      h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')},
+      h('div',{className:'card-msg'+(msgDense?' card-msg--dense':'')+(msgMore?' card-msg--more':''),ref:msgRef,onScroll:updateMsgMore},
       (function(){
         var rawMsg=(cardLoc&&cardLoc.msg!=null?resolveVal(cardLoc.msg):(typeof card.msg==='function'?card.msg():(card.msg||'')));var paras=String(rawMsg||'').split('\n\n');
         var renderPara=function(para,pi,isLast){

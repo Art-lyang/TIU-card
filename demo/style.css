@@ -132,6 +132,10 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-speaker-rcvd{font-family:'Share Tech Mono',monospace;font-size:9.5px;color:rgba(var(--ui-rgb),.62);letter-spacing:1.6px}
 .card-speaker--glitch .card-speaker-code{color:rgba(255,107,107,.75)}
 .card-speaker--glitch .card-speaker-rcvd{color:#ff6b6b}
+/* 본문 오버플로 스크롤 큐 — 저높이 화면에서 아래 문단이 "사라진 것"처럼 보이는 문제 안내 */
+.card-msg--more::after{content:'▼';position:sticky;bottom:-1px;display:block;text-align:center;font-size:10px;color:var(--ui-card);padding:14px 0 2px;margin-top:-14px;background:linear-gradient(180deg,transparent,rgba(4,9,11,.88));animation:msgMoreBlink 1.6s ease-in-out infinite;pointer-events:none}
+@keyframes msgMoreBlink{0%,100%{opacity:.4}50%{opacity:.95}}
+/* 저높이 화면: 통신 헤더 축소(포트레잇 80px·바코드 숨김)로 본문 가시 영역 확보 */
 .card-speaker-visual{position:relative;width:118px;flex:none;padding:4px;border:1px solid rgba(var(--ui-card-rgb),.3);border-radius:3px;background:rgba(0,0,0,.24);overflow:hidden}
 .card-speaker-img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:2px;filter:grayscale(1);display:block;animation:spkGlitch 7.4s steps(1,end) infinite}
 /* 그린 스캔 스윕 — CRT 주사선이 위→아래로 흐르는 느낌 */
@@ -160,6 +164,8 @@ html,body{height:100%;overflow:hidden;background:#050808;color:var(--ui);font-fa
 .card-speaker--glitch .card-speaker-img{border-color:rgba(255,60,60,.4)}
 .fs-small .card-speaker-visual{width:104px}
 @media(min-width:768px){.card-speaker-visual{width:132px}}
+/* 저높이 화면: 통신 헤더 축소(포트레잇 80px·바코드 숨김)로 본문 가시 영역 확보 — 폭 규칙들보다 뒤에 둘 것 */
+@media(max-height:640px){.card-speaker-visual,.fs-small .card-speaker-visual{width:80px}.card-speaker-bars{display:none}.card-speaker-row{gap:10px;margin:0 0 8px}.card-speaker-hr{margin:5px 0 4px}}
 .card-p-high .card-hdr-r{color:#ff4444}
 .card-p-mid .card-hdr-r{color:#f0a030}
 .card-p-low .card-hdr-r{color:var(--ui-dim)}
