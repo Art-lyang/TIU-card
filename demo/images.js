@@ -55,6 +55,14 @@ const IMG = {
   ending_TIME_UP: "assets/images/endings/ending_TIME_UP.svg",
 };
 
+// 엔딩 시네마틱 영상 (선택적). 엔딩 도달 시 크게 재생(스킵 가능) 후, hero에서 루프 재생한다.
+// 규칙: H.264(avc1) + faststart .mp4 만 사용(브라우저 <video> 호환 — CCTV 스팅과 동일). 없으면 엔딩 이미지로 폴백.
+// 파일을 assets/videos/endings/ 에 넣은 뒤 해당 엔트리의 주석을 해제하면 자동 활성화된다.
+// 키는 IMG와 동일한 'ending_<id>' 규칙. 로드 실패(onError) 시에도 엔딩 이미지로 안전 폴백.
+const ENDING_VIDEOS = {
+  // ending_F: "assets/videos/endings/ending_F.mp4",
+};
+
 const CHAR_IMG = {
   "이중철": IMG.char_jungchul,
   "서하은": IMG.char_haeun,

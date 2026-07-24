@@ -1042,7 +1042,17 @@ function NewsReport3(p){
       h('button',{className:'oracle-card__execute',style:{minWidth:200},onClick:p.onContinue},tt('news.nextCycle',null,'[ PROCEED TO NEXT CYCLE ]'))));
 }
 function GameOver(p){
-  useEffect(function(){var onKey=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}};window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
+  // 엔딩 시네마틱 영상: 있으면 진입 시 크게 재생(스킵 가능), 끝나면 hero에서 루프. 없거나 로드 실패 시 이미지 폴백.
+  var eVid=(typeof ENDING_VIDEOS!=='undefined')?((p.endVid&&ENDING_VIDEOS[p.endVid])||(p.endId?ENDING_VIDEOS['ending_'+p.endId]:null)||null):null;
+  var _cine=useState(!!eVid),cinePlay=_cine[0],setCinePlay=_cine[1];
+  var _vf=useState(false),vidFailed=_vf[0],setVidFailed=_vf[1];
+  var cineRef=useRef(null),cineActiveRef=useRef(!!eVid);
+  cineActiveRef.current=cinePlay&&!vidFailed;
+  useEffect(function(){var onKey=function(e){
+      // 시네마틱 재생 중엔 Enter/Space/Esc가 '스킵'으로 동작(재시작 오발 방지)
+      if(cineActiveRef.current){if(e.key==='Enter'||e.key===' '||e.key==='Escape'){e.preventDefault();setCinePlay(false)}return}
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();p.onRestart()}
+    };window.addEventListener('keydown',onKey);return function(){window.removeEventListener('keydown',onKey)}},[]);
   var msg=p.gi>50?tt('gameOver.msgHigh',null,"요원의 헌신적 복무에 감사드립니다."):p.gi>25?tt('gameOver.msgMid',null,"세션이 종료됩니다. 결과가 기록되었습니다."):tt('gameOver.msgLow',null,"비표준 운영 패턴 감지. 세션 데이터 분석 중...");
   var narr=p.endNarr;
   if(p.endId&&typeof tc==='function'){
@@ -1060,14 +1070,25 @@ function GameOver(p){
     h('div',{className:'bf-head-side'},'ORACLE',h('br'),'// SESSION',h('br'),'CLOSED'),
     h('div',{className:'bf-head-c'},h('div',{className:'bf-head-tag'},'FINAL RECORD'),h('div',{className:'bf-head-acts'},h('b',null,'SESSION #'+sessionNo))),
     h('div',{className:'bf-head-side bf-head-r'},h('div',{className:'bf-head-prio'},'RESULT DAY',h('br'),h('b',null,String(resultDay))),h('div',{className:'bf-head-bars'},[0,1,2,3].map(function(i){return h('i',{key:i,className:'on'})}))));
+  var heroMedia=(eVid&&!vidFailed)
+    ? h('video',{key:'hv',className:'bf-hero-img go-hero-vid',src:eVid,autoPlay:true,muted:true,loop:true,playsInline:true,onError:function(){setVidFailed(true)}})
+    : (eImg&&h('img',{src:eImg,alt:endName,className:'bf-hero-img'}));
   var hero=h('div',{className:'bf-hero go-hero'},
-    eImg&&h('img',{src:eImg,alt:endName,className:'bf-hero-img'}),
+    heroMedia,
     h('div',{className:'bf-hero-grad'}),h('div',{className:'bf-hero-scan'}),
     h('div',{className:'go-archived'},h('span',{className:'bf-hero-recdot'}),'ARCHIVED'),
     h('div',{className:'go-hero-tag'},isNarr?'ENDING':'TERMINATED'),
     h('div',{className:'go-ending-name'},endName),
     h('div',{className:'go-hero-day'},tt('gameOver.resultDay',{day:resultDay},'발생 DAY: '+resultDay)),
+    (eVid&&!vidFailed&&!cinePlay)&&h('button',{className:'go-hero-replay',onClick:function(){setCinePlay(true)},'aria-label':'replay'},tt('gameOver.replayEnding',null,'⤢ 다시 재생')),
     h('span',{className:'bf-corner tl'}),h('span',{className:'bf-corner tr'}),h('span',{className:'bf-corner bl'}),h('span',{className:'bf-corner br'}));
+  // 진입 시 큰 화면 시네마틱 오버레이 (스킵 버튼 / 클릭·Esc·Enter로 스킵, 재생 종료 시 자동 닫힘)
+  var cinematic=(eVid&&!vidFailed&&cinePlay)&&h('div',{className:'go-cine'},
+    h('video',{ref:cineRef,className:'go-cine-vid',src:eVid,autoPlay:true,muted:true,playsInline:true,
+      onEnded:function(){setCinePlay(false)},
+      onError:function(){setVidFailed(true);setCinePlay(false)}}),
+    h('div',{className:'go-cine-scan'}),h('div',{className:'go-cine-vign'}),
+    h('button',{className:'go-cine-skip',onClick:function(){setCinePlay(false)}},tt('gameOver.skipEnding',null,'SKIP ▸')));
   var body;
   if(isNarr){
     body=h('div',{className:'bf-panel'},
@@ -1121,7 +1142,7 @@ function GameOver(p){
   var btns=h('div',{className:'go-btns'},
     h('button',{className:'btn bf-enter',onClick:p.onRestart},tt('gameOver.restart',null,'[ 세션 재개시 — ACT 1 ]')),
     h('div',{className:'go-btnrow'},p.onMainMenu&&h('button',{className:'btn',onClick:p.onMainMenu},tt('gameOver.mainMenu',null,'메인메뉴')),h('button',{className:'btn',onClick:p.onLogs},tt('gameOver.logs',null,'기록')),h('button',{className:'btn',onClick:p.onArchive},tt('gameOver.archive',null,'아카이브')),h('button',{className:'btn',onClick:p.onEndings},tt('gameOver.endings',null,'엔딩')),p.onAchievements&&h('button',{className:'btn',onClick:p.onAchievements},tt('gameOver.achievements',null,'업적'))));
-  return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,ledger,btns));
+  return h('div',{className:'screen bf-screen go-screen'},h('div',{className:'bf-wrap'},header,hero,body,ledger,btns),cinematic);
 }
 function Tutorial(p){
   var s1=useState(0),step=s1[0],setStep=s1[1];
