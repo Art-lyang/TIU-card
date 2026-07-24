@@ -1027,7 +1027,18 @@ b.fm-rk--info{color:#caa14a}
 .go-btns{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:6px;padding-bottom:10px}
 .go-btnrow{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}
 .go-btnrow .btn{font-size:12px;padding:9px 16px;min-height:42px;margin-top:0}
-@media(max-width:480px){.go-hero{height:158px}.go-ending-name{font-size:18px}}
+/* 엔딩 hero 영상 — bf-hero-img 지오메트리 재사용, hero는 컬러 허용 */
+.go-hero-vid{pointer-events:none}
+.go-hero-replay{position:absolute;right:11px;bottom:9px;z-index:3;font-family:'Share Tech Mono',monospace;font-size:9px;letter-spacing:1px;color:rgba(var(--ui-rgb),.85);background:rgba(6,10,14,.55);border:1px solid rgba(var(--ui-rgb),.35);border-radius:3px;padding:4px 8px;cursor:pointer;transition:background .15s,border-color .15s}
+.go-hero-replay:hover{background:rgba(10,16,22,.8);border-color:rgba(var(--ui-rgb),.7)}
+/* 진입 시네마틱 오버레이 — 큰 화면 재생 + 스킵 */
+.go-cine{position:fixed;inset:0;z-index:9000;background:#04070a;display:flex;align-items:center;justify-content:center;animation:fadeIn .35s ease}
+.go-cine-vid{width:100%;height:100%;object-fit:contain;background:#04070a;display:block}
+.go-cine-scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,0) 0,rgba(0,0,0,0) 2px,rgba(0,0,0,.16) 3px);mix-blend-mode:multiply;opacity:.5}
+.go-cine-vign{position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 120% at 50% 50%,rgba(0,0,0,0) 55%,rgba(0,0,0,.6) 100%)}
+.go-cine-skip{position:absolute;right:18px;bottom:18px;z-index:9001;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:2px;color:rgba(var(--ui-rgb),.9);background:rgba(6,10,14,.6);border:1px solid rgba(var(--ui-rgb),.45);border-radius:4px;padding:9px 16px;cursor:pointer;transition:background .15s,border-color .15s}
+.go-cine-skip:hover{background:rgba(10,16,22,.85);border-color:rgba(var(--ui-rgb),.85);color:#f3efe6}
+@media(max-width:480px){.go-hero{height:158px}.go-ending-name{font-size:18px}.go-cine-skip{right:12px;bottom:12px;font-size:11px;padding:8px 13px}}
 
 /* ── CARD-SCREEN ORACLE CONSOLE — compact 2x2 instrumented gauges ── */
 .stats-console{border:1px solid rgba(var(--ui-rgb),.2);background:linear-gradient(180deg,rgba(var(--ui-rgb),.05),rgba(4,9,11,.4));border-radius:var(--r-sm);padding:7px 10px 8px;margin:2px 0 4px;box-shadow:inset 0 0 16px rgba(var(--ui-rgb),.03)}

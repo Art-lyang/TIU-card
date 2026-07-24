@@ -234,6 +234,7 @@ window.TS_I18N.mergeUI('en', {
     reportSection:'── ORACLE FINAL REPORT ──', duration:'Operation Duration: {days} days', resultDay:'Occurred on DAY {day}', stats:'Containment: {c} | Resources: {r} | Trust: {t} | Evaluation: {o}',
     restart:'[ RESTART SESSION — ACT 1 ]', ngPlus:'[ NEW GAME+ — ENHANCED START ]', logs:'Logs', archive:'Archive', endings:'Endings',
     grant:'GRANT: ACTIVE — RENEWAL AVAILABLE',
+    skipEnding:'SKIP ▸', replayEnding:'⤢ REPLAY',
     carryOver:'CARRY-OVER', combos:'COMBO', endingCodex:'ENDING CODEX', archiveRate:'ARCHIVE', nextRecord:'{n} unreached records',
     msgHigh:'Thank you for your devoted service.', msgMid:'The session is now terminated. Results have been recorded.', msgLow:'Nonstandard operational patterns detected. Session data is under review...',
     reasons:{
