@@ -74,13 +74,23 @@ tools/export-appintoss.mjs   ← 루트 게임 + appintoss/ 주입 + 번들 병�
 `session_start`, `day_reached(act, day)`, `mission_enter(id)`, `ending_reached(type)`,
 `demo_gate_shown`, `iap_unlock_shown`, `iap_unlock_done`.
 
-## 4. 결제 설계 (본편 전환 시)
+## 4. 결제 설계 (본편 전환 시) — SDK 2.10.8 타입 정의로 검증 완료
 
 - 상품: 비소모성 1종 `full_version_unlock` ("본편 인가 코드").
-- 게이트: 기존 **itch 데모 게이트**(BUILD 429) 로직 재사용 — 도달 지점 동일, 결제 성공 시 게이트 해제 플래그를 네이티브 저장소에 기록(복원 대상).
+- **구매 플로우 (자체 서버 불필요 — 정적 앱 그대로)**:
+  `IAP.createOneTimePurchaseOrder({ options:{ sku, processProductGrant: ()=>{해금 플래그 기록; return true} }, onEvent, onError })`
+  — 결제창·결제 검증은 토스가 전부 처리. cleanup 함수 반드시 호출.
+  중복 구매는 SDK가 `ITEM_ALREADY_OWNED`로 차단.
+- **구매 복원/환불 회수**: 부트 시 `IAP.getCompletedOrRefundedOrders`로 주문 이력 조회 →
+  완료 주문 있으면 해금 복원(재설치·기기변경 대응), 환불 주문이면 해금 회수. 심사 필수인
+  구매 복원이 클라이언트만으로 충족된다.
+- 게이트: 기존 **itch 데모 게이트**(BUILD 429) 로직 재사용 — 도달 지점 동일, 해제 플래그는
+  네이티브 저장소 팩에 포함(복원 대상). 단 신뢰 원천은 저장 플래그가 아니라 주문 이력 조회.
 - **itch 유도 버튼 분기 필수**: `components-briefing.js:243`의 `window.open(itch)` 버튼은
   `TIU_TOSS_BUILD`에서 IAP 해금 버튼으로 교체한다. (타 플랫폼 결제 유도는 심사 리스크)
-- 수수료율은 공개 문서에서 미확인 — 콘솔 계약 단계에서 확인 후 가격 확정.
+- 유의: ① 에러코드에 앱스토어 검증(`APP_MARKET_VERIFICATION_FAILED`)이 존재 — 스토어 수수료가
+  얹힐 개연성이 있으므로 실수령률은 콘솔 계약에서 확인 후 가격 확정. ② iOS는 한국 계정 전용
+  (`KOREAN_ACCOUNT_ONLY`). ③ 유료 유통에 따른 게임물 등급분류(자체등급분류 대행 여부) 콘솔 확인.
 
 ## 5. 심사 체크리스트
 
