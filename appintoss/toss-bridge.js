@@ -32,6 +32,14 @@
     return null;
   }
 
+  function iapApi(){
+    var s = sdk();
+    if (s && s.IAP) return s.IAP;
+    if (root.IAP && typeof root.IAP.createOneTimePurchaseOrder === 'function') return root.IAP;
+    return null;
+  }
+
+  var UNLOCK_KEY = 'ts_toss_full_unlock'; // 데모 게이트 해제 플래그 (demo-flag.js appintoss 변형이 읽음)
   var userHash = null;
 
   var TossBridge = {
@@ -77,6 +85,62 @@
       if (f) try { f(); } catch(e){}
     },
 
+    // ── IAP: 본편 인가 코드 (비소모성 full_version_unlock) ──
+    // 결제창·검증은 토스가 처리. processProductGrant에서 해금 플래그만 기록한다.
+    isFullUnlocked: function(){
+      try { return localStorage.getItem(UNLOCK_KEY) === '1'; } catch(e){ return false; }
+    },
+    purchaseFullUnlock: function(onDone){
+      var iap = iapApi();
+      var done = function(ok, code){ if (onDone) { var f = onDone; onDone = null; f(ok, code || null); } };
+      if (!iap) { done(false, 'NO_SDK'); return; }
+      var grant = function(){ try { localStorage.setItem(UNLOCK_KEY, '1'); } catch(e){} };
+      var cleanup = null;
+      var fin = function(){ if (cleanup) { try { cleanup(); } catch(e){} cleanup = null; } };
+      try {
+        cleanup = iap.createOneTimePurchaseOrder({
+          options: {
+            sku: CFG.productFullUnlock || 'full_version_unlock',
+            processProductGrant: function(){ grant(); return true; }
+          },
+          onEvent: function(){
+            fin();
+            TossBridge.log('iap_unlock_done', {});
+            done(TossBridge.isFullUnlocked());
+          },
+          onError: function(err){
+            fin();
+            var code = err && err.code;
+            if (code === 'ITEM_ALREADY_OWNED') { grant(); done(true, code); return; }
+            TossBridge.log('iap_unlock_error', { code: String(code || '') });
+            done(false, code);
+          }
+        });
+      } catch(e){ fin(); done(false, 'EXCEPTION'); }
+    },
+    // 부트 복원/회수: 주문 이력이 신뢰 원천. COMPLETED → 해금, 최신 상태 REFUNDED → 회수.
+    // (상품 1종이라 페이지네이션(hasNext)은 생략 — 상품 추가 시 nextKey 순회 구현)
+    syncPurchaseState: function(){
+      var iap = iapApi();
+      if (!iap || typeof iap.getCompletedOrRefundedOrders !== 'function') return Promise.resolve(false);
+      var sku = CFG.productFullUnlock || 'full_version_unlock';
+      return iap.getCompletedOrRefundedOrders().then(function(res){
+        var orders = (res && res.orders) || [];
+        var latest = null;
+        for (var i = 0; i < orders.length; i++) {
+          var o = orders[i];
+          if (o.sku !== sku) continue;
+          if (!latest || String(o.date) > String(latest.date)) latest = o;
+        }
+        var owned = !!(latest && latest.status === 'COMPLETED');
+        var cur = TossBridge.isFullUnlocked();
+        if (owned === cur) return false;
+        try { owned ? localStorage.setItem(UNLOCK_KEY, '1') : localStorage.removeItem(UNLOCK_KEY); } catch(e){}
+        TossBridge.log(owned ? 'iap_unlock_restored' : 'iap_unlock_revoked', {});
+        return true;
+      }).catch(function(){ return false; });
+    },
+
     // ── 행동 분석 ──
     log: function(name, params){
       var f = fn('eventLog');
@@ -100,11 +164,21 @@
 
   root.TossBridge = TossBridge;
 
-  // 부트 시퀀스: 로그인 → 세로 고정 → 세이브 어댑터에 준비 신호.
+  // 부트 시퀀스: 로그인 → 세로 고정 → 구매 상태 동기화(해금 복원/회수) → 어댑터에 준비 신호.
   // (어댑터는 toss-save-adapter.js — 이 파일보다 뒤에 로드된다)
+  var SYNC_GUARD = 'ts_toss_iap_synced'; // sessionStorage — 동기화 reload 루프 방지
   root.__TOSS_READY__ = TossBridge.login().then(function(hash){
     TossBridge.lockPortrait();
     TossBridge.log('session_start', { toss: TossBridge.available() ? 1 : 0 });
-    return hash;
+    var guarded = false;
+    try { guarded = sessionStorage.getItem(SYNC_GUARD) === '1'; } catch(e){}
+    if (guarded) return hash;
+    return TossBridge.syncPurchaseState().then(function(changed){
+      if (changed) {
+        try { sessionStorage.setItem(SYNC_GUARD, '1'); } catch(e){}
+        setTimeout(function(){ try { location.reload(); } catch(e){} }, 100);
+      }
+      return hash;
+    });
   });
 })();

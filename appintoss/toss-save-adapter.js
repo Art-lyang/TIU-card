@@ -24,7 +24,10 @@
   var PROGRESS_KEYS=['ts_endings','ts_sessions','ts_achievements','ts_minigamesSeen','ts_lastEnding'];
   var SETTINGS_KEYS=['ts_locale','ts_muted','ts_volume','ts_sfxVol','ts_fontSize','ts_fxMode'];
   var WATCH_PREFIXES=['ts_observer_proto_roll_'];
-  var ALL_KEYS = CURRENT_KEYS.concat(SNAP_KEYS, PROGRESS_KEYS, SETTINGS_KEYS);
+  // 토스 빌드 전용 키 (cloud-save.js 목록 밖 — 해금 플래그. 신뢰 원천은 IAP 주문 이력이고
+  // 이 미러는 오프라인 부트 시 게이트 즉시 반영용)
+  var TOSS_EXTRA_KEYS=['ts_toss_full_unlock'];
+  var ALL_KEYS = CURRENT_KEYS.concat(SNAP_KEYS, PROGRESS_KEYS, SETTINGS_KEYS, TOSS_EXTRA_KEYS);
   var WATCH = {};
   ALL_KEYS.forEach(function(k){ WATCH[k] = true; });
   function isWatchKey(key){

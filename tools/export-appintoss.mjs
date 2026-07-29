@@ -48,7 +48,14 @@ function buildVariant(name, demoFlagValue) {
   for (const p of refs) {
     const dst = join(OUT, p);
     mkdirSync(dirname(dst), { recursive: true });
-    if (p === 'demo-flag.js') { writeFileSync(dst, 'window.TS_DEMO=' + demoFlagValue + '; // appintoss ' + name + ' build' + NL); n++; continue; }
+    if (p === 'demo-flag.js') {
+      // demo 변형: IAP 해금 플래그(ts_toss_full_unlock)를 읽는 동적 게이트 —
+      // 결제 성공/복원 후 reload만으로 본편이 열린다. --full 변형은 정적 false(테스트용).
+      const flagJs = demoFlagValue === 'true'
+        ? "window.TS_DEMO=(function(){try{return localStorage.getItem('ts_toss_full_unlock')!=='1'}catch(e){return true}})(); // appintoss " + name + ' build' + NL
+        : 'window.TS_DEMO=false; // appintoss ' + name + ' build' + NL;
+      writeFileSync(dst, flagJs); n++; continue;
+    }
     if (p === 'firebase-config.js') { writeFileSync(dst, '// appintoss build: firebase 미사용 (토스 네이티브 저장소 사용)' + NL); n++; continue; }
     if (p === 'cloud-save.js') { writeFileSync(dst, '// appintoss build: cloud-save 대체 — appintoss/toss-save-adapter.js 참조' + NL); n++; continue; }
     const src = join(ROOT, p);

@@ -240,7 +240,10 @@ function DemoEndScreen(p){
         h('div',{className:'bf-analysis demo-end-body'},isEn
           ?'ACT 3 clearance requires the full build. Act 3–4 escalation, 16 endings, 19 field missions and the complete archive are waiting on the other side.'
           :'ACT 3 이후 구역은 본편에서 개방됩니다. Act 3~4의 위기, 엔딩 16종, 현장임무 19종, 전체 아카이브가 그 너머에 있습니다.')),
-      h('button',{className:'btn bf-enter demo-end-btn',onClick:function(){try{window.open(itchUrl,'_blank')}catch(e){location.href=itchUrl}}},isEn?'[ CONTINUE IN FULL VERSION — itch.io ]':'[ 본편에서 계속 — itch.io ]'),
+      (typeof window!=='undefined'&&window.TIU_TOSS_BUILD&&window.TossBridge)
+        // 앱인토스 빌드: 타 플랫폼(itch) 결제 유도 금지 — IAP 비소모성 해금으로 대체
+        ?h('button',{className:'btn bf-enter demo-end-btn',onClick:function(){window.TossBridge.purchaseFullUnlock(function(ok){if(ok){try{window.TS_DEMO=false}catch(e){}try{location.reload()}catch(e){}}})}},isEn?'[ ISSUE FULL ACCESS CODE ]':'[ 본편 인가 코드 발급 ]')
+        :h('button',{className:'btn bf-enter demo-end-btn',onClick:function(){try{window.open(itchUrl,'_blank')}catch(e){location.href=itchUrl}}},isEn?'[ CONTINUE IN FULL VERSION — itch.io ]':'[ 본편에서 계속 — itch.io ]'),
       h('button',{className:'btn demo-end-btn demo-end-btn--ghost',onClick:function(){if(p.onMenu)p.onMenu()}},isEn?'[ MAIN MENU ]':'[ 메인 메뉴 ]')));
 }
 function BriefingScreen(p){
